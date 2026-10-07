@@ -1,0 +1,94 @@
+﻿
+
+class US_AITeammateSystem : UECSScriptSystem
+{
+    US_AITeammateSystem()
+    {
+        return;
+    }
+    UFUNCTION()
+    void ServerJob_InitAITeammate(const FECSEntity &inout AITeammatePawnEntity, const FC_InitAITeammate &inout InitAITeammate) const
+    {
+        FECSEntity local_4 = InitAITeammate.PlayerEntity;
+        if (!(local_4.IsValid()))
+        {
+            Remove local_10;
+            local_10.opCall();
+            return;
+        }
+        Modify local_14;
+        FC_ControlledByAI& local_16 = local_14.opCall();
+        if (local_16)
+        {
+            Remove local_10;
+            FECSEntity local_24 = FECSEntity(local_16.GetControllerEntity());
+            if (local_24.IsValid())
+            {
+                ::FTeamUtils::JoinCombatTeam(local_4, local_24);
+                FFPTime local_30 = FFPTime(-1);
+                Get local_38;
+                int local_39 = local_38.opCall().GetTeam();
+                local_10.opCall();
+            }
+        }
+        return;
+    }
+    UFUNCTION()
+    void Run_ServerJob_InitAITeammate() const
+    {
+        const FECSEntity& local_36;
+        int local_38 = 0;
+        int local_166 = 0;
+        const FECSJob& local_2 = ECS::GetContextJob();
+        int local_4 = 0;
+        int local_3 = local_4;
+        if (local_2.IsViewCacheUsable())
+        {
+            FECSWorldPtr local_8 = ECS::GetECSWorld();
+            const TArray<FECSEntityId>& local_12 = local_2.GetViewCacheEntities();
+            int local_13 = 0;
+            for (auto& local_28 : local_12)
+            {
+                local_28;
+                FECSEntity local_32;
+                if (!(local_32.IsValid()))
+                {
+                    continue;
+                }
+                ++local_13;
+                FECSEntityScopeCycleCounter local_33 = FECSEntityScopeCycleCounter(local_32);
+                this.ServerJob_InitAITeammate(local_36, local_38);
+            }
+            local_2.UpdateCachedEntityCount(local_13);
+            return;
+        }
+        FECSRuntimeView local_80 = this.GetECSWorld().GetRuntimeViewByRegType(EECSRegType(0), EECSRuntimeViewType(2));
+        Include local_84;
+        local_84.opCall();
+        Include local_88;
+        local_88.opCall();
+        Exclude(local_80).opCall();
+        bool local_5 = local_2.BeginViewCacheBuild();
+        int local_14 = local_2.GetViewCacheEpoch();
+        int local_94 = 0;
+        FECSRuntimeViewIterator local_128 = local_80.Iterator();
+        for (; local_128.CanProceed;)
+        {
+            local_36 = local_128.Proceed();
+            ++local_94;
+            if (local_5)
+            {
+                local_2.AddViewCacheEntity(local_36.GetId());
+            }
+            FECSEntityScopeCycleCounter local_33_2 = FECSEntityScopeCycleCounter(local_36);
+            this.ServerJob_InitAITeammate(local_166, local_38);
+        }
+        local_2.UpdateCachedEntityCount(local_94);
+        if (local_5)
+        {
+            local_2.CommitViewCacheBuild(local_14);
+        }
+        return;
+    }
+}
+

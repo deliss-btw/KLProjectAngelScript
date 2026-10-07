@@ -1,0 +1,10 @@
+﻿
+
+struct FAIGenEnvData
+{
+    FAIGenEnvData()
+    {
+        return;
+    }
+}
+

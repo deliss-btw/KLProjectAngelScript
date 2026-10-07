@@ -1,0 +1,50 @@
+﻿
+namespace UWidget_TraitSourceItem
+{
+    const int ViewID = 0;
+
+}
+UCLASS(Abstract)
+class UWidget_TraitSourceItem : UEUIUserWidget
+{
+    UPROPERTY()
+    TEUIWidgetModelRef<FVM_TraitSourceInfo> TraitSourceInfo;
+    UPROPERTY()
+    FGetEUIModelRef TraitSourceInfoDelegate;
+
+    UWidget_TraitSourceItem()
+    {
+        return;
+    }
+    UFUNCTION()
+    void CodeGenInitProperty()
+    {
+        this.TraitSourceInfo.Initialize(this, FName("VM_TraitSourceInfo"), EEUIWidgetRefModelCreationType(0), false);
+        return;
+    }
+    UFUNCTION()
+    void CodeGenConstruct()
+    {
+        if (this.TraitSourceInfoDelegate.IsBound())
+        {
+            this.TraitSourceInfo.SetRef(this.TraitSourceInfoDelegate.Execute());
+        }
+        return;
+    }
+}
+
+namespace UWidget_TraitSourceItem
+{
+void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
+{
+    return;
+}
+FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
+{
+    return FEUIWidget::CreateWidget(OwningPlayer.GetLocalPlayer(), WidgetClass);
+}
+FEUIWidgetRef AddWidget(const APlayerController OwningPlayer, const FGameplayTag &inout WidgetTag)
+{
+    return FEUIWidget::AddWidget(OwningPlayer.GetLocalPlayer(), WidgetTag);
+}
+}
