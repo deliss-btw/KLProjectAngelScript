@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_GetGroundMoveStance : UBTTask_ECSScriptBase
 {
     UPROPERTY()

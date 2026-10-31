@@ -1,17 +1,29 @@
-﻿
-
 struct FDecoAttachOffset
 {
     FSubDirtyFlags8 __DirtyFlags;
     UPROPERTY()
-    FVector3f m_Location = FVector3f::ZeroVector;
+    FVector3f m_Location;
     UPROPERTY()
-    FRotator3f m_Rotation = FRotator3f::ZeroRotator;
+    FRotator3f m_Rotation;
     UPROPERTY()
-    float32 m_Scale = 1.0f;
+    float32 m_Scale;
 
+    FDecoAttachOffset()
+    {
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Location = FVector3f::ZeroVector;
+        this.m_Rotation = FRotator3f::ZeroRotator;
+        this.m_Scale = 1.0f;
+        return;
+    }
     FDecoAttachOffset(const FDecoAttachOffset &inout Other)
     {
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_Location = FVector3f::ZeroVector;
+        this.m_Rotation = FRotator3f::ZeroRotator;
+        this.m_Scale = 1.0f;
         this.m_Location = Other.m_Location;
         this.m_Rotation = Other.m_Rotation;
         this.m_Scale = Other.m_Scale;
@@ -119,7 +131,6 @@ struct FAttachPointConfig : FDataObject
     FDecoAttachOffset Offset;
     UPROPERTY()
     TArray<FAvatarDecoAttachOffsetOverride> AvatarOffsetOverrides;
-
 
     FDecoAttachOffset GetOffsetForAvatar(const uint AvatarId) const
     {

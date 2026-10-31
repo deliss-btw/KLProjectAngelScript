@@ -1,5 +1,3 @@
-﻿
-
 class US_ConditionEntityDeath : UECSScriptSystem
 {
     US_ConditionEntityDeath()

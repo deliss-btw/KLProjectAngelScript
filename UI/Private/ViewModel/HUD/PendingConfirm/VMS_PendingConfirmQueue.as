@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_PendingConfirmQueue
 {
     const int ModelId = 0;
@@ -100,7 +99,7 @@ struct FVMS_PendingConfirmQueue : FEUIViewModelSingleton
     }
     FText GetPendingCountText() const
     {
-        return FText::Format(NSLOCTEXT("PendingConfirm", "PendingCountFormat", "еѕ…е¤„зђ†пј€{0}пј‰"), this.GetPendingCount());
+        return FText::Format(NSLOCTEXT("PendingConfirm", "PendingCountFormat", "待处理（{0}）"), this.GetPendingCount());
     }
     void ToggleExpanded()
     {
@@ -264,7 +263,57 @@ FVMS_PendingConfirmQueue GetByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "PendingCount";
+    local_14.TypeName = "int";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "QueueVisibility";
+    local_14.TypeName = "ESlateVisibility";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PendingItemArray";
+    local_14.TypeName = "TArray<FEUIModelContainer>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bExpanded";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PendingCountText";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVMS_PendingConfirmQueue>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVMS_PendingConfirmQueue;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(6);
+    local_22.AddRefPropertyDirty(0, 0, FMS_PendingConfirmMessage::__IndexOf_PendingEntries());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("Model");
+    int local_2_2 = FMS_PendingConfirmMessage::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FMS_PendingConfirmMessage::__IndexOf_PendingEntries(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnModelChanged";
+    local_40.DirtyFlags.Set(FVMS_PendingConfirmQueue::__IndexOf_Model());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_EntityGameplayTagTrace_NS
 {
     const TECSComponentDerivedPtr<FC_EntityGameplayTagTrace> DerivedPtr = TECSComponentDerivedPtr<FC_EntityGameplayTagTrace>();
@@ -87,7 +86,8 @@ struct FAudioVoInfo
     }
     void SetEntity(const FECSEntity &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Entity = __Value;
+        return;
     }
     FName GetVoRowName() const property
     {
@@ -103,14 +103,10 @@ struct FAudioVoInfo
 struct FDodgeState
 {
     UPROPERTY()
-    FFPTime AccumulateDeadline;
+    FFPTime AccumulateDeadline = 0.0;
     UPROPERTY()
-    int Count;
+    int Count = 0;
 
-    FDodgeState()
-    {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
-    }
 }
 
 struct FC_EntityGameplayTagTrace : FECSComponent
@@ -147,7 +143,6 @@ struct FCE_EntityBBChangedEvent : FECSEvent
     int OldValue;
     UPROPERTY()
     int NewValue;
-
 
 }
 
@@ -187,7 +182,6 @@ struct FCS_EntityAudioVoManager : FECSSingleton
     UPROPERTY()
     int TriggerThreshold = 2;
 
-
 }
 
 struct FCS_EntityAudioVoLogicManager : FECSSingleton
@@ -200,7 +194,6 @@ struct FCS_EntityAudioVoLogicManager : FECSSingleton
     TMap<FECSEntity, FFPTime> LastEntityHealedTime;
     UPROPERTY()
     float32 HealedCd = 10.0f;
-
 
 }
 
@@ -216,7 +209,6 @@ struct FCE_InventoryAudioVo : FECSEvent
     UPROPERTY()
     int AddNum;
 
-
 }
 
 struct FCE_TriggerBeHitAudioVo : FECSEvent
@@ -230,7 +222,6 @@ struct FCE_TriggerBeHitAudioVo : FECSEvent
     FECSEntity Comforter;
     UPROPERTY()
     EAttackDataHitState HitLevel;
-
 
 }
 
@@ -246,7 +237,6 @@ struct FCE_SkillHitAudioVo : FECSEvent
     UPROPERTY()
     int AttackCategory;
 
-
 }
 
 struct FCE_DoExecutionVo : FECSEvent
@@ -256,7 +246,6 @@ struct FCE_DoExecutionVo : FECSEvent
     FECSEntity Executor;
     UPROPERTY()
     bool bIsMainExecutor = false;
-
 
 }
 
@@ -270,7 +259,6 @@ struct FCE_AbnormalStateEvent : FECSEvent
     UPROPERTY()
     FECSEntity Caster;
 
-
 }
 
 struct FCE_RebornForAudioVo : FECSEvent
@@ -281,7 +269,6 @@ struct FCE_RebornForAudioVo : FECSEvent
     UPROPERTY()
     FECSEntity RebornByEntity;
 
-
 }
 
 struct FCE_HealHpAudioVo : FECSEvent
@@ -291,7 +278,6 @@ struct FCE_HealHpAudioVo : FECSEvent
     float32 HealHp;
     UPROPERTY()
     FECSEntity FromEntity;
-
 
 }
 
@@ -385,37 +371,37 @@ bool RemoveEntityGameplayTagTrace(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEntityGameplayTagTraceOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EntityGameplayTagTrace, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EntityGameplayTagTrace, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityGameplayTagTraceOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EntityGameplayTagTrace, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EntityGameplayTagTrace, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityGameplayTagTraceOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EntityGameplayTagTrace, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EntityGameplayTagTrace, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityGameplayTagTraceOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EntityGameplayTagTrace, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EntityGameplayTagTrace, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityGameplayTagTraceOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EntityGameplayTagTrace, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EntityGameplayTagTrace, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEntityGameplayTagTraceLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EntityGameplayTagTrace, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EntityGameplayTagTrace, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEntityGameplayTagTraceActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EntityGameplayTagTrace, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EntityGameplayTagTrace, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEntityGameplayTagTraceModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EntityGameplayTagTrace, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EntityGameplayTagTrace, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_PendingDispatchAudioVo
@@ -506,17 +492,17 @@ bool RemovePendingDispatchAudioVo(const FECSWorldPtr &inout World)
 }
 void __MonitorPendingDispatchAudioVoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_PendingDispatchAudioVo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_PendingDispatchAudioVo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPendingDispatchAudioVoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_PendingDispatchAudioVo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_PendingDispatchAudioVo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPendingDispatchAudioVoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_PendingDispatchAudioVo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_PendingDispatchAudioVo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_EntityAudioVoManager
@@ -607,17 +593,17 @@ bool RemoveEntityAudioVoManager(const FECSWorldPtr &inout World)
 }
 void __MonitorEntityAudioVoManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_EntityAudioVoManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_EntityAudioVoManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEntityAudioVoManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_EntityAudioVoManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_EntityAudioVoManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEntityAudioVoManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_EntityAudioVoManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_EntityAudioVoManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_EntityAudioVoLogicManager
@@ -708,16 +694,16 @@ bool RemoveEntityAudioVoLogicManager(const FECSWorldPtr &inout World)
 }
 void __MonitorEntityAudioVoLogicManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_EntityAudioVoLogicManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_EntityAudioVoLogicManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEntityAudioVoLogicManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_EntityAudioVoLogicManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_EntityAudioVoLogicManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEntityAudioVoLogicManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_EntityAudioVoLogicManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_EntityAudioVoLogicManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

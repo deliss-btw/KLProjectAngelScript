@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_IgnoreHitShake : UESMBPBaseSpanAction
 {
     UESMAction_IgnoreHitShake()

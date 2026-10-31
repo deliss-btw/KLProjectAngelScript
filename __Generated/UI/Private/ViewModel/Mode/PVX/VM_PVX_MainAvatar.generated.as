@@ -1,12 +1,9 @@
-﻿
-
 struct FPlayerMonitorReadyEvent : FEUIModelEvent
 {
-    FEUIModelEvent _base_FEUIModelEvent;
+    FEUIModelEvent _base_FEUIModelEvent = FEUIModelEvent("", "FECSEntity, bool, bool");
 
     FPlayerMonitorReadyEvent()
     {
-        FEUIModelEvent local_22 = FEUIModelEvent("", "FECSEntity, bool, bool");
         return;
     }
     void Broadcast(const FECSEntity &inout Arg0, const bool Arg1, const bool Arg2) const
@@ -19,17 +16,16 @@ struct FPlayerMonitorReadyEvent : FEUIModelEvent
 
 struct FPlayerMonitorAvatarEvent : FEUIModelEvent
 {
-    FEUIModelEvent _base_FEUIModelEvent;
+    FEUIModelEvent _base_FEUIModelEvent = FEUIModelEvent("", "FECSEntity, uint32");
 
     FPlayerMonitorAvatarEvent()
     {
-        FEUIModelEvent local_22 = FEUIModelEvent("", "FECSEntity, uint32");
         return;
     }
     void Broadcast(const FECSEntity &inout Arg0, const uint Arg1) const
     {
         Z__CastTemplate local_4;
-        local_4.opCall().Broadcast(Arg0);
+        local_4.opCall().Broadcast(Arg0, Arg1);
         return;
     }
 }

@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PVX_MainAvatar
 {
     const int ViewID = 0;
@@ -334,6 +333,7 @@ namespace UWidget_PVX_MainAvatar
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PVX_MainAvatar;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleConfirmButtonEnabledChange"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleAvatarReadyChage"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleCampusChange"));

@@ -1,5 +1,3 @@
-﻿
-
 struct FFaceCustomize_Forehead
 {
     UPROPERTY()
@@ -16,7 +14,6 @@ struct FFaceCustomize_Forehead
     float32 Detail_16044_TranslateY = 0.0f;
     UPROPERTY()
     float32 Detail_16044_TranslateZ = 0.0f;
-
 
 }
 
@@ -51,7 +48,6 @@ struct FFaceCustomize_Eyebrow_Left
     UPROPERTY()
     float32 Detail_5118_TranslateZ = 0.0f;
 
-
 }
 
 struct FFaceCustomize_Eyebrow_Right
@@ -84,7 +80,6 @@ struct FFaceCustomize_Eyebrow_Right
     float32 Detail_2047_TranslateY = 0.0f;
     UPROPERTY()
     float32 Detail_2047_TranslateZ = 0.0f;
-
 
 }
 
@@ -125,7 +120,6 @@ struct FFaceCustomize_Eye_Left
     UPROPERTY()
     float32 Detail_3891_TranslateZ = 0.0f;
 
-
 }
 
 struct FFaceCustomize_Eye_Right
@@ -165,7 +159,6 @@ struct FFaceCustomize_Eye_Right
     UPROPERTY()
     float32 Detail_820_TranslateZ = 0.0f;
 
-
 }
 
 struct FFaceCustomize_Nose
@@ -202,7 +195,6 @@ struct FFaceCustomize_Nose
     float32 Detail_17468_TranslateY = 0.0f;
     UPROPERTY()
     float32 Detail_17468_TranslateZ = 0.0f;
-
 
 }
 
@@ -277,7 +269,6 @@ struct FFaceCustomize_Mouth
     UPROPERTY()
     float32 Detail_18159_TranslateZ = 0.0f;
 
-
 }
 
 struct FFaceCustomize_Cheek_Left
@@ -297,7 +288,6 @@ struct FFaceCustomize_Cheek_Left
     UPROPERTY()
     float32 Detail_10467_TranslateZ = 0.0f;
 
-
 }
 
 struct FFaceCustomize_Cheek_Right
@@ -316,7 +306,6 @@ struct FFaceCustomize_Cheek_Right
     float32 Detail_16472_TranslateY = 0.0f;
     UPROPERTY()
     float32 Detail_16472_TranslateZ = 0.0f;
-
 
 }
 
@@ -355,7 +344,6 @@ struct FFaceCustomize_Cheekbone_Left
     UPROPERTY()
     float32 Detail_5338_TranslateZ = 0.0f;
 
-
 }
 
 struct FFaceCustomize_Cheekbone_Right
@@ -393,7 +381,6 @@ struct FFaceCustomize_Cheekbone_Right
     UPROPERTY()
     float32 Detail_2267_TranslateZ = 0.0f;
 
-
 }
 
 struct FFaceCustomize_Temple_Left
@@ -410,7 +397,6 @@ struct FFaceCustomize_Temple_Left
     float32 Detail_23050_TranslateY = 0.0f;
     UPROPERTY()
     float32 Detail_23050_TranslateZ = 0.0f;
-
 
 }
 
@@ -429,7 +415,6 @@ struct FFaceCustomize_Temple_Right
     UPROPERTY()
     float32 Detail_20037_TranslateZ = 0.0f;
 
-
 }
 
 struct FFaceCustomize_Jaw_Left
@@ -447,7 +432,6 @@ struct FFaceCustomize_Jaw_Left
     UPROPERTY()
     float32 Detail_4459_TranslateZ = 0.0f;
 
-
 }
 
 struct FFaceCustomize_Jaw_Right
@@ -464,7 +448,6 @@ struct FFaceCustomize_Jaw_Right
     float32 Detail_1388_TranslateY = 0.0f;
     UPROPERTY()
     float32 Detail_1388_TranslateZ = 0.0f;
-
 
 }
 
@@ -500,7 +483,6 @@ struct FFaceCustomize_Chin
     float32 Detail_20427_TranslateZ = 0.0f;
     UPROPERTY()
     float32 Detail_20427_RotateZ = 0.0f;
-
 
 }
 
@@ -614,7 +596,6 @@ class UESMAnimInstance_FaceCustomize : UKLAnimInstance
     FFaceCustomize_Jaw_Right JawRight;
     UPROPERTY()
     FFaceCustomize_Chin Chin;
-
 
     UFUNCTION()
     void BlueprintUpdateAnimation_Implementation(const float32 DeltaTimeX)
@@ -929,7 +910,7 @@ class UESMAnimInstance_FaceCustomize : UKLAnimInstance
         }
         if (!(local_8))
         {
-            FString local_16_2 = (FString("[FaceCustomize] жњЄж‰ѕе€°: ") + CtrlName);
+            FString local_16_2 = (FString("[FaceCustomize] 未找到: ") + CtrlName);
             FString local_20_2 = (local_16_2 + ".");
             Print((local_20_2 + AttrName), 5.0f, FLinearColor::LucBlue);
         }
@@ -942,13 +923,13 @@ class UESMAnimInstance_FaceCustomize : UKLAnimInstance
         {
             this.RefreshCtrlInputs();
         }
-        Print("========== е·¦зњ‰жЇ›еЊєеџџи°ѓиЇ•дїЎжЃЇ ==========", 5.0f, FLinearColor::LucBlue);
-        Print((FString("[з»“жћ„дЅ“] EyebrowLeft.Primary_22953_TranslateX = ") + this.EyebrowLeft.Primary_22953_TranslateX), 5.0f, FLinearColor::LucBlue);
-        Print((FString("[з»“жћ„дЅ“] EyebrowLeft.Primary_22953_TranslateY = ") + this.EyebrowLeft.Primary_22953_TranslateY), 5.0f, FLinearColor::LucBlue);
-        Print((FString("[з»“жћ„дЅ“] EyebrowLeft.Primary_22953_TranslateZ = ") + this.EyebrowLeft.Primary_22953_TranslateZ), 5.0f, FLinearColor::LucBlue);
-        Print((FString("[з»“жћ„дЅ“] EyebrowLeft.Primary_22953_RotateZ = ") + this.EyebrowLeft.Primary_22953_RotateZ), 5.0f, FLinearColor::LucBlue);
-        Print((FString("[з»“жћ„дЅ“] EyebrowLeft.Primary_22953_Scale = ") + this.EyebrowLeft.Primary_22953_Scale), 5.0f, FLinearColor::LucBlue);
-        Print("--- CtrlInputs ж•°з»„дё­зљ„еЂј ---", 5.0f, FLinearColor::LucBlue);
+        Print("========== 左眉毛区域调试信息 ==========", 5.0f, FLinearColor::LucBlue);
+        Print((FString("[结构体] EyebrowLeft.Primary_22953_TranslateX = ") + this.EyebrowLeft.Primary_22953_TranslateX), 5.0f, FLinearColor::LucBlue);
+        Print((FString("[结构体] EyebrowLeft.Primary_22953_TranslateY = ") + this.EyebrowLeft.Primary_22953_TranslateY), 5.0f, FLinearColor::LucBlue);
+        Print((FString("[结构体] EyebrowLeft.Primary_22953_TranslateZ = ") + this.EyebrowLeft.Primary_22953_TranslateZ), 5.0f, FLinearColor::LucBlue);
+        Print((FString("[结构体] EyebrowLeft.Primary_22953_RotateZ = ") + this.EyebrowLeft.Primary_22953_RotateZ), 5.0f, FLinearColor::LucBlue);
+        Print((FString("[结构体] EyebrowLeft.Primary_22953_Scale = ") + this.EyebrowLeft.Primary_22953_Scale), 5.0f, FLinearColor::LucBlue);
+        Print("--- CtrlInputs 数组中的值 ---", 5.0f, FLinearColor::LucBlue);
         this.DebugPrintCtrlInput("primary_vtx_22953_Ctrl", "translateX");
         this.DebugPrintCtrlInput("primary_vtx_22953_Ctrl", "translateY");
         this.DebugPrintCtrlInput("primary_vtx_22953_Ctrl", "translateZ");
@@ -958,29 +939,70 @@ class UESMAnimInstance_FaceCustomize : UKLAnimInstance
         return;
     }
     UFUNCTION()
-    bool DebugVerifyValue(const FString CtrlName, const FString AttrName, const float32 ExpectedValue, const float32 Tolerance)
+    bool DebugVerifyValue(const FString &inout CtrlName, const FString &inout AttrName, const float32 ExpectedValue, const float32 Tolerance = 0.001f)
     {
-        // body not fully recovered вЂ” stub [emitter-panic]
-        bool __r; return __r;
+        if (this.bFaceConfigDirty)
+        {
+            this.RefreshCtrlInputs();
+        }
+        FName local_5 = FName(CtrlName);
+        FName local_3 = FName(AttrName);
+        int local_8 = 0;
+        for (; local_8 < this.CtrlInputs.Num(); ++local_8)
+        {
+            if ((FName(this.CtrlInputs[local_8].Name) == local_5) && (FName(this.CtrlInputs[local_8].Attribute) == local_3))
+            {
+                float32 local_12;
+                local_12 = this.CtrlInputs[local_8].Value;
+                float32 local_13 = local_12 - ExpectedValue;
+                float32 local_15 = FMath::Abs(local_13);
+                bool local_11 = (local_15 <= Tolerance);
+                if (local_11)
+                {
+                    FString local_20 = ((((((FString("[验证成功] ") + CtrlName) + ".") + AttrName) + " = ") + local_12) + " (期望: ");
+                    local_20 = ((local_20 + ExpectedValue) + ")");
+                    Print(local_20, 5.0f, FLinearColor::LucBlue);
+                }
+                else
+                {
+                    FString local_20_2 = (FString("[验证失败] ") + CtrlName);
+                    FString local_24_2 = (local_20_2 + ".");
+                    local_20_2 = (local_24_2 + AttrName);
+                    local_24_2 = (local_20_2 + " = ");
+                    local_20_2 = (local_24_2 + local_12);
+                    local_24_2 = (local_20_2 + " (期望: ");
+                    local_20_2 = (local_24_2 + ExpectedValue);
+                    local_24_2 = (local_20_2 + ", 差值: ");
+                    local_20_2 = (local_24_2 + local_15);
+                    local_24_2 = (local_20_2 + ")");
+                    Print(local_24_2, 5.0f, FLinearColor::LucBlue);
+                }
+                return local_11;
+            }
+        }
+        FString local_24_3 = (FString("[验证失败] 未找到: ") + CtrlName);
+        FString local_20_3 = (local_24_3 + ".");
+        Print((local_20_3 + AttrName), 5.0f, FLinearColor::LucBlue);
+        return false;
     }
     UFUNCTION()
     void DebugTestLeftEyebrowUpdate()
     {
-        Print("========== ејЂе§‹жµ‹иЇ•е·¦зњ‰жЇ›ж›ґж–° ==========", 5.0f, FLinearColor::LucBlue);
+        Print("========== 开始测试左眉毛更新 ==========", 5.0f, FLinearColor::LucBlue);
         float32 local_2 = 5.5f;
-        Print((FString("[ж­ҐйЄ¤1] и®ѕзЅ® EyebrowLeft.Primary_22953_TranslateX = ") + local_2), 5.0f, FLinearColor::LucBlue);
+        Print((FString("[步骤1] 设置 EyebrowLeft.Primary_22953_TranslateX = ") + local_2), 5.0f, FLinearColor::LucBlue);
         this.EyebrowLeft.Primary_22953_TranslateX = 5.5f;
-        Print("[ж­ҐйЄ¤2] ж ‡и®°дёєи„Џ", 5.0f, FLinearColor::LucBlue);
+        Print("[步骤2] 标记为脏", 5.0f, FLinearColor::LucBlue);
         this.MarkFaceConfigDirty();
-        Print("[ж­ҐйЄ¤3] йЄЊиЇЃ CtrlInputs дё­зљ„еЂј", 5.0f, FLinearColor::LucBlue);
+        Print("[步骤3] 验证 CtrlInputs 中的值", 5.0f, FLinearColor::LucBlue);
         bool local_12 = this.DebugVerifyValue("primary_vtx_22953_Ctrl", "translateX", local_2, 0.001f);
         if (local_12)
         {
-            Print("[жµ‹иЇ•з»“жћњ] вњ“ ж•°жЌ®жµЃж­ЈзЎ®пјЃ", 5.0f, FLinearColor::LucBlue);
+            Print("[测试结果] ✓ 数据流正确！", 5.0f, FLinearColor::LucBlue);
         }
         else
         {
-            Print("[жµ‹иЇ•з»“жћњ] вњ— ж•°жЌ®жµЃжњ‰й—®йўпјЃ", 5.0f, FLinearColor::LucBlue);
+            Print("[测试结果] ✗ 数据流有问题！", 5.0f, FLinearColor::LucBlue);
         }
         Print("========================================", 5.0f, FLinearColor::LucBlue);
         return;
@@ -988,210 +1010,210 @@ class UESMAnimInstance_FaceCustomize : UKLAnimInstance
     void UpdateCtrlInputsInternal()
     {
         this.CtrlInputs.Empty(310);
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16169, this.ATTR_TRANSLATE_Y, int(this.Forehead.Primary_16169_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16169, this.ATTR_TRANSLATE_Z, int(this.Forehead.Primary_16169_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16169, this.ATTR_ROTATE_X, int(this.Forehead.Primary_16169_RotateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_16173, this.ATTR_TRANSLATE_Y, int(this.Forehead.Detail_16173_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_16173, this.ATTR_TRANSLATE_Z, int(this.Forehead.Detail_16173_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_16044, this.ATTR_TRANSLATE_Y, int(this.Forehead.Detail_16044_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_16044, this.ATTR_TRANSLATE_Z, int(this.Forehead.Detail_16044_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_22953, this.ATTR_TRANSLATE_X, int(this.EyebrowLeft.Primary_22953_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_22953, this.ATTR_TRANSLATE_Y, int(this.EyebrowLeft.Primary_22953_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_22953, this.ATTR_TRANSLATE_Z, int(this.EyebrowLeft.Primary_22953_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_22953, this.ATTR_ROTATE_Z, int(this.EyebrowLeft.Primary_22953_RotateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_22953, this.ATTR_SCALE, int(this.EyebrowLeft.Primary_22953_Scale)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_22922, this.ATTR_TRANSLATE_X, int(this.EyebrowLeft.Detail_22922_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_22922, this.ATTR_TRANSLATE_Y, int(this.EyebrowLeft.Detail_22922_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_22922, this.ATTR_TRANSLATE_Z, int(this.EyebrowLeft.Detail_22922_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_10012, this.ATTR_TRANSLATE_X, int(this.EyebrowLeft.Detail_10012_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_10012, this.ATTR_TRANSLATE_Y, int(this.EyebrowLeft.Detail_10012_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_10012, this.ATTR_TRANSLATE_Z, int(this.EyebrowLeft.Detail_10012_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_5118, this.ATTR_TRANSLATE_X, int(this.EyebrowLeft.Detail_5118_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_5118, this.ATTR_TRANSLATE_Y, int(this.EyebrowLeft.Detail_5118_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_5118, this.ATTR_TRANSLATE_Z, int(this.EyebrowLeft.Detail_5118_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_19940, this.ATTR_TRANSLATE_X, int(this.EyebrowRight.Primary_19940_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_19940, this.ATTR_TRANSLATE_Y, int(this.EyebrowRight.Primary_19940_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_19940, this.ATTR_TRANSLATE_Z, int(this.EyebrowRight.Primary_19940_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_19940, this.ATTR_ROTATE_Z, int(this.EyebrowRight.Primary_19940_RotateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_19940, this.ATTR_SCALE, int(this.EyebrowRight.Primary_19940_Scale)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_19909, this.ATTR_TRANSLATE_X, int(this.EyebrowRight.Detail_19909_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_19909, this.ATTR_TRANSLATE_Y, int(this.EyebrowRight.Detail_19909_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_19909, this.ATTR_TRANSLATE_Z, int(this.EyebrowRight.Detail_19909_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_16010, this.ATTR_TRANSLATE_X, int(this.EyebrowRight.Detail_16010_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_16010, this.ATTR_TRANSLATE_Y, int(this.EyebrowRight.Detail_16010_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_16010, this.ATTR_TRANSLATE_Z, int(this.EyebrowRight.Detail_16010_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2047, this.ATTR_TRANSLATE_X, int(this.EyebrowRight.Detail_2047_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2047, this.ATTR_TRANSLATE_Y, int(this.EyebrowRight.Detail_2047_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2047, this.ATTR_TRANSLATE_Z, int(this.EyebrowRight.Detail_2047_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_8711, this.ATTR_TRANSLATE_X, int(this.EyeLeft.Primary_8711_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_8711, this.ATTR_TRANSLATE_Y, int(this.EyeLeft.Primary_8711_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_8711, this.ATTR_TRANSLATE_Z, int(this.EyeLeft.Primary_8711_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_8711, this.ATTR_ROTATE_Z, int(this.EyeLeft.Primary_8711_RotateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_8711, this.ATTR_SCALE, int(this.EyeLeft.Primary_8711_Scale)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21844, this.ATTR_TRANSLATE_X, int(this.EyeLeft.Detail_21844_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21844, this.ATTR_TRANSLATE_Y, int(this.EyeLeft.Detail_21844_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21844, this.ATTR_TRANSLATE_Z, int(this.EyeLeft.Detail_21844_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_7816, this.ATTR_TRANSLATE_X, int(this.EyeLeft.Detail_7816_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_7816, this.ATTR_TRANSLATE_Y, int(this.EyeLeft.Detail_7816_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_7816, this.ATTR_TRANSLATE_Z, int(this.EyeLeft.Detail_7816_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21743, this.ATTR_TRANSLATE_X, int(this.EyeLeft.Detail_21743_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21743, this.ATTR_TRANSLATE_Y, int(this.EyeLeft.Detail_21743_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21743, this.ATTR_TRANSLATE_Z, int(this.EyeLeft.Detail_21743_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_3891, this.ATTR_TRANSLATE_X, int(this.EyeLeft.Detail_3891_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_3891, this.ATTR_TRANSLATE_Y, int(this.EyeLeft.Detail_3891_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_3891, this.ATTR_TRANSLATE_Z, int(this.EyeLeft.Detail_3891_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_14692, this.ATTR_TRANSLATE_X, int(this.EyeRight.Primary_14692_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_14692, this.ATTR_TRANSLATE_Y, int(this.EyeRight.Primary_14692_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_14692, this.ATTR_TRANSLATE_Z, int(this.EyeRight.Primary_14692_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_14692, this.ATTR_ROTATE_Z, int(this.EyeRight.Primary_14692_RotateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_14692, this.ATTR_SCALE, int(this.EyeRight.Primary_14692_Scale)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18831, this.ATTR_TRANSLATE_X, int(this.EyeRight.Detail_18831_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18831, this.ATTR_TRANSLATE_Y, int(this.EyeRight.Detail_18831_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18831, this.ATTR_TRANSLATE_Z, int(this.EyeRight.Detail_18831_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_13793, this.ATTR_TRANSLATE_X, int(this.EyeRight.Detail_13793_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_13793, this.ATTR_TRANSLATE_Y, int(this.EyeRight.Detail_13793_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_13793, this.ATTR_TRANSLATE_Z, int(this.EyeRight.Detail_13793_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18730, this.ATTR_TRANSLATE_X, int(this.EyeRight.Detail_18730_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18730, this.ATTR_TRANSLATE_Y, int(this.EyeRight.Detail_18730_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18730, this.ATTR_TRANSLATE_Z, int(this.EyeRight.Detail_18730_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_820, this.ATTR_TRANSLATE_X, int(this.EyeRight.Detail_820_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_820, this.ATTR_TRANSLATE_Y, int(this.EyeRight.Detail_820_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_820, this.ATTR_TRANSLATE_Z, int(this.EyeRight.Detail_820_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_15537, this.ATTR_TRANSLATE_Y, int(this.Nose.Primary_15537_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_15537, this.ATTR_TRANSLATE_Z, int(this.Nose.Primary_15537_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_15537, this.ATTR_ROTATE_X, int(this.Nose.Primary_15537_RotateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_15537, this.ATTR_SCALE, int(this.Nose.Primary_15537_Scale)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2936, this.ATTR_TRANSLATE_Y, int(this.Nose.Detail_2936_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2936, this.ATTR_TRANSLATE_Z, int(this.Nose.Detail_2936_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_17476, this.ATTR_TRANSLATE_Y, int(this.Nose.Detail_17476_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_17476, this.ATTR_TRANSLATE_Z, int(this.Nose.Detail_17476_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2917, this.ATTR_TRANSLATE_Y, int(this.Nose.Detail_2917_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2917, this.ATTR_TRANSLATE_Z, int(this.Nose.Detail_2917_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_11424, this.ATTR_TRANSLATE_X, int(this.Nose.Detail_11424_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_11424, this.ATTR_TRANSLATE_Y, int(this.Nose.Detail_11424_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_11424, this.ATTR_TRANSLATE_Z, int(this.Nose.Detail_11424_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_17468, this.ATTR_TRANSLATE_X, int(this.Nose.Detail_17468_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_17468, this.ATTR_TRANSLATE_Y, int(this.Nose.Detail_17468_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_17468, this.ATTR_TRANSLATE_Z, int(this.Nose.Detail_17468_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_2906, this.ATTR_TRANSLATE_Y, int(this.Mouth.Primary_2906_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_2906, this.ATTR_TRANSLATE_Z, int(this.Mouth.Primary_2906_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_2906, this.ATTR_ROTATE_X, int(this.Mouth.Primary_2906_RotateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_2906, this.ATTR_SCALE, int(this.Mouth.Primary_2906_Scale)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_12104, this.ATTR_TRANSLATE_Y, int(this.Mouth.Detail_12104_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_12104, this.ATTR_TRANSLATE_Z, int(this.Mouth.Detail_12104_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21058, this.ATTR_TRANSLATE_X, int(this.Mouth.Detail_21058_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21058, this.ATTR_TRANSLATE_Y, int(this.Mouth.Detail_21058_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21058, this.ATTR_TRANSLATE_Z, int(this.Mouth.Detail_21058_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18045, this.ATTR_TRANSLATE_X, int(this.Mouth.Detail_18045_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18045, this.ATTR_TRANSLATE_Y, int(this.Mouth.Detail_18045_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18045, this.ATTR_TRANSLATE_Z, int(this.Mouth.Detail_18045_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2878, this.ATTR_TRANSLATE_Y, int(this.Mouth.Detail_2878_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2878, this.ATTR_TRANSLATE_Z, int(this.Mouth.Detail_2878_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21061, this.ATTR_TRANSLATE_X, int(this.Mouth.Detail_21061_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21061, this.ATTR_TRANSLATE_Y, int(this.Mouth.Detail_21061_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21061, this.ATTR_TRANSLATE_Z, int(this.Mouth.Detail_21061_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18048, this.ATTR_TRANSLATE_X, int(this.Mouth.Detail_18048_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18048, this.ATTR_TRANSLATE_Y, int(this.Mouth.Detail_18048_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18048, this.ATTR_TRANSLATE_Z, int(this.Mouth.Detail_18048_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21098, this.ATTR_TRANSLATE_X, int(this.Mouth.Detail_21098_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21098, this.ATTR_TRANSLATE_Y, int(this.Mouth.Detail_21098_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21098, this.ATTR_TRANSLATE_Z, int(this.Mouth.Detail_21098_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18085, this.ATTR_TRANSLATE_X, int(this.Mouth.Detail_18085_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18085, this.ATTR_TRANSLATE_Y, int(this.Mouth.Detail_18085_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18085, this.ATTR_TRANSLATE_Z, int(this.Mouth.Detail_18085_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_12413, this.ATTR_TRANSLATE_Y, int(this.Mouth.Detail_12413_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_12413, this.ATTR_TRANSLATE_Z, int(this.Mouth.Detail_12413_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21172, this.ATTR_TRANSLATE_X, int(this.Mouth.Detail_21172_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21172, this.ATTR_TRANSLATE_Y, int(this.Mouth.Detail_21172_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21172, this.ATTR_TRANSLATE_Z, int(this.Mouth.Detail_21172_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18159, this.ATTR_TRANSLATE_X, int(this.Mouth.Detail_18159_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18159, this.ATTR_TRANSLATE_Y, int(this.Mouth.Detail_18159_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18159, this.ATTR_TRANSLATE_Z, int(this.Mouth.Detail_18159_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_10470, this.ATTR_TRANSLATE_X, int(this.CheekLeft.Primary_10470_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_10470, this.ATTR_TRANSLATE_Y, int(this.CheekLeft.Primary_10470_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_10470, this.ATTR_TRANSLATE_Z, int(this.CheekLeft.Primary_10470_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_10470, this.ATTR_SCALE, int(this.CheekLeft.Primary_10470_Scale)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_10467, this.ATTR_TRANSLATE_X, int(this.CheekLeft.Detail_10467_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_10467, this.ATTR_TRANSLATE_Y, int(this.CheekLeft.Detail_10467_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_10467, this.ATTR_TRANSLATE_Z, int(this.CheekLeft.Detail_10467_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16473, this.ATTR_TRANSLATE_X, int(this.CheekRight.Primary_16473_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16473, this.ATTR_TRANSLATE_Y, int(this.CheekRight.Primary_16473_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16473, this.ATTR_TRANSLATE_Z, int(this.CheekRight.Primary_16473_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16473, this.ATTR_SCALE, int(this.CheekRight.Primary_16473_Scale)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_16472, this.ATTR_TRANSLATE_X, int(this.CheekRight.Detail_16472_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_16472, this.ATTR_TRANSLATE_Y, int(this.CheekRight.Detail_16472_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_16472, this.ATTR_TRANSLATE_Z, int(this.CheekRight.Detail_16472_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_9995, this.ATTR_TRANSLATE_X, int(this.CheekboneLeft.Primary_9995_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_9995, this.ATTR_TRANSLATE_Y, int(this.CheekboneLeft.Primary_9995_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_9995, this.ATTR_TRANSLATE_Z, int(this.CheekboneLeft.Primary_9995_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_9995, this.ATTR_SCALE, int(this.CheekboneLeft.Primary_9995_Scale)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_9995, this.ATTR_TRANSLATE_X, int(this.CheekboneLeft.Detail_9995_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_9995, this.ATTR_TRANSLATE_Y, int(this.CheekboneLeft.Detail_9995_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_9995, this.ATTR_TRANSLATE_Z, int(this.CheekboneLeft.Detail_9995_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_22694, this.ATTR_TRANSLATE_X, int(this.CheekboneLeft.Detail_22694_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_22694, this.ATTR_TRANSLATE_Y, int(this.CheekboneLeft.Detail_22694_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_22694, this.ATTR_TRANSLATE_Z, int(this.CheekboneLeft.Detail_22694_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_5081, this.ATTR_TRANSLATE_X, int(this.CheekboneLeft.Detail_5081_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_5081, this.ATTR_TRANSLATE_Y, int(this.CheekboneLeft.Detail_5081_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_5081, this.ATTR_TRANSLATE_Z, int(this.CheekboneLeft.Detail_5081_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_5338, this.ATTR_TRANSLATE_X, int(this.CheekboneLeft.Detail_5338_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_5338, this.ATTR_TRANSLATE_Y, int(this.CheekboneLeft.Detail_5338_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_5338, this.ATTR_TRANSLATE_Z, int(this.CheekboneLeft.Detail_5338_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_15991, this.ATTR_TRANSLATE_X, int(this.CheekboneRight.Primary_15991_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_15991, this.ATTR_TRANSLATE_Y, int(this.CheekboneRight.Primary_15991_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_15991, this.ATTR_TRANSLATE_Z, int(this.CheekboneRight.Primary_15991_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_15991, this.ATTR_SCALE, int(this.CheekboneRight.Primary_15991_Scale)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_15991, this.ATTR_TRANSLATE_X, int(this.CheekboneRight.Detail_15991_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_15991, this.ATTR_TRANSLATE_Y, int(this.CheekboneRight.Detail_15991_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_15991, this.ATTR_TRANSLATE_Z, int(this.CheekboneRight.Detail_15991_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_19681, this.ATTR_TRANSLATE_X, int(this.CheekboneRight.Detail_19681_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_19681, this.ATTR_TRANSLATE_Y, int(this.CheekboneRight.Detail_19681_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_19681, this.ATTR_TRANSLATE_Z, int(this.CheekboneRight.Detail_19681_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2010, this.ATTR_TRANSLATE_X, int(this.CheekboneRight.Detail_2010_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2010, this.ATTR_TRANSLATE_Y, int(this.CheekboneRight.Detail_2010_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2010, this.ATTR_TRANSLATE_Z, int(this.CheekboneRight.Detail_2010_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2267, this.ATTR_TRANSLATE_X, int(this.CheekboneRight.Detail_2267_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2267, this.ATTR_TRANSLATE_Y, int(this.CheekboneRight.Detail_2267_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2267, this.ATTR_TRANSLATE_Z, int(this.CheekboneRight.Detail_2267_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_10591, this.ATTR_TRANSLATE_X, int(this.TempleLeft.Primary_10591_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_10591, this.ATTR_TRANSLATE_Y, int(this.TempleLeft.Primary_10591_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_10591, this.ATTR_TRANSLATE_Z, int(this.TempleLeft.Primary_10591_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_23050, this.ATTR_TRANSLATE_X, int(this.TempleLeft.Detail_23050_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_23050, this.ATTR_TRANSLATE_Y, int(this.TempleLeft.Detail_23050_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_23050, this.ATTR_TRANSLATE_Z, int(this.TempleLeft.Detail_23050_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16597, this.ATTR_TRANSLATE_X, int(this.TempleRight.Primary_16597_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16597, this.ATTR_TRANSLATE_Y, int(this.TempleRight.Primary_16597_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16597, this.ATTR_TRANSLATE_Z, int(this.TempleRight.Primary_16597_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_20037, this.ATTR_TRANSLATE_X, int(this.TempleRight.Detail_20037_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_20037, this.ATTR_TRANSLATE_Y, int(this.TempleRight.Detail_20037_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_20037, this.ATTR_TRANSLATE_Z, int(this.TempleRight.Detail_20037_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_23173, this.ATTR_TRANSLATE_X, int(this.JawLeft.Primary_23173_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_23173, this.ATTR_TRANSLATE_Y, int(this.JawLeft.Primary_23173_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_23173, this.ATTR_TRANSLATE_Z, int(this.JawLeft.Primary_23173_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_4459, this.ATTR_TRANSLATE_X, int(this.JawLeft.Detail_4459_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_4459, this.ATTR_TRANSLATE_Y, int(this.JawLeft.Detail_4459_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_4459, this.ATTR_TRANSLATE_Z, int(this.JawLeft.Detail_4459_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_20160, this.ATTR_TRANSLATE_X, int(this.JawRight.Primary_20160_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_20160, this.ATTR_TRANSLATE_Y, int(this.JawRight.Primary_20160_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_20160, this.ATTR_TRANSLATE_Z, int(this.JawRight.Primary_20160_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_1388, this.ATTR_TRANSLATE_X, int(this.JawRight.Detail_1388_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_1388, this.ATTR_TRANSLATE_Y, int(this.JawRight.Detail_1388_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_1388, this.ATTR_TRANSLATE_Z, int(this.JawRight.Detail_1388_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16958, this.ATTR_TRANSLATE_Y, int(this.Chin.Primary_16958_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16958, this.ATTR_TRANSLATE_Z, int(this.Chin.Primary_16958_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16958, this.ATTR_SCALE, int(this.Chin.Primary_16958_Scale)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2982, this.ATTR_TRANSLATE_Y, int(this.Chin.Detail_2982_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2982, this.ATTR_TRANSLATE_Z, int(this.Chin.Detail_2982_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2972, this.ATTR_TRANSLATE_Y, int(this.Chin.Detail_2972_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2972, this.ATTR_TRANSLATE_Z, int(this.Chin.Detail_2972_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_23440, this.ATTR_TRANSLATE_X, int(this.Chin.Detail_23440_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_23440, this.ATTR_TRANSLATE_Y, int(this.Chin.Detail_23440_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_23440, this.ATTR_TRANSLATE_Z, int(this.Chin.Detail_23440_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_23440, this.ATTR_ROTATE_Z, int(this.Chin.Detail_23440_RotateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_20427, this.ATTR_TRANSLATE_X, int(this.Chin.Detail_20427_TranslateX)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_20427, this.ATTR_TRANSLATE_Y, int(this.Chin.Detail_20427_TranslateY)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_20427, this.ATTR_TRANSLATE_Z, int(this.Chin.Detail_20427_TranslateZ)));
-        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_20427, this.ATTR_ROTATE_Z, int(this.Chin.Detail_20427_RotateZ)));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16169, this.ATTR_TRANSLATE_Y, this.Forehead.Primary_16169_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16169, this.ATTR_TRANSLATE_Z, this.Forehead.Primary_16169_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16169, this.ATTR_ROTATE_X, this.Forehead.Primary_16169_RotateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_16173, this.ATTR_TRANSLATE_Y, this.Forehead.Detail_16173_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_16173, this.ATTR_TRANSLATE_Z, this.Forehead.Detail_16173_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_16044, this.ATTR_TRANSLATE_Y, this.Forehead.Detail_16044_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_16044, this.ATTR_TRANSLATE_Z, this.Forehead.Detail_16044_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_22953, this.ATTR_TRANSLATE_X, this.EyebrowLeft.Primary_22953_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_22953, this.ATTR_TRANSLATE_Y, this.EyebrowLeft.Primary_22953_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_22953, this.ATTR_TRANSLATE_Z, this.EyebrowLeft.Primary_22953_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_22953, this.ATTR_ROTATE_Z, this.EyebrowLeft.Primary_22953_RotateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_22953, this.ATTR_SCALE, this.EyebrowLeft.Primary_22953_Scale));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_22922, this.ATTR_TRANSLATE_X, this.EyebrowLeft.Detail_22922_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_22922, this.ATTR_TRANSLATE_Y, this.EyebrowLeft.Detail_22922_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_22922, this.ATTR_TRANSLATE_Z, this.EyebrowLeft.Detail_22922_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_10012, this.ATTR_TRANSLATE_X, this.EyebrowLeft.Detail_10012_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_10012, this.ATTR_TRANSLATE_Y, this.EyebrowLeft.Detail_10012_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_10012, this.ATTR_TRANSLATE_Z, this.EyebrowLeft.Detail_10012_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_5118, this.ATTR_TRANSLATE_X, this.EyebrowLeft.Detail_5118_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_5118, this.ATTR_TRANSLATE_Y, this.EyebrowLeft.Detail_5118_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_5118, this.ATTR_TRANSLATE_Z, this.EyebrowLeft.Detail_5118_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_19940, this.ATTR_TRANSLATE_X, this.EyebrowRight.Primary_19940_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_19940, this.ATTR_TRANSLATE_Y, this.EyebrowRight.Primary_19940_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_19940, this.ATTR_TRANSLATE_Z, this.EyebrowRight.Primary_19940_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_19940, this.ATTR_ROTATE_Z, this.EyebrowRight.Primary_19940_RotateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_19940, this.ATTR_SCALE, this.EyebrowRight.Primary_19940_Scale));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_19909, this.ATTR_TRANSLATE_X, this.EyebrowRight.Detail_19909_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_19909, this.ATTR_TRANSLATE_Y, this.EyebrowRight.Detail_19909_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_19909, this.ATTR_TRANSLATE_Z, this.EyebrowRight.Detail_19909_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_16010, this.ATTR_TRANSLATE_X, this.EyebrowRight.Detail_16010_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_16010, this.ATTR_TRANSLATE_Y, this.EyebrowRight.Detail_16010_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_16010, this.ATTR_TRANSLATE_Z, this.EyebrowRight.Detail_16010_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2047, this.ATTR_TRANSLATE_X, this.EyebrowRight.Detail_2047_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2047, this.ATTR_TRANSLATE_Y, this.EyebrowRight.Detail_2047_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2047, this.ATTR_TRANSLATE_Z, this.EyebrowRight.Detail_2047_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_8711, this.ATTR_TRANSLATE_X, this.EyeLeft.Primary_8711_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_8711, this.ATTR_TRANSLATE_Y, this.EyeLeft.Primary_8711_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_8711, this.ATTR_TRANSLATE_Z, this.EyeLeft.Primary_8711_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_8711, this.ATTR_ROTATE_Z, this.EyeLeft.Primary_8711_RotateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_8711, this.ATTR_SCALE, this.EyeLeft.Primary_8711_Scale));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21844, this.ATTR_TRANSLATE_X, this.EyeLeft.Detail_21844_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21844, this.ATTR_TRANSLATE_Y, this.EyeLeft.Detail_21844_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21844, this.ATTR_TRANSLATE_Z, this.EyeLeft.Detail_21844_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_7816, this.ATTR_TRANSLATE_X, this.EyeLeft.Detail_7816_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_7816, this.ATTR_TRANSLATE_Y, this.EyeLeft.Detail_7816_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_7816, this.ATTR_TRANSLATE_Z, this.EyeLeft.Detail_7816_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21743, this.ATTR_TRANSLATE_X, this.EyeLeft.Detail_21743_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21743, this.ATTR_TRANSLATE_Y, this.EyeLeft.Detail_21743_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21743, this.ATTR_TRANSLATE_Z, this.EyeLeft.Detail_21743_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_3891, this.ATTR_TRANSLATE_X, this.EyeLeft.Detail_3891_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_3891, this.ATTR_TRANSLATE_Y, this.EyeLeft.Detail_3891_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_3891, this.ATTR_TRANSLATE_Z, this.EyeLeft.Detail_3891_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_14692, this.ATTR_TRANSLATE_X, this.EyeRight.Primary_14692_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_14692, this.ATTR_TRANSLATE_Y, this.EyeRight.Primary_14692_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_14692, this.ATTR_TRANSLATE_Z, this.EyeRight.Primary_14692_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_14692, this.ATTR_ROTATE_Z, this.EyeRight.Primary_14692_RotateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_14692, this.ATTR_SCALE, this.EyeRight.Primary_14692_Scale));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18831, this.ATTR_TRANSLATE_X, this.EyeRight.Detail_18831_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18831, this.ATTR_TRANSLATE_Y, this.EyeRight.Detail_18831_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18831, this.ATTR_TRANSLATE_Z, this.EyeRight.Detail_18831_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_13793, this.ATTR_TRANSLATE_X, this.EyeRight.Detail_13793_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_13793, this.ATTR_TRANSLATE_Y, this.EyeRight.Detail_13793_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_13793, this.ATTR_TRANSLATE_Z, this.EyeRight.Detail_13793_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18730, this.ATTR_TRANSLATE_X, this.EyeRight.Detail_18730_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18730, this.ATTR_TRANSLATE_Y, this.EyeRight.Detail_18730_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18730, this.ATTR_TRANSLATE_Z, this.EyeRight.Detail_18730_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_820, this.ATTR_TRANSLATE_X, this.EyeRight.Detail_820_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_820, this.ATTR_TRANSLATE_Y, this.EyeRight.Detail_820_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_820, this.ATTR_TRANSLATE_Z, this.EyeRight.Detail_820_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_15537, this.ATTR_TRANSLATE_Y, this.Nose.Primary_15537_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_15537, this.ATTR_TRANSLATE_Z, this.Nose.Primary_15537_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_15537, this.ATTR_ROTATE_X, this.Nose.Primary_15537_RotateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_15537, this.ATTR_SCALE, this.Nose.Primary_15537_Scale));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2936, this.ATTR_TRANSLATE_Y, this.Nose.Detail_2936_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2936, this.ATTR_TRANSLATE_Z, this.Nose.Detail_2936_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_17476, this.ATTR_TRANSLATE_Y, this.Nose.Detail_17476_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_17476, this.ATTR_TRANSLATE_Z, this.Nose.Detail_17476_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2917, this.ATTR_TRANSLATE_Y, this.Nose.Detail_2917_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2917, this.ATTR_TRANSLATE_Z, this.Nose.Detail_2917_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_11424, this.ATTR_TRANSLATE_X, this.Nose.Detail_11424_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_11424, this.ATTR_TRANSLATE_Y, this.Nose.Detail_11424_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_11424, this.ATTR_TRANSLATE_Z, this.Nose.Detail_11424_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_17468, this.ATTR_TRANSLATE_X, this.Nose.Detail_17468_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_17468, this.ATTR_TRANSLATE_Y, this.Nose.Detail_17468_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_17468, this.ATTR_TRANSLATE_Z, this.Nose.Detail_17468_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_2906, this.ATTR_TRANSLATE_Y, this.Mouth.Primary_2906_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_2906, this.ATTR_TRANSLATE_Z, this.Mouth.Primary_2906_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_2906, this.ATTR_ROTATE_X, this.Mouth.Primary_2906_RotateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_2906, this.ATTR_SCALE, this.Mouth.Primary_2906_Scale));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_12104, this.ATTR_TRANSLATE_Y, this.Mouth.Detail_12104_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_12104, this.ATTR_TRANSLATE_Z, this.Mouth.Detail_12104_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21058, this.ATTR_TRANSLATE_X, this.Mouth.Detail_21058_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21058, this.ATTR_TRANSLATE_Y, this.Mouth.Detail_21058_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21058, this.ATTR_TRANSLATE_Z, this.Mouth.Detail_21058_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18045, this.ATTR_TRANSLATE_X, this.Mouth.Detail_18045_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18045, this.ATTR_TRANSLATE_Y, this.Mouth.Detail_18045_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18045, this.ATTR_TRANSLATE_Z, this.Mouth.Detail_18045_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2878, this.ATTR_TRANSLATE_Y, this.Mouth.Detail_2878_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2878, this.ATTR_TRANSLATE_Z, this.Mouth.Detail_2878_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21061, this.ATTR_TRANSLATE_X, this.Mouth.Detail_21061_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21061, this.ATTR_TRANSLATE_Y, this.Mouth.Detail_21061_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21061, this.ATTR_TRANSLATE_Z, this.Mouth.Detail_21061_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18048, this.ATTR_TRANSLATE_X, this.Mouth.Detail_18048_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18048, this.ATTR_TRANSLATE_Y, this.Mouth.Detail_18048_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18048, this.ATTR_TRANSLATE_Z, this.Mouth.Detail_18048_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21098, this.ATTR_TRANSLATE_X, this.Mouth.Detail_21098_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21098, this.ATTR_TRANSLATE_Y, this.Mouth.Detail_21098_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21098, this.ATTR_TRANSLATE_Z, this.Mouth.Detail_21098_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18085, this.ATTR_TRANSLATE_X, this.Mouth.Detail_18085_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18085, this.ATTR_TRANSLATE_Y, this.Mouth.Detail_18085_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18085, this.ATTR_TRANSLATE_Z, this.Mouth.Detail_18085_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_12413, this.ATTR_TRANSLATE_Y, this.Mouth.Detail_12413_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_12413, this.ATTR_TRANSLATE_Z, this.Mouth.Detail_12413_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21172, this.ATTR_TRANSLATE_X, this.Mouth.Detail_21172_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21172, this.ATTR_TRANSLATE_Y, this.Mouth.Detail_21172_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_21172, this.ATTR_TRANSLATE_Z, this.Mouth.Detail_21172_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18159, this.ATTR_TRANSLATE_X, this.Mouth.Detail_18159_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18159, this.ATTR_TRANSLATE_Y, this.Mouth.Detail_18159_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_18159, this.ATTR_TRANSLATE_Z, this.Mouth.Detail_18159_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_10470, this.ATTR_TRANSLATE_X, this.CheekLeft.Primary_10470_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_10470, this.ATTR_TRANSLATE_Y, this.CheekLeft.Primary_10470_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_10470, this.ATTR_TRANSLATE_Z, this.CheekLeft.Primary_10470_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_10470, this.ATTR_SCALE, this.CheekLeft.Primary_10470_Scale));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_10467, this.ATTR_TRANSLATE_X, this.CheekLeft.Detail_10467_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_10467, this.ATTR_TRANSLATE_Y, this.CheekLeft.Detail_10467_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_10467, this.ATTR_TRANSLATE_Z, this.CheekLeft.Detail_10467_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16473, this.ATTR_TRANSLATE_X, this.CheekRight.Primary_16473_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16473, this.ATTR_TRANSLATE_Y, this.CheekRight.Primary_16473_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16473, this.ATTR_TRANSLATE_Z, this.CheekRight.Primary_16473_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16473, this.ATTR_SCALE, this.CheekRight.Primary_16473_Scale));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_16472, this.ATTR_TRANSLATE_X, this.CheekRight.Detail_16472_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_16472, this.ATTR_TRANSLATE_Y, this.CheekRight.Detail_16472_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_16472, this.ATTR_TRANSLATE_Z, this.CheekRight.Detail_16472_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_9995, this.ATTR_TRANSLATE_X, this.CheekboneLeft.Primary_9995_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_9995, this.ATTR_TRANSLATE_Y, this.CheekboneLeft.Primary_9995_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_9995, this.ATTR_TRANSLATE_Z, this.CheekboneLeft.Primary_9995_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_9995, this.ATTR_SCALE, this.CheekboneLeft.Primary_9995_Scale));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_9995, this.ATTR_TRANSLATE_X, this.CheekboneLeft.Detail_9995_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_9995, this.ATTR_TRANSLATE_Y, this.CheekboneLeft.Detail_9995_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_9995, this.ATTR_TRANSLATE_Z, this.CheekboneLeft.Detail_9995_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_22694, this.ATTR_TRANSLATE_X, this.CheekboneLeft.Detail_22694_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_22694, this.ATTR_TRANSLATE_Y, this.CheekboneLeft.Detail_22694_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_22694, this.ATTR_TRANSLATE_Z, this.CheekboneLeft.Detail_22694_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_5081, this.ATTR_TRANSLATE_X, this.CheekboneLeft.Detail_5081_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_5081, this.ATTR_TRANSLATE_Y, this.CheekboneLeft.Detail_5081_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_5081, this.ATTR_TRANSLATE_Z, this.CheekboneLeft.Detail_5081_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_5338, this.ATTR_TRANSLATE_X, this.CheekboneLeft.Detail_5338_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_5338, this.ATTR_TRANSLATE_Y, this.CheekboneLeft.Detail_5338_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_5338, this.ATTR_TRANSLATE_Z, this.CheekboneLeft.Detail_5338_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_15991, this.ATTR_TRANSLATE_X, this.CheekboneRight.Primary_15991_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_15991, this.ATTR_TRANSLATE_Y, this.CheekboneRight.Primary_15991_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_15991, this.ATTR_TRANSLATE_Z, this.CheekboneRight.Primary_15991_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_15991, this.ATTR_SCALE, this.CheekboneRight.Primary_15991_Scale));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_15991, this.ATTR_TRANSLATE_X, this.CheekboneRight.Detail_15991_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_15991, this.ATTR_TRANSLATE_Y, this.CheekboneRight.Detail_15991_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_15991, this.ATTR_TRANSLATE_Z, this.CheekboneRight.Detail_15991_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_19681, this.ATTR_TRANSLATE_X, this.CheekboneRight.Detail_19681_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_19681, this.ATTR_TRANSLATE_Y, this.CheekboneRight.Detail_19681_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_19681, this.ATTR_TRANSLATE_Z, this.CheekboneRight.Detail_19681_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2010, this.ATTR_TRANSLATE_X, this.CheekboneRight.Detail_2010_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2010, this.ATTR_TRANSLATE_Y, this.CheekboneRight.Detail_2010_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2010, this.ATTR_TRANSLATE_Z, this.CheekboneRight.Detail_2010_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2267, this.ATTR_TRANSLATE_X, this.CheekboneRight.Detail_2267_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2267, this.ATTR_TRANSLATE_Y, this.CheekboneRight.Detail_2267_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2267, this.ATTR_TRANSLATE_Z, this.CheekboneRight.Detail_2267_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_10591, this.ATTR_TRANSLATE_X, this.TempleLeft.Primary_10591_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_10591, this.ATTR_TRANSLATE_Y, this.TempleLeft.Primary_10591_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_10591, this.ATTR_TRANSLATE_Z, this.TempleLeft.Primary_10591_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_23050, this.ATTR_TRANSLATE_X, this.TempleLeft.Detail_23050_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_23050, this.ATTR_TRANSLATE_Y, this.TempleLeft.Detail_23050_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_23050, this.ATTR_TRANSLATE_Z, this.TempleLeft.Detail_23050_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16597, this.ATTR_TRANSLATE_X, this.TempleRight.Primary_16597_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16597, this.ATTR_TRANSLATE_Y, this.TempleRight.Primary_16597_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16597, this.ATTR_TRANSLATE_Z, this.TempleRight.Primary_16597_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_20037, this.ATTR_TRANSLATE_X, this.TempleRight.Detail_20037_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_20037, this.ATTR_TRANSLATE_Y, this.TempleRight.Detail_20037_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_20037, this.ATTR_TRANSLATE_Z, this.TempleRight.Detail_20037_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_23173, this.ATTR_TRANSLATE_X, this.JawLeft.Primary_23173_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_23173, this.ATTR_TRANSLATE_Y, this.JawLeft.Primary_23173_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_23173, this.ATTR_TRANSLATE_Z, this.JawLeft.Primary_23173_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_4459, this.ATTR_TRANSLATE_X, this.JawLeft.Detail_4459_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_4459, this.ATTR_TRANSLATE_Y, this.JawLeft.Detail_4459_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_4459, this.ATTR_TRANSLATE_Z, this.JawLeft.Detail_4459_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_20160, this.ATTR_TRANSLATE_X, this.JawRight.Primary_20160_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_20160, this.ATTR_TRANSLATE_Y, this.JawRight.Primary_20160_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_20160, this.ATTR_TRANSLATE_Z, this.JawRight.Primary_20160_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_1388, this.ATTR_TRANSLATE_X, this.JawRight.Detail_1388_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_1388, this.ATTR_TRANSLATE_Y, this.JawRight.Detail_1388_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_1388, this.ATTR_TRANSLATE_Z, this.JawRight.Detail_1388_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16958, this.ATTR_TRANSLATE_Y, this.Chin.Primary_16958_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16958, this.ATTR_TRANSLATE_Z, this.Chin.Primary_16958_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_PRIMARY_16958, this.ATTR_SCALE, this.Chin.Primary_16958_Scale));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2982, this.ATTR_TRANSLATE_Y, this.Chin.Detail_2982_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2982, this.ATTR_TRANSLATE_Z, this.Chin.Detail_2982_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2972, this.ATTR_TRANSLATE_Y, this.Chin.Detail_2972_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_2972, this.ATTR_TRANSLATE_Z, this.Chin.Detail_2972_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_23440, this.ATTR_TRANSLATE_X, this.Chin.Detail_23440_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_23440, this.ATTR_TRANSLATE_Y, this.Chin.Detail_23440_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_23440, this.ATTR_TRANSLATE_Z, this.Chin.Detail_23440_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_23440, this.ATTR_ROTATE_Z, this.Chin.Detail_23440_RotateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_20427, this.ATTR_TRANSLATE_X, this.Chin.Detail_20427_TranslateX));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_20427, this.ATTR_TRANSLATE_Y, this.Chin.Detail_20427_TranslateY));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_20427, this.ATTR_TRANSLATE_Z, this.Chin.Detail_20427_TranslateZ));
+        this.CtrlInputs.Add(this.MakeCtrlInput(this.CTRL_DETAIL_20427, this.ATTR_ROTATE_Z, this.Chin.Detail_20427_RotateZ));
         return;
     }
 }

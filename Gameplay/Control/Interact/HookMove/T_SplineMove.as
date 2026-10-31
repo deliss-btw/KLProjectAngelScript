@@ -1,5 +1,3 @@
-﻿
-
 struct FT_SplinePoint : FECSTrait
 {
     FECSTrait _base_FECSTrait;

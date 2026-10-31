@@ -1,4 +1,3 @@
-﻿
 const FName DebugDrawKey_HitPresentation = n"HitPresentation";
 const FConsoleCommand CVar_Debug_DrawHitPresentation = FConsoleCommand();
 

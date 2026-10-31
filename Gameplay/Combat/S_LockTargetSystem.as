@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_LockTargetDebug = FConsoleVariable();
 const FConsoleVariable CVar_LockTargetDisableRetargetOnDead = FConsoleVariable();
 
@@ -27,7 +26,6 @@ class US_LockTargetSystem : UECSScriptSystem
     UPROPERTY()
     FName LockTargetSocketName = n"DefaultLockSocket";
 
-
     UFUNCTION()
     bool IsDisabled_Implementation() const
     {
@@ -42,7 +40,196 @@ class US_LockTargetSystem : UECSScriptSystem
     UFUNCTION()
     void Job_HandleLockInput(const FECSEntity &inout Entity, const FC_InterpoTransform &inout Transform, const FC_TransformHistory &inout TransformHistory, const FC_Input &inout Input, const FCS_FixedTime &inout FixedTime, const FC_ESMTrigger &inout ESMTrigger) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Get local_10;
+        int local_12 = 0;
+        ULockTargetConfig local_66;
+        int local_214 = 0;
+        int local_215 = 0;
+        FECSEntity local_22;
+        if (local_12)
+        {
+            local_22 = local_12.GetTargetEntity();
+        }
+        else
+        {
+            local_22 = ENTITY_NULL;
+        }
+        FFPTime local_24 = FFPTime();
+        FFPTime local_24_2 = -1;
+        bool local_26 = false;
+        bool local_27 = false;
+        if (!((this.LockInput == nullptr)))
+        {
+            FActiveTriggerResult local_48 = this.LockInput.opArrow().TestTrigger(Input.State, FixedTime.LastTime, FixedTime.Time, ESMTrigger.Storage);
+            if (local_48.bActive)
+            {
+                local_24_2 = local_48.TriggerTime;
+                local_26 = local_12 && (int(local_12.GetType()) == 2);
+            }
+        }
+        Get local_56;
+        const FC_LockTargetTrigger& local_58 = local_56.opCall();
+        if (local_58)
+        {
+            FFPTime local_60 = local_58.Time;
+            if (local_60.opCmp(local_24_2) > 0 && ((local_58.Time.opCmp(this.GetECSRuntime().LastTime) > 0)) && ((local_58.Time.opCmp(this.GetECSRuntime().Time) <= 0)))
+            {
+                local_24_2 = local_58.Time;
+                local_26 = false;
+                local_27 = local_58.bCanRepickNull;
+            }
+            if (FFPTime(this.GetECSRuntime().LastTime).opCmp(local_58.Time) > 0)
+            {
+                Remove local_64;
+                local_64.opCall();
+            }
+        }
+        if (local_27)
+        {
+        }
+        else
+        {
+        }
+        if (local_24_2.opCmp(0.0) >= 0)
+        {
+            FCE_LockTargetChangeEvent local_76;
+            if (local_26)
+            {
+                FECSWorldPtr local_70 = this.GetECSWorld();
+                local_76.PreTargetEntity = local_22;
+                local_76.TargetEntity = ENTITY_NULL;
+            }
+            else
+            {
+                FLockTargetOverrideInfo local_122 = ::FLockTargetUtils::GetInitOverrideInfo(Entity, FixedTime.Time);
+                FLockTargetResult local_154 = ::FLockTargetUtils::PickLockTarget(ELockTargetType(2), Entity, local_66.Data, local_122);
+                if (!((local_154.LockTarget == ENTITY_NULL)))
+                {
+                    FECSWorldPtr local_70_2 = this.GetECSWorld();
+                    local_76.PreTargetEntity = local_22;
+                    local_76.TargetEntity = local_154.LockTarget;
+                    int local_50 = local_154.LockPointIndex;
+                }
+                else
+                {
+                    if (local_27)
+                    {
+                        FECSWorldPtr local_70_3 = this.GetECSWorld();
+                        local_76.PreTargetEntity = local_22;
+                        local_76.TargetEntity = ENTITY_NULL;
+                    }
+                }
+            }
+        }
+        if (!((this.ChangeLockTargetPrev == nullptr)) && (!((this.ChangeLockTargetNext == nullptr))))
+        {
+            FCE_LockTargetChangeEvent local_76;
+            FActiveTriggerResult local_38 = this.ChangeLockTargetPrev.opArrow().TestTrigger(Input.State, FixedTime.LastTime, FixedTime.Time, ESMTrigger.Storage);
+            FActiveTriggerResult local_48_2 = this.ChangeLockTargetNext.opArrow().TestTrigger(Input.State, FixedTime.LastTime, FixedTime.Time, ESMTrigger.Storage);
+            int local_163 = 0;
+            if (local_38.bActive)
+            {
+                local_163 = -1;
+            }
+            else
+            {
+                if (local_48_2.bActive)
+                {
+                    local_163 = 1;
+                }
+            }
+            if (local_163 != 0)
+            {
+                if (local_12 && (int(local_12.GetType()) == 2))
+                {
+                    FVector local_176 = FCharacterInputUtils::GetViewPosition(Entity, TransformHistory, this.GetECSRuntime().Time);
+                    FCharacterInputUtils::GetViewInputDir(Entity, this.GetECSRuntime().Time);
+                    FRotator local_182 = FRotator::MakeFromXZ((FVector(local_12.GetLogicLockTargetPosition()) - local_176), FVector::UpVector);
+                    FECSEntity local_204 = FECSEntity(ENTITY_NULL);
+                    FECSEntity local_208 = FECSEntity(ENTITY_NULL);
+                    FECSEntity local_212 = FECSEntity(ENTITY_NULL);
+                    local_214 = -1;
+                    local_215 = -1;
+                    float local_218 = -3.4028234663852886e38;
+                    float local_220 = 3.4028234663852886e38;
+                    ::FLockTargetUtils::GetInitOverrideInfo(Entity, FixedTime.Time);
+                    float32 local_221 = this.ChangeLockTargetMaxDistance + 200.0f;
+                    FECSRuntimeQuery local_264 = FECSRuntimeQueryHelper::RuntimeQueryInCylinder(Entity, Transform.GetPosition(), local_221, local_221, true, EECSQueryRegsitryType(3), false);
+                    Include local_308;
+                    local_308.opCall();
+                    Include local_312;
+                    local_312.opCall();
+                    Exclude(local_264).opCall();
+                    FECSRuntimeQueryIterator local_338 = local_264.Iterator();
+                    for (; local_338.CanProceed;)
+                    {
+                        const FECSEntity& local_362 = local_338.Proceed();
+                        if (!(::FLockTargetUtils::IsLockTargetMatchBaseCondition(local_12.GetType(), Entity, local_362, local_66.Data.MinDetectBlockDistance, true, local_176)))
+                        {
+                            continue;
+                        }
+                        TArray<FLockPointInfo> local_366;
+                        ::FLockTargetUtils::GetMainLockPointsFromEntity(local_362, local_366, FTransformUtils::GetPlayerRollbackTime(Entity, FixedTime));
+                        for (auto& local_382 : local_366)
+                        {
+                            if ((local_362 == local_10.opCall().GetTargetEntity()) && (local_10.opCall().GetLockPointIndex() == int(local_382.Index)))
+                            {
+                                continue;
+                            }
+                            FVector local_200 = local_382.Position;
+                            FVector local_170 = (local_200 - local_176);
+                            local_200 = local_182.Vector().CrossProduct(local_170);
+                            float local_414 = FMath::RadiansToDegrees((FQuat::FindBetweenVectors(local_170, local_182.Vector())).GetAngle());
+                            if (local_170.SizeSquared() > FMath::Square(this.ChangeLockTargetMaxDistance))
+                            {
+                                continue;
+                            }
+                            if (local_414 > this.ChangeLockTargetMaxAngle)
+                            {
+                                continue;
+                            }
+                            float local_412 = 0.0;
+                            if (local_200.Z < local_412)
+                            {
+                                local_412 = local_414;
+                                local_412 = -local_412;
+                                local_414 = local_412;
+                            }
+                            if (local_220 > local_414 && (local_414 > 0.0))
+                            {
+                                local_220 = local_414;
+                                local_212 = local_362;
+                                local_215 = int(local_382.Index);
+                            }
+                            if (local_218 < local_414 && (local_414 < 0.0))
+                            {
+                                local_218 = local_414;
+                                local_208 = local_362;
+                                local_214 = int(local_382.Index);
+                            }
+                        }
+                    }
+                    if (local_163 > 0 && !((local_212 == ENTITY_NULL)))
+                    {
+                        local_204 = local_212;
+                    }
+                    else
+                    {
+                        if (local_163 < 0 && !((local_208 == ENTITY_NULL)))
+                        {
+                            local_204 = local_208;
+                        }
+                    }
+                    if (!((local_204 == ENTITY_NULL)))
+                    {
+                        FECSWorldPtr local_70_4 = this.GetECSWorld();
+                        local_76.PreTargetEntity = local_22;
+                        local_76.TargetEntity = local_204;
+                    }
+                }
+            }
+        }
+        return;
     }
     UFUNCTION()
     void Job_UpdateAutoClearHardLockTarget(const FECSEntity &inout Entity, const FC_InterpoTransform &inout Transform, const FC_TransformHistory &inout TransformHistory, const FC_LockTarget &inout LockTarget, const FCS_FixedTime &inout FixedTime) const
@@ -166,9 +353,9 @@ class US_LockTargetSystem : UECSScriptSystem
     {
         int local_10 = 0;
         int local_20 = 0;
-        Has local_8;
         if (FFPTime(FixedTime.Time).opCmp(AutoExit.GetKeepTargetTime()) >= 0)
         {
+            Has local_8;
             if (local_8.opCall())
             {
                 if (local_10.GetbAdditionalStrafeCounter())
@@ -251,7 +438,7 @@ class US_LockTargetSystem : UECSScriptSystem
             FECSEntity local_62 = FECSEntity(ENTITY_NULL);
             if (local_20.IsActive() && (int(LockTarget.GetType()) == 2))
             {
-                local_62 = ::FLockTargetUtils::PickLockTarget(ELockTargetType(ELockTargetType(2)), Entity, this.LockTargetConfigRefWhenTargetDead.Data, ::FLockTargetUtils::GetInitOverrideInfo(Entity, local_12.Time)).LockTarget;
+                local_62 = ::FLockTargetUtils::PickLockTarget(ELockTargetType(2), Entity, this.LockTargetConfigRefWhenTargetDead.Data, ::FLockTargetUtils::GetInitOverrideInfo(Entity, local_12.Time)).LockTarget;
             }
             if (local_37)
             {
@@ -272,11 +459,11 @@ class US_LockTargetSystem : UECSScriptSystem
             }
             FECSEntity local_134 = FECSEntity(ENTITY_NULL);
             int local_135 = 0;
-            local_136 = ELockTargetType(0);
+            local_136 = 0;
             if (!((local_62 == ENTITY_NULL)) && !(CVar_LockTargetDisableRetargetOnDead.GetBool()))
             {
                 local_134 = local_62;
-                local_136 = ELockTargetType(2);
+                local_136 = 2;
                 Has local_140;
                 bool local_49_2 = local_140.opCall();
                 local_135 = local_49_2 ? 0 : -1;
@@ -284,7 +471,8 @@ class US_LockTargetSystem : UECSScriptSystem
             else
             {
                 local_134 = ENTITY_NULL;
-                local_136 = ELockTargetType(0);
+                int local_63_3 = 0;
+                local_136 = local_63_3;
                 local_135 = -1;
             }
             ::FLockTargetUtils::DisposeChangeLockTarget(Entity, local_134, local_24, local_135, this.LockTargetConfigRef.Data.bShouldStrafe, EPreChangeTargetReason(local_129), ELockTargetType(local_136));
@@ -298,7 +486,7 @@ class US_LockTargetSystem : UECSScriptSystem
             {
                 if (local_150.IsValid() && local_150.IsActive())
                 {
-                    ::FLockTargetUtils::DisposeChangeLockTarget(Entity, local_150, local_24, -1, this.LockTargetConfigRef.Data.bShouldStrafe, EPreChangeTargetReason(0), ELockTargetType(ELockTargetType(2)));
+                    ::FLockTargetUtils::DisposeChangeLockTarget(Entity, local_150, local_24, -1, this.LockTargetConfigRef.Data.bShouldStrafe, EPreChangeTargetReason(0), ELockTargetType(2));
                 }
             }
         }
@@ -308,7 +496,7 @@ class US_LockTargetSystem : UECSScriptSystem
     void Job_TickPreLockTargetState(const FECSEntity &inout Entity, const FC_PreLockTargetState &inout PreLockTargetState) const
     {
         bool local_10 = false;
-        if ((int(PreLockTargetState.GetChangeTargetReason())) == 5)
+        if (int(PreLockTargetState.GetChangeTargetReason()) == 5)
         {
             FECSEntity local_8 = PreLockTargetState.GetPreTargetEntity();
             if (local_8.IsValid() && local_8.IsActive() && !(local_8.MatchGameplayTag(GameplayTags::CombatState_Special_Unlockable)))
@@ -329,7 +517,7 @@ class US_LockTargetSystem : UECSScriptSystem
                         return;
                     }
                 }
-                ::FLockTargetUtils::DisposeChangeLockTarget(Entity, PreLockTargetState.GetPreTargetEntity(), ENTITY_NULL, -1, this.LockTargetConfigRef.Data.bShouldStrafe, EPreChangeTargetReason(EPreChangeTargetReason(0)), ELockTargetType(2));
+                ::FLockTargetUtils::DisposeChangeLockTarget(Entity, PreLockTargetState.GetPreTargetEntity(), ENTITY_NULL, -1, (this.LockTargetConfigRef.Data.bShouldStrafe), EPreChangeTargetReason(0), ELockTargetType(2));
             }
         }
         return;

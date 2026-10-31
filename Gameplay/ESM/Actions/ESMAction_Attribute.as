@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_ConsumeAttributeInstantly : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ class UESMAction_ConsumeAttributeInstantly : UESMBPBaseSpanAction
     FGameAttributeRef Attribute;
     UPROPERTY()
     FESMBBVar_Numeric ConsumeValue = 0.0f;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const
@@ -77,7 +74,6 @@ class UESMAction_RecoverAttributeInstantly : UESMBPBaseSpanAction
     UPROPERTY()
     FESMBBVar_Numeric RecoverValue = 0.0f;
 
-
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const
     {
@@ -139,7 +135,6 @@ struct FConsumeAttributeContinouslyMoveInstanceData
     UPROPERTY()
     float32 CachedConsumeCoefficient = 1.0f;
 
-
 }
 
 class UESMAction_ConsumeAttributeContinously : UESMBPBaseSpanTickAction
@@ -154,7 +149,6 @@ class UESMAction_ConsumeAttributeContinously : UESMBPBaseSpanTickAction
     bool bSmooth = false;
     UPROPERTY()
     FESMBlackboardConditionAndArray TickConsumeCondition;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const
@@ -374,7 +368,6 @@ class UESMAction_ModifyAttributeSpan : UESMBPBaseSpanAction
     EGameAttributeModifyType ModifyType = EGameAttributeModifyType(1);
     UPROPERTY()
     FESMBBVar_Numeric ModifyValue = 0.0f;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const

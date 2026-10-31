@@ -1,5 +1,3 @@
-﻿
-
 class UESMBlackboard_ClearTrigger : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -14,7 +12,6 @@ class UESMBlackboard_ClearTrigger : UESMBPBaseSpanAction
     bool bClearOnExit;
     UPROPERTY()
     bool bManuallTrigger = true;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const
@@ -83,7 +80,6 @@ class UESMBlackboard_ClearTriggerByGroup : UESMBPBaseSpanAction
     bool bClearOnEnter = true;
     UPROPERTY()
     bool bClearOnExit;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const

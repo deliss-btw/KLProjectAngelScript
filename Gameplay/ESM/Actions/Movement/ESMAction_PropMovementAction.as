@@ -1,4 +1,3 @@
-﻿
 enum EPropFacingType_EntityBBVar
 {
     PropForward,
@@ -31,10 +30,6 @@ enum EPropMovementCollisionCheckMode
     CollisionChannel,
 }
 
-
-// NOTE: class defaults are not authored in this module: UESMAction_PropMovementAction (default scalar field UESMAction.NetTriggerMode has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FESMPropMovementInstanceData
 {
     UPROPERTY()
@@ -45,7 +40,6 @@ struct FESMPropMovementInstanceData
     FQuat LastRotation;
     UPROPERTY()
     bool bTriggerHitSceneSKill = false;
-
 
 }
 
@@ -91,11 +85,55 @@ struct FPropMovementExtraConfig
 
     FPropMovementExtraConfig()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_CollisionChannel = ECollisionChannel(0);
+        FSubDirtyFlags32 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_bHitSceneEvent = false;
+        this.m_HitSceneEventProcessMode = EPropMovementHitSceneEventProcessMode(0);
+        this.m_bEndMovementWhenHitScene = false;
+        this.m_PropMovementCollisionCheckMode = EPropMovementCollisionCheckMode(0);
+        this.m_bCollisionCheckIncludeDynamic = true;
+        this.m_bIncludeOverlapCollisionResponse = false;
+        this.m_bAdjustToNonPenetratePositionWhenHit = false;
+        this.m_NonPenetrateSkinOffset = 0.5f;
+        this.m_bMovementEndEvent = false;
+        this.m_MovementEndProcessMode = EPropMovementHitSceneEventProcessMode(0);
+        return;
     }
     FPropMovementExtraConfig(const FPropMovementExtraConfig &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_CollisionChannel = ECollisionChannel(0);
+        FSubDirtyFlags32 local_7;
+        this.__DirtyFlags = local_7;
+        this.m_bHitSceneEvent = false;
+        this.m_HitSceneEventProcessMode = EPropMovementHitSceneEventProcessMode(0);
+        this.m_bEndMovementWhenHitScene = false;
+        this.m_PropMovementCollisionCheckMode = EPropMovementCollisionCheckMode(0);
+        this.m_bCollisionCheckIncludeDynamic = true;
+        this.m_bIncludeOverlapCollisionResponse = false;
+        this.m_bAdjustToNonPenetratePositionWhenHit = false;
+        this.m_NonPenetrateSkinOffset = 0.5f;
+        this.m_bMovementEndEvent = false;
+        this.m_MovementEndProcessMode = EPropMovementHitSceneEventProcessMode(0);
+        this.m_bHitSceneEvent = Other.m_bHitSceneEvent;
+        this.m_HitSceneEventProcessMode = Other.m_HitSceneEventProcessMode;
+        this.m_HitSceneAbilityClass = Other.m_HitSceneAbilityClass;
+        this.m_HitSceneEventName = Other.m_HitSceneEventName;
+        this.m_bEndMovementWhenHitScene = Other.m_bEndMovementWhenHitScene;
+        this.m_PropMovementCollisionCheckMode = Other.m_PropMovementCollisionCheckMode;
+        this.m_bCollisionCheckIncludeDynamic = Other.m_bCollisionCheckIncludeDynamic;
+        this.m_AdditionalIgnoreEntityEBBs = Other.m_AdditionalIgnoreEntityEBBs;
+        this.m_ObjectTypeMask = Other.m_ObjectTypeMask;
+        this.m_CollisionChannel = Other.m_CollisionChannel;
+        this.m_bIncludeOverlapCollisionResponse = Other.m_bIncludeOverlapCollisionResponse;
+        this.m_bAdjustToNonPenetratePositionWhenHit = Other.m_bAdjustToNonPenetratePositionWhenHit;
+        this.m_NonPenetrateSkinOffset = Other.m_NonPenetrateSkinOffset;
+        this.m_bMovementEndEvent = Other.m_bMovementEndEvent;
+        this.m_MovementEndProcessMode = Other.m_MovementEndProcessMode;
+        this.m_MovementEndAbilityClass = Other.m_MovementEndAbilityClass;
+        this.m_MovementEndSignalName = Other.m_MovementEndSignalName;
+        this.m_MovementEndEventName = Other.m_MovementEndEventName;
+        return;
     }
     FPropMovementExtraConfig opAssign(const FPropMovementExtraConfig &inout Other)
     {
@@ -430,7 +468,6 @@ class UESMAction_PropMovementAction : UESMBPBaseSpanAction
     float32 GravityScale = 0.0f;
     UPROPERTY()
     bool bInstantAction = true;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const

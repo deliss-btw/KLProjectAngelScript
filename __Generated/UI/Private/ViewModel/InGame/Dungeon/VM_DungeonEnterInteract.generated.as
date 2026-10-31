@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_DungeonEnterInteract_Helpers
 {
 UFUNCTION()

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TalentUpgradeItem
 {
     const int ModelId = 0;
@@ -565,9 +564,10 @@ struct FVM_TalentUpgradeItem : FEUIViewModel
         this.RebuildSegmentProgress();
         if (this.GetNode().IsValid())
         {
-            if ((int(this.GetDisplaySkillType())) != 0)
+            int local_5 = int(this.GetDisplaySkillType());
+            if (local_5 != 0)
             {
-                this.SetSkillTypeBGVM(TEUIModelRef<FVM_TalentSkillTypeBG>(::FVM_TalentSkillTypeBG::Create(this.GetContext().Manager)));
+                this.SetSkillTypeBGVM(TEUIModelRef<FVM_TalentSkillTypeBG>(::FVM_TalentSkillTypeBG::Create(this.GetContext().Manager, ESkillType(local_5))));
             }
             TEUIModelWeakRef<FM_TalentNode> local_2 = this.GetNode();
             this.SetRedDotVM(TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(GameplayTags::RedDotSystem_Talent_NodeRedDot, GetDataId()))));
@@ -868,7 +868,6 @@ struct __GeneratedProperties_FVM_TalentUpgradeItem
     UPROPERTY()
     TEUIModelRef<FVM_TalentUpgradeItem> Self;
 
-
 }
 
 namespace FVM_TalentUpgradeItem
@@ -885,7 +884,214 @@ FVM_TalentUpgradeItem CreateByManager(const UEUIManagerSubsystem Manager, const 
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "Node";
+    local_14.TypeName = "TEUIModelWeakRef<FM_TalentNode>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ChoiceIndex";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bHover";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bSelect";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SegmentProgressModels";
+    local_14.TypeName = "TArray<FEUIModelContainer>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SkillTypeBGVM";
+    local_14.TypeName = "TEUIModelRef<FVM_TalentSkillTypeBG>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "RedDotVM";
+    local_14.TypeName = "TEUIModelRef<FVM_RedDot>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsUnlock";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "UnlockLevel";
+    local_14.TypeName = "uint32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TalentLevel";
+    local_14.TypeName = "uint32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurrentLevel";
+    local_14.TypeName = "uint32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "MaxLevel";
+    local_14.TypeName = "uint32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TalentConfig";
+    local_14.TypeName = "TDataObjectPtr<FTalentConfig>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TalentName";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TalentDesc";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Description";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Icon";
+    local_14.TypeName = "FSoftBrush";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PreviewImage";
+    local_14.TypeName = "FSoftBrush";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PreviewMovie";
+    local_14.TypeName = "UMediaSource";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TalentType";
+    local_14.TypeName = "ETalentType";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TalentDivision";
+    local_14.TypeName = "ETalentDivision";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "UnlockType";
+    local_14.TypeName = "EUnlockType";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IconStateIndex";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CanUpgrade";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "UnlockCost";
+    local_14.TypeName = "TArray<FItemParamConfig>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShouldShowSelectedBackground";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Visible";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasChooseTalent";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasDoubleFormTalent";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "LevelText";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "StateType";
+    local_14.TypeName = "ETalentNodeStateType";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsEquippedChoice";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsUnequippedChoice";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_TalentUpgradeItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_TalentUpgradeItem;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(9);
+    local_22.AddRefPropertyDirty(0, 0, FM_TalentNode::__IndexOf_EquipRevision());
+    local_22.AddRefPropertyDirty(1, 0, FM_TalentNode::__IndexOf_StateType());
+    local_22.AddRefPropertyDirty(2, 0, FM_TalentNode::__IndexOf_ActiveLevel());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("Node");
+    int local_2_2 = FM_TalentNode::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FM_TalentNode::__IndexOf_EquipRevision(), true);
+    local_30.RelatedDirtyMask.SetBit(FM_TalentNode::__IndexOf_StateType(), true);
+    local_30.RelatedDirtyMask.SetBit(FM_TalentNode::__IndexOf_ActiveLevel(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnNodeRuntimeStateChanged";
+    local_40.DirtyFlags.Set(FVM_TalentUpgradeItem::__IndexOf_Node());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(2));
+    local_40.DirtyFlags.Set(FVM_TalentUpgradeItem::__IndexOf_Node());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    local_40.DirtyFlags.Set(FVM_TalentUpgradeItem::__IndexOf_Node());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(1));
+    Result.DirtyFunctions.Add(local_40);
+    FEUIModelMsgHandleDefine local_50;
+    local_50.FunctionName = "__OnTalentNodeHoverOpenDetails";
+    local_50.MessageTypeName = "Msg_TalentNodeHoverOpenDetails";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    local_50.FunctionName = "__OnTalentUpgradeSuccess";
+    local_50.MessageTypeName = "Msg_TalentUnlockOrUpgradeAnim";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

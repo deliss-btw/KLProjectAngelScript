@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_SwitchSpecialty
 {
     const int ViewID = 0;
@@ -138,6 +137,7 @@ namespace UWidget_SwitchSpecialty
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SwitchSpecialty;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectSpecialty"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSpecialtyChangeSucc"));
     return;

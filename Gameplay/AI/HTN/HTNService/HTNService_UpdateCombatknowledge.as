@@ -1,5 +1,3 @@
-﻿
-
 class UHTNService_UpdateCombatknowledge : UHTNService_ECSScriptBase
 {
     UPROPERTY()
@@ -7,7 +5,7 @@ class UHTNService_UpdateCombatknowledge : UHTNService_ECSScriptBase
     UPROPERTY()
     FBlackboardKeySelector AttackTargetDistance2D;
 
-    default SetNodeName("ж›ґж–°ж‰ЂйњЂж•°жЌ®е€°й»‘жќїеЂј");
+    default SetNodeName("更新所需数据到黑板值");
 
     UHTNService_UpdateCombatknowledge()
     {
@@ -37,7 +35,7 @@ class UHTNService_UpdateCombatknowledge : UHTNService_ECSScriptBase
         FTargetEntity local_6;
         local_6 = FTargetEntity(::FAITargetingUtils::GetCurrentAttackTarget(local_4));
         float local_8 = local_22.GetPosition().Dist2D(local_24.GetPosition());
-        local_6.GetEntity().GetId();
+        HTNNode::SetWorldStateValueAsEntityId(Context, this.AttackTargetEntityID, local_6.GetEntity().GetId());
         HTNNode::SetWorldStateValueAsFloat(Context, this.AttackTargetDistance2D, float32(local_8));
         return;
     }

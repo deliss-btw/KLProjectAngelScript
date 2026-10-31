@@ -1,5 +1,3 @@
-﻿
-
 struct FAttributePresentation
 {
     UPROPERTY()
@@ -21,16 +19,15 @@ struct FAttributePresentation
     UPROPERTY()
     FLinearColor OverrideThemeColor = FLinearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-
     FText GetDisplayName() const
     {
         if (this.bOverrideDisplayName)
         {
             return this.OverrideDisplayName;
         }
-        if (this)
+        if (this.Preset)
         {
-            return this.opArrow().DisplayName;
+            return this.Preset.opArrow().DisplayName;
         }
         return FText();
     }
@@ -40,9 +37,9 @@ struct FAttributePresentation
         {
             return this.OverrideDescription;
         }
-        if (this)
+        if (this.Preset)
         {
-            return this.opArrow().Description;
+            return this.Preset.opArrow().Description;
         }
         return FText();
     }
@@ -52,9 +49,9 @@ struct FAttributePresentation
         {
             return this.OverrideIcon;
         }
-        if (this)
+        if (this.Preset)
         {
-            return this.opArrow().Icon;
+            return this.Preset.opArrow().Icon;
         }
         return FSoftBrush();
     }
@@ -64,9 +61,9 @@ struct FAttributePresentation
         {
             return this.OverrideThemeColor;
         }
-        if (this)
+        if (this.Preset)
         {
-            return this.opArrow().ThemeColor;
+            return this.Preset.opArrow().ThemeColor;
         }
         return FLinearColor(1.0f, 1.0f, 1.0f, 1.0f);
     }

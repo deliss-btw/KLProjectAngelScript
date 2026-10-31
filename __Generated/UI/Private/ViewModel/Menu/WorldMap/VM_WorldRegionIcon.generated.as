@@ -1,12 +1,9 @@
-﻿
-
 struct FConfigVM_WorldRegionIcon : FConfigEUIModelBase
 {
     UPROPERTY()
     bool bIsModeEntrance = false;
     UPROPERTY()
     TDataObjectPtr<FLevelInfoConfig> LevelInfoConfig;
-
 
 }
 

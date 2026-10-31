@@ -1,4 +1,3 @@
-﻿
 namespace FEcosimAIV2Utils
 {
     const FName HTN_Var = n"Var";

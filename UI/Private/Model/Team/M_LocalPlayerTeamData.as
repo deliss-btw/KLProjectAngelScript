@@ -1,4 +1,3 @@
-﻿
 namespace FMS_LocalPlayerTeamData
 {
     const int ModelId = 0;
@@ -527,7 +526,31 @@ FMS_LocalPlayerTeamData GetByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    FEUIModelMetaPropertyModelRef local_6;
+    local_6.PropertyName = FName("LocalPlayerCombatTeam");
+    int local_2_2 = FM_CombatTeam::ModelId;
+    Result.FunctionalPropertyModelRefs.Add(local_6);
+    FEUIModelMsgHandleDefine local_18;
+    local_18.FunctionName = "__OnLocalPlayerCombatTeamChanged";
+    local_18.MessageTypeName = "Msg_CombatTeamChanged";
+    local_18.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_18);
+    local_18.FunctionName = "__OnLocalPlayerCombatTeamMemberChanged";
+    local_18.MessageTypeName = "Msg_CombatTeamMemberChanged";
+    local_18.SourcePropertyModelRefs = FBitSet64(1);
+    Result.MessageHandleFunctions.Add(local_18);
+    local_18.FunctionName = "__OnLocalPlayerSocialTeamChanged";
+    local_18.MessageTypeName = "Msg_SocialTeamChanged";
+    local_18.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_18);
+    local_18.FunctionName = "__OnLocalPlayerSocialTeamMemberChanged";
+    local_18.MessageTypeName = "Msg_SocialTeamMemberChanged";
+    local_18.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_18);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

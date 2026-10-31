@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PVX_MainAvatar_PlayerComp
 {
     const int ModelId = 0;

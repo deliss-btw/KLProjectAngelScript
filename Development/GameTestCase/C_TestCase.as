@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_TestCase_NS
 {
     const TECSComponentDerivedPtr<FC_TestCase> DerivedPtr = TECSComponentDerivedPtr<FC_TestCase>();
@@ -121,18 +120,15 @@ namespace __INTENRAL_FCE_TestCaseDispatchClientActions_NS
 struct FNetworkLatencyPair
 {
     UPROPERTY()
-    FVector2D m_Value;
+    FVector2D m_Value = FVector2D(50.0, 50.0);
 
     FNetworkLatencyPair()
     {
-        FVector2D local_4 = FVector2D(50.0, 50.0);
         return;
     }
     FNetworkLatencyPair(const float32 Outgoing, const float32 Incoming)
     {
-        FVector2D local_4 = FVector2D(50.0, 50.0);
-        FVector2D local_4_2 = FVector2D(Outgoing, Incoming);
-        this.SetValue(local_4_2);
+        this.SetValue(FVector2D(Outgoing, Incoming));
         return;
     }
     float GetOutgoingLatency() const
@@ -163,7 +159,8 @@ struct FNetworkLatencyPair
     }
     void SetValue(const FVector2D &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Value = __Value;
+        return;
     }
 }
 
@@ -223,11 +220,72 @@ struct FC_TestCase : FECSComponent
 
     FC_TestCase()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_GameTestId = 0;
+        this.m_GameTestEntityId = 0;
+        this.m_CaseDuration = 0.0f;
+        this.m_LoopRounds = 0;
+        this.m_CurrntRound = 0;
+        this.m_CurrntStartTicks = 0;
+        FRootDirtyFlags32 local_7;
+        this.__DirtyFlags = local_7;
+        this.m_IssuerPawnEntityId = 0;
+        this.m_StartDelay = 3.0f;
+        this.m_RunDelay = 3.0f;
+        this.m_ReplayBeginFrame = -1;
+        this.m_bEnableLatency = false;
+        this.m_bResetCaseEnvironment = false;
+        this.m_BaseLatency = FNetworkLatencyPair(50.0f, 50.0f);
+        this.m_bFilterClearCheckpoints = false;
+        this.m_bFilterClearSamplers = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_TestCase(const FC_TestCase &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_GameTestId = 0;
+        this.m_GameTestEntityId = 0;
+        this.m_CaseDuration = 0.0f;
+        this.m_LoopRounds = 0;
+        this.m_CurrntRound = 0;
+        this.m_CurrntStartTicks = 0;
+        FRootDirtyFlags32 local_8;
+        this.__DirtyFlags = local_8;
+        this.m_IssuerPawnEntityId = 0;
+        this.m_StartDelay = 3.0f;
+        this.m_RunDelay = 3.0f;
+        this.m_ReplayBeginFrame = -1;
+        this.m_bEnableLatency = false;
+        this.m_bResetCaseEnvironment = false;
+        this.m_BaseLatency = FNetworkLatencyPair(50.0f, 50.0f);
+        this.m_bFilterClearCheckpoints = false;
+        this.m_bFilterClearSamplers = false;
+        this.__InitDirtyFlags();
+        this.m_GameTestId = int(Other.m_GameTestId);
+        this.m_GameTestEntityId = int(Other.m_GameTestEntityId);
+        this.m_IssuerPawnEntityId = int(Other.m_IssuerPawnEntityId);
+        this.m_CaseDuration = Other.m_CaseDuration;
+        this.m_LoopRounds = int(Other.m_LoopRounds);
+        this.m_CurrntRound = int(Other.m_CurrntRound);
+        this.m_CurrntStartTicks = Other.m_CurrntStartTicks;
+        this.m_StartDelay = Other.m_StartDelay;
+        this.m_RunDelay = Other.m_RunDelay;
+        this.m_CurrntRoundBeginTime = Other.m_CurrntRoundBeginTime;
+        this.m_ReplayBeginFrame = int(Other.m_ReplayBeginFrame);
+        this.m_EntityMap = Other.m_EntityMap;
+        this.m_OutputFolder = Other.m_OutputFolder;
+        this.m_GTCJsonAssetPath = Other.m_GTCJsonAssetPath;
+        this.m_ManualEntityMap = Other.m_ManualEntityMap;
+        this.m_AICommandEntityAliasMap = Other.m_AICommandEntityAliasMap;
+        this.m_SpawnedEntityIds = Other.m_SpawnedEntityIds;
+        this.m_ReusedEntityIds = Other.m_ReusedEntityIds;
+        this.m_bEnableLatency = Other.m_bEnableLatency;
+        this.m_bResetCaseEnvironment = Other.m_bResetCaseEnvironment;
+        this.m_BaseLatency = Other.m_BaseLatency;
+        this.m_FilterRemoveEntityNames = Other.m_FilterRemoveEntityNames;
+        this.m_bFilterClearCheckpoints = Other.m_bFilterClearCheckpoints;
+        this.m_bFilterClearSamplers = Other.m_bFilterClearSamplers;
+        this.m_NoReuseEntityNames = Other.m_NoReuseEntityNames;
+        return;
     }
     FC_TestCase opAssign(const FC_TestCase &inout Other)
     {
@@ -296,17 +354,15 @@ struct FC_TestCase : FECSComponent
                 }
             }
         }
-        int local_4 = this.GetNoReuseEntityNames().Num();
-        if (local_4 > 0)
+        if (this.GetNoReuseEntityNames().Num() > 0)
         {
             int local_5_2 = 0;
-            while (local_5_2 < local_4)
+            for (; local_5_2 < SourceData.EntityConfigs.Num(); ++local_5_2)
             {
                 if (SourceData.EntityConfigs[local_5_2].bUsePlayerPawn && this.GetNoReuseEntityNames().Contains(SourceData.EntityConfigs[local_5_2].UniqueName))
                 {
                     SourceData.EntityConfigs[local_5_2].bUsePlayerPawn = false;
                 }
-                ++local_5_2;
             }
         }
         if (this.GetbFilterClearCheckpoints())
@@ -778,7 +834,6 @@ struct FC_TestCaseRoundCache : FECSComponent
     UPROPERTY()
     int64 RecordWorldTimeTicks = 0;
 
-
     bool TryFindEntityConfig(const FName &inout UniqueName, FGTCEntityConfig &out TargetEntityConfig) const
     {
         for (auto& local_72 : this.EntityConfigs)
@@ -811,11 +866,15 @@ struct FC_TestCaseResetTimer : FECSComponent
 
     FC_TestCaseResetTimer()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_TestCaseResetTimer(const FC_TestCaseResetTimer &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_ResetAtTime = Other.m_ResetAtTime;
         return;
@@ -878,7 +937,6 @@ struct FC_GTCActionContainer : FECSComponent
     UPROPERTY()
     TArray<bool> SamplerStartedFlags;
 
-
     void Init(const FECSEntityId &inout InEntityId, const int InBeginFrame, const FFPTime &inout InBeginTime)
     {
         this.TestCaseEntityId = InEntityId;
@@ -898,7 +956,6 @@ struct FC_TestCaseActions : FC_GTCActionContainer
 
     FC_TestCaseActions()
     {
-        super();
         return;
     }
 }
@@ -940,7 +997,6 @@ struct FGTCLazyBindMonster
     UPROPERTY()
     bool bBound = false;
 
-
 }
 
 struct FC_TestCaseLazyBindMonsters : FECSComponent
@@ -970,7 +1026,6 @@ struct FC_TestCaseServerFixedInputs : FC_GTCActionContainer
     UPROPERTY()
     int LastAppliedAutoCheckpointIndex = -1;
 
-
 }
 
 struct FC_TestCaseClientFixedInputs : FC_GTCActionContainer
@@ -979,7 +1034,6 @@ struct FC_TestCaseClientFixedInputs : FC_GTCActionContainer
 
     FC_TestCaseClientFixedInputs()
     {
-        super();
         return;
     }
 }
@@ -990,7 +1044,6 @@ struct FC_TestCaseServerSamplers : FC_GTCActionContainer
 
     FC_TestCaseServerSamplers()
     {
-        super();
         return;
     }
 }
@@ -1001,7 +1054,6 @@ struct FC_TestCaseClientInputs : FC_GTCActionContainer
 
     FC_TestCaseClientInputs()
     {
-        super();
         return;
     }
 }
@@ -1012,7 +1064,6 @@ struct FC_TestCaseClientLogicSamplers : FC_GTCActionContainer
 
     FC_TestCaseClientLogicSamplers()
     {
-        super();
         return;
     }
 }
@@ -1023,7 +1074,6 @@ struct FC_TestCaseClientViewSamplers : FC_GTCActionContainer
 
     FC_TestCaseClientViewSamplers()
     {
-        super();
         return;
     }
 }
@@ -1036,7 +1086,6 @@ struct FC_TestCaseCameraViewPlayback : FECSComponent
     FFPTime BeginTime;
     UPROPERTY()
     TArray<FGTCCameraViewConfig> CameraViewConfigs;
-
 
 }
 
@@ -1088,7 +1137,6 @@ struct FCE_TestCaseFinished : FECSEvent
     UPROPERTY()
     uint GameTestEntityId;
 
-
 }
 
 struct FCE_TestCaseDispatchClientActions : FECSEvent
@@ -1109,7 +1157,6 @@ struct FCE_TestCaseDispatchClientActions : FECSEvent
     UPROPERTY()
     TArray<int> SamplerIndices;
 
-
 }
 
 struct FGTCTestCaseJsonOutput
@@ -1122,7 +1169,6 @@ struct FGTCTestCaseJsonOutput
     int BeginFrame;
     UPROPERTY()
     TArray<FString> SamplerResults;
-
 
 }
 
@@ -1203,37 +1249,37 @@ bool RemoveTestCase(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCase, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCase, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCase, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCase, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCase, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCase, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCase, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCase, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCase, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCase, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTestCaseLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TestCase, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TestCase, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TestCase, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TestCase, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TestCase, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TestCase, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TestCaseRoundCache
@@ -1316,37 +1362,37 @@ bool RemoveTestCaseRoundCache(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseRoundCacheOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseRoundCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseRoundCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseRoundCacheOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseRoundCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseRoundCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseRoundCacheOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseRoundCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseRoundCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseRoundCacheOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseRoundCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseRoundCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseRoundCacheOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseRoundCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseRoundCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTestCaseRoundCacheLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TestCaseRoundCache, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TestCaseRoundCache, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseRoundCacheActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TestCaseRoundCache, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TestCaseRoundCache, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseRoundCacheModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TestCaseRoundCache, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TestCaseRoundCache, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TestCaseSharedSamplers
@@ -1429,37 +1475,37 @@ bool RemoveTestCaseSharedSamplers(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseSharedSamplersOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseSharedSamplers, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseSharedSamplers, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseSharedSamplersOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseSharedSamplers, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseSharedSamplers, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseSharedSamplersOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseSharedSamplers, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseSharedSamplers, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseSharedSamplersOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseSharedSamplers, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseSharedSamplers, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseSharedSamplersOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseSharedSamplers, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseSharedSamplers, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTestCaseSharedSamplersLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TestCaseSharedSamplers, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TestCaseSharedSamplers, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseSharedSamplersActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TestCaseSharedSamplers, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TestCaseSharedSamplers, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseSharedSamplersModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TestCaseSharedSamplers, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TestCaseSharedSamplers, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TestCaseResetTimer
@@ -1539,37 +1585,37 @@ bool RemoveTestCaseResetTimer(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseResetTimerOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseResetTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseResetTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseResetTimerOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseResetTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseResetTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseResetTimerOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseResetTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseResetTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseResetTimerOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseResetTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseResetTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseResetTimerOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseResetTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseResetTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTestCaseResetTimerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TestCaseResetTimer, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TestCaseResetTimer, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseResetTimerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TestCaseResetTimer, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TestCaseResetTimer, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseResetTimerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TestCaseResetTimer, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TestCaseResetTimer, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TestCaseRunTimer
@@ -1652,37 +1698,37 @@ bool RemoveTestCaseRunTimer(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseRunTimerOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseRunTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseRunTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseRunTimerOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseRunTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseRunTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseRunTimerOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseRunTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseRunTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseRunTimerOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseRunTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseRunTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseRunTimerOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseRunTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseRunTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTestCaseRunTimerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TestCaseRunTimer, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TestCaseRunTimer, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseRunTimerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TestCaseRunTimer, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TestCaseRunTimer, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseRunTimerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TestCaseRunTimer, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TestCaseRunTimer, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_GTCActionContainer
@@ -1765,37 +1811,37 @@ bool RemoveGTCActionContainer(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorGTCActionContainerOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_GTCActionContainer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_GTCActionContainer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorGTCActionContainerOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_GTCActionContainer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_GTCActionContainer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorGTCActionContainerOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_GTCActionContainer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_GTCActionContainer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorGTCActionContainerOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_GTCActionContainer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_GTCActionContainer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorGTCActionContainerOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_GTCActionContainer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_GTCActionContainer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorGTCActionContainerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_GTCActionContainer, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_GTCActionContainer, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGTCActionContainerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_GTCActionContainer, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_GTCActionContainer, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGTCActionContainerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_GTCActionContainer, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_GTCActionContainer, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TestCaseActions
@@ -1878,37 +1924,37 @@ bool RemoveTestCaseActions(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseActionsOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseActions, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseActions, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseActionsOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseActions, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseActions, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseActionsOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseActions, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseActions, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseActionsOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseActions, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseActions, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseActionsOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseActions, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseActions, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTestCaseActionsLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TestCaseActions, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TestCaseActions, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseActionsActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TestCaseActions, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TestCaseActions, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseActionsModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TestCaseActions, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TestCaseActions, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TestCaseAICommandOverride
@@ -1991,37 +2037,37 @@ bool RemoveTestCaseAICommandOverride(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseAICommandOverrideOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseAICommandOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseAICommandOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseAICommandOverrideOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseAICommandOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseAICommandOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseAICommandOverrideOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseAICommandOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseAICommandOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseAICommandOverrideOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseAICommandOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseAICommandOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseAICommandOverrideOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseAICommandOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseAICommandOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTestCaseAICommandOverrideLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TestCaseAICommandOverride, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TestCaseAICommandOverride, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseAICommandOverrideActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TestCaseAICommandOverride, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TestCaseAICommandOverride, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseAICommandOverrideModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TestCaseAICommandOverride, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TestCaseAICommandOverride, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TestCaseBTSuppressed
@@ -2104,37 +2150,37 @@ bool RemoveTestCaseBTSuppressed(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseBTSuppressedOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseBTSuppressed, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseBTSuppressed, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseBTSuppressedOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseBTSuppressed, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseBTSuppressed, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseBTSuppressedOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseBTSuppressed, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseBTSuppressed, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseBTSuppressedOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseBTSuppressed, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseBTSuppressed, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseBTSuppressedOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseBTSuppressed, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseBTSuppressed, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTestCaseBTSuppressedLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TestCaseBTSuppressed, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TestCaseBTSuppressed, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseBTSuppressedActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TestCaseBTSuppressed, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TestCaseBTSuppressed, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseBTSuppressedModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TestCaseBTSuppressed, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TestCaseBTSuppressed, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TestCaseLazyBindMonsters
@@ -2217,37 +2263,37 @@ bool RemoveTestCaseLazyBindMonsters(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseLazyBindMonstersOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseLazyBindMonsters, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseLazyBindMonsters, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseLazyBindMonstersOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseLazyBindMonsters, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseLazyBindMonsters, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseLazyBindMonstersOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseLazyBindMonsters, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseLazyBindMonsters, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseLazyBindMonstersOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseLazyBindMonsters, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseLazyBindMonsters, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseLazyBindMonstersOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseLazyBindMonsters, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseLazyBindMonsters, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTestCaseLazyBindMonstersLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TestCaseLazyBindMonsters, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TestCaseLazyBindMonsters, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseLazyBindMonstersActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TestCaseLazyBindMonsters, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TestCaseLazyBindMonsters, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseLazyBindMonstersModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TestCaseLazyBindMonsters, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TestCaseLazyBindMonsters, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TestCaseServerFixedInputs
@@ -2330,37 +2376,37 @@ bool RemoveTestCaseServerFixedInputs(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseServerFixedInputsOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseServerFixedInputs, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseServerFixedInputs, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseServerFixedInputsOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseServerFixedInputs, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseServerFixedInputs, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseServerFixedInputsOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseServerFixedInputs, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseServerFixedInputs, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseServerFixedInputsOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseServerFixedInputs, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseServerFixedInputs, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseServerFixedInputsOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseServerFixedInputs, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseServerFixedInputs, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTestCaseServerFixedInputsLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TestCaseServerFixedInputs, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TestCaseServerFixedInputs, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseServerFixedInputsActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TestCaseServerFixedInputs, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TestCaseServerFixedInputs, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseServerFixedInputsModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TestCaseServerFixedInputs, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TestCaseServerFixedInputs, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TestCaseClientFixedInputs
@@ -2443,37 +2489,37 @@ bool RemoveTestCaseClientFixedInputs(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientFixedInputsOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseClientFixedInputs, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseClientFixedInputs, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientFixedInputsOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseClientFixedInputs, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseClientFixedInputs, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientFixedInputsOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseClientFixedInputs, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseClientFixedInputs, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientFixedInputsOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseClientFixedInputs, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseClientFixedInputs, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientFixedInputsOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseClientFixedInputs, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseClientFixedInputs, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTestCaseClientFixedInputsLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TestCaseClientFixedInputs, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TestCaseClientFixedInputs, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseClientFixedInputsActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TestCaseClientFixedInputs, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TestCaseClientFixedInputs, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseClientFixedInputsModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TestCaseClientFixedInputs, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TestCaseClientFixedInputs, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TestCaseServerSamplers
@@ -2556,37 +2602,37 @@ bool RemoveTestCaseServerSamplers(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseServerSamplersOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseServerSamplers, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseServerSamplers, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseServerSamplersOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseServerSamplers, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseServerSamplers, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseServerSamplersOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseServerSamplers, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseServerSamplers, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseServerSamplersOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseServerSamplers, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseServerSamplers, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseServerSamplersOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseServerSamplers, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseServerSamplers, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTestCaseServerSamplersLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TestCaseServerSamplers, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TestCaseServerSamplers, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseServerSamplersActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TestCaseServerSamplers, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TestCaseServerSamplers, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseServerSamplersModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TestCaseServerSamplers, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TestCaseServerSamplers, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TestCaseClientInputs
@@ -2669,37 +2715,37 @@ bool RemoveTestCaseClientInputs(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientInputsOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseClientInputs, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseClientInputs, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientInputsOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseClientInputs, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseClientInputs, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientInputsOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseClientInputs, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseClientInputs, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientInputsOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseClientInputs, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseClientInputs, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientInputsOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseClientInputs, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseClientInputs, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTestCaseClientInputsLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TestCaseClientInputs, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TestCaseClientInputs, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseClientInputsActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TestCaseClientInputs, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TestCaseClientInputs, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseClientInputsModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TestCaseClientInputs, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TestCaseClientInputs, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TestCaseClientLogicSamplers
@@ -2782,37 +2828,37 @@ bool RemoveTestCaseClientLogicSamplers(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientLogicSamplersOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseClientLogicSamplers, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseClientLogicSamplers, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientLogicSamplersOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseClientLogicSamplers, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseClientLogicSamplers, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientLogicSamplersOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseClientLogicSamplers, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseClientLogicSamplers, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientLogicSamplersOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseClientLogicSamplers, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseClientLogicSamplers, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientLogicSamplersOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseClientLogicSamplers, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseClientLogicSamplers, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTestCaseClientLogicSamplersLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TestCaseClientLogicSamplers, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TestCaseClientLogicSamplers, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseClientLogicSamplersActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TestCaseClientLogicSamplers, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TestCaseClientLogicSamplers, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseClientLogicSamplersModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TestCaseClientLogicSamplers, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TestCaseClientLogicSamplers, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TestCaseClientViewSamplers
@@ -2895,37 +2941,37 @@ bool RemoveTestCaseClientViewSamplers(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientViewSamplersOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseClientViewSamplers, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseClientViewSamplers, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientViewSamplersOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseClientViewSamplers, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseClientViewSamplers, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientViewSamplersOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseClientViewSamplers, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseClientViewSamplers, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientViewSamplersOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseClientViewSamplers, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseClientViewSamplers, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientViewSamplersOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseClientViewSamplers, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseClientViewSamplers, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTestCaseClientViewSamplersLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TestCaseClientViewSamplers, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TestCaseClientViewSamplers, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseClientViewSamplersActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TestCaseClientViewSamplers, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TestCaseClientViewSamplers, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseClientViewSamplersModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TestCaseClientViewSamplers, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TestCaseClientViewSamplers, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TestCaseCameraViewPlayback
@@ -3008,37 +3054,37 @@ bool RemoveTestCaseCameraViewPlayback(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseCameraViewPlaybackOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseCameraViewPlayback, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseCameraViewPlayback, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseCameraViewPlaybackOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseCameraViewPlayback, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseCameraViewPlayback, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseCameraViewPlaybackOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseCameraViewPlayback, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseCameraViewPlayback, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseCameraViewPlaybackOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseCameraViewPlayback, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseCameraViewPlayback, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseCameraViewPlaybackOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseCameraViewPlayback, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseCameraViewPlayback, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTestCaseCameraViewPlaybackLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TestCaseCameraViewPlayback, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TestCaseCameraViewPlayback, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseCameraViewPlaybackActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TestCaseCameraViewPlayback, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TestCaseCameraViewPlayback, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseCameraViewPlaybackModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TestCaseCameraViewPlayback, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TestCaseCameraViewPlayback, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TestCaseClientRunActionTag
@@ -3118,37 +3164,37 @@ bool RemoveTestCaseClientRunActionTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientRunActionTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseClientRunActionTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseClientRunActionTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientRunActionTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseClientRunActionTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseClientRunActionTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientRunActionTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseClientRunActionTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseClientRunActionTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientRunActionTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseClientRunActionTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseClientRunActionTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseClientRunActionTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseClientRunActionTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseClientRunActionTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTestCaseClientRunActionTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TestCaseClientRunActionTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TestCaseClientRunActionTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseClientRunActionTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TestCaseClientRunActionTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TestCaseClientRunActionTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseClientRunActionTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TestCaseClientRunActionTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TestCaseClientRunActionTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TestCaseInitPrefabTag
@@ -3228,37 +3274,37 @@ bool RemoveTestCaseInitPrefabTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseInitPrefabTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseInitPrefabTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseInitPrefabTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseInitPrefabTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseInitPrefabTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseInitPrefabTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseInitPrefabTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseInitPrefabTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseInitPrefabTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseInitPrefabTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseInitPrefabTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseInitPrefabTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseInitPrefabTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseInitPrefabTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseInitPrefabTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTestCaseInitPrefabTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TestCaseInitPrefabTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TestCaseInitPrefabTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseInitPrefabTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TestCaseInitPrefabTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TestCaseInitPrefabTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseInitPrefabTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TestCaseInitPrefabTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TestCaseInitPrefabTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TestCaseResetTag
@@ -3338,37 +3384,37 @@ bool RemoveTestCaseResetTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseResetTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseResetTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseResetTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseResetTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseResetTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseResetTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseResetTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseResetTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseResetTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseResetTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseResetTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseResetTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseResetTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseResetTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseResetTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTestCaseResetTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TestCaseResetTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TestCaseResetTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseResetTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TestCaseResetTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TestCaseResetTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseResetTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TestCaseResetTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TestCaseResetTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TestCaseReadyTag
@@ -3448,37 +3494,37 @@ bool RemoveTestCaseReadyTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseReadyTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseReadyTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TestCaseReadyTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseReadyTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseReadyTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TestCaseReadyTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseReadyTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseReadyTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TestCaseReadyTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseReadyTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseReadyTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TestCaseReadyTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTestCaseReadyTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseReadyTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TestCaseReadyTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTestCaseReadyTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TestCaseReadyTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TestCaseReadyTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseReadyTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TestCaseReadyTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TestCaseReadyTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestCaseReadyTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TestCaseReadyTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TestCaseReadyTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_GTCPendingDestroyTag
@@ -3558,37 +3604,37 @@ bool RemoveGTCPendingDestroyTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorGTCPendingDestroyTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_GTCPendingDestroyTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_GTCPendingDestroyTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorGTCPendingDestroyTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_GTCPendingDestroyTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_GTCPendingDestroyTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorGTCPendingDestroyTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_GTCPendingDestroyTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_GTCPendingDestroyTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorGTCPendingDestroyTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_GTCPendingDestroyTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_GTCPendingDestroyTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorGTCPendingDestroyTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_GTCPendingDestroyTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_GTCPendingDestroyTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorGTCPendingDestroyTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_GTCPendingDestroyTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_GTCPendingDestroyTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGTCPendingDestroyTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_GTCPendingDestroyTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_GTCPendingDestroyTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGTCPendingDestroyTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_GTCPendingDestroyTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_GTCPendingDestroyTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

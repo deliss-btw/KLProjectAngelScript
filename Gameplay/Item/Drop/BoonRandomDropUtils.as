@@ -1,5 +1,3 @@
-﻿
-
 namespace BoonRandomDropUtils
 {
 struct FSingleTraitPoolChoosedIndices
@@ -73,12 +71,11 @@ bool InternalCheckPlayerCtrlHasPawnInAvatarList(const FC_PlayerController &inout
 FTraitParam RandomChooseOneTraitFromPool(const FECSEntity &inout PlayerEntity, const FBoonRandomTraitPoolConfig &inout PoolConfig, BoonRandomDropUtils::FSingleTraitPoolChoosedIndices &inout ChoosedIndices, bool &out bSuccess)
 {
     int local_42 = 0;
-    int local_48;
+    int local_48 = 0;
     int local_101;
     FTraitParam __r;
     bSuccess = false;
-    int local_3 = PoolConfig.TraitParams.Num() - ChoosedIndices.ChoosedIndices.Num();
-    if (local_3 <= 0)
+    if ((PoolConfig.TraitParams.Num() - ChoosedIndices.ChoosedIndices.Num()) <= 0)
     {
         bSuccess = false;
     }
@@ -89,91 +86,78 @@ FTraitParam RandomChooseOneTraitFromPool(const FECSEntity &inout PlayerEntity, c
         local_36.SetNumZeroed(local_4);
         int local_49 = 0;
         int local_50 = 0;
-        while (local_50 < local_3)
+        for (; local_50 < PoolConfig.TraitParams.Num(); ++local_50)
         {
             if (ChoosedIndices.ChoosedIndices.Contains(local_50))
             {
                 local_36[local_50] = true;
+                continue;
             }
-            else
+            const FBoonRandomSingleTrait& local_52 = PoolConfig.TraitParams[local_50];
+            if (int(local_52.Weight) <= 0)
             {
-                const FBoonRandomSingleTrait& local_52 = PoolConfig.TraitParams[local_50];
-                if (int(local_52.Weight) <= 0)
+                local_36[local_50] = true;
+                continue;
+            }
+            if (local_52.Param.GetTrait())
+            {
+                EBoonTraitAdaptRule local_104;
+                TDataObjectPtr<FTraitConfig> local_76 = local_52.Param.GetTrait();
+                local_101 = local_4;
+                if (local_42 && (local_101 > 0))
                 {
-                    local_36[local_50] = true;
+                    int local_103 = 0;
+                    if (local_42.ChoosedTraitCount.Find(local_76, local_103))
+                    {
+                        if (local_103 >= local_101)
+                        {
+                            local_36[local_50] = true;
+                            continue;
+                        }
+                    }
+                }
+                EBoonTraitAdaptRule local_105;
+                local_104 = local_105;
+                if (int(local_104) == 1)
+                {
+                    if (!(BoonRandomDropUtils::InternalCheckPlayerCtrlHasPawnInAvatarList(local_48, GetBoonAvatarList())))
+                    {
+                        local_36[local_50] = true;
+                        continue;
+                    }
                 }
                 else
                 {
-                    if (local_52.Param.GetTrait())
+                    if (int(local_104) == 2)
                     {
-                        EBoonTraitAdaptRule local_104;
-                        TDataObjectPtr<FTraitConfig> local_76 = local_52.Param.GetTrait();
-                        local_101 = local_4;
-                        if (local_42 && (local_101 > 0))
+                        bool local_106;
+                        local_106 = false;
+                        if (local_48)
                         {
-                            int local_103 = 0;
-                            if (local_42.ChoosedTraitCount.Find(local_76, local_103))
+                            for (auto& local_120 : local_48.GetAllPlayerPawnEntities())
                             {
-                                if (local_103 >= local_101)
+                                local_120;
+                                Get local_124;
+                                const FC_Faction& local_126 = local_124.opCall();
+                                if (local_126)
                                 {
-                                    local_36[local_50] = true;
-                                }
-                                else
-                                {
-                                }
-                            }
-                        }
-                        EBoonTraitAdaptRule local_105;
-                        local_104 = local_105;
-                        local_4 = int(local_104);
-                        if (local_4 == 1)
-                        {
-                            if (!(BoonRandomDropUtils::InternalCheckPlayerCtrlHasPawnInAvatarList(local_48, GetBoonAvatarList())))
-                            {
-                                local_36[local_50] = true;
-                            }
-                            else
-                            {
-                            }
-                        }
-                        else
-                        {
-                            if (int(local_104) == 2)
-                            {
-                                bool local_106;
-                                local_106 = false;
-                                if (local_48)
-                                {
-                                    for (auto& local_120 : local_48.GetAllPlayerPawnEntities())
+                                    if (int(local_126.GetFactionId()) != 1)
                                     {
-                                        local_120;
-                                        Get local_124;
-                                        const FC_Faction& local_126 = local_124.opCall();
-                                        if (local_126)
-                                        {
-                                            local_4 = int(local_126.GetFactionId());
-                                            if (local_4 != 1)
-                                            {
-                                                local_106 = true;
-                                                break;
-                                            }
-                                        }
+                                        local_106 = true;
+                                        break;
                                     }
                                 }
-                                if (!(local_106))
-                                {
-                                    local_36[local_50] = true;
-                                }
-                                else
-                                {
-                                }
                             }
                         }
+                        if (!(local_106))
+                        {
+                            local_36[local_50] = true;
+                            continue;
+                        }
                     }
-                    local_49 = local_49 + int(local_52.Weight);
                 }
             }
-            ++local_50;
+            local_49 = local_49 + int(local_52.Weight);
         }
         if (local_49 <= 0)
         {
@@ -184,23 +168,20 @@ FTraitParam RandomChooseOneTraitFromPool(const FECSEntity &inout PlayerEntity, c
             int local_3_2 = FMath::RandRange(1, local_49);
             local_50 = 0;
             local_101 = 0;
-            while (local_101 < local_4)
+            for (; local_101 < PoolConfig.TraitParams.Num(); ++local_101)
             {
                 if (local_36[local_101])
                 {
+                    continue;
                 }
-                else
+                const FBoonRandomSingleTrait& local_52_2 = PoolConfig.TraitParams[local_101];
+                local_50 = local_50 + int(local_52_2.Weight);
+                if (local_3_2 <= local_50)
                 {
-                    const FBoonRandomSingleTrait& local_52_2 = PoolConfig.TraitParams[local_101];
-                    local_50 = local_50 + int(local_52_2.Weight);
-                    if (local_3_2 <= local_50)
-                    {
-                        ChoosedIndices.ChoosedIndices.Add(local_101);
-                        bSuccess = true;
-                        return __r;
-                    }
+                    ChoosedIndices.ChoosedIndices.Add(local_101);
+                    bSuccess = true;
+                    return __r;
                 }
-                ++local_101;
             }
             bSuccess = false;
         }
@@ -210,8 +191,7 @@ FTraitParam RandomChooseOneTraitFromPool(const FECSEntity &inout PlayerEntity, c
 TDataObjectPtr<FBoonRandomTraitPoolConfig> RandomChooseOnePoolFromSlot(const FBoonRandomSingleSlot &inout Slot)
 {
     int local_72;
-    int local_1 = Slot.Pools.Num();
-    if (local_1 == 0)
+    if (Slot.Pools.Num() == 0)
     {
         return TDataObjectPtr<FBoonRandomTraitPoolConfig>(nullptr);
     }
@@ -220,8 +200,7 @@ TDataObjectPtr<FBoonRandomTraitPoolConfig> RandomChooseOnePoolFromSlot(const FBo
     {
         if (int(local_68.Weight) > 0)
         {
-            local_1 = int(local_68.Weight);
-            local_53 = local_53 + local_1;
+            local_53 = local_53 + int(local_68.Weight);
         }
     }
     if (local_53 <= 0)
@@ -231,7 +210,7 @@ TDataObjectPtr<FBoonRandomTraitPoolConfig> RandomChooseOnePoolFromSlot(const FBo
     int local_2 = FMath::RandRange(1, local_53);
     int local_70 = 0;
     int local_71 = 0;
-    while (local_71 < local_1)
+    for (; local_71 < Slot.Pools.Num(); ++local_71)
     {
         local_72 = Slot.Pools[local_71].Weight;
         if (local_72 > 0)
@@ -242,7 +221,6 @@ TDataObjectPtr<FBoonRandomTraitPoolConfig> RandomChooseOnePoolFromSlot(const FBo
                 return Slot.Pools[local_71].PoolConfig;
             }
         }
-        ++local_71;
     }
     return TDataObjectPtr<FBoonRandomTraitPoolConfig>(nullptr);
 }

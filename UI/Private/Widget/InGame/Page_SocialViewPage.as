@@ -1,4 +1,3 @@
-﻿
 namespace UPage_SocialViewPage
 {
     const int ViewID = 0;
@@ -32,7 +31,7 @@ class UPage_SocialViewPage : UEUIActivatableWidget
     {
         FPlatformApplicationMisc::ClipboardCopy(this.w_txt_uid.GetText().ToString());
         FCommonTipsParam local_12;
-        ::CommonPopup::Tips(NSLOCTEXT("SocialViewPage", "CopyTargetUID", "е·Іе¤Ќе€¶зЋ©е®¶UIDе€°е‰Єиґґжќї"), local_12);
+        ::CommonPopup::Tips(NSLOCTEXT("SocialViewPage", "CopyTargetUID", "已复制玩家UID到剪贴板"), local_12);
         return;
     }
     UFUNCTION()
@@ -102,6 +101,7 @@ namespace UPage_SocialViewPage
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UPage_SocialViewPage;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

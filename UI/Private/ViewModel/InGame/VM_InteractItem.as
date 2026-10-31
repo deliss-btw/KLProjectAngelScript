@@ -1,4 +1,3 @@
-﻿
 namespace FVM_InteractItem
 {
     const int ModelId = 0;

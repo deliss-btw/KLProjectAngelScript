@@ -1,4 +1,3 @@
-﻿
 namespace VOXUtils
 {
 void SetMicMode(const EVOXVoiceMode NewMode)
@@ -79,12 +78,12 @@ void ApplyModeToRoom(const FString &inout RoomId, const EVOXChannelType ChannelT
 }
 EVOXVoiceMode LoadPersistedMicMode()
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     EVOXVoiceMode __r; return __r;
 }
 EVOXVoiceMode LoadPersistedSpeakerMode()
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     EVOXVoiceMode __r; return __r;
 }
 void RestoreModesForCurrentContext()
@@ -170,7 +169,7 @@ EVOXVoiceMode GetDefaultMicMode(const EVOXContextSlot Slot)
 }
 EVOXVoiceMode GetDefaultSpeakerMode(const EVOXContextSlot Slot)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     EVOXVoiceMode __r; return __r;
 }
 bool IsPlayerMuted(const uint PlayerUid)
@@ -231,7 +230,15 @@ void UnmutePlayer(const uint PlayerUid)
 }
 void ApplyAllRooms(const FCS_ClientVOXState &inout ClientState)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    if (!(ClientState.LocalSocialRoomId.IsEmpty()))
+    {
+        VOXUtils::ApplyModeToRoom(ClientState.LocalSocialRoomId, EVOXChannelType(0), ClientState.MicMode, ClientState.SpeakerMode);
+    }
+    if (!(ClientState.LocalBattleRoomId.IsEmpty()))
+    {
+        VOXUtils::ApplyModeToRoom(ClientState.LocalBattleRoomId, EVOXChannelType(1), ClientState.MicMode, ClientState.SpeakerMode);
+    }
+    return;
 }
 bool IsPlayerSpeaking(const uint PlayerUid)
 {

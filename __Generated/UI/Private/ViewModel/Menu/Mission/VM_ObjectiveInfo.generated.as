@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ObjectiveInfo_Helpers
 {
 UFUNCTION()

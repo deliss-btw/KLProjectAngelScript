@@ -1,17 +1,34 @@
-﻿
 namespace __FMessageHintConfigFunctions
 {
 UFUNCTION()
 FGameplayTag __FMessageHintConfig_GetHintType(const TDataObjectPtr<FMessageHintConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FGameplayTag __r; return __r;
+    FGameplayTag __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'HintType' from a null 'FMessageHintConfig' DataObject!");
+        }
+        FMessageHintConfig local_18;
+        return local_18.HintType;
+    }
+    return __r;
 }
 UFUNCTION()
 int __FMessageHintConfig_GetPriority(const TDataObjectPtr<FMessageHintConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    int __r; return __r;
+
+    if (DataObject == nullptr)
+    {
+        if (!EUIGlobals::GIsDuringPropertyConversion)
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Priority' from a null 'FMessageHintConfig' DataObject!");
+        }
+        FMessageHintConfig defaultValue;
+        return defaultValue.Priority;
+    }
+    return DataObject.Get().Priority;
 }
 UFUNCTION()
 FMessageHintConfig CastToFMessageHintConfig(const TDataObjectPtr<FMessageHintConfig> &inout DataObject)
@@ -25,14 +42,32 @@ namespace __FMessageHintConfig_SimpleTipsFunctions
 UFUNCTION()
 FArgText __FMessageHintConfig_SimpleTips_GetContent(const TDataObjectPtr<FMessageHintConfig_SimpleTips> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FArgText __r; return __r;
+    FArgText __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Content' from a null 'FMessageHintConfig_SimpleTips' DataObject!");
+        }
+        FMessageHintConfig_SimpleTips local_30;
+        return local_30.Content;
+    }
+    return __r;
 }
 UFUNCTION()
 FCommonTipsParam __FMessageHintConfig_SimpleTips_GetExtraParam(const TDataObjectPtr<FMessageHintConfig_SimpleTips> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FCommonTipsParam __r; return __r;
+    FCommonTipsParam __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'ExtraParam' from a null 'FMessageHintConfig_SimpleTips' DataObject!");
+        }
+        FMessageHintConfig_SimpleTips local_30;
+        return local_30.ExtraParam;
+    }
+    return __r;
 }
 UFUNCTION()
 FMessageHintConfig_SimpleTips CastToFMessageHintConfig_SimpleTips(const TDataObjectPtr<FMessageHintConfig_SimpleTips> &inout DataObject)
@@ -46,20 +81,47 @@ namespace __FMessageHintConfig_DialogFunctions
 UFUNCTION()
 FText __FMessageHintConfig_Dialog_GetTitle(const TDataObjectPtr<FMessageHintConfig_Dialog> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FText __r; return __r;
+    FText __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Title' from a null 'FMessageHintConfig_Dialog' DataObject!");
+        }
+        FMessageHintConfig_Dialog local_34;
+        return local_34.Title;
+    }
+    return __r;
 }
 UFUNCTION()
 FArgText __FMessageHintConfig_Dialog_GetContent(const TDataObjectPtr<FMessageHintConfig_Dialog> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FArgText __r; return __r;
+    FArgText __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Content' from a null 'FMessageHintConfig_Dialog' DataObject!");
+        }
+        FMessageHintConfig_Dialog local_34;
+        return local_34.Content;
+    }
+    return __r;
 }
 UFUNCTION()
 FText __FMessageHintConfig_Dialog_GetButtonText(const TDataObjectPtr<FMessageHintConfig_Dialog> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FText __r; return __r;
+    FText __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'ButtonText' from a null 'FMessageHintConfig_Dialog' DataObject!");
+        }
+        FMessageHintConfig_Dialog local_34;
+        return local_34.ButtonText;
+    }
+    return __r;
 }
 UFUNCTION()
 FMessageHintConfig_Dialog CastToFMessageHintConfig_Dialog(const TDataObjectPtr<FMessageHintConfig_Dialog> &inout DataObject)
@@ -73,26 +135,63 @@ namespace __FMessageHintConfig_LargeHintFunctions
 UFUNCTION()
 FMessageHintIcon __FMessageHintConfig_LargeHint_GetIcon(const TDataObjectPtr<FMessageHintConfig_LargeHint> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FMessageHintIcon __r; return __r;
+    FMessageHintIcon __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Icon' from a null 'FMessageHintConfig_LargeHint' DataObject!");
+        }
+    }
+    else
+    {
+    }
+    return __r;
 }
 UFUNCTION()
 FArgText __FMessageHintConfig_LargeHint_GetTitle(const TDataObjectPtr<FMessageHintConfig_LargeHint> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FArgText __r; return __r;
+    FArgText __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Title' from a null 'FMessageHintConfig_LargeHint' DataObject!");
+        }
+        FMessageHintConfig_LargeHint local_92;
+        return local_92.Title;
+    }
+    return __r;
 }
 UFUNCTION()
 FArgText __FMessageHintConfig_LargeHint_GetContent(const TDataObjectPtr<FMessageHintConfig_LargeHint> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FArgText __r; return __r;
+    FArgText __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Content' from a null 'FMessageHintConfig_LargeHint' DataObject!");
+        }
+        FMessageHintConfig_LargeHint local_92;
+        return local_92.Content;
+    }
+    return __r;
 }
 UFUNCTION()
 FCommonHintParam __FMessageHintConfig_LargeHint_GetExtraParam(const TDataObjectPtr<FMessageHintConfig_LargeHint> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FCommonHintParam __r; return __r;
+    FCommonHintParam __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'ExtraParam' from a null 'FMessageHintConfig_LargeHint' DataObject!");
+        }
+        FMessageHintConfig_LargeHint local_92;
+        return local_92.ExtraParam;
+    }
+    return __r;
 }
 UFUNCTION()
 FMessageHintConfig_LargeHint CastToFMessageHintConfig_LargeHint(const TDataObjectPtr<FMessageHintConfig_LargeHint> &inout DataObject)
@@ -106,20 +205,48 @@ namespace __FMessageHintConfig_SmallHintFunctions
 UFUNCTION()
 FMessageHintIcon __FMessageHintConfig_SmallHint_GetIcon(const TDataObjectPtr<FMessageHintConfig_SmallHint> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FMessageHintIcon __r; return __r;
+    FMessageHintIcon __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Icon' from a null 'FMessageHintConfig_SmallHint' DataObject!");
+        }
+    }
+    else
+    {
+    }
+    return __r;
 }
 UFUNCTION()
 FArgText __FMessageHintConfig_SmallHint_GetContent(const TDataObjectPtr<FMessageHintConfig_SmallHint> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FArgText __r; return __r;
+    FArgText __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Content' from a null 'FMessageHintConfig_SmallHint' DataObject!");
+        }
+        FMessageHintConfig_SmallHint local_84;
+        return local_84.Content;
+    }
+    return __r;
 }
 UFUNCTION()
 FCommonHintParam __FMessageHintConfig_SmallHint_GetExtraParam(const TDataObjectPtr<FMessageHintConfig_SmallHint> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FCommonHintParam __r; return __r;
+    FCommonHintParam __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'ExtraParam' from a null 'FMessageHintConfig_SmallHint' DataObject!");
+        }
+        FMessageHintConfig_SmallHint local_84;
+        return local_84.ExtraParam;
+    }
+    return __r;
 }
 UFUNCTION()
 FMessageHintConfig_SmallHint CastToFMessageHintConfig_SmallHint(const TDataObjectPtr<FMessageHintConfig_SmallHint> &inout DataObject)
@@ -133,38 +260,95 @@ namespace __FMessageHintConfig_BannerFunctions
 UFUNCTION()
 FArgText __FMessageHintConfig_Banner_GetTitle(const TDataObjectPtr<FMessageHintConfig_Banner> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FArgText __r; return __r;
+    FArgText __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Title' from a null 'FMessageHintConfig_Banner' DataObject!");
+        }
+        FMessageHintConfig_Banner local_96;
+        return local_96.Title;
+    }
+    return __r;
 }
 UFUNCTION()
 FArgText __FMessageHintConfig_Banner_GetContent(const TDataObjectPtr<FMessageHintConfig_Banner> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FArgText __r; return __r;
+    FArgText __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Content' from a null 'FMessageHintConfig_Banner' DataObject!");
+        }
+        FMessageHintConfig_Banner local_96;
+        return local_96.Content;
+    }
+    return __r;
 }
 UFUNCTION()
 EBannerBGType __FMessageHintConfig_Banner_GetBGType(const TDataObjectPtr<FMessageHintConfig_Banner> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    EBannerBGType __r; return __r;
+    int local_97 = 0;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'BGType' from a null 'FMessageHintConfig_Banner' DataObject!");
+        }
+        FMessageHintConfig_Banner local_96;
+        local_97 = int(local_96.BGType);
+        return EBannerBGType(local_97);
+    }
+    return EBannerBGType(local_97);
 }
 UFUNCTION()
 FMessageHintIcon __FMessageHintConfig_Banner_GetIcon(const TDataObjectPtr<FMessageHintConfig_Banner> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FMessageHintIcon __r; return __r;
+    FMessageHintIcon __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Icon' from a null 'FMessageHintConfig_Banner' DataObject!");
+        }
+    }
+    else
+    {
+    }
+    return __r;
 }
 UFUNCTION()
 EBannerWidgetType __FMessageHintConfig_Banner_GetSpecialWidgetType(const TDataObjectPtr<FMessageHintConfig_Banner> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    EBannerWidgetType __r; return __r;
+    int local_97 = 0;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'SpecialWidgetType' from a null 'FMessageHintConfig_Banner' DataObject!");
+        }
+        FMessageHintConfig_Banner local_96;
+        local_97 = int(local_96.SpecialWidgetType);
+        return EBannerWidgetType(local_97);
+    }
+    return EBannerWidgetType(local_97);
 }
 UFUNCTION()
 FCommonHintParam __FMessageHintConfig_Banner_GetExtraParam(const TDataObjectPtr<FMessageHintConfig_Banner> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FCommonHintParam __r; return __r;
+    FCommonHintParam __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'ExtraParam' from a null 'FMessageHintConfig_Banner' DataObject!");
+        }
+        FMessageHintConfig_Banner local_96;
+        return local_96.ExtraParam;
+    }
+    return __r;
 }
 UFUNCTION()
 FMessageHintConfig_Banner CastToFMessageHintConfig_Banner(const TDataObjectPtr<FMessageHintConfig_Banner> &inout DataObject)
@@ -178,26 +362,63 @@ namespace __FMessageHintConfig_Banner_MissionChapterFunctions
 UFUNCTION()
 FArgText __FMessageHintConfig_Banner_MissionChapter_GetTitle(const TDataObjectPtr<FMessageHintConfig_Banner_MissionChapter> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FArgText __r; return __r;
+    FArgText __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Title' from a null 'FMessageHintConfig_Banner_MissionChapter' DataObject!");
+        }
+        FMessageHintConfig_Banner_MissionChapter local_38;
+        return local_38.Title;
+    }
+    return __r;
 }
 UFUNCTION()
 FArgText __FMessageHintConfig_Banner_MissionChapter_GetSubTitle(const TDataObjectPtr<FMessageHintConfig_Banner_MissionChapter> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FArgText __r; return __r;
+    FArgText __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'SubTitle' from a null 'FMessageHintConfig_Banner_MissionChapter' DataObject!");
+        }
+        FMessageHintConfig_Banner_MissionChapter local_38;
+        return local_38.SubTitle;
+    }
+    return __r;
 }
 UFUNCTION()
 bool __FMessageHintConfig_Banner_MissionChapter_GetbEnd(const TDataObjectPtr<FMessageHintConfig_Banner_MissionChapter> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    bool __r; return __r;
+    bool local_1 = false;
+    if ((DataObject == nullptr))
+    {
+        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
+        if (local_1)
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'bEnd' from a null 'FMessageHintConfig_Banner_MissionChapter' DataObject!");
+        }
+        FMessageHintConfig_Banner_MissionChapter local_38;
+        return local_38.bEnd;
+    }
+    return local_1;
 }
 UFUNCTION()
 FCommonHintParam __FMessageHintConfig_Banner_MissionChapter_GetExtraParam(const TDataObjectPtr<FMessageHintConfig_Banner_MissionChapter> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FCommonHintParam __r; return __r;
+    FCommonHintParam __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'ExtraParam' from a null 'FMessageHintConfig_Banner_MissionChapter' DataObject!");
+        }
+        FMessageHintConfig_Banner_MissionChapter local_38;
+        return local_38.ExtraParam;
+    }
+    return __r;
 }
 UFUNCTION()
 FMessageHintConfig_Banner_MissionChapter CastToFMessageHintConfig_Banner_MissionChapter(const TDataObjectPtr<FMessageHintConfig_Banner_MissionChapter> &inout DataObject)
@@ -211,20 +432,47 @@ namespace __FMessageHintConfig_NewsTickerFunctions
 UFUNCTION()
 FArgText __FMessageHintConfig_NewsTicker_GetContent(const TDataObjectPtr<FMessageHintConfig_NewsTicker> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FArgText __r; return __r;
+    FArgText __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Content' from a null 'FMessageHintConfig_NewsTicker' DataObject!");
+        }
+        FMessageHintConfig_NewsTicker local_30;
+        return local_30.Content;
+    }
+    return __r;
 }
 UFUNCTION()
 int __FMessageHintConfig_NewsTicker_GetRepeatCount(const TDataObjectPtr<FMessageHintConfig_NewsTicker> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    int __r; return __r;
+
+    if (DataObject == nullptr)
+    {
+        if (!EUIGlobals::GIsDuringPropertyConversion)
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'RepeatCount' from a null 'FMessageHintConfig_NewsTicker' DataObject!");
+        }
+        FMessageHintConfig_NewsTicker defaultValue;
+        return defaultValue.RepeatCount;
+    }
+    return DataObject.Get().RepeatCount;
 }
 UFUNCTION()
 FCommonHintParam __FMessageHintConfig_NewsTicker_GetExtraParam(const TDataObjectPtr<FMessageHintConfig_NewsTicker> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FCommonHintParam __r; return __r;
+    FCommonHintParam __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'ExtraParam' from a null 'FMessageHintConfig_NewsTicker' DataObject!");
+        }
+        FMessageHintConfig_NewsTicker local_30;
+        return local_30.ExtraParam;
+    }
+    return __r;
 }
 UFUNCTION()
 FMessageHintConfig_NewsTicker CastToFMessageHintConfig_NewsTicker(const TDataObjectPtr<FMessageHintConfig_NewsTicker> &inout DataObject)
@@ -247,8 +495,18 @@ namespace __FMessageHintConfig_ImportantTipsFunctions
 UFUNCTION()
 EImportantTipsStyle __FMessageHintConfig_ImportantTips_GetStyle(const TDataObjectPtr<FMessageHintConfig_ImportantTips> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    EImportantTipsStyle __r; return __r;
+    int local_33 = 0;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Style' from a null 'FMessageHintConfig_ImportantTips' DataObject!");
+        }
+        FMessageHintConfig_ImportantTips local_32;
+        local_33 = int(local_32.Style);
+        return EImportantTipsStyle(local_33);
+    }
+    return EImportantTipsStyle(local_33);
 }
 UFUNCTION()
 FMessageHintConfig_ImportantTips CastToFMessageHintConfig_ImportantTips(const TDataObjectPtr<FMessageHintConfig_ImportantTips> &inout DataObject)

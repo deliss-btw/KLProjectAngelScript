@@ -1,5 +1,3 @@
-﻿
-
 struct FItemModelFactory
 {
     UPROPERTY()
@@ -11,11 +9,13 @@ struct FItemModelFactory
     }
     FItemModelFactory(const TEUIModelRef<FM_ItemData> &inout InItemDataModel)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.ItemDataModel = InItemDataModel;
+        return;
     }
     void SetItemDataModel(const TEUIModelRef<FM_ItemData> &inout InItemDataModel)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.ItemDataModel = InItemDataModel;
+        return;
     }
     TEUIModelRef<FVM_Item> Product_FVM_Item(const UObject ContextObject) const
     {

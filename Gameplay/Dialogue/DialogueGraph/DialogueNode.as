@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FDialogueNode_Speech (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FShopPanelModelData
 {
     UPROPERTY()
@@ -365,7 +360,59 @@ struct FDialogueNode_DebugSpawnMonsterByID : FDialogueActionNodeBase
     }
     void InternalExecute_Implementation(const FECSEntity &inout ContextEntity)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_76 = 0;
+        UDataTable local_136;
+        if (!(this.MonsterConfig.IsSet()))
+        {
+            XError(ELog(64), FString().Append("MonsterConfig has not been set, SpawnMonsterByID Node ").Append(this.NodeId).Append(" is invalid"));
+            return;
+        }
+        FDialogueDeliveryContext local_54;
+        if (!(::DialogueUtils::TryFindDialogueContext(ContextEntity, local_54)))
+        {
+            return;
+        }
+        FECSEntity local_58 = ContextEntity;
+        if (!(local_58.IsValid()))
+        {
+            local_58 = local_54.GetInteractTarget();
+        }
+        if (!(local_58.IsValid()))
+        {
+            XError(ELog(64), FString().Append("Spawn context entity is invalid, SpawnMonsterByID Node ").Append(this.NodeId).Append(" failed"));
+            return;
+        }
+        FECSEntity local_66;
+        if (local_54.GetInteractTarget().IsValid())
+        {
+            local_66 = local_54.GetInteractTarget();
+        }
+        else
+        {
+            local_66 = local_58;
+        }
+        Has local_70;
+        if (!(local_70.opCall()))
+        {
+            XError(ELog(64), FString().Append("Transform entity has no FC_Transform, SpawnMonsterByID Node ").Append(this.NodeId).Append(" failed"));
+            return;
+        }
+        FTransform local_100 = FTransform(FTransform::Identity);
+        local_100.SetLocation(local_76.GetPosition());
+        local_100.SetRotation(local_76.GetRotation());
+        FVector local_106 = local_100.TransformPosition(this.RelativeLocation);
+        float32 local_123 = float32((local_100.TransformRotation(FRotator(0.0, this.RelativeYaw, 0.0)).Yaw));
+        if (this.MonsterDifficultyLevelConfig != nullptr)
+        {
+            local_136 = this.MonsterDifficultyLevelConfig;
+        }
+        int local_139 = this.MonsterSpawnFixedDifficultyLevel;
+        FECSEntity local_62 = ::BlueprintFunctions_Ecology::SpawnMonsterByMonsterIdInValidPos(FECSEntityAdapter(local_58), this.MonsterConfig, local_106, FRotator(0.0, local_123, 0.0), 500.0f, 50.0f, true, local_136, local_139, NAME_None, false);
+        if (local_62.IsValid() && !(this.bEnableAI))
+        {
+            ::FASCommonUtils::SetEntityBehaviorTreeRunState(local_62, false);
+        }
+        return;
     }
 }
 

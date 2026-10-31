@@ -1,5 +1,3 @@
-﻿
-
 struct FT_SnapToFloor : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -9,7 +7,6 @@ struct FT_SnapToFloor : FECSTrait
     bool bHas_FC_SnapToFloorConfig = false;
     UPROPERTY()
     FC_SnapToFloorConfig Config_FC_SnapToFloorConfig;
-
 
 }
 
@@ -22,7 +19,6 @@ struct FT_VehicleSnapToFloor : FECSTrait
     bool bHas_FC_VehicleSnapToFloorConfig = false;
     UPROPERTY()
     FC_VehicleSnapToFloorConfig Config_FC_VehicleSnapToFloorConfig;
-
 
 }
 

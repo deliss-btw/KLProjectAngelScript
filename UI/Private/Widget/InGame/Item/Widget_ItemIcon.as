@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ItemIcon
 {
     const int ViewID = 0;
@@ -369,6 +368,7 @@ namespace UWidget_ItemIcon
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ItemIcon;
     Result.ObservedModelChangesSubscriberNames.Add(FString("RefreshAdapter"));
     return;
 }

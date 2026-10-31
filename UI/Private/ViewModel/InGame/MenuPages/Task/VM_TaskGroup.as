@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TaskGroup
 {
     const int ModelId = 0;
@@ -43,8 +42,7 @@ struct FVM_TaskGroup : FEUIViewModel
     }
     void PostConstruct()
     {
-        TEUIModelRef<FM_Task> local_2 = this.GetTask();
-        FEUIModelRef local_4;
+        FEUIModelRef local_4 = FEUIModelRef(::FVM_Task::Create(this.GetContext().Manager, this.GetTask()));
         this.GetModify_TaskList().Add(local_4);
         return;
     }

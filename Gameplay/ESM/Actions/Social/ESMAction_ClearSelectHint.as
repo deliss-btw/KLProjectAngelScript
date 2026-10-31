@@ -1,12 +1,9 @@
-﻿
-
 class UESMAction_ClearSelectHint : UESMBPBaseSpanAction
 {
     UPROPERTY()
     bool bClearAtEnter = true;
     UPROPERTY()
     bool bClearAtExit = true;
-
 
     UFUNCTION()
     EESMActionType GetActionType_Implementation() const

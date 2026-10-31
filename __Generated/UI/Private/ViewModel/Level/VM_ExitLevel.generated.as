@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_ExitLevel_Helpers
 {
 UFUNCTION()

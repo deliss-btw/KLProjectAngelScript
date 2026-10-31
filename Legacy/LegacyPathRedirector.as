@@ -1,5 +1,3 @@
-﻿
-
 class UModule_AI_C_AIStatics : UObject
 {
     UModule_AI_C_AIStatics()

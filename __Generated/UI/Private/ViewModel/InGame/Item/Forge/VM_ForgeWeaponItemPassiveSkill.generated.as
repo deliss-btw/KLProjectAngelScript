@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ForgeWeaponItemPassiveSkill_Helpers
 {
 UFUNCTION()

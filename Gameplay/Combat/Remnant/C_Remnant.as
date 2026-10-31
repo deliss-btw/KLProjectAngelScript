@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_RemnantInfo_NS
 {
     const TECSComponentDerivedPtr<FC_RemnantInfo> DerivedPtr = TECSComponentDerivedPtr<FC_RemnantInfo>();
@@ -30,12 +29,16 @@ struct FC_RemnantInfo : FECSComponent
     FC_RemnantInfo()
     {
         this.m_RemainUsableCount = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FC_RemnantInfo(const FC_RemnantInfo &inout Other)
     {
         this.m_RemainUsableCount = 0;
+        FRootDirtyFlags8 local_26;
+        this.__DirtyFlags = local_26;
         this.__InitDirtyFlags();
         this.m_RemnantItemConfig = Other.m_RemnantItemConfig;
         this.m_RemainUsableCount = int(Other.m_RemainUsableCount);
@@ -95,12 +98,16 @@ struct FC_RemnantDropItemInfo : FECSComponent
     FC_RemnantDropItemInfo()
     {
         this.m_RemainUsableCount = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FC_RemnantDropItemInfo(const FC_RemnantDropItemInfo &inout Other)
     {
         this.m_RemainUsableCount = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_RemainUsableCount = int(Other.m_RemainUsableCount);
         return;
@@ -222,37 +229,37 @@ bool RemoveRemnantInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorRemnantInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_RemnantInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_RemnantInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRemnantInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_RemnantInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_RemnantInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRemnantInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_RemnantInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_RemnantInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRemnantInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_RemnantInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_RemnantInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRemnantInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_RemnantInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_RemnantInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorRemnantInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_RemnantInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_RemnantInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRemnantInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_RemnantInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_RemnantInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRemnantInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_RemnantInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_RemnantInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_RemnantDropItemInfo
@@ -332,37 +339,37 @@ bool RemoveRemnantDropItemInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorRemnantDropItemInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_RemnantDropItemInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_RemnantDropItemInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRemnantDropItemInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_RemnantDropItemInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_RemnantDropItemInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRemnantDropItemInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_RemnantDropItemInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_RemnantDropItemInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRemnantDropItemInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_RemnantDropItemInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_RemnantDropItemInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRemnantDropItemInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_RemnantDropItemInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_RemnantDropItemInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorRemnantDropItemInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_RemnantDropItemInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_RemnantDropItemInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRemnantDropItemInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_RemnantDropItemInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_RemnantDropItemInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRemnantDropItemInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_RemnantDropItemInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_RemnantDropItemInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_RemnantPendingRemoveTag
@@ -442,37 +449,37 @@ bool RemoveRemnantPendingRemoveTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorRemnantPendingRemoveTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_RemnantPendingRemoveTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_RemnantPendingRemoveTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRemnantPendingRemoveTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_RemnantPendingRemoveTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_RemnantPendingRemoveTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRemnantPendingRemoveTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_RemnantPendingRemoveTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_RemnantPendingRemoveTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRemnantPendingRemoveTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_RemnantPendingRemoveTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_RemnantPendingRemoveTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRemnantPendingRemoveTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_RemnantPendingRemoveTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_RemnantPendingRemoveTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorRemnantPendingRemoveTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_RemnantPendingRemoveTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_RemnantPendingRemoveTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRemnantPendingRemoveTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_RemnantPendingRemoveTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_RemnantPendingRemoveTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRemnantPendingRemoveTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_RemnantPendingRemoveTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_RemnantPendingRemoveTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

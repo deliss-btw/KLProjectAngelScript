@@ -1,4 +1,3 @@
-﻿
 namespace FMS_MarkViewportDisplay
 {
     const int ModelId = 0;
@@ -109,7 +108,23 @@ FMS_MarkViewportDisplay GetByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    FEUIModelMetaPropertyModelRef local_6;
+    local_6.PropertyName = FName("MarkSpotView");
+    int local_2_2 = FM_SpotView::ModelId;
+    Result.FunctionalPropertyModelRefs.Add(local_6);
+    FEUIModelMsgHandleDefine local_18;
+    local_18.FunctionName = "__OnMarkSpotAdded";
+    local_18.MessageTypeName = "Msg_InterestedSpotAdded";
+    local_18.SourcePropertyModelRefs = FBitSet64(1);
+    Result.MessageHandleFunctions.Add(local_18);
+    local_18.FunctionName = "__OnMarkSpotRemoved";
+    local_18.MessageTypeName = "Msg_InterestedSpotRemoved";
+    local_18.SourcePropertyModelRefs = FBitSet64(1);
+    Result.MessageHandleFunctions.Add(local_18);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

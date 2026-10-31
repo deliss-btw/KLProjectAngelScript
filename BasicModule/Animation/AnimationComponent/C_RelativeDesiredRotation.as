@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_RelativeDesiredRotation_NS
 {
     const TECSComponentDerivedPtr<FC_RelativeDesiredRotation> DerivedPtr = TECSComponentDerivedPtr<FC_RelativeDesiredRotation>();
@@ -19,11 +18,23 @@ struct FC_RelativeDesiredRotation : FECSComponent
 
     FC_RelativeDesiredRotation()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Yaw = 0.0f;
+        this.m_SrcYaw = 0.0f;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_RelativeDesiredRotation(const FC_RelativeDesiredRotation &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_Yaw = 0.0f;
+        this.m_SrcYaw = 0.0f;
+        this.__InitDirtyFlags();
+        this.m_Yaw = Other.m_Yaw;
+        this.m_SrcYaw = Other.m_SrcYaw;
+        return;
     }
     FC_RelativeDesiredRotation opAssign(const FC_RelativeDesiredRotation &inout Other)
     {
@@ -207,37 +218,37 @@ bool RemoveRelativeDesiredRotation(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorRelativeDesiredRotationOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_RelativeDesiredRotation, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_RelativeDesiredRotation, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRelativeDesiredRotationOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_RelativeDesiredRotation, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_RelativeDesiredRotation, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRelativeDesiredRotationOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_RelativeDesiredRotation, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_RelativeDesiredRotation, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRelativeDesiredRotationOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_RelativeDesiredRotation, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_RelativeDesiredRotation, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRelativeDesiredRotationOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_RelativeDesiredRotation, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_RelativeDesiredRotation, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorRelativeDesiredRotationLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_RelativeDesiredRotation, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_RelativeDesiredRotation, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRelativeDesiredRotationActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_RelativeDesiredRotation, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_RelativeDesiredRotation, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRelativeDesiredRotationModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_RelativeDesiredRotation, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_RelativeDesiredRotation, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace EntityBB

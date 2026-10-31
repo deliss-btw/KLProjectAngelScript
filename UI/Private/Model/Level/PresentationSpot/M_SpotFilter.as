@@ -1,4 +1,3 @@
-﻿
 namespace FM_SpotFilter
 {
     const int ModelId = 0;
@@ -20,7 +19,6 @@ struct FSpotRefreshDeps
     bool bStaticResult;
     UPROPERTY()
     bool bStaticValue;
-
 
     FString ToDebugString() const
     {
@@ -48,7 +46,6 @@ struct FSpotRefreshResult
     UPROPERTY()
     bool bShouldDisplay;
 
-
 }
 
 struct FSpotCompiledDisplayRuleBasic
@@ -62,7 +59,6 @@ struct FSpotCompiledDisplayRuleBasic
     UPROPERTY()
     bool bHasMaxDistance;
 
-
 }
 
 struct FSpotCompiledDisplayConditionalRule
@@ -74,7 +70,6 @@ struct FSpotCompiledDisplayConditionalRule
     UPROPERTY()
     FSpotCompiledDisplayRuleBasic Rule;
 
-
 }
 
 struct FSpotCompiledDisplayRule
@@ -85,7 +80,6 @@ struct FSpotCompiledDisplayRule
     TArray<FSpotCompiledDisplayConditionalRule> ConditionalRules;
     UPROPERTY()
     bool bDisplayOnlyInCombat;
-
 
 }
 
@@ -119,7 +113,6 @@ struct FSpotRefreshTracker
     UPROPERTY()
     int FarStaggerCursor;
 
-
     void AddSpot(const TEUIModelRef<FM_Spot> &inout Spot, const FPresentationDisplayRule &inout Rule, const bool bPlayerInCombat, const float32 NearDistanceThresholdSq, TArray<TEUIModelRef<FM_Spot>> &out OutStaticAdd, TArray<TEUIModelRef<FM_Spot>> &out OutStaticRemove)
     {
         TArray<TEUIModelRef<FM_Spot>> local_4;
@@ -138,7 +131,7 @@ struct FSpotRefreshTracker
     }
     void RemoveSpot(const TEUIModelRef<FM_Spot> &inout Spot)
     {
-        this.RemoveFromArray(this, Spot);
+        this.RemoveFromArray(this.NearSpots, Spot);
         this.RemoveFromArray(this.FarSpots, Spot);
         int local_4 = this.CombatSensitiveIndex.Num() - 1;
         for (; local_4 >= 0; --local_4)
@@ -158,7 +151,7 @@ struct FSpotRefreshTracker
         TArray<TEUIModelRef<FM_Spot>> local_4;
         OutStaticAdd = local_4;
         OutStaticRemove = local_4;
-        this.RemoveFromArray(this, Spot);
+        this.RemoveFromArray(this.NearSpots, Spot);
         this.RemoveFromArray(this.FarSpots, Spot);
         int local_12 = this.CombatSensitiveIndex.Num() - 1;
         for (; local_12 >= 0; --local_12)
@@ -195,10 +188,11 @@ struct FSpotRefreshTracker
             {
                 continue;
             }
-            this.RemoveFromArray(this, local_14.Spot);
+            this.RemoveFromArray(this.NearSpots, local_14.Spot);
             this.RemoveFromArray(this.FarSpots, local_14.Spot);
-            FSpotCompiledDisplayRule local_16;
-            ::FSpotRefreshDeps::AnalyzeEffective(local_14.Rule, local_16);
+            FSpotRefreshDeps local_16 = ::FSpotRefreshDeps::AnalyzeEffective(local_14.Rule, bPlayerInCombat);
+            FSpotCompiledDisplayRule local_32 = ::FSpotCompiledDisplayRule::Compile(local_14.Rule);
+            this.ClassifySpot(local_14.Spot, local_32, local_16, NearDistanceThresholdSq, OutStaticAdd, OutStaticRemove);
         }
         return;
     }
@@ -218,21 +212,21 @@ struct FSpotRefreshTracker
         {
             this.ReclassifyNearFar(NearDistanceThresholdSq);
         }
-        int local_24 = this.Num() - 1;
+        int local_24 = this.NearSpots.Num() - 1;
         for (; local_24 >= 0; --local_24)
         {
-            FSpotRefreshEntry& local_26 = this[local_24];
+            FSpotRefreshEntry& local_26 = this.NearSpots[local_24];
             if (!(local_26.Spot))
             {
-                this.RemoveAtSwap(local_24);
+                this.NearSpots.RemoveAtSwap(local_24);
                 continue;
             }
-            double local_20 = ::PresentationSpotUtils::GetDistanceToPlayerSq(local_26.Spot);
+            float local_20 = ::PresentationSpotUtils::GetDistanceToPlayerSq(local_26.Spot);
             OutRefreshResults.Add(this.MakeRefreshResult(local_26, bCurrentPlayerInCombat, local_20));
             if (local_20 > FarDemotionThresholdSq)
             {
                 FSpotRefreshEntry local_50;
-                this.RemoveAtSwap(local_24);
+                this.NearSpots.RemoveAtSwap(local_24);
                 this.FarSpots.Add(local_50);
             }
         }
@@ -251,13 +245,13 @@ struct FSpotRefreshTracker
                     this.FarSpots.RemoveAtSwap(local_51);
                     continue;
                 }
-                double local_28 = ::PresentationSpotUtils::GetDistanceToPlayerSq(this.FarSpots[local_51].Spot);
+                float local_28 = ::PresentationSpotUtils::GetDistanceToPlayerSq(this.FarSpots[local_51].Spot);
                 OutRefreshResults.Add(this.MakeRefreshResult(this.FarSpots[local_51], bCurrentPlayerInCombat, local_28));
                 if (local_28 <= NearDistanceThresholdSq)
                 {
                     FSpotRefreshEntry local_50;
                     this.FarSpots.RemoveAtSwap(local_51);
-                    this.Add(local_50);
+                    this.NearSpots.Add(local_50);
                 }
             }
             this.FarStaggerCursor = FMath::Min(this.FarStaggerCursor + StaggerBatchSize, local_21);
@@ -272,7 +266,7 @@ struct FSpotRefreshTracker
     }
     int GetTotalTrackedCount() const
     {
-        return (this.Num() + this.FarSpots.Num());
+        return (this.NearSpots.Num() + this.FarSpots.Num());
     }
     const TArray<FSpotRefreshEntry> GetNearSpots() const
     {
@@ -323,7 +317,7 @@ struct FSpotRefreshTracker
         local_28.EffectiveDeps = EffDeps;
         if (::PresentationSpotUtils::GetDistanceToPlayerSq(Spot) <= NearDistanceThresholdSq)
         {
-            this.Add(local_28);
+            this.NearSpots.Add(local_28);
         }
         else
         {
@@ -333,18 +327,18 @@ struct FSpotRefreshTracker
     }
     void ReclassifyNearFar(const float32 NearDistanceThresholdSq)
     {
-        int local_4 = this.Num() - 1;
+        int local_4 = this.NearSpots.Num() - 1;
         for (; local_4 >= 0; --local_4)
         {
-            if (!(this[local_4].Spot))
+            if (!(this.NearSpots[local_4].Spot))
             {
-                this.RemoveAtSwap(local_4);
+                this.NearSpots.RemoveAtSwap(local_4);
                 continue;
             }
-            if (::PresentationSpotUtils::GetDistanceToPlayerSq(this[local_4].Spot) > NearDistanceThresholdSq)
+            if (::PresentationSpotUtils::GetDistanceToPlayerSq(this.NearSpots[local_4].Spot) > NearDistanceThresholdSq)
             {
                 FSpotRefreshEntry local_28;
-                this.RemoveAtSwap(local_4);
+                this.NearSpots.RemoveAtSwap(local_4);
                 this.FarSpots.Add(local_28);
             }
         }
@@ -360,7 +354,7 @@ struct FSpotRefreshTracker
             {
                 FSpotRefreshEntry local_28;
                 this.FarSpots.RemoveAtSwap(local_3);
-                this.Add(local_28);
+                this.NearSpots.Add(local_28);
             }
         }
         this.FarStaggerCursor = 0;
@@ -456,14 +450,13 @@ struct FM_SpotFilter : FEUIModel
         {
             return;
         }
-        int local_9 = int(this.GetDisplayConfig().GetInterestedDataType());
-        this.SetSpotView(::FMS_CommonSpotViews::Get(this.GetContext().Manager).GetOrCreateDefaultView(this.GetContext().Manager));
+        this.SetSpotView(::FMS_CommonSpotViews::Get(this.GetContext().Manager).GetOrCreateDefaultView(this.GetContext().Manager, EPresentationDataType(this.GetDisplayConfig().GetInterestedDataType())));
         if (!(this.GetSpotView()))
         {
             return;
         }
         bool local_3 = ::FASCommonUtils::IsInCombat(this.GetContext().GetLocalPlayerPawn());
-        int local_20 = this.GetNearDistanceThresholdSq();
+        float32 local_20 = this.GetNearDistanceThresholdSq();
         TArray<TEUIModelRef<FM_Spot>> local_24;
         TArray<TEUIModelRef<FM_Spot>> local_28;
         for (auto local_46 : this.GetSpotView().opArrow().GetAllInterestedSpots())
@@ -543,7 +536,25 @@ struct FM_SpotFilter : FEUIModel
     }
     void OnSpotAdded(const FMsg_InterestedSpotAdded &inout Message)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FPresentationDisplayRule local_32;
+        FASProfilingScope local_1 = FASProfilingScope(n"PresentationSpotFilter_OnSpotAdded", 0);
+        if ((!((this.GetDisplayConfig() != nullptr))))
+        {
+            return;
+        }
+        bool local_7 = ::FASCommonUtils::IsInCombat(this.GetContext().GetLocalPlayerPawn());
+        float32 local_14 = this.GetNearDistanceThresholdSq();
+        TArray<TEUIModelRef<FM_Spot>> local_18;
+        TArray<TEUIModelRef<FM_Spot>> local_22;
+        if (this.GetDisplayConfig().GetDisplayRule(Message.Spot, FSpotViewAdapter(this.GetSpotView()), local_32))
+        {
+            this.GetModify_RefreshTracker().AddSpot(Message.Spot, local_32, local_7, local_14, local_18, local_22);
+        }
+        for (auto& local_58 : local_18)
+        {
+            this.AddDisplayingSpotIfNeeded(local_58);
+        }
+        return;
     }
     void OnSpotRemoved(const FMsg_InterestedSpotRemoved &inout Message)
     {
@@ -554,7 +565,35 @@ struct FM_SpotFilter : FEUIModel
     }
     void OnSpotDataModified(const FMsg_InterestedSpotDataModified &inout Message)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_23;
+        FPresentationDisplayRule local_34;
+        FASProfilingScope local_1 = FASProfilingScope(n"PresentationSpotFilter_OnSpotDataModified", 0);
+        if ((!((this.GetDisplayConfig() != nullptr))))
+        {
+            return;
+        }
+        bool local_7 = ::FASCommonUtils::IsInCombat(this.GetContext().GetLocalPlayerPawn());
+        float32 local_14 = this.GetNearDistanceThresholdSq();
+        TArray<TEUIModelRef<FM_Spot>> local_18;
+        TArray<TEUIModelRef<FM_Spot>> local_22;
+        local_23 = this.GetDisplayingSpotsRevision();
+        if (this.GetDisplayConfig().GetDisplayRule(Message.Spot, FSpotViewAdapter(this.GetSpotView()), local_34))
+        {
+            this.GetModify_RefreshTracker().ReclassifySpot(Message.Spot, local_34, local_7, local_14, local_18, local_22);
+        }
+        for (auto& local_60 : local_18)
+        {
+            this.AddDisplayingSpotIfNeeded(local_60);
+        }
+        for (auto& local_60 : local_22)
+        {
+            this.RemoveDisplayingSpotIfNeeded(local_60);
+        }
+        if (this.GetDisplayingSpotsRevision() == local_23)
+        {
+            this.BumpDisplayingSpotsVersion();
+        }
+        return;
     }
     void ManualAsyncTick()
     {
@@ -941,7 +980,7 @@ FSpotRefreshDeps AnalyzeEffective(const FPresentationDisplayRule &inout Rule, co
             bool local_21_2 = true;
             local_1 = local_21_2;
         }
-        return FSpotRefreshDeps::AnalyzeBasicRule(local_16.Rule.bEnableDisplay, int(local_16.Rule.MinDistance), local_16.Rule.MaxDistance, (local_1 != 0));
+        return FSpotRefreshDeps::AnalyzeBasicRule(local_16.Rule.bEnableDisplay, local_16.Rule.MinDistance, local_16.Rule.MaxDistance, (local_1 != 0));
     }
     if ((Rule.bDisplayOnlyInCombat && !(bPlayerInCombat)))
     {
@@ -950,7 +989,8 @@ FSpotRefreshDeps AnalyzeEffective(const FPresentationDisplayRule &inout Rule, co
         local_28.bStaticValue = false;
         return local_28;
     }
-    return FSpotRefreshDeps::AnalyzeBasicRule(Rule.bEnableDisplay, int(Rule.MinDistance), Rule.MaxDistance, (local_1 != 0));
+    float32 local_23_2 = Rule.MinDistance;
+    return FSpotRefreshDeps::AnalyzeBasicRule(Rule.bEnableDisplay, local_23_2, Rule.MaxDistance, (local_1 != 0));
 }
 }
 namespace FSpotCompiledDisplayRule
@@ -968,17 +1008,14 @@ FSpotCompiledDisplayRule Compile(const FPresentationDisplayRule &inout Rule)
 {
     FSpotCompiledDisplayRule local_14;
     FSpotCompiledDisplayRule __r;
-    FSpotCompiledDisplayConditionalRule local_26;
-    FSpotCompiledDisplayRule::CompileBasicRule(local_26, Rule.bEnableDisplay, int(Rule.MinDistance));
-    local_14.DefaultRule = local_26;
+    local_14.DefaultRule = FSpotCompiledDisplayRule::CompileBasicRule(Rule.bEnableDisplay, Rule.MinDistance, Rule.MaxDistance);
     local_14.bDisplayOnlyInCombat = Rule.bDisplayOnlyInCombat;
     for (auto& local_40 : Rule.ConditionalRules)
     {
         FSpotCompiledDisplayConditionalRule local_50;
         local_50.PlayerInCombat = EPresentationDisplayConditionRequirement(local_40.Condition.PlayerInCombat);
         local_50.EntityInCombat = EPresentationDisplayConditionRequirement(local_40.Condition.EntityInCombat);
-        FSpotCompiledDisplayRule::CompileBasicRule(local_26, local_40.Rule.bEnableDisplay, int(local_40.Rule.MinDistance));
-        local_50.Rule = local_26;
+        local_50.Rule = FSpotCompiledDisplayRule::CompileBasicRule((local_40.Rule.bEnableDisplay != 0), local_40.Rule.MinDistance, local_40.Rule.MaxDistance);
         local_14.ConditionalRules.Add(local_50);
     }
     return __r;
@@ -1083,7 +1120,26 @@ FM_SpotFilter CreateByManager(const UEUIManagerSubsystem Manager, const USpotDis
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasLoadConfigDefault(true);
+    Result.SetbCanDefaultConstruct(false);
+    FEUIModelMetaPropertyModelRef local_6;
+    local_6.PropertyName = FName("SpotView");
+    int local_2_2 = FM_SpotView::ModelId;
+    Result.FunctionalPropertyModelRefs.Add(local_6);
+    FEUIModelMsgHandleDefine local_18;
+    local_18.FunctionName = "__OnSpotAdded";
+    local_18.MessageTypeName = "Msg_InterestedSpotAdded";
+    local_18.SourcePropertyModelRefs = FBitSet64(1);
+    Result.MessageHandleFunctions.Add(local_18);
+    local_18.FunctionName = "__OnSpotRemoved";
+    local_18.MessageTypeName = "Msg_InterestedSpotRemoved";
+    local_18.SourcePropertyModelRefs = FBitSet64(1);
+    Result.MessageHandleFunctions.Add(local_18);
+    local_18.FunctionName = "__OnSpotDataModified";
+    local_18.MessageTypeName = "Msg_InterestedSpotDataModified";
+    local_18.SourcePropertyModelRefs = FBitSet64(1);
+    Result.MessageHandleFunctions.Add(local_18);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

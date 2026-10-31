@@ -1,5 +1,3 @@
-﻿
-
 class US_EcologyResourceSystem : UECSScriptSystem
 {
     US_EcologyResourceSystem()
@@ -15,7 +13,7 @@ class US_EcologyResourceSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_InitResource(const FECSEntity &inout Entity, const FC_EcologyResourceProviderSummary &inout Resource) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     UFUNCTION()
     void Monitor_RemoveResource(const FECSEntity &inout Entity, const FC_EcologyResourceProviderSummary &inout Resource) const
@@ -40,7 +38,17 @@ class US_EcologyResourceSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }
@@ -80,7 +88,17 @@ class US_EcologyResourceSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }
@@ -102,7 +120,17 @@ class US_EcologyResourceSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }
@@ -142,7 +170,17 @@ class US_EcologyResourceSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }

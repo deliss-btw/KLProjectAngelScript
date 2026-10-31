@@ -1,5 +1,3 @@
-﻿
-
 struct FT_PlayerAudio : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -9,7 +7,6 @@ struct FT_PlayerAudio : FECSTrait
     bool bHas_FC_PlayerBGMInfo = true;
     UPROPERTY()
     FC_PlayerBGMInfo Config_FC_PlayerBGMInfo;
-
 
 }
 
@@ -22,7 +19,6 @@ struct FT_MonsterAudio : FECSTrait
     bool bHas_FC_MonsterBGMConfig = true;
     UPROPERTY()
     FC_MonsterBGMConfig Config_FC_MonsterBGMConfig;
-
 
 }
 

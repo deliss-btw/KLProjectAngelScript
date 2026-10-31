@@ -1,5 +1,3 @@
-﻿
-
 class UHTNTask_SetGameplayTag : UHTNTask_ECSScriptBase
 {
     UPROPERTY()

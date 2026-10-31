@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_MissionDecoractor
 {
     const int ViewID = 0;
@@ -18,7 +17,6 @@ class UWidget_MissionDecoractor : UEUIUserWidget
     FEUIModelWeakRef __Decoractor;
     UPROPERTY()
     FGetEUIModelRef DecoractorDelegate;
-
 
     UFUNCTION()
     void OnMissionTrackingChanged(const bool bIsTracking)
@@ -102,6 +100,7 @@ namespace UWidget_MissionDecoractor
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MissionDecoractor;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnMissionTrackingChanged"));
     return;
 }

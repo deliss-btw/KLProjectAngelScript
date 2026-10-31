@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_GameEntryPVP_V2
 {
     const int ViewID = 0;
@@ -43,7 +42,6 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
     UPROPERTY()
     TArray<UPVP_PlayerListItemData> PlayerStateItems_2;
 
-
     UFUNCTION()
     void OnViewBind_Implementation()
     {
@@ -63,8 +61,8 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
         {
             this.GameRuleComboBox.AddOption(this.GetGameRuleDisplayName(EPVPGameRuleType(1)));
             this.GameRuleComboBox.AddOption(this.GetGameRuleDisplayName(EPVPGameRuleType(2)));
-            this.GameRuleComboBox.AddOption("еЌ з‚№пј€жњЄе®ћзЋ°пј‰");
-            this.GameRuleComboBox.AddOption("Mobaпј€жњЄе®ћзЋ°пј‰");
+            this.GameRuleComboBox.AddOption("占点（未实现）");
+            this.GameRuleComboBox.AddOption("Moba（未实现）");
             this.GameRuleComboBox.SetSelectedIndex(0);
             this.GameRuleComboBox.OnSelectionChanged.AddUFunction(this, n"OnGameRuleSelectionChanged");
         }
@@ -382,8 +380,7 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
         }
         if (this.VMS.IsValid())
         {
-            int local_2 = int(this.GameRuleDisplayNameToType(SelectedItem));
-            RequestSwitchGameRule();
+            int(this.GameRuleDisplayNameToType(SelectedItem)).RequestSwitchGameRule();
         }
         return;
     }
@@ -401,11 +398,11 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
             }
             else
             {
-                __return = "д№±ж–—";
+                __return = "乱斗";
                 __return = "TDM";
             }
         }
-        return "жњЄзџҐ";
+        return "未知";
     }
     EPVPGameRuleType GameRuleDisplayNameToType(const FString &inout DisplayName) const
     {
@@ -527,6 +524,7 @@ namespace UWidget_GameEntryPVP_V2
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_GameEntryPVP_V2;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

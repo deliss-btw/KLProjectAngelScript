@@ -1,5 +1,3 @@
-﻿
-
 class US_LocalConditionCustomNameEvent : UECSScriptSystem
 {
     US_LocalConditionCustomNameEvent()

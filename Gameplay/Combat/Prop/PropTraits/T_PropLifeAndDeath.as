@@ -1,5 +1,3 @@
-﻿
-
 struct FT_Prop_LifeAndDeath : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -13,7 +11,6 @@ struct FT_Prop_LifeAndDeath : FECSTrait
     FECSInternalTraitCompDefinition FC_PropDeathConfig_Defination = FECSInternalTraitCompDefinition::CreateNoCheck(FC_PropDeathConfig, FName("bDealWithDeath"));
     UPROPERTY()
     FC_PropDeathConfig Config_FC_PropDeathConfig;
-
 
 }
 

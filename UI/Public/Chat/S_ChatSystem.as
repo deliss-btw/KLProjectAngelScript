@@ -1,10 +1,7 @@
-﻿
-
 class US_ChatSystem : UECSScriptSystem
 {
     float32 ServerSendChatNearbyRadiusCm = 8000.0f;
     float32 ServerSendNpcChatRadiusCm = 5000.0f;
-
 
     UFUNCTION()
     void ServerJob_HandleChatSendToDS(const FCE_ChatSendToDS &inout Event) const
@@ -251,8 +248,7 @@ class US_ChatSystem : UECSScriptSystem
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_ChatSendToDS, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_ChatSendToDS, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());

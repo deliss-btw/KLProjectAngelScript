@@ -1,5 +1,3 @@
-﻿
-
 class UWidget_SideHintList : UASUserWidget
 {
     UPROPERTY()
@@ -9,7 +7,6 @@ class UWidget_SideHintList : UASUserWidget
     UPROPERTY()
     TSubclassOf<UWidget_SideHint_Old> UI_SideHint_BPClass;
     int DefaultMaxSideHintNum = 3;
-
 
     UFUNCTION()
     void Construct_Implementation()

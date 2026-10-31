@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_DmageText_Helpers
 {
 UFUNCTION()

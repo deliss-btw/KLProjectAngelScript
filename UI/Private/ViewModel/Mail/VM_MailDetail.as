@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MailDetail
 {
     const int ModelId = 0;
@@ -420,7 +419,6 @@ struct __GeneratedProperties_FVM_MailDetail
     TArray<TEUIModelRef<FVM_CommonRewardItem>> RewardItems;
     UPROPERTY()
     TEUIModelRef<FVM_MailDetail> Self;
-
 
 }
 

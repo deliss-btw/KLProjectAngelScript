@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_ForceQuitCombat : UBTTask_ECSScriptBase
 {
     UPROPERTY()
@@ -20,7 +18,6 @@ class UBTTask_ForceQuitCombat : UBTTask_ECSScriptBase
     bool bUseRawCandidateIfProjectionFailed = true;
 
     default SetNodeName("Force Quit Combat");
-
 
     UFUNCTION()
     EBTNodeResult ExecuteTask_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const

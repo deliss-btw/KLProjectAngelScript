@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_WeaponBowLine_NS
 {
     const TECSComponentDerivedPtr<FC_WeaponBowLine> DerivedPtr = TECSComponentDerivedPtr<FC_WeaponBowLine>();
@@ -17,6 +16,8 @@ struct FC_WeaponBowLine : FECSComponent
 
     FC_WeaponBowLine()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_TargetSocketName = n"S_BowLineControl";
         this.m_ControlName = n"Ctrl_BowLine";
         this.m_AttachBowLine = false;
@@ -25,6 +26,8 @@ struct FC_WeaponBowLine : FECSComponent
     }
     FC_WeaponBowLine(const FC_WeaponBowLine &inout Other)
     {
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.m_TargetSocketName = n"S_BowLineControl";
         this.m_ControlName = n"Ctrl_BowLine";
         this.m_AttachBowLine = false;
@@ -177,37 +180,37 @@ bool RemoveWeaponBowLine(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorWeaponBowLineOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_WeaponBowLine, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_WeaponBowLine, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorWeaponBowLineOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_WeaponBowLine, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_WeaponBowLine, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorWeaponBowLineOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_WeaponBowLine, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_WeaponBowLine, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorWeaponBowLineOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_WeaponBowLine, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_WeaponBowLine, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorWeaponBowLineOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_WeaponBowLine, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_WeaponBowLine, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorWeaponBowLineLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_WeaponBowLine, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_WeaponBowLine, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorWeaponBowLineActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_WeaponBowLine, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_WeaponBowLine, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorWeaponBowLineModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_WeaponBowLine, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_WeaponBowLine, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

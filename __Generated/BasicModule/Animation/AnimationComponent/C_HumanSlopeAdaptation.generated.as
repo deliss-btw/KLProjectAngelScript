@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_SlopeAdaptControlHistory_NS
 {
     const TECSComponentDerivedPtr<FC_SlopeAdaptControlHistory> DerivedPtr = TECSComponentDerivedPtr<FC_SlopeAdaptControlHistory>();
@@ -38,7 +37,7 @@ struct FC_SlopeAdaptControlHistory : FECSComponent
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_SlopeAdaptControl &inout OutValue) const
     {
-        return this.GetInterpoValue(WorldTime, OutValue);
+        return this.History.GetInterpoValue(WorldTime, OutValue);
     }
 }
 
@@ -122,36 +121,36 @@ bool RemoveSlopeAdaptControlHistory(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorSlopeAdaptControlHistoryOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_SlopeAdaptControlHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_SlopeAdaptControlHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSlopeAdaptControlHistoryOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_SlopeAdaptControlHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_SlopeAdaptControlHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSlopeAdaptControlHistoryOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_SlopeAdaptControlHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_SlopeAdaptControlHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSlopeAdaptControlHistoryOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_SlopeAdaptControlHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_SlopeAdaptControlHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSlopeAdaptControlHistoryOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_SlopeAdaptControlHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_SlopeAdaptControlHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorSlopeAdaptControlHistoryLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_SlopeAdaptControlHistory, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_SlopeAdaptControlHistory, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSlopeAdaptControlHistoryActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_SlopeAdaptControlHistory, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_SlopeAdaptControlHistory, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSlopeAdaptControlHistoryModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_SlopeAdaptControlHistory, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_SlopeAdaptControlHistory, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

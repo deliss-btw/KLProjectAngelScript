@@ -1,5 +1,3 @@
-﻿
-
 class USolver_IterativeCascade : UAimPoseSegmentSolver
 {
     float32 RotationFractionPerBone = 0.5f;
@@ -16,7 +14,6 @@ class USolver_IterativeCascade : UAimPoseSegmentSolver
     float32 CfgNeutralYaw = 0.0f;
     float32 CfgReturnThreshold = 30.0f;
     float32 CfgRecoverThreshold = 15.0f;
-
 
     void ResetToConfigDefaults()
     {

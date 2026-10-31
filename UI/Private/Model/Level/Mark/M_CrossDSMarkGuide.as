@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CrossDSMarkGuideDialogHelper
 {
     const int ModelId = 0;
@@ -163,7 +162,7 @@ struct FMS_CrossDSMarkGuide : FEUIModelSingleton
         if (!(local_140))
         {
             FCommonTipsParam local_172;
-            ::CommonPopup::Tips(NSLOCTEXT("CrossDSNoActiveTeleporter", "з›®ж ‡з‚№ж‰ЂењЁењ°е›ѕжљ‚ж— е·ІжїЂжґ»зљ„дј йЂЃз‚№"), local_172);
+            ::CommonPopup::Tips(NSLOCTEXT("CrossDSNoActiveTeleporter", "目标点所在地图暂无已激活的传送点"), local_172);
             return true;
         }
         this.SetDialogHelper(TEUIModelRef<FVM_CrossDSMarkGuideDialogHelper>(::FVM_CrossDSMarkGuideDialogHelper::Create(this.GetContext().Manager, Spot, local_140)));
@@ -173,8 +172,8 @@ struct FMS_CrossDSMarkGuide : FEUIModelSingleton
         FText local_242 = FText();
         FText local_246 = FText();
         FDialogCallback local_232 = FDialogCallback(local_200);
-        FText local_168 = NSLOCTEXT("CrossDSMarkGuideContent", "з›®ж ‡з‚№дёЌењЁеђЊдёЂењ°е›ѕпјЊжЇеђ¦дј йЂЃи‡іжњЂиї‘зљ„дј йЂЃз‚№е№¶и‡ЄеЉЁеЇји€Є");
-        FText local_236 = NSLOCTEXT("CrossDSMarkGuideTitle", "жЏђз¤є");
+        FText local_168 = NSLOCTEXT("CrossDSMarkGuideContent", "目标点不在同一地图，是否传送至最近的传送点并自动导航");
+        FText local_236 = NSLOCTEXT("CrossDSMarkGuideTitle", "提示");
         FCommonDialogParam local_238;
         ::CommonPopup::Dialog_Decision(local_236, local_168, local_232, local_246, local_242, local_238);
         return true;

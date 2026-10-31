@@ -1,5 +1,3 @@
-﻿
-
 class US_GOAPSystem : UECSScriptSystem
 {
     US_GOAPSystem()

@@ -1,5 +1,3 @@
-﻿
-
 struct FFacialModifyBone
 {
     UPROPERTY()
@@ -13,7 +11,6 @@ struct FFacialModifyBone
     UPROPERTY()
     bool bDirty = false;
 
-
     void Clear()
     {
         this.T = FVector::ZeroVector;
@@ -23,7 +20,7 @@ struct FFacialModifyBone
     }
     void ApplyToBone(const USkeletalPoseTweaker PoseTweaker)
     {
-        if (!(this.HasValidSetup()))
+        if (!(this.Bone.HasValidSetup()))
         {
             return;
         }
@@ -36,8 +33,8 @@ struct FFacialModifyBone
         float local_50 = -local_60.Y;
         local_28.SetRotation(FQuat(local_60.X, local_50, local_60.Z, local_40_3));
         local_28.SetScale3D(this.S);
-        FTransform local_128 = (local_28 * PoseTweaker.GetBoneTransformLocal(this.GetBoneIndex()));
-        PoseTweaker.SetBoneTransformLocal(this.GetBoneIndex(), local_128);
+        FTransform local_128 = (local_28 * PoseTweaker.GetBoneTransformLocal(this.Bone.GetBoneIndex()));
+        PoseTweaker.SetBoneTransformLocal(this.Bone.GetBoneIndex(), local_128);
         return;
     }
 }

@@ -1,4 +1,3 @@
-﻿
 enum EDialogueScope
 {
     Personal,
@@ -11,7 +10,6 @@ enum EDialogueType
     Simple,
     Ambient,
 }
-
 
 struct FDialogueConfig : FDataObject
 {
@@ -28,7 +26,6 @@ struct FDialogueConfig : FDataObject
     TObjectPtr<UDialogueGraphAsset> DialogueData;
     UPROPERTY()
     FDataObjectPtr m_LevelInfo;
-
 
     const TDataObjectPtr<FNPCMainConfig> GetInteractTargetNPC() const property
     {
@@ -62,7 +59,6 @@ struct FSimpleDialogueConfig : FDialogueConfig
 
     FSimpleDialogueConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -77,7 +73,6 @@ struct FDailyDialogueConfig : FDialogueConfig
 
     FDailyDialogueConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -94,7 +89,6 @@ struct FAmbientDialogueConfig : FDialogueConfig
 
     FAmbientDialogueConfig()
     {
-        super();
         this.BroadcastScope = EDialogueScope(0);
         this.__InitDefaults();
         return;
@@ -158,7 +152,6 @@ struct FNarrationSubtitleEntry
     UPROPERTY()
     float32 SubtitleDuration = 3.0f;
 
-
 }
 
 struct FNarrationDialogueConfig : FDataObject
@@ -168,7 +161,6 @@ struct FNarrationDialogueConfig : FDataObject
     EDialogueScope BroadcastScope = EDialogueScope(0);
     UPROPERTY()
     TArray<FNarrationSubtitleEntry> NarrationEntries;
-
 
 }
 
@@ -191,7 +183,6 @@ struct FDialogueOptionStyleConfig : FDataObject
     FText ConfirmButtonText = FText();
     UPROPERTY()
     FText CancelButtonText = FText();
-
 
 }
 

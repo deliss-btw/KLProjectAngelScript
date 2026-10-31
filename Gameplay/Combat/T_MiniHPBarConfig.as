@@ -1,5 +1,3 @@
-﻿
-
 struct FT_MiniHPBarConfig : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -8,7 +6,7 @@ struct FT_MiniHPBarConfig : FECSTrait
     UPROPERTY()
     FC_MiniHPBarConfig Config_FC_MiniHPBarConfig;
 
-    default CustomName = FName("иЎЂжќЎ (FT_MiniHPBarConfig)");
+    default CustomName = FName("血条 (FT_MiniHPBarConfig)");
 
     FT_MiniHPBarConfig()
     {

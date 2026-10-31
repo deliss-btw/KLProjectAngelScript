@@ -1,10 +1,7 @@
-﻿
-
 class US_ESMBBVarLerpSystem : UECSScriptSystem
 {
     UPROPERTY()
     float32 LerpLifeTime = 1.0f;
-
 
     UFUNCTION()
     void Job_ClearBBVarLerps(const FCS_FixedTime &inout FixedTime, FC_ESMBBVarLerps &inout Lerp, const FECSEntity &inout Entity) const

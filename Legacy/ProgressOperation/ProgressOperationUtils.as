@@ -1,4 +1,3 @@
-﻿
 namespace FProgressOperationUtils
 {
 FECSEntity StartProgressOperation(const FECSEntity &inout InitiatorEntity, const FECSEntity &inout TargetEntity, const TDataObjectPtr<FProgressOperationConfig> &inout ConfigPtr, const bool bLocalPrediction = false)
@@ -75,8 +74,7 @@ bool JoinProgressOperation(const FECSEntity &inout OperationEntity, const FECSEn
     local_20.SetConfig(local_8.GetConfig());
     local_20.SetbIsInitiator(false);
     FProgressOperationActionArray local_24;
-    int local_25 = 6;
-    if (local_14.Actions.Find(local_24, local_25))
+    if (local_14.Actions.Find(EProgressOperationActionTime(6), local_24))
     {
         for (auto& local_40 : local_24.Actions)
         {
@@ -99,15 +97,14 @@ void LeaveProgressOperation(const FECSEntity &inout OperationEntity, const FECSE
         return;
     }
     FProgressOperationActionArray local_18;
-    int local_19 = 7;
-    if (local_14.Actions.Find(local_18, local_19))
+    if (local_14.Actions.Find(EProgressOperationActionTime(7), local_18))
     {
         for (auto& local_34 : local_18.Actions)
         {
             local_34.ActivateAction(local_6, ParticipantEntity);
         }
     }
-    local_40.SetFinalState(EProgressOperationState(local_6.GetState()));
+    local_40.SetFinalState(local_6.GetState());
     local_40.SetFinalProgressValue(local_6.GetProgressValue());
     local_40.SetFinalProgressMaxValue(local_6.GetProgressMaxValue());
     local_40.SetFinalProgressTime(float32(local_6.GetCurTime().ToSeconds()));
@@ -124,18 +121,18 @@ void BreakProgressOperation(const FECSEntity &inout OperationEntity)
     {
         return;
     }
-    if ((int(local_6.GetState())) < 3 && (int(local_6.GetNextState()) < 3))
+    if (int(local_6.GetState()) < 3 && (int(local_6.GetNextState()) < 3))
     {
-        local_6.SetNextState(EProgressOperationState(EProgressOperationState(5)));
+        local_6.SetNextState(EProgressOperationState(5));
     }
     return;
 }
 void ProgressOperationSucceed(const FECSEntity &inout OperationEntity)
 {
     int local_6 = 0;
-    if ((int(local_6.GetState())) < 3 && (int(local_6.GetNextState()) < 3))
+    if (int(local_6.GetState()) < 3 && (int(local_6.GetNextState()) < 3))
     {
-        local_6.SetNextState(EProgressOperationState(EProgressOperationState(3)));
+        local_6.SetNextState(EProgressOperationState(3));
     }
     return;
 }

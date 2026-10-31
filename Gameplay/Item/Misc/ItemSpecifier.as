@@ -1,5 +1,3 @@
-﻿
-
 struct FItemSpecifier
 {
     UPROPERTY()
@@ -13,16 +11,17 @@ struct FItemSpecifier
     }
     FItemSpecifier(const TDataObjectPtr<FItemConfig> &inout InItemConfig)
     {
-        this.Add(InItemConfig);
+        this.ExplicitItems.Add(InItemConfig);
         return;
     }
     FItemSpecifier(const TSet<TDataObjectPtr<FItemConfig>> &inout InExplicitItems)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.ExplicitItems = InExplicitItems;
+        return;
     }
     FItemSpecifier(const TArray<TDataObjectPtr<FItemConfig>> &inout InExplicitItems)
     {
-        this.Append(InExplicitItems);
+        this.ExplicitItems.Append(InExplicitItems);
         return;
     }
     FItemSpecifier(const FGameplayTag &inout InItemTag)
@@ -37,11 +36,11 @@ struct FItemSpecifier
     }
     bool IsEmpty() const
     {
-        return this.Num() == 0 && (this.ItemTags.Num() == 0);
+        return this.ExplicitItems.Num() == 0 && (this.ItemTags.Num() == 0);
     }
     bool IsMatch(const TDataObjectPtr<FItemConfig> &inout ItemConfig) const
     {
-        if (this.Contains(ItemConfig))
+        if (this.ExplicitItems.Contains(ItemConfig))
         {
             return true;
         }

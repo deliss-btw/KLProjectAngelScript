@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ComposableItem
 {
     const int ModelId = 0;
@@ -134,60 +133,82 @@ struct FVM_ComposableItem : FEUIViewModel
     }
     void RebuildFeatures()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        if (this.GetRegistry() == nullptr || !(this.GetCommonItemVM().IsValid()))
+        {
+            return;
+        }
+        TArray<EItemDisplayFeature> local_18 = this.GetRegistry().GetActiveFeaturesForScenario(EItemDisplayScenario(this.GetScenario()));
+        this.SetFeature_Count(this.TryBuildFeatureData(EItemDisplayFeature(1), local_18));
+        this.SetFeature_Level(this.TryBuildFeatureData(EItemDisplayFeature(2), local_18));
+        this.SetFeature_EquipMark(this.TryBuildFeatureData(EItemDisplayFeature(3), local_18));
+        this.SetFeature_RedDot(this.TryBuildFeatureData(EItemDisplayFeature(4), local_18));
+        this.SetFeature_New(this.TryBuildFeatureData(EItemDisplayFeature(5), local_18));
+        this.SetFeature_Mask(this.TryBuildFeatureData(EItemDisplayFeature(6), local_18));
+        this.SetFeature_Tag(this.TryBuildFeatureData(EItemDisplayFeature(7), local_18));
+        this.SetFeature_SpecialProps(this.TryBuildFeatureData(EItemDisplayFeature(9), local_18));
+        this.SetFeature_SpecialBg(this.TryBuildFeatureData(EItemDisplayFeature(10), local_18));
+        return;
     }
     FEUIDynamicWidgetData TryBuildFeatureData(const EItemDisplayFeature Feature, const TArray<EItemDisplayFeature> &inout ActiveFeatures)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
-        FEUIDynamicWidgetData __r; return __r;
+        if (!(ActiveFeatures.Contains(Feature)))
+        {
+            return FEUIDynamicWidgetData();
+        }
+        if (!(this.GetRegistry().IsFeatureConditionMet(EItemDisplayFeature(Feature), this.GetItemDataModel())))
+        {
+            return FEUIDynamicWidgetData();
+        }
+        FEUIDynamicWidgetData local_54;
+        local_54.ModelContainer = this.CreateFeatureModel(EItemDisplayFeature(Feature));
+        if (int(this.GetCurDisplayType()) != 0)
+        {
+            TSoftClassPtr<UEUIUserWidget> local_92 = this.GetRegistry().GetWidgetClassForFeature(EItemDisplayType(this.GetCurDisplayType()), EItemDisplayFeature(Feature));
+            if (!(local_92.IsNull()))
+            {
+                local_54.WidgetClass = local_92;
+            }
+        }
+        return local_54;
     }
     FEUIModelContainer CreateFeatureModel(const EItemDisplayFeature Feature)
     {
-        FEUIModelContainer local_18;
         switch (int(Feature))
         {
         case 1:
         {
-            TEUIModelRef<FVM_CommonItem> local_4 = this.GetCommonItemVM();
-            return local_18;
+            return FEUIModelContainer(::FVM_ItemFeature_Count::Create(this.GetContext().Manager, this.GetCommonItemVM()));
         }
         case 2:
         {
-            TEUIModelRef<FVM_CommonItem> local_4_2 = this.GetCommonItemVM();
-            return local_18;
+            return FEUIModelContainer(::FVM_ItemFeature_Level::Create(this.GetContext().Manager, this.GetCommonItemVM()));
         }
         case 3:
         {
-            TEUIModelRef<FVM_CommonItem> local_4_3 = this.GetCommonItemVM();
-            return local_18;
+            return FEUIModelContainer(::FVM_ItemFeature_EquipMark::Create(this.GetContext().Manager, this.GetCommonItemVM()));
         }
         case 4:
         {
-            TEUIModelRef<FVM_CommonItem> local_4_4 = this.GetCommonItemVM();
-            return local_18;
+            return FEUIModelContainer(::FVM_ItemFeature_RedDot::Create(this.GetContext().Manager, this.GetCommonItemVM()));
         }
         case 6:
         {
-            TEUIModelRef<FVM_CommonItem> local_4_5 = this.GetCommonItemVM();
-            return local_18;
+            return FEUIModelContainer(::FVM_ItemFeature_Mask::Create(this.GetContext().Manager, this.GetCommonItemVM()));
         }
         case 7:
         {
-            TEUIModelRef<FVM_CommonItem> local_4_6 = this.GetCommonItemVM();
-            return local_18;
+            return FEUIModelContainer(::FVM_ItemFeature_Tag::Create(this.GetContext().Manager, this.GetCommonItemVM()));
         }
         case 9:
         {
-            TEUIModelRef<FVM_CommonItem> local_4_7 = this.GetCommonItemVM();
-            return local_18;
+            return FEUIModelContainer(::FVM_ItemFeature_SpecialProps::Create(this.GetContext().Manager, this.GetCommonItemVM()));
         }
         case 10:
         {
-            TEUIModelRef<FVM_CommonItem> local_4_8 = this.GetCommonItemVM();
-            return local_18;
+            return FEUIModelContainer(::FVM_ItemFeature_SpecialBg::Create(this.GetContext().Manager, this.GetCommonItemVM()));
         }
         }
-        return local_18;
+        return FEUIModelContainer();
     }
     void RebuildFeaturesWithDisplayType(const EItemDisplayType DisplayType)
     {
@@ -209,8 +230,7 @@ struct FVM_ComposableItem : FEUIViewModel
         {
             return FeatureData;
         }
-        int local_15 = int(this.GetCurDisplayType());
-        TSoftClassPtr<UEUIUserWidget> local_26 = this.GetRegistry().GetWidgetClassForFeature();
+        TSoftClassPtr<UEUIUserWidget> local_26 = this.GetRegistry().GetWidgetClassForFeature(EItemDisplayType(this.GetCurDisplayType()), EItemDisplayFeature(Feature));
         if ((local_26 == FeatureData.WidgetClass))
         {
             return FeatureData;
@@ -536,7 +556,7 @@ namespace FVM_ComposableItem
 {
 FVM_ComposableItem& Create(const UObject ContextObject, const TEUIModelRef<FM_ItemData> &inout ItemDataModel, const EItemDisplayScenario Scenario)
 {
-    return FVM_ComposableItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), ItemDataModel);
+    return FVM_ComposableItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), ItemDataModel, EItemDisplayScenario(Scenario));
 }
 FVM_ComposableItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout ItemDataModel, const EItemDisplayScenario Scenario)
 {

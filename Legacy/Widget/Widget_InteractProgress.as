@@ -1,5 +1,3 @@
-﻿
-
 class UWidget_InteractProgress : UASUserWidget
 {
     UPROPERTY()

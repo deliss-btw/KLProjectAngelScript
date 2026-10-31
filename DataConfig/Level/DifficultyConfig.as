@@ -1,4 +1,3 @@
-﻿
 enum EDifficultyRank
 {
     Normal,
@@ -7,7 +6,6 @@ enum EDifficultyRank
     Env,
     NPC = 10,
 }
-
 
 struct FDifficultyAttributeScale
 {
@@ -18,7 +16,6 @@ struct FDifficultyAttributeScale
     UPROPERTY()
     float32 Posture = 1.0f;
 
-
 }
 
 struct FDifficultyLevelAttributeConfig : FDataObject
@@ -28,7 +25,6 @@ struct FDifficultyLevelAttributeConfig : FDataObject
     int Level = 0;
     UPROPERTY()
     TMap<EDifficultyRank, FDifficultyAttributeScale> AttributeByRank;
-
 
 }
 

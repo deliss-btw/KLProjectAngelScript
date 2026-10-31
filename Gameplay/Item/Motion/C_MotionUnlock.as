@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_MotionUnlock_NS
 {
     const TECSComponentDerivedPtr<FC_MotionUnlock> DerivedPtr = TECSComponentDerivedPtr<FC_MotionUnlock>();
@@ -17,11 +16,15 @@ struct FC_MotionUnlock : FECSComponent
 
     FC_MotionUnlock()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_MotionUnlock(const FC_MotionUnlock &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_UnlockedMotionData = Other.m_UnlockedMotionData;
         return;
@@ -186,37 +189,37 @@ bool RemoveMotionUnlock(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorMotionUnlockOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_MotionUnlock, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_MotionUnlock, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMotionUnlockOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_MotionUnlock, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_MotionUnlock, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMotionUnlockOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_MotionUnlock, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_MotionUnlock, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMotionUnlockOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_MotionUnlock, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_MotionUnlock, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMotionUnlockOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_MotionUnlock, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_MotionUnlock, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorMotionUnlockLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_MotionUnlock, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_MotionUnlock, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorMotionUnlockActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_MotionUnlock, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_MotionUnlock, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorMotionUnlockModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_MotionUnlock, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_MotionUnlock, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

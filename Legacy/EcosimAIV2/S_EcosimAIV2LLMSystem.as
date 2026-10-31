@@ -1,5 +1,3 @@
-﻿
-
 class US_EcosimAIV2LLMSystem : UECSScriptSystem
 {
     US_EcosimAIV2LLMSystem()

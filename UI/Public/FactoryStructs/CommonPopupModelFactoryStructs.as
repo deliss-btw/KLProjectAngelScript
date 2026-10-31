@@ -1,5 +1,3 @@
-﻿
-
 struct FCommonSideHintData
 {
     UPROPERTY()
@@ -13,7 +11,6 @@ struct FCommonSideHintData
     UPROPERTY()
     int Priority = 0;
 
-
 }
 
 struct FCommonLargeSideHintData : FCommonSideHintData
@@ -24,7 +21,6 @@ struct FCommonLargeSideHintData : FCommonSideHintData
 
     FCommonLargeSideHintData()
     {
-        super();
         return;
     }
 }
@@ -37,7 +33,6 @@ struct FCommonLargeSideHintDataWithAction : FCommonLargeSideHintData
 
     FCommonLargeSideHintDataWithAction()
     {
-        super();
         return;
     }
 }

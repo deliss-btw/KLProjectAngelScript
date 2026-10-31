@@ -1,5 +1,3 @@
-﻿
-
 struct __Lambda_Gameplay_Level_Commission_CommissionStatsUtils_342
 {
     __Lambda_Gameplay_Level_Commission_CommissionStatsUtils_342()
@@ -244,11 +242,14 @@ bool HasRewardBadge(const TDataObjectPtr<FCommissionBadgeConfig> &inout Config, 
     FECSEntity local_4 = CommissionStatsUtils::CheckAndGetPlayerEntity(Pawn);
     if ((local_4 == ENTITY_NULL))
     {
+        int local_9;
+        local_9 = 0;
         return false;
     }
     int local_11 = local_10;
     switch (local_11)
     {
+        int local_9;
     case 0:
     {
         int local_12 = CommissionStatsUtils::GetStateValue(Pawn, ECommissionPlayerStatsType(local_14));
@@ -259,6 +260,7 @@ bool HasRewardBadge(const TDataObjectPtr<FCommissionBadgeConfig> &inout Config, 
             OutResurlt.SetbPercent(false);
             return true;
         }
+        local_9 = 0;
         return false;
     }
     case 1:
@@ -271,12 +273,14 @@ bool HasRewardBadge(const TDataObjectPtr<FCommissionBadgeConfig> &inout Config, 
             OutResurlt.SetbPercent(false);
             return true;
         }
+        local_9 = 0;
         return false;
     }
     case 2:
     {
         if (OtherTeamer.Num() <= 0)
         {
+            local_9 = 0;
             return false;
         }
         int local_12_2 = CommissionStatsUtils::GetStateValue(Pawn, ECommissionPlayerStatsType(local_14));
@@ -291,11 +295,30 @@ bool HasRewardBadge(const TDataObjectPtr<FCommissionBadgeConfig> &inout Config, 
             }
             local_16 = local_16 + local_11_3;
         }
-        if ((local_12_2 > 0 && (local_16 > 0) && (local_15 == 0)))
+        if (local_12_2 <= 0)
+        {
+            local_9 = 0;
+        }
+        else
+        {
+            bool local_32 = (local_16 > 0);
+            local_9 = local_32;
+        }
+        if (local_9 == 0)
+        {
+            local_9 = 0;
+        }
+        else
+        {
+            bool local_32_2 = (local_15 == 0);
+            local_9 = local_32_2;
+        }
+        if (local_9 != 0)
         {
             OutResurlt.SetConfig(Config);
             OutResurlt.SetPercent((local_12_2 / local_16));
             OutResurlt.SetbPercent(true);
+            local_9 = 1;
             return true;
         }
         return false;
@@ -318,13 +341,30 @@ bool HasRewardBadge(const TDataObjectPtr<FCommissionBadgeConfig> &inout Config, 
             }
             local_11_4 = local_11_4 + local_12_3;
         }
-        if ((local_31 > 0 && (local_11_4 > 0) && (local_16_2 == 1)))
+        if (local_31 <= 0)
+        {
+            local_9 = 0;
+        }
+        else
+        {
+            local_9 = (local_11_4 > 0);
+        }
+        if (local_9 == 0)
+        {
+            local_9 = 0;
+        }
+        else
+        {
+            local_9 = (local_16_2 == 1);
+        }
+        if (local_9 != 0)
         {
             OutResurlt.SetConfig(Config);
             OutResurlt.SetPercent((local_31 / local_11_4));
             OutResurlt.SetbPercent(true);
             return true;
         }
+        local_9 = 0;
         return false;
     }
     default:

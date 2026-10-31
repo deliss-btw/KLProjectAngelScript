@@ -1,5 +1,3 @@
-﻿
-
 struct FT_AccountExclusiveTeleporter : FECSTrait
 {
     FECSTrait _base_FECSTrait;

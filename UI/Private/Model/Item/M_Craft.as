@@ -1,4 +1,3 @@
-﻿
 namespace FMS_Craft
 {
     const int ModelId = 0;

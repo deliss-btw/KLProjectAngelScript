@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_AnimIdleHeadControlHistory_NS
 {
     const TECSComponentDerivedPtr<FC_AnimIdleHeadControlHistory> DerivedPtr = TECSComponentDerivedPtr<FC_AnimIdleHeadControlHistory>();
@@ -38,7 +37,7 @@ struct FC_AnimIdleHeadControlHistory : FECSComponent
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_AnimIdleHeadControl &inout OutValue) const
     {
-        return this.GetInterpoValue(WorldTime, OutValue);
+        return this.History.GetInterpoValue(WorldTime, OutValue);
     }
 }
 
@@ -122,36 +121,36 @@ bool RemoveAnimIdleHeadControlHistory(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAnimIdleHeadControlHistoryOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimIdleHeadControlHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimIdleHeadControlHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimIdleHeadControlHistoryOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimIdleHeadControlHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimIdleHeadControlHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimIdleHeadControlHistoryOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimIdleHeadControlHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimIdleHeadControlHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimIdleHeadControlHistoryOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimIdleHeadControlHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimIdleHeadControlHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimIdleHeadControlHistoryOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimIdleHeadControlHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimIdleHeadControlHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAnimIdleHeadControlHistoryLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AnimIdleHeadControlHistory, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AnimIdleHeadControlHistory, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimIdleHeadControlHistoryActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AnimIdleHeadControlHistory, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AnimIdleHeadControlHistory, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimIdleHeadControlHistoryModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AnimIdleHeadControlHistory, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AnimIdleHeadControlHistory, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

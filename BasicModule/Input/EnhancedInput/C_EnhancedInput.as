@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_NotifyEnableInputContext_NS
 {
     const TECSEventDerivedPtr<FCE_NotifyEnableInputContext> DerivedPtr = TECSEventDerivedPtr<FCE_NotifyEnableInputContext>();
@@ -24,7 +23,6 @@ struct FCE_NotifyEnableInputContext : FECSEvent
     UPROPERTY()
     bool bEnable;
 
-
 }
 
 struct FCE_NotifyEnableInputContextTag : FECSEvent
@@ -35,7 +33,6 @@ struct FCE_NotifyEnableInputContextTag : FECSEvent
     UPROPERTY()
     bool bEnable;
 
-
 }
 
 struct FCE_SetGameplayInputEnabled : FECSEvent
@@ -43,7 +40,6 @@ struct FCE_SetGameplayInputEnabled : FECSEvent
     FECSEvent _base_FECSEvent;
     UPROPERTY()
     bool bEnabled;
-
 
 }
 
@@ -54,7 +50,6 @@ struct FCE_SetTeleportInputBlocked : FECSEvent
     uint64 SourceDsId;
     UPROPERTY()
     bool bBlocked;
-
 
 }
 

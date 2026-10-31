@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ChatMainTab_Helpers
 {
 UFUNCTION()

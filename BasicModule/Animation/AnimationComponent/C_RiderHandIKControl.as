@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_RiderHandIKControl_NS
 {
     const TECSComponentDerivedPtr<FC_RiderHandIKControl> DerivedPtr = TECSComponentDerivedPtr<FC_RiderHandIKControl>();
@@ -37,11 +36,50 @@ struct FC_RiderHandIKControl : FECSComponent
 
     FC_RiderHandIKControl()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Weight = 0.0f;
+        this.m_LeftHandWeight = 1.0f;
+        this.m_RightHandWeight = 1.0f;
+        this.m_TargetWeight = 0.0f;
+        this.m_TargetLeftHandWeight = 1.0f;
+        this.m_TargetRightHandWeight = 1.0f;
+        this.m_bHasCapturedReference = false;
+        this.m_LeftHandRelativeToRoot = FTransform::Identity;
+        this.m_RightHandRelativeToRoot = FTransform::Identity;
+        this.m_WyvernSocketWorldLocation = FVector::ZeroVector;
+        this.m_bHasWyvernSocketLocation = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_RiderHandIKControl(const FC_RiderHandIKControl &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_Weight = 0.0f;
+        this.m_LeftHandWeight = 1.0f;
+        this.m_RightHandWeight = 1.0f;
+        this.m_TargetWeight = 0.0f;
+        this.m_TargetLeftHandWeight = 1.0f;
+        this.m_TargetRightHandWeight = 1.0f;
+        this.m_bHasCapturedReference = false;
+        this.m_LeftHandRelativeToRoot = FTransform::Identity;
+        this.m_RightHandRelativeToRoot = FTransform::Identity;
+        this.m_WyvernSocketWorldLocation = FVector::ZeroVector;
+        this.m_bHasWyvernSocketLocation = false;
+        this.__InitDirtyFlags();
+        this.m_Weight = Other.m_Weight;
+        this.m_LeftHandWeight = Other.m_LeftHandWeight;
+        this.m_RightHandWeight = Other.m_RightHandWeight;
+        this.m_TargetWeight = Other.m_TargetWeight;
+        this.m_TargetLeftHandWeight = Other.m_TargetLeftHandWeight;
+        this.m_TargetRightHandWeight = Other.m_TargetRightHandWeight;
+        this.m_bHasCapturedReference = Other.m_bHasCapturedReference;
+        this.m_LeftHandRelativeToRoot = Other.m_LeftHandRelativeToRoot;
+        this.m_RightHandRelativeToRoot = Other.m_RightHandRelativeToRoot;
+        this.m_WyvernSocketWorldLocation = Other.m_WyvernSocketWorldLocation;
+        this.m_bHasWyvernSocketLocation = Other.m_bHasWyvernSocketLocation;
+        return;
     }
     FC_RiderHandIKControl opAssign(const FC_RiderHandIKControl &inout Other)
     {
@@ -304,37 +342,37 @@ bool RemoveRiderHandIKControl(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorRiderHandIKControlOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_RiderHandIKControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_RiderHandIKControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRiderHandIKControlOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_RiderHandIKControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_RiderHandIKControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRiderHandIKControlOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_RiderHandIKControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_RiderHandIKControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRiderHandIKControlOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_RiderHandIKControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_RiderHandIKControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRiderHandIKControlOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_RiderHandIKControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_RiderHandIKControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorRiderHandIKControlLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_RiderHandIKControl, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_RiderHandIKControl, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRiderHandIKControlActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_RiderHandIKControl, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_RiderHandIKControl, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRiderHandIKControlModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_RiderHandIKControl, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_RiderHandIKControl, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

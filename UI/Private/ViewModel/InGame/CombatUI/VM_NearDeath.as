@@ -1,4 +1,3 @@
-﻿
 namespace FVM_NearDeath
 {
     const int ModelId = 0;
@@ -246,7 +245,7 @@ struct FVM_NearDeath : FEUIViewModel
                 }
             }
         }
-        return NSLOCTEXT("PlayerNearDeath", "PlayerRescuedBy_Unknown", "жњЄзџҐ");
+        return NSLOCTEXT("PlayerNearDeath", "PlayerRescuedBy_Unknown", "未知");
     }
     void OnGiveUp()
     {
@@ -376,7 +375,6 @@ struct __GeneratedProperties_FVM_NearDeath
     FText RescueName;
     UPROPERTY()
     TEUIModelRef<FVM_NearDeath> Self;
-
 
 }
 

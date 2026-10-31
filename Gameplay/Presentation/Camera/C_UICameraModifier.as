@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_RequestStartCameraModifier_NS
 {
     const TECSEventDerivedPtr<FCE_RequestStartCameraModifier> DerivedPtr = TECSEventDerivedPtr<FCE_RequestStartCameraModifier>();
@@ -17,7 +16,6 @@ struct FCE_RequestStartCameraModifier : FECSEvent
     TDataObjectPtr<FTPCameraModifierConfig> ModifierConfig;
     UPROPERTY()
     float32 OverrideEnterDuration = -1.0f;
-
 
     bool Validate() const
     {
@@ -45,7 +43,6 @@ struct FCE_RequestStopCameraModifier : FECSEvent
     float32 OverrideExitDuration = -1.0f;
     UPROPERTY()
     bool bWarnIfNotExists = true;
-
 
     bool Validate() const
     {

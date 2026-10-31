@@ -1,4 +1,3 @@
-﻿
 enum ESideHintType
 {
     Default,
@@ -91,7 +90,6 @@ struct FCE_DebugShowHintText : FECSEvent
     UPROPERTY()
     FECSEntity SpecifiedShowEntity;
 
-
 }
 
 struct FCE_ShowTargetClueHint : FECSEvent
@@ -101,7 +99,6 @@ struct FCE_ShowTargetClueHint : FECSEvent
     float32 ClueRatio;
     UPROPERTY()
     FName DisplayName;
-
 
 }
 
@@ -118,7 +115,6 @@ struct FCE_ShowSideHint : FECSEvent
     int ShowCount = 0;
     UPROPERTY()
     FECSEntity SpecifiedShowEntity;
-
 
 }
 
@@ -200,7 +196,6 @@ struct FCE_ShowSignalHint : FECSEvent
     UPROPERTY()
     FECSEntity TargetEntity;
 
-
 }
 
 struct FCE_CustomLevelEventRequest : FECSEvent
@@ -223,7 +218,6 @@ struct FCE_CustomLevelEvent : FECSEvent
     UPROPERTY()
     bool bIsTutorialEvent = false;
 
-
 }
 
 struct FCE_CustomLevelValueEvent : FECSEvent
@@ -233,7 +227,6 @@ struct FCE_CustomLevelValueEvent : FECSEvent
     FName CustomName;
     UPROPERTY()
     int Count;
-
 
 }
 
@@ -249,7 +242,6 @@ struct FCE_Event_ReviveTeleport : FECSEvent
     UPROPERTY()
     int SkipNearestCount = 0;
 
-
 }
 
 struct FCE_ChangeTargetMaterial : FECSEvent
@@ -263,7 +255,6 @@ struct FCE_ChangeTargetMaterial : FECSEvent
     TSoftObjectPtr<UMaterial> TargetMaterial;
     UPROPERTY()
     TSoftObjectPtr<UMaterialInstance> TargetMaterialInstance;
-
 
 }
 

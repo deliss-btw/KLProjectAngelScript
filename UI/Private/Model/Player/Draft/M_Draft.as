@@ -1,4 +1,3 @@
-﻿
 namespace FM_Draft
 {
     const int ModelId = 0;

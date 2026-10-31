@@ -1,5 +1,3 @@
-﻿
-
 struct FSpawnEntityGroup
 {
     UPROPERTY()

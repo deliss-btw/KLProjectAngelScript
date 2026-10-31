@@ -1,5 +1,3 @@
-﻿
-
 struct FT_Prop_Ability : FECSTrait
 {
     FECSTrait _base_FECSTrait;

@@ -1,5 +1,3 @@
-﻿
-
 class AKLLevelScriptTutorialCombatEasy : AKLLevelScriptTutorialActor
 {
     UPROPERTY()
@@ -83,7 +81,6 @@ class AKLLevelScriptTutorialCombatEasy : AKLLevelScriptTutorialActor
     TDataObjectPtr<FItemConfig> SavedCombatSlot1Item;
     TDataObjectPtr<FItemConfig> SavedCombatSlot2Item;
     bool bCombatItemSlotsSnapshotted = false;
-
 
     UFUNCTION()
     void OnTutorialStep_Implementation(const int InStepIndex)
@@ -206,7 +203,43 @@ class AKLLevelScriptTutorialCombatEasy : AKLLevelScriptTutorialActor
     }
     void RegisterAllEvents()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        this.RegisterLevelEventCallback(n"OnLockEvent", FCE_LockTargetChangeEvent, this.PlayerPawnEntity);
+        this.RegisterLevelEventCallback(n"OnHitEvent", FCE_HitEvent, ENTITY_NULL);
+        this.RegisterLevelEventCallback(n"OnDeathEvent", FCE_DeathEvent, ENTITY_NULL);
+        this.RegisterLevelEventCallback(n"OnPerfectDodgeEvent", FCE_PerfectDodgeEvent, this.PlayerPawnEntity);
+        this.RegisterLevelEventCallback(n"OnItemEvent", FCE_ConsumeCombatItemEvent, this.PlayerPawnEntity);
+        this.RegisterLevelEventCallback(n"OnSocialEvent", FCE_SocialActionAnimEvent, this.PlayerPawnEntity);
+        this.RegisterLevelEventCallback(n"OnCustomEvent", FCE_CustomLevelEvent, ENTITY_NULL);
+        this.RegisterLevelEventCallback(n"OnMarkLocationEvent", FCE_RequestMarkLocation, ENTITY_NULL);
+        this.RegisterLevelEventCallback(n"OnMarkEntityEvent", FCE_RequestMarkEntity, ENTITY_NULL);
+        this.RegisterLevelEventCallback(n"OnCustomWheelEvent", FCE_ShowCustomWheelOptionRequest, ENTITY_NULL);
+        FESMTriggerRespondedDelegate local_8;
+        local_8.BindUFunction(this, n"OnSkillTriggerResponded");
+        if (this.SimpleSkillTriggerNames.Num() == 0)
+        {
+            XWarning(ELog(22), "[CombatTutorial] SimpleSkillTriggerNames 未配置，step7 战技教学将无法完成");
+        }
+        if (this.UltraSkillTriggerNames.Num() == 0)
+        {
+            XWarning(ELog(22), "[CombatTutorial] UltraSkillTriggerNames 未配置，step8 绝技教学将无法完成");
+        }
+        if (this.DivineSkillTriggerNames.Num() == 0)
+        {
+            XWarning(ELog(22), "[CombatTutorial] DivineSkillTriggerNames 未配置，step9 神格技教学将无法完成");
+        }
+        for (auto& local_26 : this.SimpleSkillTriggerNames)
+        {
+            ::ULevelEventManager::Get().RegisterESMTriggerCallback(this.PlayerPawnEntity, local_26, local_8);
+        }
+        for (auto& local_26 : this.UltraSkillTriggerNames)
+        {
+            ::ULevelEventManager::Get().RegisterESMTriggerCallback(this.PlayerPawnEntity, local_26, local_8);
+        }
+        for (auto& local_26 : this.DivineSkillTriggerNames)
+        {
+            ::ULevelEventManager::Get().RegisterESMTriggerCallback(this.PlayerPawnEntity, local_26, local_8);
+        }
+        return;
     }
     UFUNCTION()
     void OnSkillTriggerResponded(const FECSEntity &inout Entity, const FName &inout TriggerName, const int StateMachineIndex)
@@ -282,7 +315,31 @@ class AKLLevelScriptTutorialCombatEasy : AKLLevelScriptTutorialActor
     }
     void SetupStep_Potion()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_1;
+        Super::BeginStepTutorial(this.Step5Info);
+        this.HideMonster(this.MonsterHammer);
+        this.HideMonster(this.MonsterThrower);
+        this.HideMonster(this.MonsterHammerKillable);
+        this.DisableItemBar(false);
+        this.SetMountDisabled(false);
+        Super::SetCombatSkillsDisabled(false);
+        CastTo local_6;
+        TDataObjectPtr<FItemConfig> local_30 = local_6.opCall();
+        if (!(local_30.IsSet()))
+        {
+            local_1 = 0;
+        }
+        else
+        {
+            bool local_57 = (::InventoryUtils::GetInventoryItemNumber(this.PlayerPawnEntity, local_30) <= 0);
+            local_1 = local_57;
+        }
+        if (local_1 != 0)
+        {
+            ::InventoryUtils::AddInventoryItem(this.PlayerPawnEntity, local_30, 1);
+        }
+        ::BlueprintFunctions_Level::Level_SetHPToRatio(FECSEntityAdapter(this.PlayerPawnEntity), 0.1f);
+        return;
     }
     void SetupStep_Dodge()
     {
@@ -337,7 +394,17 @@ class AKLLevelScriptTutorialCombatEasy : AKLLevelScriptTutorialActor
     }
     void SetupStep_ArmorBreaker()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Super::BeginStepTutorial(this.Step10Info);
+        this.SetMountDisabled(true);
+        Super::SetCombatSkillsDisabled(false);
+        this.DisableItemBar(false);
+        if (this.ArmorBreakerConfig.IsSet())
+        {
+            CastTo local_6;
+            ::InventoryUtils::AddInventoryItem(this.PlayerEntity, local_6.opCall(), 1);
+        }
+        Super::SetupMonster(this.SpawnedDodgeMonster, false, true, this.DodgeMonsterSkillIndex);
+        return;
     }
     void SetupStep_HealingPotion()
     {
@@ -779,7 +846,7 @@ class AKLLevelScriptTutorialCombatEasy : AKLLevelScriptTutorialActor
         {
             FEntityCreateFinishDelegate local_24;
             local_24.BindUFunction(this, n"OnDodgeMonsterCreateFinish");
-            ULevelEventManager local_28 = ::ULevelEventManager::Get();
+            ::ULevelEventManager::Get().RegisterCreatureCreateFinishCallback(this.SpawnedDodgeMonster, local_24);
         }
         return;
     }

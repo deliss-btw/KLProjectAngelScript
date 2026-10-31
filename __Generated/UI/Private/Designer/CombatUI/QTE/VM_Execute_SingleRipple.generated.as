@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_Execute_SingleRipple_Helpers
 {
 UFUNCTION()

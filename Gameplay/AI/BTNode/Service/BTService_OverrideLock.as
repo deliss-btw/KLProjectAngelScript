@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FAICommand_OverrideLock (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FAICommand_OverrideLockData
 {
     UPROPERTY()
@@ -17,7 +12,6 @@ struct FAICommand_OverrideLockData
     int64 QueryHandle = 0;
     UPROPERTY()
     bool bHoldTarget = true;
-
 
 }
 
@@ -96,7 +90,6 @@ class UBTService_OverrideLock : UBTService_AICommandScript
     bool bHoldTarget = true;
     UPROPERTY()
     FAICommand_OverrideLock AICommand;
-
 
     UFUNCTION()
     void OnInitCommandInstanceData_Implementation(const FAICommandInstanceDataInitContextPtr &inout Context) const

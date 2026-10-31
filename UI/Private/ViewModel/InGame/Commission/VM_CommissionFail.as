@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommissionFail
 {
     const int ModelId = 0;

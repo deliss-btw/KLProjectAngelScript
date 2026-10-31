@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_ScriptControlBehaviorFinished_NS
 {
     const TECSEventDerivedPtr<FCE_ScriptControlBehaviorFinished> DerivedPtr = TECSEventDerivedPtr<FCE_ScriptControlBehaviorFinished>();
@@ -29,7 +28,6 @@ struct FCE_ScriptControlBehaviorFinished : FECSEvent
     int EntryId;
     UPROPERTY()
     EScriptControlSourceType SourceType;
-
 
 }
 

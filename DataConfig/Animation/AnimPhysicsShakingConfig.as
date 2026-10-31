@@ -1,5 +1,3 @@
-﻿
-
 struct FAnimPhysicsShakingConfig : FDataObject
 {
     FDataObject _base_FDataObject;

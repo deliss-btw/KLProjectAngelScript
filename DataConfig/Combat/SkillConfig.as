@@ -1,4 +1,3 @@
-﻿
 enum ESkillButtonType
 {
     None,
@@ -8,7 +7,6 @@ enum ESkillButtonType
     SpecialAttack,
     LinkSkill,
 }
-
 
 struct FNormalSkillBtnConfig
 {
@@ -24,7 +22,6 @@ struct FNormalSkillBtnConfig
     bool bShowInputActionOnGamepad = false;
     UPROPERTY()
     bool bShowInputActionOnTouch = false;
-
 
     bool GetShowInputActionVisibility() const
     {
@@ -116,7 +113,6 @@ struct FSkillBtnConfig : FDataObject
     UPROPERTY()
     FNormalSkillBtnConfig DivineSkillBtnConfig;
 
-
     const TDataObjectPtr<FAvatarMappingConfig> GetAvatarMapping() const property
     {
         const TDataObjectPtr<FAvatarMappingConfig> __r;
@@ -139,7 +135,6 @@ struct FAddTemporarySkillConfig : FDataObject
     int MaxUsableTime = 1;
     UPROPERTY()
     FDataObjectPtr m_Hint;
-
 
     const TDataObjectPtr<FMessageHintConfig_LargeHint> GetHint() const property
     {
@@ -180,7 +175,6 @@ struct FSkillInitConfig : FDataObject
     UPROPERTY()
     FSoftBrush PreviewPicture;
 
-
 }
 
 struct FAvatarSkillSlotConfig
@@ -192,7 +186,6 @@ struct FAvatarSkillSlotConfig
     UPROPERTY()
     TDataObjectPtr<FTalentConfig> DefaultTalent;
 
-
 }
 
 struct FAvatarSkillConfig : FDataObject
@@ -202,7 +195,6 @@ struct FAvatarSkillConfig : FDataObject
     uint DataId;
     UPROPERTY()
     TArray<FAvatarSkillSlotConfig> SkillInitConfigs;
-
 
 }
 
@@ -223,12 +215,11 @@ struct FSkillEffectNounsConfig : FDataObject
 struct FSkillReplaceEntry
 {
     UPROPERTY()
-    USkillConfig SkillConfig;
+    USkillConfig SkillConfig = nullptr;
     UPROPERTY()
     ESkillSlot Slot = ESkillSlot(0);
     UPROPERTY()
     bool bReplaceInSameSlot = true;
-
 
 }
 
@@ -247,7 +238,6 @@ struct FSkillPresentationOverrideConfig : FDataObject
     bool bEnableReplaceSkill = false;
     UPROPERTY()
     TArray<FSkillReplaceEntry> ReplaceSkills;
-
 
     const TDataObjectPtr<FSkillBtnConfig> GetSkillBtnConfig() const property
     {

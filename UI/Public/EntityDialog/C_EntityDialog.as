@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_EntityDialog_NS
 {
     const TECSComponentDerivedPtr<FC_EntityDialog> DerivedPtr = TECSComponentDerivedPtr<FC_EntityDialog>();
@@ -18,11 +17,15 @@ struct FC_EntityDialog : FECSComponent
 
     FC_EntityDialog()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_EntityDialog(const FC_EntityDialog &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_DialogText = Other.m_DialogText;
         return;
@@ -59,11 +62,15 @@ struct FCS_EntityDialogSpeakers : FECSSingleton
 
     FCS_EntityDialogSpeakers()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FCS_EntityDialogSpeakers(const FCS_EntityDialogSpeakers &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_Entities = Other.m_Entities;
         this.m_InRangeEntities = Other.m_InRangeEntities;
@@ -199,37 +206,37 @@ bool RemoveEntityDialog(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEntityDialogOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EntityDialog, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EntityDialog, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityDialogOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EntityDialog, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EntityDialog, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityDialogOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EntityDialog, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EntityDialog, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityDialogOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EntityDialog, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EntityDialog, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityDialogOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EntityDialog, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EntityDialog, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEntityDialogLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EntityDialog, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EntityDialog, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEntityDialogActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EntityDialog, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EntityDialog, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEntityDialogModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EntityDialog, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EntityDialog, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_EntityDialogSpeakers
@@ -317,17 +324,17 @@ bool RemoveEntityDialogSpeakers(const FECSWorldPtr &inout World)
 }
 void __MonitorEntityDialogSpeakersLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_EntityDialogSpeakers, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_EntityDialogSpeakers, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEntityDialogSpeakersActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_EntityDialogSpeakers, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_EntityDialogSpeakers, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEntityDialogSpeakersModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_EntityDialogSpeakers, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_EntityDialogSpeakers, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

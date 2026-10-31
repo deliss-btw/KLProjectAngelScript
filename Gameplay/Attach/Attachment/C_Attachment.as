@@ -1,4 +1,3 @@
-﻿
 enum EZeroOutRotationAxisWhenDetach
 {
     Pitch,
@@ -67,18 +66,36 @@ struct FAttachmentInfo
 {
     FSubDirtyFlags8 __DirtyFlags;
     UPROPERTY()
-    FName m_SocketName = NAME_None;
+    FName m_SocketName;
     UPROPERTY()
-    bool m_bAttachOffsetBaseOnRootTransform = false;
+    bool m_bAttachOffsetBaseOnRootTransform;
     UPROPERTY()
-    FVector m_LocationOffset = FVector::ZeroVector;
+    FVector m_LocationOffset;
     UPROPERTY()
-    FRotator m_RotationOffset = FRotator::ZeroRotator;
+    FRotator m_RotationOffset;
     UPROPERTY()
-    bool m_bRestoreAlignedStaticSocketOnDetach = false;
+    bool m_bRestoreAlignedStaticSocketOnDetach;
 
+    FAttachmentInfo()
+    {
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_SocketName = NAME_None;
+        this.m_bAttachOffsetBaseOnRootTransform = false;
+        this.m_LocationOffset = FVector::ZeroVector;
+        this.m_RotationOffset = FRotator::ZeroRotator;
+        this.m_bRestoreAlignedStaticSocketOnDetach = false;
+        return;
+    }
     FAttachmentInfo(const FAttachmentInfo &inout Other)
     {
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_SocketName = NAME_None;
+        this.m_bAttachOffsetBaseOnRootTransform = false;
+        this.m_LocationOffset = FVector::ZeroVector;
+        this.m_RotationOffset = FRotator::ZeroRotator;
+        this.m_bRestoreAlignedStaticSocketOnDetach = false;
         this.m_SocketName = Other.m_SocketName;
         this.m_bAttachOffsetBaseOnRootTransform = Other.m_bAttachOffsetBaseOnRootTransform;
         this.m_LocationOffset = Other.m_LocationOffset;
@@ -188,20 +205,32 @@ struct FAttachmentRequestParam
 {
     FSubDirtyFlags8 __DirtyFlags;
     UPROPERTY()
-    FName m_SocketName = NAME_None;
+    FName m_SocketName;
     UPROPERTY()
     FVector m_LocationOffset;
     UPROPERTY()
     FRotator m_RotationOffset;
     UPROPERTY()
-    bool m_bUseDetachOffset = true;
+    bool m_bUseDetachOffset;
     UPROPERTY()
     FVector m_DetachLocationOffset;
     UPROPERTY()
     FRotator m_DetachRotationOffset;
 
+    FAttachmentRequestParam()
+    {
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_SocketName = NAME_None;
+        this.m_bUseDetachOffset = true;
+        return;
+    }
     FAttachmentRequestParam(const FAttachmentRequestParam &inout Other)
     {
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_SocketName = NAME_None;
+        this.m_bUseDetachOffset = true;
         this.m_SocketName = Other.m_SocketName;
         this.m_LocationOffset = Other.m_LocationOffset;
         this.m_RotationOffset = Other.m_RotationOffset;
@@ -347,11 +376,15 @@ struct FC_AttachmentChildren : FECSComponent
 
     FC_AttachmentChildren()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_AttachmentChildren(const FC_AttachmentChildren &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_Children = Other.m_Children;
         return;
@@ -394,12 +427,16 @@ struct FC_AttachmentParent : FECSComponent
 
     FC_AttachmentParent()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_Parent = ENTITY_NULL;
         this.__InitDirtyFlags();
         return;
     }
     FC_AttachmentParent(const FC_AttachmentParent &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_Parent = ENTITY_NULL;
         this.__InitDirtyFlags();
         this.m_Parent = Other.m_Parent;
@@ -439,22 +476,42 @@ struct FEventAttachToEntity
 {
     FSubDirtyFlags16 __DirtyFlags;
     UPROPERTY()
-    FECSEntity m_Parent = ENTITY_NULL;
+    FECSEntity m_Parent;
     UPROPERTY()
     FAttachmentInfo m_AttachmentInfo;
     UPROPERTY()
-    float32 m_AttachBlendInDuration = 0.0f;
+    float32 m_AttachBlendInDuration;
     UPROPERTY()
-    float32 m_AttachBlendKeepDuration = 0.0f;
+    float32 m_AttachBlendKeepDuration;
     UPROPERTY()
-    float32 m_DetachBlendOutDuration = 0.0f;
+    float32 m_DetachBlendOutDuration;
     UPROPERTY()
-    int m_AttachSocketUpdatePeriod = 0;
+    int m_AttachSocketUpdatePeriod;
     UPROPERTY()
-    FVector m_LogicLocationOffsetExtra = FVector::ZeroVector;
+    FVector m_LogicLocationOffsetExtra;
 
+    FEventAttachToEntity()
+    {
+        FSubDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_Parent = ENTITY_NULL;
+        this.m_AttachBlendInDuration = 0.0f;
+        this.m_AttachBlendKeepDuration = 0.0f;
+        this.m_DetachBlendOutDuration = 0.0f;
+        this.m_AttachSocketUpdatePeriod = 0;
+        this.m_LogicLocationOffsetExtra = FVector::ZeroVector;
+        return;
+    }
     FEventAttachToEntity(const FEventAttachToEntity &inout Other)
     {
+        FSubDirtyFlags16 local_4;
+        this.__DirtyFlags = local_4;
+        this.m_Parent = ENTITY_NULL;
+        this.m_AttachBlendInDuration = 0.0f;
+        this.m_AttachBlendKeepDuration = 0.0f;
+        this.m_DetachBlendOutDuration = 0.0f;
+        this.m_AttachSocketUpdatePeriod = 0;
+        this.m_LogicLocationOffsetExtra = FVector::ZeroVector;
         this.m_Parent = Other.m_Parent;
         this.m_AttachmentInfo = Other.m_AttachmentInfo;
         this.m_AttachBlendInDuration = Other.m_AttachBlendInDuration;
@@ -613,11 +670,36 @@ struct FEventDetachFromEntity
 
     FEventDetachFromEntity()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bUseDetachLocationOffset = true;
+        this.m_bUseDetachRotationOffset = true;
+        this.m_LocationOffset = FVector::ZeroVector;
+        this.m_RotationOffset = FRotator::ZeroRotator;
+        this.m_bOffsetBaseOnRootTransform = false;
+        this.m_ZeroOutRotationAxisWhenDetach = false;
+        this.m_bAvoidPenetrationFromParentPos = false;
+        return;
     }
     FEventDetachFromEntity(const FEventDetachFromEntity &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_bUseDetachLocationOffset = true;
+        this.m_bUseDetachRotationOffset = true;
+        this.m_LocationOffset = FVector::ZeroVector;
+        this.m_RotationOffset = FRotator::ZeroRotator;
+        this.m_bOffsetBaseOnRootTransform = false;
+        this.m_ZeroOutRotationAxisWhenDetach = false;
+        this.m_bAvoidPenetrationFromParentPos = false;
+        this.m_bUseDetachLocationOffset = Other.m_bUseDetachLocationOffset;
+        this.m_bUseDetachRotationOffset = Other.m_bUseDetachRotationOffset;
+        this.m_LocationOffset = Other.m_LocationOffset;
+        this.m_RotationOffset = Other.m_RotationOffset;
+        this.m_bOffsetBaseOnRootTransform = Other.m_bOffsetBaseOnRootTransform;
+        this.m_ZeroOutRotationAxisWhenDetach = (int(Other.m_ZeroOutRotationAxisWhenDetach) != 0);
+        this.m_bAvoidPenetrationFromParentPos = Other.m_bAvoidPenetrationFromParentPos;
+        return;
     }
     FEventDetachFromEntity opAssign(const FEventDetachFromEntity &inout Other)
     {
@@ -757,16 +839,14 @@ struct FCE_EntityAttachmentOperation : FECSEvent
     UPROPERTY()
     FEventDetachFromEntity DetachEvent;
 
-
 }
 
 struct FC_AttachmentAnimationData : FECSComponent
 {
     UPROPERTY()
-    FVector Location;
+    FVector Location = FVector::ZeroVector;
     UPROPERTY()
     float32 AttachMoveGait = 0.0f;
-
 
 }
 
@@ -798,11 +878,46 @@ struct FC_TransformAttachmentLogic : FECSComponent
 
     FC_TransformAttachmentLogic()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_AttachmentMode = ETransformAttachmentLogicMode(2);
+        this.m_bWorldSpaceLocationOffset = false;
+        this.m_BoneIndex = -1;
+        this.m_LocationOffset = FVector::ZeroVector;
+        this.m_RotationOffset = FQuat::Identity;
+        this.m_AttachSocketUpdatePeriod = 1;
+        this.m_bRestoreAlignedStaticSocketOnDetach = false;
+        this.m_AlignedStaticSocketInverseLocationOffset = FVector::ZeroVector;
+        this.m_AlignedStaticSocketInverseRotationOffset = FQuat::Identity;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_TransformAttachmentLogic(const FC_TransformAttachmentLogic &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_4;
+        this.__DirtyFlags = local_4;
+        this.m_AttachmentMode = ETransformAttachmentLogicMode(2);
+        this.m_bWorldSpaceLocationOffset = false;
+        this.m_BoneIndex = -1;
+        this.m_LocationOffset = FVector::ZeroVector;
+        this.m_RotationOffset = FQuat::Identity;
+        this.m_AttachSocketUpdatePeriod = 1;
+        this.m_bRestoreAlignedStaticSocketOnDetach = false;
+        this.m_AlignedStaticSocketInverseLocationOffset = FVector::ZeroVector;
+        this.m_AlignedStaticSocketInverseRotationOffset = FQuat::Identity;
+        this.__InitDirtyFlags();
+        this.m_AttachmentMode = Other.m_AttachmentMode;
+        this.m_bWorldSpaceLocationOffset = Other.m_bWorldSpaceLocationOffset;
+        this.m_AttachToEntity = Other.m_AttachToEntity;
+        this.m_SocketName = Other.m_SocketName;
+        this.m_BoneIndex = int(Other.m_BoneIndex);
+        this.m_LocationOffset = Other.m_LocationOffset;
+        this.m_RotationOffset = Other.m_RotationOffset;
+        this.m_AttachSocketUpdatePeriod = int(Other.m_AttachSocketUpdatePeriod);
+        this.m_bRestoreAlignedStaticSocketOnDetach = Other.m_bRestoreAlignedStaticSocketOnDetach;
+        this.m_AlignedStaticSocketInverseLocationOffset = Other.m_AlignedStaticSocketInverseLocationOffset;
+        this.m_AlignedStaticSocketInverseRotationOffset = Other.m_AlignedStaticSocketInverseRotationOffset;
+        return;
     }
     FC_TransformAttachmentLogic opAssign(const FC_TransformAttachmentLogic &inout Other)
     {
@@ -1040,11 +1155,38 @@ struct FC_SyncTransformAttachmentPresentation : FECSComponent
 
     FC_SyncTransformAttachmentPresentation()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_BlendKeepDuration = 0.0f;
+        this.m_BlendInDuration = 0.0f;
+        FRootDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bNeedBlendInView = false;
+        this.m_LocationOffset = FVector::ZeroVector;
+        this.m_RotationOffset = FQuat::Identity;
+        this.m_BlendOutDuration = 0.0f;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_SyncTransformAttachmentPresentation(const FC_SyncTransformAttachmentPresentation &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_BlendKeepDuration = 0.0f;
+        this.m_BlendInDuration = 0.0f;
+        FRootDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_bNeedBlendInView = false;
+        this.m_LocationOffset = FVector::ZeroVector;
+        this.m_RotationOffset = FQuat::Identity;
+        this.m_BlendOutDuration = 0.0f;
+        this.__InitDirtyFlags();
+        this.m_AttachToEntity = Other.m_AttachToEntity;
+        this.m_SocketName = Other.m_SocketName;
+        this.m_bNeedBlendInView = Other.m_bNeedBlendInView;
+        this.m_LocationOffset = Other.m_LocationOffset;
+        this.m_RotationOffset = Other.m_RotationOffset;
+        this.m_BlendKeepDuration = Other.m_BlendKeepDuration;
+        this.m_BlendInDuration = Other.m_BlendInDuration;
+        this.m_BlendOutDuration = Other.m_BlendOutDuration;
+        this.m_AttachTime = Other.m_AttachTime;
+        return;
     }
     FC_SyncTransformAttachmentPresentation opAssign(const FC_SyncTransformAttachmentPresentation &inout Other)
     {
@@ -1231,7 +1373,6 @@ struct FC_ViewTransformAttachmentPresentation : FECSComponent
     UPROPERTY()
     float32 BlendDuration = 0.0f;
 
-
 }
 
 struct FC_ViewDetachBlend : FECSComponent
@@ -1247,13 +1388,12 @@ struct FC_ViewDetachBlend : FECSComponent
     UPROPERTY()
     float32 BlendDuration = 0.0f;
 
-
 }
 
 struct FC_ViewDetachTeleportHold : FECSComponent
 {
     UPROPERTY()
-    FVector TargetLocation;
+    FVector TargetLocation = FVector::ZeroVector;
     UPROPERTY()
     FQuat TargetRotation = FQuat::Identity;
     UPROPERTY()
@@ -1350,37 +1490,37 @@ bool RemoveAttachmentChildren(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAttachmentChildrenOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AttachmentChildren, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AttachmentChildren, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttachmentChildrenOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AttachmentChildren, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AttachmentChildren, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttachmentChildrenOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AttachmentChildren, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AttachmentChildren, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttachmentChildrenOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AttachmentChildren, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AttachmentChildren, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttachmentChildrenOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AttachmentChildren, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AttachmentChildren, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAttachmentChildrenLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AttachmentChildren, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AttachmentChildren, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAttachmentChildrenActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AttachmentChildren, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AttachmentChildren, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAttachmentChildrenModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AttachmentChildren, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AttachmentChildren, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AttachmentParent
@@ -1460,37 +1600,37 @@ bool RemoveAttachmentParent(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAttachmentParentOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AttachmentParent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AttachmentParent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttachmentParentOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AttachmentParent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AttachmentParent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttachmentParentOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AttachmentParent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AttachmentParent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttachmentParentOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AttachmentParent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AttachmentParent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttachmentParentOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AttachmentParent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AttachmentParent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAttachmentParentLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AttachmentParent, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AttachmentParent, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAttachmentParentActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AttachmentParent, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AttachmentParent, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAttachmentParentModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AttachmentParent, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AttachmentParent, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AttachmentAnimationData
@@ -1570,37 +1710,37 @@ bool RemoveAttachmentAnimationData(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAttachmentAnimationDataOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AttachmentAnimationData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AttachmentAnimationData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttachmentAnimationDataOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AttachmentAnimationData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AttachmentAnimationData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttachmentAnimationDataOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AttachmentAnimationData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AttachmentAnimationData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttachmentAnimationDataOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AttachmentAnimationData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AttachmentAnimationData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttachmentAnimationDataOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AttachmentAnimationData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AttachmentAnimationData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAttachmentAnimationDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AttachmentAnimationData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AttachmentAnimationData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAttachmentAnimationDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AttachmentAnimationData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AttachmentAnimationData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAttachmentAnimationDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AttachmentAnimationData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AttachmentAnimationData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TransformAttachmentLogic
@@ -1680,37 +1820,37 @@ bool RemoveTransformAttachmentLogic(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTransformAttachmentLogicOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TransformAttachmentLogic, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TransformAttachmentLogic, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTransformAttachmentLogicOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TransformAttachmentLogic, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TransformAttachmentLogic, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTransformAttachmentLogicOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TransformAttachmentLogic, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TransformAttachmentLogic, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTransformAttachmentLogicOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TransformAttachmentLogic, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TransformAttachmentLogic, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTransformAttachmentLogicOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TransformAttachmentLogic, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TransformAttachmentLogic, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTransformAttachmentLogicLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TransformAttachmentLogic, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TransformAttachmentLogic, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTransformAttachmentLogicActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TransformAttachmentLogic, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TransformAttachmentLogic, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTransformAttachmentLogicModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TransformAttachmentLogic, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TransformAttachmentLogic, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_SyncTransformAttachmentPresentation
@@ -1790,37 +1930,37 @@ bool RemoveSyncTransformAttachmentPresentation(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorSyncTransformAttachmentPresentationOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_SyncTransformAttachmentPresentation, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_SyncTransformAttachmentPresentation, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSyncTransformAttachmentPresentationOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_SyncTransformAttachmentPresentation, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_SyncTransformAttachmentPresentation, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSyncTransformAttachmentPresentationOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_SyncTransformAttachmentPresentation, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_SyncTransformAttachmentPresentation, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSyncTransformAttachmentPresentationOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_SyncTransformAttachmentPresentation, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_SyncTransformAttachmentPresentation, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSyncTransformAttachmentPresentationOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_SyncTransformAttachmentPresentation, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_SyncTransformAttachmentPresentation, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorSyncTransformAttachmentPresentationLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_SyncTransformAttachmentPresentation, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_SyncTransformAttachmentPresentation, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSyncTransformAttachmentPresentationActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_SyncTransformAttachmentPresentation, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_SyncTransformAttachmentPresentation, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSyncTransformAttachmentPresentationModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_SyncTransformAttachmentPresentation, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_SyncTransformAttachmentPresentation, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ViewTransformAttachmentPresentation
@@ -1903,37 +2043,37 @@ bool RemoveViewTransformAttachmentPresentation(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorViewTransformAttachmentPresentationOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ViewTransformAttachmentPresentation, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ViewTransformAttachmentPresentation, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorViewTransformAttachmentPresentationOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ViewTransformAttachmentPresentation, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ViewTransformAttachmentPresentation, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorViewTransformAttachmentPresentationOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ViewTransformAttachmentPresentation, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ViewTransformAttachmentPresentation, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorViewTransformAttachmentPresentationOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ViewTransformAttachmentPresentation, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ViewTransformAttachmentPresentation, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorViewTransformAttachmentPresentationOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ViewTransformAttachmentPresentation, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ViewTransformAttachmentPresentation, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorViewTransformAttachmentPresentationLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ViewTransformAttachmentPresentation, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ViewTransformAttachmentPresentation, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorViewTransformAttachmentPresentationActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ViewTransformAttachmentPresentation, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ViewTransformAttachmentPresentation, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorViewTransformAttachmentPresentationModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ViewTransformAttachmentPresentation, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ViewTransformAttachmentPresentation, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ViewDetachBlend
@@ -2016,37 +2156,37 @@ bool RemoveViewDetachBlend(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorViewDetachBlendOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ViewDetachBlend, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ViewDetachBlend, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorViewDetachBlendOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ViewDetachBlend, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ViewDetachBlend, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorViewDetachBlendOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ViewDetachBlend, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ViewDetachBlend, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorViewDetachBlendOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ViewDetachBlend, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ViewDetachBlend, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorViewDetachBlendOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ViewDetachBlend, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ViewDetachBlend, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorViewDetachBlendLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ViewDetachBlend, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ViewDetachBlend, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorViewDetachBlendActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ViewDetachBlend, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ViewDetachBlend, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorViewDetachBlendModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ViewDetachBlend, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ViewDetachBlend, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ViewDetachTeleportHold
@@ -2129,37 +2269,37 @@ bool RemoveViewDetachTeleportHold(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorViewDetachTeleportHoldOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ViewDetachTeleportHold, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ViewDetachTeleportHold, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorViewDetachTeleportHoldOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ViewDetachTeleportHold, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ViewDetachTeleportHold, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorViewDetachTeleportHoldOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ViewDetachTeleportHold, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ViewDetachTeleportHold, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorViewDetachTeleportHoldOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ViewDetachTeleportHold, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ViewDetachTeleportHold, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorViewDetachTeleportHoldOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ViewDetachTeleportHold, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ViewDetachTeleportHold, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorViewDetachTeleportHoldLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ViewDetachTeleportHold, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ViewDetachTeleportHold, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorViewDetachTeleportHoldActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ViewDetachTeleportHold, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ViewDetachTeleportHold, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorViewDetachTeleportHoldModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ViewDetachTeleportHold, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ViewDetachTeleportHold, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AttachChildrenChangedTag
@@ -2239,37 +2379,37 @@ bool RemoveAttachChildrenChangedTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAttachChildrenChangedTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AttachChildrenChangedTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AttachChildrenChangedTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttachChildrenChangedTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AttachChildrenChangedTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AttachChildrenChangedTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttachChildrenChangedTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AttachChildrenChangedTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AttachChildrenChangedTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttachChildrenChangedTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AttachChildrenChangedTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AttachChildrenChangedTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttachChildrenChangedTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AttachChildrenChangedTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AttachChildrenChangedTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAttachChildrenChangedTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AttachChildrenChangedTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AttachChildrenChangedTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAttachChildrenChangedTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AttachChildrenChangedTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AttachChildrenChangedTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAttachChildrenChangedTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AttachChildrenChangedTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AttachChildrenChangedTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

@@ -1,4 +1,3 @@
-﻿
 namespace MarkUtil
 {
 void RequestFastMarkFromUEPlayerController(const AECSPlayerController UEPlayerController)
@@ -44,7 +43,7 @@ void RequestRemoveMark(const FECSEntity &inout RequesterPlayer, const FECSEntity
     if (!(MarkUtil::CanManuallyRemoveMark(RequesterPlayer, MarkOrMarkedEntityID)))
     {
         FCommonTipsParam local_10;
-        CommonPopup::WeakTips(NSLOCTEXT("Mark", "CannotManuallyRemoveMark", "з›®ж ‡е·Іжњ‰ж ‡и®°пјЊж— жі•ж‰‹еЉЁз§»й™¤"), local_10);
+        CommonPopup::WeakTips(NSLOCTEXT("Mark", "CannotManuallyRemoveMark", "目标已有标记，无法手动移除"), local_10);
         return;
     }
     FFPTime local_16 = FFPTime(-1);
@@ -796,6 +795,7 @@ FECSEntity AddMarkToPosition(const FVector &inout Position, const FECSEntity &in
     local_66.GetModify_AllMarks().Add(local_8.GetId(), local_58);
     GetGameplaySettings<UMarkSettings> local_72;
     local_70 = local_72;
+    EntityLevelSpotUtils::AddSpotDataForViewers(local_8, ELevelSpotDataSource(3), FLevelSpotData(MarkConfig.opArrow().GetPresentationConfig(), local_70.PositionMarkPresentationRule), MarkUtil_Internal::GetCurrentViewers(PlayerEntity));
     return local_8;
 }
 void ChangeMarkConfig(const FECSEntity &inout PlayerEntity, const FECSEntityId &inout MarkEntityID, const TDataObjectPtr<FMarkConfig> &inout NewMarkConfig)
@@ -834,6 +834,7 @@ void ChangeMarkConfig(const FECSEntity &inout PlayerEntity, const FECSEntityId &
                 local_6.GetModify_AllMarks()[MarkEntityID] = local_44;
                 GetGameplaySettings<UMarkSettings> local_214;
                 local_212 = local_214;
+                EntityLevelSpotUtils::ChangeSpotData(local_120, ELevelSpotDataSource(3), FLevelSpotData(NewMarkConfig.opArrow().GetPresentationConfig(), local_212.PositionMarkPresentationRule));
                 if (ECS::GetRuntimeInfo().IsServer)
                 {
                     MarkUtil_Internal::ApplyMarkTags(local_120, NewMarkConfig);
@@ -845,8 +846,37 @@ void ChangeMarkConfig(const FECSEntity &inout PlayerEntity, const FECSEntityId &
 }
 bool FastMarkLineTrace(const FECSEntity &inout PlayerEntity, FECSEntity &out HitEntity, FVector &out HitLocation)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    bool __r; return __r;
+    const AActor local_138;
+    FECSEntity local_4;
+    HitEntity = local_4;
+    HitLocation = FVector();
+    int local_11 = 1176256512;
+    FECSWorldPtr local_14 = PlayerEntity.GetWorld();
+    Get local_18;
+    const FCS_InputLocal& local_20 = local_18.opCall();
+    if (local_20)
+    {
+        FHitResult local_88;
+        FCollisionQueryParams local_126;
+        FECSEntity local_130 = FASCommonUtils::GetUniqueAvatarPawnEntity(PlayerEntity);
+        if (local_130)
+        {
+            local_138 = local_130.GetActor();
+            if (local_138 != nullptr)
+            {
+                local_126.AddIgnoredActor(local_138);
+            }
+        }
+        FCollisionResponseParams local_166;
+        bool local_169 = FPhysicsUtils::LineTraceSingle(PlayerEntity, false, EPhysicsTraceTag(35), local_88, local_20.ViewPosition, (FVector(local_20.ViewPosition) + (local_20.ViewDir.GetForwardVector() * 10000.0)), ECollisionChannel(29), local_126, local_166);
+        if (local_169)
+        {
+            HitEntity = ECS::GetEntity(local_88.GetActor(), false);
+            HitLocation = local_88.Location;
+            return true;
+        }
+    }
+    return false;
 }
 UMarkSettings GetMinimapMarkIconsSetting()
 {
@@ -951,7 +981,8 @@ bool FindPlayerVisibleMarkInfo(const FECSEntity &inout ObserverPlayer, const FEC
     {
         if (MarkUtil_Internal::GetMarkInfo(local_60, MarkEntityID, MarkInfo))
         {
-            if (!(MarkUtil_Internal::CanVisitPlayerMark(ObserverPlayer, local_60, MarkInfo.GetMarkConfig().opArrow().bShareWithTeammates)))
+            int local_45 = MarkInfo.GetMarkConfig().opArrow().bShareWithTeammates;
+            if (!(MarkUtil_Internal::CanVisitPlayerMark(ObserverPlayer, local_60, (local_45 != 0))))
             {
                 continue;
             }

@@ -1,4 +1,3 @@
-﻿
 namespace FPhysicsShakeUtils
 {
     const float32 NormalWorldSpaceLinearMultiplier = 1000f;
@@ -10,7 +9,7 @@ namespace FPhysicsShakeUtils
 struct FShakeBoneChainConfig
 {
     UPROPERTY()
-    FName BoneChainName;
+    FName BoneChainName = NAME_None;
     UPROPERTY()
     TArray<FName> BoneNames;
     UPROPERTY()
@@ -46,7 +45,6 @@ struct FShakeBoneChainConfig
     UPROPERTY()
     int TriggeringChainIdx = -1;
 
-
 }
 
 struct FShakeControlSetting
@@ -81,8 +79,8 @@ void SetNormalMode(FShakeControlSetting &inout ShakeControlSetting)
     FPhysicsControlNamedControlMultiplierParameters local_32;
     local_32.Name = FName("WorldSpace");
     local_32.Data = FPhysicsShakeUtils::CreateWorldSpaceNormalMultiplier();
-    ShakeControlSetting.ControlMultiplierUpdates.Empty(0);
-    ShakeControlSetting.ControlMultiplierUpdates.Add(local_32);
+    ShakeControlSetting.PhysicsControlControlAndModifierUpdates.ControlMultiplierUpdates.Empty(0);
+    ShakeControlSetting.PhysicsControlControlAndModifierUpdates.ControlMultiplierUpdates.Add(local_32);
     return;
 }
 void GenerateBoneConstraintNames(const TArray<FName> &inout BoneNames, TArray<FName> &inout OutBoneConstraintNames)

@@ -1,5 +1,3 @@
-﻿
-
 class US_DialogueDeliverySystem : UECSScriptSystem
 {
     US_DialogueDeliverySystem()
@@ -262,11 +260,10 @@ class US_DialogueDeliverySystem : UECSScriptSystem
             ::UDialogueSubtitleSubsystem::Get().StopNarration();
         }
         FECSWorldPtr local_12 = ECS::GetECSWorld();
-        EDialogueType local_19 = DialogueSection.GetSection().GetDialogueType();
-        bool local_1 = ::UDialogueSubtitleSubsystem::Get().ShowDialogueWidget(local_18.UEPlayerController.GetLocalPlayer());
+        bool local_1 = ::UDialogueSubtitleSubsystem::Get().ShowDialogueWidget(local_18.UEPlayerController.GetLocalPlayer(), EDialogueType(DialogueSection.GetSection().GetDialogueType()));
         if (local_1)
         {
-            if ((int(DialogueSection.GetSection().GetDialogueType())) == 0)
+            if (int(DialogueSection.GetSection().GetDialogueType()) == 0)
             {
                 FDialogueDeliveryContext local_72;
                 if (::DialogueUtils::TryFindDialogueContext(DialogueSection.GetSection().GetDialogueContextEntity(), local_72))
@@ -383,6 +380,7 @@ class US_DialogueDeliverySystem : UECSScriptSystem
     UFUNCTION()
     void ClientJob_HandleDialogueNextSubtitle(const FECSEntity &inout PlayerEntity, const FC_DialogueSection &inout DialogueSection) const
     {
+        int local_72;
         int local_76;
         Remove local_4;
         local_4.opCall();
@@ -397,7 +395,16 @@ class US_DialogueDeliverySystem : UECSScriptSystem
         int local_67 = int(local_66.SubtitleIndex) + 1;
         bool local_5 = (local_67 >= 0) && (local_67 < local_54.GetSubtitles().Num());
         bool local_70 = (local_67 == (local_54.GetSubtitles().Num() - 1));
-        if (int(local_66.SubtitleIndex) >= 0 && (int(local_66.SubtitleIndex) < local_54.GetSubtitles().Num()))
+        if (int(local_66.SubtitleIndex) < 0)
+        {
+            local_72 = 0;
+        }
+        else
+        {
+            bool local_71 = (int(local_66.SubtitleIndex) < local_54.GetSubtitles().Num());
+            local_72 = local_71;
+        }
+        if (local_72 != 0)
         {
             int local_73;
             local_73 = local_54.GetSubtitles()[int(local_66.SubtitleIndex)].GetDialogueNodeId();
@@ -421,14 +428,22 @@ class US_DialogueDeliverySystem : UECSScriptSystem
             local_66.SubtitleIndex = local_67;
             if (local_52.FillSubtitle(local_104))
             {
-                bool local_71 = false;
-                local_82.DisplaySubtitle(FDialogueSubtitleDisplayConfig(local_104, ::DialogueUtils::GetDialogueVoiceType(local_54.GetDialogueType()), false, local_71));
+                bool local_71_2 = false;
+                local_82.DisplaySubtitle(FDialogueSubtitleDisplayConfig(local_104, ::DialogueUtils::GetDialogueVoiceType(local_54.GetDialogueType()), false, local_71_2));
             }
             else
             {
                 XError(ELog(64), FString().Append("Failed to fill subtitle: ").Append(local_104.GetDialogueLineName()));
             }
-            if (local_70 && (local_54.GetOptions().Num() > 0))
+            if (!(local_70))
+            {
+                local_72 = 0;
+            }
+            else
+            {
+                local_72 = (local_54.GetOptions().Num() > 0);
+            }
+            if (local_72 != 0)
             {
                 TArray<FDialogueOptionInfo> local_136 = local_52.GetFilledOptions(local_54);
                 if (local_136.Num() > 0)
@@ -647,6 +662,7 @@ class US_DialogueDeliverySystem : UECSScriptSystem
     void ClientJob_HandleNarrationStart(const FCE_NarrationDialogueStart &inout Event) const
     {
         const FNarrationDialogueConfig& local_4;
+        const FDialogueLineConfig& local_24;
         const UDialogueSettings local_78;
         if (!(Event.DialogueConfig.IsSet()))
         {
@@ -659,38 +675,34 @@ class US_DialogueDeliverySystem : UECSScriptSystem
         }
         TArray<FDialogueSubtitle> local_16;
         int local_17 = 0;
-        while (local_17 < 0)
+        for (; local_17 < local_4.NarrationEntries.Num(); ++local_17)
         {
             const FNarrationSubtitleEntry& local_22 = local_4.NarrationEntries[local_17];
             if (!(local_22.DialogueLine.IsSet()))
             {
+                continue;
             }
-            else
+            FDialogueSubtitle local_46 = FDialogueSubtitle(FECSEntity(), local_17, local_24.GetDataName());
+            local_46.SetDuration(local_22.SubtitleDuration);
+            local_46.SetContent(local_24.LineText);
+            local_46.SetSpeakerName(local_24.GetSpeakerName());
+            if (local_24.GetVoiceConfig().IsSet())
             {
-                const FDialogueLineConfig& local_24;
-                FDialogueSubtitle local_46 = FDialogueSubtitle(FECSEntity(), local_17, local_24.GetDataName());
-                local_46.SetDuration(local_22.SubtitleDuration);
-                local_46.SetContent(local_24.LineText);
-                local_46.SetSpeakerName(local_24.GetSpeakerName());
-                if (local_24.GetVoiceConfig().IsSet())
+                const FDialogueVoiceConfig& local_58;
+                for (auto& local_72 : local_58.VOSources)
                 {
-                    const FDialogueVoiceConfig& local_58;
-                    for (auto& local_72 : local_58.VOSources)
+                    if ((int(local_72.PlayerGender) == 0 || (int(local_72.PlayerGender) == 2)))
                     {
-                        if ((int(local_72.PlayerGender) == 0 || (int(local_72.PlayerGender) == 2)))
+                        if (local_72.Duration > 0.0f)
                         {
-                            if (local_72.Duration > 0.0f)
-                            {
-                                local_46.SetDuration(local_72.Duration);
-                            }
-                            local_46.SetVOFile(local_72.VOFile);
-                            break;
+                            local_46.SetDuration(local_72.Duration);
                         }
+                        local_46.SetVOFile(local_72.VOFile);
+                        break;
                     }
                 }
-                local_16.Add(local_46);
             }
-            ++local_17;
+            local_16.Add(local_46);
         }
         if (local_16.IsEmpty())
         {
@@ -727,8 +739,7 @@ class US_DialogueDeliverySystem : UECSScriptSystem
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_DialogueOptionSelect, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_DialogueOptionSelect, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());
@@ -1349,8 +1360,7 @@ class US_DialogueDeliverySystem : UECSScriptSystem
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_DialogueRequestEnd, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_DialogueRequestEnd, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());

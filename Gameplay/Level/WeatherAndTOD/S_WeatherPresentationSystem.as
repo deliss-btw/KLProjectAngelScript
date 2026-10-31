@@ -1,5 +1,3 @@
-﻿
-
 class US_WeatherPresentationSystem : UECSScriptSystem
 {
     US_WeatherPresentationSystem()
@@ -8,7 +6,7 @@ class US_WeatherPresentationSystem : UECSScriptSystem
     }
     bool GetArtWeatherConfig(const FECSEntity &inout SourceEntity, const TDataObjectPtr<FWeatherConfig> &inout WeatherConfig, FArtWeatherConfig &inout ArtWeatherConfig, TDataObjectPtr<FWorldAreaConfig> &inout WorldAreaConfig) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
         bool __r; return __r;
     }
     UFUNCTION()
@@ -201,6 +199,7 @@ class US_WeatherPresentationSystem : UECSScriptSystem
         FCS_DebugViewWeatherAndTOD local_8;
         int local_46 = 0;
         FString local_58;
+        int local_73;
         FECSWorldPtr local_2 = this.GetECSWorld();
         if (!(!(local_8)) && local_8.bDrawWeatherInfo)
         {
@@ -241,7 +240,15 @@ class US_WeatherPresentationSystem : UECSScriptSystem
             float32 local_72 = KLWeather::KLWeather_GetTimeInSeconds(__GetWorldContext());
             bool local_9 = (int(local_16.CurrentArtWeatherIndex) < (local_16.ArtWeatherConfig.ArtWeathers.Num() - 1));
             FArtWeatherSingleParam local_80;
-            if (int(local_16.CurrentArtWeatherIndex) >= 0 && (int(local_16.CurrentArtWeatherIndex) < local_16.ArtWeatherConfig.ArtWeathers.Num()))
+            if (int(local_16.CurrentArtWeatherIndex) < 0)
+            {
+                local_73 = 0;
+            }
+            else
+            {
+                local_73 = (int(local_16.CurrentArtWeatherIndex) < local_16.ArtWeatherConfig.ArtWeathers.Num());
+            }
+            if (local_73 != 0)
             {
                 local_80 = local_16.ArtWeatherConfig.ArtWeathers[int(local_16.CurrentArtWeatherIndex)];
             }

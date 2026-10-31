@@ -1,5 +1,3 @@
-﻿
-
 class US_EcologyPropSystem : UECSScriptSystem
 {
     US_EcologyPropSystem()

@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::API::ECSAPI
 {
 uint GetAvatarEntityId()

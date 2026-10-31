@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class UFrontendSystemBehaviorBase : UObject
 {
@@ -28,7 +26,7 @@ class UFrontendSystemBehaviorBase : UObject
 struct FFrontendSystemBehaviorInstance
 {
     UPROPERTY()
-    const UFrontendSystemBehaviorBase Behavior;
+    const UFrontendSystemBehaviorBase Behavior = nullptr;
 
     FFrontendSystemBehaviorInstance()
     {

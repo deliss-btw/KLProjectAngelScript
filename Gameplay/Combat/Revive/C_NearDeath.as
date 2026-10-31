@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_NearDeathInfo_NS
 {
     const TECSComponentDerivedPtr<FC_NearDeathInfo> DerivedPtr = TECSComponentDerivedPtr<FC_NearDeathInfo>();
@@ -71,6 +70,8 @@ struct FC_NearDeathInfo : FECSComponent
         this.m_MaxNearDeathHP = 0.0f;
         this.m_bCanHitOrLockTargetWhenNearDeath = false;
         this.m_bNearDeathHPZeroByDamage = false;
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
         this.m_KilledByEntity = ENTITY_ID_NULL;
         this.__InitDirtyFlags();
         return;
@@ -81,6 +82,8 @@ struct FC_NearDeathInfo : FECSComponent
         this.m_MaxNearDeathHP = 0.0f;
         this.m_bCanHitOrLockTargetWhenNearDeath = false;
         this.m_bNearDeathHPZeroByDamage = false;
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
         this.m_KilledByEntity = ENTITY_ID_NULL;
         this.__InitDirtyFlags();
         this.m_NearDeathHP = Other.m_NearDeathHP;
@@ -192,6 +195,8 @@ struct FC_NearDeathDeferTransition : FECSComponent
     {
         this.m_bWaitLand = false;
         this.m_bDeferByAction = false;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
@@ -199,6 +204,8 @@ struct FC_NearDeathDeferTransition : FECSComponent
     {
         this.m_bWaitLand = false;
         this.m_bDeferByAction = false;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_bWaitLand = Other.m_bWaitLand;
         this.m_bDeferByAction = Other.m_bDeferByAction;
@@ -253,12 +260,16 @@ struct FC_BeingRescuedInfo : FECSComponent
 
     FC_BeingRescuedInfo()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_RescuedByEntity = ENTITY_ID_NULL;
         this.__InitDirtyFlags();
         return;
     }
     FC_BeingRescuedInfo(const FC_BeingRescuedInfo &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_RescuedByEntity = ENTITY_ID_NULL;
         this.__InitDirtyFlags();
         this.m_RescuedByEntity = Other.m_RescuedByEntity;
@@ -299,7 +310,6 @@ struct FC_BeingRescuedViewProgress : FECSComponent
     UPROPERTY()
     float32 RescueProgress = 0.0f;
 
-
 }
 
 struct FC_InRescuedOtherInfo : FECSComponent
@@ -310,12 +320,16 @@ struct FC_InRescuedOtherInfo : FECSComponent
 
     FC_InRescuedOtherInfo()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_RescuedTarget = ENTITY_ID_NULL;
         this.__InitDirtyFlags();
         return;
     }
     FC_InRescuedOtherInfo(const FC_InRescuedOtherInfo &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_RescuedTarget = ENTITY_ID_NULL;
         this.__InitDirtyFlags();
         this.m_RescuedTarget = Other.m_RescuedTarget;
@@ -360,12 +374,16 @@ struct FC_NearDeathCounter : FECSComponent
     FC_NearDeathCounter()
     {
         this.m_NearDeathCount = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FC_NearDeathCounter(const FC_NearDeathCounter &inout Other)
     {
         this.m_NearDeathCount = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_NearDeathCount = int(Other.m_NearDeathCount);
         return;
@@ -414,7 +432,6 @@ struct FCE_RescueNearDeathEvent : FECSEvent
     UPROPERTY()
     float32 OverrideHpRatio = 0.0f;
 
-
 }
 
 struct FCE_RescuedFromNearDeathEvent : FECSEvent
@@ -447,11 +464,15 @@ struct FCS_NearDeathRule : FECSSingleton
 
     FCS_NearDeathRule()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FCS_NearDeathRule(const FCS_NearDeathRule &inout Other)
     {
+        FRootDirtyFlags8 local_25;
+        this.__DirtyFlags = local_25;
         this.__InitDirtyFlags();
         this.m_ReviveData = Other.m_ReviveData;
         return;
@@ -633,37 +654,37 @@ bool RemoveNearDeathInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorNearDeathInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_NearDeathInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_NearDeathInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNearDeathInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_NearDeathInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_NearDeathInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNearDeathInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_NearDeathInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_NearDeathInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNearDeathInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_NearDeathInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_NearDeathInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNearDeathInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_NearDeathInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_NearDeathInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorNearDeathInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_NearDeathInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_NearDeathInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorNearDeathInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_NearDeathInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_NearDeathInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorNearDeathInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_NearDeathInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_NearDeathInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_NearDeathDeferTransition
@@ -743,37 +764,37 @@ bool RemoveNearDeathDeferTransition(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorNearDeathDeferTransitionOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_NearDeathDeferTransition, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_NearDeathDeferTransition, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNearDeathDeferTransitionOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_NearDeathDeferTransition, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_NearDeathDeferTransition, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNearDeathDeferTransitionOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_NearDeathDeferTransition, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_NearDeathDeferTransition, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNearDeathDeferTransitionOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_NearDeathDeferTransition, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_NearDeathDeferTransition, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNearDeathDeferTransitionOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_NearDeathDeferTransition, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_NearDeathDeferTransition, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorNearDeathDeferTransitionLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_NearDeathDeferTransition, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_NearDeathDeferTransition, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorNearDeathDeferTransitionActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_NearDeathDeferTransition, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_NearDeathDeferTransition, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorNearDeathDeferTransitionModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_NearDeathDeferTransition, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_NearDeathDeferTransition, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_BeingRescuedInfo
@@ -853,37 +874,37 @@ bool RemoveBeingRescuedInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorBeingRescuedInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_BeingRescuedInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_BeingRescuedInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBeingRescuedInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_BeingRescuedInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_BeingRescuedInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBeingRescuedInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_BeingRescuedInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_BeingRescuedInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBeingRescuedInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_BeingRescuedInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_BeingRescuedInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBeingRescuedInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_BeingRescuedInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_BeingRescuedInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorBeingRescuedInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_BeingRescuedInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_BeingRescuedInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBeingRescuedInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_BeingRescuedInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_BeingRescuedInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBeingRescuedInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_BeingRescuedInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_BeingRescuedInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_BeingRescuedViewProgress
@@ -963,37 +984,37 @@ bool RemoveBeingRescuedViewProgress(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorBeingRescuedViewProgressOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_BeingRescuedViewProgress, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_BeingRescuedViewProgress, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBeingRescuedViewProgressOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_BeingRescuedViewProgress, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_BeingRescuedViewProgress, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBeingRescuedViewProgressOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_BeingRescuedViewProgress, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_BeingRescuedViewProgress, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBeingRescuedViewProgressOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_BeingRescuedViewProgress, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_BeingRescuedViewProgress, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBeingRescuedViewProgressOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_BeingRescuedViewProgress, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_BeingRescuedViewProgress, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorBeingRescuedViewProgressLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_BeingRescuedViewProgress, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_BeingRescuedViewProgress, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBeingRescuedViewProgressActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_BeingRescuedViewProgress, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_BeingRescuedViewProgress, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBeingRescuedViewProgressModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_BeingRescuedViewProgress, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_BeingRescuedViewProgress, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_InRescuedOtherInfo
@@ -1073,37 +1094,37 @@ bool RemoveInRescuedOtherInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorInRescuedOtherInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_InRescuedOtherInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_InRescuedOtherInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorInRescuedOtherInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_InRescuedOtherInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_InRescuedOtherInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorInRescuedOtherInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_InRescuedOtherInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_InRescuedOtherInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorInRescuedOtherInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_InRescuedOtherInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_InRescuedOtherInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorInRescuedOtherInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_InRescuedOtherInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_InRescuedOtherInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorInRescuedOtherInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_InRescuedOtherInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_InRescuedOtherInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorInRescuedOtherInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_InRescuedOtherInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_InRescuedOtherInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorInRescuedOtherInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_InRescuedOtherInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_InRescuedOtherInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_NearDeathCounter
@@ -1183,37 +1204,37 @@ bool RemoveNearDeathCounter(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorNearDeathCounterOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_NearDeathCounter, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_NearDeathCounter, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNearDeathCounterOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_NearDeathCounter, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_NearDeathCounter, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNearDeathCounterOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_NearDeathCounter, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_NearDeathCounter, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNearDeathCounterOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_NearDeathCounter, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_NearDeathCounter, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNearDeathCounterOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_NearDeathCounter, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_NearDeathCounter, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorNearDeathCounterLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_NearDeathCounter, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_NearDeathCounter, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorNearDeathCounterActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_NearDeathCounter, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_NearDeathCounter, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorNearDeathCounterModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_NearDeathCounter, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_NearDeathCounter, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_NearDeathRule
@@ -1301,17 +1322,17 @@ bool RemoveNearDeathRule(const FECSWorldPtr &inout World)
 }
 void __MonitorNearDeathRuleLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_NearDeathRule, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_NearDeathRule, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorNearDeathRuleActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_NearDeathRule, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_NearDeathRule, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorNearDeathRuleModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_NearDeathRule, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_NearDeathRule, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace EntityBB

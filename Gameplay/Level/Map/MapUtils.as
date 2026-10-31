@@ -1,4 +1,3 @@
-﻿
 namespace FMapUtils
 {
     const FMapConfig DefaultMapConfig = FMapConfig();

@@ -1,11 +1,9 @@
-﻿
 enum EECOEntityType
 {
     Ground,
     CanFly,
     Teleport,
 }
-
 
 struct FECOData
 {
@@ -18,7 +16,6 @@ struct FECOData
     UPROPERTY()
     bool bIsHolding = false;
 
-
 }
 
 struct FECOHoldPosition
@@ -27,7 +24,6 @@ struct FECOHoldPosition
     float32 m_HoldTime = 5.0f;
     UPROPERTY()
     FVector m_HoldLocation;
-
 
     float32 GetHoldTime() const property
     {
@@ -67,7 +63,6 @@ class AECOActor : AGameActor
     TArray<FECOHoldPosition> HoldPositions;
     UPROPERTY()
     bool bIsHidden = false;
-
 
     UFUNCTION()
     void ConstructionScript_Implementation()

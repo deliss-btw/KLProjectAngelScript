@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_ItemBtns
 {
     const int ModelId = 0;
@@ -54,11 +53,65 @@ struct FVMS_ItemBtns : FEUIViewModelSingleton
 
     FVMS_ItemBtns()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_CombatItem1Visible = ESlateVisibility(0);
+        this.m_CombatItem2Visible = ESlateVisibility(0);
+        this.m_HealItemVisible = ESlateVisibility(0);
+        this.m_bCenterIconVisible = true;
+        this.m_bInit = false;
+        this.m_HealItemNum = 1;
+        this.m_CombatItemNum = 1;
+        this.m_MountUsing = ESlateVisibility(2);
+        this.m_CachedVisibility = ESlateVisibility(1);
+        this.m_bIsMountBtnUnlocked = false;
+        this.m_bIsInventoryQuickSlotUnlocked = false;
+        this.m_HoverBtnIndex = INDEX_NONE;
+        this.m_bGamepadLeftShoulderPress = false;
+        this.m_CombatTmpVisibility = ESlateVisibility(2);
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVMS_ItemBtns(const FVMS_ItemBtns &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_CombatItem1Visible = ESlateVisibility(0);
+        this.m_CombatItem2Visible = ESlateVisibility(0);
+        this.m_HealItemVisible = ESlateVisibility(0);
+        this.m_bCenterIconVisible = true;
+        this.m_bInit = false;
+        this.m_HealItemNum = 1;
+        this.m_CombatItemNum = 1;
+        this.m_MountUsing = ESlateVisibility(2);
+        this.m_CachedVisibility = ESlateVisibility(1);
+        this.m_bIsMountBtnUnlocked = false;
+        this.m_bIsInventoryQuickSlotUnlocked = false;
+        this.m_HoverBtnIndex = INDEX_NONE;
+        this.m_bGamepadLeftShoulderPress = false;
+        this.m_CombatTmpVisibility = ESlateVisibility(2);
+        this.m_MountBtnVM = Other.m_MountBtnVM;
+        this.m_HealBtnVM = Other.m_HealBtnVM;
+        this.m_CombatBtnVM1 = Other.m_CombatBtnVM1;
+        this.m_CombatBtnVM2 = Other.m_CombatBtnVM2;
+        this.m_CombatItem1Visible = Other.m_CombatItem1Visible;
+        this.m_CombatItem2Visible = Other.m_CombatItem2Visible;
+        this.m_HealItemVisible = Other.m_HealItemVisible;
+        this.m_bCenterIconVisible = Other.m_bCenterIconVisible;
+        this.m_CombatTmpVM = Other.m_CombatTmpVM;
+        this.m_HoverTipsVM = Other.m_HoverTipsVM;
+        this.m_ToolTipsBtn = Other.m_ToolTipsBtn;
+        this.m_bInit = Other.m_bInit;
+        this.m_HealItemNum = int(Other.m_HealItemNum);
+        this.m_CombatItemNum = int(Other.m_CombatItemNum);
+        this.m_CurPawnEntity = Other.m_CurPawnEntity;
+        this.m_MountUsing = Other.m_MountUsing;
+        this.m_CachedVisibility = Other.m_CachedVisibility;
+        this.m_bIsMountBtnUnlocked = Other.m_bIsMountBtnUnlocked;
+        this.m_bIsInventoryQuickSlotUnlocked = Other.m_bIsInventoryQuickSlotUnlocked;
+        this.m_HoverBtnIndex = int(Other.m_HoverBtnIndex);
+        this.m_bGamepadLeftShoulderPress = Other.m_bGamepadLeftShoulderPress;
+        this.m_CombatTmpVisibility = Other.m_CombatTmpVisibility;
+        return;
     }
     FVMS_ItemBtns opAssign(const FVMS_ItemBtns &inout Other)
     {
@@ -288,7 +341,32 @@ struct FVMS_ItemBtns : FEUIViewModelSingleton
     }
     void RefreshCenterIconVisibility()
     {
-        this.SetbCenterIconVisible(this.GetbIsMountBtnUnlocked() || (int(this.GetHealItemVisible()) == 0) || (int(this.GetCombatItem1Visible()) == 0) || (int(this.GetCombatItem2Visible()) == 0));
+        int local_5;
+        if (this.GetbIsMountBtnUnlocked())
+        {
+            local_5 = 1;
+        }
+        else
+        {
+            local_5 = (int(this.GetHealItemVisible()) == 0);
+        }
+        if (local_5 != 0)
+        {
+            local_5 = 1;
+        }
+        else
+        {
+            local_5 = (int(this.GetCombatItem1Visible()) == 0);
+        }
+        if (local_5 != 0)
+        {
+            local_5 = 1;
+        }
+        else
+        {
+            local_5 = (int(this.GetCombatItem2Visible()) == 0);
+        }
+        this.SetbCenterIconVisible((local_5 != 0));
         return;
     }
     void RefreshCombatTmpInputActionVisibility()
@@ -306,7 +384,8 @@ struct FVMS_ItemBtns : FEUIViewModelSingleton
     }
     void SyncCombatTmpInputActionVisibility()
     {
-        int local_8 = 0;
+        int local_7;
+        int local_8;
         if (!(this.GetCombatTmpVM().IsValid()))
         {
             return;
@@ -319,13 +398,15 @@ struct FVMS_ItemBtns : FEUIViewModelSingleton
             if (this.GetbGamepadLeftShoulderPress())
             {
                 local_8 = 0;
+                local_7 = local_8;
             }
             else
             {
                 local_8 = 1;
+                local_7 = local_8;
             }
             TEUIModelRef<FVM_NormalSkillBtn> local_2_2 = this.GetCombatTmpVM();
-            SetOverrideInputActionVisibility();
+            local_7.SetOverrideInputActionVisibility();
             return;
         }
         bool local_3_2 = false;
@@ -1092,7 +1173,6 @@ struct __GeneratedProperties_FVMS_ItemBtns
     bool IsInventoryQuickSlotUnlock;
     UPROPERTY()
     TEUIModelRef<FVMS_ItemBtns> Self;
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MonsterWeaknessInfo
 {
     const int ModelId = 0;

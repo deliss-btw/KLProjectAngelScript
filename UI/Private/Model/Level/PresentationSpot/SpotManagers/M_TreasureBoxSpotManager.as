@@ -1,4 +1,3 @@
-﻿
 namespace FMS_TreasureBoxSpotManager
 {
     const int ModelId = 0;

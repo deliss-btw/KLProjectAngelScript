@@ -1,4 +1,3 @@
-﻿
 namespace CommissionFinish_Util
 {
     const int TITLE_TEXT_INDEX_NORMAL = 0;
@@ -119,7 +118,7 @@ struct FVM_CommissionFinish : FEUIViewModel
         this.m_SkipCountdownSeconds = 0;
         this.m_bShowSkipButton = false;
         this.m_TitleTextIndex = 0;
-        this.m_TitleNormalText = NSLOCTEXT("PVX", "Settlement_Performance", "е›ўйџиЎЁзЋ°");
+        this.m_TitleNormalText = NSLOCTEXT("PVX", "Settlement_Performance", "团队表现");
         if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
         {
             return;
@@ -153,7 +152,7 @@ struct FVM_CommissionFinish : FEUIViewModel
         this.m_SkipCountdownSeconds = 0;
         this.m_bShowSkipButton = false;
         this.m_TitleTextIndex = 0;
-        this.m_TitleNormalText = NSLOCTEXT("PVX", "Settlement_Performance", "е›ўйџиЎЁзЋ°");
+        this.m_TitleNormalText = NSLOCTEXT("PVX", "Settlement_Performance", "团队表现");
         this.m_bPendingClose = Other.m_bPendingClose;
         this.m_bCanClose = Other.m_bCanClose;
         this.m_CommissionTotalTime = Other.m_CommissionTotalTime;
@@ -285,22 +284,151 @@ struct FVM_CommissionFinish : FEUIViewModel
     }
     void PostConstruct()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_46 = 0;
+        int local_111;
+        int local_208 = 0;
+        this.SetbCanClose(false);
+        FECSEntity local_6 = FECSEntity(this.GetContext().GetLocalPlayer());
+        if (!(::CommissionUtils::GetCurrentCommissionConfig().IsSet()))
+        {
+            this.SetbPendingClose(true);
+            return;
+        }
+        FECSWorldPtr local_36 = ECS::GetECSWorld();
+        Has local_40;
+        if (!(local_40.opCall()))
+        {
+            this.SetbPendingClose(true);
+            return;
+        }
+        FECSWorldPtr local_36_2 = ECS::GetECSWorld();
+        FText local_58 = local_46.GetbSuccess() ? NSLOCTEXT("StateSuccessText", "已完成") : NSLOCTEXT("StateFailedText", "失败");
+        this.SetGetCommissionStateTypeText(local_58);
+        FText local_50;
+        if (local_46.GetbSuccess())
+        {
+            local_50 = NSLOCTEXT("ButtonSuccessText", "继续");
+        }
+        else
+        {
+            local_50 = NSLOCTEXT("ButtonFailedText", "退出");
+        }
+        this.SetGetCommissionEndButtonText(local_50);
+        this.GetModify_MainObjectResurlts().Empty(0);
+        this.GetModify_SpecialObjectResurlts().Empty(0);
+        for (auto& local_74 : local_46.GetScoreItems())
+        {
+            FCommissionFinishResurltItemParam local_80;
+            local_80.ResurltContent = this.GetScoreItemDisplayText(local_74);
+            local_80.ResurltNum = 0;
+            local_80.ResurltScore = local_74.GetScore();
+            FEUIModelContainer::MakeCached local_94;
+            this.GetModify_MainObjectResurlts().Add(local_94.opImplConv());
+        }
+        this.SetbHasSpecialObjectResurlts((this.GetSpecialObjectResurlts().Num() > 0));
+        this.SetRewardScoreNum(local_46.GetRewardScore());
+        if (CommissionUtils::CVar_Commission_DebugEnableNewTierRule.GetBool())
+        {
+            local_111 = INDEX_NONE;
+            this.SetScoreRating(::CommissionUtils::GetCommissionScore2TierTextAndIndex(::CommissionUtils::GetCurrentCommissionConfig().opArrow().CommissionType, this.GetRewardScoreNum(), local_111));
+            this.SetScoreRatingImageIndex(local_111);
+        }
+        else
+        {
+            this.SetFullScoreNum(local_46.GetTotalScore());
+            local_111 = INDEX_NONE;
+            this.SetScoreRating(this.GetCurCommissionRatingResurlt(::CommissionUtils::GetCommissionRatingRule(::CommissionUtils::GetCurrentCommissionConfig().opArrow().CommissionType), this.GetRewardScoreNum(), this.GetFullScoreNum(), local_111));
+            this.SetScoreRatingImageIndex(local_111);
+        }
+        FFPTime local_126 = FFPTime(local_46.GetFinishTime());
+        FECSWorldPtr local_36_3 = ECS::GetECSWorld();
+        Get local_124;
+        this.SetCommissionTotalTime((local_126 - local_124.opCall().CommissionStartTime));
+        this.GetModify_TeamerInfos().Empty(0);
+        this.GetModify_BadgeInfos().Empty(0);
+        local_111 = 0;
+        for (; local_111 < local_46.GetFinishTeamers().Num(); ++local_111)
+        {
+            const FFinishTeamMemberInfo& local_130 = local_46.GetFinishTeamers()[local_111];
+            FCommissionTeamerItemData local_160;
+            local_160.PlayerNameCached = local_130.GetPlayerNameCached();
+            local_160.AvatarPrefabConfig = local_130.GetAvatarPrefabConfig();
+            local_160.TeamIndex = local_111 + 1;
+            local_160.PlayerID = local_130.GetPlayerID();
+            FEUIModelContainer::MakeCached local_202;
+            this.GetModify_TeamerInfos().Add(local_202.opImplConv());
+            if (local_208 && (local_208.GetPlayerId() == int(local_160.PlayerID)))
+            {
+                for (auto& local_224 : local_46.GetFinishTeamers()[local_111].GetRewardBadge())
+                {
+                    if (this.GetBadgeInfos().Num() >= 4)
+                    {
+                        break;
+                    }
+                    FCommissionBadgeItemData local_256;
+                    local_256.BadgeRewardResurlt = local_224;
+                    FEUIModelContainer::MakeCached local_270;
+                    this.GetModify_BadgeInfos().Add(local_270.opImplConv());
+                }
+            }
+        }
+        this.UpdateRewardItem();
+        this.SetbHaveBadge((this.GetBadgeInfos().Num() > 0));
+        this.SetStateChange(false);
+        return;
     }
     FText GetScoreItemDisplayText(const FCommissionFinishScoreItem &inout ScoreItem) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         FText __r; return __r;
     }
     FText GetCurCommissionRatingResurlt(const TArray<FCommissionRating> &inout RatingRule, const int CurScore, const int FullScore, int &inout BestRatingImageIndex)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        FText __r; return __r;
+        float32 local_14;
+        FText local_8 = INVTEXT("Z");
+        if (FullScore > 0)
+        {
+            local_14 = CurScore / FullScore;
+        }
+        else
+        {
+            local_14 = 0.0f;
+        }
+        float32 local_12_2 = local_14 * 100.0f;
+        local_14 = FMath::TruncToFloat(local_12_2) / 100.0f;
+        float32 local_17 = -1.0f;
+        BestRatingImageIndex = INDEX_NONE;
+        for (auto& local_32 : RatingRule)
+        {
+            if ((local_32.RatingScorePercentRequst > local_17 && (local_32.RatingScorePercentRequst <= local_14)))
+            {
+                local_8 = local_32.RatingText;
+                local_17 = local_32.RatingScorePercentRequst;
+                BestRatingImageIndex = int(local_32.RatingImageIndex);
+            }
+        }
+        return local_8;
     }
     int GetRankImageIndex() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        int local_1 = 2;
+        if (this.GetbIsRaceCommission())
+        {
+            int local_9;
+            UCommissionSettings local_6 = ::CommissionUtils::GetCommissionSettings();
+            local_9 = INDEX_NONE;
+            if (local_6.RaceCommissionTierToImageIndex.Find(this.GetCurrentTier(), local_9))
+            {
+                return local_9;
+            }
+            return 2;
+        }
+        if (this.GetScoreRatingImageIndex() != INDEX_NONE)
+        {
+            return this.GetScoreRatingImageIndex();
+        }
+        int local_2 = 2;
+        return local_2;
     }
     FText GetCommissionTypeName() const
     {
@@ -343,7 +471,7 @@ struct FVM_CommissionFinish : FEUIViewModel
     }
     void UpdateRewardItem()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     void OnCommissionRewardRsp(const FCE_OnCommissionFinishRewardRspEvent &inout CommissionRewardRsp)
     {
@@ -357,7 +485,7 @@ struct FVM_CommissionFinish : FEUIViewModel
         if (local_6.GetCommissionPopup())
         {
             TEUIModelRef<FM_CommissionPopup> local_8 = local_6.GetCommissionPopup();
-            "CommissionFinishClose".EndFullScreenRewardFlow();
+"CommissionFinishClose".EndFullScreenRewardFlow();
         }
         return;
     }
@@ -1120,7 +1248,6 @@ struct __GeneratedProperties_FVM_CommissionFinish
     bool IsNotRaceCommission;
     UPROPERTY()
     TEUIModelRef<FVM_CommissionFinish> Self;
-
 
 }
 

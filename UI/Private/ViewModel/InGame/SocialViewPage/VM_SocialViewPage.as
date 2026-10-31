@@ -1,4 +1,3 @@
-﻿
 enum ESocialViewPageTargetTeamStatus
 {
     WaitingQuery,
@@ -128,7 +127,7 @@ struct FVMS_SocialViewPage : FEUIViewModelSingleton
     {
         if (!(this.GetTargetPlayerModel().IsValid()))
         {
-            return NSLOCTEXT("SocialViewPage", "SocialViewPage_UnknownPlayer", "жњЄзџҐ");
+            return NSLOCTEXT("SocialViewPage", "SocialViewPage_UnknownPlayer", "未知");
         }
         return FText::FromString(this.GetTargetPlayerModel().opArrow().GetNickName());
     }
@@ -266,7 +265,7 @@ struct FVMS_SocialViewPage : FEUIViewModelSingleton
     {
         FPlatformApplicationMisc::ClipboardCopy(String::Conv_Int64ToString(this.GetPlayerUid()));
         FCommonTipsParam local_16;
-        ::CommonPopup::Tips(NSLOCTEXT("SocialViewPage", "CopyTargetUID", "е·Іе¤Ќе€¶зЋ©е®¶UIDе€°е‰Єиґґжќї"), local_16);
+        ::CommonPopup::Tips(NSLOCTEXT("SocialViewPage", "CopyTargetUID", "已复制玩家UID到剪贴板"), local_16);
         return;
     }
     void OnFriendDataUpdated(const FMsg_FriendDataUpdated &inout Msg)
@@ -333,7 +332,6 @@ struct FVMS_SocialViewPage : FEUIViewModelSingleton
     void RefreshButtons()
     {
         USocialViewPageOperator local_44;
-        FEUIModelRef local_48;
         if (!(this.GetSocialViewPageData()))
         {
             return;
@@ -349,7 +347,7 @@ struct FVMS_SocialViewPage : FEUIViewModelSingleton
             local_44 = ::SocialViewPageOperatorUtils::GetOperator(local_38.opArrow().OperatorType);
             if (local_44 != nullptr && local_44.ShouldShow(local_22))
             {
-                this.GetModify_BigButtonTabs().Add(local_48);
+                this.GetModify_BigButtonTabs().Add(FEUIModelRef(::FVM_SocialViewPageBigBtn::Create(this.GetContext().Manager, local_38)));
             }
         }
         this.GetModify_SmallButtonTabs().Empty(0);
@@ -362,7 +360,7 @@ struct FVMS_SocialViewPage : FEUIViewModelSingleton
             local_44 = ::SocialViewPageOperatorUtils::GetOperator(local_38.opArrow().OperatorType);
             if (local_44 != nullptr && local_44.ShouldShow(local_22))
             {
-                this.GetModify_SmallButtonTabs().Add(local_48);
+                this.GetModify_SmallButtonTabs().Add(FEUIModelRef(::FVM_SocialViewPageSmallBtn::Create(this.GetContext().Manager, local_38)));
             }
         }
         if (this.GetbCurShowHideSmallButton())
@@ -376,7 +374,7 @@ struct FVMS_SocialViewPage : FEUIViewModelSingleton
                 local_44 = ::SocialViewPageOperatorUtils::GetOperator(local_38.opArrow().OperatorType);
                 if (local_44 != nullptr && local_44.ShouldShow(local_22))
                 {
-                    this.GetModify_SmallButtonTabs().Add(local_48);
+                    this.GetModify_SmallButtonTabs().Add(FEUIModelRef(::FVM_SocialViewPageSmallBtn::Create(this.GetContext().Manager, local_38)));
                 }
             }
         }
@@ -747,7 +745,6 @@ struct __GeneratedProperties_FVMS_SocialViewPage
     UPROPERTY()
     TEUIModelRef<FVMS_SocialViewPage> Self;
 
-
 }
 
 namespace FVM_SocialViewPage
@@ -774,8 +771,7 @@ ESocialViewPageOpenType ResolveOpenTypeFromCurrentLevel()
 }
 void PrepareFromWorldInteract(const UObject ContextObject, const FECSEntity &inout InInteractTarget)
 {
-    int local_5 = int(FVM_SocialViewPage::ResolveOpenTypeFromCurrentLevel());
-    TEUIModelRef<FVMS_SocialViewPage>(FVMS_SocialViewPage::Get(ContextObject)).opArrow().PrepareFromWorldInteract(InInteractTarget);
+    TEUIModelRef<FVMS_SocialViewPage>(FVMS_SocialViewPage::Get(ContextObject)).opArrow().PrepareFromWorldInteract(InInteractTarget, FVM_SocialViewPage::ResolveOpenTypeFromCurrentLevel());
     return;
 }
 void GotoPage(const ULocalPlayer InLocalPlayer, const TEUIModelRef<FM_Player> &inout InTargetPlayerModel, const ESocialViewPageOpenType InOpenType = ESocialViewPageOpenType::Default, const uint InInteractTargetPlayerUid = 0)
@@ -810,7 +806,7 @@ void SetupPage(const UObject ContextObject, const TEUIModelRef<FM_Player> &inout
 {
     TEUIModelRef<FVMS_SocialViewPage> local_2 = TEUIModelRef<FVMS_SocialViewPage>(FVMS_SocialViewPage::Get(ContextObject));
     local_2.opArrow().SetTargetPlayerModel(InTargetPlayerModel);
-    local_2.opArrow().SetOpenType();
+    local_2.opArrow().SetOpenType(ESocialViewPageOpenType(InOpenType));
     local_2.opArrow().SetInteractTargetPlayerUid(InInteractTargetPlayerUid);
     local_2.opArrow().SetTargetTeamStatus(ESocialViewPageTargetTeamStatus(0));
     float32 local_6 = 0.0f;

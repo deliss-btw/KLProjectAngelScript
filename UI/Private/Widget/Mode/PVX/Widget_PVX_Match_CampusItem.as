@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PVX_Match_CampusItem
 {
     const int ViewID = 0;
@@ -216,6 +215,7 @@ namespace UWidget_PVX_Match_CampusItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PVX_Match_CampusItem;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleCampusItemSelected"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleCampusItemCanMatch"));
     return;

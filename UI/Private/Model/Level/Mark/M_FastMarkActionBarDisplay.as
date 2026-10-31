@@ -1,4 +1,3 @@
-﻿
 namespace FM_FastMarkActionBarDisplay
 {
     const int ModelId = 0;
@@ -82,8 +81,8 @@ struct FM_FastMarkActionBarDisplay : FEUIModelSingleton
         const UMarkSettings local_2;
         GetGameplaySettings<UMarkSettings> local_4;
         local_2 = local_4;
-        UEUIManagerSubsystem local_30 = this.GetManager();
-        this.SetFastMarkAction(TEUIModelRef<FVM_InputAction>());
+        FSimpleModelEvent local_28;
+        this.SetFastMarkAction(TEUIModelRef<FVM_InputAction>(::FVM_InputAction::Create(this.GetManager(), local_2.ViewportFastMarkAction, local_28)));
         this.GetFastMarkAction().opArrow().SetbOnlyShowMainKey(true);
         this.ScheduleTick(this.GetModify_ChordPollTimer(), n"PollChordSatisfied", this.GetChordPollInterval(), 0.0f);
         this.PollChordSatisfied();
@@ -172,12 +171,12 @@ struct FM_FastMarkActionBarDisplay : FEUIModelSingleton
             if (::MarkUtil::IsEntityMarkedBySelf(this.GetContext().GetLocalPlayer(), this.GetCurrentAimingEntity().GetId()) || ::MarkUtil::IsSelfCreateMark(this.GetContext().GetLocalPlayer(), this.GetCurrentAimingEntity().GetId()) || (::FGuidingPathUtils::GetGuidingPathTargetEntityID(this.GetContext().GetLocalPlayer()) == this.GetCurrentAimingEntity().GetId()))
             {
                 ::FASCommonUtils::GetEntityDisplayNameText(local_12);
-                return FText::Format(NSLOCTEXT("CancelMarkAndGuide", "еЏ–ж¶€ж ‡и®°е’ЊеЇји€Є{0}"), local_12);
+                return FText::Format(NSLOCTEXT("CancelMarkAndGuide", "取消标记和导航{0}"), local_12);
             }
             else
             {
                 ::FASCommonUtils::GetEntityDisplayNameText(local_12);
-                return FText::Format(NSLOCTEXT("MarkAndGuideEntity", "ж ‡и®°е№¶еЇји€Єе€°{0}"), local_12);
+                return FText::Format(NSLOCTEXT("MarkAndGuideEntity", "标记并导航到{0}"), local_12);
             }
         }
         else

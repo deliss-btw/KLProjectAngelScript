@@ -1,4 +1,3 @@
-﻿
 enum EFriendRowType
 {
     Friend,
@@ -45,14 +44,12 @@ struct FMsg_AddFriendRequest : FEUIMessage
     UPROPERTY()
     FString ApplyMsg;
 
-
 }
 
 struct FMsg_AddFriendRsp : FEUIMessage
 {
     UPROPERTY()
     uint TargetUid;
-
 
 }
 
@@ -63,14 +60,12 @@ struct FMsg_HandleFriendApply : FEUIMessage
     UPROPERTY()
     bool bAccept;
 
-
 }
 
 struct FMsg_AddNewFriendSuccess : FEUIMessage
 {
     UPROPERTY()
     uint FriendUid;
-
 
 }
 
@@ -91,7 +86,6 @@ struct FMsg_FriendUtilDeferredPopup : FEUIMessage
     bool bWeakTips = true;
     UPROPERTY()
     FText Content;
-
 
 }
 
@@ -508,7 +502,18 @@ struct FMS_FriendDataModel : FEUIModelSingleton
     }
     void OnFriendUtilDeferredPopup(const FMsg_FriendUtilDeferredPopup &inout Msg)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FCommonTipsParam local_6;
+        if (Msg.Content.IsEmpty())
+        {
+            return;
+        }
+        if (Msg.bWeakTips)
+        {
+            ::CommonPopup::WeakTips(Msg.Content, local_6);
+            return;
+        }
+        ::CommonPopup::Tips(Msg.Content, local_6);
+        return;
     }
     void ClearFriendSearchResultsList()
     {
@@ -679,10 +684,10 @@ struct FMS_FriendDataModel : FEUIModelSingleton
         if (Rsp.GetRetcode() != 0)
         {
             XLog(ELog(27), FString().Append("[FMS_FriendDataModel] FriendAssemble failed retcode=").Append(Rsp.GetRetcode()));
-            ::CommonPopup::Tips(NSLOCTEXT("FriendAssemble", "AssembleReqFailed", "й‚ЂиЇ·иЇ·ж±‚е¤±иґҐ"), local_18);
+            ::CommonPopup::Tips(NSLOCTEXT("FriendAssemble", "AssembleReqFailed", "邀请请求失败"), local_18);
             return;
         }
-        ::CommonPopup::Tips(NSLOCTEXT("FriendAssemble", "AssembleReqSent", "й‚ЂиЇ·иЇ·ж±‚е·ІеЏ‘йЂЃ"), local_18);
+        ::CommonPopup::Tips(NSLOCTEXT("FriendAssemble", "AssembleReqSent", "邀请请求已发送"), local_18);
         return;
     }
     void GS_OnFriendAssembleConfirmRsp(const FPbFriendAssembleConfirmRsp &inout Rsp)
@@ -691,10 +696,10 @@ struct FMS_FriendDataModel : FEUIModelSingleton
         if (Rsp.GetRetcode() != 0)
         {
             XLog(ELog(27), FString().Append("[FMS_FriendDataModel] FriendAssembleConfirm failed retcode=").Append(Rsp.GetRetcode()));
-            ::CommonPopup::Tips(NSLOCTEXT("FriendAssemble", "AssembleConfirmFailed", "жЌўзєїе¤±иґҐ"), local_18);
+            ::CommonPopup::Tips(NSLOCTEXT("FriendAssemble", "AssembleConfirmFailed", "换线失败"), local_18);
             return;
         }
-        ::CommonPopup::Tips(NSLOCTEXT("FriendAssemble", "AssembleConfirmSuccess", "жЌўзєїж€ђеЉџ"), local_18);
+        ::CommonPopup::Tips(NSLOCTEXT("FriendAssemble", "AssembleConfirmSuccess", "换线成功"), local_18);
         return;
     }
     void GS_OnFriendAssembleNotify(const FPbFriendAssembleNotify &inout N)
@@ -709,10 +714,10 @@ struct FMS_FriendDataModel : FEUIModelSingleton
             this.SetPendingAssembleTargetDsId(N.GetTargetDsId());
             this.SetPendingAssembleTargetLevelKey(N.GetTargetLevelKey());
             this.GS_FriendAssembleReplyReq(false);
-            ::CommonPopup::Tips(NSLOCTEXT("FriendAssemble", "AssembleBanTeleport", "еЅ“е‰ЌзЉ¶жЂЃж— жі•жЋҐеЏ—еЏ¬й›†й‚ЂиЇ·пјЊе·Іи‡ЄеЉЁж‹’з»ќ"), local_26);
+            ::CommonPopup::Tips(NSLOCTEXT("FriendAssemble", "AssembleBanTeleport", "当前状态无法接受召集邀请，已自动拒绝"), local_26);
             return;
         }
-        ::CommonPopup::Tips(NSLOCTEXT("FriendAssemble", "AssembleInviteNotice", "ж”¶е€°еҐЅеЏ‹й‚ЂиЇ·еЉ е…ҐиЇ·ж±‚"), local_26);
+        ::CommonPopup::Tips(NSLOCTEXT("FriendAssemble", "AssembleInviteNotice", "收到好友邀请加入请求"), local_26);
         XLog(ELog(27), FString().Append("[FMS_FriendDataModel] FriendAssembleNotify received, assembler=").Append(N.GetAssemblerUid()));
         local_27 = N.GetAssemblerUid();
         if (local_27 != 0)
@@ -736,10 +741,10 @@ struct FMS_FriendDataModel : FEUIModelSingleton
         if (Rsp.GetRetcode() != 0)
         {
             XLog(ELog(27), FString().Append("[FMS_FriendDataModel] FriendAssembleReply failed retcode=").Append(Rsp.GetRetcode()));
-            ::CommonPopup::Tips(NSLOCTEXT("FriendAssemble", "AssembleReplyFailed", "е›ће¤Ќе¤±иґҐ"), local_18);
+            ::CommonPopup::Tips(NSLOCTEXT("FriendAssemble", "AssembleReplyFailed", "回复失败"), local_18);
             return;
         }
-        ::CommonPopup::Tips(NSLOCTEXT("FriendAssemble", "AssembleReplySent", "е·Іе›ће¤Ќй‚ЂиЇ·"), local_18);
+        ::CommonPopup::Tips(NSLOCTEXT("FriendAssemble", "AssembleReplySent", "已回复邀请"), local_18);
         return;
     }
     void GS_OnFriendAssembleResultNotify(const FPbFriendAssembleResultNotify &inout N)
@@ -748,10 +753,10 @@ struct FMS_FriendDataModel : FEUIModelSingleton
         XLog(ELog(27), FString().Append("[FMS_FriendDataModel] FriendAssembleResultNotify retcode=").Append(N.GetRetcode()));
         if (N.GetRetcode() != 0)
         {
-            ::CommonPopup::Tips(NSLOCTEXT("FriendAssemble", "AssembleResultFailed", "еЏ¬й›†й‚ЂиЇ·е¤±иґҐ"), local_16);
+            ::CommonPopup::Tips(NSLOCTEXT("FriendAssemble", "AssembleResultFailed", "召集邀请失败"), local_16);
             return;
         }
-        ::CommonPopup::Tips(NSLOCTEXT("FriendAssemble", "AssembleResultSuccess", "еЏ¬й›†й‚ЂиЇ·ж€ђеЉџ"), local_16);
+        ::CommonPopup::Tips(NSLOCTEXT("FriendAssemble", "AssembleResultSuccess", "召集邀请成功"), local_16);
         return;
     }
     void GS_OnTeamAssembleRsp(const FPbTeamAssembleRsp &inout Rsp)
@@ -766,10 +771,10 @@ struct FMS_FriendDataModel : FEUIModelSingleton
         if (Rsp.GetRetcode() != 0)
         {
             XLog(ELog(27), FString().Append("[FMS_FriendDataModel] TeamAssemble failed retcode=").Append(Rsp.GetRetcode()));
-            ::CommonPopup::Tips(NSLOCTEXT("TeamAssemble", "AssembleReqFailed", "еЏ¬й›†иЇ·ж±‚е¤±иґҐ"), local_18);
+            ::CommonPopup::Tips(NSLOCTEXT("TeamAssemble", "AssembleReqFailed", "召集请求失败"), local_18);
             return;
         }
-        ::CommonPopup::Tips(NSLOCTEXT("TeamAssemble", "AssembleReqSent", "еЏ¬й›†иЇ·ж±‚е·ІеЏ‘йЂЃ"), local_18);
+        ::CommonPopup::Tips(NSLOCTEXT("TeamAssemble", "AssembleReqSent", "召集请求已发送"), local_18);
         return;
     }
     void GS_OnTeamAssembleConfirmRsp(const FPbTeamAssembleConfirmRsp &inout Rsp)
@@ -778,10 +783,10 @@ struct FMS_FriendDataModel : FEUIModelSingleton
         if (Rsp.GetRetcode() != 0)
         {
             XLog(ELog(27), FString().Append("[FMS_FriendDataModel] TeamAssembleConfirm failed retcode=").Append(Rsp.GetRetcode()));
-            ::CommonPopup::Tips(NSLOCTEXT("TeamAssemble", "AssembleConfirmFailed", "жЌўзєїе¤±иґҐ"), local_18);
+            ::CommonPopup::Tips(NSLOCTEXT("TeamAssemble", "AssembleConfirmFailed", "换线失败"), local_18);
             return;
         }
-        ::CommonPopup::Tips(NSLOCTEXT("TeamAssemble", "AssembleConfirmSuccess", "жЌўзєїж€ђеЉџ"), local_18);
+        ::CommonPopup::Tips(NSLOCTEXT("TeamAssemble", "AssembleConfirmSuccess", "换线成功"), local_18);
         return;
     }
     void GS_OnTeamAssembleNotify(const FPbTeamAssembleNotify &inout N)
@@ -796,7 +801,7 @@ struct FMS_FriendDataModel : FEUIModelSingleton
             this.SetPendingTeamAssembleLevelKey(N.GetTargetLevelKey());
             this.GS_TeamAssembleReplyReq(false);
             FCommonTipsParam local_26;
-            ::CommonPopup::Tips(NSLOCTEXT("TeamAssemble", "AssembleBanTeleport", "еЅ“е‰ЌзЉ¶жЂЃж— жі•жЋҐеЏ—еЏ¬й›†й‚ЂиЇ·пјЊе·Іи‡ЄеЉЁж‹’з»ќ"), local_26);
+            ::CommonPopup::Tips(NSLOCTEXT("TeamAssemble", "AssembleBanTeleport", "当前状态无法接受召集邀请，已自动拒绝"), local_26);
             return;
         }
         XLog(ELog(27), FString().Append("[FMS_FriendDataModel] TeamAssembleNotify received, assembler=").Append(N.GetAssemblerUid()));
@@ -822,10 +827,10 @@ struct FMS_FriendDataModel : FEUIModelSingleton
         if (Rsp.GetRetcode() != 0)
         {
             XLog(ELog(27), FString().Append("[FMS_FriendDataModel] TeamAssembleReply failed retcode=").Append(Rsp.GetRetcode()));
-            ::CommonPopup::Tips(NSLOCTEXT("TeamAssemble", "AssembleReplyFailed", "е›ће¤Ќе¤±иґҐ"), local_18);
+            ::CommonPopup::Tips(NSLOCTEXT("TeamAssemble", "AssembleReplyFailed", "回复失败"), local_18);
             return;
         }
-        ::CommonPopup::Tips(NSLOCTEXT("TeamAssemble", "AssembleReplySent", "е·Іе›ће¤ЌеЏ¬й›†"), local_18);
+        ::CommonPopup::Tips(NSLOCTEXT("TeamAssemble", "AssembleReplySent", "已回复召集"), local_18);
         return;
     }
     void GS_OnTeamAssembleResultNotify(const FPbTeamAssembleResultNotify &inout N)
@@ -838,7 +843,7 @@ struct FMS_FriendDataModel : FEUIModelSingleton
             FText local_52;
             FString local_4 = local_44.GetNickname();
             FText::FromString(local_52);
-            ::CommonPopup::Tips(FText::Format(NSLOCTEXT("TeamAssemble", "MemberAccepted", "{0} жЋҐеЏ—дє†еЏ¬й›†"), local_52), local_64);
+            ::CommonPopup::Tips(FText::Format(NSLOCTEXT("TeamAssemble", "MemberAccepted", "{0} 接受了召集"), local_52), local_64);
         }
         else
         {
@@ -846,7 +851,7 @@ struct FMS_FriendDataModel : FEUIModelSingleton
             FText local_52;
             FString local_4_2 = local_44.GetNickname();
             FText::FromString(local_52);
-            ::CommonPopup::Tips(FText::Format(NSLOCTEXT("TeamAssemble", "MemberRejected", "{0} ж‹’з»ќдє†еЏ¬й›†"), local_52), local_64);
+            ::CommonPopup::Tips(FText::Format(NSLOCTEXT("TeamAssemble", "MemberRejected", "{0} 拒绝了召集"), local_52), local_64);
         }
         return;
     }
@@ -921,7 +926,7 @@ struct FMS_FriendDataModel : FEUIModelSingleton
         if (!(::FMS_LocalPlayerTeamData::Get(this.GetManager()).IsInTeam(ETeamType(1))))
         {
             FCommonTipsParam local_12;
-            ::CommonPopup::Tips(NSLOCTEXT("TeamAssemble", "NotInTeam", "еЅ“е‰ЌжњЄењЁз¤ѕдє¤йџдјЌдё­"), local_12);
+            ::CommonPopup::Tips(NSLOCTEXT("TeamAssemble", "NotInTeam", "当前未在社交队伍中"), local_12);
             return;
         }
         FPbTeamAssembleReq local_16;

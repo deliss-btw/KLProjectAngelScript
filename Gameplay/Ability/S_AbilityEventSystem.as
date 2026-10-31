@@ -1,5 +1,3 @@
-﻿
-
 class US_AbilityEventSystem : UECSScriptSystem
 {
     US_AbilityEventSystem()
@@ -9,17 +7,38 @@ class US_AbilityEventSystem : UECSScriptSystem
     UFUNCTION()
     void Job_DispatchOnAbilityCustomInteractEvent(const FCE_OnAbilityCustomInteract &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FAbilityUtils::InvokeAbilityEvent(Event.InteractTarget, this.GetECSRuntime(), EEASAbilityEvent(29), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DipatchHitOhterEvent(const FECSEntity &inout Entity, const FC_DealDamageFrame &inout DealDamage, const FCS_FixedTime &inout FixedTime) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        for (auto& local_16 : DealDamage.DamageToCalculateRecord)
+        {
+            if (int(local_16.DamageProcedureType) != 0)
+            {
+                continue;
+            }
+            FAbilityHitEventData local_22;
+            local_22.DamageIndex = int(local_16.Index);
+            FAbilityUtils::InvokeAbilityEventCustomData(Entity, this.GetECSRuntime(), EEASAbilityEvent(8), FixedTime.Time, local_22, true);
+        }
+        return;
     }
     UFUNCTION()
     void Job_DipatchBeingHitEvent(const FECSEntity &inout Entity, const FC_TakeDamageToCalculateFrame &inout TakeDamage, const FCS_FixedTime &inout FixedTime) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        for (auto& local_16 : TakeDamage.DamageToCalculateRecord)
+        {
+            if (int(local_16.DamageProcedureType) != 0)
+            {
+                continue;
+            }
+            FAbilityHitEventData local_22;
+            local_22.DamageIndex = int(local_16.Index);
+            FAbilityUtils::InvokeAbilityEventCustomData(Entity, this.GetECSRuntime(), EEASAbilityEvent(9), FixedTime.Time, local_22, true);
+        }
+        return;
     }
     UFUNCTION()
     void Job_DipatchDealDamageCalculatedEvent(const FECSEntity &inout Entity, const FC_DealDamageFrame &inout DealDamage, const FCS_FixedTime &inout FixedTime) const
@@ -29,93 +48,223 @@ class US_AbilityEventSystem : UECSScriptSystem
             FAbilityDamageCalculatedEventData local_22;
             local_22.DamageTarget = local_16.DamageTarget;
             local_22.DamageIndex = int(local_16.DamageToApplyIndex);
+            FAbilityUtils::InvokeAbilityEventCustomData(Entity, this.GetECSRuntime(), EEASAbilityEvent(10), FixedTime.Time, local_22, true);
         }
         return;
     }
     UFUNCTION()
     void Job_DipatchTakeDamageCalculatedEvent(const FECSEntity &inout Entity, const FC_DamageToApplyFrame &inout DamageToApply, const FCS_FixedTime &inout FixedTime) const
     {
-        int local_3 = 0;
         int local_1 = 0;
-        while (local_1 < local_3)
+        for (; local_1 < DamageToApply.Datas.Num(); )
         {
             FAbilityDamageCalculatedEventData local_10;
             local_10.DamageTarget = Entity;
             local_10.DamageIndex = local_1;
+            FAbilityUtils::InvokeAbilityEventCustomData(Entity, this.GetECSRuntime(), EEASAbilityEvent(11), FixedTime.Time, local_10, true);
             ++local_1;
-            local_3 = DamageToApply.Datas.Num();
         }
         return;
     }
     UFUNCTION()
     void Job_DipatchDamageResolvedEvent(const FCE_DamageEvent &inout DamageEvent) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        if (ECS::IsAuthorityOrPrediction(DamageEvent.FinalDamageSource))
+        {
+            Has local_6;
+            if (local_6.opCall())
+            {
+                FAbilityUtils::InvokeAbilityEvent(DamageEvent.FinalDamageSource, this.GetECSRuntime(), EEASAbilityEvent(12), DamageEvent, true);
+            }
+        }
+        if (ECS::IsAuthorityOrPrediction(DamageEvent.Receiver))
+        {
+            Has local_6;
+            if (local_6.opCall())
+            {
+                FAbilityUtils::InvokeAbilityEvent(DamageEvent.Receiver, this.GetECSRuntime(), EEASAbilityEvent(13), DamageEvent, true);
+            }
+        }
+        return;
     }
     UFUNCTION()
     void Job_DispatchHitStateEvent(const FCE_HitStateChanged &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(17), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchDodgeSuccessEvent(const FCE_InvincibleCounterEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(19), Event, Event.GetbPredictable());
+        return;
     }
     UFUNCTION()
     void Job_DispatchPerfectDodgeEvent(const FCE_PerfectDodgeEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(20), Event, Event.GetbPredictable());
+        return;
     }
     UFUNCTION()
     void Job_DispatchGuardHitEvent(const FCE_GuardHitEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(21), Event, Event.GetbPredictable());
+        return;
     }
     UFUNCTION()
     void Job_DispatchDeathResistanceHPChangeEvent(const FCE_DeathResistanceHPChangeEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(24), Event, Event.GetbPredictable());
+        return;
     }
     UFUNCTION()
     void Job_DispatchCharacterDeathEvent(const FCE_DeathEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(22), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchKillAbilityEvents(const FCE_DeathEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FECSEntity local_4 = FECSEntity(Event.Sender);
+        if (!(local_4.IsValid()))
+        {
+            return;
+        }
+        FECSEntity local_10 = FECSEntity(Event.KilledByEntity);
+        if (!(local_10.IsValid()))
+        {
+            return;
+        }
+        Has local_18;
+        bool local_5 = local_18.opCall();
+        if (local_5)
+        {
+            FAbilitySelfKillEventData local_22;
+            local_22.Victim = local_4;
+            FAbilityUtils::InvokeAbilityEventCustomData(local_10, this.GetECSRuntime(), EEASAbilityEvent(54), Event.Time, local_22, Event.GetbPredictable());
+        }
+        FAbilityTeamKillEventData local_32;
+        local_32.Victim = local_4;
+        local_32.Killer = local_10;
+        TArray<FECSEntity> local_40 = ::FTeamUtils::GetTeammates(local_10);
+        if (local_40.Num() == 0)
+        {
+            local_5 = local_18.opCall();
+            if (local_5)
+            {
+                FAbilityUtils::InvokeAbilityEventCustomData(local_10, this.GetECSRuntime(), EEASAbilityEvent(55), Event.Time, local_32, Event.GetbPredictable());
+            }
+        }
+        else
+        {
+            for (auto& local_56 : local_40)
+            {
+                FECSEntity local_14 = ::FTeamUtils::GetPawnEntityFromTeamMember(local_56, true);
+                if (!(local_14.IsValid()) || !(local_18.opCall()))
+                {
+                    continue;
+                }
+                FAbilityUtils::InvokeAbilityEventCustomData(local_14, this.GetECSRuntime(), EEASAbilityEvent(55), Event.Time, local_32, Event.GetbPredictable());
+            }
+        }
+        return;
     }
     UFUNCTION()
     void Job_DispatchCharacterRebornEvent(const FCE_Reborn &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(26), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchCharacterNearDeathEvent(const FCE_NearDeathEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(23), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchCharacterRescuedFromNearDeathEvent(const FCE_RescuedFromNearDeathEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(25), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchBodyPartDestroyEvent(const FCE_BodyPartDestroyEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(18), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchPreFireProjectile(const FCE_CharacterFireProjectile &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(27), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchPostFireProjectile(const FCE_CharacterFireProjectile &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(28), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchAbilityDelayEvent(const FCE_AbilityDelayEvent &inout Event) const
@@ -149,27 +298,75 @@ class US_AbilityEventSystem : UECSScriptSystem
     UFUNCTION()
     void Job_DispatchAbilityDelayEventByClass(const FCE_AbilityDelayEventByClass &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        bool local_1;
+        int local_18 = 0;
+        Has local_6;
+        if (!(Event.Receiver.IsValid()) || !(local_6.opCall()))
+        {
+            local_1 = true;
+        }
+        else
+        {
+            Has local_12;
+            local_1 = local_12.opCall();
+        }
+        if (local_1)
+        {
+            return;
+        }
+        if (local_18)
+        {
+            int local_21 = FAbilityUtils::GetAbilityIndexByClass(Event.Receiver, Event.AbilityClass.Get());
+            if (local_21 != -1)
+            {
+                FAbilityUtils::InvokeSignal(local_18.ModifyAbilityInstance(local_21), Event.Receiver, Event.SignalName, Event.Time, Event.bAbilityPredictable);
+            }
+        }
+        return;
     }
     UFUNCTION()
     void ServerJob_DispatchEntityExitWeather(const FCE_EntityExitWeather &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(31), Event, true);
+        return;
     }
     UFUNCTION()
     void ServerJob_DispatchPlayerControllerExitWeather(const FCE_PlayerControllerExitWeather &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(33), Event, true);
+        return;
     }
     UFUNCTION()
     void ServerJob_DispatchEntityEnterWeather(const FCE_EntityEnterWeather &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(30), Event, true);
+        return;
     }
     UFUNCTION()
     void ServerJob_DispatchPlayerControllerEnterWeather(const FCE_PlayerControllerEnterWeather &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(32), Event, true);
+        return;
     }
     UFUNCTION()
     void ServerJob_DispatchPlayerControllerBeginOverlap(const FCE_PlayerControllerBeginOverlap &inout Event) const
@@ -180,6 +377,7 @@ class US_AbilityEventSystem : UECSScriptSystem
         {
             return;
         }
+        FAbilityUtils::InvokeAbilityEvent(local_4, this.GetECSRuntime(), EEASAbilityEvent(34), Event, true);
         return;
     }
     UFUNCTION()
@@ -191,117 +389,250 @@ class US_AbilityEventSystem : UECSScriptSystem
         {
             return;
         }
+        FAbilityUtils::InvokeAbilityEvent(local_4, this.GetECSRuntime(), EEASAbilityEvent(35), Event, true);
         return;
     }
     UFUNCTION()
     void Job_DispatchPlayerSwitchSuccess(const FCE_PlayerSwitchSuccess &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (local_4.opCall())
+        {
+            FAbilityUtils::InvokeAbilityEvent(Event.SwitchOutPawn, this.GetECSRuntime(), EEASAbilityEvent(37), Event, true);
+        }
+        if (local_4.opCall())
+        {
+            FAbilityUtils::InvokeAbilityEvent(Event.SwitchInPawn, this.GetECSRuntime(), EEASAbilityEvent(36), Event, true);
+        }
+        return;
     }
     UFUNCTION()
     void Job_DispatchShieldActivate(const FCE_ShieldActivateEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(38), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchShieldDeactivate(const FCE_ShieldActivateEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(39), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchShieldBroken(const FCE_ShieldBrokenEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(40), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchShieldDestroy(const FCE_ShieldDestroyEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(41), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchMutualClash(const FCE_MutualClashEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(42), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchMutualClashAttributeConsume(const FCE_MutualClashAttributeConsumeEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(43), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchMutualClashPlayerBeHitFromNoRangeEvent(const FCE_MutualClashPlayerBeHitFromNoRangeEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(44), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchDefenseHit(const FCE_DefenseHitEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (local_4.opCall())
+        {
+            FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(45), Event, true);
+        }
+        if (local_4.opCall())
+        {
+            FAbilityUtils::InvokeAbilityEvent(Event.Attacker, this.GetECSRuntime(), EEASAbilityEvent(45), Event, true);
+        }
+        return;
     }
     UFUNCTION()
     void Job_DispatchOnLaserEndPointHitUnit(const FCE_LaserEndPointHitUnitEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(46), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchEnvBreakablePropDeadEvent(const FCE_EnvBreakablePropDeadEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(48), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchEnvBreakablePropPhaseChangedEvent(const FCE_EnvBreakablePropPhaseChangedEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(47), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchHealOtherEvent(const FCE_HealOtherEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        if (local_4.opCall())
+        {
+            FAbilityUtils::InvokeAbilityEvent(Event.HealFromEntity, this.GetECSRuntime(), EEASAbilityEvent(50), Event, true);
+        }
+        if (local_4.opCall())
+        {
+            FAbilityUtils::InvokeAbilityEvent(Event.HealedEntity, this.GetECSRuntime(), EEASAbilityEvent(51), Event, true);
+        }
+        return;
     }
     UFUNCTION()
     void Job_DispatchSummon(const FCE_SummonEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (local_4.opCall())
+        {
+            FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(52), Event, true);
+        }
+        return;
     }
     UFUNCTION()
     void Job_DispatchInitFakeCharacterEvent(const FCE_InitFakeCharacterEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (local_4.opCall())
+        {
+            FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(53), Event, true);
+        }
+        return;
     }
     UFUNCTION()
     void Job_ConsumeCombatItemEvent(const FCE_ConsumeCombatItemEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(56), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchBuffAddedEvent(const FCE_BuffAddedEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        if (Event.bFirstAdded)
+        {
+            FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(57), Event, true);
+        }
+        return;
     }
     UFUNCTION()
     void Job_DispatchBuffRemovedEvent(const FCE_BuffRemovedEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(58), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchTriggerLockHPEvent(const FCE_TriggerLockHPEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(59), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchSkillTransitCompleteEvent(const FCE_SkillTransitComplete &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(60), Event, true);
+        return;
     }
     UFUNCTION()
     void Job_DispatchOnBeginMount(const FCE_OnBeginMount &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (local_4.opCall())
+        {
+            FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(61), Event, true);
+        }
+        if (local_4.opCall())
+        {
+            FAbilityUtils::InvokeAbilityEvent(Event.MountEntity, this.GetECSRuntime(), EEASAbilityEvent(63), Event, true);
+        }
+        return;
     }
     UFUNCTION()
     void Job_DispatchOnEndMount(const FCE_OnEndMount &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (local_4.opCall())
+        {
+            FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(62), Event, true);
+        }
+        if (local_4.opCall())
+        {
+            FAbilityUtils::InvokeAbilityEvent(Event.MountEntity, this.GetECSRuntime(), EEASAbilityEvent(64), Event, true);
+        }
+        return;
     }
     UFUNCTION()
     void Run_Job_DispatchOnAbilityCustomInteractEvent() const

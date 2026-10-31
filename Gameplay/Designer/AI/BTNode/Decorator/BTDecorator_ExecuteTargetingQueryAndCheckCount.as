@@ -1,5 +1,3 @@
-﻿
-
 class UBTDecorator_ExecuteTargetingQueryAndCheckCount : UBTDecorator_ECSScriptBase
 {
     UPROPERTY()
@@ -11,8 +9,7 @@ class UBTDecorator_ExecuteTargetingQueryAndCheckCount : UBTDecorator_ECSScriptBa
     UPROPERTY()
     int CompareValue = 0;
 
-    default SetNodeName("ж‰§иЎЊTargetingQueryе№¶жЈЂжџҐз›®ж ‡ж•°й‡Џ");
-
+    default SetNodeName("执行TargetingQuery并检查目标数量");
 
     UFUNCTION()
     FString GetStaticDescription_Implementation() const
@@ -56,7 +53,7 @@ class UBTDecorator_ExecuteTargetingQueryAndCheckCount : UBTDecorator_ECSScriptBa
     UFUNCTION()
     bool CalculateRawConditionValue_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         bool __r; return __r;
     }
 }

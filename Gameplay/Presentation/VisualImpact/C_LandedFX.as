@@ -1,4 +1,3 @@
-﻿
 enum EImpactEventType
 {
     Default,
@@ -83,11 +82,60 @@ struct FEntityLandedInfo
 
     FEntityLandedInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_CharacterSize = EPrefabSize(0);
+        this.m_bUseLandedStrengthLevelDirectly = false;
+        this.m_LandedStrengthLevel = ELandedStrength(0);
+        this.m_ActionImpactType = EActionImpactType(0);
+        this.m_LandedStrength = FVector::ZeroVector;
+        this.m_Velocity = FVector::ZeroVector;
+        this.m_EntityMass = 0.0f;
+        this.m_AttachName = n"None";
+        this.m_RootBoneName = n"Rider_Point";
+        this.m_TraceStartOffset = FVector::ZeroVector;
+        this.m_TraceDir = FVector::DownVector;
+        this.m_TraceLength = 200.0f;
+        this.m_bDurational = false;
+        this.m_ImpactRotationType = EImpactRotationType(0);
+        this.m_ImpactEventType = EImpactEventType(0);
+        return;
     }
     FEntityLandedInfo(const FEntityLandedInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags16 local_9;
+        this.__DirtyFlags = local_9;
+        this.m_CharacterSize = EPrefabSize(0);
+        this.m_bUseLandedStrengthLevelDirectly = false;
+        this.m_LandedStrengthLevel = ELandedStrength(0);
+        this.m_ActionImpactType = EActionImpactType(0);
+        this.m_LandedStrength = FVector::ZeroVector;
+        this.m_Velocity = FVector::ZeroVector;
+        this.m_EntityMass = 0.0f;
+        this.m_AttachName = n"None";
+        this.m_RootBoneName = n"Rider_Point";
+        this.m_TraceStartOffset = FVector::ZeroVector;
+        this.m_TraceDir = FVector::DownVector;
+        this.m_TraceLength = 200.0f;
+        this.m_bDurational = false;
+        this.m_ImpactRotationType = EImpactRotationType(0);
+        this.m_ImpactEventType = EImpactEventType(0);
+        this.m_CharacterSize = Other.m_CharacterSize;
+        this.m_bUseLandedStrengthLevelDirectly = Other.m_bUseLandedStrengthLevelDirectly;
+        this.m_LandedStrengthLevel = Other.m_LandedStrengthLevel;
+        this.m_ActionImpactType = Other.m_ActionImpactType;
+        this.m_LandedStrength = Other.m_LandedStrength;
+        this.m_Velocity = Other.m_Velocity;
+        this.m_EntityMass = Other.m_EntityMass;
+        this.m_AttachName = Other.m_AttachName;
+        this.m_RootBoneName = Other.m_RootBoneName;
+        this.m_TraceStartOffset = Other.m_TraceStartOffset;
+        this.m_TraceDir = Other.m_TraceDir;
+        this.m_TraceLength = Other.m_TraceLength;
+        this.m_bDurational = Other.m_bDurational;
+        this.m_ImpactRotationType = Other.m_ImpactRotationType;
+        this.m_ImpactEventType = Other.m_ImpactEventType;
+        return;
     }
     FEntityLandedInfo opAssign(const FEntityLandedInfo &inout Other)
     {
@@ -405,12 +453,16 @@ struct FC_AirborneData : FECSComponent
 
     FC_AirborneData()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_Velocity = FVector::ZeroVector;
         this.__InitDirtyFlags();
         return;
     }
     FC_AirborneData(const FC_AirborneData &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_Velocity = FVector::ZeroVector;
         this.__InitDirtyFlags();
         this.m_Velocity = Other.m_Velocity;
@@ -449,7 +501,7 @@ struct FC_AirborneData : FECSComponent
 struct FC_ImpactFXConfig : FECSComponent
 {
     UPROPERTY()
-    FName LandImpactConfigRowName;
+    FName LandImpactConfigRowName = NAME_None;
 
     FC_ImpactFXConfig()
     {
@@ -534,37 +586,37 @@ bool RemoveAirborneTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAirborneTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AirborneTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AirborneTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAirborneTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AirborneTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AirborneTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAirborneTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AirborneTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AirborneTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAirborneTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AirborneTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AirborneTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAirborneTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AirborneTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AirborneTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAirborneTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AirborneTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AirborneTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAirborneTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AirborneTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AirborneTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAirborneTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AirborneTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AirborneTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AirborneData
@@ -644,37 +696,37 @@ bool RemoveAirborneData(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAirborneDataOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AirborneData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AirborneData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAirborneDataOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AirborneData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AirborneData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAirborneDataOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AirborneData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AirborneData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAirborneDataOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AirborneData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AirborneData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAirborneDataOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AirborneData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AirborneData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAirborneDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AirborneData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AirborneData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAirborneDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AirborneData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AirborneData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAirborneDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AirborneData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AirborneData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ImpactFXConfig
@@ -754,37 +806,37 @@ bool RemoveImpactFXConfig(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorImpactFXConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ImpactFXConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ImpactFXConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorImpactFXConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ImpactFXConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ImpactFXConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorImpactFXConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ImpactFXConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ImpactFXConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorImpactFXConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ImpactFXConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ImpactFXConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorImpactFXConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ImpactFXConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ImpactFXConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorImpactFXConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ImpactFXConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ImpactFXConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorImpactFXConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ImpactFXConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ImpactFXConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorImpactFXConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ImpactFXConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ImpactFXConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

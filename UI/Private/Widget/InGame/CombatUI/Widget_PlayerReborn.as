@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PlayerReborn
 {
     const int ViewID = 0;
@@ -90,6 +89,7 @@ namespace UWidget_PlayerReborn
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PlayerReborn;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

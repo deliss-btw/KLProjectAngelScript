@@ -1,8 +1,6 @@
-﻿
-
 class UBTDecorator_IsTargetProp : UBTDecorator_ECSScriptBase
 {
-    default SetNodeName("з›®ж ‡жЇеђ¦дёєProp");
+    default SetNodeName("目标是否为Prop");
 
     UBTDecorator_IsTargetProp()
     {

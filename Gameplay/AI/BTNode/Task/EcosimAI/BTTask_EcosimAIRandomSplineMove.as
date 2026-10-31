@@ -1,9 +1,7 @@
-﻿
-
 struct FEcosimAIRandomSplineMoveBTTaskInstanceData
 {
     UPROPERTY()
-    USplineComponent Spline;
+    USplineComponent Spline = nullptr;
     UPROPERTY()
     FVector EndLocation = FVector::ZeroVector;
     UPROPERTY()
@@ -12,7 +10,6 @@ struct FEcosimAIRandomSplineMoveBTTaskInstanceData
     float32 TargetSplineDistance;
     UPROPERTY()
     FVector LastLocation;
-
 
 }
 
@@ -23,7 +20,6 @@ class UBTTask_EcosimAIRandomSplineMove : UBTTask_ECSScriptBase
 
     default SetNodeName("EcosimAIRandomSplineMove");
 
-
     UFUNCTION()
     UScriptStruct GetNodeMemoryType_Implementation() const
     {
@@ -33,7 +29,7 @@ class UBTTask_EcosimAIRandomSplineMove : UBTTask_ECSScriptBase
     EBTNodeResult ExecuteTask_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const
     {
         XLog(ELog(43), FString().Append("ChangeMoveStance EcosimAIRandomSplineMove ").Append(Context.PawnEntity.GetIdValue()).Append(" , ").Append(this.MoveStance).Append("}"));
-        ECS::GetContextTime();
+        FAIInputUtils::ChangeMoveStance(this.MoveStance, Context.PawnEntity, ECS::GetContextTime(), ECharacterMoveStanceLayer(1));
         return EBTNodeResult(3);
     }
     UFUNCTION()

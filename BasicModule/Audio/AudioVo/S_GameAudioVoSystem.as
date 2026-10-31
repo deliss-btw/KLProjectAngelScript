@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_AudioVo_PrintOnScreen = FConsoleVariable();
 const FConsoleVariable CVar_AudioVo_DebugLog = FConsoleVariable();
 const FConsoleVariable CVar_AudioVo_DebugC1 = FConsoleVariable();
@@ -242,7 +241,7 @@ class US_GameAudioVoSystem : UECSScriptSystem
         if (CVar_AudioVo_PrintOnScreen.GetBool())
         {
             Print(FString().Append("Job_UpdateInventoryPickedUp, Sender").Append(Event.Sender).Append(" Getter").Append(Event.InventoryGetter).Append(" Dropper").Append(Event.InventoryDropper).Append(", Item:").Append(local_10.ItemName).Append(", Rarity:").Append(local_10.Rarity), 600.0f, FLinearColor::LucBlue);
-            FECSEntity local_8;
+            FString local_8;
             Print(FString().Append("Job_UpdateInventoryPickedUp, Sender").Append(Event.Sender).Append(" LocalPawnEntity").Append(local_8).Append(" }"), 600.0f, FLinearColor::LucBlue);
         }
         XLogIf(CVar_AudioVo_DebugLog.GetBool(), ELog(1), FString().Append("Job_UpdateInventoryPickedUp, MySelf").Append(Event.Sender).Append(", Getter:").Append(Event.InventoryGetter).Append(" Pickup Inventory Successed! ItemName:").Append(local_10.ItemName).Append(", Rarity:").Append(local_10.Rarity));

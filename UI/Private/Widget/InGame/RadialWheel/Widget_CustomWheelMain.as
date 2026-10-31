@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CustomWheelMain
 {
 enum ECustomWheelMousePosType
@@ -24,38 +23,51 @@ class UWidget_CustomWheelMain : UEUIActivatableWidget
     UPROPERTY()
     UEUIImage FollowCursorImage;
     UPROPERTY()
-    float32 StickDeadZone;
+    float32 StickDeadZone = 0.5f;
     UPROPERTY()
-    float32 StickSelectThreshold;
+    float32 StickSelectThreshold = 0.75f;
     UPROPERTY()
-    int InnerWidth;
+    int InnerWidth = 130;
     UPROPERTY()
-    int OuterWidth;
+    int OuterWidth = 250;
     UPROPERTY()
-    float32 Angle;
+    float32 Angle = 45.0f;
     UPROPERTY()
-    float32 AngleOffset;
+    float32 AngleOffset = 22.5f;
     FOnButtonClickedEvent OnFanRingClickedEvent;
     FVector2D CachedMouseScreenPosition;
     FVector2D CachedRightStickValue;
-    int GamepadLatchedIndex;
+    int GamepadLatchedIndex = INDEX_NONE;
     TArray<UWidget_CustomWheelMainButton> Buttons;
-    UWidget_CustomWheelMain::ECustomWheelMousePosType MousePosType;
-    int ClickedDownIndex;
-    int ClickedUpIndex;
-    EEUIInputType CachedInputType;
+    UWidget_CustomWheelMain::ECustomWheelMousePosType MousePosType = UWidget_CustomWheelMain::ECustomWheelMousePosType(2);
+    int ClickedDownIndex = INDEX_NONE;
+    int ClickedUpIndex = INDEX_NONE;
+    EEUIInputType CachedInputType = EEUIInputType(0);
     FEUIModelWeakRef __VMS_CustomWheel;
     UPROPERTY()
     FGetEUIModelRef PageDelegate;
 
-    UWidget_CustomWheelMain()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
     UFUNCTION()
     void Construct_Implementation()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        UWidget_CustomWheelMainButton local_18;
+        UEUIInputSubsystem::Get(this.GetOwningLocalPlayer()).OnInputMethodChanged.AddUFunction(this, n"OnInputMethodChanged");
+        this.CachedInputType = this.GetCurrentInputType();
+        this.OnFanRingClickedEvent.AddUFunction(this, n"OnFanRingClickedEventCallback");
+        this.GamepadLatchedIndex = INDEX_NONE;
+        this.FollowCursorImage.SetVisibility(ESlateVisibility(2));
+        int local_5 = this.WheelRoot.GetChildrenCount();
+        this.Buttons.SetNum(local_5);
+        int local_9 = 0;
+        for (; local_9 < local_5; ++local_9)
+        {
+            local_18 = Cast<UWidget_CustomWheelMainButton>(this.WheelRoot.GetChildAt(local_9));
+            if (local_18 != nullptr)
+            {
+                this.Buttons[local_9] = local_18;
+            }
+        }
+        return;
     }
     UFUNCTION()
     FEventReply OnAnalogValueChanged_Implementation(const FGeometry &inout MyGeometry, const FAnalogInputEvent &inout InAnalogInputEvent)
@@ -105,14 +117,27 @@ class UWidget_CustomWheelMain : UEUIActivatableWidget
     UFUNCTION()
     FEventReply OnMouseButtonDown_Implementation(const FGeometry &inout MyGeometry, const FPointerEvent &inout MouseEvent)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        FEventReply __r; return __r;
+        int local_1;
+        local_1 = GetSelectedIndex();
+        int local_2 = INDEX_NONE;
+        if (local_1 != local_2 && (MouseEvent.GetEffectingButton() == EKeys::LeftMouseButton))
+        {
+            this.ClickedDownIndex = local_1;
+            return FEventReply::Handled();
+        }
+        return FEventReply::Unhandled();
     }
     UFUNCTION()
     FEventReply OnMouseButtonUp_Implementation(const FGeometry &inout MyGeometry, const FPointerEvent &inout MouseEvent)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        FEventReply __r; return __r;
+        int local_1;
+        local_1 = GetSelectedIndex();
+        if (this.ClickedDownIndex != INDEX_NONE && (this.ClickedDownIndex == local_1) && (MouseEvent.GetEffectingButton() == EKeys::LeftMouseButton))
+        {
+            this.OnFanRingClickedEvent.Broadcast();
+            return FEventReply::Handled();
+        }
+        return FEventReply::Unhandled();
     }
     UFUNCTION()
     void OnInputMethodChanged(const EEUIInputType NewInputType)
@@ -142,11 +167,66 @@ class UWidget_CustomWheelMain : UEUIActivatableWidget
     }
     void UpdateMousePosHoverState(const FVector2D &inout LocalPos)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        float32 local_5 = float32(LocalPos.Distance(FVector2D::ZeroVector));
+        UWidget_CustomWheelMain::ECustomWheelMousePosType local_6 = this.MousePosType;
+        if (local_5 < this.InnerWidth)
+        {
+            local_6 = UWidget_CustomWheelMain::ECustomWheelMousePosType(0);
+            this.UpdateCursorImagePosition(LocalPos);
+            this.SetHoverButtonIndex(INDEX_NONE);
+        }
+        else
+        {
+            if (local_5 < this.OuterWidth)
+            {
+                int local_10;
+                local_6 = UWidget_CustomWheelMain::ECustomWheelMousePosType(1);
+                local_10 = INDEX_NONE;
+                float local_4_2 = -LocalPos.Y;
+                float32 local_11 = (FMath::RadiansToDegrees(float32((FMath::Atan2(LocalPos.X, local_4_2))))) + this.AngleOffset;
+                if (local_11 < 0.0f)
+                {
+                    local_11 = local_11 + 360.0f;
+                }
+                this.SetHoverButtonIndex(uint((local_11 / this.Angle)) % 8);
+            }
+            else
+            {
+                local_6 = UWidget_CustomWheelMain::ECustomWheelMousePosType(2);
+                this.SetHoverButtonIndex(INDEX_NONE);
+            }
+        }
+        if (int(local_6) != int(this.MousePosType))
+        {
+            this.MousePosType = UWidget_CustomWheelMain::ECustomWheelMousePosType(local_6);
+            this.SetCursorImageVisibility((int(this.MousePosType) == 0));
+        }
+        return;
     }
     void SetHoverButtonIndex(const int HoverButtonIndex)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (this.VMS_CustomWheel.IsValid())
+        {
+            int local_2;
+            local_2 = GetSelectedIndex();
+            if (HoverButtonIndex != local_2)
+            {
+                int local_3 = INDEX_NONE;
+                if (local_2 != local_3)
+                {
+                    0.ChangeSelectedState((local_2 != 0));
+                }
+                HoverButtonIndex.SetSelectedIndex();
+                local_3 = INDEX_NONE;
+                if (HoverButtonIndex != local_3)
+                {
+                    1.ChangeSelectedState((HoverButtonIndex != 0));
+                    return;
+                }
+                this.ClickedDownIndex = INDEX_NONE;
+            }
+        }
+        return;
     }
     void SetCursorImageVisibility(const bool bIsVisible)
     {
@@ -177,7 +257,37 @@ class UWidget_CustomWheelMain : UEUIActivatableWidget
     }
     void UpdateGamepadSelectButtonIndex()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (!(this.VMS_CustomWheel.IsValid()))
+        {
+            return;
+        }
+        float32 local_5 = float32(this.CachedRightStickValue.DistSquared(FVector2D::ZeroVector));
+        if (local_5 < (this.StickDeadZone * this.StickDeadZone))
+        {
+            if (this.GamepadLatchedIndex != INDEX_NONE)
+            {
+                OnConfirmButtonClicked();
+                this.GamepadLatchedIndex = INDEX_NONE;
+                this.SetHoverButtonIndex(INDEX_NONE);
+            }
+            return;
+        }
+        if (local_5 < (this.StickSelectThreshold * this.StickSelectThreshold))
+        {
+            return;
+        }
+        float32 local_6 = FMath::RadiansToDegrees(float32((FMath::Atan2(this.CachedRightStickValue.X, this.CachedRightStickValue.Y))));
+        if (local_6 < 0.0f)
+        {
+            local_6 = local_6 + 360.0f;
+        }
+        int local_7 = (uint(((local_6 + this.AngleOffset) / this.Angle))) % 8;
+        this.GamepadLatchedIndex = local_7;
+        if (local_7 != GetSelectedIndex())
+        {
+            this.SetHoverButtonIndex(local_7);
+        }
+        return;
     }
     UFUNCTION()
     void Page_ClosePage() const
@@ -269,6 +379,7 @@ namespace UWidget_CustomWheelMain
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CustomWheelMain;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCloseCustomWheel"));
     return;
 }

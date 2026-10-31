@@ -1,4 +1,3 @@
-﻿
 enum EScriptControlSourceType
 {
     LBP,
@@ -41,7 +40,6 @@ enum EScriptControlBehaviorName
     TriggerESMEcology,
 }
 
-
 struct FScriptControlEcologyMoveParams
 {
     UPROPERTY()
@@ -52,7 +50,6 @@ struct FScriptControlEcologyMoveParams
     FVector Direction = FVector::ZeroVector;
     UPROPERTY()
     ECreatureMoveStance MoveStance = ECreatureMoveStance(0);
-
 
 }
 
@@ -138,7 +135,6 @@ struct FScriptControlBehaviorParams
     UPROPERTY()
     bool BoolParam = false;
 
-
 }
 
 struct FScriptControlBehaviorEntry
@@ -151,7 +147,6 @@ struct FScriptControlBehaviorEntry
     FScriptControlBehaviorParams Params;
     UPROPERTY()
     int EntryId = 0;
-
 
 }
 
@@ -171,7 +166,6 @@ struct FScriptControlQueueSlot
     FScriptControlBehaviorEntry CurrentAction;
     UPROPERTY()
     bool bHasCurrentAction = false;
-
 
     bool HasPendingState() const
     {
@@ -274,7 +268,7 @@ namespace ScriptControlSourceConfig
 {
 int GetPriority(const EScriptControlSourceType Source)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     int __r; return __r;
 }
 }

@@ -1,4 +1,3 @@
-﻿
 namespace FPropFilterTypes
 {
     const TArray<FName> PropFilterTypes = TArray<FName>();

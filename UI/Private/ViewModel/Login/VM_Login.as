@@ -1,4 +1,3 @@
-﻿
 enum ELoginState
 {
     None,
@@ -45,7 +44,6 @@ struct FLoginDownloadInfo
     bool bNeedExitClient = false;
     UPROPERTY()
     FString DownloadExtraInfo;
-
 
 }
 
@@ -508,11 +506,99 @@ struct FVMS_Login : FEUIViewModelSingleton
 
     FVMS_Login()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_LoginSettings = nullptr;
+        this.m_ClientConnectionSubsystem = nullptr;
+        this.m_LoginSwitchIndex = 0;
+        this.m_bShowLoginSwitch = true;
+        this.m_SelectRegionIndex = INDEX_NONE;
+        this.m_LoginState = ELoginState(0);
+        this.m_DownloadProgressDownloaded = 0;
+        this.m_DownloadProgressTotal = 0;
+        this.m_DownloadSpeedMBps = 0.0f;
+        this.m_bHasLastDownloadProgressSample = false;
+        this.m_LastDownloadedByte = 0;
+        this.m_LastDownloadProgressTimeSeconds = 0.0;
+        this.m_DownloadProgress = 0.0f;
+        this.m_PSOPercentage = 0.0f;
+        this.m_PSOTotalCount = 0;
+        this.m_bPSOSawWork = false;
+        this.m_PSOElapsedSeconds = 0.0f;
+        this.m_bIsSDKLoginSucc = false;
+        this.m_StartLoginSDKRequestSeq = 0;
+        this.m_ContinueGameRequestSeq = 0;
+        this.m_SwitchAccountRequestSeq = 0;
+        this.bIsLoggingIn = false;
+        this.m_bRegionInfoFinish = false;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVMS_Login(const FVMS_Login &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_LoginSettings = nullptr;
+        this.m_ClientConnectionSubsystem = nullptr;
+        this.m_LoginSwitchIndex = 0;
+        this.m_bShowLoginSwitch = true;
+        this.m_SelectRegionIndex = INDEX_NONE;
+        this.m_LoginState = ELoginState(0);
+        this.m_DownloadProgressDownloaded = 0;
+        this.m_DownloadProgressTotal = 0;
+        this.m_DownloadSpeedMBps = 0.0f;
+        this.m_bHasLastDownloadProgressSample = false;
+        this.m_LastDownloadedByte = 0;
+        this.m_LastDownloadProgressTimeSeconds = 0.0;
+        this.m_DownloadProgress = 0.0f;
+        this.m_PSOPercentage = 0.0f;
+        this.m_PSOTotalCount = 0;
+        this.m_bPSOSawWork = false;
+        this.m_PSOElapsedSeconds = 0.0f;
+        this.m_bIsSDKLoginSucc = false;
+        this.m_StartLoginSDKRequestSeq = 0;
+        this.m_ContinueGameRequestSeq = 0;
+        this.m_SwitchAccountRequestSeq = 0;
+        this.bIsLoggingIn = false;
+        this.m_bRegionInfoFinish = false;
+        this.m_LoginSettings = Other.m_LoginSettings;
+        this.m_LoginSwitchIndex = int(Other.m_LoginSwitchIndex);
+        this.m_bShowLoginSwitch = Other.m_bShowLoginSwitch;
+        this.m_SelectRegionIndex = int(Other.m_SelectRegionIndex);
+        this.m_HotUpdateProgressText = Other.m_HotUpdateProgressText;
+        this.m_PSOPrecompileText = Other.m_PSOPrecompileText;
+        this.m_RegionInfos = Other.m_RegionInfos;
+        this.m_LoginButtons = Other.m_LoginButtons;
+        this.m_StartGameButton = Other.m_StartGameButton;
+        this.m_ContinueGameButton = Other.m_ContinueGameButton;
+        this.m_SwitchAccountButton = Other.m_SwitchAccountButton;
+        this.m_NoticeButton = Other.m_NoticeButton;
+        this.m_SettingsButton = Other.m_SettingsButton;
+        this.m_ExitGameButton = Other.m_ExitGameButton;
+        this.m_ClientConnectionSubsystem = Other.m_ClientConnectionSubsystem;
+        this.m_LoginState = Other.m_LoginState;
+        this.m_RecentServerName = Other.m_RecentServerName;
+        this.m_DownloadProgressDownloaded = Other.m_DownloadProgressDownloaded;
+        this.m_DownloadProgressTotal = Other.m_DownloadProgressTotal;
+        this.m_DownloadSpeedMBps = Other.m_DownloadSpeedMBps;
+        this.m_bHasLastDownloadProgressSample = Other.m_bHasLastDownloadProgressSample;
+        this.m_LastDownloadedByte = Other.m_LastDownloadedByte;
+        this.m_LastDownloadProgressTimeSeconds = Other.m_LastDownloadProgressTimeSeconds;
+        this.m_ClientVersionStr = Other.m_ClientVersionStr;
+        this.m_DownloadProgress = Other.m_DownloadProgress;
+        this.m_PSOPercentage = Other.m_PSOPercentage;
+        this.m_PSOTotalCount = int(Other.m_PSOTotalCount);
+        this.m_bPSOSawWork = Other.m_bPSOSawWork;
+        this.m_PSOElapsedSeconds = Other.m_PSOElapsedSeconds;
+        this.m_DownloadTotalString = Other.m_DownloadTotalString;
+        this.m_bIsSDKLoginSucc = Other.m_bIsSDKLoginSucc;
+        this.m_CachedSDKLoginResult = Other.m_CachedSDKLoginResult;
+        this.m_StartLoginSDKRequestSeq = int(Other.m_StartLoginSDKRequestSeq);
+        this.m_ContinueGameRequestSeq = int(Other.m_ContinueGameRequestSeq);
+        this.m_SwitchAccountRequestSeq = int(Other.m_SwitchAccountRequestSeq);
+        this.m_SelectServerName = Other.m_SelectServerName;
+        this.m_SelectServerTitle = Other.m_SelectServerTitle;
+        this.m_bRegionInfoFinish = Other.m_bRegionInfoFinish;
+        return;
     }
     FVMS_Login opAssign(const FVMS_Login &inout Other)
     {
@@ -839,7 +925,7 @@ struct FVMS_Login : FEUIViewModelSingleton
     }
     TEUIModelRef<FVM_LoginButton> CreateLoginButton(const ELoginButtonType InButtonType, const FLoginButtonInfo &inout ButtonInfo)
     {
-        FVM_LoginButton& local_4 = ::FVM_LoginButton::Create(this.GetManager());
+        FVM_LoginButton& local_4 = ::FVM_LoginButton::Create(this.GetManager(), ELoginButtonType(InButtonType));
         local_4.Init(ButtonInfo);
         return TEUIModelRef<FVM_LoginButton>(local_4);
     }
@@ -1034,7 +1120,38 @@ struct FVMS_Login : FEUIViewModelSingleton
     }
     void OnRecievedGateAddress(const bool bSuccess, const FString &inout ReqURL, FPbQueryCurRegionHttpRsp &inout QueryCurRegionHttpRsp)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_2 = INDEX_NONE;
+        int local_1 = local_2;
+        int local_3 = 0;
+        for (; local_3 < this.GetRegionInfos().Num(); ++local_3)
+        {
+            if (ReqURL.StartsWith(GetDispatchURL(), ESearchCase(1)))
+            {
+                local_1 = local_3;
+                break;
+            }
+        }
+        if (local_1 == INDEX_NONE)
+        {
+            XWarning(ELog(78), FString().Append("OnRecievedGateAddress: no region matched ReqURL ").Append(ReqURL));
+            return;
+        }
+        FVM_RegionInfo local_14;
+        local_14.SetbGateAddressReceived(true);
+        if (bSuccess)
+        {
+            if (!(local_14.TryFillDetailDataByPb(QueryCurRegionHttpRsp)))
+            {
+                XWarning(ELog(78), FString().Append("OnRecievedGateAddress: invalid gate data for region ").Append(local_14.GetName()).Append(", ReqURL ").Append(ReqURL));
+            }
+        }
+        else
+        {
+            local_14.SetbValid(false);
+            XWarning(ELog(78), FString().Append("OnRecievedGateAddress: request failed for region ").Append(local_14.GetName()).Append(", ReqURL ").Append(ReqURL));
+        }
+        this.TryAdvanceAfterAllGateAddressesReceived();
+        return;
     }
     void ResetSDKLoginAuthState()
     {
@@ -1409,7 +1526,7 @@ struct FVMS_Login : FEUIViewModelSingleton
             XLog(ELog(78), "UpdatePSOProgress: precompile finished, advance to SDKLogin");
             KLPipelineCache::OnPrecompileFinished();
             this.SetbIsSDKLoginSucc(false);
-            this.SetLoginState(ELoginState(ELoginState(5)));
+            this.SetLoginState(ELoginState(5));
         }
         return;
     }
@@ -2127,7 +2244,6 @@ struct __GeneratedProperties_FVM_RegionInfo
     UPROPERTY()
     TEUIModelRef<FVM_RegionInfo> Self;
 
-
 }
 
 struct __GeneratedProperties_FVMS_Login
@@ -2154,7 +2270,6 @@ struct __GeneratedProperties_FVMS_Login
     ESlateVisibility ExitGameBtnVisibility;
     UPROPERTY()
     TEUIModelRef<FVMS_Login> Self;
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommonHoverProvider
 {
     const int ViewID = 0;
@@ -27,7 +26,6 @@ class UWidget_CommonHoverProvider : UEUIUserWidget
     FConfigVM_CommonHoverProvider HoverProviderConfig;
     UPROPERTY()
     FGetEUIModelRef HoverProviderDelegate;
-
 
     UFUNCTION()
     void OnViewBind_Implementation()
@@ -368,6 +366,7 @@ namespace UWidget_CommonHoverProvider
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonHoverProvider;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

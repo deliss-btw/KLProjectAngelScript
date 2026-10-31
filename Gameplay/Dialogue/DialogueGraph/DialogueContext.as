@@ -1,5 +1,3 @@
-﻿
-
 struct FDialogueSubtitle
 {
     FSubDirtyFlags8 __DirtyFlags;
@@ -20,12 +18,18 @@ struct FDialogueSubtitle
 
     FDialogueSubtitle()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_DialogueNodeId = 0;
+        this.m_Duration = 0.0f;
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        return;
     }
     FDialogueSubtitle(const FDialogueSubtitle &inout Other)
     {
         this.m_DialogueNodeId = 0;
         this.m_Duration = 0.0f;
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
         this.m_Entity = Other.m_Entity;
         this.m_DialogueNodeId = int(Other.m_DialogueNodeId);
         this.m_DialogueLineName = Other.m_DialogueLineName;
@@ -39,6 +43,8 @@ struct FDialogueSubtitle
     {
         this.m_DialogueNodeId = 0;
         this.m_Duration = 0.0f;
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
         this.SetEntity(InEntity);
         this.SetDialogueNodeId(InDialogueNodeId);
         this.SetDialogueLineName(InDialogueLineName);
@@ -167,11 +173,16 @@ struct FDialogueOptionInfo
 
     FDialogueOptionInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_OptionNodeId = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        return;
     }
     FDialogueOptionInfo(const FDialogueOptionInfo &inout Other)
     {
         this.m_OptionNodeId = 0;
+        FSubDirtyFlags8 local_51;
+        this.__DirtyFlags = local_51;
         this.m_OptionText = Other.m_OptionText;
         this.m_OptionStyle = Other.m_OptionStyle;
         this.m_OptionNodeId = int(Other.m_OptionNodeId);
@@ -183,6 +194,8 @@ struct FDialogueOptionInfo
     FDialogueOptionInfo(const uint InOptionNodeId)
     {
         this.m_OptionNodeId = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.SetOptionNodeId(InOptionNodeId);
         return;
     }
@@ -321,11 +334,16 @@ struct FDialogueSection
 
     FDialogueSection()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_DialogueType = EDialogueType(0);
+        FSubDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
+        return;
     }
     FDialogueSection(const FDialogueSection &inout Other)
     {
         this.m_DialogueType = EDialogueType(0);
+        FSubDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
         this.m_DialogueName = Other.m_DialogueName;
         this.m_DialogueType = Other.m_DialogueType;
         this.m_DialogueContextEntity = Other.m_DialogueContextEntity;
@@ -337,6 +355,8 @@ struct FDialogueSection
     FDialogueSection(const FName &inout InDialogueName, const EDialogueType InDialogueType, const FECSEntity &inout InDialogueContextEntity)
     {
         this.m_DialogueType = EDialogueType(0);
+        FSubDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
         this.SetDialogueName(InDialogueName);
         this.SetDialogueType(EDialogueType(InDialogueType));
         this.SetDialogueContextEntity(InDialogueContextEntity);
@@ -471,14 +491,14 @@ struct FDialoguePlayState
     UPROPERTY()
     uint m_LastNodeId = 0;
 
-
     FName GetDialogueName() const property
     {
-        return this;
+        return this.m_DialogueName;
     }
     void SetDialogueName(const FName &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_DialogueName = __Value;
+        return;
     }
     uint GetLastNodeId() const property
     {
@@ -503,12 +523,18 @@ struct FDialogueInfo
 
     FDialogueInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_bHasAttachPoint = false;
+        this.m_bIsAttachable = false;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        return;
     }
     FDialogueInfo(const FDialogueInfo &inout Other)
     {
         this.m_bHasAttachPoint = false;
         this.m_bIsAttachable = false;
+        FSubDirtyFlags8 local_26;
+        this.__DirtyFlags = local_26;
         this.m_DialogueConfig = Other.m_DialogueConfig;
         this.m_bHasAttachPoint = Other.m_bHasAttachPoint;
         this.m_bIsAttachable = Other.m_bIsAttachable;
@@ -519,6 +545,8 @@ struct FDialogueInfo
         UDialogueGraphAsset local_4;
         this.m_bHasAttachPoint = false;
         this.m_bIsAttachable = false;
+        FSubDirtyFlags8 local_6;
+        this.__DirtyFlags = local_6;
         this.SetDialogueConfig(InDialogueConfig);
         if (local_4 == nullptr)
         {
@@ -609,7 +637,8 @@ struct FDialogueInfoList
     }
     void SetDialogueInfos(const TMap<FName, FDialogueInfo> &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_DialogueInfos = __Value;
+        return;
     }
 }
 
@@ -639,11 +668,37 @@ struct FDialogueDeliveryContext
 
     FDialogueDeliveryContext()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_DialogueType = EDialogueType(0);
+        this.m_StartAtNodeId = 0;
+        this.m_InterruptDistanceSquared = 0.0;
+        this.m_ResumeDistanceSquared = 0.0;
+        this.m_SubtitleInterval = 0.0f;
+        FSubDirtyFlags16 local_7;
+        this.__DirtyFlags = local_7;
+        this.m_LastNodeId = 0;
+        return;
     }
     FDialogueDeliveryContext(const FDialogueDeliveryContext &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_DialogueType = EDialogueType(0);
+        this.m_StartAtNodeId = 0;
+        this.m_InterruptDistanceSquared = 0.0;
+        this.m_ResumeDistanceSquared = 0.0;
+        this.m_SubtitleInterval = 0.0f;
+        FSubDirtyFlags16 local_33;
+        this.__DirtyFlags = local_33;
+        this.m_LastNodeId = 0;
+        this.m_DialogueName = Other.m_DialogueName;
+        this.m_DialogueType = Other.m_DialogueType;
+        this.m_InteractTarget = Other.m_InteractTarget;
+        this.m_DialogueConfig = Other.m_DialogueConfig;
+        this.m_AttachableDialogues = Other.m_AttachableDialogues;
+        this.m_StartAtNodeId = int(Other.m_StartAtNodeId);
+        this.m_LastNodeId = int(Other.m_LastNodeId);
+        this.m_InterruptDistanceSquared = Other.m_InterruptDistanceSquared;
+        this.m_ResumeDistanceSquared = Other.m_ResumeDistanceSquared;
+        this.m_SubtitleInterval = Other.m_SubtitleInterval;
+        return;
     }
     FDialogueDeliveryContext opAssign(const FDialogueDeliveryContext &inout Other)
     {

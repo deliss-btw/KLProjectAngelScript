@@ -1,4 +1,3 @@
-﻿
 namespace CommonTimeFormat
 {
     const FText TextMD = FText();

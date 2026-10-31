@@ -1,11 +1,9 @@
-﻿
 enum EBeginOverlapFilterType
 {
     Self,
     OverlappingEntity,
     SelfAndOverlappingEntity,
 }
-
 
 struct FEventToESMTriggerFilterConfigItem_BeginOverlap : FEventToESMTriggerFilterConfigItemBase
 {
@@ -16,7 +14,6 @@ struct FEventToESMTriggerFilterConfigItem_BeginOverlap : FEventToESMTriggerFilte
     TArray<FESMBlackboardCondition> ConditionsForSelf;
     UPROPERTY()
     TArray<FESMBlackboardCondition> ConditionsForOverlappingEntity;
-
 
     bool ShouldEvaluateSelf() const
     {

@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_EcologyPropPendingInitSpawnerInfoTag_NS
 {
     const TECSComponentDerivedPtr<FC_EcologyPropPendingInitSpawnerInfoTag> DerivedPtr = TECSComponentDerivedPtr<FC_EcologyPropPendingInitSpawnerInfoTag>();
@@ -103,37 +102,37 @@ bool RemoveEcologyPropPendingInitSpawnerInfoTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcologyPropPendingInitSpawnerInfoTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyPropPendingInitSpawnerInfoTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyPropPendingInitSpawnerInfoTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyPropPendingInitSpawnerInfoTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyPropPendingInitSpawnerInfoTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyPropPendingInitSpawnerInfoTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyPropPendingInitSpawnerInfoTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyPropPendingInitSpawnerInfoTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyPropPendingInitSpawnerInfoTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyPropPendingInitSpawnerInfoTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyPropPendingInitSpawnerInfoTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyPropPendingInitSpawnerInfoTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyPropPendingInitSpawnerInfoTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyPropPendingInitSpawnerInfoTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyPropPendingInitSpawnerInfoTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcologyPropPendingInitSpawnerInfoTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcologyPropPendingInitSpawnerInfoTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcologyPropPendingInitSpawnerInfoTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyPropPendingInitSpawnerInfoTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcologyPropPendingInitSpawnerInfoTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcologyPropPendingInitSpawnerInfoTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyPropPendingInitSpawnerInfoTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcologyPropPendingInitSpawnerInfoTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcologyPropPendingInitSpawnerInfoTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcologyPropPendingInitActivationStateTag
@@ -213,36 +212,36 @@ bool RemoveEcologyPropPendingInitActivationStateTag(const FECSEntity &inout Enti
 }
 FECSMonitorRuntimeView __GetMonitorEcologyPropPendingInitActivationStateTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyPropPendingInitActivationStateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyPropPendingInitActivationStateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyPropPendingInitActivationStateTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyPropPendingInitActivationStateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyPropPendingInitActivationStateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyPropPendingInitActivationStateTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyPropPendingInitActivationStateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyPropPendingInitActivationStateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyPropPendingInitActivationStateTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyPropPendingInitActivationStateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyPropPendingInitActivationStateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyPropPendingInitActivationStateTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyPropPendingInitActivationStateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyPropPendingInitActivationStateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcologyPropPendingInitActivationStateTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcologyPropPendingInitActivationStateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcologyPropPendingInitActivationStateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyPropPendingInitActivationStateTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcologyPropPendingInitActivationStateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcologyPropPendingInitActivationStateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyPropPendingInitActivationStateTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcologyPropPendingInitActivationStateTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcologyPropPendingInitActivationStateTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

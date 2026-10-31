@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ComposableItem
 {
     const int ViewID = 0;
@@ -36,7 +35,6 @@ class UWidget_ComposableItem : UEUIUserListItemWidget
     FGetEUIModelRef ComposableItemDelegate;
     UPROPERTY()
     FGetEUIModelRef SelectableDelegate;
-
 
     UFUNCTION()
     void HandleComposableItemVMChanged()
@@ -115,6 +113,7 @@ namespace UWidget_ComposableItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ComposableItem;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleComposableItemVMChanged"));
     return;
 }

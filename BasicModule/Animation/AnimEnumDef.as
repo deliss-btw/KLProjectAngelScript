@@ -1,4 +1,3 @@
-﻿
 enum EStrafeDirectionType
 {
     strafe_Fwd,

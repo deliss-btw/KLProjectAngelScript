@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CharacterBeHitGroundMovement : UESMCharacterBeHitGroundMovementAction
 {
     UESMAction_CharacterBeHitGroundMovement()

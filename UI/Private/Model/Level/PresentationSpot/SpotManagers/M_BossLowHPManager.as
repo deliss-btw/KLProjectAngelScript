@@ -1,4 +1,3 @@
-﻿
 namespace FMS_BossLowHPManager
 {
     const int ModelId = 0;
@@ -124,7 +123,9 @@ void __OnBossLowHPListChanged(FMS_BossLowHPManager &inout Model, const FECSEntit
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorBossLowHPListLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorBossLowHPListModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_LowHpBoss()
 {

@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ExecuteAvatarIcon_Helpers
 {
 UFUNCTION()

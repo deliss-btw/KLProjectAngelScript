@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_Weather_Helpers
 {
 UFUNCTION()

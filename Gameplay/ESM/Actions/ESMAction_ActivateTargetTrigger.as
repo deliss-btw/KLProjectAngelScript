@@ -1,5 +1,3 @@
-﻿
-
 struct FESMActivateTargetTriggerInstanceData
 {
     UPROPERTY()
@@ -27,7 +25,6 @@ class UESMAction_ActivateTargetTrigger : UESMBPBaseSpanAction
     FNameHandle_ESMBBTrigger TargetTriggerAtInterruptExit;
     UPROPERTY()
     float32 TargetTriggerAtInterruptExitValidateTime = 0.1f;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const

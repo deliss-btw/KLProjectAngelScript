@@ -1,5 +1,3 @@
-﻿
-
 class UEcosimAIV2LLMGISubsystem : UScriptGameInstanceSubsystem
 {
     TArray<FEcosimAIV2LLMCallbackContext> LLMCallbackContextList;
@@ -30,15 +28,15 @@ class UEcosimAIV2LLMGISubsystem : UScriptGameInstanceSubsystem
     }
     void EntityGetLLMCallBack(const FECSEntity &inout Entity, const FString &inout PromptFileName, const TMap<FString, FString> &inout PromptVarRelaceMap)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     void EntityPublicSpeakByLLM(const FECSEntity &inout Entity, const FString &inout PromptFileName, const TMap<FString, FString> &inout PromptVarRelaceMap)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     void EntityPublicSpeakBySimpleLLM(const FString &inout PromptFileName, const FString &inout AdditionalContext, const FECSEntity &inout Entity)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MissionInfoTitle
 {
     const int ModelId = 0;
@@ -102,7 +101,8 @@ struct FVM_MissionInfoTitle : FEUIViewModel
         {
             return;
         }
-        this.GetModify_RemainCounterDown().SetRemainedTimeWithPrecision(FFPTime(FMath::Max((FFPTime(this.GetEndTime()) - this.GetContext().Time).ToSeconds(), 0.0)), EMWCounterDownPrecision(0));
+        float local_12 = FMath::Max((FFPTime(this.GetEndTime()) - this.GetContext().Time).ToSeconds(), 0.0);
+        this.GetModify_RemainCounterDown().SetRemainedTimeWithPrecision(FFPTime(local_12), EMWCounterDownPrecision(0));
         return;
     }
     FTimespan GetRemainTimer() const
@@ -340,7 +340,6 @@ struct __GeneratedProperties_FVM_MissionInfoTitle
     int bTimeShot;
     UPROPERTY()
     TEUIModelRef<FVM_MissionInfoTitle> Self;
-
 
 }
 

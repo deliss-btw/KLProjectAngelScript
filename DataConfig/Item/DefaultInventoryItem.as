@@ -1,5 +1,3 @@
-﻿
-
 struct FDefaultInventoryItemConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -7,7 +5,6 @@ struct FDefaultInventoryItemConfig : FDataObject
     uint DataId;
     UPROPERTY()
     TArray<FInventoryInitItem> InitItems;
-
 
 }
 

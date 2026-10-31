@@ -1,4 +1,3 @@
-﻿
 namespace FEnvSurfaceImpactUtils
 {
     const FConsoleVariable CVar_EnvSurfaceImpact_Log = FConsoleVariable();
@@ -143,6 +142,8 @@ bool CheckEnvSurfaceHit(FEnvHitPresentationData &inout Result, const FECSEntity 
                 Result.HitLocation = local_270.ImpactPoint;
                 Result.HitNormal = local_270.ImpactNormal;
                 Result.HitBoneName = local_270.BoneName;
+                UPrimitiveComponent local_428;
+                Result.HitPrimitiveComp = local_428;
                 Result.HitFanPlaneNormal = local_170;
                 Result.PhysicsMaterial = local_270.GetPhysMaterial();
                 if (!(local_1))
@@ -182,94 +183,7 @@ bool CheckEnvSurfaceHit(FEnvHitPresentationData &inout Result, const FECSEntity 
 UFUNCTION()
 void ShowEnvSurfaceImpact_Effect(const FCE_EnvSurfaceImpactFXEvent &inout Event, const bool bDebug, const bool bPrintOnScreen)
 {
-    UDataTable local_10;
-    if (bDebug)
-    {
-        XLog(ELog(0), FString().Append("HandleEnvSurfaceImpact_Effect ").Append(Event.ImpactSurfaceTypeName));
-    }
-    if (local_10 == nullptr)
-    {
-        XWarning(ELog(49), "HandleEnvSurfaceImpact_Effect, can not find datatable: SurfaceContactVFXConfig.");
-        return;
-    }
-    FECSEntity local_16 = FECSEntity(Event.Sender);
-    if (!(local_16.IsValid()))
-    {
-        XWarning(ELog(49), "HandleEnvSurfaceImpact_Effect, PawnEntity is not valid.");
-        return;
-    }
-    FName local_18(local_16.GetEntityName());
-    ECharacterBodySize local_21 = Event.CharacterBodySize;
-    EArealStrikeEnvSurfaceFXStyle_Sparks local_23 = Event.FXStyle_Sparks;
-    FName local_26 = Event.ImpactSurfaceTypeName;
-    UDataTable::FindDataObject local_54;
-    if (local_54.opCall(FEnvSurfaceImpactUtils::EnvSufaceImpactTableRowName))
-    {
-        const FArealStrikeEnvSurfaceVFXData& local_80 = GetData();
-        const FImpactFXData& local_82 = local_80.GetDataRawBySecondType();
-        if (local_82.FXActor.IsNull())
-        {
-            return;
-        }
-        FFXConfig local_198;
-        if (bDebug)
-        {
-            if (bPrintOnScreen)
-            {
-                Print(FString().Append("Env Surface Impact ").Append(local_18).Append(": ").Append(local_21).Append(" -> ").Append(local_23).Append(" -> FxActor: ").Append(local_82.FXActor), 5.0f, FLinearColor::LucBlue);
-            }
-        }
-        local_198.SetAsset(FSoftClassPath(local_82.FXActor.ToString()));
-        local_198.SetLocationOffset(Event.ImpactPosition);
-        local_198.SetRotationOffset(FRotator(Event.ImpactRotation));
-        float32 local_199 = local_82.RandomRotationAngle;
-        if (local_199 >= 0.0f && !(Event.ImpactOutDir.IsZero()))
-        {
-            float32 local_215 = FMath::DegreesToRadians(FMath::RandRange(0.0f, local_82.RandomRotationAngle));
-            local_199 = float32(FMath::Acos(local_198.GetRotationOffset().GetForwardVector().DotProduct(Event.ImpactOutDir)));
-            if (local_215 > local_199)
-            {
-                local_215 = local_199;
-            }
-            FVector local_242 = local_198.GetRotationOffset().GetForwardVector().CrossProduct(Event.ImpactOutDir);
-            local_198.SetRotationOffset((FQuat(local_242, local_215) * local_198.GetRotationOffset().Quaternion()).Rotator());
-        }
-        if (!((local_82.LocationOffset == FVector3f::ZeroVector)) || !((local_82.RotationOffset == FRotator3f::ZeroRotator)))
-        {
-            FTransform local_300 = FTransform(local_198.GetRotationOffset(), local_198.GetLocationOffset(), FVector::OneVector);
-            local_198.SetLocationOffset(local_300.TransformPosition(FVector(local_82.LocationOffset)));
-            local_198.SetRotationOffset(local_300.TransformRotation(FRotator(local_82.RotationOffset)));
-        }
-        local_198.SetScale(FVector(local_82.Scale));
-        local_198.SetbUseWorldOriginAsBaseTransformSource(true);
-        local_198.SetLocationOffsetSpace(EFXOffsetSpace(2));
-        local_198.SetRotationOffsetSpace(EFXOffsetSpace(2));
-        local_198.SetbDetach(true);
-        local_198.SetDeterminedSurfaceName(local_26);
-        if (FEnvSurfaceImpactUtils::CVar_EnvSurfaceImpact_DrawFxDirection.GetBool())
-        {
-            DebugDraw::DrawDebugLine(ECS::GetUEWorld(), local_198.GetLocationOffset(), (FVector(local_198.GetLocationOffset()) + (local_198.GetRotationOffset().GetForwardVector() * 100.0)), FColor::Yellow, false, 60.0f, uint8(0), 0.0f);
-        }
-        if (Event.bDurational)
-        {
-            ECSFX::PlayFXDurational(local_16, local_198, Event.Time, 1.0f, false);
-        }
-        else
-        {
-            ECSFX::PlayFXInstant(local_16, local_198, Event.Time, 1.0f, false, true);
-        }
-    }
-    else
-    {
-        if (bDebug)
-        {
-            if (bPrintOnScreen)
-            {
-                Print(FString().Append("Env Surface Impact ").Append(local_18).Append(": ").Append(local_26).Append(" -> ").Append(local_21).Append(" -> FxActor No Config!"), 5.0f, FLinearColor::LucBlue);
-            }
-        }
-    }
-    return;
+    // body not fully recovered — stub [argmismatch:argint]
 }
 UFUNCTION()
 bool GetWeaponHitEnvSurfaceHitInfo(FEnvHitPresentationData &inout Result, const FECSEntity &inout EventSender, const FStrikeEventData &inout StrikeEventData, const FSurfaceContactInfo &inout SurfaceContactInfo)
@@ -305,6 +219,8 @@ bool GetWeaponHitEnvSurfaceResult(FEnvHitPresentationData &inout Result, const F
     Result.HitFanPlaneNormal = local_170;
     Result.HitLocation = local_240.ImpactPoint;
     Result.HitNormal = local_240.ImpactNormal;
+    UPrimitiveComponent local_174;
+    Result.HitPrimitiveComp = local_174;
     Result.SurfaceName = local_4;
     XLogIf(local_1, ELog(1), (FString("GetLineTraceSurfaceName, Name: ") + local_4));
     return local_241;
@@ -312,8 +228,211 @@ bool GetWeaponHitEnvSurfaceResult(FEnvHitPresentationData &inout Result, const F
 UFUNCTION()
 FName DoTraceEnvSurfaceInfo(bool &inout bTraceResult, FHitResult &inout OutHitResult, const FECSEntity &inout PawnEntity, const FSurfaceContactInfo &inout SurfaceContactInfo)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    FName __r; return __r;
+    float32 local_21;
+    float32 local_22;
+    bool local_29;
+    const AActor local_46;
+    const AActor local_84;
+    UMiEnvInteractColliderComponent local_92;
+    int local_98 = 0;
+    float32 local_190;
+    float32 local_195;
+    UPrimitiveComponent local_352;
+    UPrimitiveComponent local_358;
+    bTraceResult = false;
+    FName local_5 = FGamePhysicsUtils::GetDefaultPhysicalSurfaceName();
+    FName local_7(SurfaceContactInfo.GetSocketName().Name);
+    FVector local_14(SurfaceContactInfo.GetFxStartLocation());
+    FVector local_20(SurfaceContactInfo.GetTraceStartOffset());
+    local_21 = SurfaceContactInfo.GetTraceLength();
+    FVector local_28(SurfaceContactInfo.GetTraceDir());
+    local_29 = FEnvSurfaceImpactUtils::CVar_EnvSurfaceImpact_Log.GetBool();
+    if (!(PawnEntity.IsValid()))
+    {
+        XLogIf(local_29, ELog(1), (FString("TraceEnvSurfaceInfo Entity is not valid! EntityName: ") + PawnEntity.GetEntityName()));
+        return local_5;
+    }
+    if (!((PawnEntity.GetActorVisualSkeletalMesh() != nullptr)))
+    {
+        return local_5;
+    }
+    local_46 = PawnEntity.GetActor();
+    if (local_46 == nullptr)
+    {
+        XLogIf(local_29, ELog(1), (FString("TraceEnvSurfaceInfo PawnEntity has no Actor: ") + PawnEntity.GetEntityName()));
+        return local_5;
+    }
+    FVector local_64 = FTransformUtils::GetLocation(PawnEntity, FFPTime(-1));
+    FVector local_54 = FTransformUtils::GetLocation(PawnEntity, FFPTime(-1));
+    FVector local_76 = local_64;
+    FVector local_82 = local_54;
+    if (local_28.IsZero())
+    {
+        local_28 = FVector(1.0, 0.0, 0.0);
+    }
+    if (local_98)
+    {
+        FECSEntity local_102 = local_98.GetCurrentWeaponEntity();
+        local_84 = local_102.GetActor();
+        if (local_84 != nullptr)
+        {
+            UMiEnvInteractColliderComponent local_106 = Cast<UMiEnvInteractColliderComponent>(local_84.GetComponentByClass(UMiEnvInteractColliderComponent));
+            if (local_106 != nullptr)
+            {
+                local_92 = local_106;
+            }
+            FTransform local_160 = FTransformUtils::GetSocketTransformInActor(local_102, local_7, ERelativeTransformSpace(0));
+            FQuat local_176 = local_160.GetRotation();
+            local_64 = local_160.TransformPosition(local_20);
+            local_76 = local_64;
+            local_28 = local_176.RotateVector(local_28);
+            Get local_180;
+            const FC_Collision& local_182 = local_180.opCall();
+            if (local_182)
+            {
+                FVector local_70 = ((local_28.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector) * local_182.GetScaledRadius()) * 2.0);
+                local_64 -= local_70;
+            }
+        }
+    }
+    if (local_92 != nullptr)
+    {
+        local_190 = local_92.GetScaledColliderHalfHeight();
+    }
+    else
+    {
+        local_190 = 56.0f;
+    }
+    if (local_92 != nullptr)
+    {
+        local_22 = local_92.GetScaledColliderRadius();
+    }
+    else
+    {
+        local_22 = 2.5f;
+    }
+    if (local_21 > 0.0f)
+    {
+        local_195 = local_21;
+    }
+    else
+    {
+        local_195 = local_190 * 2.0f;
+    }
+    float local_194 = local_195;
+    FVector local_188_2 = (local_28.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector) * local_194);
+    local_54 = (local_64 + local_188_2);
+    local_82 = local_54;
+    FCollisionShape local_203 = FCollisionShape::MakeCapsule(local_22, local_190);
+    FVector local_222;
+    if (local_92 != nullptr)
+    {
+        local_222 = local_92.GetWorldLocation();
+    }
+    else
+    {
+        local_222 = (local_64 + (local_28.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector) * local_190));
+    }
+    FQuat local_168 = local_28.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector).ToOrientationQuat();
+    TArray<FHitResult> local_226;
+    TArray<AActor> local_230;
+    if (local_46 != nullptr)
+    {
+        local_230.Add(local_46);
+    }
+    if (local_84 != nullptr)
+    {
+        local_230.Add(local_84);
+    }
+    FHitResult local_296;
+    FCollisionQueryParams local_334;
+    local_334.bTraceComplex = true;
+    local_334.bReturnPhysicalMaterial = true;
+    local_334.AddIgnoredActors(local_230);
+    if (false)
+    {
+        bool local_1_2 = FPhysicsUtils::SweepMulti(ECS::GetUEWorld(), EPhysicsTraceTag(32), local_226, local_64, local_54, local_168, FCollisionObjectQueryParams(ECollisionChannel(0)), local_203, local_334);
+        if (local_1_2)
+        {
+            TArray<FHitResult> local_346;
+            int local_347 = 0;
+            for (; local_347 < local_226.Num(); ++local_347)
+            {
+                FHitResult& local_350 = local_226[local_347];
+                if (!(FSceneInteractUtils::FilterInvalidHitResult(local_350)))
+                {
+                    continue;
+                }
+                local_346.Add(local_350);
+            }
+            if (local_346.Num() > 0)
+            {
+            }
+            else
+            {
+            }
+            if (local_296.GetbBlockingHit() && (local_352 != nullptr))
+            {
+                local_5 = FSceneInteractUtils::GetPhysicalMaterialNameFromHitResult(local_296);
+                if (local_29)
+                {
+                    XLogIf(local_29, ELog(1), FString().Append("TraceEnvSurfaceInfo, PhysicalSurface is ").Append(local_5));
+                }
+                bTraceResult = true;
+            }
+        }
+        else
+        {
+            XLogIf(local_29, ELog(1), FString().Append("TraceEnvSurfaceInfo, PhysicsUtils::SweepMulti faild!"));
+        }
+    }
+    else
+    {
+        FName local_355;
+        if (FEnvSurfaceImpactUtils::LineTraceMulti_EnvironmentSurface(PawnEntity, local_355, local_296, local_64, local_54))
+        {
+            if (FEnvSurfaceImpactUtils::CVar_EnvSurfaceImpact_Log.GetBool())
+            {
+                Print(FString().Append("TraceEnvSurfaceInfo, PhysicalSurface is ").Append(local_355), 5.0f, FLinearColor::LucBlue);
+            }
+        }
+        else
+        {
+            bool local_1_4 = FPhysicsUtils::LineTraceMulti(ECS::GetUEWorld(), EPhysicsTraceTag(32), local_226, local_82, local_76, FCollisionObjectQueryParams(ECollisionChannel(0)), local_334);
+            if (local_1_4)
+            {
+                TArray<FHitResult> local_346;
+                int local_356 = local_226.Num() - 1;
+                for (; local_356 >= 0; --local_356)
+                {
+                    FHitResult& local_350_2 = local_226[local_356];
+                    if (!(FSceneInteractUtils::FilterInvalidHitResult(local_350_2)))
+                    {
+                        continue;
+                    }
+                    local_346.Add(local_350_2);
+                }
+                if (local_346.Num() > 0)
+                {
+                }
+                else
+                {
+                }
+                if (local_296.GetbBlockingHit() && (local_358 != nullptr))
+                {
+                    local_5 = FSceneInteractUtils::GetPhysicalMaterialNameFromHitResult(local_296);
+                    if (local_29)
+                    {
+                        XLogIf(local_29, ELog(1), FString().Append("TraceEnvSurfaceInfo, PhysicalSurface is ").Append(local_5));
+                    }
+                    bTraceResult = true;
+                }
+            }
+            XLogIf(local_29, ELog(1), FString().Append("TraceEnvSurfaceInfo, PhysicsUtils::LineTraceMulti faild!"));
+        }
+    }
+    OutHitResult = local_296;
+    return local_5;
 }
 UFUNCTION()
 bool LineTraceMulti_EnvironmentSurface(const FECSEntity &inout PawnEntity, FName &inout OutSurfaceName, FHitResult &inout OutHitResult, const FVector &inout TraceStart, const FVector &inout TraceEnd)

@@ -1,5 +1,3 @@
-﻿
-
 class US_ASGameModeSystemTraining : US_ECSScriptGameModeSystemBase
 {
     US_ASGameModeSystemTraining()
@@ -18,7 +16,7 @@ class US_ASGameModeSystemTraining : US_ECSScriptGameModeSystemBase
         {
             XError(ELog(45), FString().Append("[TrainingSpawn] Dirty FCS_GameMode on training begin: GameModeType=").Append(int(local_16.GetGameModeType())).Append(", bPVPGame=").Append(local_16.GetbPVPGame()).Append(", bPVXGame=").Append(local_16.GetbPVXGame()).Append(". Reset to None."));
         }
-        local_16.SetGameModeType(EGameModeType(EGameModeType(0)));
+        local_16.SetGameModeType(EGameModeType(0));
         local_16.SetbPVPGame(false);
         local_16.SetbPVXGame(false);
         local_16.SetFairModeFlags(0);
@@ -72,7 +70,7 @@ class US_ASGameModeSystemTraining : US_ECSScriptGameModeSystemBase
             FECSWorldPtr local_2_6 = this.GetECSWorld();
             SendEvent local_38;
             local_38.opCall(ENTITY_NULL, local_40);
-            local_32.SetStageType(EFCS_GameStageType(EFCS_GameStageType(2)));
+            local_32.SetStageType(EFCS_GameStageType(2));
         }
         return;
     }
@@ -117,7 +115,7 @@ class US_ASGameModeSystemTraining : US_ECSScriptGameModeSystemBase
         if (local_16)
         {
             this.SpawnTrainingPlayer(local_68);
-            local_12.SetStageType(EFCS_GameStageType(EFCS_GameStageType(3)));
+            local_12.SetStageType(EFCS_GameStageType(3));
         }
         return;
     }

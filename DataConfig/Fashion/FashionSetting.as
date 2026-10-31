@@ -1,4 +1,3 @@
-﻿
 enum EFashionSlotMainTab
 {
     Cloth,
@@ -10,7 +9,6 @@ enum EFashionSlotSubTab
     Major,
     Deco,
 }
-
 
 struct FFashionSubTabTextConfig
 {
@@ -40,7 +38,6 @@ struct FFashionSlotConfig : FDataObject
     bool bAllowUnequip = true;
     UPROPERTY()
     FDataObjectPtr m_ShowcaseConfig;
-
 
     const TDataObjectPtr<FUIShowcaseConfig> GetShowcaseConfig() const property
     {
@@ -123,7 +120,7 @@ FText GetSystemName()
     {
         return local_4;
     }
-    return NSLOCTEXT("FashionSettings", "FashionSettings_DefaultSystemName", "и‡Єе®љд№‰е¤–и§‚");
+    return NSLOCTEXT("FashionSettings", "FashionSettings_DefaultSystemName", "自定义外观");
 }
 FText GetMainTabText(const EFashionSlotMainTab MainTab)
 {
@@ -143,17 +140,48 @@ FText GetMainTabText(const EFashionSlotMainTab MainTab)
             }
             else
             {
-                __return = NSLOCTEXT("FashionSettings", "FashionSettings_DefaultMainTab_Mount", "еќђйЄ‘");
+                __return = NSLOCTEXT("FashionSettings", "FashionSettings_DefaultMainTab_Mount", "坐骑");
             }
         }
     }
-    __return = NSLOCTEXT("FashionSettings", "FashionSettings_DefaultMainTab_Cloth", "ж—¶иЈ…");
+    __return = NSLOCTEXT("FashionSettings", "FashionSettings_DefaultMainTab_Cloth", "时装");
     return __return;
 }
 FText GetSubTabText(const EFashionSlotMainTab MainTab, const EFashionSlotSubTab SubTab)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    FText __r; return __r;
+    bool local_27;
+    FFashionSubTabTextConfig local_20;
+    FText __return;
+    FText local_24;
+    if (!(FashionSettings::Get().SubTabTextMap.Find(MainTab, local_20)))
+    {
+        local_27 = false;
+    }
+    else
+    {
+        local_27 = local_20.SubTabTextMap.Find(SubTab, local_24);
+    }
+    local_27 = local_27 && !(local_24.IsEmpty());
+    if (local_27)
+    {
+        return local_24;
+    }
+    int local_29 = int(SubTab);
+    if (local_29 <= 1)
+    {
+        if (local_29 != 0)
+        {
+            if (local_29 != 1)
+            {
+            }
+            else
+            {
+                __return = NSLOCTEXT("FashionSettings", "FashionSettings_DefaultSubTab_Deco", "配饰");
+            }
+        }
+    }
+    __return = NSLOCTEXT("FashionSettings", "FashionSettings_DefaultSubTab_Major", "主体");
+    return __return;
 }
 TDataObjectPtr<FMessageHintConfig> GetNewUnlockLargeHint()
 {
@@ -167,7 +195,7 @@ FText GetReturnConfirmTitle()
     {
         return local_4;
     }
-    return NSLOCTEXT("FashionSettings", "FashionSettings_DefaultReturnConfirmTitle", "дїќе­еЅ“е‰Ќе¤–и§‚пјџ");
+    return NSLOCTEXT("FashionSettings", "FashionSettings_DefaultReturnConfirmTitle", "保存当前外观？");
 }
 FText GetReturnConfirmMessage()
 {
@@ -176,6 +204,6 @@ FText GetReturnConfirmMessage()
     {
         return local_4;
     }
-    return NSLOCTEXT("FashionSettings", "FashionSettings_DefaultReturnConfirmMessage", "еЅ“е‰Ќйў„и§€зљ„е¤–и§‚е°љжњЄж›їжЌўпјЊиї”е›ће‰ЌжЇеђ¦ж›їжЌўдёєеЅ“е‰Ќе¤–и§‚пјџ");
+    return NSLOCTEXT("FashionSettings", "FashionSettings_DefaultReturnConfirmMessage", "当前预览的外观尚未替换，返回前是否替换为当前外观？");
 }
 }

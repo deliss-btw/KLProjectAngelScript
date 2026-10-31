@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_BlockInteractionConfig_NS
 {
     const TECSComponentDerivedPtr<FC_BlockInteractionConfig> DerivedPtr = TECSComponentDerivedPtr<FC_BlockInteractionConfig>();
@@ -39,7 +38,7 @@ struct FC_BlockInteractionConfig : FECSComponent
         FC_BlockInteractionRuntime& local_8 = local_4.opCall(local_6);
         if (local_8)
         {
-            local_8.SetbBlocked(this.bInitialBlocked);
+            local_8.SetbBlocked((this.bInitialBlocked));
         }
         return;
     }
@@ -54,12 +53,16 @@ struct FC_BlockInteractionRuntime : FECSComponent
     FC_BlockInteractionRuntime()
     {
         this.m_bBlocked = false;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FC_BlockInteractionRuntime(const FC_BlockInteractionRuntime &inout Other)
     {
         this.m_bBlocked = false;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_bBlocked = Other.m_bBlocked;
         return;
@@ -166,37 +169,37 @@ bool RemoveBlockInteractionConfig(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorBlockInteractionConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_BlockInteractionConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_BlockInteractionConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBlockInteractionConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_BlockInteractionConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_BlockInteractionConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBlockInteractionConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_BlockInteractionConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_BlockInteractionConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBlockInteractionConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_BlockInteractionConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_BlockInteractionConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBlockInteractionConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_BlockInteractionConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_BlockInteractionConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorBlockInteractionConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_BlockInteractionConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_BlockInteractionConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBlockInteractionConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_BlockInteractionConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_BlockInteractionConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBlockInteractionConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_BlockInteractionConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_BlockInteractionConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_BlockInteractionRuntime
@@ -276,37 +279,37 @@ bool RemoveBlockInteractionRuntime(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorBlockInteractionRuntimeOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_BlockInteractionRuntime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_BlockInteractionRuntime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBlockInteractionRuntimeOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_BlockInteractionRuntime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_BlockInteractionRuntime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBlockInteractionRuntimeOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_BlockInteractionRuntime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_BlockInteractionRuntime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBlockInteractionRuntimeOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_BlockInteractionRuntime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_BlockInteractionRuntime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBlockInteractionRuntimeOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_BlockInteractionRuntime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_BlockInteractionRuntime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorBlockInteractionRuntimeLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_BlockInteractionRuntime, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_BlockInteractionRuntime, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBlockInteractionRuntimeActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_BlockInteractionRuntime, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_BlockInteractionRuntime, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBlockInteractionRuntimeModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_BlockInteractionRuntime, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_BlockInteractionRuntime, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace EntityBB

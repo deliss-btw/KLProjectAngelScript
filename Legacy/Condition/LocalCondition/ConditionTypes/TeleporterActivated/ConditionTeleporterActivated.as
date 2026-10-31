@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FConditionTeleporterActivatedConfig (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
-
 class UConditionTeleporterActivated : ULocalConditionTypeDefineBase
 {
     UConditionTeleporterActivated()
@@ -56,9 +51,10 @@ struct FConditionTeleporterActivatedConfig : FLocalConditionTypeDefineConfigBase
 {
     FLocalConditionTypeDefineConfigBase _base_FLocalConditionTypeDefineConfigBase;
 
+    default _base_FLocalConditionTypeDefineConfigBase = UConditionTeleporterActivated;
+
     FConditionTeleporterActivatedConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }

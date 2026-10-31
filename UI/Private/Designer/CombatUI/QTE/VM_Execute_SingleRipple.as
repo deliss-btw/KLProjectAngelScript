@@ -1,4 +1,3 @@
-﻿
 namespace FVM_Execute_SingleRipple
 {
     const int ModelId = 0;
@@ -23,7 +22,7 @@ struct FVM_Execute_SingleRipple : FEUIViewModel
         this.m_State = EProgressOperationState(0);
         this.m_CurTime = 0.0f;
         this.m_MaxTime = 0.0f;
-        this.m_TapHint = NSLOCTEXT("QTE", "SingleRipple_Hint", "ж‹је€Ђ");
+        this.m_TapHint = NSLOCTEXT("QTE", "SingleRipple_Hint", "拼刀");
         if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
         {
             return;
@@ -35,7 +34,7 @@ struct FVM_Execute_SingleRipple : FEUIViewModel
         this.m_State = EProgressOperationState(0);
         this.m_CurTime = 0.0f;
         this.m_MaxTime = 0.0f;
-        this.m_TapHint = NSLOCTEXT("QTE", "SingleRipple_Hint", "ж‹је€Ђ");
+        this.m_TapHint = NSLOCTEXT("QTE", "SingleRipple_Hint", "拼刀");
         this.m_State = Other.m_State;
         this.m_PageHandle = Other.m_PageHandle;
         this.m_CurTime = Other.m_CurTime;

@@ -1,5 +1,3 @@
-﻿
-
 class US_CharacterOutline : UECSScriptSystem
 {
     US_CharacterOutline()
@@ -138,7 +136,7 @@ class US_CharacterOutline : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_UpdateTeamOutline(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = ::__GetMonitorPlayerInTeamOnRemoveView(this.GetECSWorld(), EECSRegType(0), false, true);
+        FECSMonitorRuntimeView local_56 = ::__GetMonitorPlayerInTeamOnRemoveView(this.GetECSWorld(), EECSRegType(0), (0 != 0), true);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {

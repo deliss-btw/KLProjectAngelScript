@@ -1,13 +1,8 @@
-﻿
 enum ETriggerPlayerEntityMode
 {
     EntityBB,
     FromCustomInteractEventToESMTriggerFilterContext,
 }
-
-
-// NOTE: class defaults are not authored in this module: UESMAction_PropAddBuffToPlayer (default scalar field UESMAction.NetTriggerMode has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
 
 class UESMAction_PropAddBuffToPlayer : UESMBPBaseInstantAction
 {
@@ -20,7 +15,6 @@ class UESMAction_PropAddBuffToPlayer : UESMBPBaseInstantAction
     UPROPERTY()
     FPrefabConfigNameSelector BuffTagNames;
 
-
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const
     {
@@ -29,7 +23,7 @@ class UESMAction_PropAddBuffToPlayer : UESMBPBaseInstantAction
     UFUNCTION()
     void Do_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        ::PropAddBuffToPlayerUtils::TriggerEntityAddBuffListByBuffTag(this.GetTriggerPlayerEntity(Context.GetEntity()), Context.GetEntity(), this.bIncludeDefault, this.BuffTagNames.SelectedNames);
+        ::PropAddBuffToPlayerUtils::TriggerEntityAddBuffListByBuffTag(this.GetTriggerPlayerEntity(Context.GetEntity()), Context.GetEntity(), (this.bIncludeDefault), this.BuffTagNames.SelectedNames);
         return;
     }
     FECSEntity GetTriggerPlayerEntity(const FECSEntity &inout Entity) const

@@ -1,5 +1,3 @@
-﻿
-
 struct FT_EcologyConfigTrait : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -9,7 +7,6 @@ struct FT_EcologyConfigTrait : FECSTrait
     bool bHas_FC_EcologyTestConfig = true;
     UPROPERTY()
     FC_EcologyTestConfig Config_FC_EcologyTestConfig;
-
 
 }
 

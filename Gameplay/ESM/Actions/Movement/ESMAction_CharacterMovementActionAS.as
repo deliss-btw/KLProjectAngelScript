@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CharacterMovementActionAS : UESMCharacterMovementAction
 {
     UESMAction_CharacterMovementActionAS()

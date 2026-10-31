@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_MissionInfo
 {
     const int ViewID = 0;
@@ -31,6 +30,7 @@ namespace UWidget_MissionInfo
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MissionInfo;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

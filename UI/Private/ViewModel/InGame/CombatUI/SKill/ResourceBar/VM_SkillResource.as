@@ -1,4 +1,3 @@
-﻿
 namespace FMS_SkillBtnsManager
 {
     const int ModelId = 0;

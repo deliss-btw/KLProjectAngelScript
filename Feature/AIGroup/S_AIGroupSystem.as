@@ -1,5 +1,3 @@
-﻿
-
 class US_AIGroupSystem : UECSScriptSystem
 {
     US_AIGroupSystem()

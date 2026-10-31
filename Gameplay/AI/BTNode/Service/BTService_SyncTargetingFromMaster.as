@@ -1,4 +1,3 @@
-﻿
 enum ESyncBindDir
 {
     MasterSide,
@@ -10,7 +9,6 @@ enum ESyncPairRefSource
     FromEntityBB,
     FromBlackboard,
 }
-
 
 class UBTService_SyncTargetingFromMaster : UBTService_ECSScriptBase
 {

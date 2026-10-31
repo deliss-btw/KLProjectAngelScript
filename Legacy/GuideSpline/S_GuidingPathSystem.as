@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_GuidingPath_DebugDraw = FConsoleVariable();
 const FConsoleVariable CVar_GuidingPath_DiagLog = FConsoleVariable();
 const int GuidingPathSource_None = 0;
@@ -112,7 +111,6 @@ class US_GuidingPathSystem : UECSScriptSystem
     UPROPERTY()
     FGameplayTagContainer NotCancelGuidingPathTargetTags;
 
-
     void SendGuidingPathFindFailed(const FECSEntity &inout Player, const FVector &inout TargetLocation) const
     {
         FFPTime local_6 = FFPTime(-1);
@@ -144,7 +142,7 @@ class US_GuidingPathSystem : UECSScriptSystem
                 ModifyOrAdd local_48;
                 int local_32 = int(Event.TargetLocation2D.Y);
                 int local_31 = int(Event.TargetLocation2D.X);
-                XLog(ELog(51), FString().Append("[GuidingPath/йЂ‰и·Ї] жњЌеЉЎе™Ёж”¶е€°иЇ·ж±‚ з›®ж ‡и§Јжћђе¤±иґҐв†’ж ‡и®°bLastFindPathSuccess=false 2D=(").Append(local_31).Append(",").Append(local_32).Append(") жѕејЏ3D=").Append(Event.bHasTargetLocation));
+                XLog(ELog(51), FString().Append("[GuidingPath/选路] 服务器收到请求 目标解析失败→标记bLastFindPathSuccess=false 2D=(").Append(local_31).Append(",").Append(local_32).Append(") 显式3D=").Append(Event.bHasTargetLocation));
                 local_48.opCall().SetTargetLocation(FVector(Event.TargetLocation2D.X, Event.TargetLocation2D.Y, 0.0));
                 local_48.opCall().SetbLastFindPathSuccess(false);
                 this.SendGuidingPathFindFailed(Event.Sender, FVector(Event.TargetLocation2D.X, Event.TargetLocation2D.Y, 0.0));
@@ -153,7 +151,7 @@ class US_GuidingPathSystem : UECSScriptSystem
             int local_49 = int(local_12.Z);
             int local_31_2 = int(local_12.Y);
             int local_32_2 = int(local_12.X);
-            XLog(ELog(51), FString().Append("[GuidingPath/йЂ‰и·Ї] жњЌеЉЎе™Ёж”¶е€°иЇ·ж±‚ и§Јжћђз›®ж ‡=(").Append(local_32_2).Append(",").Append(local_31_2).Append(",").Append(local_49).Append(") её¦е®ћдЅ“=false жѕејЏ3D=").Append(Event.bHasTargetLocation));
+            XLog(ELog(51), FString().Append("[GuidingPath/选路] 服务器收到请求 解析目标=(").Append(local_32_2).Append(",").Append(local_31_2).Append(",").Append(local_49).Append(") 带实体=false 显式3D=").Append(Event.bHasTargetLocation));
         }
         if (Event.TargetEntity.IsValid())
         {
@@ -316,7 +314,7 @@ class US_GuidingPathSystem : UECSScriptSystem
             int local_47 = int(local_8.X);
             int local_46 = int(StartRoadPoint.Z);
             int local_45 = int(StartRoadPoint.Y);
-            XLog(ELog(51), FString().Append("[GuidingPath/з›®ж ‡й™Ќе±‚] ж··еђ€и·ЇйЄЊиЇЃ иµ·з‚№дёЉи·Ї=").Append(bValidUp).Append(" з»€з‚№дё‹и·Ї=").Append(local_28).Append(" и·ЇзЅ‘иїћйЂљ=").Append(local_9).Append(" иµ·з‚№и·Їз‚№=(").Append(int(StartRoadPoint.X)).Append(",").Append(local_45).Append(",").Append(local_46).Append(") з»€з‚№и·Їз‚№=(").Append(local_47).Append(",").Append(local_48).Append(",").Append(local_49).Append(") дё‹и·Їз»€з‚№gap=").Append(local_50));
+            XLog(ELog(51), FString().Append("[GuidingPath/目标降层] 混合路验证 起点上路=").Append(bValidUp).Append(" 终点下路=").Append(local_28).Append(" 路网连通=").Append(local_9).Append(" 起点路点=(").Append(int(StartRoadPoint.X)).Append(",").Append(local_45).Append(",").Append(local_46).Append(") 终点路点=(").Append(local_47).Append(",").Append(local_48).Append(",").Append(local_49).Append(") 下路终点gap=").Append(local_50));
         }
         if (!(bValidUp) || !(local_28) || !(local_9))
         {
@@ -349,7 +347,7 @@ class US_GuidingPathSystem : UECSScriptSystem
             {
                 int local_1_2 = uint(local_30);
                 int local_50_2 = uint(local_29);
-                XLog(ELog(51), FString().Append("[GuidingPath/з›®ж ‡й™Ќе±‚] ж··еђ€и·Їж‹јжЋҐж‹’з»ќ дёЉи·Ї-и·ЇзЅ‘gap=").Append(local_50_2).Append(" и·ЇзЅ‘-дё‹и·Їgap=").Append(local_1_2).Append(" дёЉй™ђ=").Append(uint(local_52)));
+                XLog(ELog(51), FString().Append("[GuidingPath/目标降层] 混合路拼接拒绝 上路-路网gap=").Append(local_50_2).Append(" 路网-下路gap=").Append(local_1_2).Append(" 上限=").Append(uint(local_52)));
             }
             return false;
         }
@@ -436,7 +434,7 @@ class US_GuidingPathSystem : UECSScriptSystem
                         bool local_1_2 = local_104.GetbStartPenetrating();
                         int local_6 = int(local_104.Location.Z);
                         int local_5 = uint(local_4_2);
-                        XLog(ELog(51), FString().Append("[GuidingPath/з›®ж ‡й™Ќе±‚] з©їйЂЏеЋљзў°ж’ћдЅ“е¤„зђ† е°ќиЇ•=").Append(local_21).Append(" иµ·Z=").Append(local_5).Append(" е‘Ѕдё­Z=").Append(local_6).Append(" з©їйЂЏ=").Append(local_1_2).Append(" еїЅз•Ґз»„д»¶=").Append(local_186).Append(" е…њеє•дё‹и·і=").Append(local_195));
+                        XLog(ELog(51), FString().Append("[GuidingPath/目标降层] 穿透厚碰撞体处理 尝试=").Append(local_21).Append(" 起Z=").Append(local_5).Append(" 命中Z=").Append(local_6).Append(" 穿透=").Append(local_1_2).Append(" 忽略组件=").Append(local_186).Append(" 兜底下跳=").Append(local_195));
                     }
                     if (!(local_186))
                     {
@@ -506,7 +504,7 @@ class US_GuidingPathSystem : UECSScriptSystem
                     int local_5_2 = int(local_202.Z);
                     int local_6_2 = int(local_202.Y);
                     int local_195_2 = int(local_202.X);
-                    XLog(ELog(51), FString().Append("[GuidingPath/з›®ж ‡й™Ќе±‚] еЂ™йЂ‰е±‚=").Append(local_20).Append(" з‚№=(").Append(local_195_2).Append(",").Append(local_6_2).Append(",").Append(local_5_2).Append(") NavMeshжЉ•еЅ±=").Append(local_1_3).Append(" жЉ•еЅ±gap=").Append(local_239).Append(" NavMeshи·Їеѕ„=").Append(local_224).Append(" и·ЇзЅ‘ж··еђ€и·Їеѕ„=").Append(local_227).Append(" еЏЇиѕѕ=").Append(local_186).Append(" з‚№ж•°=").Append(local_240).Append(" иµ·з‚№gap=").Append(local_241).Append(" з»€з‚№gap=").Append(local_242));
+                    XLog(ELog(51), FString().Append("[GuidingPath/目标降层] 候选层=").Append(local_20).Append(" 点=(").Append(local_195_2).Append(",").Append(local_6_2).Append(",").Append(local_5_2).Append(") NavMesh投影=").Append(local_1_3).Append(" 投影gap=").Append(local_239).Append(" NavMesh路径=").Append(local_224).Append(" 路网混合路径=").Append(local_227).Append(" 可达=").Append(local_186).Append(" 点数=").Append(local_240).Append(" 起点gap=").Append(local_241).Append(" 终点gap=").Append(local_242));
                 }
                 if (CVar_GuidingPath_DebugDraw.GetBool())
                 {
@@ -577,7 +575,707 @@ class US_GuidingPathSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_UpdateGuidPathFinding(const FECSEntity &inout Entity, const FCS_FixedTime &inout FixedTime, const FC_PlayerController &inout PlayerControllerComp, FC_GuidingPathUpdateInfo &inout GuidingPathUpdateInfo) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        bool local_1;
+        int local_8 = 0;
+        float32 local_20;
+        int local_50 = 0;
+        bool local_51;
+        bool local_99;
+        bool local_100;
+        bool local_124;
+        bool local_148;
+        bool local_149;
+        bool local_198;
+        UPrimitiveComponent local_342;
+        float local_345;
+        int local_376 = 0;
+        if (!(PlayerControllerComp.GetPlayerPawnEntity().IsValid()))
+        {
+            return;
+        }
+        local_1 = !(local_8);
+        if (local_1)
+        {
+            return;
+        }
+        FVector local_14(FVector::ZeroVector);
+        if (!(GuidingPathUpdateInfo.TargetEntity.IsValid()))
+        {
+            local_1 = false;
+        }
+        else
+        {
+            Has local_18;
+            local_1 = local_18.opCall();
+        }
+        if (local_1)
+        {
+            Get local_6;
+            local_14 = local_6.opCall().GetPosition();
+            float local_23 = FMath::Max(this.PathFindingUpdateMinDistance, 100.0f);
+            if (GuidingPathUpdateInfo.bHasDownwardResolvedTarget && (GuidingPathUpdateInfo.DownwardResolveTargetEntity == GuidingPathUpdateInfo.TargetEntity) && local_14.Equals(GuidingPathUpdateInfo.DownwardResolveSourceLocation, FMath::Max(this.DownwardTargetCacheTolerance, 0.0f)) && ((((FVector(local_8.GetPosition()) - GuidingPathUpdateInfo.DownwardResolvePlayerLocation)).SizeSquared() < (local_23 * local_23))))
+            {
+                GuidingPathUpdateInfo.TargetLocation = GuidingPathUpdateInfo.DownwardResolvedTargetLocation;
+            }
+            else
+            {
+                local_1 = false;
+                GuidingPathUpdateInfo.bHasDownwardResolvedTarget = local_1;
+                GuidingPathUpdateInfo.TargetLocation = local_14;
+            }
+        }
+        if (GuidingPathUpdateInfo.TargetLocation.IsZero())
+        {
+            return;
+        }
+        bool local_19 = local_50 && (FECSEntity(local_50.GetTargetEntity()) == GuidingPathUpdateInfo.TargetEntity) && GuidingPathUpdateInfo.TargetLocation.Equals(local_50.GetTargetLocation(), 0.1);
+        if (local_19 && local_50.GetbLastFindPathSuccess() && this.ReachedGuidingPathTarget(local_50, local_8.GetPosition()))
+        {
+            ::MessageHintUtils::ShowMessageHint(Entity, this.GuidingPathTargetReachedHint, TArray<FTextArgument>());
+            Remove local_60;
+            local_60.opCall();
+            Remove local_64;
+            local_64.opCall();
+            return;
+        }
+        if (local_50 && local_50.GetTargetEntity().IsValid() && !((FECSEntity(local_50.GetTargetEntity()) == GuidingPathUpdateInfo.TargetEntity)))
+        {
+            FC_GuidingPathTarget& local_70;
+            Modify local_68;
+            local_70 = local_68.opCall();
+            if (local_70)
+            {
+                if (local_70.GuidingPlayers.IsEmpty())
+                {
+                    Remove local_76;
+                    local_76.opCall();
+                }
+            }
+        }
+        bool local_77 = GuidingPathUpdateInfo.TargetEntity.IsValid() && (!(local_50) || !((FECSEntity(local_50.GetTargetEntity()) == GuidingPathUpdateInfo.TargetEntity)));
+        if (local_77)
+        {
+            FC_GuidingPathTarget& local_70;
+            local_70.GuidingPlayers.Add(Entity);
+        }
+        if (GuidingPathUpdateInfo.LastUpdateTime.opCmp(0.0) > 0)
+        {
+            local_20 = this.PathFindingUpdateInterval;
+            if (((FFPTime(FixedTime.Time) - GuidingPathUpdateInfo.LastUpdateTime).ToSeconds()) < local_20)
+            {
+                if (!(GuidingPathUpdateInfo.bPendingManualResult))
+                {
+                    local_77 = false;
+                }
+                else
+                {
+                    local_77 = local_50;
+                }
+                local_1 = local_77 && local_19;
+                if (local_1)
+                {
+                    if (!(local_50.GetbLastFindPathSuccess()))
+                    {
+                        this.SendGuidingPathFindFailed(Entity, local_50.GetTargetLocation());
+                    }
+                    local_1 = false;
+                    GuidingPathUpdateInfo.bPendingManualResult = local_1;
+                }
+                return;
+            }
+            if (local_19 && ((((FVector(local_8.GetPosition()) - GuidingPathUpdateInfo.LastUpdateLocation).SizeSquared()) < (this.PathFindingUpdateMinDistance * this.PathFindingUpdateMinDistance))))
+            {
+                if (!(GuidingPathUpdateInfo.bPendingManualResult))
+                {
+                    local_1 = false;
+                }
+                else
+                {
+                    local_1 = local_50;
+                }
+                if (local_1)
+                {
+                    if (!(local_50.GetbLastFindPathSuccess()))
+                    {
+                        this.SendGuidingPathFindFailed(Entity, local_50.GetTargetLocation());
+                    }
+                    local_1 = false;
+                    GuidingPathUpdateInfo.bPendingManualResult = local_1;
+                }
+                return;
+            }
+        }
+        XLog(ELog(51), FString().Append("[GuidingPath/选路] 服务器开始重算 目标=(").Append(int(GuidingPathUpdateInfo.TargetLocation.X)).Append(",").Append(int(GuidingPathUpdateInfo.TargetLocation.Y)).Append(",").Append(int(GuidingPathUpdateInfo.TargetLocation.Z)).Append(") 同目标=").Append(local_19).Append(" 带实体=").Append(GuidingPathUpdateInfo.TargetEntity.IsValid()));
+        bool local_94 = false;
+        TArray<FVector> local_98;
+        local_99 = false;
+        local_100 = false;
+        int local_101 = 30;
+        float local_23_2 = 0.0f;
+        FVector local_108 = local_8.GetPosition();
+        FVector local_114 = GuidingPathUpdateInfo.TargetLocation;
+        TArray<FVector> local_118;
+        TArray<FVector> local_122;
+        float32 local_123 = 0.0f;
+        local_1 = FAINavigationUtils::FindClosestRoadPoint(this.GetWorld(), local_8.GetPosition(), local_108) && FAINavigationUtils::FindPathForPlayerGuide(this.GetWorld(), local_8.GetPosition(), local_108, this.PathOffsetFromCorners, local_101, FVector(this.QueryExtentRadius, this.QueryExtentRadius, this.QueryExtentHeight), this.NavFilterClass, local_118, local_122, local_123);
+        if (!(local_1))
+        {
+            local_123 = int(float32(local_8.GetPosition().Distance(local_108)));
+        }
+        local_23_2 = local_23_2 + local_123;
+        this.AppendHerarchicalStepPath(local_118, local_122, local_101);
+        TArray<FVector> local_132;
+        TArray<FVector> local_136;
+        float32 local_137 = 0.0f;
+        local_77 = FAINavigationUtils::FindClosestRoadPoint(this.GetWorld(), GuidingPathUpdateInfo.TargetLocation, local_114) && FAINavigationUtils::FindPathForPlayerGuide(this.GetWorld(), local_114, GuidingPathUpdateInfo.TargetLocation, this.PathOffsetFromCorners, local_101, (FVector(this.QueryExtentRadius, this.QueryExtentRadius, this.QueryExtentHeight)), this.NavFilterClass, local_132, local_136, local_137);
+        if (!(local_77))
+        {
+            local_20 = float32(local_114.Distance(GuidingPathUpdateInfo.TargetLocation));
+            local_137 = int(local_20);
+        }
+        local_23_2 = local_23_2 + local_137;
+        this.AppendHerarchicalStepPath(local_132, local_136, local_101);
+        TArray<FVector> local_142;
+        float32 local_143 = 0.0f;
+        bool local_102_2 = FAINavigationUtils::RoadGraphPathFindSimple(this.GetWorld(), local_108, local_114, local_142, 500, local_143, EKLRoadMask(1));
+        bool local_145 = local_102_2;
+        bool local_146 = false;
+        bool local_147 = false;
+        bool local_138 = local_123 > 50000.0f || (local_137 > 50000.0f);
+        if (local_138)
+        {
+            local_102_2 = false;
+            local_146 = true;
+        }
+        local_138 = local_102_2 && GuidingPathUpdateInfo.TargetEntity.IsValid();
+        if (local_138 && ((this.UnvalidatedRoadAccessMaxDistance > 0.0f)))
+        {
+            local_51 = !(local_1) && ((local_123 > this.UnvalidatedRoadAccessMaxDistance));
+            local_148 = !(local_77) && ((local_137 > this.UnvalidatedRoadAccessMaxDistance));
+            local_138 = local_51 || local_148;
+            if (local_138)
+            {
+                local_102_2 = false;
+                local_147 = true;
+            }
+        }
+        if (CVar_GuidingPath_DiagLog.GetBool())
+        {
+            int local_92 = int(local_8.GetPosition().Distance(local_108));
+            int local_150 = int(local_114.Distance(GuidingPathUpdateInfo.TargetLocation));
+            int local_159 = int(local_114.Z);
+            int local_158 = int(local_114.Y);
+            int local_157 = int(local_114.X);
+            int local_156 = int(local_108.Z);
+            int local_155 = int(local_108.Y);
+            int local_154 = int(local_108.X);
+            int local_153 = uint(local_143);
+            int local_152 = local_142.Num();
+            local_20 = this.UnvalidatedRoadAccessMaxDistance;
+            XLog(ELog(51), FString().Append("[GuidingPath/垂直诊断] 路网决策 有路网图=").Append(local_102_2).Append(" 路网FindPath=").Append(local_145).Append(" 被500mClamp=").Append(local_146).Append(" 未验证接入超限=").Append(local_147).Append(" 接入上限=").Append(uint(local_20)).Append(" 起点上路=").Append(local_1).Append(" 终点上路=").Append(local_77).Append(" 起上路len=").Append(uint(local_123)).Append(" 终上路len=").Append(uint(local_137)).Append(" 起-ramp直距=").Append(local_92).Append(" 终-ramp直距=").Append(local_150).Append(" 路网段数=").Append(local_152).Append(" 路网长=").Append(local_153).Append(" 起ramp=(").Append(local_154).Append(",").Append(local_155).Append(",").Append(local_156).Append(") 终ramp=(").Append(local_157).Append(",").Append(local_158).Append(",").Append(local_159).Append(")"));
+        }
+        if (local_1)
+        {
+            if (local_118.Num() > 1 && (local_142.Num() > 0))
+            {
+                if (local_118[(local_118.Num() - 1)].Distance(local_142[0]) < 300.0)
+                {
+                    local_142.RemoveAt(0);
+                }
+            }
+            local_98.Append(local_118);
+        }
+        else
+        {
+            local_98.Add(local_8.GetPosition());
+        }
+        local_98.Append(local_142);
+        if (local_77)
+        {
+            int local_152_2 = local_132.Num();
+            if (local_152_2 > 1 && (local_142.Num() > 0))
+            {
+                local_152_2 = local_142.Num();
+                if (local_132[0].Distance(local_142[(local_152_2 - 1)]) < 300.0)
+                {
+                    local_152_2 = local_142.Num() - 1;
+                    local_142.RemoveAt(local_152_2);
+                }
+            }
+            local_98.Append(local_132);
+        }
+        else
+        {
+            local_98.Add(GuidingPathUpdateInfo.TargetLocation);
+        }
+        local_23_2 = local_23_2 + local_143;
+        TArray<FVector> local_166;
+        TArray<FVector> local_170;
+        float32 local_171 = 0.0f;
+        local_148 = false;
+        local_51 = false;
+        local_20 = this.NavMeshOverRoadRatio;
+        int local_172 = int(local_20);
+        int local_173 = int(this.NavMeshStraightMaxLength);
+        bool local_174 = false;
+        FVector local_42_2 = (GuidingPathUpdateInfo.TargetLocation - local_8.GetPosition());
+        float32 local_21_3 = float32(local_42_2.Size());
+        float32 local_176 = 0.0f;
+        float32 local_177 = 0.0f;
+        float32 local_178 = 0;
+        float32 local_175 = FMath::Max(3000.0f, this.QueryExtentRadius * 2.0f);
+        float32 local_180 = local_175;
+        bool local_181 = false;
+        if (local_102_2)
+        {
+            local_94 = true;
+            local_99 = true;
+            local_100 = true;
+            if (GuidingPathUpdateInfo.TargetEntity.IsValid())
+            {
+                local_20 = FMath::Max(this.DownwardTargetNavEndpointGap, 50.0f);
+                local_180 = float32(local_20);
+            }
+            local_181 = this.FindNavmeshGuidePath(local_8.GetPosition(), GuidingPathUpdateInfo.TargetLocation, local_101, local_166, local_170, local_171) && this.ValidateNavmeshGuidePathEndpointGaps(local_8.GetPosition(), GuidingPathUpdateInfo.TargetLocation, local_166, local_175, local_180, local_176, local_177, local_178);
+            if (local_181)
+            {
+                local_171 = local_178;
+            }
+            local_149 = local_181 && (local_171 > 0.0f);
+            if (local_149 && (local_171 < local_173))
+            {
+                local_20 = local_171 * local_172;
+                if (local_20 < local_23_2)
+                {
+                }
+            }
+        }
+        else
+        {
+            local_51 = true;
+            local_148 = this.FindNavmeshGuidePath(local_8.GetPosition(), GuidingPathUpdateInfo.TargetLocation, local_101, local_166, local_170, local_171);
+            local_181 = local_148 && this.ValidateNavmeshGuidePath(local_8.GetPosition(), GuidingPathUpdateInfo.TargetLocation, local_166, local_175, local_176, local_177, local_178);
+            if (local_181)
+            {
+                local_171 = local_178;
+            }
+            else
+            {
+                local_51 = false;
+            }
+        }
+        if (CVar_GuidingPath_DiagLog.GetBool())
+        {
+            int local_155_2 = uint(local_171);
+            int local_156_2 = uint(local_180);
+            int local_157_2 = uint(local_175);
+            int local_151 = uint(local_177);
+            int local_152_3 = uint(local_176);
+            XLog(ELog(51), FString().Append("[GuidingPath/垂直诊断] navmesh判定 有路网图=").Append(local_102_2).Append(" navmesh找到=").Append(local_148).Append(" navmesh点数=").Append(local_166.Num()).Append(" 可用=").Append(local_181).Append(" 起点gap=").Append(local_152_3).Append(" 终点gap=").Append(local_151).Append(" 起点gap上限=").Append(local_157_2).Append(" 终点gap上限=").Append(local_156_2).Append(" navlen=").Append(local_155_2));
+            FVector local_42_3 = FVector(this.QueryExtentRadius, this.QueryExtentRadius, this.QueryExtentHeight);
+            TArray<FVector> local_192;
+            FVector local_310;
+            TArray<FVector> local_196;
+            float32 local_197 = 0.0f;
+            local_124 = FAINavigationUtils::FindPathForPlayerGuide(this.GetWorld(), GuidingPathUpdateInfo.TargetLocation, GuidingPathUpdateInfo.TargetLocation, this.PathOffsetFromCorners, 0, local_42_3, this.NavFilterClass, local_192, local_196, local_197);
+            local_192.Empty(0);
+            local_196.Empty(0);
+            local_197 = 0.0f;
+            local_198 = FAINavigationUtils::FindPathForPlayerGuide(this.GetWorld(), local_8.GetPosition(), local_8.GetPosition(), this.PathOffsetFromCorners, 0, local_42_3, this.NavFilterClass, local_192, local_196, local_197);
+            int local_71 = int(local_8.GetPosition().Z);
+            local_155_2 = int(local_8.GetPosition().Y);
+            int local_154_2 = int(local_8.GetPosition().X);
+            int local_159_2 = int(GuidingPathUpdateInfo.TargetLocation.Z);
+            local_152_3 = int(GuidingPathUpdateInfo.TargetLocation.Y);
+            local_156_2 = int(GuidingPathUpdateInfo.TargetLocation.X);
+            local_151 = uint(this.QueryExtentHeight);
+            local_20 = this.QueryExtentRadius;
+            local_157_2 = uint(local_20);
+            XLog(ELog(51), FString().Append("[GuidingPath/垂直诊断] navmesh投影 目标在navmesh=").Append(local_124).Append(" 起点在navmesh=").Append(local_198).Append(" 查询盒(半径=").Append(local_157_2).Append(",半高=").Append(local_151).Append(") 目标=(").Append(local_156_2).Append(",").Append(local_152_3).Append(",").Append(local_159_2).Append(") 起点=(").Append(local_154_2).Append(",").Append(local_155_2).Append(",").Append(local_71).Append(")"));
+        }
+        local_198 = false;
+        if (PlayerControllerComp.GetPlayerPawnEntity().IsValid())
+        {
+            FString local_336;
+            FHitResult local_266;
+            FCollisionQueryParams local_304;
+            local_310 = (FVector(local_8.GetPosition()) + FVector(0.0, 0.0, 50.0));
+            FVector local_42_4 = (GuidingPathUpdateInfo.TargetLocation + FVector(0.0, 0.0, 50.0));
+            FCollisionResponseParams local_326;
+            local_138 = FPhysicsUtils::LineTraceSingle(PlayerControllerComp.GetPlayerPawnEntity(), false, EPhysicsTraceTag(31), local_266, local_310, local_42_4, FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(5)), local_304, local_326);
+            if (local_138)
+            {
+                local_20 = float32(((FVector(local_266.Location) - GuidingPathUpdateInfo.TargetLocation).Size()));
+            }
+            else
+            {
+                local_20 = 0.0f;
+            }
+            local_198 = local_138 && (local_20 > 300.0f);
+            if (CVar_GuidingPath_DiagLog.GetBool())
+            {
+                FString local_332 = "无";
+                local_336 = FString("无");
+                if (local_138 && (local_266.GetActor() != nullptr))
+                {
+                    local_332 = local_266.GetActor().GetName();
+                }
+                if (local_138 && (local_342 != nullptr))
+                {
+                    UPrimitiveComponent local_344;
+                    local_336 = local_344.GetName();
+                }
+                int local_156_3 = int(local_42_4.Z);
+                int local_151_2 = int(local_310.Z);
+                int local_157_3 = uint(local_20);
+                int local_153_2 = int(local_266.ImpactPoint.Z);
+                XLog(ELog(51), FString().Append("[GuidingPath/垂直诊断] LOS 直线被挡=").Append(local_198).Append(" 撞中=").Append(local_138).Append(" 撞点=(").Append(int(local_266.ImpactPoint.X)).Append(",").Append(int(local_266.ImpactPoint.Y)).Append(",").Append(local_153_2).Append(") 距目标=").Append(local_157_3).Append(" 起Z=").Append(local_151_2).Append(" 目标Z=").Append(local_156_3).Append(" Actor=").Append(local_332).Append(" Comp=").Append(local_336));
+            }
+        }
+        if (PlayerControllerComp.GetPlayerPawnEntity().IsValid() && !(local_198))
+        {
+            local_174 = FAINavigationUtils::IsDirectlyReachable(PlayerControllerComp.GetPlayerPawnEntity(), local_8.GetPosition(), GuidingPathUpdateInfo.TargetLocation);
+            if (local_174)
+            {
+                local_51 = true;
+            }
+        }
+        local_20 = this.GuideStraightenRatio;
+        if (local_51)
+        {
+            TArray<FVector> local_192 = local_98;
+            local_98.Empty(0);
+            if (local_174 && !(local_181 && (local_166.Num() >= 2)))
+            {
+                local_94 = true;
+                local_99 = true;
+                local_100 = true;
+                local_98.Add(local_8.GetPosition());
+                local_98.Add(GuidingPathUpdateInfo.TargetLocation);
+            }
+            else
+            {
+                if (local_181 && ((local_166.Num() >= 2)))
+                {
+                    local_94 = true;
+                    local_99 = true;
+                    local_100 = true;
+                    local_98.Append(local_166);
+                }
+                else
+                {
+                    if (local_192.Num() >= 2)
+                    {
+                        local_98 = local_192;
+                        local_51 = false;
+                    }
+                    else
+                    {
+                        local_94 = false;
+                    }
+                }
+            }
+        }
+        local_138 = false;
+        local_124 = local_20 > 0.0f && !(local_174);
+        local_149 = local_124 && !(local_198);
+        local_124 = local_149 && (local_21_3 > 1.0f);
+        local_149 = local_124 && local_94;
+        if ((local_149 && ((local_98.Num() > 2))) && PlayerControllerComp.GetPlayerPawnEntity().IsValid())
+        {
+            local_345 = 0.0f;
+            int local_92_2 = 1;
+            for (; local_92_2 < local_98.Num(); )
+            {
+                FVector local_188 = local_98[local_92_2];
+                int local_152_4 = local_92_2 - 1;
+                local_345 = local_345 + (float32(((local_188 - local_98[local_152_4]).Size())));
+                ++local_92_2;
+            }
+            float32 local_179 = FMath::Max(local_20, 1.0f);
+            float32 local_197_2 = local_21_3 * local_179;
+            if (local_345 > local_197_2)
+            {
+                int local_152_5 = local_98.Num();
+                this.SimplifyByNavVisibility(PlayerControllerComp.GetPlayerPawnEntity(), local_98);
+                local_138 = (local_98.Num() < local_152_5);
+            }
+        }
+        bool local_346 = false;
+        local_345 = this.GuideFallbackRoadRatio;
+        bool local_199 = local_345 > 0.0f && local_94;
+        local_149 = local_199 && !(local_174);
+        local_124 = local_149 && !(local_198);
+        local_149 = (local_124 && !(local_51)) && !(local_181);
+        if (((local_149 && (local_21_3 > 1.0f)) && (local_98.Num() >= 2)) && PlayerControllerComp.GetPlayerPawnEntity().IsValid())
+        {
+            float local_347 = 0.0f;
+            int local_152_6 = 1;
+            for (; local_152_6 < local_98.Num(); )
+            {
+                float32 local_197_3 = float32(((FVector(local_98[local_152_6]) - local_98[local_152_6 - 1]).Size()));
+                local_347 = local_347 + local_197_3;
+                ++local_152_6;
+            }
+            float32 local_197_4 = local_21_3 * local_345;
+            if (local_347 > local_197_4)
+            {
+                local_98.Empty(0);
+                local_98.Add(local_8.GetPosition());
+                local_98.Add(GuidingPathUpdateInfo.TargetLocation);
+                local_346 = true;
+            }
+        }
+        local_149 = this.bClampUnwalkableSegment && local_94;
+        if ((((local_149 && ((this.UnwalkableSegmentMaxZ > 0.0f))) && (local_98.Num() >= 2)) && !(local_174)) && !(local_181))
+        {
+            int local_152_7 = -1;
+            float local_347_2 = 0.0f;
+            int local_150_2 = 1;
+            for (; local_150_2 < local_98.Num(); ++local_150_2)
+            {
+                float32 local_179_2 = FMath::Abs(float32((local_98[local_150_2].Z - local_98[(local_150_2 - 1)].Z)));
+                if (local_179_2 > this.UnwalkableSegmentMaxZ)
+                {
+                    local_152_7 = local_150_2;
+                    local_347_2 = local_179_2;
+                    break;
+                }
+            }
+            if (local_152_7 >= 1)
+            {
+                if (CVar_GuidingPath_DiagLog.GetBool())
+                {
+                    XLog(ELog(51), FString().Append("[GuidingPath/垂直诊断] 目标不可达(路网回退+超巨大垂直段 段#").Append(local_152_7).Append(" dZ=").Append(uint(local_347_2)).Append(" 点数=").Append(local_98.Num()).Append(") → 判无效(隐藏引导+手动点触发查找失败Tips)"));
+                }
+                local_94 = false;
+            }
+        }
+        if ((!(local_94) && GuidingPathUpdateInfo.TargetEntity.IsValid()) && !(local_14.IsZero()))
+        {
+            FVector local_310;
+            FString local_90;
+            bool local_349;
+            TArray<FVector> local_196;
+            float32 local_179_3 = 0.0f;
+            local_349 = false;
+            bool local_199_6 = this.FindHighestReachableTargetBelow(PlayerControllerComp.GetPlayerPawnEntity(), local_8.GetPosition(), local_14, local_101, local_310, local_196, local_179_3, local_349);
+            if (local_199_6)
+            {
+                GuidingPathUpdateInfo.bHasDownwardResolvedTarget = true;
+                GuidingPathUpdateInfo.DownwardResolveTargetEntity = GuidingPathUpdateInfo.TargetEntity;
+                GuidingPathUpdateInfo.DownwardResolveSourceLocation = local_14;
+                GuidingPathUpdateInfo.DownwardResolvedTargetLocation = local_310;
+                GuidingPathUpdateInfo.DownwardResolvePlayerLocation = local_8.GetPosition();
+                GuidingPathUpdateInfo.TargetLocation = local_310;
+                local_98 = local_196;
+                local_166 = local_196;
+                local_171 = int(local_179_3);
+                if (local_349)
+                {
+                    local_23_2 = local_179_3;
+                }
+                FVector local_188_2 = (local_310 - local_8.GetPosition());
+                local_21_3 = float32(local_188_2.Size());
+                local_94 = true;
+                local_99 = true;
+                local_100 = true;
+                local_148 = !(local_349);
+                local_181 = !(local_349);
+                local_51 = !(local_349);
+                local_174 = false;
+                local_346 = false;
+                local_138 = false;
+                if (CVar_GuidingPath_DiagLog.GetBool())
+                {
+                    if (local_349)
+                    {
+                        local_90 = "路网混合路径";
+                    }
+                    else
+                    {
+                        local_90 = "NavMesh路径";
+                    }
+                    int local_155_3 = uint(local_179_3);
+                    int local_91 = local_196.Num();
+                    int local_153_3 = int((local_14.Z - local_310.Z));
+                    int local_157_4 = int(local_310.Z);
+                    int local_151_3 = int(local_310.Y);
+                    int local_156_4 = int(local_310.X);
+                    XLog(ELog(51), FString().Append("[GuidingPath/目标降层] 向下解析成功 路径=").Append(local_90).Append(" 原目标=(").Append(int(local_14.X)).Append(",").Append(int(local_14.Y)).Append(",").Append(int(local_14.Z)).Append(") 可达目标=(").Append(local_156_4).Append(",").Append(local_151_3).Append(",").Append(local_157_4).Append(") 下移=").Append(local_153_3).Append(" 路径点=").Append(local_91).Append(" 路径长=").Append(local_155_3));
+                }
+            }
+            else
+            {
+                if (CVar_GuidingPath_DiagLog.GetBool())
+                {
+                    int local_157_5 = uint(this.DownwardTargetProbeDepth);
+                    int local_153_4 = int(local_14.Z);
+                    int local_91_2 = int(local_14.Y);
+                    int local_155_4 = int(local_14.X);
+                    XLog(ELog(51), FString().Append("[GuidingPath/目标降层] 向下解析失败 原目标=(").Append(local_155_4).Append(",").Append(local_91_2).Append(",").Append(local_153_4).Append(") 探测深度=").Append(local_157_5).Append(" 最大层数=").Append(this.DownwardTargetMaxLayers));
+                }
+            }
+        }
+        int local_150_3 = 0;
+        if (local_94)
+        {
+            if (local_346)
+            {
+                local_150_3 = 4;
+            }
+            else
+            {
+                if (!(local_51))
+                {
+                    local_150_3 = 3;
+                }
+                else
+                {
+                    local_150_3 = (local_174 && !(local_181 && (local_166.Num() >= 2))) ? 1 : 2;
+                }
+            }
+        }
+        FString local_332_2 = this.GetGuidingPathSourceName(local_150_3);
+        int local_158_2 = uint(local_171);
+        int local_71_2 = uint(local_21_3);
+        int local_152_8 = uint(local_23_2);
+        if (local_94)
+        {
+            FString local_90;
+            if (local_138)
+            {
+                local_90 = " 视线串拉";
+            }
+            else
+            {
+                local_90 = "";
+            }
+            XLog(ELog(51), FString().Append("[GuidingPath/选路] 来源=").Append(local_332_2).Append(local_90).Append(" 源点=").Append(local_98.Num()).Append(" 直达=").Append(local_174).Append(" NavLen=").Append(local_158_2).Append(" 直线=").Append(local_71_2).Append(" 路网=").Append(local_152_8));
+        }
+        if (CVar_GuidingPath_DiagLog.GetBool() && local_94)
+        {
+            int local_157_6 = int(local_8.GetPosition().Z);
+            int local_353 = int(GuidingPathUpdateInfo.TargetLocation.Z);
+            float32 local_197_5 = FMath::Abs(float32((GuidingPathUpdateInfo.TargetLocation.Z - local_8.GetPosition().Z)));
+            int local_354 = uint(local_197_5);
+            XLog(ELog(51), FString().Append("[GuidingPath/垂直诊断] 服务器 来源=").Append(local_332_2).Append(" 起点Z=").Append(local_157_6).Append(" 目标Z=").Append(local_353).Append(" |dz|=").Append(local_354).Append(" 直达=").Append(local_174).Append(" 直线被挡=").Append(local_198).Append(" 兜底直线=").Append(local_346).Append(" 点数=").Append(local_98.Num()));
+        }
+        this.LogSteepSegments("服务器路径", local_98, local_150_3);
+        if (CVar_GuidingPath_DebugDraw.GetBool())
+        {
+            FString local_336;
+            FColor local_357 = FColor(uint8(0), uint8(120), uint8(255), uint8(255));
+            FColor local_356 = FColor(uint8(0), uint8(200), uint8(0), uint8(255));
+            FColor local_362 = FColor(uint8(255), uint8(200), uint8(0), uint8(255));
+            FColor local_363 = FColor(uint8(200), uint8(0), uint8(200), uint8(255));
+            FColor local_364 = FColor(uint8(139), uint8(69), uint8(19), uint8(255));
+            FColor local_365 = this.GetGuidingPathSourceColor(local_150_3);
+            if (local_138)
+            {
+                local_336 = " [视线串拉]";
+            }
+            else
+            {
+                local_336 = "";
+            }
+            int local_352 = local_98.Num();
+            FString local_370 = FString().Append("[GuidingPath/服务器] 来源=").Append(local_332_2).Append(local_336).Append("\n源点=").Append(local_352).Append(" NavLen=").Append(local_158_2).Append(" 直线=").Append(local_71_2).Append(" 路网=").Append(local_152_8);
+            FECSDebugDraw::DrawDebugString(n"GuidingPathSrv", (FVector(local_8.GetPosition()) + FVector(0.0, 0.0, 160.0)), local_370, local_365, 1.0f, FColor(uint8(0), uint8(0), uint8(0), uint8(0)), -1.0f);
+            if (local_98.Num() >= 2)
+            {
+                int local_353_2 = 0;
+                for (; local_353_2 < (local_98.Num() - 1); )
+                {
+                    DebugDraw::DrawDebugLine(this.GetWorld(), local_98[local_353_2], local_98[local_353_2 + 1], local_365, false, 10.0f, uint8(0), 3.0f);
+                    ++local_353_2;
+                }
+                int local_157_7 = 0;
+                for (; local_157_7 < local_98.Num(); )
+                {
+                    DebugDraw::DrawDebugPoint(this.GetWorld(), local_98[local_157_7], 14.0f, local_365, false, 10.0f, uint8(0));
+                    ++local_157_7;
+                }
+            }
+            else
+            {
+                if (local_51 && local_148)
+                {
+                    int local_353_3 = 0;
+                    for (; local_353_3 < (local_166.Num() - 1); )
+                    {
+                        DebugDraw::DrawDebugLine(this.GetWorld(), local_166[local_353_3], local_166[local_353_3 + 1], local_363, false, 10.0f, uint8(0), 3.0f);
+                        ++local_353_3;
+                    }
+                }
+                else
+                {
+                    if (local_94)
+                    {
+                        int local_157_8 = 0;
+                        for (; local_157_8 < (local_118.Num() - 1); )
+                        {
+                            DebugDraw::DrawDebugLine(this.GetWorld(), local_118[local_157_8], local_118[local_157_8 + 1], local_357, false, 10.0f, uint8(0), 3.0f);
+                            ++local_157_8;
+                        }
+                        int local_353_4 = 0;
+                        for (; local_353_4 < (local_142.Num() - 1); )
+                        {
+                            DebugDraw::DrawDebugLine(this.GetWorld(), local_142[local_353_4], local_142[local_353_4 + 1], local_356, false, 10.0f, uint8(0), 3.0f);
+                            ++local_353_4;
+                        }
+                        local_157_8 = 0;
+                        for (; local_157_8 < (local_132.Num() - 1); )
+                        {
+                            DebugDraw::DrawDebugLine(this.GetWorld(), local_132[local_157_8], local_132[local_157_8 + 1], local_362, false, 10.0f, uint8(0), 3.0f);
+                            ++local_157_8;
+                        }
+                    }
+                }
+            }
+            DebugDraw::DrawDebugSphere(this.GetWorld(), local_8.GetPosition(), 50.0f, 12, local_364, false, 10.0f, uint8(0), 0.0f);
+            DebugDraw::DrawDebugSphere(this.GetWorld(), GuidingPathUpdateInfo.TargetLocation, 50.0f, 12, local_364, false, 10.0f, uint8(0), 0.0f);
+        }
+        if (!(local_94))
+        {
+            XLog(ELog(51), local_336.Append("[GuidingPath/选路] 找不到有效路径 来源=").Append(local_332_2).Append(" 点数=").Append(local_98.Num()).Append(" 直达=").Append(local_174).Append(" navmesh可用=").Append(local_181).Append(" 有路网图=").Append(local_102_2).Append(" 兜底直线=").Append(local_346));
+        }
+        local_376.SetTargetLocation(GuidingPathUpdateInfo.TargetLocation);
+        local_376.SetTargetEntity(GuidingPathUpdateInfo.TargetEntity);
+        TDataObjectPtr<FBasePrefabConfig> local_448;
+        if (GuidingPathUpdateInfo.TargetEntity)
+        {
+            local_448 = ::GetPrefabConfigPtr(GuidingPathUpdateInfo.TargetEntity);
+        }
+        else
+        {
+            local_448 = TDataObjectPtr<FBasePrefabConfig>();
+        }
+        local_376.SetTargetEntityPrefabConfig(local_448);
+        local_376.SetbLastFindPathSuccess(local_94);
+        local_376.SetbGoodSourceLocation(local_99);
+        local_376.SetbGoodTargetlocation(local_100);
+        local_376.SetPathSource(local_150_3);
+        local_376.SetbStraightened(local_138);
+        if (local_94)
+        {
+            local_376.SetPoints(local_98);
+        }
+        else
+        {
+            local_376.GetModify_Points().Empty(0);
+        }
+        GuidingPathUpdateInfo.LastUpdateTime = FixedTime.Time;
+        GuidingPathUpdateInfo.LastUpdateLocation = local_8.GetPosition();
+        if (GuidingPathUpdateInfo.bPendingManualResult)
+        {
+            if (!(local_94))
+            {
+                this.SendGuidingPathFindFailed(Entity, GuidingPathUpdateInfo.TargetLocation);
+            }
+            GuidingPathUpdateInfo.bPendingManualResult = false;
+        }
+        return;
     }
     UFUNCTION()
     void Monitor_OnServerRemoveGuidPath(const FECSEntity &inout Entity, const FC_GuidingPathPoints &inout GuidingPathPoints) const
@@ -634,6 +1332,7 @@ class US_GuidingPathSystem : UECSScriptSystem
         }
         GetGameplaySettings<UGuideSettings> local_10;
         local_8 = local_10;
+        ::EntityLevelSpotUtils::AddSpotDataForViewers(Entity, ELevelSpotDataSource(1), FLevelSpotData(local_8.GuideEntityPresentationRule), FLevelSpotViewers(C_GuidingPathTarget.GuidingPlayers));
         return;
     }
     UFUNCTION()
@@ -730,26 +1429,46 @@ class US_GuidingPathSystem : UECSScriptSystem
         FC_GuidingPathManualUpdateTag local_10;
         Assign local_8;
         local_8.opCall(local_10);
-        XLog(ELog(51), FString().Append("[GuidingPath/йЂ‰и·Ї] е®ўж€·з«Їж”¶е€°жњЌеЉЎе™Ёж›ґж–°дє‹д»¶в†’зЅ®ж‰‹еЉЁtag"));
+        XLog(ELog(51), FString().Append("[GuidingPath/选路] 客户端收到服务器更新事件→置手动tag"));
         return;
     }
     UFUNCTION()
     void ClientJob_OnGuidingPathFindFailed(const FCE_GuidingPathFindFailedEvent &inout Event, const FCS_LocalTime &inout LocalTime) const
     {
+        int local_5;
         int local_24 = 0;
         FECSEntity local_4 = FECSEntity(Event.Sender);
         if (CVar_GuidingPath_DebugDraw.GetBool())
         {
             DebugDraw::DrawDebugSphere(this.GetWorld(), Event.TargetLocation, 60.0f, 16, FColor(uint8(255), uint8(0), uint8(0), uint8(255)), false, 10.0f, uint8(0), 0.0f);
         }
-        if ((this.GuidingPathFailTipsCooldown > 0.0f && ((local_24.LastTipTime.opCmp(0.0) > 0)) && ((((FFPTime(LocalTime.Time) - local_24.LastTipTime).ToSeconds()) < this.GuidingPathFailTipsCooldown))))
+        if (this.GuidingPathFailTipsCooldown <= 0.0f)
+        {
+            local_5 = 0;
+        }
+        else
+        {
+            FFPTime local_26 = local_24.LastTipTime;
+            bool local_29 = (local_26.opCmp(0.0) > 0);
+            local_5 = local_29;
+        }
+        if (local_5 == 0)
+        {
+            local_5 = 0;
+        }
+        else
+        {
+            bool local_29_2 = (((FFPTime(LocalTime.Time) - local_24.LastTipTime).ToSeconds()) < this.GuidingPathFailTipsCooldown);
+            local_5 = local_29_2;
+        }
+        if (local_5 != 0)
         {
             return;
         }
         local_24.LastTipTime = LocalTime.Time;
-        XLog(ELog(51), FString().Append("[GuidingPath/йЂ‰и·Ї] е®ўж€·з«Їж”¶е€°жњЌеЉЎе™ЁеЇ»и·Їе¤±иґҐдє‹д»¶ в†’ еј№TipsвЂњеЇји€Єи·Їеѕ„жџҐж‰ѕе¤±иґҐвЂќ"));
+        XLog(ELog(51), FString().Append("[GuidingPath/选路] 客户端收到服务器寻路失败事件 → 弹Tips“导航路径查找失败”"));
         FCommonTipsParam local_48;
-        ::CommonPopup::Tips(NSLOCTEXT("GuidingPath", "GuidingPath_FindPathFailed", "еЇји€Єи·Їеѕ„жџҐж‰ѕе¤±иґҐ"), local_48);
+        ::CommonPopup::Tips(NSLOCTEXT("GuidingPath", "GuidingPath_FindPathFailed", "导航路径查找失败"), local_48);
         return;
     }
     UFUNCTION()
@@ -764,7 +1483,7 @@ class US_GuidingPathSystem : UECSScriptSystem
             int local_33 = int(GuidingPathPoints.GetTargetLocation().Z);
             int local_32 = int(GuidingPathPoints.GetTargetLocation().Y);
             int local_31 = int(GuidingPathPoints.GetTargetLocation().X);
-            XLog(ELog(51), FString().Append("[GuidingPath/йЂ‰и·Ї] е®ўж€·з«ЇMonitorи§¦еЏ‘ ж€ђеЉџ=").Append(GuidingPathPoints.GetbLastFindPathSuccess()).Append(" ж‰‹еЉЁиЇ·ж±‚tag=").Append(local_17).Append(" з‚№ж•°=").Append(GuidingPathPoints.GetPoints().Num()).Append(" жќҐжєђ=").Append(this.GetGuidingPathSourceName(GuidingPathPoints.GetPathSource())).Append(" з›®ж ‡=(").Append(local_31).Append(",").Append(local_32).Append(",").Append(local_33).Append(")"));
+            XLog(ELog(51), FString().Append("[GuidingPath/选路] 客户端Monitor触发 成功=").Append(GuidingPathPoints.GetbLastFindPathSuccess()).Append(" 手动请求tag=").Append(local_17).Append(" 点数=").Append(GuidingPathPoints.GetPoints().Num()).Append(" 来源=").Append(this.GetGuidingPathSourceName(GuidingPathPoints.GetPathSource())).Append(" 目标=(").Append(local_31).Append(",").Append(local_32).Append(",").Append(local_33).Append(")"));
         }
         if (CVar_GuidingPath_DebugDraw.GetBool())
         {
@@ -813,7 +1532,7 @@ class US_GuidingPathSystem : UECSScriptSystem
     {
         int local_20 = 0;
         Has local_8;
-        XLog(ELog(51), FString().Append("[GuidingPath/йЂ‰и·Ї] е®ўж€·з«ЇMonitor и·Їеѕ„з»„д»¶иў«з§»й™¤ ж‰‹еЉЁиЇ·ж±‚tag=").Append(local_8.opCall()));
+        XLog(ELog(51), FString().Append("[GuidingPath/选路] 客户端Monitor 路径组件被移除 手动请求tag=").Append(local_8.opCall()));
         if (Entity.IsValid())
         {
             Remove local_14;
@@ -1064,7 +1783,7 @@ class US_GuidingPathSystem : UECSScriptSystem
         }
         TArray<FVector> local_14;
         this.BuildCoarseGuidingPolyline(StartLocation, GuidingPathPoints, local_14);
-        this.LogSteepSegments("е®ўж€·з«ЇзІ—жЉзєї", local_14, GuidingPathPoints.GetPathSource());
+        this.LogSteepSegments("客户端粗折线", local_14, GuidingPathPoints.GetPathSource());
         this.DensifyPolyline(local_14, FMath::Max(this.DrapeStep, 10.0f), this.MaxSplineLength, local_6.RawSamples);
         local_6.DrapedPoints = local_6.RawSamples;
         local_6.SampleHit.SetNum(local_6.RawSamples.Num());
@@ -1147,9 +1866,6 @@ class US_GuidingPathSystem : UECSScriptSystem
     }
     void FinalizeGuidingDrape(const FECSEntity &inout Entity, FC_GuidingPathDrapeState &inout S, FC_GuidingSplineActor &inout C_GuidingSplineActor, const FC_PlayerController &inout PlayerControllerComp) const
     {
-        int local_2 = 0;
-        int local_11 = 0;
-        int local_12;
         int local_16;
         int local_25;
         bool local_32;
@@ -1160,24 +1876,17 @@ class US_GuidingPathSystem : UECSScriptSystem
             Get local_10;
             Has local_6;
             int local_24;
+            int local_12;
             bool local_1 = local_6.opCall();
-            if (local_1)
-            {
-                local_11 = local_10.opCall().GetPathSource();
-                local_12 = local_11;
-            }
-            else
-            {
-                local_12 = 0;
-            }
-            this.LogSteepSegments("е®ўж€·з«Їиґґењ°з‚№", S.DrapedPoints, local_12);
+            local_12 = local_1 ? local_10.opCall().GetPathSource() : 0;
+            this.LogSteepSegments("客户端贴地点", S.DrapedPoints, local_12);
             int local_13 = -1;
             int local_14 = 0;
             int local_15 = 1;
-            while (local_15 < local_2)
+            for (; local_15 < S.DrapedPoints.Num(); ++local_15)
             {
                 float local_18 = S.DrapedPoints[local_15].Z;
-                local_2 = local_15 - 1;
+                int local_2 = local_15 - 1;
                 local_18 = local_18 - S.DrapedPoints[local_2].Z;
                 local_2 = uint(FMath::Abs(float32(local_18)));
                 if (local_2 > local_14)
@@ -1185,35 +1894,29 @@ class US_GuidingPathSystem : UECSScriptSystem
                     local_14 = local_2;
                     local_13 = local_15;
                 }
-                ++local_15;
             }
-            local_2 = 0;
+            int local_2_2 = 0;
             local_15 = 0;
             int local_23 = 0;
             local_24 = 0;
-            while (local_24 < local_11)
+            for (; local_24 < S.SampleHit.Num(); ++local_24)
             {
                 if (S.SampleHit[local_24] == 0)
                 {
-                    ++local_2;
+                    ++local_2_2;
+                    continue;
                 }
-                else
+                if (S.SampleHit[local_24] == 2)
                 {
-                    if (S.SampleHit[local_24] == 2)
-                    {
-                        ++local_15;
-                    }
-                    else
-                    {
-                        if (S.SampleHit[local_24] == 3)
-                        {
-                            ++local_23;
-                        }
-                    }
+                    ++local_15;
+                    continue;
                 }
-                ++local_24;
+                if (S.SampleHit[local_24] == 3)
+                {
+                    ++local_23;
+                }
             }
-            XLog(ELog(51), FString().Append("[GuidingPath/ећ‚з›ґиЇЉж–­] е®ўж€·з«Їиґґењ°з‚№ жњЄе‘Ѕдё­=").Append(local_2).Append("/").Append(S.SampleHit.Num()).Append(" ж·±жЋўж•‘е›ћ=").Append(local_15).Append("(еЋџдјљжµ®з©є,зЋ°е·Іиґґзњџе®ћењ°иЎЁ) RoadGraphдїќй«=").Append(local_23));
+            XLog(ELog(51), FString().Append("[GuidingPath/垂直诊断] 客户端贴地点 未命中=").Append(local_2_2).Append("/").Append(S.SampleHit.Num()).Append(" 深探救回=").Append(local_15).Append("(原会浮空,现已贴真实地表) RoadGraph保高=").Append(local_23));
             if (local_13 > 0 && (local_14 > 150))
             {
                 if ((local_13 - 1) < S.SampleHit.Num())
@@ -1250,7 +1953,7 @@ class US_GuidingPathSystem : UECSScriptSystem
                 {
                     local_34 = 0;
                 }
-                XLog(ELog(51), FString().Append("[GuidingPath/ећ‚з›ґиЇЉж–­] е®ўж€·з«Їиґґењ°з‚№ жњЂй™Ў#").Append(local_13).Append(" dZ=").Append(local_14).Append(" е‘Ѕдё­A=").Append(local_25).Append(" е‘Ѕдё­B=").Append(local_24).Append(" еј¦A=").Append(local_16).Append(" еј¦B=").Append(local_34));
+                XLog(ELog(51), FString().Append("[GuidingPath/垂直诊断] 客户端贴地点 最陡#").Append(local_13).Append(" dZ=").Append(local_14).Append(" 命中A=").Append(local_25).Append(" 命中B=").Append(local_24).Append(" 弦A=").Append(local_16).Append(" 弦B=").Append(local_34));
             }
         }
         this.UpdateGuidingSplineActor(Entity, S.StartSnapshot, S.DrapedPoints);
@@ -1289,7 +1992,6 @@ class US_GuidingPathSystem : UECSScriptSystem
     UFUNCTION()
     void ClientJob_TickGuidingPathDrape(const FECSEntity &inout Entity, FC_GuidingPathDrapeState &inout S, FC_GuidingSplineActor &inout C_GuidingSplineActor, const FC_PlayerController &inout PlayerControllerComp) const
     {
-        int local_3 = 0;
         bool local_7;
         USplineComponent local_26;
         int local_62 = 0;
@@ -1305,11 +2007,10 @@ class US_GuidingPathSystem : UECSScriptSystem
             bool local_10;
             int local_9;
             bool local_1;
-            int local_2 = S.DrapedPoints.Num();
-            if (local_2 >= 2)
+            if (S.DrapedPoints.Num() >= 2)
             {
                 int local_4 = 0;
-                while (local_4 < local_2)
+                for (; local_4 < (S.DrapedPoints.Num() - 1); )
                 {
                     int local_5 = local_4 + 1;
                     if (local_5 < S.SampleHit.Num())
@@ -1339,7 +2040,8 @@ class US_GuidingPathSystem : UECSScriptSystem
                 local_21 = local_26.GetSplineLength();
                 if (local_21 > 1.0f)
                 {
-                    float32 local_27 = local_21 / 100.0f;
+                    float32 local_22 = 100.0f;
+                    float32 local_27 = local_21 / local_22;
                     int local_5_2 = FMath::Clamp(FMath::FloorToInt(local_27), 1, 400);
                     FVector local_42 = local_26.GetLocationAtDistanceAlongSpline(0.0f, ESplineCoordinateSpace(1));
                     int local_43 = 1;
@@ -1347,7 +2049,8 @@ class US_GuidingPathSystem : UECSScriptSystem
                     {
                         local_27 = local_43;
                         local_27 = local_27 * 100.0f;
-                        FVector local_34 = local_26.GetLocationAtDistanceAlongSpline(FMath::Min(local_27, local_21), ESplineCoordinateSpace(1));
+                        local_22 = FMath::Min(local_27, local_21);
+                        FVector local_34 = local_26.GetLocationAtDistanceAlongSpline(local_22, ESplineCoordinateSpace(1));
                         DebugDraw::DrawDebugLine(this.GetWorld(), local_42, local_34, FColor(uint8(255), uint8(0), uint8(255), uint8(255)), false, 0.0f, uint8(0), 2.0f);
                         local_42 = local_34;
                         ++local_43;
@@ -1362,7 +2065,7 @@ class US_GuidingPathSystem : UECSScriptSystem
                 int local_63 = 0;
                 int local_64 = 0;
                 int local_65 = 0;
-                while (local_65 < local_3)
+                for (; local_65 < S.SampleHit.Num(); ++local_65)
                 {
                     if (S.SampleHit[local_65] == 3)
                     {
@@ -1372,24 +2075,19 @@ class US_GuidingPathSystem : UECSScriptSystem
                         {
                             local_63 = local_64;
                         }
+                        continue;
                     }
-                    else
+                    if (S.SampleHit[local_65] != 0)
                     {
-                        if (S.SampleHit[local_65] != 0)
-                        {
-                            local_43_2 = local_43_2 + 1;
-                            local_64 = 0;
-                        }
-                        else
-                        {
-                            local_64 = local_64 + 1;
-                            if (local_64 > local_63)
-                            {
-                                local_63 = local_64;
-                            }
-                        }
+                        local_43_2 = local_43_2 + 1;
+                        local_64 = 0;
+                        continue;
                     }
-                    ++local_65;
+                    local_64 = local_64 + 1;
+                    if (local_64 > local_63)
+                    {
+                        local_63 = local_64;
+                    }
                 }
                 if (C_GuidingSplineActor.SplineComponent.IsValid())
                 {
@@ -1403,18 +2101,18 @@ class US_GuidingPathSystem : UECSScriptSystem
                 FString local_78;
                 if (int(S.Phase) == 1)
                 {
-                    local_78 = "иґґењ°дё­";
+                    local_78 = "贴地中";
                 }
                 else
                 {
                     FString local_74;
                     if (int(S.Phase) == 3)
                     {
-                        local_74 = "е®Њж€ђ";
+                        local_74 = "完成";
                     }
                     else
                     {
-                        local_74 = "з©єй—І";
+                        local_74 = "空闲";
                     }
                     local_78 = local_74;
                 }
@@ -1422,14 +2120,14 @@ class US_GuidingPathSystem : UECSScriptSystem
                 FString local_74;
                 if (local_62.GetbStraightened())
                 {
-                    local_74 = " [и§†зєїдёІж‹‰]";
+                    local_74 = " [视线串拉]";
                 }
                 else
                 {
                     local_74 = "";
                 }
                 int local_4_2 = S.DrapedPoints.Num();
-                FString local_90 = FString().Append("[GuidingPath/е®ўж€·з«Ї] жќҐжєђ=").Append(local_70).Append(local_74).Append("\nиґґењ°е‘Ѕдё­=").Append(local_43_2).Append("/").Append(local_4_2).Append(" RoadGraphдїќй«=").Append(local_5_3).Append(" жњЂй•їж‚¬з©єж®µ=").Append(local_63).Append("\nж ·жќЎй•ї=").Append(local_9).Append(" й¶ж®µ=").Append(local_78);
+                FString local_90 = FString().Append("[GuidingPath/客户端] 来源=").Append(local_70).Append(local_74).Append("\n贴地命中=").Append(local_43_2).Append("/").Append(local_4_2).Append(" RoadGraph保高=").Append(local_5_3).Append(" 最长悬空段=").Append(local_63).Append("\n样条长=").Append(local_9).Append(" 阶段=").Append(local_78);
                 if (local_62.GetPoints().Num() > 0)
                 {
                     local_120 = (FVector(local_62.GetPoints()[0]) + FVector(0.0, 0.0, 320.0));
@@ -1509,7 +2207,7 @@ class US_GuidingPathSystem : UECSScriptSystem
                 }
                 else
                 {
-                    local_3 = local_43_3 - S.Cursor;
+                    int local_3 = local_43_3 - S.Cursor;
                     local_9 = FMath::Min(local_4_3, local_3);
                     int local_63_2 = 0;
                     for (; local_63_2 < local_9; )
@@ -1769,13 +2467,13 @@ class US_GuidingPathSystem : UECSScriptSystem
                 int local_45 = int(Pts[local_20].X);
                 int local_46 = int(Pts[local_20].Y);
                 int local_47 = int(Pts[local_20].Z);
-                XLog(ELog(51), FString().Append("[GuidingPath/ећ‚з›ґиЇЉж–­] ").Append(Stage).Append(" й™Ўж®µ#").Append(local_20).Append(" dZ=").Append(local_21).Append(" dXY=").Append(local_41).Append(" A=(").Append(local_42).Append(",").Append(local_43).Append(",").Append(local_44).Append(") B=(").Append(local_45).Append(",").Append(local_46).Append(",").Append(local_47).Append(") жќҐжєђ=").Append(local_14));
+                XLog(ELog(51), FString().Append("[GuidingPath/垂直诊断] ").Append(Stage).Append(" 陡段#").Append(local_20).Append(" dZ=").Append(local_21).Append(" dXY=").Append(local_41).Append(" A=(").Append(local_42).Append(",").Append(local_43).Append(",").Append(local_44).Append(") B=(").Append(local_45).Append(",").Append(local_46).Append(",").Append(local_47).Append(") 来源=").Append(local_14));
                 ++local_16;
             }
         }
         if (local_15 > 0)
         {
-            XLog(ELog(51), FString().Append("[GuidingPath/ећ‚з›ґиЇЉж–­] ").Append(Stage).Append(" ж±‡жЂ» й™Ўж®µ=").Append(local_15).Append(" жњЂй™Ў#").Append(local_17).Append(" dZ=").Append(local_18).Append(" dXY=").Append(local_19).Append(" з‚№ж•°=").Append(Pts.Num()).Append(" жќҐжєђ=").Append(local_14));
+            XLog(ELog(51), FString().Append("[GuidingPath/垂直诊断] ").Append(Stage).Append(" 汇总 陡段=").Append(local_15).Append(" 最陡#").Append(local_17).Append(" dZ=").Append(local_18).Append(" dXY=").Append(local_19).Append(" 点数=").Append(Pts.Num()).Append(" 来源=").Append(local_14));
         }
         return;
     }
@@ -1783,21 +2481,21 @@ class US_GuidingPathSystem : UECSScriptSystem
     {
         if (Src == 1)
         {
-            return "NavMeshз›ґиѕѕ";
+            return "NavMesh直达";
         }
         if (Src == 2)
         {
-            return "NavMeshи·Їеѕ„";
+            return "NavMesh路径";
         }
         if (Src == 3)
         {
-            return "и·ЇзЅ‘";
+            return "路网";
         }
         if (Src == 4)
         {
-            return "е…њеє•з›ґзєї";
+            return "兜底直线";
         }
-        return "ж— ";
+        return "无";
     }
     FColor GetGuidingPathSourceColor(const int Src) const
     {
@@ -2162,7 +2860,7 @@ class US_GuidingPathSystem : UECSScriptSystem
                 {
                     local_99 = 0;
                 }
-                this.LogSteepSegments("ж ·жќЎз‚№", local_106, local_99);
+                this.LogSteepSegments("样条点", local_106, local_99);
             }
             int local_102_3 = local_106.Num();
             local_30.ClearSplinePoints(false);
@@ -2241,8 +2939,7 @@ class US_GuidingPathSystem : UECSScriptSystem
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_RequestGuidingPathEvent, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_RequestGuidingPathEvent, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ChatPrivateChatPanel
 {
     const int ModelId = 0;
@@ -402,7 +401,70 @@ FVM_ChatPrivateChatPanel CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "PrivatePeerItems";
+    local_14.TypeName = "TArray<FEUIModelContainer>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectedPrivateChatPeerItem";
+    local_14.TypeName = "FEUIModelContainer";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PanelMessages";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_ChatMessage>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_ChatPrivateChatPanel>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_ChatPrivateChatPanel;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(7);
+    local_22.AddRefPropertyDirty(0, 1, FMS_ChatRuntimeData::__IndexOf_SelectedPrivateChatPeerUid());
+    local_22.AddRefPropertyDirty(1, 0, FMS_ChatDataModel::__IndexOf_PrivateChatPeerOrder());
+    local_22.AddRefPropertyDirty(2, 0, FMS_ChatDataModel::__IndexOf_PrivateChatThreadsByPeer());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("ChatRuntimeData");
+    int local_2_2 = FMS_ChatRuntimeData::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(1);
+    local_30.RelatedDirtyMask.SetBit(FMS_ChatRuntimeData::__IndexOf_SelectedPrivateChatPeerUid(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    local_30.PropertyName = FName("ChatDataModel");
+    int local_24 = FMS_ChatDataModel::ModelId;
+    int local_24_2 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FMS_ChatDataModel::__IndexOf_PrivateChatPeerOrder(), true);
+    local_30.RelatedDirtyMask.SetBit(FMS_ChatDataModel::__IndexOf_PrivateChatThreadsByPeer(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnPrivateChatPeerOrderChanged";
+    local_40.DirtyFlags.Set(FVM_ChatPrivateChatPanel::__IndexOf_ChatDataModel());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(2));
+    local_40.DirtyFlags.Set(FVM_ChatPrivateChatPanel::__IndexOf_ChatDataModel());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(1));
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnSelectedPrivateChatPeerUidChanged";
+    local_40.DirtyFlags.Set(FVM_ChatPrivateChatPanel::__IndexOf_ChatRuntimeData());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    FEUIModelMsgHandleDefine local_50;
+    local_50.FunctionName = "__OnPrivateChatUpdated";
+    local_50.MessageTypeName = "Msg_PrivateChatUpdated";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    local_40.FunctionName = "__OnSelectedPrivateChatPeerIndexChanged";
+    local_40.DirtyFlags.Set(FVM_ChatPrivateChatPanel::__IndexOf_ChatRuntimeData());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

@@ -1,4 +1,3 @@
-﻿
 enum ECommissionEntryRuleType
 {
     None,
@@ -8,7 +7,6 @@ enum ECommissionEntryRuleType
     Escape,
     AllyAssist,
 }
-
 
 struct FCommissionEntryRuleConfig : FDataObject
 {
@@ -25,7 +23,6 @@ struct FCommissionEntryRuleConfig : FDataObject
     FSoftBrush RuleIcon;
     UPROPERTY()
     TSet<TSoftClassPtr<AKLLevelScriptActor>> ExtraLoadDatalayerClasses;
-
 
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 class UESMAnimInstance_MonsterBipedRiderOfDoom : UESMAnimInstance_MonsterBipedBase
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ class UESMAnimInstance_MonsterBipedRiderOfDoom : UESMAnimInstance_MonsterBipedBa
     FName RiderHandIKSocketName = NAME_None;
     UPROPERTY()
     float32 TailDynamicAlpha = 1.0f;
-
 
     UFUNCTION()
     void WhenUpdateMainAnimInstance_Implementation(const float32 DeltaTimeX)

@@ -1,4 +1,3 @@
-﻿
 enum EDisplayItemSourceType
 {
     None,

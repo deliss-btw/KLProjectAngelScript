@@ -1,10 +1,8 @@
-﻿
 enum EBTTaskLoopStepType
 {
     PingPong,
     Wrap,
 }
-
 
 class UBTTask_LoopStepInt : UBTTask_ECSScriptBase
 {

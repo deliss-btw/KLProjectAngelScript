@@ -1,5 +1,3 @@
-﻿
-
 class UFrontendSystemInstancedPageGroup : UEUIBlueprintGroup
 {
     UPROPERTY()
@@ -45,7 +43,6 @@ struct FFrontendSystemContext
     UPROPERTY()
     EFrontendSystemState SystemState;
 
-
 }
 
 struct FFrontendSystemBehaviorContainer
@@ -71,13 +68,13 @@ struct FFrontendSystemBehaviorContainer
             this.InstancedBehaviors.Add(local_6);
             return;
         }
-        this.Add(Behavior);
+        this.ConstBehaviors.Add(Behavior);
         return;
     }
     void EnterState(const FFrontendSystemContext &inout SystemContext)
     {
         FInstancedStruct local_4;
-        for (auto& local_20 : this)
+        for (auto& local_20 : this.ConstBehaviors)
         {
             local_20.OnEnter(SystemContext, local_4);
         }
@@ -90,7 +87,7 @@ struct FFrontendSystemBehaviorContainer
     void ExitState(const FFrontendSystemContext &inout SystemContext)
     {
         FInstancedStruct local_4;
-        for (auto& local_20 : this)
+        for (auto& local_20 : this.ConstBehaviors)
         {
             local_20.OnExit(SystemContext, local_4);
         }
@@ -112,7 +109,6 @@ struct FFrontendSystemInstance
     UFrontendSystemInstancedPageGroup SystemPageGroup = nullptr;
     UPROPERTY()
     TMap<EFrontendSystemState, FFrontendSystemBehaviorContainer> Behaviors;
-
 
 }
 

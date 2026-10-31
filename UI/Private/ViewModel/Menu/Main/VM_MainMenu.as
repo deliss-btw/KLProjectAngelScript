@@ -1,4 +1,3 @@
-﻿
 namespace FMS_MainMenuCache
 {
     const int ModelId = 0;
@@ -18,11 +17,18 @@ struct FMS_MainMenuCache : FEUIModelSingleton
 
     FMS_MainMenuCache()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_CategoryIndex = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FMS_MainMenuCache(const FMS_MainMenuCache &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_CategoryIndex = INDEX_NONE;
+        this.m_CategoryIndex = int(Other.m_CategoryIndex);
+        return;
     }
     FMS_MainMenuCache opAssign(const FMS_MainMenuCache &inout Other)
     {
@@ -76,7 +82,21 @@ struct FVM_MainMenu : FEUIViewModel
     }
     void PostConstruct()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        FMS_MainMenuCache& local_4 = ::FMS_MainMenuCache::Get(this.GetManager());
+        int local_5 = 0;
+        for (; local_5 < ::MenuSettings::Get().MenuCategories.Num(); ++local_5)
+        {
+            FVM_MainMenuCategory& local_12 = ::FVM_MainMenuCategory::Create(this.GetContext().Manager, local_5);
+            if (local_12.GetMenuEntries().Num() > 0)
+            {
+                this.GetModify_MenuCategories().Add(TEUIModelRef<FVM_MainMenuCategory>(local_12));
+                if (local_4.GetCategoryIndex() == local_5 || (local_4.GetCategoryIndex() == INDEX_NONE && (local_5 == 0)))
+                {
+                    this.SetSelectedMenuCategory(TEUIModelRef<FVM_MainMenuCategory>(local_12));
+                }
+            }
+        }
+        return;
     }
     void OnMenuCategorySelected(const FEUIModelContainer &inout MenuCategory)
     {

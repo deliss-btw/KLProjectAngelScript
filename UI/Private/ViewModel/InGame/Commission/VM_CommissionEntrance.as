@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommissionEntrance
 {
     const int ModelId = 0;
@@ -137,7 +136,6 @@ struct __GeneratedProperties_FVM_CommissionEntrance
     bool IsActivityEntranceLock;
     UPROPERTY()
     TEUIModelRef<FVM_CommissionEntrance> Self;
-
 
 }
 

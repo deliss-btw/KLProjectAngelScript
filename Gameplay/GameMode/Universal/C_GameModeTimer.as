@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_GameModeTimer_NS
 {
     const TECSComponentDerivedPtr<FCS_GameModeTimer> DerivedPtr = TECSComponentDerivedPtr<FCS_GameModeTimer>();
@@ -8,9 +7,6 @@ namespace __INTENRAL_FCS_GameModeFastTickTag_NS
 {
     const TECSComponentDerivedPtr<FCS_GameModeFastTickTag> DerivedPtr = TECSComponentDerivedPtr<FCS_GameModeFastTickTag>();
     const FCS_GameModeFastTickTag DefaultValue = FCS_GameModeFastTickTag();
-
-// NOTE: class defaults are not authored in this module: FGMTimerAction_DebugLog (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
 
 }
 struct FGameModeTimerEntrySetup
@@ -23,7 +19,6 @@ struct FGameModeTimerEntrySetup
     int RepeatCount = -1;
     UPROPERTY()
     FInstancedStruct Action;
-
 
 }
 
@@ -38,30 +33,21 @@ struct FGameModeTimerEntry
     UPROPERTY()
     FInstancedStruct Action;
 
-
 }
 
 struct FCS_GameModeTimer : FECSSingleton
 {
     UPROPERTY()
-    FFPTime NextTriggerTime;
+    FFPTime NextTriggerTime = FFPTime(-1);
     UPROPERTY()
     TMap<int, FGameModeTimerEntry> TimerEntries;
     UPROPERTY()
-    int NextHandleId;
+    int NextHandleId = 1;
     UPROPERTY()
-    FFPTime LastCheckedMatchStartTime;
+    FFPTime LastCheckedMatchStartTime = FFPTime(-1);
     UPROPERTY()
-    FFPTime LastCheckedMatchEndTime;
+    FFPTime LastCheckedMatchEndTime = FFPTime(-1);
 
-    FCS_GameModeTimer()
-    {
-        FFPTime local_2 = FFPTime(-1);
-        this.NextHandleId = 1;
-        this.LastCheckedMatchStartTime = FFPTime(-1);
-        this.LastCheckedMatchEndTime = FFPTime(-1);
-        return;
-    }
     int AllocateHandle()
     {
         ++this.NextHandleId;
@@ -78,6 +64,7 @@ struct FCS_GameModeTimer : FECSSingleton
             {
             }
         }
+        this.NextTriggerTime = local_4;
         return;
     }
 }
@@ -313,17 +300,17 @@ bool RemoveGameModeTimer(const FECSWorldPtr &inout World)
 }
 void __MonitorGameModeTimerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_GameModeTimer, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_GameModeTimer, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameModeTimerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_GameModeTimer, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_GameModeTimer, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameModeTimerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_GameModeTimer, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_GameModeTimer, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_GameModeFastTickTag
@@ -411,16 +398,16 @@ bool RemoveGameModeFastTickTag(const FECSWorldPtr &inout World)
 }
 void __MonitorGameModeFastTickTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_GameModeFastTickTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_GameModeFastTickTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameModeFastTickTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_GameModeFastTickTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_GameModeFastTickTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameModeFastTickTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_GameModeFastTickTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_GameModeFastTickTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

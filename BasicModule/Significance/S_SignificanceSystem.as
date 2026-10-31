@@ -1,5 +1,3 @@
-﻿
-
 class US_SignificanceSystemAS : UECSScriptSystem
 {
     US_SignificanceSystemAS()
@@ -8,7 +6,7 @@ class US_SignificanceSystemAS : UECSScriptSystem
     }
     void UpdateSignificance(const FECSEntity &inout Entity) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argint]
+        // body not fully recovered — stub [argmismatch:argint]
     }
     UFUNCTION()
     void Monitor_ActorActive(const FECSEntity &inout Entity, const FC_Actor &inout Actor) const
@@ -38,7 +36,7 @@ class US_SignificanceSystemAS : UECSScriptSystem
     UFUNCTION()
     void Monitor_ViewEntityFXData(const FECSEntity &inout Entity, const FC_ViewEntityFXData &inout FXData) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argint]
+        // body not fully recovered — stub [argmismatch:argint]
     }
     UFUNCTION()
     void Monitor_ControlledByAIUpdate(const FECSEntity &inout Entity, const FC_ControlledByAI &inout ControlledByAI) const
@@ -142,7 +140,7 @@ class US_SignificanceSystemAS : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_UpdateTeam(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = ::__GetMonitorPlayerInTeamOnRemoveView(this.GetECSWorld(), EECSRegType(0), false, true);
+        FECSMonitorRuntimeView local_56 = ::__GetMonitorPlayerInTeamOnRemoveView(this.GetECSWorld(), EECSRegType(0), (0 != 0), true);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {
@@ -177,7 +175,7 @@ class US_SignificanceSystemAS : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_MountDrivenByUpdate(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = ::__GetMonitorMountIsDrivenByOnRemoveView(this.GetECSWorld(), EECSRegType(0), false, true);
+        FECSMonitorRuntimeView local_56 = ::__GetMonitorMountIsDrivenByOnRemoveView(this.GetECSWorld(), EECSRegType(0), (0 != 0), true);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {

@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_PendingTeleport_NS
 {
     const TECSComponentDerivedPtr<FC_PendingTeleport> DerivedPtr = TECSComponentDerivedPtr<FC_PendingTeleport>();
@@ -114,7 +113,6 @@ struct FCE_TeleportToLocationRequest : FECSEvent
     UPROPERTY()
     FECSEntity WaitDetachChild;
 
-
 }
 
 struct FC_PendingTeleport : FECSComponent
@@ -134,7 +132,6 @@ struct FC_PendingTeleport : FECSComponent
     UPROPERTY()
     FFPTime DeadlineTime;
 
-
 }
 
 struct FCE_ShowTeleportLoadingScreen : FECSEvent
@@ -144,7 +141,6 @@ struct FCE_ShowTeleportLoadingScreen : FECSEvent
     ELoadingScreenAction Action = ELoadingScreenAction(0);
     UPROPERTY()
     uint64 Serial = 0;
-
 
 }
 
@@ -160,7 +156,6 @@ struct FCE_TeleportLoadingScreenStateChanged : FECSEvent
     UPROPERTY()
     uint64 Serial = 0;
 
-
     bool Validate() const
     {
         Has local_4;
@@ -175,7 +170,6 @@ struct FCE_TeleportViewHideReady : FECSEvent
     FECSEntity TargetEntity;
     UPROPERTY()
     uint64 Serial = 0;
-
 
     bool Validate() const
     {
@@ -207,7 +201,6 @@ struct FCS_TeleportLoadingScreenState : FECSSingleton
     UPROPERTY()
     uint64 ConsumedCloseUIVisibilityRevision = 0;
 
-
 }
 
 struct FCE_ServerToClientSetCameraPose : FECSEvent
@@ -219,7 +212,6 @@ struct FCE_ServerToClientSetCameraPose : FECSEvent
     bool bSetRotation = false;
     UPROPERTY()
     FRotator Rotation;
-
 
 }
 
@@ -245,7 +237,6 @@ struct FCE_TeleportToPublicEventRequest : FECSEvent
     UPROPERTY()
     ELoadingScreenAction Action = ELoadingScreenAction(0);
 
-
     bool Validate() const
     {
         return this.PublicEventEntity.IsValid();
@@ -260,7 +251,6 @@ struct FC_TeleportBlockInput : FECSComponent
     bool bInputDisabled = false;
     UPROPERTY()
     FECSEntity PlayerEntity;
-
 
 }
 
@@ -289,7 +279,6 @@ struct FC_TeleportLoadingTransaction : FECSComponent
     UPROPERTY()
     FFPTime GuardReadyDeadline;
 
-
 }
 
 struct FC_TeleportHideVisual : FECSComponent
@@ -304,7 +293,6 @@ struct FC_TeleportHideVisual : FECSComponent
     FECSEntity PlayerEntity;
     UPROPERTY()
     TArray<FName> HiddenMeshNames;
-
 
 }
 
@@ -322,11 +310,25 @@ struct FC_TeleportViewHideState : FECSComponent
 
     FC_TeleportViewHideState()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_TransactionSerial = 0;
+        this.m_bReleaseRequested = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_TeleportViewHideState(const FC_TeleportViewHideState &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_4;
+        this.__DirtyFlags = local_4;
+        this.m_TransactionSerial = 0;
+        this.m_bReleaseRequested = false;
+        this.__InitDirtyFlags();
+        this.m_TransactionSerial = Other.m_TransactionSerial;
+        this.m_bReleaseRequested = Other.m_bReleaseRequested;
+        this.m_ReleaseRequestTime = Other.m_ReleaseRequestTime;
+        this.m_ForceReleaseTime = Other.m_ForceReleaseTime;
+        return;
     }
     FC_TeleportViewHideState opAssign(const FC_TeleportViewHideState &inout Other)
     {
@@ -432,7 +434,6 @@ struct FC_TeleportViewHideRuntime : FECSComponent
     UPROPERTY()
     bool bGuardAppliedLogged = false;
 
-
 }
 
 struct FC_TeleportLandOnLoadingClose : FECSComponent
@@ -443,11 +444,15 @@ struct FC_TeleportLandOnLoadingClose : FECSComponent
 
     FC_TeleportLandOnLoadingClose()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_TeleportLandOnLoadingClose(const FC_TeleportLandOnLoadingClose &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_DeadlineTime = Other.m_DeadlineTime;
         return;
@@ -562,37 +567,37 @@ bool RemovePendingTeleport(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPendingTeleportOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PendingTeleport, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PendingTeleport, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPendingTeleportOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PendingTeleport, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PendingTeleport, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPendingTeleportOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PendingTeleport, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PendingTeleport, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPendingTeleportOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PendingTeleport, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PendingTeleport, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPendingTeleportOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PendingTeleport, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PendingTeleport, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPendingTeleportLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PendingTeleport, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PendingTeleport, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPendingTeleportActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PendingTeleport, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PendingTeleport, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPendingTeleportModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PendingTeleport, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PendingTeleport, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_TeleportLoadingScreenState
@@ -683,17 +688,17 @@ bool RemoveTeleportLoadingScreenState(const FECSWorldPtr &inout World)
 }
 void __MonitorTeleportLoadingScreenStateLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_TeleportLoadingScreenState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_TeleportLoadingScreenState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeleportLoadingScreenStateActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_TeleportLoadingScreenState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_TeleportLoadingScreenState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeleportLoadingScreenStateModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_TeleportLoadingScreenState, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_TeleportLoadingScreenState, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TeleportBlockInput
@@ -776,37 +781,37 @@ bool RemoveTeleportBlockInput(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTeleportBlockInputOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TeleportBlockInput, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TeleportBlockInput, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportBlockInputOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TeleportBlockInput, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TeleportBlockInput, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportBlockInputOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TeleportBlockInput, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TeleportBlockInput, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportBlockInputOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TeleportBlockInput, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TeleportBlockInput, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportBlockInputOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TeleportBlockInput, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TeleportBlockInput, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTeleportBlockInputLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TeleportBlockInput, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TeleportBlockInput, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeleportBlockInputActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TeleportBlockInput, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TeleportBlockInput, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeleportBlockInputModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TeleportBlockInput, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TeleportBlockInput, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TeleportLoadingTransaction
@@ -889,37 +894,37 @@ bool RemoveTeleportLoadingTransaction(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTeleportLoadingTransactionOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TeleportLoadingTransaction, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TeleportLoadingTransaction, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportLoadingTransactionOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TeleportLoadingTransaction, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TeleportLoadingTransaction, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportLoadingTransactionOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TeleportLoadingTransaction, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TeleportLoadingTransaction, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportLoadingTransactionOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TeleportLoadingTransaction, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TeleportLoadingTransaction, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportLoadingTransactionOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TeleportLoadingTransaction, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TeleportLoadingTransaction, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTeleportLoadingTransactionLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TeleportLoadingTransaction, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TeleportLoadingTransaction, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeleportLoadingTransactionActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TeleportLoadingTransaction, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TeleportLoadingTransaction, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeleportLoadingTransactionModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TeleportLoadingTransaction, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TeleportLoadingTransaction, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TeleportHideVisual
@@ -1002,37 +1007,37 @@ bool RemoveTeleportHideVisual(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTeleportHideVisualOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TeleportHideVisual, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TeleportHideVisual, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportHideVisualOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TeleportHideVisual, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TeleportHideVisual, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportHideVisualOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TeleportHideVisual, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TeleportHideVisual, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportHideVisualOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TeleportHideVisual, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TeleportHideVisual, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportHideVisualOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TeleportHideVisual, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TeleportHideVisual, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTeleportHideVisualLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TeleportHideVisual, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TeleportHideVisual, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeleportHideVisualActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TeleportHideVisual, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TeleportHideVisual, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeleportHideVisualModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TeleportHideVisual, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TeleportHideVisual, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TeleportViewHideState
@@ -1112,37 +1117,37 @@ bool RemoveTeleportViewHideState(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTeleportViewHideStateOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TeleportViewHideState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TeleportViewHideState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportViewHideStateOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TeleportViewHideState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TeleportViewHideState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportViewHideStateOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TeleportViewHideState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TeleportViewHideState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportViewHideStateOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TeleportViewHideState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TeleportViewHideState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportViewHideStateOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TeleportViewHideState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TeleportViewHideState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTeleportViewHideStateLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TeleportViewHideState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TeleportViewHideState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeleportViewHideStateActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TeleportViewHideState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TeleportViewHideState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeleportViewHideStateModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TeleportViewHideState, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TeleportViewHideState, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TeleportViewHideRuntime
@@ -1225,37 +1230,37 @@ bool RemoveTeleportViewHideRuntime(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTeleportViewHideRuntimeOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TeleportViewHideRuntime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TeleportViewHideRuntime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportViewHideRuntimeOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TeleportViewHideRuntime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TeleportViewHideRuntime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportViewHideRuntimeOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TeleportViewHideRuntime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TeleportViewHideRuntime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportViewHideRuntimeOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TeleportViewHideRuntime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TeleportViewHideRuntime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportViewHideRuntimeOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TeleportViewHideRuntime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TeleportViewHideRuntime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTeleportViewHideRuntimeLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TeleportViewHideRuntime, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TeleportViewHideRuntime, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeleportViewHideRuntimeActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TeleportViewHideRuntime, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TeleportViewHideRuntime, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeleportViewHideRuntimeModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TeleportViewHideRuntime, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TeleportViewHideRuntime, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TeleportLandOnLoadingClose
@@ -1335,37 +1340,37 @@ bool RemoveTeleportLandOnLoadingClose(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTeleportLandOnLoadingCloseOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TeleportLandOnLoadingClose, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TeleportLandOnLoadingClose, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportLandOnLoadingCloseOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TeleportLandOnLoadingClose, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TeleportLandOnLoadingClose, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportLandOnLoadingCloseOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TeleportLandOnLoadingClose, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TeleportLandOnLoadingClose, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportLandOnLoadingCloseOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TeleportLandOnLoadingClose, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TeleportLandOnLoadingClose, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeleportLandOnLoadingCloseOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TeleportLandOnLoadingClose, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TeleportLandOnLoadingClose, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTeleportLandOnLoadingCloseLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TeleportLandOnLoadingClose, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TeleportLandOnLoadingClose, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeleportLandOnLoadingCloseActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TeleportLandOnLoadingClose, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TeleportLandOnLoadingClose, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeleportLandOnLoadingCloseModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TeleportLandOnLoadingClose, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TeleportLandOnLoadingClose, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

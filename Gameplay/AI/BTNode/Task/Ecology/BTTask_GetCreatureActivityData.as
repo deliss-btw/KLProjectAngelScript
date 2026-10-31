@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_EcologyGetCreatureActivityData : UBTTask_ECSScriptBase
 {
     UPROPERTY()

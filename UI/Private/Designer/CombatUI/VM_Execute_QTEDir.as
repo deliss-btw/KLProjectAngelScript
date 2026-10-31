@@ -1,4 +1,3 @@
-﻿
 namespace FVM_Execute_QTEDir
 {
     const int ModelId = 0;
@@ -76,12 +75,12 @@ struct FVM_Execute_QTEDir : FEUIViewModel
         if (this.GetTeamMemberNum() == 1)
         {
             FNameHandle_EntityBBVarInt local_26;
-            this.SetHintText(NSLOCTEXT("ExecuteQTESoloHint", "жЊЃз»­еЋ‹е€¶з›®ж ‡пјЃ"));
+            this.SetHintText(NSLOCTEXT("ExecuteQTESoloHint", "持续压制目标！"));
             local_26;
             this.SetQTE_Progress(FMath::Clamp((this.GetPawnEntity().GetBB_Int(local_26) / this.GetSuccTimes()), 0.0f, 1.0f));
             return;
         }
-        this.SetHintText(NSLOCTEXT("ExecuteQTETeamHint", "й›†з»“йџеЏ‹ж”»е‡»з›®ж ‡е¤ґйѓЁпјЊе°ЅеЏЇиѓЅйЂ ж€ђдј¤е®іпјЃ"));
+        this.SetHintText(NSLOCTEXT("ExecuteQTETeamHint", "集结队友攻击目标头部，尽可能造成伤害！"));
         FNameHandle_EntityBBVarEntity local_34;
         local_34;
         FECSEntity local_38 = this.GetPawnEntity().GetBB_Entity(local_34);

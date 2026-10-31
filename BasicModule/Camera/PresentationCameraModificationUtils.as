@@ -1,4 +1,3 @@
-﻿
 namespace FPresentationCameraModificationUtils
 {
 FFPTime GetCurrentRequestTime(const FECSEntity &inout Entity)

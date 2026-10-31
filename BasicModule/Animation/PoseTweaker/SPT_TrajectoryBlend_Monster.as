@@ -1,5 +1,3 @@
-﻿
-
 class USPT_TrajectoryBlend_Monster_Quad003 : USPT_TrajectoryBlend_Template
 {
     USPT_TrajectoryBlend_Monster_Quad003()

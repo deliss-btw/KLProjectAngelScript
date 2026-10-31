@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_AvatarDetails
 {
     const int ViewID = 0;
@@ -207,6 +206,7 @@ namespace UWidget_AvatarDetails
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_AvatarDetails;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnAvatarChanged"));
     return;
 }

@@ -1,5 +1,3 @@
-﻿
-
 class US_EntityLifecyclePhaseSystem : UECSScriptSystem
 {
     US_EntityLifecyclePhaseSystem()
@@ -74,7 +72,7 @@ class US_EntityLifecyclePhaseSystem : UECSScriptSystem
     UFUNCTION()
     void Job_PhaseDefaultProgression(const FECSEntity &inout Entity, FC_EntityLifecyclePhase &inout Phase) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     void ApplyPhaseRespectingPriority(const FECSEntity &inout Entity, const EEntityLifecycleUnifiedPhaseType NewPhase) const
     {

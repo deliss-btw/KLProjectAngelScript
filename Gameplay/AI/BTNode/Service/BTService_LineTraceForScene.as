@@ -1,5 +1,3 @@
-﻿
-
 class UBTService_LineTraceForScene : UBTService_ECSScriptBase
 {
     UPROPERTY()
@@ -9,7 +7,7 @@ class UBTService_LineTraceForScene : UBTService_ECSScriptBase
     UPROPERTY()
     FBlackboardKeySelector LineTraceResult;
 
-    default SetNodeName("е‰Ќж–№е°„зєїе€¤ж–­жЇеђ¦ж’ћеў™");
+    default SetNodeName("前方射线判断是否撞墙");
 
     UBTService_LineTraceForScene()
     {
@@ -36,7 +34,7 @@ class UBTService_LineTraceForScene : UBTService_ECSScriptBase
     UFUNCTION()
     void TickNode_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory, const float32 DeltaSeconds) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [opcode-uncovered]
     }
 }
 

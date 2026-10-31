@@ -1,5 +1,3 @@
-﻿
-
 class UESMAnimInstance_Prop_Weapon : UAnimInstance
 {
     UPROPERTY()

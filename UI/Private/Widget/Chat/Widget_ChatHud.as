@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ChatHud
 {
     const int ViewID = 0;
@@ -23,8 +22,7 @@ class UWidget_ChatHud : UEUIActivatableWidget
     {
         if (!(this.ChatHudPanel.IsValid()))
         {
-            FEUIModelRef local_4;
-            this.ChatHudPanel = local_4;
+            this.ChatHudPanel = FEUIModelRef(::FVM_ChatHudPanel::Create(this));
         }
         if (this.w_scroll_content != nullptr)
         {
@@ -121,6 +119,7 @@ namespace UWidget_ChatHud
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ChatHud;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleHunLinesChanged"));
     return;
 }

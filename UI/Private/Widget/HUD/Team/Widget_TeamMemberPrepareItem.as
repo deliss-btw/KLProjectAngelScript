@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TeamMemberPrepareItem
 {
     const int ViewID = 0;
@@ -46,6 +45,7 @@ namespace UWidget_TeamMemberPrepareItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TeamMemberPrepareItem;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

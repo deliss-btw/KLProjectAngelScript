@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_StaminaBar_Helpers
 {
 UFUNCTION()

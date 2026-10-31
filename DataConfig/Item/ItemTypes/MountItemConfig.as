@@ -1,5 +1,3 @@
-﻿
-
 struct FMountItemConfig : FItemConfig
 {
     FItemConfig _base_FItemConfig;
@@ -12,7 +10,6 @@ struct FMountItemConfig : FItemConfig
 
     FMountItemConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }

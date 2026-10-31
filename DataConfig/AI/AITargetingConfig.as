@@ -1,5 +1,3 @@
-﻿
-
 struct FAILockPointRatingConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -13,7 +11,6 @@ struct FAILockPointRatingConfig : FDataObject
     float32 WeightXY = 1.0f;
     UPROPERTY()
     float32 WeightZ = 1.0f;
-
 
 }
 

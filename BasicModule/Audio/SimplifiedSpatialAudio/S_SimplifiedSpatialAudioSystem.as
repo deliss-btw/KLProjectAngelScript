@@ -1,5 +1,3 @@
-﻿
-
 class US_SimplifiedSpatialAudioSystem : UECSScriptSystem
 {
     UPROPERTY()
@@ -9,7 +7,6 @@ class US_SimplifiedSpatialAudioSystem : UECSScriptSystem
     UPROPERTY()
     float32 LastPerformanceCheckTime = 0.0f;
 
-
     UFUNCTION()
     bool IsDisabled_Implementation() const
     {
@@ -18,7 +15,8 @@ class US_SimplifiedSpatialAudioSystem : UECSScriptSystem
     UFUNCTION()
     void Job_CreateSimplifiedSpatialAudioVolume(const FECSEntity &inout Entity, const FC_Transform &inout Transform) const
     {
-        FString local_4 = "SimplifiedSpatialAudioSystem: Should create simplified spatial audio volume at ";
+        FString local_8 = (FString("SimplifiedSpatialAudioSystem: Should create simplified spatial audio volume at ") + Transform.GetPosition());
+        XLog(ELog(1), local_8);
         return;
     }
     UFUNCTION()
@@ -84,12 +82,10 @@ class US_SimplifiedSpatialAudioSystem : UECSScriptSystem
         ::FSimplifiedSpatialAudioUtils::GetPerformanceStats(local_1, local_3, local_4);
         if (local_4 > 0)
         {
-            ELog local_14;
-            (FString("SimplifiedSpatialAudio Performance: Avg=") + local_14);
-            FString local_10 = (local_14 + "ms, Max=");
-            (local_10 + local_14);
-            FString local_10_2 = (local_14 + "ms, Count=");
-            (local_10_2 + int(local_14));
+            FString local_10 = ((FString("SimplifiedSpatialAudio Performance: Avg=") + local_1) + "ms, Max=");
+            FString local_14_2 = (local_10 + local_3);
+            FString local_10_2 = (local_14_2 + "ms, Count=");
+            XLog(ELog(1), (local_10_2 + local_4));
         }
         return;
     }

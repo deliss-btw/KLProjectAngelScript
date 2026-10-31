@@ -1,5 +1,3 @@
-﻿
-
 struct FNPCDailyRouteMoveInstanceData
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ struct FNPCDailyRouteMoveInstanceData
     float32 BlockedElapsedTime = 0.0f;
     UPROPERTY()
     FVector LastLocation = FVector::ZeroVector;
-
 
 }
 
@@ -22,7 +19,6 @@ class UBTTask_NPCDailyRouteMoveAlongPath : UBTTask_ECSScriptBase
     float32 BlockedMoveDistanceThreshold = 5.0f;
 
     default SetNodeName("NPC Daily Route Move Along Path");
-
 
     UFUNCTION()
     UScriptStruct GetNodeMemoryType_Implementation() const

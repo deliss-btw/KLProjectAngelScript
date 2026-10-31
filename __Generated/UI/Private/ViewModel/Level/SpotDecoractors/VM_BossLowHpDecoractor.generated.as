@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_BossLowHpDecoractor_Helpers
 {
 UFUNCTION()

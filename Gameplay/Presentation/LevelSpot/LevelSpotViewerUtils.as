@@ -1,4 +1,3 @@
-﻿
 namespace LevelSpotViewerUtils
 {
 void RemoveSpotFromViewers(const FLevelSpotId &inout SpotId, const FLevelSpotViewers &inout Viewers)

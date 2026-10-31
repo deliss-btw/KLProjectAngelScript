@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommissionFinishResurltItem
 {
     const int ModelId = 0;
@@ -12,7 +11,6 @@ struct FCommissionFinishResurltItemParam
     int ResurltNum;
     UPROPERTY()
     int ResurltScore;
-
 
 }
 
@@ -132,7 +130,6 @@ struct __GeneratedProperties_FVM_CommissionFinishResurltItem
     bool HasNum;
     UPROPERTY()
     TEUIModelRef<FVM_CommissionFinishResurltItem> Self;
-
 
 }
 

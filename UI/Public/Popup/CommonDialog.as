@@ -1,4 +1,3 @@
-﻿
 enum ECommonDialogAnswerType
 {
     Ignored,
@@ -8,14 +7,12 @@ enum ECommonDialogAnswerType
     SaveQuit,
 }
 
-
 struct FCommonDialogAnswer
 {
     UPROPERTY()
     ECommonDialogAnswerType AnswerType;
     UPROPERTY()
     int OptionIndex;
-
 
 }
 

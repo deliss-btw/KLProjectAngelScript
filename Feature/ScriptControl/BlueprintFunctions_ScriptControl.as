@@ -1,4 +1,3 @@
-﻿
 namespace BlueprintFunctions_ScriptControl
 {
 UFUNCTION()
@@ -26,32 +25,27 @@ int PushSCtrlAction(const FECSEntityId &inout EntityId, const EScriptControlBeha
 UFUNCTION()
 int PushSCtrlEcologyMoveState(const FECSEntityId &inout EntityId, const FScriptControlEcologyMoveParams &inout EcologyMoveParams)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    int __r; return __r;
+    return ScriptControlUtils::PushScriptControlState(EntityId, EScriptControlSourceType(0), EScriptControlBehaviorName(1), ScriptControlParamPacker::PackEcologyMove(EcologyMoveParams));
 }
 UFUNCTION()
 int PushSCtrlEcologyMoveAction(const FECSEntityId &inout EntityId, const FScriptControlEcologyMoveParams &inout EcologyMoveParams, const bool bInsertFront = false)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    int __r; return __r;
+    return ScriptControlUtils::PushScriptControlAction(EntityId, EScriptControlSourceType(0), EScriptControlBehaviorName(1), ScriptControlParamPacker::PackEcologyMove(EcologyMoveParams), bInsertFront);
 }
 UFUNCTION()
 int PushSCtrlESMSkillAction(const FECSEntityId &inout EntityId, const FScriptControlESMSkillParams &inout SkillParams, const bool bInsertFront = false, const bool bAutoAddHostility = true)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    int __r; return __r;
+    return CombatScriptControlUtils::PushCombatScriptControlAction(EntityId, EScriptControlSourceType(0), EScriptControlBehaviorName(2), ScriptControlParamPacker::PackESMSkill(SkillParams), bInsertFront, bAutoAddHostility);
 }
 UFUNCTION()
 int PushSCtrlESMEcologyBehaviorState(const FECSEntityId &inout EntityId, const FScriptControlESMEcologyBehaviorParams &inout EcologyParams)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    int __r; return __r;
+    return ScriptControlUtils::PushScriptControlState(EntityId, EScriptControlSourceType(0), EScriptControlBehaviorName(3), ScriptControlParamPacker::PackESMEcologyBehavior(EcologyParams));
 }
 UFUNCTION()
 int PushSCtrlESMEcologyBehaviorAction(const FECSEntityId &inout EntityId, const FScriptControlESMEcologyBehaviorParams &inout EcologyParams, const bool bInsertFront = false)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    int __r; return __r;
+    return ScriptControlUtils::PushScriptControlAction(EntityId, EScriptControlSourceType(0), EScriptControlBehaviorName(3), ScriptControlParamPacker::PackESMEcologyBehavior(EcologyParams), bInsertFront);
 }
 UFUNCTION()
 int PushSCtrlTriggerESMState(const FECSEntityId &inout EntityId, const FScriptControlTriggerESMParams &inout ESMParams)

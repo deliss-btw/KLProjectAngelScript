@@ -1,5 +1,3 @@
-﻿
-
 class UHTNDecorator_CheckTargetOnNavMesh : UHTNDecorator_ECSScriptBase
 {
     UPROPERTY()

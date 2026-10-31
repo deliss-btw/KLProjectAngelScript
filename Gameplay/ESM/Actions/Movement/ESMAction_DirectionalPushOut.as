@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_DirectionalPushOut : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ class UESMAction_DirectionalPushOut : UESMBPBaseSpanTickAction
     float32 PreventSlideAngle = -1.0f;
     UPROPERTY()
     float32 FullSlideAngle = -1.0f;
-
 
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const

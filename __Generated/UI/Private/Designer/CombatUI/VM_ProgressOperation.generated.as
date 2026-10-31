@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_ProgressOperation_Helpers
 {
 UFUNCTION()

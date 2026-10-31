@@ -1,4 +1,3 @@
-﻿
 namespace FVM_EntityDialog
 {
     const int ModelId = 0;

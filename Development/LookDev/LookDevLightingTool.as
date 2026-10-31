@@ -1,4 +1,3 @@
-﻿
 enum ELookDevLightingMode
 {
     AssetReview,
@@ -19,7 +18,6 @@ enum ELookDevTODLighting
     OvercastDay,
     OvercastNight,
 }
-
 
 class AKLLookDevLightingTool : AKLEditorTickableActor
 {
@@ -131,7 +129,7 @@ class AKLLookDevLightingTool : AKLEditorTickableActor
     }
     void SetupLightingByCurrentConfig()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     void SetupAssetReviewLighting()
     {
@@ -238,8 +236,10 @@ class AKLLookDevLightingTool : AKLEditorTickableActor
             int local_6;
             this.DirectionalLightComponent.SetVisibility(true, false);
             this.SkyLightComponent.SetVisibility(true, false);
-            this.BackgroundMesh.SetVisibility(this.bShowBackground, false);
-            this.PlaneMesh.SetVisibility(this.bShowPlane, false);
+            int local_5 = this.bShowBackground;
+            this.BackgroundMesh.SetVisibility((local_5 != 0), false);
+            local_5 = this.bShowPlane;
+            this.PlaneMesh.SetVisibility((local_5 != 0), false);
             if (this.bShowPlane)
             {
                 int local_7;
@@ -253,9 +253,11 @@ class AKLLookDevLightingTool : AKLEditorTickableActor
                 local_6 = local_7;
             }
             this.PlaneMesh.SetCollisionEnabled(ECollisionEnabled(local_6));
-            this.CalibratorMeshes.SetVisibility(this.bShowCalibrator, true);
+            int local_4 = this.bShowCalibrator;
+            this.CalibratorMeshes.SetVisibility((local_4 != 0), true);
             this.PostProcessComponent.SetVisibility(true, false);
-            this.PBRCheckerComponent.SetVisibility(this.bUsePBRChecker, false);
+            local_4 = this.bUsePBRChecker;
+            this.PBRCheckerComponent.SetVisibility((local_4 != 0), false);
         }
         else
         {
@@ -264,7 +266,7 @@ class AKLLookDevLightingTool : AKLEditorTickableActor
             this.DirectionalLightComponent.SetVisibility(false, false);
             this.SkyLightComponent.SetVisibility(false, false);
             this.BackgroundMesh.SetVisibility(false, false);
-            this.PlaneMesh.SetVisibility(this.bShowPlaneInTOD, false);
+            this.PlaneMesh.SetVisibility((this.bShowPlaneInTOD), false);
             if (this.bShowPlaneInTOD)
             {
                 local_7 = 3;
@@ -282,8 +284,8 @@ class AKLLookDevLightingTool : AKLEditorTickableActor
         }
         if (int(this.LightingMode) == 1)
         {
-            KLWeather::KLWeather_SetComponentVisibility(__GetWorldContext(), EKLWeatherVisibleComponent(1), this.bShowCloudShadow);
-            KLWeather::KLWeather_SetComponentVisibility(__GetWorldContext(), EKLWeatherVisibleComponent(2), this.bShowFillLights);
+            KLWeather::KLWeather_SetComponentVisibility(__GetWorldContext(), EKLWeatherVisibleComponent(1), (this.bShowCloudShadow));
+            KLWeather::KLWeather_SetComponentVisibility(__GetWorldContext(), EKLWeatherVisibleComponent(2), (this.bShowFillLights));
             KLWeather::KLWeather_SetComponentVisibility(__GetWorldContext(), EKLWeatherVisibleComponent(3), false);
             KLWeather::KLWeather_SetNorthDirectionOffset(__GetWorldContext(), this.NorthDirectionOffset);
             KLWeather::KLWeather_SetSkyLightIntensityMultiplier(__GetWorldContext(), this.SkyLightIntensityMultiplier);

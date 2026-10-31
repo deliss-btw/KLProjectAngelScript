@@ -1,4 +1,3 @@
-﻿
 namespace FVM_Teleporter
 {
     const int ModelId = 0;
@@ -111,8 +110,7 @@ struct FVM_Teleporter : FEUIViewModel
     }
     FSoftBrush GetDisplayIcon() const
     {
-        int local_1 = int(this.GetSpotUsage());
-        return ::PresentationSpotDisplayUtils::GetSpotIcon(this.GetSpot());
+        return ::PresentationSpotDisplayUtils::GetSpotIcon(this.GetSpot(), this.GetSpotUsage());
     }
     FSoftBrush GetPreviewHeaderImage() const
     {
@@ -127,7 +125,7 @@ struct FVM_Teleporter : FEUIViewModel
         if (!(this.GetContext().GetLocalPlayerPawn().IsValid()) || !(::TeleporterUtils::IsTeleportAllowed(this.GetContext().GetLocalPlayerPawn())))
         {
             FCommonTipsParam local_14;
-            ::CommonPopup::Tips(NSLOCTEXT("RegionMap", "TeleportToEntity_Failed", "еЅ“е‰ЌзЉ¶жЂЃж— жі•дј йЂЃ"), local_14);
+            ::CommonPopup::Tips(NSLOCTEXT("RegionMap", "TeleportToEntity_Failed", "当前状态无法传送"), local_14);
             return;
         }
         ::FVM_TeleporterUtils::Get(this.GetManager()).RequestTeleportWithConfirm(this.GetTeleporterConfig());
@@ -136,8 +134,7 @@ struct FVM_Teleporter : FEUIViewModel
     FSpotViewAdapter GetSpotView() const
     {
         FSpotViewAdapter __r;
-        int local_3 = int(this.GetSpotUsage());
-        FSpotViewAdapter local_20 = FSpotViewAdapter(::PresentationSpotDisplayUtils::GetDesiredSpotView(this.GetSpot().opArrow().GetManager()));
+        FSpotViewAdapter local_20 = FSpotViewAdapter(::PresentationSpotDisplayUtils::GetDesiredSpotView(this.GetSpot().opArrow().GetManager(), this.GetSpotUsage()));
         return __r;
     }
     TEUIModelRef<FM_Spot> GetSpot() const property
@@ -310,7 +307,6 @@ struct __GeneratedProperties_FVM_Teleporter
     UPROPERTY()
     TEUIModelRef<FVM_Teleporter> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_TeleporterConfig
@@ -330,7 +326,7 @@ namespace FVM_Teleporter
 {
 FVM_Teleporter& Create(const UObject ContextObject, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationSpotUsage SpotUsage)
 {
-    return FVM_Teleporter::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot);
+    return FVM_Teleporter::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot, EPresentationSpotUsage(SpotUsage));
 }
 FVM_Teleporter CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationSpotUsage SpotUsage)
 {

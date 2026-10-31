@@ -1,4 +1,3 @@
-﻿
 enum ETalentNodeStateType
 {
     Hide,
@@ -920,7 +919,6 @@ struct FAvatarEquippedTalentInfo
     UPROPERTY()
     TArray<uint> ChooseIds;
 
-
 }
 
 struct FAvatarUnlockTalentInfo
@@ -1007,7 +1005,7 @@ struct FMS_Talent : FEUIModelSingleton
     }
     void DebugFillTestData()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     void RegisterTalentToNode(const uint TalentId, const uint NodePrimaryId)
     {
@@ -1039,7 +1037,7 @@ struct FMS_Talent : FEUIModelSingleton
                     continue;
                 }
                 local_54 = TreeM.GetTreeId();
-                FM_TalentNode& local_62 = ::FM_TalentNode::Create(this.GetContext().Manager, local_54, NodeArray[local_1]);
+                FM_TalentNode& local_62 = ::FM_TalentNode::Create(this.GetContext().Manager, local_54, NodeArray[local_1], ETalentNodeStateType(StateType));
                 this.GetModify_TalentNodeMap().Add(local_53, TEUIModelRef<FM_TalentNode>(local_62));
                 this.RegisterTalentToNode(local_53, local_53);
                 local_62.GetModify_ChoiceBaseIds().Add(local_53);
@@ -1454,7 +1452,7 @@ struct FMS_Talent : FEUIModelSingleton
                 for (auto local_217 : local_16)
                 {
                     local_188_2 = this.MakeSlotRedDotKey(local_203, ESkillType(local_217));
-                    bool local_1 = local_138.Contains(local_217);
+                    bool local_1 = local_138.Contains(ESkillType(local_217));
                     local_204 = local_4.HasRedDot(GameplayTags::RedDotSystem_Avatar_ReplaceSkillSlot, local_188_2);
                     if ((local_1 && !(local_204)))
                     {
@@ -1838,7 +1836,7 @@ struct FMS_Talent : FEUIModelSingleton
             local_5 = int(local_30.DataId);
             local_31 = local_5;
             FM_TalentTree& local_34 = ::FM_TalentTree::Create(this.GetContext().Manager, local_31);
-            local_34.SetLayoutConfig(TDataObjectPtr<FTalentLayoutTreeConfig>());
+            local_34.SetLayoutConfig(TDataObjectPtr<FTalentLayoutTreeConfig>(local_30));
             local_34.UpdateValid(true);
             this.CreateAndAddNode(local_34, local_30.TalentTreeArray, ETalentNodeStateType(1));
             this.GetModify_TalentTreeMap().Add(local_31, TEUIModelRef<FM_TalentTree>(local_34));
@@ -2510,7 +2508,6 @@ struct FMsg_TalentTreeDataUpdate : FEUIMessage
     UPROPERTY()
     bool bStructural = true;
 
-
 }
 
 struct FMsg_TalentTreeUpdateFinish : FEUIMessage
@@ -2521,7 +2518,6 @@ struct FMsg_TalentTreeUpdateFinish : FEUIMessage
     TEUIModelWeakRef<FVM_TalentUpgradeItem> FirstItemNodeM;
     UPROPERTY()
     TEUIModelWeakRef<FVM_TalentUpgradeFormulaTree> FormulaTreeVM;
-
 
 }
 
@@ -2536,7 +2532,6 @@ struct FMsg_TalentItemHoverStateChagne : FEUIMessage
     UPROPERTY()
     UWidget SourceWidget = nullptr;
 
-
 }
 
 struct FMsg_TalentUnlockOrUpgradeOpenConfirm : FEUIMessage
@@ -2546,7 +2541,6 @@ struct FMsg_TalentUnlockOrUpgradeOpenConfirm : FEUIMessage
     UPROPERTY()
     int ChoiceIndex;
 
-
 }
 
 struct FMsg_TalentUnlockOrUpgradeRequest : FEUIMessage
@@ -2555,7 +2549,6 @@ struct FMsg_TalentUnlockOrUpgradeRequest : FEUIMessage
     TEUIModelWeakRef<FM_TalentNode> TalentNode;
     UPROPERTY()
     int ChoiceIndex;
-
 
 }
 
@@ -2588,7 +2581,6 @@ struct FMsg_TalentSetEquipChoiceTalent : FEUIMessage
     UPROPERTY()
     int NewChoice;
 
-
 }
 
 struct FMsg_TalentSetEquipSkillSlot : FEUIMessage
@@ -2597,7 +2589,6 @@ struct FMsg_TalentSetEquipSkillSlot : FEUIMessage
     TEUIModelWeakRef<FM_TalentNode> TalentNode;
     UPROPERTY()
     int ChoiceIndex;
-
 
 }
 
@@ -2618,7 +2609,6 @@ struct FMsg_TalentNodeHoverOpenDetails : FEUIMessage
     TEUIModelWeakRef<FM_TalentNode> TalentNode;
     UPROPERTY()
     int ChoiceIndex = 0;
-
 
 }
 
@@ -2654,7 +2644,7 @@ namespace FM_TalentNode
 {
 FM_TalentNode& Create(const UObject ContextObject, const uint TreeId, const FTalentTreeNode &inout Config, const ETalentNodeStateType StateType)
 {
-    return FM_TalentNode::CreateByManager(EUIInternal::GetContextManager(ContextObject), TreeId, Config);
+    return FM_TalentNode::CreateByManager(EUIInternal::GetContextManager(ContextObject), TreeId, Config, ETalentNodeStateType(StateType));
 }
 FM_TalentNode CreateByManager(const UEUIManagerSubsystem Manager, const uint TreeId, const FTalentTreeNode &inout Config, const ETalentNodeStateType StateType)
 {

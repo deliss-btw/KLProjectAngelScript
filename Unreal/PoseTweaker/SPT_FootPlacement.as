@@ -1,5 +1,3 @@
-﻿
-
 struct FFootPlacementLeg
 {
     UPROPERTY()
@@ -52,7 +50,6 @@ struct FFootPlacementLeg
     float32 RotAbsorptionElapsed = 0.0f;
     UPROPERTY()
     FQuat AbsorptionStartRotCarryover = FQuat::Identity;
-
 
     void Reset()
     {
@@ -109,10 +106,11 @@ class USPT_FootPlacement_Template : USkeletalPoseTweaker
     UFUNCTION()
     void EvaluatePose_Implementation()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argint]
+        // body not fully recovered — stub [argmismatch:argint]
     }
     void ProcessLeg(const FName &inout LegName, FFootPlacementLeg &inout Leg, const int Index)
     {
+        int local_109;
         if (!(Leg.IK.IsValid()))
         {
             return;
@@ -173,7 +171,7 @@ class USPT_FootPlacement_Template : USkeletalPoseTweaker
         {
             Leg.Carryover = (Leg.Carryover.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector) * Leg.MaxCarryover);
             int local_88 = Index + 51000;
-            this.AddOnScreenDebugMessage(FString().Append("[FootPlacement][").Append(LegName).Append("] Carryover clamped: ").Append(local_84).Append(" cm > ").Append(Leg.MaxCarryover).Append(" cm вЂ” upstream may need fixing"), local_88, false, 2.0f);
+            this.AddOnScreenDebugMessage(FString().Append("[FootPlacement][").Append(LegName).Append("] Carryover clamped: ").Append(local_84).Append(" cm > ").Append(Leg.MaxCarryover).Append(" cm — upstream may need fixing"), local_88, false, 2.0f);
         }
         FVector local_8 = (local_44 - Leg.Carryover);
         FQuat local_108 = local_68;
@@ -184,7 +182,23 @@ class USPT_FootPlacement_Template : USkeletalPoseTweaker
             {
                 local_72_2 = float32(FMath::RadiansToDegrees(local_68.AngularDistance(Leg.PrevAnimRot)));
             }
-            if (local_71 && Leg.bHasPrevFrame && ((local_72_2 >= Leg.RotJumpThreshold)))
+            if (!(local_71))
+            {
+                local_109 = 0;
+            }
+            else
+            {
+                local_109 = Leg.bHasPrevFrame;
+            }
+            if (local_109 == 0)
+            {
+                local_109 = 0;
+            }
+            else
+            {
+                local_109 = (local_72_2 >= Leg.RotJumpThreshold);
+            }
+            if (local_109 != 0)
             {
                 Leg.RotCarryover = (local_68 * Leg.PrevFinalRot.Inverse());
                 Leg.AbsorptionStartRotCarryover = Leg.RotCarryover;
@@ -239,7 +253,7 @@ class USPT_FootPlacement_Template : USkeletalPoseTweaker
             }
             else
             {
-                if (Leg.bInAbsorption)
+                if Leg.bInAbsorption
                 {
                     local_142 = FString().Append("Swing(c=").Append(local_74).Append(", window ").Append((Leg.AbsorptionDuration - Leg.AbsorptionElapsed)).Append("s left)");
                 }
@@ -249,7 +263,7 @@ class USPT_FootPlacement_Template : USkeletalPoseTweaker
                 }
             }
             int local_87 = Index + 51010;
-            this.AddOnScreenDebugMessage(FString().Append("[FootPlacement][").Append(LegName).Append("] Carryover=").Append(Leg.Carryover.Size()).Append(" ").Append(local_142), false, (1073741824 != 0));
+            this.AddOnScreenDebugMessage(FString().Append("[FootPlacement][").Append(LegName).Append("] Carryover=").Append(Leg.Carryover.Size()).Append(" ").Append(local_142), local_87, false, 2.0f);
             if (Leg.RotJumpThreshold > 0.0f)
             {
                 float32 local_79_2 = float32(FMath::RadiansToDegrees(Leg.RotCarryover.AngularDistance(FQuat::Identity)));
@@ -263,7 +277,7 @@ class USPT_FootPlacement_Template : USkeletalPoseTweaker
                     local_146 = "RotIdle";
                 }
                 int local_88_2 = Index + 51020;
-                this.AddOnScreenDebugMessage(FString().Append("[FootPlacement][").Append(LegName).Append("] RotCarryover=").Append(local_79_2).Append("В° Jump=").Append(local_72_2).Append("В° ").Append(local_146), local_88_2, false, 2.0f);
+                this.AddOnScreenDebugMessage(FString().Append("[FootPlacement][").Append(LegName).Append("] RotCarryover=").Append(local_79_2).Append("° Jump=").Append(local_72_2).Append("° ").Append(local_146), local_88_2, false, 2.0f);
             }
         }
         return;

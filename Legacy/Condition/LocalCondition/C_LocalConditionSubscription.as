@@ -1,4 +1,3 @@
-﻿
 namespace FLocalConditionHandleList
 {
     const FLocalConditionHandleList Empty = FLocalConditionHandleList();
@@ -46,16 +45,16 @@ struct FCS_LocalConditionSubscriptionManager : FECSSingleton
         {
             return;
         }
-        this.FindOrAdd(TypeDefine).KeyedHandles.FindOrAdd(Key).ConditionInstances.Add(Handle);
+        this.TypeSubscriptions.FindOrAdd(TypeDefine).KeyedHandles.FindOrAdd(Key).ConditionInstances.Add(Handle);
         return;
     }
     void Unsubscribe(const ULocalConditionTypeDefineBase TypeDefine, const FName &inout Key, const FConditionInstanceHandle &inout Handle)
     {
-        if (TypeDefine == nullptr || !(this.Contains(TypeDefine)))
+        if (TypeDefine == nullptr || !(this.TypeSubscriptions.Contains(TypeDefine)))
         {
             return;
         }
-        FLocalConditionTypeSubscriptions& local_4 = this[TypeDefine];
+        FLocalConditionTypeSubscriptions& local_4 = this.TypeSubscriptions[TypeDefine];
         if (local_4.KeyedHandles.Contains(Key))
         {
             TArray<FConditionInstanceHandle> local_6;
@@ -71,7 +70,7 @@ struct FCS_LocalConditionSubscriptionManager : FECSSingleton
     const FLocalConditionHandleList& GetHandleList(const TSubclassOf<ULocalConditionTypeDefineBase> &inout ConditionType, const FName &inout Key) const
     {
         ULocalConditionTypeDefineBase local_2 = ConditionType.GetDefaultObject();
-        bool local_5 = local_2 != nullptr && this.Contains(local_2);
+        bool local_5 = local_2 != nullptr && this.TypeSubscriptions.Contains(local_2);
         if (local_5)
         {
             TMap<FName, FLocalConditionHandleList> local_8;
@@ -84,7 +83,7 @@ struct FCS_LocalConditionSubscriptionManager : FECSSingleton
     }
     bool IsEmpty() const
     {
-        return this.IsEmpty();
+        return this.TypeSubscriptions.IsEmpty();
     }
 }
 
@@ -176,16 +175,16 @@ bool RemoveLocalConditionSubscriptionManager(const FECSWorldPtr &inout World)
 }
 void __MonitorLocalConditionSubscriptionManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_LocalConditionSubscriptionManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_LocalConditionSubscriptionManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLocalConditionSubscriptionManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_LocalConditionSubscriptionManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_LocalConditionSubscriptionManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLocalConditionSubscriptionManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_LocalConditionSubscriptionManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_LocalConditionSubscriptionManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

@@ -1,4 +1,3 @@
-﻿
 enum EBossChangeAreaEventType
 {
     FlockDecision,
@@ -28,7 +27,6 @@ struct FCombatAreaResourceEntry
     bool bAvailableCreatureIsBoss = false;
     UPROPERTY()
     FName LevelGroupName;
-
 
 }
 
@@ -88,7 +86,6 @@ struct FBossChangeAreaEvent
     UPROPERTY()
     FVector ArrivePos = FVector::ZeroVector;
 
-
 }
 
 struct FBossChangeAreaRecord
@@ -105,7 +102,6 @@ struct FBossChangeAreaRecord
     int MaxNum = 128;
     UPROPERTY()
     TArray<FBossChangeAreaEvent> History;
-
 
 }
 
@@ -138,7 +134,6 @@ struct FCS_BossChangeAreaDebugger : FECSSingleton
     bool bResourceSnapshotActive = false;
     UPROPERTY()
     bool bResourceCacheBuilt = false;
-
 
 }
 
@@ -230,16 +225,16 @@ bool RemoveBossChangeAreaDebugger(const FECSWorldPtr &inout World)
 }
 void __MonitorBossChangeAreaDebuggerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_BossChangeAreaDebugger, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_BossChangeAreaDebugger, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBossChangeAreaDebuggerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_BossChangeAreaDebugger, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_BossChangeAreaDebugger, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBossChangeAreaDebuggerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_BossChangeAreaDebugger, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_BossChangeAreaDebugger, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

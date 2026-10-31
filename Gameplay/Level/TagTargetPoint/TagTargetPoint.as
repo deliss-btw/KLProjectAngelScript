@@ -1,5 +1,3 @@
-﻿
-
 class ATagTargetPoint : ATargetPoint
 {
     UPROPERTY()
@@ -46,7 +44,7 @@ class UTagTargetPointManager : UScriptWorldSubsystem
     }
     TOptional<FTransform> GetTagTransform(const FName &inout Tag)
     {
-        FName local_2;
+        ATagTargetPoint local_2;
         if (this.TagTargetPoints.Find(Tag, local_2))
         {
             return TOptional<FTransform>(local_2.GetActorTransform());

@@ -1,5 +1,3 @@
-﻿
-
 class UEQC_TargetEntity : UEnvQueryContext_ECS_BlueprintBase
 {
     UEQC_TargetEntity()

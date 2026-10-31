@@ -1,10 +1,7 @@
-﻿
-
 struct FESMAimControlInstanceData
 {
     UPROPERTY()
     bool bShowCastHint = false;
-
 
 }
 
@@ -48,7 +45,6 @@ class UESMAction_AimControl : UESMBPBaseSpanTickAction
     UPROPERTY()
     TArray<FSkillCastHintData> CastHintDatas;
 
-
     UFUNCTION()
     FESMInstanceDataInfo GetViewInstanceDataInfo_Implementation() const
     {
@@ -76,7 +72,7 @@ class UESMAction_AimControl : UESMBPBaseSpanTickAction
     UFUNCTION()
     void Tick_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [unresolved-operand]
+        // body not fully recovered — stub [unresolved-operand]
     }
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
@@ -270,7 +266,7 @@ class UESMAction_AimControl : UESMBPBaseSpanTickAction
     {
         int local_8 = 0;
         int local_28 = 0;
-        int local_42 = 0;
+        float32 local_42 = 0.0f;
         int local_140 = 0;
         bool local_1 = !(bAiming);
         bool local_2 = !(bLastAiming);
@@ -320,10 +316,18 @@ class UESMAction_AimControl : UESMBPBaseSpanTickAction
                         local_90.bOverrideMaxLockDistance = true;
                         local_90.MaxMaxLockDistance = local_42;
                     }
-                    FLockTargetResult local_122 = ::FLockTargetUtils::PickLockTargetResult(ELockTargetType(ELockTargetType(1)), Context.GetEntity(), ActionTime.WorldTime, this.LockTargetConfig.Data, local_90);
+                    FLockTargetResult local_122 = ::FLockTargetUtils::PickLockTargetResult(ELockTargetType(1), Context.GetEntity(), ActionTime.WorldTime, this.LockTargetConfig.Data, local_90);
                     if (!((local_122.LockTarget == ENTITY_NULL)))
                     {
-                        ::FLockTargetUtils::UpdateLockTarget(Context.GetEntity(), local_122.LockTarget, int(local_122.LockPointIndex), ELockTargetType(ELockTargetType(1)), true, (local_39 ? int(this.LockTargetConfig.Data.KeepDuration) : 0));
+                        if (local_39)
+                        {
+                            local_42 = this.LockTargetConfig.Data.KeepDuration;
+                        }
+                        else
+                        {
+                            local_42 = 0.0f;
+                        }
+                        ::FLockTargetUtils::UpdateLockTarget(Context.GetEntity(), local_122.LockTarget, int(local_122.LockPointIndex), ELockTargetType(1), true, local_42);
                     }
                 }
                 if (Context.GetECSRuntime().IsClient)

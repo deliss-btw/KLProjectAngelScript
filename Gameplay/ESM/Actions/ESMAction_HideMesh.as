@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_HideMesh : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ class UESMAction_HideMesh : UESMBPBaseSpanAction
     bool bSpecificEntity = false;
     UPROPERTY()
     FNameHandle_EntityBBVarEntity SpecificEntityId;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const

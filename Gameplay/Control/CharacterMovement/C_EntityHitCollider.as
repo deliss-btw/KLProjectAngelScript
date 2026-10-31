@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_EntityHitCollider_NS
 {
     const TECSComponentDerivedPtr<FC_EntityHitCollider> DerivedPtr = TECSComponentDerivedPtr<FC_EntityHitCollider>();
@@ -17,11 +16,15 @@ struct FC_EntityHitCollider : FECSComponent
 
     FC_EntityHitCollider()
     {
+        FRootDirtyFlags32 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_EntityHitCollider(const FC_EntityHitCollider &inout Other)
     {
+        FRootDirtyFlags32 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_Entity = Other.m_Entity;
         this.m_LastPosition = Other.m_LastPosition;
@@ -174,37 +177,37 @@ bool RemoveEntityHitCollider(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEntityHitColliderOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EntityHitCollider, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EntityHitCollider, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityHitColliderOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EntityHitCollider, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EntityHitCollider, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityHitColliderOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EntityHitCollider, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EntityHitCollider, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityHitColliderOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EntityHitCollider, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EntityHitCollider, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityHitColliderOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EntityHitCollider, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EntityHitCollider, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEntityHitColliderLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EntityHitCollider, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EntityHitCollider, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEntityHitColliderActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EntityHitCollider, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EntityHitCollider, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEntityHitColliderModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EntityHitCollider, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EntityHitCollider, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

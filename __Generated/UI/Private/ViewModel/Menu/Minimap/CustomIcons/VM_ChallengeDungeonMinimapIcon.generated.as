@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ChallengeDungeonMinimapIcon_Helpers
 {
 UFUNCTION()

@@ -1,5 +1,3 @@
-﻿
-
 class UHTNTask_SetBlackBoardValue : UHTNTask_ECSScriptBase
 {
     UPROPERTY()
@@ -22,7 +20,7 @@ class UHTNTask_SetBlackBoardValue : UHTNTask_ECSScriptBase
     void Execute_Implementation(const FHTNContext &inout Context)
     {
         HTNNode::SetWorldStateValueAsVector(Context, this.KeyName, this.Value);
-        FString local_16 = FString();
+        XLog(ELog(0), FString().Append("Execution SetVector ").Append(this.KeyName.SelectedKeyName).Append(" : ").Append(HTNNode::GetWorldStateValueAsVector(Context, this.KeyName)));
         this.FinishExecuteWithContext(Context, true);
         return;
     }

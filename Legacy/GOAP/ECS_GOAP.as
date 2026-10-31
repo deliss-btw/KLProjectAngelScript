@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class UECSGOAPInstanceBase : UGOAP_InstanceBase
 {
@@ -33,7 +31,6 @@ class UGOAPExampleAction : UGOAP_ActionScriptableBase
     UPROPERTY()
     float32 Duration = 2.0f;
     float32 TimeCounter = 0.0f;
-
 
     UFUNCTION()
     void WhenActionActivated_Implementation()
@@ -97,10 +94,9 @@ void RunGOAP(const FECSEntity &inout Entity, const TSubclassOf<UECSGOAPInstanceB
     }
     local_6.Instance.Entity = Entity;
     FGOAP_PlanContext local_28;
-    bool local_7 = false;
-    FGOAP_PlanContext local_29 = local_7;
+    bool local_29 = false;
     local_6.Instance.TryPlanToGoal(GoalName, local_28, local_29, false);
-    if (local_29 != 0)
+    if (local_29)
     {
         local_6.Instance.ExecutePlannedActions(local_28, FOnActionFinished__GOAP_InstanceBase());
     }

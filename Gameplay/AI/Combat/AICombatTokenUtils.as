@@ -1,4 +1,3 @@
-﻿
 namespace FAICombatTokenUtils
 {
 bool GenerateSpecialToken(const FECSEntity &inout Invoker, const TDataObjectPtr<FAISpecialCombatTokenConfig> &inout SpecialTokenConfg, const TArray<FAISmart_AnyValue> &inout Params, const FFPTime &inout GenerateTokenDelay, const EAISpecialTokenDispatchMode DispatchMode = EAISpecialTokenDispatchMode::SendToAll, const TArray<FECSEntityId> &inout TargetEntities = TArray<FECSEntityId>())

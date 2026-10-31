@@ -1,4 +1,3 @@
-﻿
 namespace LoginSystemUtil
 {
 FText ResolveLoginTextData(const TDataObjectPtr<FKLTextData> &inout TextData)

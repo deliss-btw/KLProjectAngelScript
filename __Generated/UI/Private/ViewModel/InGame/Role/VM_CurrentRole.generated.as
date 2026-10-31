@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_CurrentRole_Helpers
 {
 UFUNCTION()

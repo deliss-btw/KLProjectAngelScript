@@ -1,4 +1,3 @@
-﻿
 enum EESMActionFilterType
 {
     Default,

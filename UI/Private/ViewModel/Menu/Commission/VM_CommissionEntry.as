@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommissionEntry
 {
     const int ModelId = 0;
@@ -41,8 +40,7 @@ struct FVM_CommissionEntry : FEUIViewModel
     }
     void GotoCommissionPanel()
     {
-        int local_2 = int(this.GetCommissionType());
-        FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_CommissionPanel, FEUIModelRef());
+        FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_CommissionPanel, FEUIModelRef(::FVM_CommissionPanel::Create(this.GetContext().Manager, this.GetCommissionType(), 0)));
         return;
     }
     void RefreshCounterDownState()
@@ -61,8 +59,7 @@ struct FVM_CommissionEntry : FEUIViewModel
         {
             return;
         }
-        int local_5 = int(this.GetCommissionType());
-        this.GetModify_RefreshCounterDown().SetRemainedTimeWithPrecision(FFPTime(::FMS_CommissionData::Get(this.GetContext().Manager).GetRefreshRemainingTime().GetTotalSeconds()), EMWCounterDownPrecision(1));
+        this.GetModify_RefreshCounterDown().SetRemainedTimeWithPrecision(FFPTime(::FMS_CommissionData::Get(this.GetContext().Manager).GetRefreshRemainingTime(ECommissionType(this.GetCommissionType())).GetTotalSeconds()), EMWCounterDownPrecision(1));
         return;
     }
     FTimespan GetRefreshRemainingTime() const
@@ -71,11 +68,11 @@ struct FVM_CommissionEntry : FEUIViewModel
     }
     bool HasRefreshTime() const
     {
-        if (!(::CommissionUtils::IsCommissionTypeUnlocked(ECommissionType(this.GetCommissionType()), false)))
+        if (!(::CommissionUtils::IsCommissionTypeUnlocked(this.GetCommissionType(), false)))
         {
             return false;
         }
-        return (int(this.GetCommissionType())) == 2 || (int(this.GetCommissionType()) == 4);
+        return int(this.GetCommissionType()) == 2 || (int(this.GetCommissionType()) == 4);
     }
     bool GetIsUnlock() const
     {
@@ -137,7 +134,6 @@ struct __GeneratedProperties_FVM_CommissionEntry
     bool IsLock;
     UPROPERTY()
     TEUIModelRef<FVM_CommissionEntry> Self;
-
 
 }
 

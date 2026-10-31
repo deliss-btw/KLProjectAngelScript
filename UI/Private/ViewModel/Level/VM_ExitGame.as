@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_ExitGame
 {
     const int ModelId = 0;
@@ -55,8 +54,8 @@ struct FVMS_ExitGame : FEUIViewModelSingleton
         FText local_72 = FText();
         FText local_76 = FText();
         FDialogCallback local_58 = FDialogCallback(local_26);
-        FText local_62 = NSLOCTEXT("DialogMessage", "зЎ®е®љи¦Ѓз»“жќџжёёж€Џеђ—пјџ");
-        FText local_66 = NSLOCTEXT("DialogTitle", "з»“жќџжёёж€Џ");
+        FText local_62 = NSLOCTEXT("DialogMessage", "确定要结束游戏吗？");
+        FText local_66 = NSLOCTEXT("DialogTitle", "结束游戏");
         FCommonDialogParam local_68;
         ::CommonPopup::Dialog_Decision(local_66, local_62, local_58, local_76, local_72, local_68);
         return;
@@ -69,8 +68,8 @@ struct FVMS_ExitGame : FEUIViewModelSingleton
         FText local_72 = FText();
         FText local_76 = FText();
         FDialogCallback local_58 = FDialogCallback(local_26);
-        FText local_62 = NSLOCTEXT("DialogMessage", "зЎ®е®љи¦Ѓз»“жќџжёёж€Џеђ—пјџ");
-        FText local_66 = NSLOCTEXT("DialogTitle", "з»“жќџжёёж€Џ");
+        FText local_62 = NSLOCTEXT("DialogMessage", "确定要结束游戏吗？");
+        FText local_66 = NSLOCTEXT("DialogTitle", "结束游戏");
         FCommonDialogParam local_68;
         ::CommonPopup::Dialog_Decision(InLocalPlayer, local_66, local_62, local_58, local_76, local_72, local_68);
         return;

@@ -1,5 +1,3 @@
-﻿
-
 class UItemActionTrigger_ActivateAbility : UItemActionTriggerBase
 {
     UPROPERTY()
@@ -12,7 +10,35 @@ class UItemActionTrigger_ActivateAbility : UItemActionTriggerBase
     }
     void Execute(const FItemActionSource &inout ActionSource) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_28 = 0;
+        FECSEntity local_4 = FECSEntity(ActionSource.GetItemOwner());
+        if (!(FECSEntity::Has<FC_EASAbility>(local_4).opCall()))
+        {
+            XWarning(ELog(47), FString().Append("Failed to active ability ").Append(this.GetAbilityName()).Append(" on ").Append(local_4).Append(", unable to find ability component."));
+            return;
+        }
+        int local_19 = ::ItemActionUtils::GetItemActionGeneratedAbilityIndexFromAsset(ActionSource, this.AbilityClass);
+        if (local_19 != INDEX_NONE)
+        {
+            bool local_20;
+            local_20 = false;
+            FC_EASAbilityInstance& local_22 = FAbilityUtils::GetAbilityInstance(local_4, local_19, local_20);
+            if (!(local_20))
+            {
+                XWarning(ELog(47), FString().Append("Failed to active ability ").Append(this.GetAbilityName()).Append(" on ").Append(local_4).Append(", ability instance not found."));
+                return;
+            }
+            FAbilityUtils::ActivateAbility(local_22, local_28, local_4, FFPTime(ECS::GetECSWorld().GetFixedTime().Time));
+        }
+        else
+        {
+            if (!(FAbilityUtils::AddAbility(local_4, local_4, this.AbilityClass.Get(), false, this.GetAbilityName(), true, false, true, false, FFPTime(0))))
+            {
+                XWarning(ELog(47), FString().Append("Failed to active ability ").Append(this.GetAbilityName()).Append(" on ").Append(local_4).Append(", unable to add ability."));
+                return;
+            }
+        }
+        return;
     }
     FName GetAbilityName() const
     {
@@ -34,7 +60,27 @@ class UItemActionTrigger_AbilitySignal : UItemActionTriggerBase
     }
     void Execute(const FItemActionSource &inout ActionSource) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        FECSEntity local_4 = FECSEntity(ActionSource.GetItemOwner());
+        if (!(FECSEntity::Has<FC_EASAbility>(local_4).opCall()))
+        {
+            XWarning(ELog(47), FString().Append("Failed to invoke ability ").Append(this.GetAbilityName()).Append(" signal [").Append(this.Signal).Append("] on ").Append(local_4).Append(", unable to find ability component."));
+            return;
+        }
+        int local_19 = ::ItemActionUtils::GetItemActionGeneratedAbilityIndexFromAsset(ActionSource, this.AbilityClass);
+        if (local_19 == INDEX_NONE)
+        {
+            return;
+        }
+        bool local_20 = false;
+        FC_EASAbilityInstance& local_22 = FAbilityUtils::GetAbilityInstance(local_4, local_19, local_20);
+        if (!(local_20))
+        {
+            XWarning(ELog(47), FString().Append("Failed to invoke ability ").Append(this.GetAbilityName()).Append(" signal [").Append(this.Signal).Append("] on ").Append(local_4).Append(", ability instance not found."));
+            return;
+        }
+        FFPTime local_26 = FFPTime(ECS::GetECSWorld().GetFixedTime().Time);
+        FAbilityUtils::InvokeSignal(local_22, local_4, this.Signal, local_26, true);
+        return;
     }
     FName GetAbilityName() const
     {
@@ -50,7 +96,6 @@ class UItemActionTrigger_AddBuff : UItemActionTriggerBase
     float32 OverrideDuration = -1.0f;
     UPROPERTY()
     int StackNum = -1;
-
 
     void Execute(const FItemActionSource &inout ActionSource) const
     {

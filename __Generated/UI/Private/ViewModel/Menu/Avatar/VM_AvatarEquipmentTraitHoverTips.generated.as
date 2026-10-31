@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_AvatarEquipmentTraitHoverTips_Helpers
 {
 UFUNCTION()

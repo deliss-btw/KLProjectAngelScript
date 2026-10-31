@@ -1,5 +1,3 @@
-﻿
-
 class UBTService_EcologyBaseInfoSync : UBTService_ECSScriptBase
 {
     UPROPERTY()

@@ -1,5 +1,3 @@
-﻿
-
 class US_ASGameModeSystemPVB : US_ECSScriptGameModeSystemBase
 {
     US_ASGameModeSystemPVB()

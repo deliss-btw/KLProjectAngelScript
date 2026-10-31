@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FEUIActionBindingMinimapAction (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FEUIActionBindingMinimapAction : FEUIActionBindingCustom
 {
     FEUIActionBindingCustom _base_FEUIActionBindingCustom;
@@ -93,7 +88,6 @@ class UMinimapGlobalConfig : UGameplaySettingsBase
     TSoftClassPtr<UUserWidget> BossTrackingAreaIconWidget;
     UPROPERTY()
     int BossTrackingAreaIconZOrder = -100;
-
 
 }
 

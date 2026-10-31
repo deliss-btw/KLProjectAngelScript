@@ -1,5 +1,3 @@
-﻿
-
 struct FT_Lockable : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -10,7 +8,7 @@ struct FT_Lockable : FECSTrait
     UPROPERTY()
     FC_LockableConfig Config_FC_LockableConfig;
 
-    default CustomName = FName("й”Ѓе®љ (FT_Lockable)");
+    default CustomName = FName("锁定 (FT_Lockable)");
 
     FT_Lockable()
     {

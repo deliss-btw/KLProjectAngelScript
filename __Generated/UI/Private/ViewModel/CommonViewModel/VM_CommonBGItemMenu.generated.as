@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommonBGItemMenu_Helpers
 {
 UFUNCTION()

@@ -1,4 +1,3 @@
-﻿
 namespace FBeHitUtils
 {
 void HandleBeHitContext(const FECSEntity &inout Entity, const int Frame)

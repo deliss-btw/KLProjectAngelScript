@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_ReadReactionParam : UBTTask_ECSScriptBase
 {
     UPROPERTY()

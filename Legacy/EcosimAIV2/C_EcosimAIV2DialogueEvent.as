@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_EcosimAIV2InteractDialogueEvent_NS
 {
     const TECSEventDerivedPtr<FCE_EcosimAIV2InteractDialogueEvent> DerivedPtr = TECSEventDerivedPtr<FCE_EcosimAIV2InteractDialogueEvent>();
@@ -44,7 +43,6 @@ struct FCE_EcosimAIV2DialogueSelectEvent : FECSEvent
     UPROPERTY()
     int OptionIndex = -1;
 
-
 }
 
 struct FCE_EcosimAIV2DialogueEndEvent : FECSEvent
@@ -68,7 +66,6 @@ struct FCE_EcosimAIV2ClientDialogueSelectEvent : FECSEvent
     FECSEvent _base_FECSEvent;
     UPROPERTY()
     int CurrentSectionIndex;
-
 
 }
 

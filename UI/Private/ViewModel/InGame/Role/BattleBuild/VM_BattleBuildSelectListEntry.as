@@ -1,4 +1,3 @@
-﻿
 namespace FVM_BattleBuildSelectListEntry
 {
     const int ModelId = 0;
@@ -98,7 +97,6 @@ struct __GeneratedProperties_FVM_BattleBuildSelectListEntry
     bool IsSelected;
     UPROPERTY()
     TEUIModelRef<FVM_BattleBuildSelectListEntry> Self;
-
 
 }
 

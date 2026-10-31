@@ -1,4 +1,3 @@
-﻿
 namespace ChatSystemUtil
 {
 FText ResolveKLTextData(const TDataObjectPtr<FKLTextData> &inout TextData)
@@ -183,13 +182,41 @@ bool ShouldShowMessageOnChatHud(const uint ChannelType)
 }
 FText GetChannelTabDisplayName(const EChatChannelTab ChannelTab)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    FText __r; return __r;
+    const UChatSettings local_2;
+    GetGameplaySettings<UChatSettings> local_4;
+    local_2 = local_4;
+    if (local_2 != nullptr)
+    {
+        FChatChannelNameInfoConfig local_56;
+        if (local_2.ChannelNameMap.Find(ChannelTab, local_56))
+        {
+            FText local_64 = ChatSystemUtil::ResolveKLTextData(local_56.ChannelNameTextData);
+            if (!(local_64.IsEmpty()))
+            {
+                return local_64;
+            }
+        }
+    }
+    return FText();
 }
 FText GetChatHudChannelPrefix(const EChatChannelTab ChannelTab)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    FText __r; return __r;
+    const UChatSettings local_2;
+    GetGameplaySettings<UChatSettings> local_4;
+    local_2 = local_4;
+    if (local_2 != nullptr)
+    {
+        FChatChannelNameInfoConfig local_56;
+        if (local_2.ChannelNameMap.Find(ChannelTab, local_56))
+        {
+            FText local_64 = ChatSystemUtil::ResolveKLTextData(local_56.ChannelNameShortTextData);
+            if (!(local_64.IsEmpty()))
+            {
+                return local_64;
+            }
+        }
+    }
+    return FText();
 }
 bool CanSendByChannelType(const EChatChannelTab Tab)
 {
@@ -417,14 +444,11 @@ FText MakeRecruitCommissionTeamHyperlinkText(const uint RecruiterUid)
     const UChatSettings local_2;
     GetGameplaySettings<UChatSettings> local_4;
     local_2 = local_4;
-    FText local_12;
     if ((!((local_2 != nullptr))))
     {
-        return local_12;
+        return FText();
     }
-    local_12 = ChatSystemUtil::ResolveKLTextData(local_2.RecruitCommissionTeamTextData);
-    FString local_20 = FString();
-    return FText();
+    return ChatSystemUtil::BuildStyledActionHyperlinkText(ChatSystemUtil::ResolveKLTextData(local_2.RecruitCommissionTeamTextData), local_2.RecruitCommissionTeamStyle, ChatSystemUtil::GetChatSystemHyperlinkActionString(EChatSystemHyperlinkKind(1)), FString().Append(RecruiterUid));
 }
 FText MakeSystemChatItemWithRarityHyperlinkText(const TDataObjectPtr<FItemConfig> &inout ItemPtr)
 {

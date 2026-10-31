@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_Execute_QTE
 {
     const int ViewID = 0;
@@ -160,6 +159,7 @@ namespace UWidget_Execute_QTE
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_Execute_QTE;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnStateChanged"));
     return;
 }

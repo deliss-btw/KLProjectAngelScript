@@ -1,4 +1,3 @@
-﻿
 namespace CameraOptions
 {
     const FConsoleVariable CVar_Camera_AdditionalInputModifierIndex = FConsoleVariable();

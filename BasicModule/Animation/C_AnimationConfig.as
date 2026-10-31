@@ -1,4 +1,3 @@
-﻿
 enum EShakeSolveSpace
 {
     WorldSpace,
@@ -29,7 +28,6 @@ struct FBoneShakeScale
     UPROPERTY()
     float32 StrengthScale = 1.0f;
 
-
 }
 
 struct FCompanionChainStrengthScale
@@ -38,7 +36,6 @@ struct FCompanionChainStrengthScale
     FName CompanionChainName;
     UPROPERTY()
     float32 StrengthScale = 1.0f;
-
 
 }
 
@@ -54,7 +51,6 @@ struct FBoneChainBaseConfig
     EShakeResponseMode ResponseMode = EShakeResponseMode(1);
     UPROPERTY()
     TArray<FName> CompanionChainNames;
-
 
 }
 
@@ -75,7 +71,6 @@ struct FBoneChainShakeCurveConfig
     UPROPERTY()
     TArray<FCompanionChainStrengthScale> CompanionChainScales;
 
-
 }
 
 struct FShakeDynamicParam
@@ -94,7 +89,6 @@ struct FShakeDynamicParam
     FVector AttackerForwardVector = FVector(1.0, 0.0, 0.0);
     UPROPERTY()
     FVector AttackDirectionVector = FVector(0.0, 1.0, 0.0);
-
 
 }
 
@@ -121,7 +115,6 @@ struct FC_SampleTrajectoryConfig : FECSComponent
     float32 ExtraInputLengthForLookAt = 500.0f;
     UPROPERTY()
     float32 HeightForLookAt = 150.0f;
-
 
 }
 
@@ -233,37 +226,37 @@ bool RemovePhysicsShakingConfig(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPhysicsShakingConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PhysicsShakingConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PhysicsShakingConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPhysicsShakingConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PhysicsShakingConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PhysicsShakingConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPhysicsShakingConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PhysicsShakingConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PhysicsShakingConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPhysicsShakingConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PhysicsShakingConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PhysicsShakingConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPhysicsShakingConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PhysicsShakingConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PhysicsShakingConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPhysicsShakingConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PhysicsShakingConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PhysicsShakingConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPhysicsShakingConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PhysicsShakingConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PhysicsShakingConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPhysicsShakingConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PhysicsShakingConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PhysicsShakingConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_SampleTrajectoryConfig
@@ -343,36 +336,36 @@ bool RemoveSampleTrajectoryConfig(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorSampleTrajectoryConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_SampleTrajectoryConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_SampleTrajectoryConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSampleTrajectoryConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_SampleTrajectoryConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_SampleTrajectoryConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSampleTrajectoryConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_SampleTrajectoryConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_SampleTrajectoryConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSampleTrajectoryConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_SampleTrajectoryConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_SampleTrajectoryConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSampleTrajectoryConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_SampleTrajectoryConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_SampleTrajectoryConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorSampleTrajectoryConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_SampleTrajectoryConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_SampleTrajectoryConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSampleTrajectoryConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_SampleTrajectoryConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_SampleTrajectoryConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSampleTrajectoryConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_SampleTrajectoryConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_SampleTrajectoryConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

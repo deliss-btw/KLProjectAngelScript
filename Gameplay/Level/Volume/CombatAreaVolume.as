@@ -1,5 +1,3 @@
-﻿
-
 class ACombatAreaVolume : AECSRegionVolume
 {
     default bAffectCombat = true;

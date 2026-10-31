@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommissionMonsterInfo_Helpers
 {
 UFUNCTION()

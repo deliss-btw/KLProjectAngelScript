@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_AvatarMainWardrobe
 {
     const int ViewID = 0;
@@ -31,7 +30,7 @@ class UWidget_AvatarMainWardrobe : UEUIActivatableWidget
     FEUIActionBinding MainTabPrevActionBinding;
     UPROPERTY()
     FEUIActionBinding MainTabNextActionBinding;
-    int SyncedMainTabIndex;
+    int SyncedMainTabIndex = INDEX_NONE;
     UPROPERTY()
     FConfigVM_AvatarShowcase ShowcaseConfig;
     FEUIModelWeakRef __Wardrobe;
@@ -40,24 +39,40 @@ class UWidget_AvatarMainWardrobe : UEUIActivatableWidget
     UPROPERTY()
     FGetEUIModelRef ShowcaseDelegate;
 
-    UWidget_AvatarMainWardrobe()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
     UFUNCTION()
     void OnViewBind_Implementation()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (this.Wardrobe.IsValid())
+        {
+            TEUIModelRef<FVM_AvatarShowcase> local_4;
+            local_4;
+            local_4.SetCurrentShowcase();
+        }
+        this.RefreshActionBinding();
+        this.SyncedMainTabIndex = INDEX_NONE;
+        this.SyncMainTabSelection();
+        this.FocusInitialWardrobeEntry();
+        return;
     }
     UFUNCTION()
     void HandleWardrobeActionStateChanged()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.RefreshActionBinding();
+        int local_1 = 1;
+        if (this.Wardrobe.IsValid() && (GetPendingNavigationType() == 1) && (int(GetPendingMainTab()) != int(GetCurrentMainTab())))
+        {
+            this.SyncedMainTabIndex = INDEX_NONE;
+        }
+        this.SyncMainTabSelection();
+        return;
     }
     UFUNCTION()
     void HandleWardrobeMainTabStateChanged()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.RefreshActionBinding();
+        this.SyncedMainTabIndex = INDEX_NONE;
+        this.SyncMainTabSelection();
+        return;
     }
     UFUNCTION()
     void OnWardrobeReturnAction()
@@ -112,13 +127,30 @@ class UWidget_AvatarMainWardrobe : UEUIActivatableWidget
     {
         if (this.Wardrobe.IsValid())
         {
-            RequestMainTabByOffset();
+            Offset.RequestMainTabByOffset();
         }
         return;
     }
     void SyncMainTabSelection()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (!(this.Wardrobe.IsValid()) || ((this.EUI_List == nullptr)))
+        {
+            this.SyncedMainTabIndex = INDEX_NONE;
+            return;
+        }
+        int local_6 = GetCurrentMainTabListIndex();
+        if (local_6 == this.SyncedMainTabIndex)
+        {
+            return;
+        }
+        if (GetMainTabItems().IsValidIndex(local_6))
+        {
+            this.SyncedMainTabIndex = local_6;
+            this.EUI_List.SetSelectedIndex(local_6);
+            return;
+        }
+        this.SyncedMainTabIndex = INDEX_NONE;
+        return;
     }
     void FocusInitialWardrobeEntry()
     {
@@ -321,6 +353,7 @@ namespace UWidget_AvatarMainWardrobe
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_AvatarMainWardrobe;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleWardrobeActionStateChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleWardrobeMainTabStateChanged"));
     return;
@@ -338,6 +371,7 @@ namespace UWidget_AvatarWardrobeEntrance
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_AvatarWardrobeEntrance;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

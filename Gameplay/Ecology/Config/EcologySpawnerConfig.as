@@ -1,14 +1,9 @@
-﻿
 enum ECreatureConfigType
 {
     Legacy,
     Monster,
     NPC,
 }
-
-
-// NOTE: class defaults are not authored in this module: FClassicSpawnerConfig (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
 
 struct FCreatureConfigProxy
 {
@@ -94,7 +89,7 @@ struct FCreatureConfigProxy
     }
     TSoftClassPtr<AECSPrefab> GetCreaturePrefab() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         TSoftClassPtr<AECSPrefab> __r; return __r;
     }
     TDataObjectPtr<FNPCMainConfig> GetNPCConfig() const
@@ -142,7 +137,6 @@ struct FClassicEcologIsomorphicConfig
     UPROPERTY()
     int MaxCount;
 
-
     bool ShouldShowMonster(const FMonsterMainConfig &inout Config) const
     {
         if (Config.GetCombatConfig())
@@ -161,12 +155,14 @@ struct FClassicEcologIsomorphicConfig
         {
             if (GetCreature())
             {
+                FCreatureConfigProxy local_28 = FCreatureConfigProxy(this.MonsterConfig);
             }
             else
             {
                 XError(ELog(30), "Monster Config Without Creature Info");
             }
         }
+        FCreatureConfigProxy local_28_2 = FCreatureConfigProxy(this.CreatureType);
         return __r;
     }
     TDataObjectPtr<FEcologyCreatureDefinitionRow> GetCreatureType() const
@@ -179,7 +175,7 @@ struct FClassicEcologIsomorphicConfig
                 return local_4.GetCreature();
             }
         }
-        return this;
+        return this.CreatureType;
     }
 }
 
@@ -191,7 +187,6 @@ struct FClassicEcologyTeamConfig
     int MaxTeamCount;
     UPROPERTY()
     bool bAcceptSpawnRatio = true;
-
 
 }
 
@@ -230,7 +225,6 @@ struct FClassicSpawnerConfig : FSpawnerConfig
 
     FClassicSpawnerConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -302,7 +296,7 @@ struct FBossSpawnInfoConfig
                 return local_4.GetCreature();
             }
         }
-        return this;
+        return this.Creature;
     }
     FCreatureConfigProxy GetCreatureProxy() const
     {
@@ -312,12 +306,14 @@ struct FBossSpawnInfoConfig
             const FMonsterMainConfig& local_4;
             if (local_4.GetCreature())
             {
+                FCreatureConfigProxy local_30 = FCreatureConfigProxy(this.MonsterConfig);
             }
             else
             {
                 XError(ELog(30), "Monster Config Without Creature Info");
             }
         }
+        FCreatureConfigProxy local_30_2 = FCreatureConfigProxy(this.Creature);
         return __r;
     }
     bool CheckPositionInVolumes(const FVector &inout Position) const
@@ -354,7 +350,6 @@ struct FRandomBossSpawnInfoConfig : FBossSpawnInfoConfig
     UPROPERTY()
     int Weight = 1;
 
-
 }
 
 struct FRandomBossSpawnInfoPoolConfig
@@ -378,7 +373,6 @@ struct FMixedRandomBossSpawnerConfig : FSpawnerConfig
 
     FMixedRandomBossSpawnerConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -435,7 +429,6 @@ struct FBaseMonsterSpawnerConfig : FConstMonsterSpawner
 
     FBaseMonsterSpawnerConfig()
     {
-        super();
         this.MonsterId = 0;
         this.bCreateFlock = true;
         this.__InitDefaults();
@@ -467,7 +460,6 @@ struct FConstNPCSpawnerConfig : FSpawnerConfig
 
     FConstNPCSpawnerConfig()
     {
-        super();
         this.NPCId = 0;
         this.__InitDefaults();
         return;

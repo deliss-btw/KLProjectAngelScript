@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_SearchResourceLocation : UBTTask_ECSScriptBase
 {
     UPROPERTY()

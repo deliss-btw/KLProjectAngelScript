@@ -1,4 +1,3 @@
-﻿
 namespace FM_Trait
 {
     const int ModelId = 0;

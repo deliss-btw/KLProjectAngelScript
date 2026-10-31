@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_FloatInterpolationHistory_NS
 {
     const TECSComponentDerivedPtr<FC_FloatInterpolationHistory> DerivedPtr = TECSComponentDerivedPtr<FC_FloatInterpolationHistory>();
@@ -38,7 +37,7 @@ struct FC_FloatInterpolationHistory : FECSComponent
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_FloatInterpolation &inout OutValue) const
     {
-        return this.GetInterpoValue(WorldTime, OutValue);
+        return this.History.GetInterpoValue(WorldTime, OutValue);
     }
 }
 
@@ -122,36 +121,36 @@ bool RemoveFloatInterpolationHistory(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorFloatInterpolationHistoryOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_FloatInterpolationHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_FloatInterpolationHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFloatInterpolationHistoryOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_FloatInterpolationHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_FloatInterpolationHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFloatInterpolationHistoryOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_FloatInterpolationHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_FloatInterpolationHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFloatInterpolationHistoryOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_FloatInterpolationHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_FloatInterpolationHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFloatInterpolationHistoryOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_FloatInterpolationHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_FloatInterpolationHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorFloatInterpolationHistoryLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_FloatInterpolationHistory, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_FloatInterpolationHistory, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFloatInterpolationHistoryActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_FloatInterpolationHistory, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_FloatInterpolationHistory, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFloatInterpolationHistoryModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_FloatInterpolationHistory, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_FloatInterpolationHistory, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

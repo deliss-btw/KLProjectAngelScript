@@ -1,5 +1,3 @@
-﻿
-
 struct __Lambda_Gameplay_Ecology_Utils_EcologyPointUtils_97
 {
     __Lambda_Gameplay_Ecology_Utils_EcologyPointUtils_97()
@@ -64,6 +62,7 @@ struct __Lambda_Gameplay_Ecology_Utils_EcologyPointUtils_99
     {
         int local_4 = 0;
         int local_44 = 0;
+        int local_64 = 0;
         int local_74 = 0;
         FVoxelRegionIndex local_2 = VoxelPos.ToRegionPos();
         TMap<int64, FEcologyVoxelSceneRegionSlot>& local_8 = local_4.GetCellSlotDataRef(EEcologyVoxelUnitSlot(3));
@@ -94,7 +93,6 @@ struct __Lambda_Gameplay_Ecology_Utils_EcologyPointUtils_99
             }
             if (PointQuery.OwnerGroup.IsValid())
             {
-                int local_64;
                 if (!(local_64))
                 {
                     continue;

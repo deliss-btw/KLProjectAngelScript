@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_MotionPage
 {
     const int ModelId = 0;
@@ -161,7 +160,6 @@ struct FVMS_MotionPage : FEUIViewModelSingleton
     void RefreshMotionList()
     {
         FMotionData local_136;
-        FEUIModelRef local_220;
         this.GetModify_SingleMotionRefs().Empty(0);
         this.GetModify_MultiMotionRefs().Empty(0);
         this.GetModify_FunctionPropMotionRefs().Empty(0);
@@ -185,22 +183,19 @@ struct FVMS_MotionPage : FEUIViewModelSingleton
                 TDataObjectPtr<FMotionData> local_166 = local_190;
                 if (int(local_136.MotionType) == 0)
                 {
-                    local_220 = FEUIModelRef(::FVM_SocialMotionItem::Create(this.GetContext().Manager, EMotionType(0), local_166, local_17));
-                    this.GetModify_SingleMotionRefs().Add(local_220);
+                    this.GetModify_SingleMotionRefs().Add(FEUIModelRef(::FVM_SocialMotionItem::Create(this.GetContext().Manager, EMotionType(0), local_166, local_17)));
                 }
                 else
                 {
                     if (int(local_136.MotionType) == 1)
                     {
-                        local_220 = FEUIModelRef(::FVM_SocialMotionItem::Create(this.GetContext().Manager, EMotionType(1), local_166, local_17));
-                        this.GetModify_MultiMotionRefs().Add(local_220);
+                        this.GetModify_MultiMotionRefs().Add(FEUIModelRef(::FVM_SocialMotionItem::Create(this.GetContext().Manager, EMotionType(1), local_166, local_17)));
                     }
                     else
                     {
                         if (int(local_136.MotionType) == 2)
                         {
-                            local_220 = FEUIModelRef(::FVM_SocialMotionItem::Create(this.GetContext().Manager, EMotionType(2), local_166, local_17));
-                            this.GetModify_FunctionPropMotionRefs().Add(local_220);
+                            this.GetModify_FunctionPropMotionRefs().Add(FEUIModelRef(::FVM_SocialMotionItem::Create(this.GetContext().Manager, EMotionType(2), local_166, local_17)));
                         }
                     }
                 }
@@ -209,7 +204,7 @@ struct FVMS_MotionPage : FEUIViewModelSingleton
         int local_221 = 0;
         for (; local_221 < 3; )
         {
-            this.GetModify_MotionTabs().Add(local_220);
+            this.GetModify_MotionTabs().Add(FEUIModelRef(::FVM_MotionTab::Create(this.GetContext().Manager, local_221)));
             ++local_221;
         }
         this.UpdateDisplayMotionRefs();

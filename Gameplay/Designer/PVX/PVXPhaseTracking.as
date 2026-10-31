@@ -1,4 +1,3 @@
-﻿
 namespace PVXPhaseTracking
 {
 void Init(const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig)

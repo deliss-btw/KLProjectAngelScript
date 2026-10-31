@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_GetCanFlyToByTargetLocation : UBTTask_ECSScriptBase
 {
     UPROPERTY()
@@ -40,7 +38,7 @@ class UBTTask_GetCanFlyToByTargetLocation : UBTTask_ECSScriptBase
         if (local_6.GetValueAsBool(this.EntityCanFly.SelectedKeyName))
         {
             float32 local_34 = FAINavigationUtils::EstimateGroundPathLengthTo(local_4, local_22);
-            if ((local_34 < 0.0f || (local_34 >= this.MaxGroundMovePathLength)))
+            if (local_34 < 0.0f || (local_34 >= this.MaxGroundMovePathLength))
             {
                 if (FAINavigationUtils::EstimateAirPathLengthTo(local_4, local_22) > 0.0f)
                 {

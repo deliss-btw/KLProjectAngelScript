@@ -1,15 +1,9 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: UESMAction_ToggleComponentsForDurationLocalReg (default scalar field UESMAction.ActionFilterType has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
-
 class UESMAction_ToggleComponentsForDurationLocalReg : UESMBPBaseSpanAction
 {
     UPROPERTY()
     bool bHidden = true;
     UPROPERTY()
     FNameToComponentLogicNames LogicNames;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const
@@ -24,12 +18,12 @@ class UESMAction_ToggleComponentsForDurationLocalReg : UESMBPBaseSpanAction
     UFUNCTION()
     void ViewEnter_Implementation(const FESMViewContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     UFUNCTION()
     void ViewExit_Implementation(const FESMViewContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     FECSEntity GetDefaultEntity(const FESMViewContext &inout Context) const
     {
@@ -50,7 +44,6 @@ class UESMAction_ToggleComponentsInstantlyLocalReg : UESMBPBaseInstantAction
     UPROPERTY()
     FNameToComponentLogicNames LogicNames;
 
-
     UFUNCTION()
     EESMActionType GetActionType_Implementation() const
     {
@@ -64,7 +57,7 @@ class UESMAction_ToggleComponentsInstantlyLocalReg : UESMBPBaseInstantAction
     UFUNCTION()
     void ViewDo_Implementation(const FESMViewContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
 }
 

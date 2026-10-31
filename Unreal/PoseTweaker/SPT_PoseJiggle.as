@@ -1,4 +1,3 @@
-﻿
 enum EDynamicsSourceType
 {
     Curve,
@@ -12,7 +11,6 @@ enum EBodyChainType
     LeftLeg,
     RightLeg,
 }
-
 
 struct FRuntimeJiggleInfo
 {
@@ -55,7 +53,6 @@ struct FBodyJiggleEffectInfo
     UPROPERTY()
     float32 Pelvis_Weight;
 
-
 }
 
 struct FBodyJiggleSpringSetting
@@ -66,7 +63,6 @@ struct FBodyJiggleSpringSetting
     float32 SpringDamping = 0.03f;
     UPROPERTY()
     FVector SpringMaxDisplacement = FVector(3.0, 3.0, 3.0);
-
 
 }
 
@@ -108,7 +104,6 @@ class USPT_PoseJiggleBase : USkeletalPoseTweaker
     FTransform RightLegCTRL;
     TArray<FRuntimeJiggleInfo> RuntimeJiggleInfos;
 
-
     UFUNCTION()
     void OnInitialization_Implementation()
     {
@@ -139,9 +134,8 @@ class USPT_PoseJiggleBase : USkeletalPoseTweaker
                 }
                 FRuntimeFloatCurve& local_30 = this.JiggleCurves.FindOrAdd(local_20.JiggleCurveName);
                 local_27 = local_20.Time;
-                float32 local_32 = local_30.GetFloatValue(local_27, 0.0f);
                 FVector local_38 = local_20.InputImpulseDisplacement;
-                local_26 = (local_38 * local_32);
+                local_26 = (local_38 * (local_30.GetFloatValue(local_27, 0.0f)));
             }
             else
             {

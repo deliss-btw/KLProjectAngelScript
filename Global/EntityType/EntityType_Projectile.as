@@ -1,4 +1,3 @@
-﻿
 const TArray<FName> EntityType_Projectile_CompCategory = TArray<FName>();
 namespace FECSEntityType
 {

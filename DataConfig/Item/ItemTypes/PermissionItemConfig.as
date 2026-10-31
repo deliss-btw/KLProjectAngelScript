@@ -1,4 +1,3 @@
-﻿
 enum EPermissionItemType
 {
     None,
@@ -6,7 +5,6 @@ enum EPermissionItemType
     Other,
     MaxCount,
 }
-
 
 struct FPermissionItemConfig : FItemConfig
 {
@@ -20,7 +18,6 @@ struct FPermissionItemConfig : FItemConfig
 
     FPermissionItemConfig()
     {
-        super();
         this.PermissionType = EPermissionItemType(0);
         this.__InitDefaults();
         return;

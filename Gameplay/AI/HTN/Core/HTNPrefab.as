@@ -1,5 +1,3 @@
-﻿
-
 class AHTNTestPrefab : AKLLevelPrefabBase
 {
     UPROPERTY()

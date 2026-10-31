@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TaskGroup_Helpers
 {
 UFUNCTION()

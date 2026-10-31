@@ -1,12 +1,9 @@
-﻿
-
 class UESMAction_OverrideDivineLiteraryType : UESMBPBaseSpanAction
 {
     UPROPERTY()
     TDataObjectPtr<FDivineLiteraryTypeConfig> DivineLiteraryType;
     UPROPERTY()
     bool bAutoRestoreWhenExit = false;
-
 
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const

@@ -1,5 +1,3 @@
-﻿
-
 class UASWaitForESMActionEventWrapper : UECSAsyncActionBase
 {
     UPROPERTY()

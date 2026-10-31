@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ChallengeDungeonMinimapIcon
 {
     const int ModelId = 0;
@@ -235,7 +234,6 @@ struct __GeneratedProperties_FVM_ChallengeDungeonMinimapIcon
     bool HasReward;
     UPROPERTY()
     TEUIModelRef<FVM_ChallengeDungeonMinimapIcon> Self;
-
 
 }
 

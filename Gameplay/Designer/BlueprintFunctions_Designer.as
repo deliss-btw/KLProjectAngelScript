@@ -1,4 +1,3 @@
-﻿
 namespace BlueprintFunctions_Designer
 {
 UFUNCTION()
@@ -178,18 +177,19 @@ void ClampProjectileAimDirectionInEntitySpace(FName &out OutSocketName, EProject
         local_132_2 = local_222;
         FVector local_186 = local_110_2.RotateVector(FVector((local_218 * local_219), local_132_2, local_134));
         FVector local_230 = local_94.UnrotateVector(local_186);
+        float32 local_244 = 0.0f;
         if (local_230.SizeSquared() >= 1e-8)
         {
             local_132_2 = (local_230.X * local_230.X) + (local_230.Y * local_230.Y);
             float32 local_216 = float32(local_132_2);
             local_132_2 = local_230.X;
             local_132_2 = FMath::RadiansToDegrees(FMath::Atan2(local_230.Y, local_132_2));
-            float32 local_245 = float32(local_132_2);
+            local_244 = float32(local_132_2);
             local_132_2 = FMath::Sqrt(local_216);
             local_132_2 = FMath::RadiansToDegrees(FMath::Atan2(local_230.Z, local_132_2));
             local_222 = float32(local_132_2);
         }
-        float32 local_245_2 = 0.0f;
+        float32 local_245 = 0.0f;
         local_132_2 = local_111;
         OutWorldSpaceClampedTargetPosition = (local_168 + (local_186 * local_132_2));
         if (bDrawDebug)
@@ -200,8 +200,9 @@ void ClampProjectileAimDirectionInEntitySpace(FName &out OutSocketName, EProject
             DebugDraw::DrawDebugSphere(local_156, local_168, 100.0f, 16, FColor::Green, false, local_216_2, uint8(0), 0.0f);
             DebugDraw::DrawDebugSphere(local_156, local_236, 100.0f, 16, FColor::Red, false, local_216_2, uint8(0), 0.0f);
             DebugDraw::DrawDebugSphere(local_156, OutWorldSpaceClampedTargetPosition, 100.0f, 16, FColor::Cyan, false, local_216_2, uint8(0), 0.0f);
-            local_245_2 = local_111 * 0.5f;
-            DebugDraw::DrawDebugDirectionalArrow(local_156, local_168, (local_168 + (local_206 * local_245_2)), 60.0f, FColor::Red, false, local_216_2, uint8(0), 8.0f);
+            local_245 = local_111 * 0.5f;
+            local_134 = local_245;
+            DebugDraw::DrawDebugDirectionalArrow(local_156, local_168, (local_168 + (local_206 * local_134)), 60.0f, FColor::Red, false, local_216_2, uint8(0), 8.0f);
             FVector local_242_2 = (local_186 * local_111);
             DebugDraw::DrawDebugDirectionalArrow(local_156, local_168, (local_168 + local_242_2), 60.0f, FColor::Green, false, local_216_2, uint8(0), 8.0f);
         }
@@ -219,7 +220,7 @@ void ClampProjectileAimDirectionInEntitySpace(FName &out OutSocketName, EProject
         local_254_2 = float32(local_132_2);
         local_132_2 = FMath::Sqrt(local_224);
         local_132_2 = FMath::RadiansToDegrees(FMath::Atan2(local_130_2.Z, local_132_2));
-        local_255_2 = float32(float32(local_132_2));
+        local_255_2 = float32(local_132_2);
         local_187_2 = 0.0f;
     }
     float32 local_253_2 = float32(EntitySpaceAimRotationClampMax.Y);
@@ -227,50 +228,53 @@ void ClampProjectileAimDirectionInEntitySpace(FName &out OutSocketName, EProject
     float32 local_213_2 = FMath::Clamp(local_254_2, float32(EntitySpaceAimRotationClampMin.Z), float32(EntitySpaceAimRotationClampMax.Z));
     local_253_2 = float32(EntitySpaceAimRotationClampMax.X);
     float32 local_224_2 = FMath::Clamp(local_187_2, float32(EntitySpaceAimRotationClampMin.X), local_253_2);
-    float32 local_245_4 = local_222_2 * 0.017453292f;
-    float32 local_214_2 = FMath::Cos(local_245_4);
+    float32 local_245_2 = local_222_2 * 0.017453292f;
+    float32 local_214_2 = FMath::Cos(local_245_2);
     local_253_2 = 0.017453292f;
-    local_245_4 = local_222_2 * local_253_2;
-    local_253_2 = FMath::Sin(local_245_4);
-    local_245_4 = local_213_2 * 0.017453292f;
-    float32 local_216_3 = FMath::Cos(local_245_4);
-    local_245_4 = local_213_2 * 0.017453292f;
-    float32 local_217_2 = FMath::Sin(local_245_4);
+    local_245_2 = local_222_2 * local_253_2;
+    local_253_2 = FMath::Sin(local_245_2);
+    local_245_2 = local_213_2 * 0.017453292f;
+    float32 local_216_3 = FMath::Cos(local_245_2);
+    local_245_2 = local_213_2 * 0.017453292f;
+    float32 local_217_2 = FMath::Sin(local_245_2);
     float32 local_159_3 = local_214_2 * local_217_2;
     local_132_2 = local_159_3;
-    local_245_4 = local_214_2 * local_216_3;
-    FVector local_88_3 = local_94.RotateVector(FVector(local_245_4, local_132_2, local_253_2));
-    float local_134_3 = local_111;
+    local_245_2 = local_214_2 * local_216_3;
+    float local_134_3 = local_245_2;
+    FVector local_88_3 = local_94.RotateVector(FVector(local_134_3, local_132_2, local_253_2));
+    local_134_3 = local_111;
     local_206 = (local_88_3 * local_134_3);
     OutWorldSpaceClampedTargetPosition = (local_168 + local_206);
     if (bDrawDebug)
     {
         float32 local_124;
         local_206 = (local_82_2 + local_94.RotateVector(local_154));
-        local_245_4 = local_255_2 * 0.017453292f;
-        local_159_3 = FMath::Cos(local_245_4);
-        local_245_4 = local_255_2 * 0.017453292f;
-        local_124 = FMath::Sin(local_245_4);
-        local_245_4 = local_254_2 * 0.017453292f;
-        float32 local_218_2 = FMath::Cos(local_245_4);
-        local_245_4 = local_254_2 * 0.017453292f;
-        float32 local_219_2 = FMath::Sin(local_245_4);
+        local_245_2 = local_255_2 * 0.017453292f;
+        local_159_3 = FMath::Cos(local_245_2);
+        local_245_2 = local_255_2 * 0.017453292f;
+        local_124 = FMath::Sin(local_245_2);
+        local_245_2 = local_254_2 * 0.017453292f;
+        float32 local_218_2 = FMath::Cos(local_245_2);
+        local_245_2 = local_254_2 * 0.017453292f;
+        float32 local_219_2 = FMath::Sin(local_245_2);
         local_132_2 = local_124;
         float local_136_7 = (local_159_3 * local_219_2);
-        local_245_4 = local_159_3 * local_218_2;
-        FVector local_212 = local_94.RotateVector(FVector(local_245_4, local_136_7, local_132_2));
+        local_245_2 = local_159_3 * local_218_2;
+        local_134_3 = local_245_2;
+        FVector local_212 = local_94.RotateVector(FVector(local_134_3, local_136_7, local_132_2));
         XLog(ELog(0), FString().Append("ClampProjectileAim worldDir unclamped=(").Append(local_212.X).Append(", ").Append(local_212.Y).Append(", ").Append(local_212.Z).Append(") clamped=(").Append(local_88_3.X).Append(", ").Append(local_88_3.Y).Append(", ").Append(local_212).Append(") deg unclamped=(").Append(local_255_2).Append(",").Append(local_254_2).Append(",").Append(local_187_2).Append(") clamped=(").Append(local_222_2).Append(",").Append(local_213_2).Append(",").Append(local_224_2).Append(")"));
         local_156 = ECS::GetUEWorld();
+        float32 local_244_2 = 5.0f;
         int local_262 = 1090519040;
-        DebugDraw::DrawDebugSphere(local_156, local_168, 100.0f, 16, FColor::Green, false, 5.0f, uint8(0), 0.0f);
-        DebugDraw::DrawDebugSphere(local_156, local_206, 100.0f, 16, FColor::Red, false, 5.0f, uint8(0), 0.0f);
-        DebugDraw::DrawDebugSphere(local_156, OutWorldSpaceClampedTargetPosition, 100.0f, 16, FColor::Cyan, false, 5.0f, uint8(0), 0.0f);
+        DebugDraw::DrawDebugSphere(local_156, local_168, 100.0f, 16, FColor::Green, false, local_244_2, uint8(0), 0.0f);
+        DebugDraw::DrawDebugSphere(local_156, local_206, 100.0f, 16, FColor::Red, false, local_244_2, uint8(0), 0.0f);
+        DebugDraw::DrawDebugSphere(local_156, OutWorldSpaceClampedTargetPosition, 100.0f, 16, FColor::Cyan, false, local_244_2, uint8(0), 0.0f);
         float local_136_8 = (local_111 * 0.5f);
         FVector local_186_2 = (local_212 * local_136_8);
-        DebugDraw::DrawDebugDirectionalArrow(local_156, local_168, (local_168 + local_186_2), 60.0f, FColor::Red, false, 5.0f, uint8(0), 8.0f);
+        DebugDraw::DrawDebugDirectionalArrow(local_156, local_168, (local_168 + local_186_2), 60.0f, FColor::Red, false, local_244_2, uint8(0), 8.0f);
         local_134_3 = local_111;
         FVector local_200_2 = (local_88_3 * local_134_3);
-        DebugDraw::DrawDebugDirectionalArrow(local_156, local_168, (local_168 + local_200_2), 60.0f, FColor::Green, false, 5.0f, uint8(0), 8.0f);
+        DebugDraw::DrawDebugDirectionalArrow(local_156, local_168, (local_168 + local_200_2), 60.0f, FColor::Green, false, local_244_2, uint8(0), 8.0f);
     }
     return;
 }
@@ -638,7 +642,7 @@ void SetFlockClaimNewResourceSpecified(const FECSEntity &inout BossEntity, const
 {
     if (!(BossEntity.IsValid()))
     {
-        XLog(ELog(30), "SetFlockClaimNewResourceSpecified: BossEntity ж— ж•€пјЊи·іиї‡е€‡жЌў");
+        XLog(ELog(30), "SetFlockClaimNewResourceSpecified: BossEntity 无效，跳过切换");
         return;
     }
     if (!(ECS::IsAuthorityOrPrediction(BossEntity)))
@@ -649,14 +653,14 @@ void SetFlockClaimNewResourceSpecified(const FECSEntity &inout BossEntity, const
     Has local_14;
     if (!(local_10.IsValid()) || !(local_14.opCall()))
     {
-        XLog(ELog(30), FString().Append("SetFlockClaimNewResourceSpecified: BossEntity ").Append(BossEntity.GetIdValue()).Append(" жњЄж‰ѕе€°жњ‰ж•€ FlockпјЊи·іиї‡е€‡жЌў"));
+        XLog(ELog(30), FString().Append("SetFlockClaimNewResourceSpecified: BossEntity ").Append(BossEntity.GetIdValue()).Append(" 未找到有效 Flock，跳过切换"));
         return;
     }
     FECSEntity local_6 = FECSEntity(BossEntity.GetWorld(), ResourceID);
     Has local_32;
     if (!(local_6.IsValid()) || !(local_32.opCall()))
     {
-        XLog(ELog(30), FString().Append("SetFlockClaimNewResourceSpecified: з›®ж ‡иµ„жєђж— ж•€ж€–йќћиµ„жєђз‚№ ResourceId ").Append(ResourceID).Append("пјЊи·іиї‡е€‡жЌў"));
+        XLog(ELog(30), FString().Append("SetFlockClaimNewResourceSpecified: 目标资源无效或非资源点 ResourceId ").Append(ResourceID).Append("，跳过切换"));
         return;
     }
     FEcologyBehaviorUtils::FlockClaimNewResource(local_10, local_6, true);

@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_VOCheck_DebugLog = FConsoleVariable();
 
 struct FEsmAudioVoCheckInstanceData
@@ -9,7 +8,6 @@ struct FEsmAudioVoCheckInstanceData
     FFPTime LastCheckTime = 0.0;
     UPROPERTY()
     bool bFirstTriggered = false;
-
 
 }
 
@@ -25,7 +23,6 @@ class UESMAction_VOCheck : UESMBPBaseSpanTickAction
     float32 FirstTriggerTime = 5.0f;
     UPROPERTY()
     float32 LoopTriggerTime = 10.0f;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetViewInstanceDataInfo_Implementation() const

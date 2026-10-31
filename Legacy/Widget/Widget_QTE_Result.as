@@ -1,5 +1,3 @@
-﻿
-
 class UWidget_QTE_Result : UASUserWidget
 {
     UPROPERTY()
@@ -11,7 +9,6 @@ class UWidget_QTE_Result : UASUserWidget
     UPROPERTY()
     float32 DestroyTime = 2.0f;
     float32 CurrentTime = 0.0f;
-
 
     UFUNCTION()
     void Construct_Implementation()

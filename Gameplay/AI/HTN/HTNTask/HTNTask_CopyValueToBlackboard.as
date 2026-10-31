@@ -1,5 +1,3 @@
-﻿
-
 class UHTNTask_CopyVectorValueToBlackboard : UHTNTask_ECSScriptBase
 {
     UPROPERTY()
@@ -17,7 +15,9 @@ class UHTNTask_CopyVectorValueToBlackboard : UHTNTask_ECSScriptBase
     UFUNCTION()
     void Execute_Implementation(const FHTNContext &inout Context)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        HTNNode::SetWorldStateValueAsVector(Context, this.CopyTo, this.VectorValue.GetValue(Context.opImplConv()));
+        this.FinishExecuteWithContext(Context, true);
+        return;
     }
 }
 

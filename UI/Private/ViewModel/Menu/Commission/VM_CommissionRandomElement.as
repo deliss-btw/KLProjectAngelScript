@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommissionRandomElement
 {
     const int ModelId = 0;
@@ -58,12 +57,11 @@ struct FVM_CommissionRandomElement : FEUIViewModel
     }
     void PostConstruct()
     {
-        FEUIModelRef local_4;
-        this.GetModify_ImageAndTitleAndDesc().AddModel(local_4, false);
-        this.GetModify_ImageAndTitleAndDesc().AddModel(local_4, false);
+        this.GetModify_ImageAndTitleAndDesc().AddModel(FEUIModelRef(::FVM_Image::Create(this.GetContext().Manager, this.GetImage())), false);
+        this.GetModify_ImageAndTitleAndDesc().AddModel(FEUIModelRef(::FVM_TitleAndDesc::Create(this.GetContext().Manager, this.GetTitle(), this.GetDesc())), false);
         if (!(this.GetAdditionalDesc().IsEmpty()))
         {
-            this.GetModify_ImageAndTitleAndDesc().AddModel(local_4, false);
+            this.GetModify_ImageAndTitleAndDesc().AddModel(FEUIModelRef(::FVM_Text::Create(this.GetContext().Manager, this.GetAdditionalDesc())), false);
         }
         return;
     }

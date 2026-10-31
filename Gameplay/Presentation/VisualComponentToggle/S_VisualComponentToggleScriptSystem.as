@@ -1,5 +1,3 @@
-﻿
-
 class US_VisualComponentToggleScriptSystem : UECSScriptSystem
 {
     US_VisualComponentToggleScriptSystem()
@@ -9,7 +7,16 @@ class US_VisualComponentToggleScriptSystem : UECSScriptSystem
     UFUNCTION()
     void ClientJob_PresentationDelayHideVisualComponent(const FECSEntity &inout Entity, FC_PresentationVisualComponentToggleDelayHidden &inout DelayHidden, const FCS_FixedTime &inout FixedTime) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        if (FFPTime(FixedTime.Time).opCmp(DelayHidden.NextTargetTime) >= 0)
+        {
+            bool local_4 = DelayHidden.ExecuteTaskAndUpdateNextTargetTime(DelayHidden.NextTargetTime, Entity, this.GetFName());
+            if (local_4)
+            {
+                Remove local_10;
+                local_10.opCall();
+            }
+        }
+        return;
     }
     UFUNCTION()
     void Job_LogicDelayHideVisualComponent(const FECSEntity &inout Entity, const FC_LogicVisualComponentToggleDelayHidden &inout DelayHidden, const FCS_FixedTime &inout FixedTime) const
@@ -144,6 +151,7 @@ class US_VisualComponentToggleScriptSystem : UECSScriptSystem
     {
         int local_10 = 0;
         Remove local_16;
+        int local_28;
         FECSEntity local_4 = FECSEntity(ActorData.LogicEntity);
         if (!(local_10))
         {
@@ -153,25 +161,21 @@ class US_VisualComponentToggleScriptSystem : UECSScriptSystem
         TArray<FName> local_20;
         TArray<FName> local_24;
         int local_25 = 0;
-        while (local_25 < 0)
+        for (; local_25 < local_10.Names.Num(); ++local_25)
         {
             if (!(local_10.VirtualIndices.IsValidIndex(local_25)))
             {
+                continue;
             }
-            else
+            local_28 = local_10.VirtualIndices[local_25];
+            if (DirtyBits.ShowBits.GetBit(local_28))
             {
-                int local_28;
-                local_28 = local_10.VirtualIndices[local_25];
-                if (DirtyBits.ShowBits.GetBit(local_28))
-                {
-                    local_20.AddUnique(local_10.Names[local_25]);
-                }
-                if (DirtyBits.HideBits.GetBit(local_28))
-                {
-                    local_24.AddUnique(local_10.Names[local_25]);
-                }
+                local_20.AddUnique(local_10.Names[local_25]);
             }
-            ++local_25;
+            if (DirtyBits.HideBits.GetBit(local_28))
+            {
+                local_24.AddUnique(local_10.Names[local_25]);
+            }
         }
         FFPTime local_30 = FFPTime(FixedTime.Time);
         if (local_20.Num() > 0)
@@ -533,8 +537,7 @@ class US_VisualComponentToggleScriptSystem : UECSScriptSystem
             }
             if (!(local_52.opCall()) == !(false))
             {
-                FString local_56 = "Timer job error: 'FC_LocalTag' included by job but not exist on ";
-                FString local_60 = local_32.ToString();
+                XLog(ELog(2), (FString("Timer job error: 'FC_LocalTag' included by job but not exist on ") + local_32.ToString()));
                 local_34 = true;
             }
             if (local_34)

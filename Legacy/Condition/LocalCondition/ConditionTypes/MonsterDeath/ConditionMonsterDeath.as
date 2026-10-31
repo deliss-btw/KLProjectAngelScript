@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FConditionMonsterDeathConfig (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
-
 class UConditionMonsterDeath : ULocalConditionTypeDefineBase
 {
     UConditionMonsterDeath()
@@ -12,7 +7,19 @@ class UConditionMonsterDeath : ULocalConditionTypeDefineBase
     }
     void OnConditionRegistered(const FLocalConditionInstance &inout ConditionInstance) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        TDataObjectPtr<FMonsterMainConfig> local_30;
+        TConstRawPtr<FConditionMonsterDeathConfig> local_26 = this.GetConditionMonsterDeathConfig(ConditionInstance.GetConditionConfig());
+        if (local_30)
+        {
+            FECSWorldPtr local_34 = ECS::GetECSWorld();
+            ModifyOrAdd local_38;
+            FCS_ConditionMonsterDeathManager& local_40 = local_38.opCall();
+            if (local_40)
+            {
+                local_40.MonitoredMonsters.FindOrAdd(local_30).ConditionInstances.Add(ConditionInstance.GetHandle());
+            }
+        }
+        return;
     }
     void OnConditionUnregistered(const FLocalConditionInstance &inout ConditionInstance) const
     {
@@ -77,9 +84,10 @@ struct FConditionMonsterDeathConfig : FLocalConditionTypeDefineConfigBase
     UPROPERTY()
     TSoftClassPtr<AKLLevelScriptBaseActor> DataLayerLevelClass;
 
+    default _base_FLocalConditionTypeDefineConfigBase = UConditionMonsterDeath;
+
     FConditionMonsterDeathConfig()
     {
-        super();
         this.PlayerFilter = ELocalConditionPlayerFilter(0);
         this.__InitDefaults();
         return;

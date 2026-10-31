@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_SocialDungeonMinimapIcon_Helpers
 {
 UFUNCTION()

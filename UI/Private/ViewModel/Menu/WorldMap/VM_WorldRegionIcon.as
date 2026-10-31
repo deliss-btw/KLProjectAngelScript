@@ -1,4 +1,3 @@
-﻿
 namespace FVM_WorldRegionIcon
 {
     const int ModelId = 0;
@@ -66,7 +65,7 @@ struct FVM_WorldRegionIcon : FEUIViewModel
         if (this.IsLocked())
         {
             FCommonTipsParam local_10;
-            ::CommonPopup::WeakTips(NSLOCTEXT("WorldMap", "RegionMapLocked", "иЇҐеЊєеџџжљ‚жњЄејЂж”ѕ"), local_10);
+            ::CommonPopup::WeakTips(NSLOCTEXT("WorldMap", "RegionMapLocked", "该区域暂未开放"), local_10);
             return;
         }
         if (this.GetbIsModeEntrance())
@@ -297,7 +296,6 @@ struct __GeneratedProperties_FVM_WorldRegionIcon
     UPROPERTY()
     TEUIModelRef<FVM_WorldRegionIcon> Self;
 
-
 }
 
 namespace FVM_WorldRegionIcon
@@ -314,7 +312,71 @@ FVM_WorldRegionIcon CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostLoad(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(true);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "LevelInfoConfig";
+    local_14.TypeName = "TDataObjectPtr<FLevelInfoConfig>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bIsModeEntrance";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "RedDotVM";
+    local_14.TypeName = "TEUIModelRef<FVM_RedDot>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IconVisibility";
+    local_14.TypeName = "ESlateVisibility";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsLocked";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelfVisisbility";
+    local_14.TypeName = "ESlateVisibility";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasMainMission";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasSideMission";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_WorldRegionIcon>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_WorldRegionIcon;
+    FEUIModelMetaPropertyModelRef local_19;
+    local_19.PropertyName = FName("MissionSpotView");
+    int local_2_2 = FM_SpotView::ModelId;
+    Result.FunctionalPropertyModelRefs.Add(local_19);
+    FEUIModelMsgHandleDefine local_32;
+    local_32.FunctionName = "__OnMissionSpotAdded";
+    local_32.MessageTypeName = "Msg_InterestedSpotAdded";
+    local_32.SourcePropertyModelRefs = FBitSet64(1);
+    Result.MessageHandleFunctions.Add(local_32);
+    local_32.FunctionName = "__OnMissionSpotRemoved";
+    local_32.MessageTypeName = "Msg_InterestedSpotRemoved";
+    local_32.SourcePropertyModelRefs = FBitSet64(1);
+    Result.MessageHandleFunctions.Add(local_32);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

@@ -1,5 +1,3 @@
-﻿
-
 class USocialViewPageOperator_OpenPage : USocialViewPageOperator
 {
     USocialViewPageOperator_OpenPage()
@@ -20,7 +18,7 @@ class USocialViewPageOperator_OpenPage : USocialViewPageOperator
             return;
         }
         FCommonTipsParam local_12;
-        ::CommonPopup::Tips(NSLOCTEXT("SocialViewPage", "OpenPageError", "йЎµйќўй…ЌзЅ®жњЄж‰ѕе€°"), local_12);
+        ::CommonPopup::Tips(NSLOCTEXT("SocialViewPage", "OpenPageError", "页面配置未找到"), local_12);
         return;
     }
 }
@@ -114,13 +112,14 @@ class USocialViewPageOperator_DeleteFriend : USocialViewPageOperator
         }
         GetGameplaySettings<UChatSettings> local_8;
         local_6 = local_8;
-        ULocalPlayer local_18;
-        ::ChatSystemUtil::ResolveKLTextData(local_18);
-        FText::Format(::ChatSystemUtil::ResolveKLTextData(local_6.DeleteFriendConfirmMessageTextData), FText::FromString(::FriendUtil::GetFriendName(int(Context.TargetPlayerUid))));
-        ::ChatSystemUtil::ResolveKLTextData(local_6.DeleteFriendConfirmButtonTextData);
-        ::ChatSystemUtil::ResolveKLTextData(local_6.DeleteFriendCancelButtonTextData);
+        FText local_18 = ::ChatSystemUtil::ResolveKLTextData(local_6.DeleteFriendConfirmTitleTextData);
+        FText local_38 = FText::Format(::ChatSystemUtil::ResolveKLTextData(local_6.DeleteFriendConfirmMessageTextData), FText::FromString(::FriendUtil::GetFriendName(int(Context.TargetPlayerUid))));
+        FText local_30 = ::ChatSystemUtil::ResolveKLTextData(local_6.DeleteFriendConfirmButtonTextData);
+        FText local_34 = ::ChatSystemUtil::ResolveKLTextData(local_6.DeleteFriendCancelButtonTextData);
         FDialogDynamicCallback local_50;
         local_50.BindUFunction(this, n"OnConfirmDeleteFriend");
+        FCommonDialogParam local_86;
+        ::CommonPopup::Dialog_Decision(Context.LocalPlayer, local_18, local_38, FDialogCallback(local_50), local_30, local_34, local_86);
         return;
     }
     UFUNCTION()
@@ -204,7 +203,7 @@ class USocialViewPageOperator_InviteJoinTeam : USocialViewPageOperator
         }
         ::FSocialTeamUtils::ClientSendTeamUp(Context.LocalPlayerEntity, int(Context.TargetPlayerUid));
         FCommonTipsParam local_10;
-        ::CommonPopup::Tips(NSLOCTEXT("TeamInvitationItem", "SendTeamUpRequest", "й‚ЂиЇ·иЇ·ж±‚е·ІеЏ‘йЂЃ"), local_10);
+        ::CommonPopup::Tips(NSLOCTEXT("TeamInvitationItem", "SendTeamUpRequest", "邀请请求已发送"), local_10);
         return;
     }
 }
@@ -242,15 +241,18 @@ class USocialViewPageOperator_RequestJoinTeam : USocialViewPageOperator
         {
             FDialogDynamicCallback local_10;
             local_10.BindUFunction(this, n"OnConfirmJoinTeamWhenInTeam");
-            NSLOCTEXT("Team", "JoinTeamWhenInTeamCancel", "еђ¦");
-            NSLOCTEXT("Team", "JoinTeamWhenInTeamMessage", "жЇеђ¦з¦»ејЂеЅ“е‰ЌйџдјЌе№¶з”іиЇ·е…Ґйџпјџ");
-            ULocalPlayer local_60;
-            NSLOCTEXT(local_60, "Team", "JoinTeamWhenInTeamTitle");
+            FText local_16 = NSLOCTEXT("Team", "JoinTeamWhenInTeamCancel", "否");
+            FText local_20 = NSLOCTEXT("Team", "JoinTeamWhenInTeamConfirm", "是");
+            FDialogCallback local_52 = FDialogCallback(local_10);
+            FText local_56 = NSLOCTEXT("Team", "JoinTeamWhenInTeamMessage", "是否离开当前队伍并申请入队？");
+            FText local_60 = NSLOCTEXT("Team", "JoinTeamWhenInTeamTitle", "提示");
+            FCommonDialogParam local_62;
+            ::CommonPopup::Dialog_Decision(Context.LocalPlayer, local_60, local_56, local_52, local_20, local_16, local_62);
             return;
         }
         ::FSocialTeamUtils::ClientSendTeamUp(Context.LocalPlayerEntity, int(Context.TargetPlayerUid));
         FCommonTipsParam local_68;
-        ::CommonPopup::Tips(NSLOCTEXT("TeamInvitationItem", "SendJoinTeamRequest", "еЉ е…ҐиЇ·ж±‚е·ІеЏ‘йЂЃ"), local_68);
+        ::CommonPopup::Tips(NSLOCTEXT("TeamInvitationItem", "SendJoinTeamRequest", "加入请求已发送"), local_68);
         return;
     }
     UFUNCTION()
@@ -263,7 +265,7 @@ class USocialViewPageOperator_RequestJoinTeam : USocialViewPageOperator
             {
                 ::FSocialTeamUtils::ClientSendTeamUp(::FASCommonUtils::GetLocalUniquePlayerEntity(), local_16);
                 FCommonTipsParam local_28;
-                ::CommonPopup::Tips(NSLOCTEXT("TeamInvitationItem", "SendJoinTeamRequest", "еЉ е…ҐиЇ·ж±‚е·ІеЏ‘йЂЃ"), local_28);
+                ::CommonPopup::Tips(NSLOCTEXT("TeamInvitationItem", "SendJoinTeamRequest", "加入请求已发送"), local_28);
             }
         }
         return true;
@@ -301,13 +303,15 @@ class USocialViewPageOperator_KickOutTeam : USocialViewPageOperator
         }
         FString local_10;
         local_10.GetNickName();
-        FText::Format(NSLOCTEXT("Team", "KickMemberMessage", "жЇеђ¦зЎ®и®¤иЇ·з¦»{0}"), FText::FromString(local_10));
+        FText local_22 = FText::Format(NSLOCTEXT("Team", "KickMemberMessage", "是否确认请离{0}"), FText::FromString(local_10));
         FDialogDynamicCallback local_26;
         local_26.BindUFunction(this, n"OnConfirmKickOut");
-        NSLOCTEXT("Team", "KickPlayerCancel", "еђ¦");
-        NSLOCTEXT("Team", "KickPlayerConfirm", "жЇ");
-        ULocalPlayer local_6;
-        NSLOCTEXT(local_6, "Team", "KickPlayerTitle");
+        FText local_14 = NSLOCTEXT("Team", "KickPlayerCancel", "否");
+        FText local_18 = NSLOCTEXT("Team", "KickPlayerConfirm", "是");
+        FDialogCallback local_60 = FDialogCallback(local_26);
+        FText local_6 = NSLOCTEXT("Team", "KickPlayerTitle", "提示");
+        FCommonDialogParam local_62;
+        ::CommonPopup::Dialog_Decision(Context.LocalPlayer, local_6, local_22, local_60, local_18, local_14, local_62);
         return;
     }
     UFUNCTION()
@@ -320,7 +324,7 @@ class USocialViewPageOperator_KickOutTeam : USocialViewPageOperator
             {
                 ::FSocialTeamUtils::ClientSendKickTeammate(::FASCommonUtils::GetLocalUniquePlayerEntity(), local_16);
                 FCommonTipsParam local_28;
-                ::CommonPopup::Tips(NSLOCTEXT("TeamInvitationItem", "KikOutPlayerFrom", "е·ІиЇ·з¦»зЋ©е®¶"), local_28);
+                ::CommonPopup::Tips(NSLOCTEXT("TeamInvitationItem", "KikOutPlayerFrom", "已请离玩家"), local_28);
             }
         }
         return true;
@@ -358,13 +362,15 @@ class USocialViewPageOperator_GiveTeamLeader : USocialViewPageOperator
         }
         FString local_10;
         local_10.GetNickName();
-        FText::Format(NSLOCTEXT("Mail", "SetCaptainMessage", "жЇеђ¦зЎ®и®¤е°†йџй•їиЅ¬и®©з»™{0}"), FText::FromString(local_10));
+        FText local_22 = FText::Format(NSLOCTEXT("Mail", "SetCaptainMessage", "是否确认将队长转让给{0}"), FText::FromString(local_10));
         FDialogDynamicCallback local_26;
         local_26.BindUFunction(this, n"OnConfirmGiveLeader");
-        NSLOCTEXT("Team", "GiveTeamLeaderCancel", "еђ¦");
-        NSLOCTEXT("Team", "GiveTeamLeaderConfirm", "жЇ");
-        ULocalPlayer local_6;
-        NSLOCTEXT(local_6, "Team", "GiveTeamLeaderTitle");
+        FText local_14 = NSLOCTEXT("Team", "GiveTeamLeaderCancel", "否");
+        FText local_18 = NSLOCTEXT("Team", "GiveTeamLeaderConfirm", "是");
+        FDialogCallback local_60 = FDialogCallback(local_26);
+        FText local_6 = NSLOCTEXT("Team", "GiveTeamLeaderTitle", "提示");
+        FCommonDialogParam local_62;
+        ::CommonPopup::Dialog_Decision(Context.LocalPlayer, local_6, local_22, local_60, local_18, local_14, local_62);
         return;
     }
     UFUNCTION()
@@ -377,7 +383,7 @@ class USocialViewPageOperator_GiveTeamLeader : USocialViewPageOperator
             {
                 ::FSocialTeamUtils::ClientSendTransferCaptain(::FASCommonUtils::GetLocalUniquePlayerEntity(), local_16);
                 FCommonTipsParam local_28;
-                ::CommonPopup::Tips(NSLOCTEXT("TeamInvitationItem", "GiveTeamLeaderTeam", "е·ІиЅ¬з§»йџй•ї"), local_28);
+                ::CommonPopup::Tips(NSLOCTEXT("TeamInvitationItem", "GiveTeamLeaderTeam", "已转移队长"), local_28);
             }
         }
         return true;

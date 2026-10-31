@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_RegionMapPanel
 {
     const int ViewID = 0;
@@ -24,9 +23,7 @@ class UWidget_RegionMapPanel : UEUIActivatableWidget
     {
         if (!(this.RegionMap))
         {
-            TDataObjectPtr<FLevelInfoConfig> local_28 = ::FLevelUtils::GetCurrentLevelInfoConfig(this.GetWorld());
-            FEUIModelRef local_30;
-            this.RegionMap = local_30;
+            this.RegionMap = FEUIModelRef(::FVM_RegionMap::Create(this, ::FLevelUtils::GetCurrentLevelInfoConfig(this.GetWorld())));
         }
         return;
     }
@@ -37,7 +34,7 @@ class UWidget_RegionMapPanel : UEUIActivatableWidget
         {
             return;
         }
-        this.MinimapWidget.SetMapScale(int(MinimapDisplayConfig.opArrow().WorldMapDefaultMapScale));
+        this.MinimapWidget.SetMapScale(MinimapDisplayConfig.opArrow().WorldMapDefaultMapScale);
         return;
     }
     UFUNCTION()
@@ -188,6 +185,7 @@ namespace UWidget_RegionMapPanel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_RegionMapPanel;
     Result.ObservedModelChangesSubscriberNames.Add(FString("InitMapScale"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedSpotChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedLevelInfoChanged"));

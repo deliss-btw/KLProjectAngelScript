@@ -1,4 +1,3 @@
-﻿
 namespace FJobPerformanceUtils
 {
 UFUNCTION()
@@ -16,15 +15,13 @@ void StopPerformanceAnalysis()
 UFUNCTION()
 void PrintFrequencyWarnings()
 {
-    ELog local_10;
-    FECSJobPerformanceControl::GetFrequencyWarningsContent(local_10);
+    XLog(ELog(54), FECSJobPerformanceControl::GetFrequencyWarningsContent(true));
     return;
 }
 UFUNCTION()
 void DumpECSFrequencyWarning()
 {
-    ELog local_10;
-    FECSJobPerformanceControl::GetFrequencyWarningsContent(local_10);
+    XLog(ELog(54), FECSJobPerformanceControl::GetFrequencyWarningsContent(true));
     return;
 }
 UFUNCTION()

@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommonBigItemBg
 {
     const int ViewID = 0;
@@ -11,7 +10,6 @@ class UWidget_CommonBigItemBg : UEUIUserWidget
     UWidgetSwitcher w_switcher_state;
     bool bHovered = false;
     bool bSelected = false;
-
 
     UFUNCTION()
     void OnViewBind_Implementation()
@@ -67,6 +65,7 @@ namespace UWidget_CommonBigItemBg
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonBigItemBg;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

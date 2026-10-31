@@ -1,5 +1,3 @@
-﻿
-
 class US_LevelDataLayerSystem : UECSScriptSystem
 {
     US_LevelDataLayerSystem()
@@ -129,11 +127,11 @@ class US_LevelDataLayerSystem : UECSScriptSystem
     {
         int local_24 = 0;
         ECS::GetContextJob();
-        if (ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_LevelActiveDataLayers, EECSRegType(0), false, true).bIsMonitored)
+        if (int(ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_LevelActiveDataLayers, EECSRegType(0), false, true).bIsMonitored) != 0)
         {
             this.Monitor_LevelActiveDataLayers(local_24);
         }
-        if (ECSInternal::GetMonitorSingletonOnModify(this.GetECSWorld(), FCS_LevelActiveDataLayers, EECSRegType(0), false, true).bIsMonitored)
+        if (int(ECSInternal::GetMonitorSingletonOnModify(this.GetECSWorld(), FCS_LevelActiveDataLayers, EECSRegType(0), false, true).bIsMonitored) != 0)
         {
             this.Monitor_LevelActiveDataLayers(local_24);
         }

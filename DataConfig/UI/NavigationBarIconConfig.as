@@ -1,5 +1,3 @@
-﻿
-
 struct FNavigationBarIconConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -11,7 +9,6 @@ struct FNavigationBarIconConfig : FDataObject
     TSoftClassPtr<UEUIUserWidget> CustomIconWidget;
     UPROPERTY()
     bool bResident = false;
-
 
 }
 

@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FPVPGameModeFlowSettings (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FPVPGameModeFlowSettings : FGameModeFlowSettings
 {
     FGameModeFlowSettings _base_FGameModeFlowSettings;
@@ -35,9 +30,10 @@ struct FPVPGameModeFlowSettings : FGameModeFlowSettings
     UPROPERTY()
     TDataObjectPtr<FNPCMainConfig> BotNPCConfig;
 
+    default _base_FGameModeFlowSettings = UPVPGameModeFlow;
+
     FPVPGameModeFlowSettings()
     {
-        super();
         this.GameRuleType = EPVPGameRuleType(0);
         this.TDMKillTargetByPlayerCount = FRuntimeCurveUtils::CreateLinear(0.0f, 30.0f, 32.0f, 30.0f);
         this.TDMKillScoreLimit = 30;

@@ -1,4 +1,3 @@
-﻿
 namespace FInitialLevelLoadingPassUtils
 {
 FECSEntity ActivateLevelGroupAndGetGroupEntity(FCS_LevelDataManager &inout LevelDataManager, const FConfigGUID &inout GroupGUID)

@@ -1,5 +1,3 @@
-﻿
-
 struct FFixedArraySerializationTestAS
 {
     UPROPERTY()
@@ -23,7 +21,8 @@ struct FFixedArraySerializationTestAS
     }
     void SetValue1(const TFixedArray<int, auto> &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Value1 = __Value;
+        return;
     }
     const TFixedArray<FString, auto> GetValue2() const property
     {
@@ -44,5 +43,5 @@ struct FFixedArraySerializationTestAS
 
 void Test_FixedArraySerialization(FUnitTest &inout T)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
 }

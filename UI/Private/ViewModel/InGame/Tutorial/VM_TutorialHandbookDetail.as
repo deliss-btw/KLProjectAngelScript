@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TutorialHandbookDetail
 {
     const int ModelId = 0;
@@ -26,15 +25,41 @@ struct FVM_TutorialHandbookDetail : FEUIViewModel
 
     FVM_TutorialHandbookDetail()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_TabIndex = 0;
+        this.m_SelectedIndex = INDEX_NONE;
+        this.m_bHasContent = false;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        XError(ELog(17), "Should not construct model'FVM_TutorialHandbookDetail' by default constructor.");
+        return;
     }
     FVM_TutorialHandbookDetail(const FVM_TutorialHandbookDetail &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_TabIndex = 0;
+        this.m_SelectedIndex = INDEX_NONE;
+        this.m_bHasContent = false;
+        this.m_TabIndex = int(Other.m_TabIndex);
+        this.m_TabTitle = Other.m_TabTitle;
+        this.m_ListItems = Other.m_ListItems;
+        this.m_SelectedDetail = Other.m_SelectedDetail;
+        this.m_SelectedIndex = int(Other.m_SelectedIndex);
+        this.m_SelectedItem = Other.m_SelectedItem;
+        this.m_bHasContent = Other.m_bHasContent;
+        return;
     }
     FVM_TutorialHandbookDetail(const int InTabIndex)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_TabIndex = 0;
+        this.m_SelectedIndex = INDEX_NONE;
+        this.m_bHasContent = false;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        this.SetTabIndex(InTabIndex);
+        return;
     }
     FVM_TutorialHandbookDetail opAssign(const FVM_TutorialHandbookDetail &inout Other)
     {

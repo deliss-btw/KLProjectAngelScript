@@ -1,4 +1,3 @@
-﻿
 namespace FM_VegenfulSpiritManager
 {
     const int ModelId = 0;

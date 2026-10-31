@@ -1,4 +1,3 @@
-﻿
 enum EOnTakeDamageFilterType
 {
     Self,
@@ -7,7 +6,6 @@ enum EOnTakeDamageFilterType
     SelfAndCauser,
     SelfAndDirectDamageCauser,
 }
-
 
 struct FEventToESMTriggerFilterConfigItem_OnTakeDamage : FEventToESMTriggerFilterConfigItemBase
 {
@@ -24,7 +22,6 @@ struct FEventToESMTriggerFilterConfigItem_OnTakeDamage : FEventToESMTriggerFilte
     bool bFilterAttackType = false;
     UPROPERTY()
     int AttackTypesToFilter = 0;
-
 
     bool ShouldEvaluateSelf() const
     {

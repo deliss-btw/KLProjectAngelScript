@@ -1,4 +1,3 @@
-﻿
 namespace UPage_BonfirePage_Supply
 {
     const int ViewID = 0;
@@ -253,6 +252,7 @@ namespace UPage_BonfirePage_Supply
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UPage_BonfirePage_Supply;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

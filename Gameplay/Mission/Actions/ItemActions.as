@@ -1,15 +1,9 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FMissionAction_RemoveItem (default scalar field FMissionActionBase.ActionType has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FMissionItemInfo
 {
     UPROPERTY()
     TDataObjectPtr<FItemConfig> ItemConfig;
     UPROPERTY()
     uint ItemCount = 1;
-
 
 }
 
@@ -22,13 +16,12 @@ struct FMissionAction_RemoveItemCallback
     UPROPERTY()
     int ActionIndex;
 
-
     void opCall(const EAwaitGsResourceResult Result, bool &inout bIsConfirmed)
     {
         XLog(ELog(63), FString().Append("OpCall RemoveItemActionCallback ").Append(Result));
-        if (!(this.IsValid()))
+        if (!(this.PlayerEntity.IsValid()))
         {
-            XError(ELog(63), FString().Append("RemoveItem opCall Failed to get PlayerEntity, PlayerEntityId=").Append(this.GetIdValue()));
+            XError(ELog(63), FString().Append("RemoveItem opCall Failed to get PlayerEntity, PlayerEntityId=").Append(this.PlayerEntity.GetIdValue()));
             return;
         }
         Modify local_12;
@@ -60,7 +53,7 @@ struct FMissionAction_RemoveItemCallback
             }
             return;
         }
-        XWarning(ELog(63), FString().Append("RemoveItem opCall Failed to get MissionExecution, PlayerEntity=").Append(this.GetEntityName()));
+        XWarning(ELog(63), FString().Append("RemoveItem opCall Failed to get MissionExecution, PlayerEntity=").Append(this.PlayerEntity.GetEntityName()));
         return;
     }
 }
@@ -108,9 +101,7 @@ struct FMissionAction_RemoveItem : FMissionActionBase
         local_98.PlayerEntity = Context.ContextEntity;
         local_98.ExecutionEntryId = int(Context.EntryId);
         local_98.ActionIndex = int(Context.ActionIndex);
-        FPbGetGsResourceReq local_106;
-        FInstancedStruct::Make(local_106);
-        UGameDSConnectionSubsystem local_102 = ::UGameDSConnectionSubsystem::Get();
+        ::UGameDSConnectionSubsystem::Get().SendAwaitGsResourceRequest(Context.ContextEntity, local_4, FInstancedStruct::Make(local_98));
         return true;
     }
 }

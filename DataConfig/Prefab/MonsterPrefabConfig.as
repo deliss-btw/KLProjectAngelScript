@@ -1,4 +1,3 @@
-﻿
 const FMonsterPrefabConfig DefaultMonsterConfig = FMonsterPrefabConfig();
 
 struct FPVPOverrideMonsterConfig : FDataObject
@@ -42,7 +41,6 @@ struct FMonsterPrefabConfig : FBasePrefabConfig
     FDataObjectPtr m_PVPOverride;
     UPROPERTY()
     TMap<EGameModeType, FDataObjectPtr> m_GameModeOverride;
-
 
     const TDataObjectPtr<FSkillBtnConfig> GetSkillBtnConfig() const property
     {

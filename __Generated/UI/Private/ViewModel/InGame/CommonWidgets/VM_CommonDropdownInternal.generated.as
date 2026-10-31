@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommonDropdownOption_Helpers
 {
 UFUNCTION()

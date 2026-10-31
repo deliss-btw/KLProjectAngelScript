@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TauntHintPointer
 {
     const int ModelId = 0;

@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FASECSDelayActionTest (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
-
 namespace FLevelControlNPCUtils
 {
 class UAsyncLevelAction_Base : ULevelAsyncActionBase
@@ -34,7 +29,6 @@ class UAsyncLevelAction_NPCMoveToLocation : UAsyncLevelAction_Base
     bool bRun = true;
     bool bMoveUseRoadGraph = false;
     bool bSprint = false;
-
 
     UFUNCTION()
     void OnActivate_Implementation() const
@@ -75,7 +69,7 @@ class UAsyncLevelAction_NPCMoveToLocation : UAsyncLevelAction_Base
             local_6.SetInt(FEcologyKnowledgeKey(FName("MoveSpeedType")), local_18);
             local_18 = local_12;
             local_6.SetInt(FEcologyKnowledgeKey(FName("MoveSimulateType")), local_18);
-            local_6.SetBool(FEcologyKnowledgeKey(FName("bMoveUseRoadGraph")), this.bMoveUseRoadGraph);
+            local_6.SetBool(FEcologyKnowledgeKey(FName("bMoveUseRoadGraph")), (this.bMoveUseRoadGraph));
         }
         return;
     }
@@ -144,9 +138,8 @@ class UAsyncLevelAction_NPCChangePose : UAsyncLevelAction_Base
     void OnActivate_Implementation() const
     {
         Super::OnActivate_Implementation();
-        FFPTime local_2 = FFPTime(1);
+        FESMTriggerUtils::ActivateESMTrigger(this.Entity, this.EntityBB_TriggerName, ECS::GetContextTime(), FFPTime(1), 0);
         ECS::GetContextTime();
-        FFPTime local_2_2 = ECS::GetContextTime();
         FNameHandle_EntityBBVarEnum local_12;
         local_12;
         this.OnComplete.Broadcast();
@@ -187,7 +180,6 @@ class UAsyncLevelAction_NPCInteractTarget : UAsyncLevelAction_Base
     FGameplayTagContainer SuccessWhenMatchAnyGameplayTags;
     float32 TimeOutTime = -1.0f;
     bool bRun;
-
 
     UFUNCTION()
     void OnActivate_Implementation() const

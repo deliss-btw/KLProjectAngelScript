@@ -1,5 +1,3 @@
-﻿
-
 struct FEcologyConditionWorldContext
 {
     UPROPERTY()
@@ -25,6 +23,7 @@ struct FEcologyConditionWorldContext
     }
     FEcologyConditionWorldContext(const int InTimeSegments, const FName &inout InWeatherName, const FECSWorldPtr &inout InWorldContext = ECS::ECSWorld)
     {
+        this.WorldContext = InWorldContext;
         this.WeatherName = InWeatherName;
         this.WeatherConfig = ::FWeatherUtils::GetWeatherConfig(this.WeatherName);
         this.TimeSegments = InTimeSegments;
@@ -32,6 +31,7 @@ struct FEcologyConditionWorldContext
     }
     void Setup(const FVector &inout Position, const FECSWorldPtr &inout InWorldContext = ECS::ECSWorld, const FCS_EcologyScriptGlobalContext &inout GlobalContext = FEcologyUtils::GetGlobalContext())
     {
+        this.WorldContext = InWorldContext;
         this.WeatherName = ::FEcologySceneInfoUtils::GetWeatherByPosition(GlobalContext, Position);
         this.WeatherConfig = ::FWeatherUtils::GetWeatherConfig(this.WeatherName);
         this.TimeSegments = ::FEcologySceneInfoUtils::GetCurrentTimeSegments(GlobalContext);

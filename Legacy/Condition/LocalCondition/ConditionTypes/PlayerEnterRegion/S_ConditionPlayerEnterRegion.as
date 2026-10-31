@@ -1,5 +1,3 @@
-﻿
-
 class US_PlayerEnterRegionConditionSystem : UECSScriptSystem
 {
     US_PlayerEnterRegionConditionSystem()

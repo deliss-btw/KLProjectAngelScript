@@ -1,5 +1,3 @@
-﻿
-
 class UFlowNode_PrintText : UFlowNode
 {
     UPROPERTY()
@@ -13,13 +11,12 @@ class UFlowNode_PrintText : UFlowNode
     UPROPERTY()
     bool bPrintToLog = true;
 
-
     UFUNCTION()
     void ExecuteInput_Implementation(const FName &inout PinName)
     {
         if (this.Text.Len() > 0)
         {
-            System::PrintString(__GetWorldContext(), this.Text, this.bPrintToScreen, this.bPrintToLog, this.Color, this.Duration, NAME_None);
+            System::PrintString(__GetWorldContext(), this.Text, (this.bPrintToScreen), (this.bPrintToLog), this.Color, this.Duration, NAME_None);
         }
         this.TriggerFirstOutput(true);
         return;

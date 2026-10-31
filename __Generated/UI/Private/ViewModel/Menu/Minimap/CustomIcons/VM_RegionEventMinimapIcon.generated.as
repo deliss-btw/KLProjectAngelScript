@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_RegionEventMinimapIcon_Helpers
 {
 UFUNCTION()

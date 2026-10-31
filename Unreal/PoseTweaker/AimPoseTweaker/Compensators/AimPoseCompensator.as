@@ -1,4 +1,3 @@
-﻿
 enum EAimPoseCompensateMethod
 {
     RotationRestore,
@@ -8,12 +7,10 @@ enum EAimPoseCompensateMethod
     TwistSmooth,
 }
 
-
 struct FAimPoseCompensatorExecContext
 {
     UPROPERTY()
     float32 DeltaTime = 0.0f;
-
 
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 struct FClientPingInfo
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ struct FClientPingInfo
     float32 AvgPingMs = -1.0f;
     UPROPERTY()
     int PingSampleCount = 0;
-
 
 }
 
@@ -57,7 +54,6 @@ class UGameClientConnectionSubsystem : UGameClientConnectionSubsystemBase
     FOnUDPPingComplete PingCompleteDelegate;
     TArray<FString> CachedGmList;
     bool bInLoginPhase = false;
-
 
     UFUNCTION()
     void OnInitialize_Implementation()
@@ -251,7 +247,7 @@ class UGameClientConnectionSubsystem : UGameClientConnectionSubsystemBase
         FString local_4 = local_14.GetMsg();
         FString local_18 = local_14.GetLevel();
         XLog(ELog(27), FString().Append("PlatformAntiAddictNotify - Level: ").Append(local_18).Append(", Msg: ").Append(local_4));
-        FText local_30 = NSLOCTEXT("AntiAddiction", "Title", "йІжІ‰иї·жЏђз¤є");
+        FText local_30 = NSLOCTEXT("AntiAddiction", "Title", "防沉迷提示");
         FText local_26 = FText::FromString(local_4);
         FString local_22 = local_18.ToLower();
         if (local_22.Contains("error", ESearchCase(1), ESearchDir(0)))
@@ -288,7 +284,7 @@ class UGameClientConnectionSubsystem : UGameClientConnectionSubsystemBase
     {
         FPbReloginNotify::FromWrapper(ProtoWrapper);
         XLog(ELog(27), FString().Append("OnReloginNotify"));
-        this.ShowDisconnectDialog(NSLOCTEXT("Disconnect", "GSDisconnect", "жњЌеЉЎе™ЁиїћжЋҐж–­ејЂ"));
+        this.ShowDisconnectDialog(NSLOCTEXT("Disconnect", "GSDisconnect", "服务器连接断开"));
         return;
     }
     UFUNCTION()
@@ -302,19 +298,19 @@ class UGameClientConnectionSubsystem : UGameClientConnectionSubsystemBase
         this.bClientHotPatchNotified = true;
         bool local_1 = FPbClientHotPatchNotify::FromWrapper(ProtoWrapper).GetNeedExitClient();
         XLog(ELog(27), FString().Append("OnClientHotPatchNotify need_exit_client=").Append(local_1));
-        FText local_24 = NSLOCTEXT("HotPatch", "Title", "з‰€жњ¬ж›ґж–°");
+        FText local_24 = NSLOCTEXT("HotPatch", "Title", "版本更新");
         FDialogDynamicCallback local_28;
         FCommonDialogParam local_30;
         local_30.bIsForbidIgnored = true;
         if (local_1)
         {
-            FText local_20 = NSLOCTEXT("HotPatch", "ExitClientMessage", "жёёж€Џз‰€жњ¬е·Іж›ґж–°пјЊиЇ·йЂЂе‡єжёёж€ЏеђЋй‡Ќж–°еђЇеЉЁе®ўж€·з«ЇгЂ‚");
+            FText local_20 = NSLOCTEXT("HotPatch", "ExitClientMessage", "游戏版本已更新，请退出游戏后重新启动客户端。");
             local_28.BindUFunction(this, n"OnClientHotPatchExitGameConfirmed");
             ::CommonPopup::Dialog_Confirm(local_24, local_20, FDialogCallback(local_28), FText(), local_30);
         }
         else
         {
-            FText local_34 = NSLOCTEXT("HotPatch", "ReturnLoginMessage", "жёёж€Џз‰€жњ¬е·Іж›ґж–°пјЊиЇ·иї”е›ћз™»еЅ•з•ЊйќўгЂ‚");
+            FText local_34 = NSLOCTEXT("HotPatch", "ReturnLoginMessage", "游戏版本已更新，请返回登录界面。");
             local_28.BindUFunction(this, n"OnClientHotPatchReturnLoginConfirmed");
             ::CommonPopup::Dialog_Confirm(local_24, local_34, FDialogCallback(local_28), FText(), local_30);
         }
@@ -433,8 +429,7 @@ class UGameClientConnectionSubsystem : UGameClientConnectionSubsystemBase
     UFUNCTION()
     void OnReceiveErrorCode(const int ErrorCode)
     {
-        ELog local_8;
-        (FString("Error code received ErrorCode=") + int(local_8));
+        XWarning(ELog(27), (FString("Error code received ErrorCode=") + ErrorCode));
         UKLGameInstance local_16 = (Cast<UKLGameInstance>(this.GetOuter()));
         if (local_16 != nullptr)
         {
@@ -470,7 +465,7 @@ class UGameClientConnectionSubsystem : UGameClientConnectionSubsystemBase
         XWarning(ELog(27), FString().Append("OnDSVersionNotify version mismatch! DS Version=").Append(local_8.GetDsVersion()).Append(" DS CL=").Append(local_18).Append(" Client CL=").Append(local_17));
         if (local_18 != local_17)
         {
-            UMiHoYoSDKHelper::LogToScreenAndConsole(FString().Append("з‰€жњ¬дёЌеЊ№й…Ќ - е®ўж€·з«Ї: CL ").Append(local_17).Append(", жњЌеЉЎе™Ё: CL ").Append(local_18), 30.0f);
+            UMiHoYoSDKHelper::LogToScreenAndConsole(FString().Append("版本不匹配 - 客户端: CL ").Append(local_17).Append(", 服务器: CL ").Append(local_18), 30.0f);
         }
         return;
     }
@@ -478,17 +473,14 @@ class UGameClientConnectionSubsystem : UGameClientConnectionSubsystemBase
     void OnPlayerEnterDSNotify(const FProtoWrapper &in ProtoWrapper)
     {
         FPbPlayerEnterDSNotify local_8 = FPbPlayerEnterDSNotify::FromWrapper(ProtoWrapper);
-        FString local_14 = "OnPlayerEnterDSNotify Retcode=";
         int local_9 = local_8.GetRetcode();
-        ELog local_18;
-        (local_14 + int(local_18));
-        FString local_14_2 = (local_18 + " LevelKey=");
+        FString local_14 = ((FString("OnPlayerEnterDSNotify Retcode=") + local_9) + " LevelKey=");
         int local_19 = local_8.GetLevelKey();
-        (local_14_2 + int(local_18));
+        XLog(ELog(27), (local_14 + local_19));
         if (local_8.GetRetcode() != 0)
         {
             FCommonTipsParam local_30;
-            ::CommonPopup::Tips(NSLOCTEXT("EnterDS", "EnterDS_Failed", "иї›е…ҐDSе¤±иґҐ"), local_30);
+            ::CommonPopup::Tips(NSLOCTEXT("EnterDS", "EnterDS_Failed", "进入DS失败"), local_30);
         }
         return;
     }
@@ -586,7 +578,7 @@ class UGameClientConnectionSubsystem : UGameClientConnectionSubsystemBase
     void GetPlayerToken(const FString &inout UserName)
     {
         this.CachedLoginUserName = UserName;
-        FString local_4 = "Req GetPlayerToken UserName:";
+        XLog(ELog(27), (FString("Req GetPlayerToken UserName:") + UserName));
         FPbGetPlayerTokenReq local_14;
         local_14.SetIsSdkLogin(false);
         local_14.SetAccountType(1);
@@ -599,11 +591,10 @@ class UGameClientConnectionSubsystem : UGameClientConnectionSubsystemBase
     void GetSDKPlayerToken(const FString &inout UserName, const FSDKLoginResult &in SDKLoginResult)
     {
         this.CachedLoginUserName = UserName;
-        FString local_4 = "Req GetSDKPlayerToken OpenID:";
-        FString local_4_2 = "  ComboToken:";
-        ELog local_8;
-        (FString("  AccountType:") + int(local_8));
-        FString local_4_3 = (local_8 + " DeviceID:");
+        XLog(ELog(27), (FString("Req GetSDKPlayerToken OpenID:") + SDKLoginResult.Data.OpenId));
+        XLog(ELog(27), (FString("  ComboToken:") + SDKLoginResult.Data.ComboToken));
+        FString local_4 = ((FString("  AccountType:") + SDKLoginResult.Data.AccountType) + " DeviceID:");
+        XLog(ELog(27), (local_4 + SDKLoginResult.Data.DeviceId));
         this.CachedSDKOpenId = SDKLoginResult.Data.OpenId;
         this.CachedSDKComboId = SDKLoginResult.Data.ComboId;
         this.CachedSDKDeviceId = SDKLoginResult.Data.DeviceId;
@@ -704,7 +695,7 @@ class UGameClientConnectionSubsystem : UGameClientConnectionSubsystemBase
     }
     void SendGmTalkReq(const FString &inout Msg)
     {
-        FString local_4 = "Req GmTalkReq Msg:";
+        XLog(ELog(27), (FString("Req GmTalkReq Msg:") + Msg));
         FPbGmTalkReq local_14;
         local_14.SetMsg(Msg);
         this.SendProtoWrapper(local_14.ToWrapper());
@@ -726,10 +717,8 @@ class UGameClientConnectionSubsystem : UGameClientConnectionSubsystemBase
     }
     void RequestCreatePlayer(const FString &inout Nickname, const uint Gender)
     {
-        FString local_4 = "Req CreatePlayer Nickname:";
-        ELog local_8;
-        FString local_4_2 = (local_8 + " Gender:");
-        (local_4_2 + int(local_8));
+        FString local_4 = ((FString("Req CreatePlayer Nickname:") + Nickname) + " Gender:");
+        XLog(ELog(27), (local_4 + Gender));
         FPbCreatePlayerReq local_14;
         local_14.SetNickname(Nickname);
         local_14.SetGender(Gender);
@@ -773,8 +762,7 @@ class UGameClientConnectionSubsystem : UGameClientConnectionSubsystemBase
     }
     void SendStartDungeonReq(const uint DungeonId)
     {
-        ELog local_8;
-        (FString("Req StartDungeonReq DungeonId:") + int(local_8));
+        XLog(ELog(27), (FString("Req StartDungeonReq DungeonId:") + DungeonId));
         FPbStartDungeonReq local_14;
         local_14.SetDungeonId(DungeonId);
         this.SendProtoWrapper(local_14.ToWrapper());
@@ -872,13 +860,13 @@ class UGameClientConnectionSubsystem : UGameClientConnectionSubsystemBase
         }
         if ((FString(Result.Address) == this.GatePingInfo.Address) && (int(Result.Port) == this.GatePingInfo.Port))
         {
-            this.UpdatePingSlot(this.GatePingInfo, int(Result.PingMs));
+            this.UpdatePingSlot(this.GatePingInfo, Result.PingMs);
         }
         else
         {
             if ((FString(Result.Address) == this.DSPingInfo.Address) && (int(Result.Port) == this.DSPingInfo.Port))
             {
-                this.UpdatePingSlot(this.DSPingInfo, int(Result.PingMs));
+                this.UpdatePingSlot(this.DSPingInfo, Result.PingMs);
             }
         }
         this.ReportPingToServer();
@@ -1007,7 +995,7 @@ class UGameClientConnectionSubsystem : UGameClientConnectionSubsystemBase
         {
             return;
         }
-        this.ShowDisconnectDialog(NSLOCTEXT("Disconnect", "GSDisconnect", "жњЌеЉЎе™ЁиїћжЋҐж–­ејЂ"));
+        this.ShowDisconnectDialog(NSLOCTEXT("Disconnect", "GSDisconnect", "服务器连接断开"));
         return;
     }
     ULocalPlayer GetOwningLocalPlayerSafe()
@@ -1039,7 +1027,7 @@ class UGameClientConnectionSubsystem : UGameClientConnectionSubsystemBase
         FText local_32;
         local_28.Add(FCommonDialogOption(ECommonDialogAnswerType(1), local_22, local_32));
         FCommonDialogParam local_78;
-        ::CommonPopup_Internal::OpenDialogForLocalPlayer(local_2, NSLOCTEXT("Disconnect", "Title", "иїћжЋҐж–­ејЂ"), Message, local_28, FDialogCallback(local_10), local_78);
+        ::CommonPopup_Internal::OpenDialogForLocalPlayer(local_2, NSLOCTEXT("Disconnect", "Title", "连接断开"), Message, local_28, FDialogCallback(local_10), local_78);
         return;
     }
     UFUNCTION()

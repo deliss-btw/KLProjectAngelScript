@@ -1,4 +1,3 @@
-﻿
 namespace FVM_KeepShowcaseVisible
 {
     const int ModelId = 0;

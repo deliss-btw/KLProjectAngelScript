@@ -1,5 +1,3 @@
-﻿
-
 class US_LongNeckIKControlAS : UECSScriptSystem
 {
     US_LongNeckIKControlAS()

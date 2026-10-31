@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonItemTipDisplayAdapter
 {
     const int ModelId = 0;
@@ -202,8 +201,7 @@ struct FVM_CommonItemTipDisplayAdapter : FEUIViewModel
         {
             return false;
         }
-        int local_84 = int(::DisplayItemAdapter_Fashion::ConvertFashionRarity(EFashionRarity(local_83)));
-        TDataObjectPtr<FItemRarityConfig> local_108 = ::UGlobalItemSettings::Get().GetRarityConfig();
+        TDataObjectPtr<FItemRarityConfig> local_108 = ::UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(::DisplayItemAdapter_Fashion::ConvertFashionRarity(EFashionRarity(local_83))));
         FText local_114 = ::FashionSettings::GetFashionSlotName(EFashionSlotType(local_109));
         this.SetItemCategory(local_114);
         this.SetItemDescription(local_114);

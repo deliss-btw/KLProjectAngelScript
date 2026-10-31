@@ -1,5 +1,3 @@
-﻿
-
 struct FResourceSummaryForFlockSpawner
 {
     UPROPERTY()
@@ -13,7 +11,6 @@ struct FResourceSummaryForFlockSpawner
     UPROPERTY()
     float32 SpawnCreatureRatio;
 
-
 }
 
 struct FWeightedIndexInfo
@@ -22,7 +19,6 @@ struct FWeightedIndexInfo
     int Index;
     UPROPERTY()
     int Weight;
-
 
 }
 
@@ -35,13 +31,15 @@ struct FFlockCostPair
 
     FFlockCostPair()
     {
-        this.Cost = 0.0f;
+        this.Flock = FECSEntity();
         this.Cost = 0.0f;
         return;
     }
     FFlockCostPair(const FECSEntity &inout InFlock, const float32 InCost)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.Flock = InFlock;
+        this.Cost = InCost;
+        return;
     }
 }
 
@@ -49,7 +47,6 @@ class US_EcologySpawnerSystem : UECSScriptSystem
 {
     float32 ConstNPCGroundTraceHeightMultiplier = 1.5f;
     float32 ConstNPCGroundSnapOffset = 0.05f;
-
 
     TConstRawPtr<FVirtualConfigData> ReadSpawnerConfig(const FECSEntity &inout ConfigEntity) const
     {
@@ -75,7 +72,7 @@ class US_EcologySpawnerSystem : UECSScriptSystem
     }
     void SpawnBossByMixBossSpawner(const FECSEntity &inout SpawnerEntity, FC_EcologyMixRandomBossSpawner &inout ModifiabSpawnerComponent, const FC_EcologyConfigReference &inout ConfigRef) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argint]
+        // body not fully recovered — stub [argmismatch:argint]
     }
     void SpawnBossBySpawnPool(const FECSEntity &inout SpawnerEntity, FCS_EcologyScriptGlobalContext &inout EcologyContext, FC_EcologyMixRandomBossSpawner &inout ModifiabSpawnerComponent, const FMixedRandomBossSpawnerConfig &inout ConfigData, const int PoolIndex) const
     {
@@ -166,7 +163,7 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         int local_12 = 0;
         int local_22 = 0;
         bool local_187;
-        FECSEntityId local_199;
+        int local_194 = 0;
         FC_EcologyResourceProviderSummary local_258;
         FDataObjectPtr local_306;
         int local_312 = 0;
@@ -187,8 +184,7 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         bool local_2 = (local_16.ActivityVolumes.Num() > 0);
         if (local_2 && !(local_16.CheckAllVolumeIsValid()))
         {
-            SpawnerEntity.GetId();
-            XError(ELog(30), FString().Append("Spawn Boss failed because volume not exit ").Append(local_199).Append(local_199).Append(", Pool:").Append(PoolIndex).Append(", Boss:").Append(BossConfigIndex).Append(" "));
+            XError(ELog(30), FString().Append("Spawn Boss failed because volume not exit ").Append(SpawnerEntity.GetId()).Append(", Pool:").Append(PoolIndex).Append(", Boss:").Append(BossConfigIndex).Append(" ").Append(local_194.ConfigRef));
             return ENTITY_NULL;
         }
         ::FEcologySceneInfoUtils::GetTimeSegmentsGameplayTagContaiers(local_12, ::FEcologySceneInfoUtils::GetCurrentTimeSegments(local_10));
@@ -247,17 +243,15 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         }
         int local_325 = local_22.RandomGenerator.NextRangeInt(0, (local_324.Num() - 1));
         FEcologyFlockActivityTarget local_330;
-        local_324[local_325].GetId();
-        local_330.MainTargetResource = local_199;
+        local_330.MainTargetResource = local_324[local_325].GetId();
         FEcologyFlockSpawnParam local_426;
-        local_16.GetCreatureProxy();
+        FCreatureConfigProxy local_452 = local_16.GetCreatureProxy();
         local_426.SpawnNum = 1;
         TDataObjectPtr<FEcologyCreatureDefinitionRow> local_54 = local_16.GetCreatureType();
         UBaseEcologyPlanerDefine local_454;
         local_426.PlanerDefine = local_454;
         FRuntimeSpawnerReference local_456;
-        SpawnerEntity.GetId();
-        local_456.SpawnerEntity = local_199;
+        local_456.SpawnerEntity = SpawnerEntity.GetId();
         FECSEntity local_460 = ::FEcologySpawnerUtils::SpawnEcologyFlockEntity(local_426, local_456, local_16.ActivityVolumes);
         ::FEcologyBehaviorUtils::AddChangeAreaTirggers(local_460, local_16.ChangeAreaTriggerDefinitionCollection);
         return local_460;
@@ -422,9 +416,7 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         }
         else
         {
-            SpawnerEntity.GetId();
-            FECSEntityId local_29;
-            XLog(ELog(30), FString().Append("ConstFlockSpawner: External Resource UnitId=").Append(SpawnerData.PendingExternalResourceUnitId.GUID).Append(" not resolved yet for ").Append(local_29));
+            XLog(ELog(30), FString().Append("ConstFlockSpawner: External Resource UnitId=").Append(SpawnerData.PendingExternalResourceUnitId.GUID).Append(" not resolved yet for ").Append(SpawnerEntity.GetId()));
         }
         return;
     }
@@ -443,7 +435,80 @@ class US_EcologySpawnerSystem : UECSScriptSystem
     UFUNCTION()
     void Job_RefreshConstNPCSpawner(const FECSEntity &inout SpawnerEntity, FC_EcologyRuntimeConstNPCSpawner &inout NPCSpawner, const FC_EcologyConfigReference &inout ConfigRef) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        const FConstNPCSpawnerConfig& local_16;
+        int local_26 = 0;
+        int local_138 = 0;
+        if (!(ConfigRef.ReadSpawnerConfig()))
+        {
+            return;
+        }
+        if (!(FInstancedStruct::GetPtr(GetConfigData()).opCall()))
+        {
+            return;
+        }
+        if (!(local_16.NPCConfig))
+        {
+            return;
+        }
+        if (FECSEntity(NPCSpawner.CreatureEntity))
+        {
+            return;
+        }
+        FEcologyCreatureSpawnerContext local_88;
+        FCreatureConfigProxy local_114 = FCreatureConfigProxy(local_16.NPCConfig);
+        local_88.SpawnerConfigRef = ConfigRef.ConfigRef;
+        local_88.RuntimeSpawnerEntity = SpawnerEntity.GetId();
+        local_88.TargetLocation = local_26.GetPosition();
+        local_88.TargetRotation = local_26.GetRotation();
+        FVector local_122 = local_88.TargetLocation;
+        float32 local_123 = 0.0f;
+        float32 local_125 = 0.0f;
+        bool local_126 = false;
+        TSubclassOf<ACharacterPrefab> local_130 = local_88.LoadMonsterPrefab();
+        bool local_5 = !((local_130 == nullptr));
+        if (local_5)
+        {
+            ACharacterPrefab local_132 = local_130.GetDefaultObject();
+            if (local_132 == nullptr)
+            {
+                local_5 = false;
+            }
+            else
+            {
+                local_5 = local_132.Physics.bTraitEnable;
+            }
+            if (local_5)
+            {
+                local_126 = (int(local_138.GetShapeType())) != 0 && !(local_138.GetbOverlapOnly());
+                if (local_126)
+                {
+                    local_123 = local_138.GetScaledHalfHeight();
+                    local_125 = local_138.GetScaledHeight() * this.ConstNPCGroundTraceHeightMultiplier;
+                    local_126 = (local_125 > 0.0f);
+                }
+            }
+        }
+        if (local_126)
+        {
+            FHitResult local_208;
+            FVector local_232 = (local_122 + FVector(0.0, 0.0, local_125));
+            FVector local_214 = (local_122 - FVector(0.0, 0.0, local_125));
+            FCollisionQueryParams local_276;
+            local_276.bTraceComplex = false;
+            FCollisionResponseParams local_285;
+            bool local_5_2 = FPhysicsUtils::LineTraceSingle(SpawnerEntity, false, EPhysicsTraceTag(34), local_208, local_232, local_214, ECollisionChannel(18), local_276, local_285);
+            if (local_5_2)
+            {
+                local_88.TargetLocation = local_122.NewZ((local_208.ImpactPoint.Z + local_123) + this.ConstNPCGroundSnapOffset);
+            }
+        }
+        FECSEntity local_20 = ::FEcologySpawnerUtils::SpawnCreatureByContext(local_88);
+        if (local_20.IsValid())
+        {
+            NPCSpawner.CreatureEntity = local_20.GetId();
+        }
+        ::FEcologySpawnerUtils::TryMarkSpawnComplete(SpawnerEntity);
+        return;
     }
     UFUNCTION()
     void Monitor_ConstNPCSpawnerInactivate(const FECSEntity &inout SpawnerEntity, const FC_EcologyRuntimeConstNPCSpawner &inout NPCSpawner) const
@@ -479,7 +544,17 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }
@@ -519,7 +594,17 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }
@@ -541,7 +626,17 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }
@@ -581,7 +676,17 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }
@@ -603,7 +708,17 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }
@@ -643,7 +758,17 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }
@@ -665,7 +790,17 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }
@@ -705,7 +840,17 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }
@@ -1083,7 +1228,17 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }
@@ -1123,7 +1278,17 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }
@@ -1145,7 +1310,17 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }
@@ -1185,7 +1360,17 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }
@@ -1389,7 +1574,17 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }
@@ -1429,7 +1624,17 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }
@@ -1642,7 +1847,17 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }
@@ -1682,7 +1897,17 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }
@@ -1904,7 +2129,17 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }
@@ -1944,7 +2179,17 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }

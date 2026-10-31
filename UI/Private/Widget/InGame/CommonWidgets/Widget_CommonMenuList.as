@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommonMenuList
 {
     const int ViewID = 0;
@@ -16,15 +15,11 @@ class UWidget_CommonMenuList : UEUIUserWidget
     UPROPERTY()
     TArray<FRedDotNodeData> RedDotNodes;
     UPROPERTY()
-    int SelectedIndex;
+    int SelectedIndex = INDEX_NONE;
     UPROPERTY()
     FOnCommonMenuListEntrySelected OnEntrySelected;
     TArray<FEUIWidgetRef> Entries;
 
-    UWidget_CommonMenuList()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
     UFUNCTION()
     void PreConstruct_Implementation(const bool bIsDesignTime)
     {
@@ -143,8 +138,7 @@ class UWidget_CommonMenuList : UEUIUserWidget
         {
             if (this.RedDotNodes.IsValidIndex(Index))
             {
-                FEUIModelRef local_16;
-                Entry.RedDot.GetView().SetViewModel(local_16, n"RedDotVM");
+                Entry.RedDot.GetView().SetViewModel(FEUIModelRef(::FVM_RedDot::Create(this, this.RedDotNodes[Index])), n"RedDotVM");
             }
             else
             {
@@ -161,6 +155,7 @@ namespace UWidget_CommonMenuList
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonMenuList;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FAICommand_LockTarget (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FAICommand_LockTargetData
 {
     UPROPERTY()
@@ -11,7 +6,6 @@ struct FAICommand_LockTargetData
     bool bForceLockCurrent;
     UPROPERTY()
     FECSEntityId TargetEntityID;
-
 
 }
 
@@ -102,7 +96,6 @@ class UBTService_LockTarget : UBTService_AICommandScript
     UPROPERTY()
     FAICommand_LockTarget AICommand;
 
-
     UFUNCTION()
     void OnInitCommandInstanceData_Implementation(const FAICommandInstanceDataInitContextPtr &inout Context) const
     {
@@ -124,7 +117,6 @@ struct FAICommand_AIForceLockTargetTagData
     bool bForceLockCurrent;
     UPROPERTY()
     bool bShowArrow;
-
 
 }
 
@@ -151,11 +143,11 @@ struct FAICommand_AIForceLockTargetTag : FAICommandScript
     {
         const FAICommand_AIForceLockTargetTagData& local_2;
         int local_4 = 0;
-        if (local_2.bForceLockCurrent)
+        if (int(local_2.bForceLockCurrent) != 0)
         {
             local_4.SetRefCount((local_4.GetRefCount() + 1));
         }
-        local_4.SetbShowArrow(local_2.bShowArrow);
+        local_4.SetbShowArrow((int(local_2.bShowArrow) != 0));
         return;
     }
     void Finish_Implementation(const FAICommandParams &inout Params, const FFPTime &inout WorldTime) const
@@ -185,7 +177,6 @@ class UBTService_AIForceLockTargetTag : UBTService_AICommandScript
     bool bShowArrow = true;
     UPROPERTY()
     FAICommand_AIForceLockTargetTag AICommand;
-
 
     UFUNCTION()
     void OnInitCommandInstanceData_Implementation(const FAICommandInstanceDataInitContextPtr &inout Context) const

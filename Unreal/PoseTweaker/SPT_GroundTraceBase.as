@@ -1,5 +1,3 @@
-﻿
-
 namespace FootIKUtils
 {
 struct FKLGroundPlaneTraceResultInSPT : FKLGroundPlaneTraceResult
@@ -35,7 +33,6 @@ struct FFootEffectorDebugDrawFlags
     bool bDrawRealGroundTrace = false;
     UPROPERTY()
     bool bDrawRealGroundHit = false;
-
 
 }
 
@@ -140,8 +137,7 @@ struct FKLFootIKInstance : FPT_TwoBoneIK
         USPT_GroundTraceBase local_88;
         UESMAnimInstance local_164;
         FVector local_12 = ((FVector(GroundTraceParams.TraceDirection) * 5000.0) * TraceOffsetScale);
-        float local_24 = this.UpdateEffectorSpeed(ComponentTM, TimeDelta);
-        float local_14 = FMath::Clamp(local_24 / this.FootFastMovingSpeed, 0.0, 1.0);
+        float local_14 = FMath::Clamp((this.UpdateEffectorSpeed(ComponentTM, TimeDelta)) / this.FootFastMovingSpeed, 0.0, 1.0);
         bool local_33 = this.bWantsDebugDraw;
         if (local_33 && DebugFlags.bDrawAnimLocation)
         {
@@ -336,7 +332,7 @@ class USPT_GroundTraceBase : USkeletalPoseTweaker
         else
         {
             local_33 = this.TraceRealGround(local_26, local_6, (DetailedIK.MaxDistanceOffPlane * DetailedIK.GetDetailIKWeight(this)), local_40, local_12);
-            local_40 = DetailedIK.Damper.Update(local_40, FootPosition, int(this.CurrentDeltaSeconds));
+            local_40 = DetailedIK.Damper.Update(local_40, FootPosition, this.CurrentDeltaSeconds);
         }
         if (local_33)
         {
@@ -489,14 +485,14 @@ FTransform RotateAroundPoint(const FTransform &inout inTM, const FVector &inout 
 }
 void CreateGroundPlaneTraceParams(FKLGroundPlaneTraceParams &inout groundPlaneTraceParams, const int problePtNum, const float32 scaleX, const float32 scaleY)
 {
-    groundPlaneTraceParams.SetNum(problePtNum);
+    groundPlaneTraceParams.TraceProblePoints.SetNum(problePtNum);
     int local_1 = 0;
     for (; local_1 < problePtNum; )
     {
         float32 local_4 = 0.0f;
         float32 local_6 = 1.0f;
         FMath::SinCos(local_4, local_6, FMath::DegreesToRadians((local_1 * 360.0f) / problePtNum));
-        groundPlaneTraceParams[local_1] = FVector3f(local_6 * scaleX, local_4 * scaleY, 0.0f);
+        groundPlaneTraceParams.TraceProblePoints[local_1] = FVector3f(local_6 * scaleX, local_4 * scaleY, 0.0f);
         ++local_1;
     }
     return;

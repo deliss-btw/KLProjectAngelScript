@@ -1,5 +1,3 @@
-﻿
-
 struct FMS_HUDInputManagerConfigDefault : FConfigEUIModelDefaultBase
 {
     UPROPERTY()

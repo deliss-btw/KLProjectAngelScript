@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ExitLevel
 {
     const int ViewID = 0;
@@ -95,6 +94,7 @@ namespace UWidget_ExitLevel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ExitLevel;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnWillAutoLeaveLevelChanged"));
     return;
 }

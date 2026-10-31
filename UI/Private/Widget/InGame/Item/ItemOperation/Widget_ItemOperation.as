@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ItemOperation
 {
     const int ViewID = 0;
@@ -137,6 +136,7 @@ namespace UWidget_ItemOperation
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ItemOperation;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnShowListChanged"));
     return;
 }

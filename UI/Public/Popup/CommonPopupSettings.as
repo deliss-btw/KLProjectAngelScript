@@ -1,5 +1,3 @@
-﻿
-
 struct FCommonPopupOccupyRuleConfig
 {
     UPROPERTY()
@@ -9,7 +7,6 @@ struct FCommonPopupOccupyRuleConfig
     UPROPERTY()
     int DefaultPriority = 0;
 
-
 }
 
 struct FCommonTipsSettings
@@ -18,7 +15,6 @@ struct FCommonTipsSettings
     FGameplayTag WidgetTag;
     UPROPERTY()
     float32 DefaultTipsLifetime = 2.0f;
-
 
 }
 
@@ -74,7 +70,6 @@ class UCommonPopupSettings : UGameplaySettingsBase
     TMap<FGameplayTag, FCommonPopupOccupyRuleConfig> OccupyRules;
     UPROPERTY()
     ECommonPopupOccupyRule DefaultOccupyRule = ECommonPopupOccupyRule(0);
-
 
 }
 

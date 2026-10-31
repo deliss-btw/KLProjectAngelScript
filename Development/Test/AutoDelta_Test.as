@@ -1,5 +1,3 @@
-﻿
-
 struct FTestAutoDeltaAS
 {
     FSubDirtyFlags8 __DirtyFlags;
@@ -12,17 +10,32 @@ struct FTestAutoDeltaAS
 
     FTestAutoDeltaAS()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_InnerValue1 = 0;
+        this.m_InnerValue2 = 0;
+        this.m_InnerValue3 = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        return;
     }
     FTestAutoDeltaAS(const FTestAutoDeltaAS &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_InnerValue1 = 0;
+        this.m_InnerValue2 = 0;
+        this.m_InnerValue3 = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_InnerValue1 = int(Other.m_InnerValue1);
+        this.m_InnerValue2 = int(Other.m_InnerValue2);
+        this.m_InnerValue3 = int(Other.m_InnerValue3);
+        return;
     }
     FTestAutoDeltaAS(const int SomeInValue)
     {
         this.m_InnerValue1 = 0;
         this.m_InnerValue2 = 0;
         this.m_InnerValue3 = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.SetInnerValue1(SomeInValue);
         return;
     }
@@ -90,11 +103,22 @@ struct FTestAutoDeltaNestedAS
 
     FTestAutoDeltaNestedAS()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_InnerValue10 = 0;
+        this.m_InnerValue14 = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        return;
     }
     FTestAutoDeltaNestedAS(const FTestAutoDeltaNestedAS &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_InnerValue10 = 0;
+        this.m_InnerValue14 = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_InnerValue10 = int(Other.m_InnerValue10);
+        this.m_InnerNested = Other.m_InnerNested;
+        this.m_InnerValue14 = int(Other.m_InnerValue14);
+        return;
     }
     FTestAutoDeltaNestedAS opAssign(const FTestAutoDeltaNestedAS &inout Other)
     {
@@ -156,7 +180,6 @@ struct FAutoDeltaTestTooFewPropertiesAS
     UPROPERTY()
     int m_InnerValue1;
 
-
     int GetInnerValue() const property
     {
         return this.m_InnerValue;
@@ -194,12 +217,16 @@ struct FTestAutoDeltaLayoutHolderAS
     FTestAutoDeltaLayoutHolderAS()
     {
         this.m_SimpleInt = 0;
+        FRootDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FTestAutoDeltaLayoutHolderAS(const FTestAutoDeltaLayoutHolderAS &inout Other)
     {
         this.m_SimpleInt = 0;
+        FRootDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_NestedComposite_Flatten = Other.m_NestedComposite_Flatten;
         this.m_NestedComposite_Nested = Other.m_NestedComposite_Nested;
@@ -306,11 +333,24 @@ struct FAutoDeltaDeepLeafAS
 
     FAutoDeltaDeepLeafAS()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Leaf_0 = 0;
+        this.m_Leaf_1 = 0;
+        this.m_Leaf_2 = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        return;
     }
     FAutoDeltaDeepLeafAS(const FAutoDeltaDeepLeafAS &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Leaf_0 = 0;
+        this.m_Leaf_1 = 0;
+        this.m_Leaf_2 = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_Leaf_0 = int(Other.m_Leaf_0);
+        this.m_Leaf_1 = int(Other.m_Leaf_1);
+        this.m_Leaf_2 = int(Other.m_Leaf_2);
+        return;
     }
     FAutoDeltaDeepLeafAS opAssign(const FAutoDeltaDeepLeafAS &inout Other)
     {
@@ -376,11 +416,22 @@ struct FAutoDeltaMidWithFlattenLeafAS
 
     FAutoDeltaMidWithFlattenLeafAS()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Mid_Local = 0;
+        this.m_Mid_Extra = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        return;
     }
     FAutoDeltaMidWithFlattenLeafAS(const FAutoDeltaMidWithFlattenLeafAS &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Mid_Local = 0;
+        this.m_Mid_Extra = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_Mid_Local = int(Other.m_Mid_Local);
+        this.m_FlattenLeaf = Other.m_FlattenLeaf;
+        this.m_Mid_Extra = int(Other.m_Mid_Extra);
+        return;
     }
     FAutoDeltaMidWithFlattenLeafAS opAssign(const FAutoDeltaMidWithFlattenLeafAS &inout Other)
     {
@@ -447,11 +498,22 @@ struct FAutoDeltaMidWithNestedLeafAS
 
     FAutoDeltaMidWithNestedLeafAS()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Mid_Local = 0;
+        this.m_Mid_Extra = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        return;
     }
     FAutoDeltaMidWithNestedLeafAS(const FAutoDeltaMidWithNestedLeafAS &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Mid_Local = 0;
+        this.m_Mid_Extra = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_Mid_Local = int(Other.m_Mid_Local);
+        this.m_NestedLeaf = Other.m_NestedLeaf;
+        this.m_Mid_Extra = int(Other.m_Mid_Extra);
+        return;
     }
     FAutoDeltaMidWithNestedLeafAS opAssign(const FAutoDeltaMidWithNestedLeafAS &inout Other)
     {
@@ -520,11 +582,15 @@ struct FAutoDeltaDeepHolderAS
 
     FAutoDeltaDeepHolderAS()
     {
+        FRootDirtyFlags16 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FAutoDeltaDeepHolderAS(const FAutoDeltaDeepHolderAS &inout Other)
     {
+        FRootDirtyFlags16 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_NestedWithFlatten = Other.m_NestedWithFlatten;
         this.m_NestedWithNested = Other.m_NestedWithNested;
@@ -631,11 +697,32 @@ struct FTestAutoDeltaRootAS
 
     FTestAutoDeltaRootAS()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags32 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_IntNotReplicated = 14;
+        this.m_Int_15 = 1897;
+        this.__InitDirtyFlags();
+        return;
     }
     FTestAutoDeltaRootAS(const FTestAutoDeltaRootAS &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags32 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_IntNotReplicated = 14;
+        this.m_Int_15 = 1897;
+        this.__InitDirtyFlags();
+        this.m_Name_0 = Other.m_Name_0;
+        this.m_AutoDelta_1 = Other.m_AutoDelta_1;
+        this.m_Array_4 = Other.m_Array_4;
+        this.m_Set_5 = Other.m_Set_5;
+        this.m_Map_6 = Other.m_Map_6;
+        this.m_String_7 = Other.m_String_7;
+        this.m_FewProperties_8 = Other.m_FewProperties_8;
+        this.m_SimpleStruct_9 = Other.m_SimpleStruct_9;
+        this.m_NestedAutoDelta_10 = Other.m_NestedAutoDelta_10;
+        this.m_IntNotReplicated = int(Other.m_IntNotReplicated);
+        this.m_Int_15 = int(Other.m_Int_15);
+        return;
     }
     FTestAutoDeltaRootAS opAssign(const FTestAutoDeltaRootAS &inout Other)
     {
@@ -915,14 +1002,14 @@ void Test_AutoDeltaASUnitTest(FUnitTest &inout UnitTest)
     AutoDelta::ClearDirtyFlags(local_210);
     local_210.GetNestedComposite_Flatten().SetInnerValue10(11);
     UnitTest.AssertTrue(AutoDelta::IsDirty(local_210, 0), "Flatten inner -> parent idx 0 dirty");
-    UnitTest.AssertFalse(AutoDelta::IsDirty(local_210, 5), "Flatten е†™дёЌеє”ж±Ўжџ“ Nested ж§ЅдЅЌ 5");
+    UnitTest.AssertFalse(AutoDelta::IsDirty(local_210, 5), "Flatten 写不应污染 Nested 槽位 5");
     AutoDelta::ClearDirtyFlags(local_210);
     UnitTest.AssertFalse(AutoDelta::GetDirtyFlags(local_210.GetNestedComposite_Nested()).IsNewData(), "Nested clear should clear NewData");
     local_210.GetNestedComposite_Nested().SetInnerValue10(110);
-    UnitTest.AssertTrue(AutoDelta::IsDirty(local_210, 5), "Nested inner -> з€¶еЏЄдє® idx 5");
-    UnitTest.AssertFalse(AutoDelta::IsDirty(local_210, 0), "Nested е†™дёЌеє”иЇЇжџ“ Flatten ж®µ idx 0");
-    UnitTest.AssertFalse(AutoDelta::IsDirty(local_210, 6), "Nested е†™дёЌеє”и¶Љз•Њдє® idx 6");
-    UnitTest.AssertTrue((AutoDelta::IsDirty(local_210.GetNestedComposite_Nested(), 0)), "Composite_Nested и‡Єиє« bitmap idx 0 = InnerValue10 dirty");
+    UnitTest.AssertTrue(AutoDelta::IsDirty(local_210, 5), "Nested inner -> 父只亮 idx 5");
+    UnitTest.AssertFalse(AutoDelta::IsDirty(local_210, 0), "Nested 写不应误染 Flatten 段 idx 0");
+    UnitTest.AssertFalse(AutoDelta::IsDirty(local_210, 6), "Nested 写不应越界亮 idx 6");
+    UnitTest.AssertTrue((AutoDelta::IsDirty(local_210.GetNestedComposite_Nested(), 0)), "Composite_Nested 自身 bitmap idx 0 = InnerValue10 dirty");
     FTestAutoDeltaLayoutHolderAS local_238;
     AutoDelta::InitDirtyFlags(local_238);
     AutoDelta::ClearDirtyFlags(local_238);
@@ -933,25 +1020,25 @@ void Test_AutoDeltaASUnitTest(FUnitTest &inout UnitTest)
     local_210.GetNestedComposite_Nested().SetInnerValue10(200);
     UnitTest.AssertFalse(AutoDelta::GetDirtyFlags(local_210.GetNestedComposite_Nested()).IsNewData(), "Send nested dirty delta should not be NewData");
     AutoDelta::DummyNetSerialize(local_210, local_238, FTestAutoDeltaLayoutHolderAS);
-    UnitTest.AssertEquals(100, local_238.GetNestedComposite_Flatten().GetInnerValue10(), "Flatten е†…е­—ж®µеђЊж­Ґ");
-    UnitTest.AssertEquals(200, local_238.GetNestedComposite_Nested().GetInnerValue10(), "Nested е†…е­—ж®µеђЊж­Ґ");
-    UnitTest.AssertEquals(-1, local_238.GetNestedComposite_Flatten().GetInnerValue14(), "Flatten жњЄи„Џе­—ж®µдїќз•™жњ¬ењ°");
-    UnitTest.AssertEquals(-2, local_238.GetNestedComposite_Nested().GetInnerValue14(), "Nested жњЄи„Џе­—ж®µдїќз•™жњ¬ењ°");
+    UnitTest.AssertEquals(100, local_238.GetNestedComposite_Flatten().GetInnerValue10(), "Flatten 内字段同步");
+    UnitTest.AssertEquals(200, local_238.GetNestedComposite_Nested().GetInnerValue10(), "Nested 内字段同步");
+    UnitTest.AssertEquals(-1, local_238.GetNestedComposite_Flatten().GetInnerValue14(), "Flatten 未脏字段保留本地");
+    UnitTest.AssertEquals(-2, local_238.GetNestedComposite_Nested().GetInnerValue14(), "Nested 未脏字段保留本地");
     AutoDelta::ClearDirtyFlags(local_210);
     AutoDelta::ClearDirtyFlags(local_238);
     local_210.GetAutoDelta_Flatten().SetInnerValue1(7);
     UnitTest.AssertTrue(AutoDelta::IsDirty(local_210, 7), "AutoDelta_Flatten.InnerValue1 -> parent idx 7");
-    UnitTest.AssertFalse(AutoDelta::IsDirty(local_210, 10), "дёЌеє”зў°е€° AutoDelta_Nested ж§ЅдЅЌ 10");
+    UnitTest.AssertFalse(AutoDelta::IsDirty(local_210, 10), "不应碰到 AutoDelta_Nested 槽位 10");
     local_210.GetAutoDelta_Nested().SetInnerValue3(9);
     UnitTest.AssertTrue(AutoDelta::IsDirty(local_210, 10), "AutoDelta_Nested.InnerValue3 -> parent idx 10");
-    UnitTest.AssertTrue((AutoDelta::IsDirty(local_210.GetAutoDelta_Nested(), 2)), "AutoDelta_Nested и‡Єиє« bitmap idx 2 = InnerValue3 dirty");
+    UnitTest.AssertTrue((AutoDelta::IsDirty(local_210.GetAutoDelta_Nested(), 2)), "AutoDelta_Nested 自身 bitmap idx 2 = InnerValue3 dirty");
     local_238.GetAutoDelta_Flatten().SetInnerValue2(-10);
     local_238.GetAutoDelta_Nested().SetInnerValue1(-11);
     AutoDelta::DummyNetSerialize(local_210, local_238, FTestAutoDeltaLayoutHolderAS);
-    UnitTest.AssertEquals(7, local_238.GetAutoDelta_Flatten().GetInnerValue1(), "Flatten AutoDelta еђЊж­Ґ InnerValue1");
-    UnitTest.AssertEquals(9, local_238.GetAutoDelta_Nested().GetInnerValue3(), "Nested AutoDelta еђЊж­Ґ InnerValue3");
-    UnitTest.AssertEquals(-10, local_238.GetAutoDelta_Flatten().GetInnerValue2(), "Flatten AutoDelta жњЄи„Џе­—ж®µдїќз•™жњ¬ењ°");
-    UnitTest.AssertEquals(-11, local_238.GetAutoDelta_Nested().GetInnerValue1(), "Nested AutoDelta жњЄи„Џе­—ж®µдїќз•™жњ¬ењ°");
+    UnitTest.AssertEquals(7, local_238.GetAutoDelta_Flatten().GetInnerValue1(), "Flatten AutoDelta 同步 InnerValue1");
+    UnitTest.AssertEquals(9, local_238.GetAutoDelta_Nested().GetInnerValue3(), "Nested AutoDelta 同步 InnerValue3");
+    UnitTest.AssertEquals(-10, local_238.GetAutoDelta_Flatten().GetInnerValue2(), "Flatten AutoDelta 未脏字段保留本地");
+    UnitTest.AssertEquals(-11, local_238.GetAutoDelta_Nested().GetInnerValue1(), "Nested AutoDelta 未脏字段保留本地");
     UnitTest.AssertFalse(AutoDelta::IsNoDirty(local_210.GetAutoDelta_Nested()), "Pre-clear: nested still dirty");
     AutoDelta::ClearDirtyFlags(local_210);
     UnitTest.AssertTrue(AutoDelta::IsNoDirty(local_210), "ClearAll: parent bitmap empty");

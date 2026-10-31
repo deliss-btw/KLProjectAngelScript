@@ -1,4 +1,3 @@
-﻿
 namespace FVM_Task
 {
     const int ModelId = 0;
@@ -85,7 +84,6 @@ struct __GeneratedProperties_FVM_Task
     bool IsCompleted;
     UPROPERTY()
     TEUIModelRef<FVM_Task> Self;
-
 
 }
 

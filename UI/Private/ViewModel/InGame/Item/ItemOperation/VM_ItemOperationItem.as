@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ItemOperationItem
 {
     const int ModelId = 0;
@@ -244,7 +243,6 @@ struct __GeneratedProperties_FVM_ItemOperationItem
     int BorderIndex;
     UPROPERTY()
     TEUIModelRef<FVM_ItemOperationItem> Self;
-
 
 }
 

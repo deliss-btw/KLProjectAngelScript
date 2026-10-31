@@ -1,4 +1,3 @@
-﻿
 enum EEcologyTargetPlanerType
 {
     CommonEntity,
@@ -33,7 +32,6 @@ struct FC_EcologyPlaner : FECSComponent
     UPROPERTY()
     TObjectPtr<UBaseEcologyPlanerDefine> PlanerDefine;
 
-
 }
 
 struct FHTNPlanerDefineConfig
@@ -55,12 +53,12 @@ struct FHTNPlanerDefineConfig
     {
         int local_82 = 0;
         this.SyncLoad();
-        if (!(this.IsValid()) || !(this.BlackboardAsset.IsValid()))
+        if (!(this.HTNAsset.IsValid()) || !(this.BlackboardAsset.IsValid()))
         {
             return;
         }
         EcologyPlaner.FuncType = EEcologyPlanerFuncType(2);
-        local_82.DynamicSetup(this, this.BlackboardAsset, this.DynamicHTNSet);
+        local_82.DynamicSetup(this.HTNAsset, this.BlackboardAsset, this.DynamicHTNSet);
         local_82.InitDynamicBehaviorTreeSet(this.DynamicBehaviorTree);
         FC_HTNNeedRestartTag local_88;
         Assign local_86;
@@ -69,7 +67,7 @@ struct FHTNPlanerDefineConfig
     }
     void SyncLoad() const
     {
-        Ecology::SyncLoadObject(this.ToSoftObjectPath());
+        Ecology::SyncLoadObject(this.HTNAsset.ToSoftObjectPath());
         Ecology::SyncLoadObject(this.BlackboardAsset.ToSoftObjectPath());
         return;
     }
@@ -120,7 +118,7 @@ struct FC_EcologyHTNPlanerConfig : FECSComponent
         local_22.PlanerType = EEcologyTargetPlanerType(local_23);
         TObjectPtr<UBaseEcologyPlanerDefine> local_34;
         local_22.PlanerDefine = local_34;
-        this.SetupEcologyPlanerEntity(Owner, local_22);
+        this.Config.SetupEcologyPlanerEntity(Owner, local_22);
         return;
     }
 }
@@ -134,7 +132,6 @@ struct FT_EcologyPlanerTrait : FECSTrait
     bool bHas_FC_EcologyHTNPlanerConfig = false;
     UPROPERTY()
     FC_EcologyHTNPlanerConfig Config_FC_EcologyHTNPlanerConfig;
-
 
 }
 
@@ -218,37 +215,37 @@ bool RemoveEcologyPlaner(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcologyPlanerOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyPlaner, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyPlaner, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyPlanerOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyPlaner, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyPlaner, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyPlanerOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyPlaner, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyPlaner, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyPlanerOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyPlaner, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyPlaner, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyPlanerOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyPlaner, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyPlaner, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcologyPlanerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcologyPlaner, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcologyPlaner, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyPlanerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcologyPlaner, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcologyPlaner, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyPlanerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcologyPlaner, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcologyPlaner, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcologyHTNPlanerConfig
@@ -331,36 +328,36 @@ bool RemoveEcologyHTNPlanerConfig(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcologyHTNPlanerConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyHTNPlanerConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyHTNPlanerConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyHTNPlanerConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyHTNPlanerConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyHTNPlanerConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyHTNPlanerConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyHTNPlanerConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyHTNPlanerConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyHTNPlanerConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyHTNPlanerConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyHTNPlanerConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyHTNPlanerConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyHTNPlanerConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyHTNPlanerConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcologyHTNPlanerConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcologyHTNPlanerConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcologyHTNPlanerConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyHTNPlanerConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcologyHTNPlanerConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcologyHTNPlanerConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyHTNPlanerConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcologyHTNPlanerConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcologyHTNPlanerConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

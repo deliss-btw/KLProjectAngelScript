@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TraitDetailListItem_Helpers
 {
 UFUNCTION()

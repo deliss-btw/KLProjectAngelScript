@@ -1,4 +1,3 @@
-﻿
 namespace FVM_SystemControlEntrance
 {
     const int ModelId = 0;
@@ -241,7 +240,6 @@ struct __GeneratedProperties_FVM_SystemControlEntrance
     bool IsUnlocked;
     UPROPERTY()
     TEUIModelRef<FVM_SystemControlEntrance> Self;
-
 
 }
 

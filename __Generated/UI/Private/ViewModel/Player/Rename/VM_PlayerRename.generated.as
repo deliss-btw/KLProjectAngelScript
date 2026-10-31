@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_PlayerRename_Helpers
 {
 UFUNCTION()

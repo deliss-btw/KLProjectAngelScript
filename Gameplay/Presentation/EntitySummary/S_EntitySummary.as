@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_EntitySummary_Enable = FConsoleVariable();
 
 class US_EntitySummary : UECSScriptSystem
@@ -162,7 +161,7 @@ class US_EntitySummary : UECSScriptSystem
     }
     bool MayNeedAddToSummaryByFlockComponent(const FC_EcologyFlockComponent &inout C_FlockComponent) const
     {
-        int local_16;
+        int local_16 = 0;
         if (!(C_FlockComponent))
         {
             return false;
@@ -316,7 +315,7 @@ class US_EntitySummary : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_EcologyFlockComponentChange(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = ::__GetMonitorEcologyFlockComponentOnRemoveView(this.GetECSWorld(), EECSRegType(0), true, true);
+        FECSMonitorRuntimeView local_56 = ::__GetMonitorEcologyFlockComponentOnRemoveView(this.GetECSWorld(), EECSRegType(0), (1 != 0), true);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {
@@ -351,7 +350,7 @@ class US_EntitySummary : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_EcologyFlockBehaviorComponentChange(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = ::__GetMonitorEcologyFlockBehaviorComponentOnRemoveView(this.GetECSWorld(), EECSRegType(0), true, true);
+        FECSMonitorRuntimeView local_56 = ::__GetMonitorEcologyFlockBehaviorComponentOnRemoveView(this.GetECSWorld(), EECSRegType(0), (1 != 0), true);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {

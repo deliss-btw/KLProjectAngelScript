@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_WeaponDrawSheatheInfo_NS
 {
     const TECSComponentDerivedPtr<FC_WeaponDrawSheatheInfo> DerivedPtr = TECSComponentDerivedPtr<FC_WeaponDrawSheatheInfo>();
@@ -19,7 +18,6 @@ struct FWeaponDrawSheatheConfig
     float32 AimExitProtectTime;
     UPROPERTY()
     float32 StrafeExitProtectTime;
-
 
 }
 
@@ -45,11 +43,35 @@ struct FC_WeaponDrawSheatheInfo : FECSComponent
 
     FC_WeaponDrawSheatheInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_bOldIsAiming = false;
+        this.m_OldKeepStrafeCounter = 0;
+        this.m_bOldMatchAnyGameplayTags = false;
+        FRootDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_bWeaponShouldDrawn = false;
+        this.m_bWeaponShouldSheathe = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_WeaponDrawSheatheInfo(const FC_WeaponDrawSheatheInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_bOldIsAiming = false;
+        this.m_OldKeepStrafeCounter = 0;
+        this.m_bOldMatchAnyGameplayTags = false;
+        FRootDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_bWeaponShouldDrawn = false;
+        this.m_bWeaponShouldSheathe = false;
+        this.__InitDirtyFlags();
+        this.m_bOldIsAiming = Other.m_bOldIsAiming;
+        this.m_OldKeepStrafeCounter = int(Other.m_OldKeepStrafeCounter);
+        this.m_bOldMatchAnyGameplayTags = Other.m_bOldMatchAnyGameplayTags;
+        this.m_bWeaponShouldDrawn = Other.m_bWeaponShouldDrawn;
+        this.m_bWeaponShouldSheathe = Other.m_bWeaponShouldSheathe;
+        this.m_AimingExpireTime = Other.m_AimingExpireTime;
+        this.m_StrafeExpireTime = Other.m_StrafeExpireTime;
+        this.m_TagsExpireTime = Other.m_TagsExpireTime;
+        return;
     }
     FC_WeaponDrawSheatheInfo opAssign(const FC_WeaponDrawSheatheInfo &inout Other)
     {
@@ -287,37 +309,37 @@ bool RemoveWeaponDrawSheatheInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorWeaponDrawSheatheInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_WeaponDrawSheatheInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_WeaponDrawSheatheInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorWeaponDrawSheatheInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_WeaponDrawSheatheInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_WeaponDrawSheatheInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorWeaponDrawSheatheInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_WeaponDrawSheatheInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_WeaponDrawSheatheInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorWeaponDrawSheatheInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_WeaponDrawSheatheInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_WeaponDrawSheatheInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorWeaponDrawSheatheInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_WeaponDrawSheatheInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_WeaponDrawSheatheInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorWeaponDrawSheatheInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_WeaponDrawSheatheInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_WeaponDrawSheatheInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorWeaponDrawSheatheInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_WeaponDrawSheatheInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_WeaponDrawSheatheInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorWeaponDrawSheatheInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_WeaponDrawSheatheInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_WeaponDrawSheatheInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace EntityBB

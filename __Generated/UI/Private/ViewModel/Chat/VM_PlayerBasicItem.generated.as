@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_PlayerBasicItemExtend_Helpers
 {
 UFUNCTION()

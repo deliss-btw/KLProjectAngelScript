@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PendingConfirmQueue
 {
     const int ViewID = 0;
@@ -67,6 +66,7 @@ namespace UWidget_PendingConfirmQueue
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PendingConfirmQueue;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

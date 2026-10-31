@@ -1,4 +1,3 @@
-﻿
 enum EKnockdownCond
 {
     None,
@@ -26,7 +25,6 @@ enum EReviveType
     OtherRevive,
     MAX,
 }
-
 
 struct FReviveData : FDataObject
 {
@@ -75,7 +73,6 @@ struct FReviveData : FDataObject
     bool bUseOverrideRevivePrefabClass = false;
     UPROPERTY()
     TArray<TSubclassOf<AECSPrefab>> RestPointRevivePrefabClass;
-
 
 }
 

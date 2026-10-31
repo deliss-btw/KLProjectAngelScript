@@ -1,5 +1,3 @@
-﻿
-
 struct FAvatarBuildOverrideConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -25,7 +23,6 @@ struct FAvatarBuildOverrideConfig : FDataObject
     TMap<ESkillSlot, FDataObjectPtr> m_ReplaceSkillSlotTalents;
     UPROPERTY()
     FDataObjectPtr m_DivineSkill;
-
 
     TDataObjectPtr<FAvatarMappingConfig> GetAvatarMappingConfig() const property
     {

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TeammateMessageBubble
 {
     const int ModelId = 0;

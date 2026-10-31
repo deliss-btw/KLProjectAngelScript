@@ -1,4 +1,3 @@
-﻿
 enum ETeamType
 {
     None,
@@ -65,7 +64,31 @@ struct FM_TeamMember : FEUIModel
     }
     void RemoveFromTeam(const bool bRemoveEmptyItemFromMemberArray = true)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        TRawPtr<FTeamCommonData> local_2 = this.GetTeamCommonData();
+        if (local_2)
+        {
+            TEUIModelRef<FM_TeamMember> local_8 = local_2.opArrow().Captain;
+            if ((local_8 == FEUIModelRef(this)))
+            {
+                local_2.opArrow().Captain.Reset();
+            }
+            local_8 = TEUIModelRef<FM_TeamMember>(this);
+            int local_11 = local_2.opArrow().Members.IndexOfByKey(local_8);
+            if (local_11 != INDEX_NONE)
+            {
+                if (bRemoveEmptyItemFromMemberArray)
+                {
+                    local_2.opArrow().Members.RemoveAt(local_11);
+                }
+                else
+                {
+                    local_2.opArrow().Members[local_11].Reset();
+                }
+            }
+        }
+        this.SetTeamRef(FEUIModelWeakRef());
+        this.SetPlayer(TEUIModelRef<FM_Player>());
+        return;
     }
     ETeamType GetTeamType() const
     {

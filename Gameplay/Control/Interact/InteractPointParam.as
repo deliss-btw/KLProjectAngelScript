@@ -1,4 +1,3 @@
-﻿
 enum EInteractSelectType
 {
     CloseInteractLow,
@@ -30,7 +29,6 @@ struct FInteractPointParam
     float32 ViewOffsetRangeRatioX = -1.0f;
     UPROPERTY()
     float32 ViewOffsetRangeRatioY = -1.0f;
-
 
     bool opEquals(const FInteractPointParam &inout Other) const
     {

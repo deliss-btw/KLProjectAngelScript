@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_LocalPlayerUid
 {
     const int ViewID = 0;
@@ -23,9 +22,7 @@ class UWidget_LocalPlayerUid : UEUIUserWidget
     void RefreshUid(const uint Value)
     {
         FString local_8 = (FString("") + Value);
-        FString local_12;
-        FText::FromString(local_12);
-        this.w_formatTxt_UID.SetArgument(local_12, "0");
+        this.w_formatTxt_UID.SetArgument("0", FText::FromString(local_8));
         return;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
@@ -90,6 +87,7 @@ namespace UWidget_LocalPlayerUid
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_LocalPlayerUid;
     Result.ObservedModelChangesSubscriberNames.Add(FString("RefreshUid"));
     return;
 }

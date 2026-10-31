@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_AutoTestJobPool_NS
 {
     const TECSComponentDerivedPtr<FCS_AutoTestJobPool> DerivedPtr = TECSComponentDerivedPtr<FCS_AutoTestJobPool>();
@@ -57,7 +56,6 @@ struct FCS_AutoTestJobPool : FECSSingleton
     UPROPERTY()
     bool bBTTaskShouldStart = false;
 
-
 }
 
 struct FGTCInfo
@@ -66,7 +64,6 @@ struct FGTCInfo
     bool IsFinished;
     UPROPERTY()
     TArray<FString> LogFiles;
-
 
 }
 
@@ -169,17 +166,17 @@ bool RemoveAutoTestJobPool(const FECSWorldPtr &inout World)
 }
 void __MonitorAutoTestJobPoolLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_AutoTestJobPool, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_AutoTestJobPool, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAutoTestJobPoolActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_AutoTestJobPool, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_AutoTestJobPool, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAutoTestJobPoolModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_AutoTestJobPool, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_AutoTestJobPool, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_GTCRecord
@@ -270,16 +267,16 @@ bool RemoveGTCRecord(const FECSWorldPtr &inout World)
 }
 void __MonitorGTCRecordLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_GTCRecord, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_GTCRecord, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGTCRecordActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_GTCRecord, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_GTCRecord, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGTCRecordModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_GTCRecord, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_GTCRecord, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

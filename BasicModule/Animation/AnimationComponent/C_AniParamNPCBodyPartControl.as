@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_AniParamNPCBodyPartControl_NS
 {
     const TECSComponentDerivedPtr<FC_AniParamNPCBodyPartControl> DerivedPtr = TECSComponentDerivedPtr<FC_AniParamNPCBodyPartControl>();
@@ -21,11 +20,26 @@ struct FC_AniParamNPCBodyPartControl : FECSComponent
 
     FC_AniParamNPCBodyPartControl()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_StanceWeight = 0.0f;
+        this.m_ArmWeight = 0.0f;
+        this.m_HeadWeight = 0.0f;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_AniParamNPCBodyPartControl(const FC_AniParamNPCBodyPartControl &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_StanceWeight = 0.0f;
+        this.m_ArmWeight = 0.0f;
+        this.m_HeadWeight = 0.0f;
+        this.__InitDirtyFlags();
+        this.m_StanceWeight = Other.m_StanceWeight;
+        this.m_ArmWeight = Other.m_ArmWeight;
+        this.m_HeadWeight = Other.m_HeadWeight;
+        return;
     }
     FC_AniParamNPCBodyPartControl opAssign(const FC_AniParamNPCBodyPartControl &inout Other)
     {
@@ -87,7 +101,6 @@ class UESMAction_AniParamNPCBodyPartControl : UESMBPBaseSpanTickAction
     bool EnableArmLayer = false;
     UPROPERTY()
     bool EnableHeadLayer = false;
-
 
     UFUNCTION()
     EESMAssetWorkflow GetWorkflow_Implementation() const
@@ -219,37 +232,37 @@ bool RemoveAniParamNPCBodyPartControl(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAniParamNPCBodyPartControlOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AniParamNPCBodyPartControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AniParamNPCBodyPartControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAniParamNPCBodyPartControlOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AniParamNPCBodyPartControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AniParamNPCBodyPartControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAniParamNPCBodyPartControlOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AniParamNPCBodyPartControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AniParamNPCBodyPartControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAniParamNPCBodyPartControlOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AniParamNPCBodyPartControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AniParamNPCBodyPartControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAniParamNPCBodyPartControlOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AniParamNPCBodyPartControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AniParamNPCBodyPartControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAniParamNPCBodyPartControlLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AniParamNPCBodyPartControl, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AniParamNPCBodyPartControl, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAniParamNPCBodyPartControlActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AniParamNPCBodyPartControl, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AniParamNPCBodyPartControl, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAniParamNPCBodyPartControlModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AniParamNPCBodyPartControl, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AniParamNPCBodyPartControl, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: ASpeedGuideSplinePrefab (default scalar field AECSPrefab.bStatic has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
-
 class ASpeedGuideSplinePrefab : ASplinePrefabBase
 {
     UPROPERTY()
@@ -26,11 +21,38 @@ class ASpeedGuideSplinePrefab : ASplinePrefabBase
     UPROPERTY()
     FT_SpeedGuideSplineFXParam FXParam;
 
-
     UFUNCTION()
     void ConstructionScript_Implementation()
     {
-        if ((this.SplineCollisionWidth <= 0.0f || (this.SplineCollisionHeight <= 0.0f) || (this.CollisionBoxBaseSize <= 0.0f) || ((this.CollisionBoxMesh == nullptr))))
+        int local_3;
+        if (this.SplineCollisionWidth <= 0.0f)
+        {
+            local_3 = 1;
+        }
+        else
+        {
+            bool local_4 = (this.SplineCollisionHeight <= 0.0f);
+            local_3 = local_4;
+        }
+        if (local_3 != 0)
+        {
+            local_3 = 1;
+        }
+        else
+        {
+            bool local_4_2 = (this.CollisionBoxBaseSize <= 0.0f);
+            local_3 = local_4_2;
+        }
+        if (local_3 != 0)
+        {
+            local_3 = 1;
+        }
+        else
+        {
+            bool local_4_3 = (this.CollisionBoxMesh == nullptr);
+            local_3 = local_4_3;
+        }
+        if (local_3 != 0)
         {
             return;
         }
@@ -45,7 +67,8 @@ class ASpeedGuideSplinePrefab : ASplinePrefabBase
         int local_15 = 0;
         for (; local_15 <= local_8; )
         {
-            FVector local_32 = this.SplineComponent.GetRelativeTransform().TransformPosition((this.SplineComponent.GetLocationAtDistanceAlongSpline(FMath::Min((local_15 * this.SplineCollisionWidth), local_1), ESplineCoordinateSpace(0))));
+            float32 local_2_2 = FMath::Min((local_15 * this.SplineCollisionWidth), local_1);
+            FVector local_32 = this.SplineComponent.GetRelativeTransform().TransformPosition((this.SplineComponent.GetLocationAtDistanceAlongSpline(local_2_2, ESplineCoordinateSpace(0))));
             local_14.AddSplinePoint(local_32, ESplineCoordinateSpace(0), false);
             ++local_15;
         }

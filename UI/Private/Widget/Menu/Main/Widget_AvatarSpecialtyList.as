@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_AvatarSpecialtyList
 {
     const int ViewID = 0;
@@ -74,6 +73,7 @@ namespace UWidget_AvatarSpecialtyList
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_AvatarSpecialtyList;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

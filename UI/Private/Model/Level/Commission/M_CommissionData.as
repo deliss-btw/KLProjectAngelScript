@@ -1,4 +1,3 @@
-﻿
 namespace FMS_CommissionData
 {
     const int ModelId = 0;
@@ -25,7 +24,6 @@ struct FMsg_CommissionRecruitCdUpdated : FEUIMessage
     UPROPERTY()
     uint RecruitCdExpireTime = 0;
 
-
 }
 
 struct FMsg_CommissionRecruitSendUpdated : FEUIMessage
@@ -38,7 +36,6 @@ struct FMsg_CommissionRecruitSendUpdated : FEUIMessage
     int Retcode = 0;
     UPROPERTY()
     uint RecruitCdExpireTime = 0;
-
 
 }
 
@@ -381,7 +378,7 @@ struct FMS_CommissionData : FEUIModelSingleton
                 GetDataObjectByGSDataId<FCommissionConfig> local_98;
                 if (local_98.opImplConv().IsSet() && (local_41 == 2))
                 {
-                    NSLOCTEXT("Commission", "ChallengeFactorRefreshed", "гЂЊ{0}жЊ‘ж€е› е­ђе·Іе€·ж–°гЂЌ");
+                    NSLOCTEXT("Commission", "ChallengeFactorRefreshed", "「{0}挑战因子已刷新」");
                     FText local_154;
                     FCommonTipsParam local_158;
                     ::CommonPopup::Tips(local_154, local_158);
@@ -692,7 +689,11 @@ void __CacheAllFinishPlayerModel(FMS_CommissionData &inout Model, const FECSEnti
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    ECSWorld.__MonitorPlayerControllerLifetime(EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    ECSWorld.__MonitorPlayerControllerModification(EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorCommissionFinishLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorCommissionFinishModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_CommissionMap()
 {

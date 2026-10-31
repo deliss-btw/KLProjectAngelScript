@@ -1,4 +1,3 @@
-﻿
 namespace FMS_GMTalk
 {
     const int ModelId = 0;
@@ -37,7 +36,7 @@ struct FMS_GMTalk : FEUIModelSingleton
         FString local_8_2 = ((local_8 + "GM Response: ") + Notify.GetRetMsg());
         FDialogCallback local_48;
         FCommonDialogParam local_58;
-        ::CommonPopup::Dialog_Confirm(NSLOCTEXT("GMTalkResponse", "GMж¶€жЃЇ"), FText::FromString(local_8_2), local_48, FText(), local_58);
+        ::CommonPopup::Dialog_Confirm(NSLOCTEXT("GMTalkResponse", "GM消息"), FText::FromString(local_8_2), local_48, FText(), local_58);
         return;
     }
     int GetNop() const property

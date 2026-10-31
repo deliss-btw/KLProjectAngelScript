@@ -1,5 +1,3 @@
-﻿
-
 class US_LoadingScreenUIStateSystem : US_EUIGroupScriptSystemBase
 {
     US_LoadingScreenUIStateSystem()

@@ -1,9 +1,8 @@
-﻿
 namespace AutoTest::API::ShopAPI
 {
 TEUIModelRef<FVM_ShopPanel> GetShopViewModel()
 {
-    // body not fully recovered вЂ” stub [unresolved-operand]
+    // body not fully recovered — stub [unresolved-operand]
     TEUIModelRef<FVM_ShopPanel> __r; return __r;
 }
 void PerformPurchase()

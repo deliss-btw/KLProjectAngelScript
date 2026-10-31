@@ -1,5 +1,3 @@
-﻿
-
 class UHTNTask_ReAllocateFlockSlot : UHTNTask_ECSScriptBase
 {
     UPROPERTY()
@@ -69,7 +67,6 @@ class UHTNTask_FlockStartChangeArea : UHTNTask_ECSScriptBase
     FAISmart_EntityId TargetAreaEntityId;
     UPROPERTY()
     bool bNeedChangeAreaServerTrack = false;
-
 
     UFUNCTION()
     void CreatePlanSteps_Implementation(const FHTNContext &inout Context) const
@@ -150,7 +147,6 @@ class UHTNTask_ModifyFlockState : UHTNTask_ECSScriptBase
     UPROPERTY()
     bool ForceModifyOnSameState = false;
 
-
     UFUNCTION()
     void CreatePlanSteps_Implementation(const FHTNContext &inout Context) const
     {
@@ -180,7 +176,6 @@ class UHTNTask_FlockClaimResource : UHTNTask_ECSScriptBase
     bool SendLeaderChangeAreaEvent = false;
 
     default SetNodeName("FlockClaimResource");
-
 
     UFUNCTION()
     void CreatePlanSteps_Implementation(const FHTNContext &inout Context) const
@@ -235,7 +230,6 @@ class UHTNTask_FlockChangeEmergencyState : UHTNTask_ECSScriptBase
 
     default SetNodeName("FlockChangeEmergencyState");
 
-
     UFUNCTION()
     void CreatePlanSteps_Implementation(const FHTNContext &inout Context) const
     {
@@ -245,9 +239,9 @@ class UHTNTask_FlockChangeEmergencyState : UHTNTask_ECSScriptBase
     UFUNCTION()
     void Execute_Implementation(const FHTNContext &inout Context)
     {
-        ::FEcologyBehaviorUtils::ModifyFlockEmergencyState(0, this.IsEmergency);
+        ::FEcologyBehaviorUtils::ModifyFlockEmergencyState(0, (this.IsEmergency));
         UBlackboardComponent local_6 = Context.GetBlackboardComponent();
-        local_6.SetValueAsBool(this.DebugOutPut.SelectedKeyName, this.IsEmergency);
+        local_6.SetValueAsBool(this.DebugOutPut.SelectedKeyName, (this.IsEmergency));
         this.FinishExecuteWithContext(Context, true);
         return;
     }

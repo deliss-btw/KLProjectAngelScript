@@ -1,4 +1,3 @@
-﻿
 namespace FTimeOfDayUtils
 {
 int GetCurrentTimeOfDayInSeconds()

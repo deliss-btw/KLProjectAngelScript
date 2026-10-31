@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Camera_ViewTurnLimitEnableCorrection = FConsoleVariable();
 
 namespace __ConsoleCommond
@@ -56,7 +55,6 @@ class US_ViewTurnLimitSystem : UECSScriptSystem
     float32 TestJitterMaxYaw = 5.0f;
     float32 TestJitterMaxPitch = 1.0f;
     float32 TestJitterChancePerFrame = 0.9f;
-
 
     void StartTestJitter(const float32 InMaxYaw, const float32 InMaxPitch, const float32 InChance)
     {

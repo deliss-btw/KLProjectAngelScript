@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_PropMovementFacingDirectionOverride_NS
 {
     const TECSComponentDerivedPtr<FC_PropMovementFacingDirectionOverride> DerivedPtr = TECSComponentDerivedPtr<FC_PropMovementFacingDirectionOverride>();
@@ -16,12 +15,16 @@ struct FC_PropMovementFacingDirectionOverride : FECSComponent
     FC_PropMovementFacingDirectionOverride()
     {
         this.m_bRemoveAfterAccessed = false;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FC_PropMovementFacingDirectionOverride(const FC_PropMovementFacingDirectionOverride &inout Other)
     {
         this.m_bRemoveAfterAccessed = false;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_FacingDirectionVector = Other.m_FacingDirectionVector;
         this.m_bRemoveAfterAccessed = Other.m_bRemoveAfterAccessed;
@@ -149,37 +152,37 @@ bool RemovePropMovementFacingDirectionOverride(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPropMovementFacingDirectionOverrideOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PropMovementFacingDirectionOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PropMovementFacingDirectionOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPropMovementFacingDirectionOverrideOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PropMovementFacingDirectionOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PropMovementFacingDirectionOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPropMovementFacingDirectionOverrideOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PropMovementFacingDirectionOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PropMovementFacingDirectionOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPropMovementFacingDirectionOverrideOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PropMovementFacingDirectionOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PropMovementFacingDirectionOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPropMovementFacingDirectionOverrideOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PropMovementFacingDirectionOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PropMovementFacingDirectionOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPropMovementFacingDirectionOverrideLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PropMovementFacingDirectionOverride, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PropMovementFacingDirectionOverride, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPropMovementFacingDirectionOverrideActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PropMovementFacingDirectionOverride, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PropMovementFacingDirectionOverride, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPropMovementFacingDirectionOverrideModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PropMovementFacingDirectionOverride, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PropMovementFacingDirectionOverride, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

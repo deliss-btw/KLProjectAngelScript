@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_AnimPostProcessEnable_NS
 {
     const TECSComponentDerivedPtr<FC_AnimPostProcessEnable> DerivedPtr = TECSComponentDerivedPtr<FC_AnimPostProcessEnable>();
@@ -47,11 +46,65 @@ struct FC_AnimPostProcessEnable : FECSComponent
 
     FC_AnimPostProcessEnable()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags32 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_SteeringCount = 0;
+        this.m_OrientationWarpingCount = 0;
+        this.m_SteeringAOCount = 0;
+        this.m_OffsetRootBoneCount = 0;
+        this.m_StrafeMoveLeanCount = 0;
+        this.m_NaviMoveLeanCount = 0;
+        this.m_NaviDynamicMoveLeanCount = 0;
+        this.m_FootPlacementCount = 0;
+        this.m_bEnableSteering = false;
+        this.m_bEnableOrientationWarping = false;
+        this.m_bEnableSteeringAO = false;
+        this.m_bEnableOffsetRootBone = false;
+        this.m_bEnableStrafeMoveLean = false;
+        this.m_bEnableNaviMoveLean = false;
+        this.m_bEnableNaviDynamicMoveLean = false;
+        this.m_bEnableFootPlacement = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_AnimPostProcessEnable(const FC_AnimPostProcessEnable &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags32 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_SteeringCount = 0;
+        this.m_OrientationWarpingCount = 0;
+        this.m_SteeringAOCount = 0;
+        this.m_OffsetRootBoneCount = 0;
+        this.m_StrafeMoveLeanCount = 0;
+        this.m_NaviMoveLeanCount = 0;
+        this.m_NaviDynamicMoveLeanCount = 0;
+        this.m_FootPlacementCount = 0;
+        this.m_bEnableSteering = false;
+        this.m_bEnableOrientationWarping = false;
+        this.m_bEnableSteeringAO = false;
+        this.m_bEnableOffsetRootBone = false;
+        this.m_bEnableStrafeMoveLean = false;
+        this.m_bEnableNaviMoveLean = false;
+        this.m_bEnableNaviDynamicMoveLean = false;
+        this.m_bEnableFootPlacement = false;
+        this.__InitDirtyFlags();
+        this.m_SteeringCount = int(Other.m_SteeringCount);
+        this.m_OrientationWarpingCount = int(Other.m_OrientationWarpingCount);
+        this.m_SteeringAOCount = int(Other.m_SteeringAOCount);
+        this.m_OffsetRootBoneCount = int(Other.m_OffsetRootBoneCount);
+        this.m_StrafeMoveLeanCount = int(Other.m_StrafeMoveLeanCount);
+        this.m_NaviMoveLeanCount = int(Other.m_NaviMoveLeanCount);
+        this.m_NaviDynamicMoveLeanCount = int(Other.m_NaviDynamicMoveLeanCount);
+        this.m_FootPlacementCount = int(Other.m_FootPlacementCount);
+        this.m_bEnableSteering = Other.m_bEnableSteering;
+        this.m_bEnableOrientationWarping = Other.m_bEnableOrientationWarping;
+        this.m_bEnableSteeringAO = Other.m_bEnableSteeringAO;
+        this.m_bEnableOffsetRootBone = Other.m_bEnableOffsetRootBone;
+        this.m_bEnableStrafeMoveLean = Other.m_bEnableStrafeMoveLean;
+        this.m_bEnableNaviMoveLean = Other.m_bEnableNaviMoveLean;
+        this.m_bEnableNaviDynamicMoveLean = Other.m_bEnableNaviDynamicMoveLean;
+        this.m_bEnableFootPlacement = Other.m_bEnableFootPlacement;
+        return;
     }
     FC_AnimPostProcessEnable opAssign(const FC_AnimPostProcessEnable &inout Other)
     {
@@ -393,37 +446,37 @@ bool RemoveAnimPostProcessEnable(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAnimPostProcessEnableOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimPostProcessEnable, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimPostProcessEnable, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimPostProcessEnableOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimPostProcessEnable, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimPostProcessEnable, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimPostProcessEnableOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimPostProcessEnable, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimPostProcessEnable, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimPostProcessEnableOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimPostProcessEnable, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimPostProcessEnable, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimPostProcessEnableOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimPostProcessEnable, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimPostProcessEnable, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAnimPostProcessEnableLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AnimPostProcessEnable, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AnimPostProcessEnable, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimPostProcessEnableActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AnimPostProcessEnable, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AnimPostProcessEnable, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimPostProcessEnableModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AnimPostProcessEnable, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AnimPostProcessEnable, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: UESMAction_TriggerInteract (default scalar field UESMAction.NetTriggerMode has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FESMKeepInteractInstanceData
 {
     UPROPERTY()
@@ -11,7 +6,6 @@ struct FESMKeepInteractInstanceData
     uint64 UniqueId;
     UPROPERTY()
     FInteractionPointAndBehaviorIndex TargetPointAndBehaviorIndex;
-
 
 }
 
@@ -23,7 +17,6 @@ struct FESMKeepInteractViewInstanceData
     uint64 UniqueId;
     UPROPERTY()
     FInteractionPointAndBehaviorIndex TargetPointAndBehaviorIndex;
-
 
 }
 
@@ -273,7 +266,32 @@ class UESMAction_AddInteractProgress : UESMBPBaseInstantAction
     UFUNCTION()
     void Do_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        const FECSEntity& local_2 = Context.GetEntity();
+        Get local_6;
+        const FC_InteractionInfoForESM& local_8 = local_6.opCall();
+        if (local_8)
+        {
+            FECSEntity local_14 = FECSEntity(local_8.GetTargetEntity());
+            Modify local_18;
+            FC_RuntimeInteractTargetStatus& local_20 = local_18.opCall();
+            if (local_20)
+            {
+                UInteractionBehaviorBase local_26 = ::FInteractUtils::GetInteractionBehaviorFromEntity(local_14, local_8.GetTargetPointAndBehaviorIndex());
+                int local_28 = local_20.GetInteractionBehaviorStatusIndex(local_26);
+                if (local_28 != INDEX_NONE)
+                {
+                    FRuntimeInteractionBehaviorStatus& local_30 = local_20.GetModify_InteractionBehaviorStatus()[local_28];
+                    local_30.SetProgressValue((local_30.GetProgressValue() + 0.0f));
+                    if (local_30.GetProgressValue() > local_26.InteractProgressConfig.MaxProgressValue)
+                    {
+                        local_30.SetProgressValue(local_26.InteractProgressConfig.MaxProgressValue);
+                        ::FInteractUtils::ExecuteInteractSuccessAction(local_2, local_14, local_8.GetTargetPointAndBehaviorIndex());
+                    }
+                    local_30.SetProgressValue(FMath::Max(local_30.GetProgressValue(), 0.0f));
+                }
+            }
+        }
+        return;
     }
 }
 

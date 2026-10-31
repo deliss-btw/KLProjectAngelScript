@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TalentSkillChangeWidget
 {
     const int ViewID = 0;
@@ -265,6 +264,7 @@ namespace UWidget_TalentSkillChangeWidget
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TalentSkillChangeWidget;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnChangeSkillSelectionChanged"));
     return;
 }

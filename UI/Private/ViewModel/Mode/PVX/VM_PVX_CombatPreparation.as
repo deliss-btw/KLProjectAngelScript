@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PVX_CombatPreparation
 {
     const int ModelId = 0;
@@ -28,11 +27,27 @@ struct FVM_PVX_CombatPreparation : FEUIViewModel
 
     FVM_PVX_CombatPreparation()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_SelectedAvatarIndex = INDEX_NONE;
+        this.m_FilterByIllustrate = EAvatarIllustrate(3);
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVM_PVX_CombatPreparation(const FVM_PVX_CombatPreparation &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_SelectedAvatarIndex = INDEX_NONE;
+        this.m_FilterByIllustrate = EAvatarIllustrate(3);
+        this.m_SelectedAvatarIndex = int(Other.m_SelectedAvatarIndex);
+        this.m_IllustrateTypes = Other.m_IllustrateTypes;
+        this.m_FilterByIllustrate = Other.m_FilterByIllustrate;
+        this.m_PlayerOwnedAvatarInfo = Other.m_PlayerOwnedAvatarInfo;
+        this.m_FilteredAvatars = Other.m_FilteredAvatars;
+        this.m_SelectedAvatar = Other.m_SelectedAvatar;
+        this.m_AvatarDetailInfo = Other.m_AvatarDetailInfo;
+        this.m_Showcase = Other.m_Showcase;
+        return;
     }
     FVM_PVX_CombatPreparation& opAssign(const FVM_PVX_CombatPreparation &inout Other)
     {
@@ -52,13 +67,10 @@ struct FVM_PVX_CombatPreparation : FEUIViewModel
         GetGameplaySettings<UUtilitySettings> local_4;
         local_2 = local_4;
         FEUIModelContainer local_20;
-        UEUIManagerSubsystem local_22 = this.GetManager();
-        FEUIModelRef local_26;
-        local_20.AddModel(local_26, false);
+        local_20.AddModel(FEUIModelRef(::FVM_Image::Create(this.GetManager(), local_2.CommonCategoryAllIcon)), false);
         FVM_CommonTabItem& local_28 = ::FVM_CommonTabItem::Create(this.GetManager());
-        local_28.SetTitleText(NSLOCTEXT("PVX_CombatPreparation", "IllustrateAll", "е…ЁйѓЁ"));
-        local_26 = FEUIModelRef(local_28);
-        local_20.AddModel(local_26, false);
+        local_28.SetTitleText(NSLOCTEXT("PVX_CombatPreparation", "IllustrateAll", "全部"));
+        local_20.AddModel(FEUIModelRef(local_28), false);
         this.GetModify_IllustrateTypes().Add(local_20);
         GetGameplaySettings<UAvatarBuildSettings> local_38;
         local_36 = local_38;
@@ -69,15 +81,13 @@ struct FVM_PVX_CombatPreparation : FEUIViewModel
             {
                 FEUIModelContainer local_56;
                 FAvatarIllustrateInfo local_192;
-                if (local_36.AvatarIllustrateInfos.Find(local_192, local_41))
+                if (local_36.AvatarIllustrateInfos.Find(EAvatarIllustrate(local_41), local_192))
                 {
-                    UEUIManagerSubsystem local_22_2 = this.GetManager();
-                    local_56.AddModel(local_26, false);
+                    local_56.AddModel(FEUIModelRef(::FVM_Image::Create(this.GetManager(), local_192.Icon)), false);
                 }
                 else
                 {
-                    UEUIManagerSubsystem local_22_3 = this.GetManager();
-                    local_56.AddModel(local_26, false);
+                    local_56.AddModel(FEUIModelRef(::FVM_Image::Create(this.GetManager(), local_2.CommonCategoryAllIcon)), false);
                 }
                 FVM_CommonTabItem& local_196 = ::FVM_CommonTabItem::Create(this.GetManager());
                 local_196.SetTitleText(local_192.DisplayName);
@@ -148,15 +158,63 @@ struct FVM_PVX_CombatPreparation : FEUIViewModel
     }
     void OnSelectIllustrateFilter(const int IllustrateFilterItemIndex)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_2 = IllustrateFilterItemIndex - 1;
+        if (local_2 == INDEX_NONE)
+        {
+            this.SetFilterByIllustrate(EAvatarIllustrate(3));
+            return;
+        }
+        this.SetFilterByIllustrate(EAvatarIllustrate(local_2));
+        return;
     }
     void OnSelectAvatar(const int AvatarIndex)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (AvatarIndex != INDEX_NONE)
+        {
+            this.SetSelectedAvatarIndex(AvatarIndex);
+        }
+        return;
     }
     void RefreshFilteredAvatarList()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        FVM_AvatarInfo& local_24;
+        bool local_28;
+        if (!(this.GetPlayerOwnedAvatarInfo().IsValid()))
+        {
+            this.SetPlayerOwnedAvatarInfo(TEUIModelRef<FVMS_PlayerOwnedAvatarInfo>(::FVMS_PlayerOwnedAvatarInfo::Get(this.GetManager())));
+        }
+        this.GetModify_FilteredAvatars().Reset(0);
+        TEUIModelRef<FVMS_PlayerOwnedAvatarInfo> local_2 = this.GetPlayerOwnedAvatarInfo();
+        for (auto& local_22 : GetUnLockAvatarList())
+        {
+            if (local_24)
+            {
+                if (!(local_24.GetAvatarConfig()))
+                {
+                    local_28 = false;
+                }
+                else
+                {
+                    EAvatarIllustrate local_26;
+                    local_28 = int(local_26) == int(this.GetFilterByIllustrate()) || (int(this.GetFilterByIllustrate()) == 3);
+                }
+                if (local_28)
+                {
+                    FEUIModelContainer local_44;
+                    local_44.AddModel(local_22.opImplConv(), false);
+                    FVM_AvatarInfoExtend& local_48 = ::FVM_AvatarInfoExtend::Create(this.GetContext().Manager);
+                    local_48.SetbShowDisplayState(false);
+                    local_44.AddModel(FEUIModelRef(local_48), false);
+                    this.GetModify_FilteredAvatars().Add(local_44);
+                }
+            }
+        }
+        if (this.GetFilteredAvatars().Num() > 0)
+        {
+            int local_7 = this.GetFilteredAvatars().IndexOfByKey(this.GetSelectedAvatar());
+            this.SetSelectedAvatarIndex((local_7 == INDEX_NONE ? 0 : local_7));
+        }
+        return;
     }
     int GetSelectedAvatarIndex() const property
     {
@@ -337,7 +395,62 @@ FVM_PVX_CombatPreparation CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "IllustrateTypes";
+    local_14.TypeName = "TArray<FEUIModelContainer>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "FilteredAvatars";
+    local_14.TypeName = "TArray<FEUIModelContainer>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectedAvatar";
+    local_14.TypeName = "FEUIModelContainer";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AvatarDetailInfo";
+    local_14.TypeName = "TEUIModelRef<FVM_AvatarDetailInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectedAvatarInfo";
+    local_14.TypeName = "TEUIModelRef<FVM_AvatarInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_PVX_CombatPreparation>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_PVX_CombatPreparation;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(8);
+    local_22.AddRefPropertyDirty(0, 0, FVMS_PlayerOwnedAvatarInfo::__IndexOf_UnLockAvatarList());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("PlayerOwnedAvatarInfo");
+    int local_2_2 = FVMS_PlayerOwnedAvatarInfo::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FVMS_PlayerOwnedAvatarInfo::__IndexOf_UnLockAvatarList(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnSelectedAvatarIndexChanged";
+    local_40.DirtyFlags.Set(FVM_PVX_CombatPreparation::__IndexOf_SelectedAvatarIndex());
+    local_40.DirtyFlags.Set(FVM_PVX_CombatPreparation::__IndexOf_FilteredAvatars());
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__RefreshFilteredAvatarList";
+    local_40.DirtyFlags.Set(FVM_PVX_CombatPreparation::__IndexOf_PlayerOwnedAvatarInfo());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    local_40.DirtyFlags.Set(FVM_PVX_CombatPreparation::__IndexOf_FilterByIllustrate());
+    Result.DirtyFunctions.Add(local_40);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

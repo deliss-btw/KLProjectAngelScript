@@ -1,4 +1,3 @@
-﻿
 namespace FEasyMenuLegacyBridge
 {
 FString BuildPythonBridgeCommandByKey(const FString &inout CmdKey)

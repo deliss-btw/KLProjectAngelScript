@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_LevelUpBanner
 {
     const int ViewID = 0;
@@ -22,7 +21,6 @@ class UWidget_LevelUpBanner : UEUIUserWidget
     FConfigVM_LevelUpBanner LevelUpBannerConfig;
     UPROPERTY()
     FGetEUIModelRef LevelUpBannerDelegate;
-
 
     UFUNCTION()
     void OnViewBind_Implementation()
@@ -98,6 +96,7 @@ namespace UWidget_LevelUpBanner
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_LevelUpBanner;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

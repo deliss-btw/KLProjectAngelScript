@@ -1,12 +1,9 @@
-﻿
-
 struct FPresentationSpotDisplayModelData
 {
     UPROPERTY()
     TEUIModelRef<FM_Spot> Spot;
     UPROPERTY()
     EPresentationSpotUsage SpotUsage;
-
 
 }
 
@@ -15,7 +12,7 @@ namespace PresentationSpotDisplayUtils
 FSoftBrush GetSpotIcon(const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationSpotUsage Usage)
 {
     const UPresentationSpotDisplaySettings local_50;
-    EPresentationSpotUsage local_56;
+    USpotDisplayConfigBase local_56;
     const UPresentationSpotSettings local_174;
     if (!(Spot))
     {
@@ -32,7 +29,7 @@ FSoftBrush GetSpotIcon(const TEUIModelRef<FM_Spot> &inout Spot, const EPresentat
             return local_48;
         }
     }
-    TDataObjectPtr<FPresentationConfig> local_148 = GetPresentationConfig(Spot.opArrow(), FSpotViewAdapter(PresentationSpotDisplayUtils::GetDesiredSpotView(Spot.opArrow().GetManager())));
+    TDataObjectPtr<FPresentationConfig> local_148 = GetPresentationConfig(Spot.opArrow(), FSpotViewAdapter(PresentationSpotDisplayUtils::GetDesiredSpotView(Spot.opArrow().GetManager(), EPresentationSpotUsage(Usage))));
     if (!(local_148))
     {
         GetGameplaySettings<UPresentationSpotSettings> local_176;
@@ -44,7 +41,7 @@ FSoftBrush GetSpotIcon(const TEUIModelRef<FM_Spot> &inout Spot, const EPresentat
 FMargin GetSpotIconPadding(const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationSpotUsage Usage)
 {
     const UPresentationSpotDisplaySettings local_8;
-    EPresentationSpotUsage local_14;
+    USpotDisplayConfigBase local_14;
     if (!(Spot))
     {
         return FMargin();
@@ -78,7 +75,7 @@ FSpotView GetDesiredSpotView(const UObject ContextObject, const EPresentationSpo
     }
     else
     {
-        EPresentationSpotUsage local_12;
+        USpotDisplayConfigBase local_12;
         GetGameplaySettings<UPresentationSpotDisplaySettings> local_8;
         local_6 = local_8;
         if (local_6.DisplayConfigs.Find(Usage, local_12))

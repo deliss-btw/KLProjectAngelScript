@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ItemRarity
 {
     const int ModelId = 0;
@@ -46,8 +45,7 @@ struct FVM_ItemRarity : FEUIViewModel
     }
     void PostConstruct()
     {
-        int local_3 = int(this.GetRarity());
-        this.SetRarityConfig(::UGlobalItemSettings::Get().GetRarityConfig());
+        this.SetRarityConfig(::UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(this.GetRarity())));
         return;
     }
     int GetRarityIndex() const
@@ -101,14 +99,13 @@ struct __GeneratedProperties_FVM_ItemRarity
     UPROPERTY()
     TEUIModelRef<FVM_ItemRarity> Self;
 
-
 }
 
 namespace FVM_ItemRarity
 {
 FVM_ItemRarity& Create(const UObject ContextObject, const EItemRarity Rarity)
 {
-    return FVM_ItemRarity::CreateByManager(EUIInternal::GetContextManager(ContextObject));
+    return FVM_ItemRarity::CreateByManager(EUIInternal::GetContextManager(ContextObject), EItemRarity(Rarity));
 }
 FVM_ItemRarity CreateByManager(const UEUIManagerSubsystem Manager, const EItemRarity Rarity)
 {

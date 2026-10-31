@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommissionTier
 {
     const int ModelId = 0;
@@ -94,8 +93,13 @@ struct FVM_CommissionTier : FEUIViewModel
     }
     int GetTierIndex() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        TEUIModelRef<FM_CommissionTier> local_2 = this.GetCommissionTier();
+        if (!(local_2.opArrow().GetCommissionTierConfig()))
+        {
+            return INDEX_NONE;
+        }
+        TEUIModelRef<FM_CommissionTier> local_2_2 = this.GetCommissionTier();
+        return (int(local_2_2.opArrow().GetCommissionTierConfig().opArrow().Tier) - 1);
     }
     TEUIModelRef<FM_CommissionTier> GetCommissionTier() const property
     {
@@ -148,7 +152,6 @@ struct __GeneratedProperties_FVM_CommissionTier
     UPROPERTY()
     TEUIModelRef<FVM_CommissionTier> Self;
 
-
 }
 
 namespace FVM_CommissionTier
@@ -165,7 +168,7 @@ FVM_CommissionTier CreateByManager(const UEUIManagerSubsystem Manager, const TEU
 }
 FVM_CommissionTier& Create(const UObject ContextObject, const TEUIModelRef<FM_CommissionTier> &inout CommissionTier, const ECommissionTier SpecifiedHighlightedTier)
 {
-    return FVM_CommissionTier::CreateByManager(EUIInternal::GetContextManager(ContextObject), CommissionTier);
+    return FVM_CommissionTier::CreateByManager(EUIInternal::GetContextManager(ContextObject), CommissionTier, ECommissionTier(SpecifiedHighlightedTier));
 }
 FVM_CommissionTier CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_CommissionTier> &inout CommissionTier, const ECommissionTier SpecifiedHighlightedTier)
 {

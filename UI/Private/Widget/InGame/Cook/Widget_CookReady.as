@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CookReady
 {
     const int ViewID = 0;
@@ -218,6 +217,7 @@ namespace UWidget_CookReady
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CookReady;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnAllReady"));
     return;
 }
@@ -234,6 +234,7 @@ namespace UWidget_CookReadyHeadAvatar
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CookReadyHeadAvatar;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

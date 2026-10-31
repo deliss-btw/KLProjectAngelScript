@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AvatarTraining
 {
     const int ModelId = 0;
@@ -22,15 +21,37 @@ struct FVM_AvatarTraining : FEUIViewModel
 
     FVM_AvatarTraining()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_SelectedIndex = INDEX_NONE;
+        this.bRewardDialogOpen = false;
+        this.PendingTrainingId = 0;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        XError(ELog(17), "Should not construct model'FVM_AvatarTraining' by default constructor.");
+        return;
     }
     FVM_AvatarTraining(const FVM_AvatarTraining &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_SelectedIndex = INDEX_NONE;
+        this.bRewardDialogOpen = false;
+        this.PendingTrainingId = 0;
+        this.m_AvatarConfig = Other.m_AvatarConfig;
+        this.m_TrainingList = Other.m_TrainingList;
+        this.m_SelectedIndex = int(Other.m_SelectedIndex);
+        return;
     }
     FVM_AvatarTraining(const TDataObjectPtr<FAvatarPrefabConfig> &inout InAvatarConfig)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_SelectedIndex = INDEX_NONE;
+        this.bRewardDialogOpen = false;
+        this.PendingTrainingId = 0;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        this.SetAvatarConfig(InAvatarConfig);
+        return;
     }
     FVM_AvatarTraining opAssign(const FVM_AvatarTraining &inout Other)
     {
@@ -87,7 +108,8 @@ struct FVM_AvatarTraining : FEUIViewModel
         int local_2 = 0;
         int local_1 = local_2;
         ::FMS_TrainingModel::Get(this.GetManager()).ConsumeTrainingRedDot(local_1);
-        if (!(GetFinishReward().IsSet()))
+        TDataObjectPtr<FRewardConfig> local_28 = GetFinishReward();
+        if (!(local_28.IsSet()))
         {
             this.TryEnterTrainingLevel(local_1);
             return;
@@ -102,26 +124,18 @@ struct FVM_AvatarTraining : FEUIViewModel
             return;
         }
         bool local_53 = ::FMS_TrainingModel::Get(this.GetManager()).IsTrainingFinished(local_1);
-        TDataObjectPtr<FKLTextData> local_68;
-        ::FCommonRewardListBuilder::BuildFromRewardConfig(local_68);
-        FText local_84;
-        if (local_53)
-        {
-            local_84 = ::ChatSystemUtil::ResolveKLTextData(local_58.TrainingRewardClaimedDescTextData);
-        }
-        else
-        {
-            local_84 = ::ChatSystemUtil::ResolveKLTextData(local_58.TrainingRewardPreviewDescTextData);
-        }
+        TArray<FRewardItemEntry> local_68 = ::FCommonRewardListBuilder::BuildFromRewardConfig(local_28);
+        FText local_84 = local_53 ? ::ChatSystemUtil::ResolveKLTextData(local_58.TrainingRewardClaimedDescTextData) : ::ChatSystemUtil::ResolveKLTextData(local_58.TrainingRewardPreviewDescTextData);
         this.bRewardDialogOpen = true;
         this.PendingTrainingId = local_1;
         FDialogModelCallback local_110;
         local_110.Bind(this, FVM_AvatarTraining::OnTrainingRewardDialogClosed);
-        TDataObjectPtr<FKLTextData> local_72;
-        ::ChatSystemUtil::ResolveKLTextData(local_72);
-        ::ChatSystemUtil::ResolveKLTextData(local_58.TrainingDialogConfirmTextTextData);
-        FText local_80 = local_84;
-        ::ChatSystemUtil::ResolveKLTextData(local_58.TrainingDialogTitleTextData);
+        FText local_72 = ::ChatSystemUtil::ResolveKLTextData(local_58.TrainingDialogCancelTextTextData);
+        FText local_76 = ::ChatSystemUtil::ResolveKLTextData(local_58.TrainingDialogConfirmTextTextData);
+        FText local_80 = FText();
+        FDialogCallback local_142 = FDialogCallback(local_110);
+        FText local_146 = ::ChatSystemUtil::ResolveKLTextData(local_58.TrainingDialogTitleTextData);
+        ::CommonPopup::RewardDialog_Decision(local_146, local_68, local_142, local_84, local_80, local_76, local_72);
         return;
     }
     bool OnTrainingRewardDialogClosed(const FCommonDialogAnswer &inout Answer)

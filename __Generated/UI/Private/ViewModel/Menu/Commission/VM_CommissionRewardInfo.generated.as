@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommissionRewardInfo_Helpers
 {
 UFUNCTION()

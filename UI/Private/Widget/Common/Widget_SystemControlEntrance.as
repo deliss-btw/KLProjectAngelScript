@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_SystemControlEntrance
 {
     const int ViewID = 0;
@@ -48,6 +47,7 @@ namespace UWidget_SystemControlEntrance
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SystemControlEntrance;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

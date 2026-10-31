@@ -1,4 +1,3 @@
-﻿
 namespace FEcosimAIV2Utils
 {
 void SetNPCMainPose(const FECSEntity &inout Entity, const EEcosimAIHumanityMainPose Pose)

@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::API::DivineSkillAPI
 {
 bool HasDivineSkillUnlocked(const FName &inout DivineSkillName)

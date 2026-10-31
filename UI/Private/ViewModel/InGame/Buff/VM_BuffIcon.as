@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Buff_DebugBuffDataIcon = FConsoleVariable();
 namespace FVM_BuffIcon
 {
@@ -955,7 +954,6 @@ struct __GeneratedProperties_FVM_BuffIcon
     UPROPERTY()
     TEUIModelRef<FVM_BuffIcon> Self;
 
-
 }
 
 namespace FVM_BuffIcon
@@ -1106,7 +1104,11 @@ void __OnMeatBuffStateChange(FVM_BuffIcon &inout Model, const FECSEntity &inout 
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorPlayerMetaBuffListLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerMetaBuffListModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    ECSWorld.__MonitorBuffInstanceLifetime(EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    ECSWorld.__MonitorBuffInstanceModification(EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 bool __UIGetter_bIsPlaceholder(const FVM_BuffIcon &inout Model)
 {

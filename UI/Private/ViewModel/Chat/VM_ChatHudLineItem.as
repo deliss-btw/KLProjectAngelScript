@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ChatHudLineItem
 {
     const int ModelId = 0;

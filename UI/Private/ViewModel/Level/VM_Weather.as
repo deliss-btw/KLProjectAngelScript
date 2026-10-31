@@ -1,4 +1,3 @@
-﻿
 namespace FVM_Weather
 {
     const int ModelId = 0;
@@ -64,7 +63,7 @@ struct FVM_Weather : FEUIViewModel
         FText local_6;
         if (this.GetWeatherConfig())
         {
-            local_6 = NSLOCTEXT("VM_Weather", "WeatherTipsText", "е¤©ж°”еЏдёє{0}");
+            local_6 = NSLOCTEXT("VM_Weather", "WeatherTipsText", "天气变为{0}");
             return FText::Format(local_6, this.GetWeatherConfig().opArrow().DisplayName);
         }
         return local_6;
@@ -385,7 +384,47 @@ FVMS_CurrentWeather GetByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "WeatherConfig";
+    local_14.TypeName = "TDataObjectPtr<FWeatherConfig>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "DisplayIcon";
+    local_14.TypeName = "FSlateBrush";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "WeatherModel";
+    local_14.TypeName = "TEUIModelRef<FVM_Weather>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "OldWeatherModel";
+    local_14.TypeName = "TEUIModelRef<FVM_Weather>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVMS_CurrentWeather>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVMS_CurrentWeather;
+    FEUIModelMetaPropertyModelRef local_19;
+    local_19.PropertyName = FName("WeatherData");
+    int local_2_2 = FMS_WeatherData::ModelId;
+    Result.FunctionalPropertyModelRefs.Add(local_19);
+    FEUIModelMsgHandleDefine local_32;
+    local_32.FunctionName = "__ShowWeatherChangePopup";
+    local_32.MessageTypeName = "Msg_WeatherChanged";
+    local_32.SourcePropertyModelRefs = FBitSet64(1);
+    Result.MessageHandleFunctions.Add(local_32);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

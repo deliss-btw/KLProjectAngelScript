@@ -1,4 +1,3 @@
-﻿
 namespace FSurfaceContactFXUtils
 {
 UFUNCTION()
@@ -34,6 +33,7 @@ AFXActor DoSurfaceTrace(const FKLSpawnFxActorHelper &inout SpawnFxActorHelper, c
         return nullptr;
     }
     FECSEntity local_10 = FECSEntity(SpawnFxActorHelper.OwnerEntity);
+    FECSEntity local_14 = FECSEntity(SpawnFxActorHelper.Entity);
     FSurfaceLineTraceConfig local_56;
     local_56.TraceStartBoneOrSocketName = local_2.GetTraceStartBoneOrSocketName();
     local_56.TraceLength = local_2.GetTraceLength();
@@ -54,7 +54,6 @@ AFXActor DoSurfaceTrace(const FKLSpawnFxActorHelper &inout SpawnFxActorHelper, c
     {
         return FSurfaceContactFXUtils::PlaySurfaceVFX(local_10.GetIdValue(), local_56, SpawnFxActorHelper, SpawnTransform);
     }
-    FECSEntity local_14;
     if (local_14.IsValid())
     {
         return FSurfaceContactFXUtils::PlaySurfaceVFX(local_14.GetIdValue(), local_56, SpawnFxActorHelper, SpawnTransform);
@@ -64,8 +63,49 @@ AFXActor DoSurfaceTrace(const FKLSpawnFxActorHelper &inout SpawnFxActorHelper, c
 }
 bool FXScenePhysicsTest(FName &inout SurfaceName, bool &inout bTraceResult, const FECSEntity &inout OwnerEntity, FVector &inout BlockLocation, FVector &inout HitNormal, FQuat4f &inout OutBlockRotation, const FSurfaceContactInfo &inout SurfaceContactInfo)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    bool __r; return __r;
+    float32 local_31;
+    UPrimitiveComponent local_182;
+    FVector local_24 = (FVector(SurfaceContactInfo.GetFxStartLocation()) + FVector(SurfaceContactInfo.GetTraceStartOffset()));
+    FVector local_30(SurfaceContactInfo.GetTraceDir());
+    local_31 = SurfaceContactInfo.GetTraceLength();
+    FVector local_18 = (local_24 + (local_30.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector) * local_31));
+    FGamePhysicsUtils::GetDefaultPhysicalSurfaceName();
+    TArray<FHitResult> local_54;
+    FCollisionObjectQueryParams local_56;
+    local_56.AddObjectTypesToQuery(ECollisionChannel(0));
+    FCollisionQueryParams local_96;
+    local_96.bTraceComplex = true;
+    local_96.bReturnPhysicalMaterial = true;
+    if (FPhysicsUtils::LineTraceMulti(ECS::GetUEWorld(), EPhysicsTraceTag(32), local_54, local_24, local_18, local_56, local_96))
+    {
+        FHitResult local_166;
+        for (auto& local_180 : local_54)
+        {
+            if (!(FSceneInteractUtils::FilterInvalidHitResult(local_180)))
+            {
+                continue;
+            }
+            local_166 = local_180;
+            break;
+        }
+        if (local_166.GetbBlockingHit() && (local_182 != nullptr))
+        {
+            SurfaceName = FSceneInteractUtils::GetPhysicalMaterialNameFromHitResult(local_166);
+            BlockLocation = local_166.ImpactPoint;
+            HitNormal = local_166.Normal;
+            bTraceResult = true;
+            if ((int(SurfaceContactInfo.GetImpactRotationType())) == 0)
+            {
+                OutBlockRotation = FTransformUtils::GetSocketRotationInActor(OwnerEntity, SurfaceContactInfo.GetRootBoneName());
+            }
+            else
+            {
+                OutBlockRotation = FQuat4f(HitNormal.ToOrientationQuat());
+            }
+            return true;
+        }
+    }
+    return false;
 }
 UFUNCTION()
 AFXActor PlaySurfaceVFX(const int RefEntityId, const FSurfaceLineTraceConfig &inout TraceConfig, const FKLSpawnFxActorHelper &inout SpawnFxActorHelper, const FTransform &inout SpawnTransform)
@@ -79,15 +119,15 @@ AFXActor PlaySurfaceVFX(const int RefEntityId, const FSurfaceLineTraceConfig &in
     FSurfaceContactInfo local_44;
     if (!(TraceConfig.FxStartLocation.IsZero()))
     {
-        local_44.SetApplyTargetType(EApplyTargetType(EApplyTargetType(3)));
+        local_44.SetApplyTargetType(EApplyTargetType(3));
     }
-    FImpactFXUtils::FilllSurfaceContactEventData(EApplyTargetType(local_44.GetApplyTargetType()), local_14, local_44, TraceConfig, EImpactEventType(1));
+    FImpactFXUtils::FilllSurfaceContactEventData(local_44.GetApplyTargetType(), local_14, local_44, TraceConfig, EImpactEventType(1));
     bool local_47 = false;
     FVector local_54;
     FVector local_60;
     FQuat4f local_64;
     FName local_66;
-    if ((int(local_44.GetApplyTargetType())) == 3 && (local_14.GetActor() == nullptr))
+    if (int(local_44.GetApplyTargetType()) == 3 && (local_14.GetActor() == nullptr))
     {
         FSurfaceContactFXUtils::FXScenePhysicsTest(local_66, local_47, local_14, local_54, local_60, local_64, local_44);
     }

@@ -1,4 +1,3 @@
-﻿
 namespace FPreloadAssetUtils
 {
     const FConsoleVariable CVar_PreloadAssetDebug = FConsoleVariable();
@@ -193,20 +192,19 @@ bool RequestESMAssetPreload(const FC_ESM &inout ESM)
     UESMPreloadCustomData local_14 = (Cast<UESMPreloadCustomData>(ESM.Asset.GetCustomConfig(UESMPreloadCustomData)));
     if (local_14 != nullptr)
     {
-        FName local_20 = FName(ESM.ToString());
+        FName local_20 = FName(ESM.AssetPath.ToString());
         local_6 = FPreloadAssetUtils::AddESMPreloadCustomDataToRequest(local_14, local_20);
     }
     else
     {
-        FString local_18 = FString();
-        bool local_1 = FPreloadAssetUtils::CVar_PreloadAssetDebug.GetBool();
+        XLogIf(FPreloadAssetUtils::CVar_PreloadAssetDebug.GetBool(), ELog(0), FString().Append("ESMAssetPreload.NoCustomData, Asset:").Append(ESM.AssetPath));
     }
     return local_6;
 }
 UFUNCTION()
 bool AreAudioActionDataAssetsReady(const FAudioActionData &inout AudioData)
 {
-    for (auto& local_16 : AudioData)
+    for (auto& local_16 : AudioData.TargetEvent)
     {
         if (!(local_16.IsNull()) && !(local_16.IsValid()))
         {
@@ -239,7 +237,7 @@ bool AreAudioActionDataAssetsReady(const FAudioActionData &inout AudioData)
 UFUNCTION()
 void PreloadAudioActionDataAssets(const FAudioActionData &inout AudioData)
 {
-    for (auto& local_16 : AudioData)
+    for (auto& local_16 : AudioData.TargetEvent)
     {
         FPreloadAssetUtils::LoadAkEvent(local_16);
     }
@@ -260,6 +258,7 @@ void PreloadAudioActionDataAssets(const FAudioActionData &inout AudioData)
 UFUNCTION()
 void PreloadSimpleAudioSet(const FSimpleAudioSet &inout AudioSet)
 {
+    FPreloadAssetUtils::LoadAkEvent(AudioSet.Event);
     FPreloadAssetUtils::LoadAkSwitch(AudioSet.Switch);
     FPreloadAssetUtils::LoadAkState(AudioSet.State);
     for (auto& local_20 : AudioSet.RtpcMap)
@@ -271,6 +270,7 @@ void PreloadSimpleAudioSet(const FSimpleAudioSet &inout AudioSet)
 UFUNCTION()
 void PreloadDefaultCombatBGMConfig(const FDefaultCombatBGMConfig &inout BGMConfig)
 {
+    FPreloadAssetUtils::LoadAkState(BGMConfig.DefaultCombatBGMStateRef);
     FPreloadAssetUtils::LoadAkEvent(BGMConfig.DefaultCombatBGMEventRef);
     FPreloadAssetUtils::LoadAkState(BGMConfig.DefaultTraceBGMStateRef);
     FPreloadAssetUtils::LoadAkEvent(BGMConfig.DefaultTraceBGMEventRef);
@@ -451,11 +451,11 @@ void LoadInstrumentMidiSwitches(const FInstrumentAudioConfig &inout Config)
                 XWarning(ELog(1), FString().Append("LoadInstrumentMidiSwitches invalid MidiKey:").Append(local_21).Append(", InstrumentId:").Append(Config.InstrumentId));
                 continue;
             }
-            FString local_26 = FString();
-            FString local_26_2 = local_6.GetSwitchPath(FName());
-            if (!(local_26_2.IsEmpty()))
+            FName local_36 = FName(FString().Append(Config.SwitchGroupName).Append("-").Append(Config.SwitchValueName).Append("_").Append(FString::ApplyFormat(local_21, "02d")));
+            FString local_26 = local_6.GetSwitchPath(local_36);
+            if (!(local_26.IsEmpty()))
             {
-                FPreloadAssetUtils::LoadAkSwitch(TSoftObjectPtr<UAkSwitchValue>(FSoftObjectPath(local_26_2)));
+                FPreloadAssetUtils::LoadAkSwitch(TSoftObjectPtr<UAkSwitchValue>(FSoftObjectPath(local_26)));
             }
         }
         return;
@@ -463,11 +463,11 @@ void LoadInstrumentMidiSwitches(const FInstrumentAudioConfig &inout Config)
     local_21 = Config.PreloadMinKey;
     for (; local_21 <= int(Config.PreloadMaxKey); ++local_21)
     {
-        FString local_40 = FString();
-        FString local_40_2 = local_6.GetSwitchPath(FName());
-        if (!(local_40_2.IsEmpty()))
+        FName local_29 = FName(FString().Append(Config.SwitchGroupName).Append("-").Append(Config.SwitchValueName).Append("_").Append(FString::ApplyFormat(local_21, "02d")));
+        FString local_40 = local_6.GetSwitchPath(local_29);
+        if (!(local_40.IsEmpty()))
         {
-            FPreloadAssetUtils::LoadAkSwitch(TSoftObjectPtr<UAkSwitchValue>(FSoftObjectPath(local_40_2)));
+            FPreloadAssetUtils::LoadAkSwitch(TSoftObjectPtr<UAkSwitchValue>(FSoftObjectPath(local_40)));
         }
     }
     return;

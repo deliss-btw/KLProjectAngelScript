@@ -1,4 +1,3 @@
-﻿
 namespace FVM_SelectableItem
 {
     const int ModelId = 0;
@@ -185,7 +184,6 @@ struct __GeneratedProperties_FVM_CommonTabItem
     int EquipStateSwitcherIndex;
     UPROPERTY()
     TEUIModelRef<FVM_CommonTabItem> Self;
-
 
 }
 

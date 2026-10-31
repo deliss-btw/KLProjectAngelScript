@@ -1,5 +1,3 @@
-﻿
-
 class UMessageHintHandler_Dialog : UMessageHintHandler
 {
     UMessageHintHandler_Dialog()

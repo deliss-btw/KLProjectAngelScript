@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PositionMarkList
 {
     const int ModelId = 0;
@@ -135,7 +134,8 @@ struct __Lambda_UI_Private_ViewModel_HUD_Mark_VM_PositionMarkList_54
     }
     __Lambda_UI_Private_ViewModel_HUD_Mark_VM_PositionMarkList_54(const FVector &inout _InCameraLocation)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.__CameraLocation = _InCameraLocation;
+        return;
     }
     FVector GetCameraLocation() property
     {
@@ -173,7 +173,38 @@ FVM_PositionMarkList CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "PositionMarks";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_MarkSpotIcon>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_PositionMarkList>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_PositionMarkList;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(2);
+    local_22.AddRefPropertyDirty(0, 1, FMS_MarkViewportDisplay::__IndexOf_PositionMarks());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("MarkViewportDisplay");
+    int local_2_2 = FMS_MarkViewportDisplay::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(1);
+    local_30.RelatedDirtyMask.SetBit(FMS_MarkViewportDisplay::__IndexOf_PositionMarks(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnPositionMarksChanged";
+    local_40.DirtyFlags.Set(FVM_PositionMarkList::__IndexOf_MarkViewportDisplay());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    Result.TickFunction.FunctionName = "__Tick";
+    return;
 }
 UScriptStruct GetModelStruct()
 {

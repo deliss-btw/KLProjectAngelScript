@@ -1,4 +1,3 @@
-﻿
 enum EChatChannelParentType
 {
     Chat,
@@ -22,7 +21,6 @@ struct FChatFriendChannelTab
     int ChannelID;
     UPROPERTY()
     FGameplayTag RedDotTag;
-
 
     void FullWihtChatTab(const FChatChannelTabInfoConfig &inout Config)
     {
@@ -244,7 +242,6 @@ struct __GeneratedProperties_FVM_ChatChannelTab
     FSoftBrush ChannelTabIcon;
     UPROPERTY()
     TEUIModelRef<FVM_ChatChannelTab> Self;
-
 
 }
 

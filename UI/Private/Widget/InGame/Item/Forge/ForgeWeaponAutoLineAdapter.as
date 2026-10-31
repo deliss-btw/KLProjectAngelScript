@@ -1,5 +1,3 @@
-﻿
-
 struct FForgeWeaponAutoLineRouteOverride
 {
     UPROPERTY()
@@ -16,7 +14,6 @@ struct FForgeWeaponAutoLineRouteOverride
     float32 ToExtend = 1.0f;
     UPROPERTY()
     EEUIAutoLineRouteMode RouteMode = EEUIAutoLineRouteMode(0);
-
 
 }
 

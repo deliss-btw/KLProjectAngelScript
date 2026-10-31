@@ -1,4 +1,3 @@
-﻿
 namespace FVM_GovReviewCharge
 {
     const int ModelId = 0;
@@ -80,13 +79,11 @@ struct FVM_GovReviewCharge : FEUIViewModel
         {
             return;
         }
-        bool local_2 = false;
         int local_1 = this.GetSelectedTabIndex();
-        local_2.SetbIsSelected();
+        0.SetbIsSelected();
         this.SetSelectedTabIndex(Index);
-        bool local_2_2 = true;
         int local_1_2 = this.GetSelectedTabIndex();
-        local_2_2.SetbIsSelected();
+        1.SetbIsSelected();
         this.SetSelectedTab(this.GetTabEntries()[this.GetSelectedTabIndex()]);
         return;
     }
@@ -94,10 +91,10 @@ struct FVM_GovReviewCharge : FEUIViewModel
     {
         int local_8 = 0;
         int local_16 = 0;
-        NSLOCTEXT("GovReviewCharge", "GoodsTab", "е•†е“Ѓ");
+        NSLOCTEXT("GovReviewCharge", "GoodsTab", "商品");
         local_8.SetbIsSelected(true);
         this.GetModify_TabEntries().Add(TEUIModelRef<FVM_MissionTabEntry>(local_8));
-        NSLOCTEXT("GovReviewCharge", "RechargeTab", "е……еЂј");
+        NSLOCTEXT("GovReviewCharge", "RechargeTab", "充值");
         this.GetModify_TabEntries().Add(TEUIModelRef<FVM_MissionTabEntry>(local_16));
         this.SetSelectedTab(this.GetTabEntries()[this.GetSelectedTabIndex()]);
         return;

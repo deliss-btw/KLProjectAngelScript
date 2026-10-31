@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommissionLeaderboard_Helpers
 {
 UFUNCTION()

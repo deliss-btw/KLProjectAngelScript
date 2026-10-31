@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TestEUICanvasSlot_Helpers
 {
 UFUNCTION()

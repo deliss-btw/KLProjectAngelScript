@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TutorialHandbook_Helpers
 {
 UFUNCTION()

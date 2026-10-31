@@ -1,17 +1,15 @@
-﻿
-
 class AAS_ECSPlayerController : APXECSPlayerController
 {
     UPROPERTY()
-    TArray<float32> CameraArmLengthRatioArray;
-    int CameraArmLengthIndex;
+    TArray<float32> CameraArmLengthRatioArray = {1.0f, 2.0f, 0.5f};
+    int CameraArmLengthIndex = 0;
     UPROPERTY()
     TArray<FDataObjectPtr> CameraArmLengthAddictiveModifiers;
     FDataObjectPtr CurrentArmLengthModifierConfig;
     UPROPERTY()
-    float32 CameraArmLengthRatioBlendTime;
+    float32 CameraArmLengthRatioBlendTime = 1.0f;
     UPROPERTY()
-    float32 TargetCameraRatio;
+    float32 TargetCameraRatio = 1.0f;
     FShowSideHintDelegate ShowSideHint;
     FDebugShowHintTextDelegate ShowHintText;
     FDebugShowHintTextDelegate ShowDialogText;
@@ -22,10 +20,6 @@ class AAS_ECSPlayerController : APXECSPlayerController
     FGameModeStateChangedDelegate GameModeStateChanged;
     FSetHUDVisibilityDelegate MainHUDSetVisibility;
 
-    AAS_ECSPlayerController()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
     UFUNCTION()
     void Tick_Implementation(const float32 DeltaSeconds)
     {

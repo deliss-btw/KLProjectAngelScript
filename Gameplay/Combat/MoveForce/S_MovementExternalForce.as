@@ -1,5 +1,3 @@
-﻿
-
 class US_MovementExternalForce : UECSScriptSystem
 {
     US_MovementExternalForce()
@@ -20,8 +18,8 @@ class US_MovementExternalForce : UECSScriptSystem
         local_96.opCall();
         if (local_102 && (int(local_102.GetFactionId()) != 0))
         {
-            int local_105 = RadialForce.GetEnableFactionRelation();
-            local_48 = local_48.FilterByFaction(EFaction(local_102.GetFactionId()));
+            int local_107 = RadialForce.GetEnableFactionRelation();
+            local_48 = local_48.FilterByFaction(local_102.GetFactionId(), uint8(local_107));
         }
         FECSRuntimeQueryIterator local_130 = local_48.Iterator();
         Has local_158;
@@ -98,8 +96,8 @@ class US_MovementExternalForce : UECSScriptSystem
         local_132.opCall();
         if (local_138 && (int(local_138.GetFactionId()) != 0))
         {
-            int local_141 = BoxForce.GetEnableFactionRelation();
-            local_52 = local_52.FilterByFaction(EFaction(local_138.GetFactionId()));
+            int local_143 = BoxForce.GetEnableFactionRelation();
+            local_52 = local_52.FilterByFaction(local_138.GetFactionId(), uint8(local_143));
         }
         FECSRuntimeQueryIterator local_166 = local_52.Iterator();
         Has local_194;

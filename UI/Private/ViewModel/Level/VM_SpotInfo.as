@@ -1,4 +1,3 @@
-﻿
 namespace FVM_SpotInfo
 {
     const int ModelId = 0;
@@ -65,8 +64,7 @@ struct FVM_SpotInfo : FEUIViewModel
     }
     FMargin GetSpotIconPadding() const
     {
-        int local_1 = int(this.GetSpotUsage());
-        return ::PresentationSpotDisplayUtils::GetSpotIconPadding(this.GetSpot());
+        return ::PresentationSpotDisplayUtils::GetSpotIconPadding(this.GetSpot(), this.GetSpotUsage());
     }
     bool HasGuideDecoractor() const
     {
@@ -112,8 +110,7 @@ struct FVM_SpotInfo : FEUIViewModel
         }
         else
         {
-            int local_8 = int(this.GetSpotUsage());
-            __return = ::PresentationSpotDisplayUtils::CreateDecoractor(this.GetSpot());
+            __return = ::PresentationSpotDisplayUtils::CreateDecoractor(this.GetSpot(), this.GetSpotUsage());
         }
         return __return;
     }
@@ -186,20 +183,18 @@ struct FVM_SpotInfo : FEUIViewModel
     }
     void PostConstruct()
     {
-        int local_1 = int(this.GetSpotUsage());
-        this.SetSpotViewAdapter(FSpotViewAdapter(::PresentationSpotDisplayUtils::GetDesiredSpotView(this.GetManager())));
+        this.SetSpotViewAdapter(FSpotViewAdapter(::PresentationSpotDisplayUtils::GetDesiredSpotView(this.GetManager(), this.GetSpotUsage())));
         this.UpdateSpotIcon();
         this.UpdateDecoractors();
         return;
     }
     void OnSpotPresentationDataModified(const FMsg_SpotPresentationDataModified &inout Message)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     void UpdateSpotIcon()
     {
-        int local_1 = int(this.GetSpotUsage());
-        this.SetSpotIcon(::PresentationSpotDisplayUtils::GetSpotIcon(this.GetSpot()));
+        this.SetSpotIcon(::PresentationSpotDisplayUtils::GetSpotIcon(this.GetSpot(), this.GetSpotUsage()));
         return;
     }
     void UpdateDecoractors()
@@ -224,9 +219,8 @@ struct FVM_SpotInfo : FEUIViewModel
         {
             if (local_3.GetBit(local_45) && !(this.GetDecoractors().Contains(local_45)))
             {
-                int local_48 = int(this.GetSpotUsage());
                 EPresentationSpotDecoractor local_29_2 = local_45;
-                this.GetModify_Decoractors().Add(local_29_2, ::PresentationSpotDisplayUtils::CreateDecoractor(this.GetSpot()));
+                this.GetModify_Decoractors().Add(local_29_2, ::PresentationSpotDisplayUtils::CreateDecoractor(this.GetSpot(), this.GetSpotUsage()));
             }
         }
         return;
@@ -364,14 +358,13 @@ struct __GeneratedProperties_FVM_SpotInfo
     UPROPERTY()
     TEUIModelRef<FVM_SpotInfo> Self;
 
-
 }
 
 namespace FVM_SpotInfo
 {
 FVM_SpotInfo& Create(const UObject ContextObject, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationSpotUsage SpotUsage)
 {
-    return FVM_SpotInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot);
+    return FVM_SpotInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot, EPresentationSpotUsage(SpotUsage));
 }
 FVM_SpotInfo CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationSpotUsage SpotUsage)
 {
@@ -381,7 +374,97 @@ FVM_SpotInfo CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModel
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "SpotIcon";
+    local_14.TypeName = "FSoftBrush";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SpotName";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SpotDescription";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SpotIconPadding";
+    local_14.TypeName = "FMargin";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasGuideDecoractor";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "GuideDecoractorModel";
+    local_14.TypeName = "FEUIModelContainer";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasMarkDecoractor";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "MarkDecoractorModel";
+    local_14.TypeName = "FEUIModelContainer";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasMissionDecoractor";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "MissionDecoractorModel";
+    local_14.TypeName = "FEUIModelContainer";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasBossLowHPDecoractor";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "BossLowHPDecoractorModel";
+    local_14.TypeName = "FEUIModelContainer";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShouldShowLargeMissionIcon";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShouldShowSmallMissionIcon";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_SpotInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_SpotInfo;
+    FEUIModelMetaPropertyModelRef local_19;
+    local_19.PropertyName = FName("Spot");
+    int local_2_2 = FM_Spot::ModelId;
+    Result.FunctionalPropertyModelRefs.Add(local_19);
+    FEUIModelMsgHandleDefine local_32;
+    local_32.FunctionName = "__OnSpotPresentationDataModified";
+    local_32.MessageTypeName = "Msg_SpotPresentationDataModified";
+    local_32.SourcePropertyModelRefs = FBitSet64(1);
+    Result.MessageHandleFunctions.Add(local_32);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

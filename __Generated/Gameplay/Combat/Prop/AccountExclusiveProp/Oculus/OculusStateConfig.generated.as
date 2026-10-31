@@ -1,5 +1,3 @@
-﻿
-
 struct FOculusStateConfig
 {
     UPROPERTY()
@@ -100,13 +98,13 @@ struct FOculusStateConfig
             const FOculusStateData& local_22 = this.GetDataRaw(EOculusState(local_19));
             if (local_22.bFallBack)
             {
+                int local_14 = int(local_22.FallBack);
                 EOculusState local_23;
-                local_23 = local_22.FallBack;
-                EOculusState local_14 = local_22.FallBack;
-                FName local_11 = local_2.GetNameByValue(int(local_14));
+                local_23 = EOculusState(local_14);
+                FName local_11 = local_2.GetNameByValue(int(local_22.FallBack));
                 if (local_2.GetIndexByName(local_11, EGetByNameFlags(0)) < local_7)
                 {
-                    local_14 = local_22.FallBack;
+                    local_14 = int(local_22.FallBack);
                     this.CopyFallbackData(EOculusState(local_14), EOculusState(local_19));
                     continue;
                 }

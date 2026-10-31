@@ -1,4 +1,3 @@
-﻿
 enum EEcosimAIV2NumberComparison
 {
     GreaterThan,
@@ -92,7 +91,6 @@ struct FInteractSimpleSpeakToAndOptionCondition_SpeakNumOfTime : FInteractSimple
     UPROPERTY()
     EEcosimAIV2NumberComparison EcosimAIV2NumberComparison;
 
-
 }
 
 struct FInteractSimpleSpeakToAndOptionCondition_NotSpokenTo : FInteractSimpleSpeakToAndOptionConditionBase
@@ -101,7 +99,6 @@ struct FInteractSimpleSpeakToAndOptionCondition_NotSpokenTo : FInteractSimpleSpe
 
     FInteractSimpleSpeakToAndOptionCondition_NotSpokenTo()
     {
-        super();
         return;
     }
 }
@@ -112,7 +109,6 @@ struct FInteractSimpleSpeakToAndOptionCondition_HaventSpokenToTarget : FInteract
 
     FInteractSimpleSpeakToAndOptionCondition_HaventSpokenToTarget()
     {
-        super();
         return;
     }
 }
@@ -133,12 +129,11 @@ struct FEcosimAIV2DialogueOptionCondition_ConsumeItem : FEcosimAIV2DialogueOptio
 
     FEcosimAIV2DialogueOptionCondition_ConsumeItem()
     {
-        super();
         return;
     }
     FString ToString() const
     {
-        if (!(this) || !(this.IsSet()))
+        if (!(this._base_FEcosimAIV2DialogueOptionConditionBase) || !(this._base_FEcosimAIV2DialogueOptionConditionBase.IsSet()))
         {
             return "";
         }
@@ -191,11 +186,15 @@ struct FC_EcosimAIV2SyncSpeakToAndOptionInfo : FECSComponent
 
     FC_EcosimAIV2SyncSpeakToAndOptionInfo()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_EcosimAIV2SyncSpeakToAndOptionInfo(const FC_EcosimAIV2SyncSpeakToAndOptionInfo &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_HasSpeakToAndOptionPlayerEntityList = Other.m_HasSpeakToAndOptionPlayerEntityList;
         this.m_CurrentSpeakToEntity = Other.m_CurrentSpeakToEntity;
@@ -367,37 +366,37 @@ bool RemoveEcosimAIV2InteractSpeak(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2InteractSpeakOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcosimAIV2InteractSpeak, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcosimAIV2InteractSpeak, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2InteractSpeakOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcosimAIV2InteractSpeak, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcosimAIV2InteractSpeak, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2InteractSpeakOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcosimAIV2InteractSpeak, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcosimAIV2InteractSpeak, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2InteractSpeakOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcosimAIV2InteractSpeak, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcosimAIV2InteractSpeak, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2InteractSpeakOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcosimAIV2InteractSpeak, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcosimAIV2InteractSpeak, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcosimAIV2InteractSpeakLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcosimAIV2InteractSpeak, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcosimAIV2InteractSpeak, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2InteractSpeakActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcosimAIV2InteractSpeak, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcosimAIV2InteractSpeak, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2InteractSpeakModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcosimAIV2InteractSpeak, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcosimAIV2InteractSpeak, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcosimAIV2InteractOption
@@ -480,37 +479,37 @@ bool RemoveEcosimAIV2InteractOption(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2InteractOptionOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcosimAIV2InteractOption, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcosimAIV2InteractOption, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2InteractOptionOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcosimAIV2InteractOption, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcosimAIV2InteractOption, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2InteractOptionOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcosimAIV2InteractOption, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcosimAIV2InteractOption, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2InteractOptionOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcosimAIV2InteractOption, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcosimAIV2InteractOption, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2InteractOptionOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcosimAIV2InteractOption, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcosimAIV2InteractOption, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcosimAIV2InteractOptionLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcosimAIV2InteractOption, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcosimAIV2InteractOption, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2InteractOptionActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcosimAIV2InteractOption, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcosimAIV2InteractOption, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2InteractOptionModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcosimAIV2InteractOption, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcosimAIV2InteractOption, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcosimAIV2DialogueMemory
@@ -593,37 +592,37 @@ bool RemoveEcosimAIV2DialogueMemory(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2DialogueMemoryOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcosimAIV2DialogueMemory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcosimAIV2DialogueMemory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2DialogueMemoryOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcosimAIV2DialogueMemory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcosimAIV2DialogueMemory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2DialogueMemoryOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcosimAIV2DialogueMemory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcosimAIV2DialogueMemory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2DialogueMemoryOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcosimAIV2DialogueMemory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcosimAIV2DialogueMemory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2DialogueMemoryOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcosimAIV2DialogueMemory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcosimAIV2DialogueMemory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcosimAIV2DialogueMemoryLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcosimAIV2DialogueMemory, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcosimAIV2DialogueMemory, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2DialogueMemoryActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcosimAIV2DialogueMemory, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcosimAIV2DialogueMemory, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2DialogueMemoryModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcosimAIV2DialogueMemory, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcosimAIV2DialogueMemory, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcosimAIV2InteractSimpleSpeakToAndOption
@@ -706,37 +705,37 @@ bool RemoveEcosimAIV2InteractSimpleSpeakToAndOption(const FECSEntity &inout Enti
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2InteractSimpleSpeakToAndOptionOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcosimAIV2InteractSimpleSpeakToAndOption, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcosimAIV2InteractSimpleSpeakToAndOption, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2InteractSimpleSpeakToAndOptionOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcosimAIV2InteractSimpleSpeakToAndOption, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcosimAIV2InteractSimpleSpeakToAndOption, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2InteractSimpleSpeakToAndOptionOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcosimAIV2InteractSimpleSpeakToAndOption, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcosimAIV2InteractSimpleSpeakToAndOption, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2InteractSimpleSpeakToAndOptionOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcosimAIV2InteractSimpleSpeakToAndOption, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcosimAIV2InteractSimpleSpeakToAndOption, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2InteractSimpleSpeakToAndOptionOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcosimAIV2InteractSimpleSpeakToAndOption, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcosimAIV2InteractSimpleSpeakToAndOption, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcosimAIV2InteractSimpleSpeakToAndOptionLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcosimAIV2InteractSimpleSpeakToAndOption, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcosimAIV2InteractSimpleSpeakToAndOption, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2InteractSimpleSpeakToAndOptionActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcosimAIV2InteractSimpleSpeakToAndOption, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcosimAIV2InteractSimpleSpeakToAndOption, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2InteractSimpleSpeakToAndOptionModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcosimAIV2InteractSimpleSpeakToAndOption, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcosimAIV2InteractSimpleSpeakToAndOption, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcosimAIV2SyncSpeakToAndOptionInfo
@@ -816,37 +815,37 @@ bool RemoveEcosimAIV2SyncSpeakToAndOptionInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2SyncSpeakToAndOptionInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcosimAIV2SyncSpeakToAndOptionInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcosimAIV2SyncSpeakToAndOptionInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2SyncSpeakToAndOptionInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcosimAIV2SyncSpeakToAndOptionInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcosimAIV2SyncSpeakToAndOptionInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2SyncSpeakToAndOptionInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcosimAIV2SyncSpeakToAndOptionInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcosimAIV2SyncSpeakToAndOptionInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2SyncSpeakToAndOptionInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcosimAIV2SyncSpeakToAndOptionInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcosimAIV2SyncSpeakToAndOptionInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2SyncSpeakToAndOptionInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcosimAIV2SyncSpeakToAndOptionInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcosimAIV2SyncSpeakToAndOptionInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcosimAIV2SyncSpeakToAndOptionInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcosimAIV2SyncSpeakToAndOptionInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcosimAIV2SyncSpeakToAndOptionInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2SyncSpeakToAndOptionInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcosimAIV2SyncSpeakToAndOptionInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcosimAIV2SyncSpeakToAndOptionInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2SyncSpeakToAndOptionInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcosimAIV2SyncSpeakToAndOptionInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcosimAIV2SyncSpeakToAndOptionInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcosimAIV2PlayerDiagueInfo
@@ -929,37 +928,37 @@ bool RemoveEcosimAIV2PlayerDiagueInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2PlayerDiagueInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcosimAIV2PlayerDiagueInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcosimAIV2PlayerDiagueInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2PlayerDiagueInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcosimAIV2PlayerDiagueInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcosimAIV2PlayerDiagueInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2PlayerDiagueInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcosimAIV2PlayerDiagueInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcosimAIV2PlayerDiagueInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2PlayerDiagueInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcosimAIV2PlayerDiagueInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcosimAIV2PlayerDiagueInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2PlayerDiagueInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcosimAIV2PlayerDiagueInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcosimAIV2PlayerDiagueInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcosimAIV2PlayerDiagueInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcosimAIV2PlayerDiagueInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcosimAIV2PlayerDiagueInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2PlayerDiagueInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcosimAIV2PlayerDiagueInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcosimAIV2PlayerDiagueInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2PlayerDiagueInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcosimAIV2PlayerDiagueInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcosimAIV2PlayerDiagueInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcosimAIV2InteractingDialogueContext
@@ -1042,37 +1041,37 @@ bool RemoveEcosimAIV2InteractingDialogueContext(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2InteractingDialogueContextOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcosimAIV2InteractingDialogueContext, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcosimAIV2InteractingDialogueContext, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2InteractingDialogueContextOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcosimAIV2InteractingDialogueContext, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcosimAIV2InteractingDialogueContext, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2InteractingDialogueContextOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcosimAIV2InteractingDialogueContext, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcosimAIV2InteractingDialogueContext, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2InteractingDialogueContextOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcosimAIV2InteractingDialogueContext, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcosimAIV2InteractingDialogueContext, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2InteractingDialogueContextOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcosimAIV2InteractingDialogueContext, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcosimAIV2InteractingDialogueContext, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcosimAIV2InteractingDialogueContextLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcosimAIV2InteractingDialogueContext, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcosimAIV2InteractingDialogueContext, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2InteractingDialogueContextActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcosimAIV2InteractingDialogueContext, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcosimAIV2InteractingDialogueContext, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2InteractingDialogueContextModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcosimAIV2InteractingDialogueContext, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcosimAIV2InteractingDialogueContext, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_EcosimAIV2CareAboutPlayerController
@@ -1163,17 +1162,17 @@ bool RemoveEcosimAIV2CareAboutPlayerController(const FECSWorldPtr &inout World)
 }
 void __MonitorEcosimAIV2CareAboutPlayerControllerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_EcosimAIV2CareAboutPlayerController, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_EcosimAIV2CareAboutPlayerController, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2CareAboutPlayerControllerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_EcosimAIV2CareAboutPlayerController, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_EcosimAIV2CareAboutPlayerController, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2CareAboutPlayerControllerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_EcosimAIV2CareAboutPlayerController, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_EcosimAIV2CareAboutPlayerController, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

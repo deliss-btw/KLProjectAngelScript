@@ -1,4 +1,3 @@
-﻿
 namespace FEcosimAIV2Utils
 {
 bool IsMountOrCoachEntity(const FECSEntity &inout Entity)
@@ -146,11 +145,11 @@ FECSEntity GetMountOrSelf(const FECSEntity &inout Entity)
 }
 float32 BoundsLength(const FBox3f &inout B)
 {
-    return (B.Max.X - B.X);
+    return (B.Max.X - B.Min.X);
 }
 float32 BoundsWidth(const FBox3f &inout B)
 {
-    return (B.Max.Y - B.Y);
+    return (B.Max.Y - B.Min.Y);
 }
 FVector BoundsCenter(const FBox3f &inout B)
 {
@@ -209,12 +208,12 @@ FBox3f GetTeamMemberBounds(const FECSEntity &inout Entity)
     if (!((local_8 == Entity)) && Entity.IsValid())
     {
         FBox3f local_24 = FEcosimAIV2Utils::GetEntityPushColliderBounds(Entity);
-        local_31.Min.X = FMath::Min(local_31.Min.X, int(local_24.Min.X));
-        local_31.Min.Y = FMath::Min(local_31.Min.Y, int(local_24.Min.Y));
-        local_31.Min.Z = FMath::Min(local_31.Min.Z, int(local_24.Min.Z));
-        local_31.Max.X = FMath::Max(local_31.Max.X, int(local_24.Max.X));
-        local_31.Max.Y = FMath::Max(local_31.Max.Y, int(local_24.Max.Y));
-        local_31.Max.Z = FMath::Max(local_31.Max.Z, int(local_24.Max.Z));
+        local_31.Min.X = FMath::Min(local_31.Min.X, local_24.Min.X);
+        local_31.Min.Y = FMath::Min(local_31.Min.Y, local_24.Min.Y);
+        local_31.Min.Z = FMath::Min(local_31.Min.Z, local_24.Min.Z);
+        local_31.Max.X = FMath::Max(local_31.Max.X, local_24.Max.X);
+        local_31.Max.Y = FMath::Max(local_31.Max.Y, local_24.Max.Y);
+        local_31.Max.Z = FMath::Max(local_31.Max.Z, local_24.Max.Z);
     }
     return local_31;
 }
@@ -327,10 +326,8 @@ void BindEntityToSlot(const FECSEntity &inout TeamEntity, const int SlotIndex, c
 }
 FECSEntity CreateTeamEntity()
 {
-    int local_18 = 0;
-    FECSEntity local_12;
-    ECS::GetECSWorld().Create(EEntityType(9), local_12);
-    local_18.TeamEntity = local_12;
+    FECSEntity local_12 = ECS::GetECSWorld().Create(EEntityType(9), n"EcosimAIV2_TeamEntity");
+    0.TeamEntity = local_12;
     XLog(ELog(0), FString().Append("CreateTeamEntity: ").Append(local_12));
     return local_12;
 }

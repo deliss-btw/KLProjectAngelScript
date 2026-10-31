@@ -1,4 +1,3 @@
-﻿
 namespace FMS_WeatherData
 {
     const int ModelId = 0;
@@ -174,7 +173,9 @@ void __ShowWeatherChangePopup(FMS_WeatherData &inout Model, const FMsg_WeatherCh
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorClientWeatherEffectLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorClientWeatherEffectModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_CacheOldWeatherPrivate()
 {

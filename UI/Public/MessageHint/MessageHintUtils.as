@@ -1,4 +1,3 @@
-﻿
 namespace MessageHintUtils
 {
 void ShowMessageHint(const FECSEntity &inout Entity, const TDataObjectPtr<FMessageHintConfig> &inout Config, const TArray<FTextArgument> &inout Arguments = TArray<FTextArgument>())
@@ -126,7 +125,7 @@ void ShowMessageHintInternal(const FShowMessageHintParams &inout Params)
     UMessageHintSettings local_4 = MessageHintUtils_Internal::GetSettings();
     if (local_4 != nullptr)
     {
-        FGameplayTag local_8;
+        UMessageHintHandler local_8;
         if (local_4.Handlers.Find(Params.GetConfig().opArrow().HintType, local_8))
         {
             XLog(ELog(16), FString().Append("Show message hint internal: ").Append(Params.ToString()).Append(", with handler: ").Append(local_8.GetName()));

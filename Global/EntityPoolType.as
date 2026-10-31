@@ -1,4 +1,3 @@
-﻿
 enum EEntityPoolType
 {
     Invalid = 255,

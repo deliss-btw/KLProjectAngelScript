@@ -1,4 +1,3 @@
-﻿
 namespace EntityLevelSpotUtils
 {
 void AddSpotData(const FECSEntity &inout Entity, const ELevelSpotDataSource ConfigSource, const FLevelSpotData &inout Data)
@@ -17,7 +16,7 @@ void AddSpotDataForViewers(const FECSEntity &inout Entity, const ELevelSpotDataS
     FC_LevelSpot& local_12 = local_10.opCall();
     if (local_12)
     {
-        FLevelSpotOverrideInfo& local_14 = local_12.GetModify_LevelSpotInfo().ModifyOrAddOverride();
+        FLevelSpotOverrideInfo& local_14 = local_12.GetModify_LevelSpotInfo().ModifyOrAddOverride(ELevelSpotDataSource(ConfigSource));
         local_14.SetData(Data);
         local_14.SetViewers(Viewers);
     }
@@ -104,7 +103,7 @@ void RemoveSpotData(const FECSEntity &inout Entity, const ELevelSpotDataSource C
     FC_LevelSpot& local_12 = local_10.opCall();
     if (local_12)
     {
-        if (local_12.GetModify_LevelSpotInfo().RemoveOverride())
+        if (local_12.GetModify_LevelSpotInfo().RemoveOverride(ELevelSpotDataSource(ConfigSource)))
         {
             MarkModifiedIfDirty local_16;
             local_16.opCall(local_12);
@@ -177,11 +176,11 @@ TRawPtr<FLevelSpotOverrideInfo> FindExistingConfigPtr(const FECSEntity &inout En
     FC_LevelSpot& local_6 = local_4.opCall();
     if (local_6)
     {
-        if (!(local_6.GetLevelSpotInfo().HasOverride()))
+        if (!(local_6.GetLevelSpotInfo().HasOverride(ELevelSpotDataSource(ConfigSource))))
         {
             return TRawPtr<FLevelSpotOverrideInfo>(nullptr);
         }
-        return TRawPtr<FLevelSpotOverrideInfo>(local_6.GetModify_LevelSpotInfo().ModifyOrAddOverride());
+        return TRawPtr<FLevelSpotOverrideInfo>(local_6.GetModify_LevelSpotInfo().ModifyOrAddOverride(ELevelSpotDataSource(ConfigSource)));
     }
     return TRawPtr<FLevelSpotOverrideInfo>(nullptr);
 }

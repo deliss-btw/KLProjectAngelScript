@@ -1,4 +1,3 @@
-﻿
 namespace FVM_DisplayItem
 {
     const int ModelId = 0;
@@ -236,7 +235,21 @@ struct FVM_DisplayItem : FEUIViewModel
     }
     void RebuildFeatures()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        if (this.GetRegistry() == nullptr || !(this.GetCommonItemVM().IsValid()))
+        {
+            return;
+        }
+        TArray<EItemDisplayFeature> local_18 = this.GetRegistry().GetActiveFeaturesForScenario(EItemDisplayScenario(this.GetScenario()));
+        this.SetFeature_Count(this.TryBuildFeatureData(EItemDisplayFeature(1), local_18));
+        this.SetFeature_Level(this.TryBuildFeatureData(EItemDisplayFeature(2), local_18));
+        this.SetFeature_EquipMark(this.TryBuildFeatureData(EItemDisplayFeature(3), local_18));
+        this.SetFeature_RedDot(this.TryBuildFeatureData(EItemDisplayFeature(4), local_18));
+        this.SetFeature_New(this.TryBuildFeatureData(EItemDisplayFeature(5), local_18));
+        this.SetFeature_Mask(this.TryBuildFeatureData(EItemDisplayFeature(6), local_18));
+        this.SetFeature_Tag(this.TryBuildFeatureData(EItemDisplayFeature(7), local_18));
+        this.SetFeature_Grade(this.TryBuildFeatureData(EItemDisplayFeature(8), local_18));
+        this.SetFeature_SpecialProps(this.TryBuildFeatureData(EItemDisplayFeature(9), local_18));
+        return;
     }
     FEUIDynamicWidgetData TryBuildFeatureData(const EItemDisplayFeature Feature, const TArray<EItemDisplayFeature> &inout ActiveFeatures)
     {
@@ -246,10 +259,9 @@ struct FVM_DisplayItem : FEUIViewModel
         }
         FEUIDynamicWidgetData local_50;
         local_50.ModelContainer = this.CreateFeatureModel(EItemDisplayFeature(Feature));
-        if ((int(this.GetCurDisplayType())) != 0)
+        if (int(this.GetCurDisplayType()) != 0)
         {
-            EItemDisplayType local_65 = this.GetCurDisplayType();
-            TSoftClassPtr<UEUIUserWidget> local_90 = this.GetRegistry().GetWidgetClassForFeature();
+            TSoftClassPtr<UEUIUserWidget> local_90 = this.GetRegistry().GetWidgetClassForFeature(EItemDisplayType(this.GetCurDisplayType()), EItemDisplayFeature(Feature));
             if (!(local_90.IsNull()))
             {
                 local_50.WidgetClass = local_90;
@@ -259,46 +271,38 @@ struct FVM_DisplayItem : FEUIViewModel
     }
     FEUIModelContainer CreateFeatureModel(const EItemDisplayFeature Feature)
     {
-        FEUIModelContainer local_18;
         switch (int(Feature))
         {
         case 1:
         {
-            TEUIModelRef<FVM_CommonItem> local_4 = this.GetCommonItemVM();
-            return local_18;
+            return FEUIModelContainer(::FVM_ItemFeature_Count::Create(this.GetContext().Manager, this.GetCommonItemVM()));
         }
         case 2:
         {
-            TEUIModelRef<FVM_CommonItem> local_4_2 = this.GetCommonItemVM();
-            return local_18;
+            return FEUIModelContainer(::FVM_ItemFeature_Level::Create(this.GetContext().Manager, this.GetCommonItemVM()));
         }
         case 3:
         {
-            TEUIModelRef<FVM_CommonItem> local_4_3 = this.GetCommonItemVM();
-            return local_18;
+            return FEUIModelContainer(::FVM_ItemFeature_EquipMark::Create(this.GetContext().Manager, this.GetCommonItemVM()));
         }
         case 4:
         {
-            TEUIModelRef<FVM_CommonItem> local_4_4 = this.GetCommonItemVM();
-            return local_18;
+            return FEUIModelContainer(::FVM_ItemFeature_RedDot::Create(this.GetContext().Manager, this.GetCommonItemVM()));
         }
         case 6:
         {
-            TEUIModelRef<FVM_CommonItem> local_4_5 = this.GetCommonItemVM();
-            return local_18;
+            return FEUIModelContainer(::FVM_ItemFeature_Mask::Create(this.GetContext().Manager, this.GetCommonItemVM()));
         }
         case 7:
         {
-            TEUIModelRef<FVM_CommonItem> local_4_6 = this.GetCommonItemVM();
-            return local_18;
+            return FEUIModelContainer(::FVM_ItemFeature_Tag::Create(this.GetContext().Manager, this.GetCommonItemVM()));
         }
         case 8:
         {
-            TEUIModelRef<FVM_CommonItem> local_4_7 = this.GetCommonItemVM();
-            return local_18;
+            return FEUIModelContainer(::FVM_ItemFeature_Grade::Create(this.GetContext().Manager, this.GetCommonItemVM()));
         }
         }
-        return local_18;
+        return FEUIModelContainer();
     }
     void RebuildFeaturesWithDisplayType(const EItemDisplayType DisplayType)
     {
@@ -320,8 +324,7 @@ struct FVM_DisplayItem : FEUIViewModel
         {
             return FeatureData;
         }
-        int local_15 = int(this.GetCurDisplayType());
-        TSoftClassPtr<UEUIUserWidget> local_26 = this.GetRegistry().GetWidgetClassForFeature();
+        TSoftClassPtr<UEUIUserWidget> local_26 = this.GetRegistry().GetWidgetClassForFeature(EItemDisplayType(this.GetCurDisplayType()), EItemDisplayFeature(Feature));
         if ((local_26 == FeatureData.WidgetClass))
         {
             return FeatureData;
@@ -808,7 +811,7 @@ namespace FVM_DisplayItem
 {
 FVM_DisplayItem& Create(const UObject ContextObject, const TEUIModelRef<FM_DisplayItemData> &inout DisplayData, const EItemDisplayScenario Scenario)
 {
-    return FVM_DisplayItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), DisplayData);
+    return FVM_DisplayItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), DisplayData, EItemDisplayScenario(Scenario));
 }
 FVM_DisplayItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_DisplayItemData> &inout DisplayData, const EItemDisplayScenario Scenario)
 {
@@ -818,7 +821,150 @@ FVM_DisplayItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIMo
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "CommonItemVM";
+    local_14.TypeName = "TEUIModelRef<FVM_CommonItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Feature_Count";
+    local_14.TypeName = "FEUIDynamicWidgetData";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Feature_Level";
+    local_14.TypeName = "FEUIDynamicWidgetData";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Feature_EquipMark";
+    local_14.TypeName = "FEUIDynamicWidgetData";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Feature_RedDot";
+    local_14.TypeName = "FEUIDynamicWidgetData";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Feature_New";
+    local_14.TypeName = "FEUIDynamicWidgetData";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Feature_Mask";
+    local_14.TypeName = "FEUIDynamicWidgetData";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Feature_Tag";
+    local_14.TypeName = "FEUIDynamicWidgetData";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Feature_Grade";
+    local_14.TypeName = "FEUIDynamicWidgetData";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Feature_SpecialProps";
+    local_14.TypeName = "FEUIDynamicWidgetData";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurDisplayState";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "DisplayName";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "DisplayDesc";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ItemImage";
+    local_14.TypeName = "FSoftBrush";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ItemImageHigh";
+    local_14.TypeName = "FSoftBrush";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ItemImageTemp";
+    local_14.TypeName = "FSoftBrush";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ItemImageBG";
+    local_14.TypeName = "FSoftBrush";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "RarityColor";
+    local_14.TypeName = "FLinearColor";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_DisplayItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_DisplayItem;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(22);
+    local_22.AddRefPropertyDirty(0, 0, FM_DisplayItemData::__IndexOf_ItemImage());
+    local_22.AddRefPropertyDirty(1, 0, FM_DisplayItemData::__IndexOf_ItemImageHigh());
+    local_22.AddRefPropertyDirty(2, 0, FM_DisplayItemData::__IndexOf_ItemImageTemp());
+    local_22.AddRefPropertyDirty(3, 0, FM_DisplayItemData::__IndexOf_ItemImageBG());
+    local_22.AddRefPropertyDirty(4, 0, FM_DisplayItemData::__IndexOf_CurDisplayState());
+    local_22.AddRefPropertyDirty(5, 0, FM_DisplayItemData::__IndexOf_RarityColor());
+    local_22.AddRefPropertyDirty(6, 0, FM_DisplayItemData::__IndexOf_DisplayName());
+    local_22.AddRefPropertyDirty(7, 0, FM_DisplayItemData::__IndexOf_DisplayDesc());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("DisplayData");
+    int local_2_2 = FM_DisplayItemData::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FM_DisplayItemData::__IndexOf_ItemImage(), true);
+    local_30.RelatedDirtyMask.SetBit(FM_DisplayItemData::__IndexOf_ItemImageHigh(), true);
+    local_30.RelatedDirtyMask.SetBit(FM_DisplayItemData::__IndexOf_ItemImageTemp(), true);
+    local_30.RelatedDirtyMask.SetBit(FM_DisplayItemData::__IndexOf_ItemImageBG(), true);
+    local_30.RelatedDirtyMask.SetBit(FM_DisplayItemData::__IndexOf_CurDisplayState(), true);
+    local_30.RelatedDirtyMask.SetBit(FM_DisplayItemData::__IndexOf_RarityColor(), true);
+    local_30.RelatedDirtyMask.SetBit(FM_DisplayItemData::__IndexOf_DisplayName(), true);
+    local_30.RelatedDirtyMask.SetBit(FM_DisplayItemData::__IndexOf_DisplayDesc(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__RefreshDisplayData";
+    local_40.DirtyFlags.Set(FVM_DisplayItem::__IndexOf_DisplayData());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(7));
+    local_40.DirtyFlags.Set(FVM_DisplayItem::__IndexOf_DisplayData());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    local_40.DirtyFlags.Set(FVM_DisplayItem::__IndexOf_DisplayData());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(1));
+    local_40.DirtyFlags.Set(FVM_DisplayItem::__IndexOf_DisplayData());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(2));
+    local_40.DirtyFlags.Set(FVM_DisplayItem::__IndexOf_DisplayData());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(3));
+    local_40.DirtyFlags.Set(FVM_DisplayItem::__IndexOf_DisplayData());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(4));
+    local_40.DirtyFlags.Set(FVM_DisplayItem::__IndexOf_DisplayData());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(5));
+    local_40.DirtyFlags.Set(FVM_DisplayItem::__IndexOf_DisplayData());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(6));
+    Result.DirtyFunctions.Add(local_40);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

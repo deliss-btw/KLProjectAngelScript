@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_SpotInfo_Helpers
 {
 UFUNCTION()

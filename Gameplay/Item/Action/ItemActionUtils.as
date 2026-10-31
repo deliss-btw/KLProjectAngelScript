@@ -1,4 +1,3 @@
-﻿
 namespace ItemActionUtils
 {
 bool FindItemActionConfig(const TDataObjectPtr<FItemConfig> &inout ItemConfig, const EItemActionType ActionType, TSubclassOf<UItemActionConfigBase> &out ItemActionConfig)
@@ -58,6 +57,7 @@ void ExecuteActionFromUI(const TDataObjectPtr<FItemConfig> &inout ItemConfig, co
         return;
     }
     FFPTime local_10 = FFPTime(-1);
+    FItemActionConfigPtr local_40 = FItemActionConfigPtr(ItemConfig, EItemActionType(ActionType));
     local_14.ItemActionSource = ActionSource;
     return;
 }

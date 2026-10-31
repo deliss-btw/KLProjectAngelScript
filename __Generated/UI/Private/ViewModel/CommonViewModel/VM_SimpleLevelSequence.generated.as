@@ -1,5 +1,3 @@
-﻿
-
 struct FConfigVM_SimpleLevelSequence : FConfigEUIModelBase
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ struct FConfigVM_SimpleLevelSequence : FConfigEUIModelBase
     ELevelSequenceVisibilityMode VisibilityMode = ELevelSequenceVisibilityMode(0);
     UPROPERTY()
     TSoftObjectPtr<ULevelSequence> LevelSequenceData;
-
 
 }
 

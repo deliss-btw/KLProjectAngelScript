@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_SkillInfo_Avatar_PlayerSword
 {
     const int ViewID = 0;
@@ -97,7 +96,6 @@ class UWidget_SkillInfo_Avatar_PlayerSword : UEUIUserWidget
     UPROPERTY()
     FLinearColor LineMarkUltraOn = FLinearColor(1.0f, 0.6f, 0.0f, 1.0f);
     FEUIModelWeakRef __SkillInfo;
-
 
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
@@ -651,6 +649,7 @@ namespace UWidget_SkillInfo_Avatar_PlayerSword
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SkillInfo_Avatar_PlayerSword;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCustomSkillEnergyRatioChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnbMarkAChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnbMarkBChanged"));

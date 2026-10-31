@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class UAS_GameModeSettingsPVP : UAS_GameModeSettings
 {
@@ -41,7 +39,6 @@ class UAS_GameModeSettingsPVP : UAS_GameModeSettings
     TArray<int> PIE_Team2AvatarIndexList;
     UPROPERTY()
     int PIE_TeamBossPrefabIdx = -1;
-
 
 }
 

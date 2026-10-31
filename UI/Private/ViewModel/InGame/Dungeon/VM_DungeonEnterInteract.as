@@ -1,4 +1,3 @@
-﻿
 namespace FVM_DungeonEnterInteract
 {
     const int ModelId = 0;
@@ -206,7 +205,9 @@ void __Monitor_OnPlayerWaitReborn(FVM_DungeonEnterInteract &inout Model, const F
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorLocalInteractWithTeamLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorLocalInteractWithTeamModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TArray<FEUIModelContainer> __UIGetter_InteractPosList(const FVM_DungeonEnterInteract &inout Model)
 {

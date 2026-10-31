@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_Crosshair
 {
     const int ModelId = 0;

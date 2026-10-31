@@ -1,10 +1,8 @@
-﻿
 enum ELightFollowSource
 {
     MainLight,
     TODCurve,
 }
-
 
 class ULightDistanceComponent : UActorComponent
 {
@@ -254,7 +252,7 @@ class ULightDistanceComponent : UActorComponent
                 return;
             }
             FLinearColor local_18 = this.GetSunColorWithTemperature();
-            local_4 = FLinearColor((this.BaseColor.R * local_18.R), (this.BaseColor.G * local_18.G), (this.BaseColor.B * local_18.B), int(this.BaseColor.A));
+            local_4 = FLinearColor((this.BaseColor.R * local_18.R), (this.BaseColor.G * local_18.G), (this.BaseColor.B * local_18.B), this.BaseColor.A);
         }
         else
         {

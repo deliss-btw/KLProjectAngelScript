@@ -1,5 +1,3 @@
-﻿
-
 class US_HTNSystem : UECSScriptSystem
 {
     US_HTNSystem()

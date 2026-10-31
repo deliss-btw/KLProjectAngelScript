@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ThreeChooseOne
 {
     const int ModelId = 0;

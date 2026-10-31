@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_DisableAttachPresentation = FConsoleVariable();
 const FConsoleVariable CVar_Attachment_AvoidPenetrationFromParentPos = FConsoleVariable();
 const float32 DetachTeleportHoldCatchUpToleranceCm = 1f;
@@ -65,7 +64,109 @@ class US_AttachmentSystem : UECSScriptSystem
     }
     void HandleDetachFromEntity(const FECSEntity &inout ChildEntity, const FEventDetachFromEntity &inout Event, const FCS_FixedTime &inout FixedTime) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        bool local_5;
+        int local_12 = 0;
+        int local_46 = 0;
+        Modify local_234;
+        if (ECS::GetRuntimeInfo().IsClient && !(local_4.opCall()))
+        {
+            return;
+        }
+        if (local_12)
+        {
+            const FECSEntity& local_14 = local_12.GetParent();
+            if (local_14.IsValid())
+            {
+                FVector local_20;
+                FRotator local_26;
+                ::FAttachmentUtils::ResolveDetachLogicTransform(ChildEntity, local_14, Event.GetbOffsetBaseOnRootTransform(), Event.GetbUseDetachLocationOffset(), Event.GetbUseDetachRotationOffset(), Event.GetLocationOffset(), Event.GetRotationOffset(), FixedTime, local_20, local_26);
+                Has local_32;
+                local_5 = local_32.opCall();
+                if (local_5)
+                {
+                    local_26 = FRotator(0.0, local_26.Yaw, 0.0);
+                    if (Event.GetbAvoidPenetrationFromParentPos() && CVar_Attachment_AvoidPenetrationFromParentPos.GetBool())
+                    {
+                        if (local_46)
+                        {
+                            Get local_60;
+                            FVector local_56 = local_60.opCall().GetPosition();
+                            FVector local_72 = (local_20 - local_56);
+                            if (!(local_72.IsNearlyZero(9.999999747378752e-5)))
+                            {
+                                FCollisionQueryParams local_110;
+                                local_110.AddIgnoredEntityId(ChildEntity.GetIdValue());
+                                local_110.AddIgnoredEntityId(local_14.GetIdValue());
+                                FHitResult local_178;
+                                FCollisionResponseParams local_200;
+                                if ((FPhysicsUtils::SweepSingle(ChildEntity, false, EPhysicsTraceTag(20), local_178, local_56, local_20, local_26.Quaternion(), ECollisionChannel(18), local_46.GetScaledShape(), local_110, local_200)) && !(local_178.GetbStartPenetrating()))
+                                {
+                                    FVector local_66 = local_72.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector);
+                                    FVector local_218(local_178.Location);
+                                    local_20 = (local_218 - (local_66 * (FMath::Min(1.0f, local_178.Distance))));
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    int local_226 = Event.GetZeroOutRotationAxisWhenDetach();
+                    if (local_226 != 0)
+                    {
+                        int local_111 = Event.GetZeroOutRotationAxisWhenDetach() & 1;
+                        if (local_111 != 0)
+                        {
+                            local_26 = FRotator(0.0, local_26.Yaw, local_26.Roll);
+                        }
+                        int local_228 = Event.GetZeroOutRotationAxisWhenDetach() & 2;
+                        if (local_228 != 0)
+                        {
+                            local_26 = FRotator(local_26.Pitch, 0.0, local_26.Roll);
+                        }
+                        int local_111_2 = Event.GetZeroOutRotationAxisWhenDetach() & 4;
+                        if (local_111_2 != 0)
+                        {
+                            local_26 = FRotator(local_26.Pitch, local_26.Yaw, 0.0);
+                        }
+                    }
+                }
+                ChildEntity.TeleportTo(local_20, local_26.Quaternion(), FFPTime(-1));
+            }
+            if (!(local_14.IsValid()))
+            {
+                local_5 = false;
+            }
+            else
+            {
+                local_5 = local_4.opCall();
+            }
+            if (local_5)
+            {
+                FC_CharacterMovement& local_236 = local_234.opCall();
+                if (local_236)
+                {
+                    local_236.GetModify_PostDetachEntities().AddUnique(ChildEntity.GetId());
+                }
+            }
+            if (!(!(ChildEntity.IsValid())) && local_4.opCall())
+            {
+                FC_CharacterMovement& local_236_2 = local_234.opCall();
+                if (local_236_2)
+                {
+                    local_236_2.GetModify_PostDetachEntities().AddUnique(local_14.GetId());
+                }
+            }
+            this.InternalDetachFromEntity(ChildEntity);
+        }
+        Has local_242;
+        if (!(local_242.opCall()))
+        {
+            Remove local_246;
+            local_246.opCall();
+        }
+        return;
     }
     void HandleAttachToEntity(const FECSEntity &inout ChildEntity, const FEventAttachToEntity &inout Event, const FCS_FixedTime &inout FixedTime) const
     {
@@ -86,11 +187,11 @@ class US_AttachmentSystem : UECSScriptSystem
         local_16.SetParent(local_10);
         if (!(Event.GetAttachmentInfo().GetbAttachOffsetBaseOnRootTransform()) && !((Event.GetAttachmentInfo().GetSocketName() == NAME_None)) && (Event.GetAttachSocketUpdatePeriod() > 0))
         {
-            local_22.SetAttachmentMode(ETransformAttachmentLogicMode(ETransformAttachmentLogicMode(0)));
+            local_22.SetAttachmentMode(ETransformAttachmentLogicMode(0));
         }
         else
         {
-            local_22.SetAttachmentMode(ETransformAttachmentLogicMode(ETransformAttachmentLogicMode(1)));
+            local_22.SetAttachmentMode(ETransformAttachmentLogicMode(1));
         }
         local_22.SetAttachToEntity(local_10);
         local_22.SetLocationOffset(Event.GetAttachmentInfo().GetLocationOffset());

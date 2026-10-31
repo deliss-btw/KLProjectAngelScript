@@ -1,5 +1,3 @@
-﻿
-
 struct FT_Inventory : FECSTrait
 {
     FECSTrait _base_FECSTrait;

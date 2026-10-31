@@ -1,10 +1,7 @@
-﻿
-
 class UESMAction_OverrideMovementDestructibleDamageLevel : UESMBPBaseSpanAction
 {
     UPROPERTY()
     EDestructibleClassLevel DamageLevel = EDestructibleClassLevel(0);
-
 
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const

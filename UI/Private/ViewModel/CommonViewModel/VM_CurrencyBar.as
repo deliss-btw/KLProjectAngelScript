@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CurrencyBar
 {
     const int ModelId = 0;
@@ -105,7 +104,6 @@ struct __GeneratedProperties_FVM_CurrencyBar
     int CurrencyNum;
     UPROPERTY()
     TEUIModelRef<FVM_CurrencyBar> Self;
-
 
 }
 

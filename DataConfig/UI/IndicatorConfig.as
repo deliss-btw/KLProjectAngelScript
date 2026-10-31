@@ -1,5 +1,3 @@
-﻿
-
 struct FIndicatorConfig : FDataObject
 {
     FDataObject _base_FDataObject;

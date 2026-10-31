@@ -1,4 +1,3 @@
-﻿
 enum EItemDisplayType
 {
     None,
@@ -40,7 +39,6 @@ enum EItemDisplayScenario
     AvatarWardrobe,
     AvatarWardrobeSlotEntry,
 }
-
 
 struct FItemDisplayTypeConfig
 {
@@ -96,7 +94,7 @@ class UItemWidgetFeatureRegistrySettings : UGameplaySettingsBase
     }
     bool IsFeatureConditionMet(const EItemDisplayFeature Feature, const TEUIModelRef<FM_ItemData> &inout ItemData) const
     {
-        EItemDisplayFeature local_2;
+        UItemFeatureConditionBase local_2;
         if (this.FeatureConditions.Find(Feature, local_2) && (local_2 != nullptr))
         {
             return local_2.IsConditionMet(ItemData);
@@ -105,13 +103,43 @@ class UItemWidgetFeatureRegistrySettings : UGameplaySettingsBase
     }
     TSoftClassPtr<UEUIUserWidget> GetWidgetClassForFeature(const EItemDisplayType DisplayType, const EItemDisplayFeature Feature) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
-        TSoftClassPtr<UEUIUserWidget> __r; return __r;
+        FItemDisplayTypeConfig local_20;
+        if (!(this.FeatureConfigs.Find(DisplayType, local_20)))
+        {
+            return TSoftClassPtr<UEUIUserWidget>();
+        }
+        TSoftClassPtr<UEUIUserWidget> local_42;
+        if (local_20.FeatureWidgetMap.Find(Feature, local_42))
+        {
+            return local_42;
+        }
+        return local_42;
     }
     TArray<EItemDisplayFeature> GetActiveFeaturesForScenario(const EItemDisplayScenario Scenario) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
-        TArray<EItemDisplayFeature> __r; return __r;
+        FItemScenarioConfig local_8;
+        bool local_10 = this.ScenarioConfigs.Find(Scenario, local_8);
+        TArray<EItemDisplayFeature> local_14;
+        for (auto local_27 : this.DefaultActiveFeatures)
+        {
+            if (local_10 && local_8.ExcludeFeatures.Contains(local_27))
+            {
+                continue;
+            }
+            local_14.AddUnique(local_27);
+        }
+        if (local_10)
+        {
+            for (auto local_27 : local_8.ActiveFeatures)
+            {
+                if (local_8.ExcludeFeatures.Contains(local_27))
+                {
+                    continue;
+                }
+                local_14.AddUnique(local_27);
+            }
+        }
+        return local_14;
     }
     bool IsFeatureActive(const EItemDisplayScenario Scenario, const EItemDisplayFeature Feature) const
     {

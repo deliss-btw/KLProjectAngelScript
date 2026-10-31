@@ -1,4 +1,3 @@
-﻿
 namespace FVM_SocialMotionItem
 {
     const int ModelId = 0;
@@ -78,7 +77,7 @@ struct FVM_SocialMotionItem : FEUIViewModel
     }
     void PostConstruct()
     {
-        this.SetTooltipModel(FEUIModelRef());
+        this.SetTooltipModel(FEUIModelRef(::FVM_LockHover::Create(this.GetContext().Manager, this.GetData().opArrow().LockSource)));
         if (int(this.GetData().opArrow().ShowType) == 0)
         {
             if (this.GetIsLock())
@@ -118,7 +117,7 @@ struct FVM_SocialMotionItem : FEUIViewModel
     }
     FText GetName() const
     {
-        // body not fully recovered вЂ” stub [no-return]
+        // body not fully recovered — stub [no-return]
         FText __r; return __r;
     }
     UTexture2D GetActionIcon() const
@@ -274,10 +273,9 @@ struct __GeneratedProperties_FVM_SocialMotionItem
 
 namespace FVM_SocialMotionItem
 {
-FVM_SocialMotionItem Create(const UObject ContextObject, const EMotionType Type, const TDataObjectPtr<FMotionData> &inout Data, const bool IsLock)
+FVM_SocialMotionItem& Create(const UObject ContextObject, const EMotionType Type, const TDataObjectPtr<FMotionData> &inout Data, const bool IsLock)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    FVM_SocialMotionItem __r; return __r;
+    return FVM_SocialMotionItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), EMotionType(Type), Data, IsLock);
 }
 FVM_SocialMotionItem CreateByManager(const UEUIManagerSubsystem Manager, const EMotionType Type, const TDataObjectPtr<FMotionData> &inout Data, const bool IsLock)
 {

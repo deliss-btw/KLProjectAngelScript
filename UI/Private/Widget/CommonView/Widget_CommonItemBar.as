@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommonItemBar
 {
     const int ViewID = 0;
@@ -144,20 +143,7 @@ class UWidget_CommonItemBar : UEUIUserWidget
     UFUNCTION()
     void ApplySharedHoverAnchor(const UWidget InHoverAnchor, const ECommonHoverLayout InHoverLayout)
     {
-        if (this.ItemBar.IsValid())
-        {
-            InHoverAnchor.SetSharedHoverAnchor();
-        }
-        if (this.HoverProvider == nullptr)
-        {
-            return;
-        }
-        this.HoverProvider.SetHoverForWidgetOverride(InHoverAnchor);
-        if (this.HoverProvider.HoverProvider.IsValid())
-        {
-            SetHoverPosition();
-        }
-        return;
+        // body not fully recovered — stub [argmismatch:argint]
     }
     void ApplyConfiguredSharedHoverAnchor()
     {
@@ -259,6 +245,7 @@ namespace UWidget_CommonItemBar
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonItemBar;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

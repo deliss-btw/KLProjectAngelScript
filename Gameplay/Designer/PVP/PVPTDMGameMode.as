@@ -1,15 +1,11 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FPVPTDMGameModeFlowSettings (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FPVPTDMGameModeFlowSettings : FGameModeFlowSettings
 {
     FGameModeFlowSettings _base_FGameModeFlowSettings;
 
+    default _base_FGameModeFlowSettings = UPVPTDMGameModeFlow;
+
     FPVPTDMGameModeFlowSettings()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -146,6 +142,7 @@ class UPVPTDMGameModeFlow : UPVPGameModeFlowBase
     void BeginNewRound() const
     {
         int local_14 = 0;
+        int local_314 = 0;
         FECSWorldPtr local_2 = ECS::GetECSWorld();
         Has local_6;
         if (!(local_6.opCall()))
@@ -164,6 +161,7 @@ class UPVPTDMGameModeFlow : UPVPGameModeFlowBase
         Super::ClampPotionsForAllPlayers();
         FFPTime local_308 = FFPTime(-1);
         FECSWorldPtr local_2_3 = ECS::GetECSWorld();
+        local_314.CustomName = this.BrawlPrepStartLevelEventName;
         FFPTime local_306 = FFPTime(-1);
         FECSWorldPtr local_2_4 = ECS::GetECSWorld();
         SendEvent local_318;
@@ -172,6 +170,7 @@ class UPVPTDMGameModeFlow : UPVPGameModeFlowBase
     }
     void TickRoundPrep(FCS_PVP_TDM_RoundData &inout RD) const
     {
+        int local_302 = 0;
         if (ECS::GetContextTime().opCmp(RD.GetRoundPrepEndTime()) >= 0)
         {
             int local_289;
@@ -180,6 +179,7 @@ class UPVPTDMGameModeFlow : UPVPGameModeFlowBase
             RD.SetRoundCombatEndTime((ECS::GetContextTime() + FFPTime(local_289)));
             FFPTime local_2 = FFPTime(-1);
             FECSWorldPtr local_296 = ECS::GetECSWorld();
+            local_302.CustomName = this.BrawlPrepEndLevelEventName;
             FFPTime local_294 = FFPTime(-1);
             FECSWorldPtr local_296_2 = ECS::GetECSWorld();
             SendEvent local_306;

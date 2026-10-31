@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_GramherSkillResourceItem_Helpers
 {
 UFUNCTION()

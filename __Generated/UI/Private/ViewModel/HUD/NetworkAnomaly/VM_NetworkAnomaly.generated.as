@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_NetworkAnomaly_Helpers
 {
 UFUNCTION()

@@ -1,5 +1,3 @@
-﻿
-
 class US_EcosimAIV2QuestSystem : UECSScriptSystem
 {
     UPROPERTY()

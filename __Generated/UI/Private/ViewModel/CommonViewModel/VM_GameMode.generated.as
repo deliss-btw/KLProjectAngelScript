@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_GameMode_Helpers
 {
 UFUNCTION()

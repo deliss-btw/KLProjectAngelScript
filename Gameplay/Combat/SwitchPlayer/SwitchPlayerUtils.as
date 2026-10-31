@@ -1,4 +1,3 @@
-﻿
 enum ESwitchPlayerBlockReason
 {
     None,
@@ -211,10 +210,10 @@ void CopyStatesForInplaceSwitch(const FECSEntity &inout PrevEntity, const FECSEn
     for (; local_49 < local_46.Player.GetSMRuntime().Num(); ++local_49)
     {
         UESMStateMachine local_56 = local_40.Asset.GetStateMachine(local_49);
-        local_57 = local_46.Player.GetSMRuntime()[].GetStateIndex();
+        local_57 = local_46.Player.GetSMRuntime()[local_49].GetStateIndex();
         FName local_59 = local_56.GetDataName();
         FName local_61 = local_56.GetState_BP(local_57).GetDataName();
-        FFPTime local_68 = local_46.Player.GetSMRuntime()[].GetStateLastTime();
+        FFPTime local_68 = local_46.Player.GetSMRuntime()[local_49].GetStateLastTime();
         if (local_48.Asset.GetStateMachineByName(local_59) == nullptr)
         {
             continue;

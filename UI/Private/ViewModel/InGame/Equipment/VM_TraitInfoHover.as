@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TraitInfoHover
 {
     const int ModelId = 0;
@@ -84,7 +83,7 @@ struct FVM_TraitInfoHover : FEUIViewModel
     {
         if (this.GetTraitLevel() > this.GetTraitMaxLevel())
         {
-            return NSLOCTEXT("TraitLevelOutOfLimit", "жєўе‡є");
+            return NSLOCTEXT("TraitLevelOutOfLimit", "溢出");
         }
         if (this.GetTraitLevel() == this.GetTraitMaxLevel())
         {
@@ -98,7 +97,7 @@ struct FVM_TraitInfoHover : FEUIViewModel
     }
     FText GetTraitName() const
     {
-        // body not fully recovered вЂ” stub [no-return]
+        // body not fully recovered — stub [no-return]
         FText __r; return __r;
     }
     FEUIModelContainer GetTraitDetailListModel() const
@@ -192,7 +191,6 @@ struct __GeneratedProperties_FVM_TraitInfoHover
     FEUIModelContainer TraitDetailListModel;
     UPROPERTY()
     TEUIModelRef<FVM_TraitInfoHover> Self;
-
 
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 class UESMAnimInstance_MonsterNoxiousInsect : UESMAnimInstance_MonsterBase
 {
     UPROPERTY()
@@ -50,10 +48,9 @@ class UESMAnimInstance_MonsterNoxiousInsect : UESMAnimInstance_MonsterBase
     {
         if (this.Entity.IsValid())
         {
+            FC_RelativeDesiredRotation local_14;
             FFPTime local_6 = this.GetContextSampleTime();
-            FFPTime local_4 = (local_6 - 0.5);
-            FECSEntity::SampleHistory(this.Entity);
-            FFPTime local_14;
+            FECSEntity::SampleHistory(this.Entity).opCall((local_6 - 0.5), local_14);
             return FMath::Lerp(this.RelativeDesiredRotation.GetYaw(), local_14.GetYaw(), 0.5f);
         }
         else
@@ -66,10 +63,9 @@ class UESMAnimInstance_MonsterNoxiousInsect : UESMAnimInstance_MonsterBase
     {
         if (this.Entity.IsValid())
         {
+            FC_RelativeDesiredRotation local_14;
             FFPTime local_8 = FFPTime();
-            FFPTime local_4 = (this.GetContextSampleTime() - 1);
-            FECSEntity::SampleHistory(this.Entity);
-            FFPTime local_14;
+            FECSEntity::SampleHistory(this.Entity).opCall((this.GetContextSampleTime() - 1), local_14);
             return FMath::Lerp(this.RelativeDesiredRotation.GetYaw(), local_14.GetYaw(), 0.5f);
         }
         else

@@ -1,4 +1,3 @@
-﻿
 enum EItemActionType
 {
     Use,
@@ -18,7 +17,6 @@ enum EItemActionTriggerPhase
     OnExcutionFailed,
 }
 
-
 struct FItemActionSource
 {
     FSubDirtyFlags8 __DirtyFlags;
@@ -33,12 +31,18 @@ struct FItemActionSource
 
     FItemActionSource()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_ItemUid = 0;
+        this.m_bSpecifyInventoryID = false;
+        FSubDirtyFlags8 local_4;
+        this.__DirtyFlags = local_4;
+        return;
     }
     FItemActionSource(const FItemActionSource &inout Other)
     {
         this.m_ItemUid = 0;
         this.m_bSpecifyInventoryID = false;
+        FSubDirtyFlags8 local_28;
+        this.__DirtyFlags = local_28;
         this.m_ItemOwner = Other.m_ItemOwner;
         this.m_ItemConfig = Other.m_ItemConfig;
         this.m_ItemUid = Other.m_ItemUid;
@@ -153,9 +157,9 @@ struct FItemActionRuntimeInfo
     UPROPERTY()
     TArray<EItemActionTriggerPhase> m_ExecutedPhases;
     UPROPERTY()
-    FFPTime m_ActionStartTime = -1;
+    FFPTime m_ActionStartTime;
     UPROPERTY()
-    FFPTime m_ActionTimeout = -1;
+    FFPTime m_ActionTimeout;
     UPROPERTY()
     bool m_bRunning;
     UPROPERTY()
@@ -165,8 +169,28 @@ struct FItemActionRuntimeInfo
     UPROPERTY()
     bool m_bFailed;
 
+    FItemActionRuntimeInfo()
+    {
+        this.m_bRunning = false;
+        this.m_bCostPaid = false;
+        this.m_bFinished = false;
+        this.m_bFailed = false;
+        FSubDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_ActionStartTime = -1;
+        this.m_ActionTimeout = -1;
+        return;
+    }
     FItemActionRuntimeInfo(const FItemActionRuntimeInfo &inout Other)
     {
+        this.m_bRunning = false;
+        this.m_bCostPaid = false;
+        this.m_bFinished = false;
+        this.m_bFailed = false;
+        FSubDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_ActionStartTime = -1;
+        this.m_ActionTimeout = -1;
         this.m_ActionSource = Other.m_ActionSource;
         this.m_ExecutedPhases = Other.m_ExecutedPhases;
         this.m_ActionStartTime = Other.m_ActionStartTime;
@@ -490,7 +514,13 @@ class UItemActionConfigBase : UDataAsset
     }
     void ExecuteTriggers(const EItemActionTriggerPhase Phase, FItemActionRuntimeInfo &inout RuntimeInfo) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FItemActionTriggerArray local_4;
+        if (this.ActionTriggers.Find(Phase, local_4))
+        {
+            this.ExecuteTriggersInternal(local_4.Triggers, RuntimeInfo.GetActionSource());
+        }
+        RuntimeInfo.GetModify_ExecutedPhases().Add(Phase);
+        return;
     }
     void ExecuteTriggersInternal(const TArray<UItemActionTriggerBase> &inout Triggers, const FItemActionSource &inout ActionSource) const
     {

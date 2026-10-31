@@ -1,4 +1,3 @@
-﻿
 namespace FMovementUtils
 {
 bool TryComputeNonPenetrateLocation(const FHitResult &inout Hit, const FVector &inout CurrentLocation, const float32 SkinOffset, FVector &inout OutSafeLocation)
@@ -345,10 +344,7 @@ FECSEntity GetTrackTargetEntity(const FTrackTargetParams &inout Params, const FE
                 }
                 if (TrackSoftLockConfig != nullptr && (local_4 == ENTITY_NULL))
                 {
-                    FFPTime local_68;
-                    FLockTargetUtils::GetInitOverrideInfo(OwnerEntity, local_68);
-                    FLockTargetResult local_86;
-                    local_4 = local_86.LockTarget;
+                    local_4 = FLockTargetUtils::PickLockTargetResult(ELockTargetType(1), OwnerEntity, Time, TrackSoftLockConfig.Data, FLockTargetUtils::GetInitOverrideInfo(OwnerEntity, Time)).LockTarget;
                 }
             }
         }

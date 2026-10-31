@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::API::NavAPI
 {
 float GetViewYawToTarget(const int PawnEntityId, const FVector &inout TargetLocation)

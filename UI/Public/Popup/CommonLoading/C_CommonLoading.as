@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_CommonLoadingManager_NS
 {
     const TECSComponentDerivedPtr<FCS_CommonLoadingManager> DerivedPtr = TECSComponentDerivedPtr<FCS_CommonLoadingManager>();
@@ -32,7 +31,6 @@ struct FCS_CommonLoadingManager : FECSSingleton
     UPROPERTY()
     FEUIWidgetRef LoadingPage;
 
-
 }
 
 struct FCE_ShowLoadingPage : FECSEvent
@@ -44,7 +42,6 @@ struct FCE_ShowLoadingPage : FECSEvent
     float32 FadeInTime = -1.0f;
     UPROPERTY()
     float32 FadeOutTime = -1.0f;
-
 
 }
 
@@ -136,16 +133,16 @@ bool RemoveCommonLoadingManager(const FECSWorldPtr &inout World)
 }
 void __MonitorCommonLoadingManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_CommonLoadingManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_CommonLoadingManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommonLoadingManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_CommonLoadingManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_CommonLoadingManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommonLoadingManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_CommonLoadingManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_CommonLoadingManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

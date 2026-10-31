@@ -1,4 +1,3 @@
-﻿
 namespace FMS_LevelInfo
 {
     const int ModelId = 0;

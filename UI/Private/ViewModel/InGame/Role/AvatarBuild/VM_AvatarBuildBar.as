@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AvatarBuildBar
 {
     const int ModelId = 0;

@@ -1,4 +1,3 @@
-﻿
 enum EObjectiveItemUIState
 {
     Pending,
@@ -58,7 +57,44 @@ bool TryFindActivetedObjectiveInstance(const uint InstanceId, FObjectiveInstance
 }
 void RegisterAndUpdateConditionInfo(FObjectiveConditionInfo &inout ConditionInfo, const TDataObjectPtr<FConditionConfigBase> &inout ConditionConfig, const FObjectiveContext &inout Context)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    int local_26 = 0;
+    int local_86 = 0;
+    int local_167 = 0;
+    ConditionInfo.ConditionConfig = ConditionConfig;
+    ConditionInfo.ProgressValue = 0;
+    ConditionInfo.TargetProgressValue = ConditionUtils::GetTargetValue(ConditionConfig);
+    if (local_26 == 2)
+    {
+        CastTo local_32;
+        TDataObjectPtr<FLocalConditionConfigBase> local_56 = local_32.opCall();
+        if (local_56)
+        {
+            local_86 = int(Context.UniqueIdForUsage);
+            ConditionInfo.ConditionIdentifier = FConditionIdentifier(GetUniqueID(), local_86, Context.ConditionUsage);
+            ObjectiveUtils::RegisterLocalCondition(local_56, Context.ContextEntity);
+        }
+        return;
+    }
+    if (local_26 == 1)
+    {
+        CastTo local_142;
+        if (local_142.opCall())
+        {
+            ConditionInfo.GSCondDataId = local_86;
+            local_86 = int(Context.UniqueIdForUsage);
+            int64 local_88 = local_167;
+            ConditionInfo.ConditionIdentifier = FConditionIdentifier(local_88, local_86, Context.ConditionUsage);
+            return;
+        }
+        CastTo local_196;
+        if (local_196.opCall())
+        {
+            ConditionInfo.GSCondDataId = local_167;
+            int64 local_88_2 = local_86;
+            ConditionInfo.ConditionIdentifier = FConditionIdentifier(local_88_2, int(Context.UniqueIdForUsage), Context.ConditionUsage);
+        }
+    }
+    return;
 }
 uint CreateObjectiveInstance(const TDataObjectPtr<FObjectiveConfig> &inout Objective, const FObjectiveContext &inout Context)
 {
@@ -444,13 +480,13 @@ bool IsCommissionObjective(const TDataObjectPtr<FObjectiveConfig> &inout Objecti
 UFUNCTION()
 FText GetObjectiveDesc(const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConfig, const int ProgressValue = 0, const int FailProgressValue = 0)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     FText __r; return __r;
 }
 UFUNCTION()
 FText GetObjectiveProgress(const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConfig, const int ProgressValue = 0, const int FailProgressValue = 0)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     FText __r; return __r;
 }
 FGuideContext CreateGuideContext(const FECSEntity &inout RequesterPlayer, const TDataObjectPtr<FLevelInfoConfig> &inout LevelInfo, const TDataObjectPtr<FObjectiveSingleConfig> &inout ObjectiveSingle, const int GuideIndex, const FGuideDataSourceConfig &inout InGuideDataSource, const TDataObjectPtr<FGuidePresentationConfig> &inout GuidePresentationConfig, const bool bClientAutoSelectIcon = false, const bool bShowGuidingPath = false)
@@ -594,8 +630,8 @@ bool StartObjectiveGuide(const uint ObjectiveInstanceId, const FECSEntity &inout
 }
 bool StartObjectiveGuide(const uint ObjectiveInstanceId, const FECSEntity &inout RequesterPlayer, const EGuideStyleType GuideStyle)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    bool __r; return __r;
+    FGuideDataSourceConfig local_100;
+    return ObjectiveUtils::StartObjectiveGuide(ObjectiveInstanceId, RequesterPlayer, GuideUtils::GetGuidePresentationConfig(EGuideStyleType(GuideStyle)), local_100, false, false);
 }
 void StopObjectiveGuide(const uint ObjectiveInstanceId, const FECSEntity &inout RequesterPlayer = ENTITY_NULL)
 {
@@ -716,7 +752,6 @@ void HandleGSConditionProgressNotify(const FECSEntity &inout PlayerEntity, const
 {
     int local_10 = 0;
     int local_51 = 0;
-    FConditionIdentifier local_56;
     FFPTime local_6 = FFPTime(-1);
     for (auto& local_26 : GsCondValues)
     {
@@ -725,15 +760,14 @@ void HandleGSConditionProgressNotify(const FECSEntity &inout PlayerEntity, const
     }
     for (auto& local_48 : GsEventValues)
     {
-        EConditionUsage local_49 = ObjectiveUtils::ConvertToConditionUsage(local_48.GetCondModule());
-        int local_7 = int(local_49);
+        int local_49 = int(ObjectiveUtils::ConvertToConditionUsage(local_48.GetCondModule()));
+        int local_7 = local_49;
         if (local_7 == 0)
         {
             XError(ELog(65), FString().Append("HandleGSConditionProgressNotify ").Append(PlayerEntity).Append(" ").Append(local_48.GetCondModule()).Append(" is invalid"));
             continue;
         }
-        int local_27 = local_48.GetModuleInnerId();
-        int local_58 = local_48.GetConditionId();
+        FConditionIdentifier local_56 = FConditionIdentifier(local_48.GetConditionId(), local_48.GetModuleInnerId(), EConditionUsage(local_49));
         if (local_10.GSEventValueMap.Contains(local_56))
         {
             XError(ELog(65), FString().Append("HandleGSConditionProgressNotify ").Append(PlayerEntity).Append(" ").Append(local_49).Append(" CondId=").Append(local_48.GetConditionId()).Append(" CondValue=").Append(local_51).Append(" already exists"));

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MinimapIconDecoratorTooltip
 {
     const int ModelId = 0;
@@ -72,8 +71,7 @@ struct FVM_MinimapIconDecoratorTooltip : FEUIViewModel
     {
         FSimpleModelEvent local_22;
         local_22.Add(Model, ModelCallback);
-        FEUIInputAction local_28 = FEUIInputAction(InputAction);
-        FEUIModelRef local_30;
+        FEUIModelRef local_30 = FEUIModelRef(::FVM_InputAction::Create(ContextObject, FEUIInputAction(InputAction), local_22));
         this.GetModify_Actions().Add(local_30);
         return;
     }
@@ -430,7 +428,6 @@ struct __GeneratedProperties_FVM_MinimapIconDecoratorTooltipPanel
     FEUIModelContainer BaseTooltipModelContainer;
     UPROPERTY()
     TEUIModelRef<FVM_MinimapIconDecoratorTooltipPanel> Self;
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace FMS_ShopGoodsData
 {
     const int ModelId = 0;
@@ -290,7 +289,6 @@ struct FDoShoppingResultItem
     UPROPERTY()
     uint64 ItemGuid = 0;
 
-
 }
 
 struct FMsg_DoShoppingResult : FEUIMessage
@@ -301,7 +299,6 @@ struct FMsg_DoShoppingResult : FEUIMessage
     uint Num = 0;
     UPROPERTY()
     TArray<FDoShoppingResultItem> Items;
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_DynamicHUDManager
 {
     const int ModelId = 0;
@@ -76,9 +75,7 @@ struct FVMS_DynamicHUDManager : FEUIViewModelSingleton
         this.GetModify_SelectTargetModelArray().Empty(0);
         for (auto& local_80 : this.GetSelectTargetEntityArray())
         {
-            local_80;
-            FEUIModelRef local_82;
-            this.GetModify_SelectTargetModelArray().Add(local_82);
+            this.GetModify_SelectTargetModelArray().Add(FEUIModelRef(::FVM_SelectTarget::Create(this.GetContext().Manager, local_80, local_64)));
         }
         return;
     }
@@ -289,7 +286,9 @@ void __OnMonitorShowCrosshairEvent(FVMS_DynamicHUDManager &inout Model, const FE
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorHUDShowHideCrosshairLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorHUDShowHideCrosshairModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 ESlateVisibility __UIGetter_Visibility_CrossHair(const FVMS_DynamicHUDManager &inout Model)
 {

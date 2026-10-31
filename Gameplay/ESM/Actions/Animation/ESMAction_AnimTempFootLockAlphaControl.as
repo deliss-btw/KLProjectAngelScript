@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_AnimTempFootLockAlphaControl : UESMBPBaseSpanAction
 {
     UESMAction_AnimTempFootLockAlphaControl()

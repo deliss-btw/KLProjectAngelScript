@@ -1,5 +1,3 @@
-﻿
-
 class UEQG_CombatUnstuckPoint : UEnvQueryGenerator_ECS_BlueprintBase
 {
     UPROPERTY()
@@ -26,7 +24,6 @@ class UEQG_CombatUnstuckPoint : UEnvQueryGenerator_ECS_BlueprintBase
     float32 GoalScoreMax = 100.0f;
 
     default GeneratedItemType = UEnvQueryItemType_Point;
-
 
     UFUNCTION()
     void DoItemGenerationFromEntities_Implementation(const TArray<FECSEntityId> &inout ContextEntities) const
@@ -307,7 +304,7 @@ class UEQG_CombatUnstuckPoint : UEnvQueryGenerator_ECS_BlueprintBase
                 local_12 = (local_72 < BossToPlayerDistSq);
                 float32 local_75 = (local_7 / local_10) - CosThreshold;
                 float32 local_94 = (local_75 / FMath::Max(1.0f - CosThreshold, 0.001f)) * this.AlignmentScoreMax;
-                float local_95 = local_10 - this.MinDistance;
+                float32 local_95 = local_10 - this.MinDistance;
                 local_75 = this.MaxDistance - this.MinDistance;
                 float32 local_97 = local_95 / FMath::Max(local_75, 1.0f);
                 if (local_12)
@@ -320,7 +317,7 @@ class UEQG_CombatUnstuckPoint : UEnvQueryGenerator_ECS_BlueprintBase
                     local_75 = local_95 * this.DistScoreMax;
                 }
                 local_70 = (float32(PlayerPos.Y) - float32(local_52.Y));
-                float local_98 = float32(local_52.X);
+                float32 local_98 = float32(local_52.X);
                 FVector local_92 = FVector((float32(PlayerPos.X) - local_98), local_70, 0.0);
                 local_70 = local_92.Y * local_92.Y;
                 if (GoalRadiusSq < 0.0f || (float32(((local_92.X * local_92.X) + local_70)) > GoalRadiusSq))
@@ -335,7 +332,7 @@ class UEQG_CombatUnstuckPoint : UEnvQueryGenerator_ECS_BlueprintBase
                 float32 local_110 = local_95 + local_109;
                 if (this.bDebugDraw)
                 {
-                    FECSDebugDraw::DrawDebugString(n"PathFindingDebugDraw", (local_52 + FVector(0.0, 0.0, 150.0)), FString().Append("T:").Append(FString::ApplyFormat(local_110, ".2f")), FColor::Purple, 1.0f, FColor(uint8(0), uint8(0), uint8(0), uint8(0)), int(this.DebugDrawDuration));
+                    FECSDebugDraw::DrawDebugString(n"PathFindingDebugDraw", (local_52 + FVector(0.0, 0.0, 150.0)), FString().Append("T:").Append(FString::ApplyFormat(local_110, ".2f")), FColor::Purple, 1.0f, FColor(uint8(0), uint8(0), uint8(0), uint8(0)), this.DebugDrawDuration);
                     FECSDebugDraw::DrawDebugString(n"PathFindingDebugDraw", (local_52 + FVector(0.0, 0.0, 120.0)), FString().Append("A:").Append(FString::ApplyFormat(local_94, ".2f")), FColor::Blue, 1.0f, FColor(uint8(0), uint8(0), uint8(0), uint8(0)), this.DebugDrawDuration);
                     FECSDebugDraw::DrawDebugString(n"PathFindingDebugDraw", (local_52 + FVector(0.0, 0.0, 90.0)), FString().Append("D:").Append(FString::ApplyFormat(local_75, ".2f")), FColor::Yellow, 1.0f, FColor(uint8(0), uint8(0), uint8(0), uint8(0)), this.DebugDrawDuration);
                     FECSDebugDraw::DrawDebugString(n"PathFindingDebugDraw", (local_52 + FVector(0.0, 0.0, 60.0)), FString().Append("G:").Append(FString::ApplyFormat(local_109, ".0f")), FColor::White, 1.0f, FColor(uint8(0), uint8(0), uint8(0), uint8(0)), this.DebugDrawDuration);

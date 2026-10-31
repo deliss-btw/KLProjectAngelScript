@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PVX_CombatPreparation
 {
     const int ViewID = 0;
@@ -187,6 +186,7 @@ namespace UWidget_PVX_CombatPreparation
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PVX_CombatPreparation;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

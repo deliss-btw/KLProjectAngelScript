@@ -1,4 +1,3 @@
-﻿
 enum ECommonHoverCloseReason
 {
     HoverOnly,
@@ -29,7 +28,6 @@ struct FCommonHoverNode
     UPROPERTY()
     bool bPendingWeakClose = false;
 
-
 }
 
 struct FCommonHoverRootNode
@@ -38,7 +36,6 @@ struct FCommonHoverRootNode
     int StackRootKey = 0;
     UPROPERTY()
     FCommonHoverHandle ActiveHover;
-
 
 }
 
@@ -155,23 +152,73 @@ struct FMS_CommonHoverManager : FEUIModelSingleton
     }
     void HandleHoverWidgetUnbound(const FCommonHoverHandle &inout Handle)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (!(Handle.IsValid()) || (this.GetClosingHovers().IndexOfByKey(Handle) != INDEX_NONE))
+        {
+            return;
+        }
+        this.CloseActiveChild(Handle, this.GetHoverStackRootKey(Handle));
+        this.RemoveDisplayedHover(Handle);
+        this.UntrackHover(Handle);
+        return;
     }
     void CloseHoverSingle(const FCommonHoverHandle &inout Handle)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_1 = this.GetDisplayingHovers().IndexOfByKey(Handle);
+        if (local_1 != INDEX_NONE)
+        {
+            this.GetModify_ClosingHovers().Add(Handle);
+            FEUIWidget::RemoveWidget(this.GetDisplayingHovers()[local_1].WidgetRef);
+            this.RemoveClosingHover(Handle);
+            this.RemoveDisplayedHover(Handle);
+        }
+        this.UntrackHover(Handle);
+        return;
     }
     FCommonHoverInfo GetHover(const FCommonHoverHandle &inout Handle) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        FCommonHoverInfo __r; return __r;
+        FCommonHoverInfo __r;
+        if (Handle)
+        {
+            int local_2 = this.GetDisplayingHovers().IndexOfByKey(Handle);
+            if (local_2 != INDEX_NONE)
+            {
+                FVM_CommonHover& local_10 = FEUIWidgetRef::GetViewModel(this.GetDisplayingHovers()[local_2].WidgetRef).opCall(NAME_None);
+                if (local_10)
+                {
+                    FCommonHoverInfo local_62;
+                    local_62.AnchorsViewportSpace = local_10.GetAnchorsViewportSpace();
+                    local_62.ContentWidget = local_10.GetContentWidget();
+                    local_62.ContentModels = local_10.GetContentModels();
+                    local_62.bClickClose = local_10.GetbClickClose();
+                    local_62.OutsideCloseMode = local_10.GetOutsideCloseMode();
+                    bool local_1 = local_10.GetbFocusHover();
+                    local_62.bFocusHover = local_1;
+                    local_62.HoverLayout = local_10.GetHoverLayout();
+                    local_62.CloseScopeInsideWidget = local_10.GetCloseScopeInsideWidget();
+                    int local_3 = this.FindHoverNodeIndex(Handle);
+                    if (local_3 == INDEX_NONE)
+                    {
+                        local_1 = false;
+                    }
+                    else
+                    {
+                        local_1 = this.GetHoverNodes()[local_3].bPinned;
+                    }
+                    local_62.bPinned = local_1;
+                    local_62.HoverLimitationViewportSpaceOverride = local_10.GetHoverLimitationViewportSpaceOverride();
+                }
+                else
+                {
+                }
+            }
+        }
+        return __r;
     }
     void SetHover(const FCommonHoverHandle &inout Handle, const FCommonHoverInfo &inout InHoverInfo)
     {
         if (Handle)
         {
-            FEUIWidgetRef::GetViewModel local_6;
-            FVM_CommonHover& local_8 = local_6.opCall(NAME_None);
+            FVM_CommonHover& local_8 = FEUIWidgetRef::GetViewModel(Handle.WidgetRef).opCall(NAME_None);
             if (local_8)
             {
                 local_8.SetAnchorsViewportSpace(InHoverInfo.AnchorsViewportSpace);
@@ -244,27 +291,93 @@ struct FMS_CommonHoverManager : FEUIModelSingleton
     }
     void UntrackHover(const FCommonHoverHandle &inout Handle)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.ClearRootActiveHover(Handle);
+        TArray<FCommonHoverHandle> local_4;
+        for (auto& local_20 : this.GetModify_HoverNodes())
+        {
+            FCommonHoverHandle local_22;
+            if (local_22.opCmp(Handle) == 0)
+            {
+                this.SyncDisplayedChildToHoverModel(local_20.Handle, FCommonHoverHandle::InvalidHandle);
+                if (local_20.bPendingWeakClose)
+                {
+                    local_4.Add(local_20.Handle);
+                }
+            }
+        }
+        int local_23 = this.FindHoverNodeIndex(Handle);
+        if (local_23 != INDEX_NONE)
+        {
+            this.GetModify_HoverNodes().RemoveAt(local_23);
+        }
+        for (auto& local_38 : local_4)
+        {
+            this.TryClosePendingWeakHover(local_38);
+        }
+        return;
     }
     void MarkPendingWeakClose(const FCommonHoverHandle &inout Handle)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_1 = this.FindHoverNodeIndex(Handle);
+        if (local_1 == INDEX_NONE)
+        {
+            return;
+        }
+        this.GetModify_HoverNodes()[local_1].bPendingWeakClose = true;
+        return;
     }
     void ClearPendingWeakClose(const FCommonHoverHandle &inout Handle)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_1 = this.FindHoverNodeIndex(Handle);
+        if (local_1 == INDEX_NONE)
+        {
+            return;
+        }
+        this.GetModify_HoverNodes()[local_1].bPendingWeakClose = false;
+        return;
     }
     void TryClosePendingWeakHover(const FCommonHoverHandle &inout Handle)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_1 = this.FindHoverNodeIndex(Handle);
+        if (local_1 == INDEX_NONE || !(this.GetHoverNodes()[local_1].bPendingWeakClose))
+        {
+            return;
+        }
+        if (!(this.IsHoverDisplayed(Handle)))
+        {
+            this.ClearPendingWeakClose(Handle);
+            return;
+        }
+        if (this.IsHoverStackCloseProtected(Handle))
+        {
+            this.ClearPendingWeakClose(Handle);
+            return;
+        }
+        if (this.HasDisplayedActiveChild(Handle))
+        {
+            return;
+        }
+        this.ClearPendingWeakClose(Handle);
+        this.CloseHoverSubtree(Handle);
+        return;
     }
     void RemoveDisplayedHover(const FCommonHoverHandle &inout Handle)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_1 = this.GetDisplayingHovers().IndexOfByKey(Handle);
+        if (local_1 != INDEX_NONE)
+        {
+            this.GetModify_DisplayingHovers().RemoveAt(local_1);
+        }
+        return;
     }
     void RemoveClosingHover(const FCommonHoverHandle &inout Handle)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_1 = this.GetClosingHovers().IndexOfByKey(Handle);
+        if (local_1 != INDEX_NONE)
+        {
+            this.GetModify_ClosingHovers().RemoveAt(local_1);
+        }
+        return;
     }
     void CloseActiveChild(const FCommonHoverHandle &inout ParentHandle, const int StackRootKey)
     {
@@ -291,16 +404,37 @@ struct FMS_CommonHoverManager : FEUIModelSingleton
     }
     void CollectHoverSubtree(const FCommonHoverHandle &inout Handle, TArray<FCommonHoverHandle> &inout OutHandles) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (!(Handle.IsValid()) || (OutHandles.IndexOfByKey(Handle) != INDEX_NONE))
+        {
+            return;
+        }
+        for (auto& local_18 : this.GetHoverNodes())
+        {
+            FCommonHoverHandle local_20;
+            if (local_20.opCmp(Handle) == 0)
+            {
+                this.CollectHoverSubtree(local_18.Handle, OutHandles);
+            }
+        }
+        OutHandles.Add(Handle);
+        return;
     }
     void SetActiveChild(const FCommonHoverHandle &inout ParentHandle, const int StackRootKey, const FCommonHoverHandle &inout ChildHandle)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (!(ParentHandle.IsValid()))
+        {
+            this.SetRootActiveHover(StackRootKey, ChildHandle);
+            return;
+        }
+        if (this.FindHoverNodeIndex(ParentHandle) != INDEX_NONE)
+        {
+            this.SyncDisplayedChildToHoverModel(ParentHandle, ChildHandle);
+        }
+        return;
     }
     void SyncDisplayedChildToHoverModel(const FCommonHoverHandle &inout HoverHandle, const FCommonHoverHandle &inout ChildHandle)
     {
-        FEUIWidgetRef::GetViewModel local_4;
-        FVM_CommonHover& local_6 = local_4.opCall(NAME_None);
+        FVM_CommonHover& local_6 = FEUIWidgetRef::GetViewModel(HoverHandle.WidgetRef).opCall(NAME_None);
         if (local_6)
         {
             local_6.SetDisplayedChildHoverHandle(ChildHandle);
@@ -309,32 +443,79 @@ struct FMS_CommonHoverManager : FEUIModelSingleton
     }
     FCommonHoverHandle GetActiveChild(const FCommonHoverHandle &inout ParentHandle, const int StackRootKey) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        FCommonHoverHandle __r; return __r;
+        FCommonHoverHandle __r;
+        if (!(ParentHandle.IsValid()))
+        {
+            FCommonHoverHandle local_4 = this.GetRootActiveHover(StackRootKey);
+        }
+        else
+        {
+            if (this.FindHoverNodeIndex(ParentHandle) != INDEX_NONE)
+            {
+            }
+            else
+            {
+            }
+        }
+        return __r;
     }
     bool BlocksSiblingHover(const FCommonHoverHandle &inout Handle) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        bool __r; return __r;
+        int local_1 = this.FindHoverNodeIndex(Handle);
+        if (local_1 == INDEX_NONE)
+        {
+            return false;
+        }
+        if (this.GetHoverNodes()[local_1].bPinned)
+        {
+            return true;
+        }
+        FCommonHoverHandle local_6;
+        return local_6.IsValid() && this.BlocksSiblingHover(local_6);
     }
     bool IsHoverStackCloseProtected(const FCommonHoverHandle &inout Handle) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        bool __r; return __r;
+        FCommonHoverHandle local_2;
+        int local_5 = 0;
+        for (; local_5 < this.GetHoverNodes().Num(); ++local_5)
+        {
+            FCommonHoverInfo local_112 = this.GetHover(local_2);
+            if (local_112.HasBlockingCloseMask() || local_112.IsPinnedPassThrough() || local_112.BlocksSiblingHover())
+            {
+                return true;
+            }
+            int local_7 = this.FindHoverNodeIndex(local_2);
+            if (local_7 == INDEX_NONE || !(this.GetHoverNodes()[local_7].ActiveChildHandle.IsValid()))
+            {
+                return false;
+            }
+        }
+        return false;
     }
     bool HasDisplayedActiveChild(const FCommonHoverHandle &inout Handle) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        bool __r; return __r;
+        if (this.FindHoverNodeIndex(Handle) == INDEX_NONE)
+        {
+            return false;
+        }
+        FCommonHoverHandle local_6;
+        return local_6.IsValid() && this.IsHoverDisplayed(local_6);
     }
     void SetHoverPinned(const FCommonHoverHandle &inout Handle, const bool bPinned)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_1 = this.FindHoverNodeIndex(Handle);
+        if (local_1 != INDEX_NONE)
+        {
+            if (!(this.GetHoverNodes()[local_1].bPinned) != !(bPinned))
+            {
+                this.GetModify_HoverNodes()[local_1].bPinned = bPinned;
+            }
+        }
+        return;
     }
     bool IsHoverDisplayed(const FCommonHoverHandle &inout Handle) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        bool __r; return __r;
+        return Handle.IsValid() && (this.GetDisplayingHovers().IndexOfByKey(Handle) != INDEX_NONE);
     }
     int ResolveStackRootKey(const FCommonHoverInfo &inout InHoverInfo, const FCommonHoverHandle &inout ParentHandle) const
     {
@@ -357,8 +538,18 @@ struct FMS_CommonHoverManager : FEUIModelSingleton
     }
     int GetHoverStackRootKey(const FCommonHoverHandle &inout Handle) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        int local_4;
+        int local_1 = this.FindHoverNodeIndex(Handle);
+        int local_2 = INDEX_NONE;
+        if (local_1 != local_2)
+        {
+            local_4 = this.GetHoverNodes()[local_1].StackRootKey;
+        }
+        else
+        {
+            local_4 = 0;
+        }
+        return local_4;
     }
     int GetHoverWidgetRootKey(const FCommonHoverHandle &inout Handle) const
     {
@@ -370,17 +561,43 @@ struct FMS_CommonHoverManager : FEUIModelSingleton
     }
     FCommonHoverHandle FindHoverByWidgetRootKey(const int WidgetRootKey) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        FCommonHoverHandle __r; return __r;
+        FCommonHoverHandle __r;
+        if (WidgetRootKey == 0)
+        {
+        }
+        else
+        {
+            __Lambda_UI_Private_Model_Framework_CommonPopup_M_CommonHover_628 local_4;
+            if (this.GetHoverNodes().IndexOfByPredicate(local_4) != INDEX_NONE)
+            {
+            }
+            else
+            {
+            }
+        }
+        return __r;
     }
     FCommonHoverHandle GetRootActiveHover(const int StackRootKey) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        FCommonHoverHandle __r; return __r;
+        FCommonHoverHandle __r;
+        if (this.FindRootNodeIndex(StackRootKey) != INDEX_NONE)
+        {
+        }
+        else
+        {
+        }
+        return __r;
     }
     void SetRootActiveHover(const int StackRootKey, const FCommonHoverHandle &inout Handle)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (this.FindRootNodeIndex(StackRootKey) != INDEX_NONE)
+        {
+            return;
+        }
+        FCommonHoverRootNode local_8;
+        local_8.StackRootKey = StackRootKey;
+        this.GetModify_RootHoverNodes().Add(local_8);
+        return;
     }
     void ClearRootActiveHover(const FCommonHoverHandle &inout Handle)
     {

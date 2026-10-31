@@ -1,12 +1,9 @@
-﻿
-
 struct FConfigVM_CommonSideHintList : FConfigEUIModelBase
 {
     UPROPERTY()
     int MaxDisplayNum = 3;
     UPROPERTY()
     ECommonSideHintListType SideHintListType;
-
 
 }
 

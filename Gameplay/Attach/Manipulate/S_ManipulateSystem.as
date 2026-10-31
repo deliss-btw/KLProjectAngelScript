@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_DebugManipulateByCurve = FConsoleVariable();
 const FConsoleVariable CVar_DebugViewSocketAlign = FConsoleVariable();
 const FConsoleVariable CVar_DefaultManipulateSocketUpdatePeriod = FConsoleVariable();
@@ -31,7 +30,7 @@ class US_ManipulateSystem : UECSScriptSystem
     {
         int local_46 = 0;
         int local_66 = 0;
-        float32 local_102;
+        int local_102;
         Has local_6;
         Get local_12;
         bool local_7 = !(local_6.opCall()) || (local_12.opCall().GetLasUpdateCounter() != ManipulatedInfo.GetUpdateCounter());
@@ -220,7 +219,7 @@ class US_ManipulateSystem : UECSScriptSystem
             return;
         }
         ManipulatedInfo.SetExitTime(FixedTime.Time);
-        XWarning(ELog(42), FString().Append("[Manipulate] Span Action иїћз»­дё¤её§жњЄе€·ж–°пјЊиЎҐеЏ‘йЂЂе‡єиЇ·ж±‚пјЊMasterEntity=").Append(ActionLifecycle.MasterEntity.GetIdValue()).Append(", UpdateCounter=").Append(ActionLifecycle.UpdateCounter));
+        XWarning(ELog(42), FString().Append("[Manipulate] Span Action 连续两帧未刷新，补发退出请求，MasterEntity=").Append(ActionLifecycle.MasterEntity.GetIdValue()).Append(", UpdateCounter=").Append(ActionLifecycle.UpdateCounter));
         return;
     }
     UFUNCTION()
@@ -1519,8 +1518,7 @@ class US_ManipulateSystem : UECSScriptSystem
             }
             if (!(local_52.opCall()) == !(false))
             {
-                FString local_56 = "Timer job error: 'FC_LocalTag' included by job but not exist on ";
-                FString local_60 = local_32.ToString();
+                XLog(ELog(2), (FString("Timer job error: 'FC_LocalTag' included by job but not exist on ") + local_32.ToString()));
                 local_34 = true;
             }
             if (local_34)

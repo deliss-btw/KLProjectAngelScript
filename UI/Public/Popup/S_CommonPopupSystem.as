@@ -1,10 +1,7 @@
-﻿
-
 class US_CommonPopupSystem : US_EUIGroupScriptSystemBase
 {
     UPROPERTY()
     bool bLoadingScreenVisible = false;
-
 
     UFUNCTION()
     bool IsDisabled_Implementation() const

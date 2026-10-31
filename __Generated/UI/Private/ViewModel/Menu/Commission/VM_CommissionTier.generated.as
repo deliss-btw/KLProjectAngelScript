@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommissionTier_Helpers
 {
 UFUNCTION()

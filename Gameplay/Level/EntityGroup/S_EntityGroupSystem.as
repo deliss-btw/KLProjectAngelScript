@@ -1,5 +1,3 @@
-﻿
-
 class US_EntityGroupSystem : UECSScriptSystem
 {
     US_EntityGroupSystem()
@@ -39,20 +37,15 @@ class US_EntityGroupSystem : UECSScriptSystem
         }
         if (local_19)
         {
-            ELog local_72;
             FC_EntityGroup local_56;
             local_56.EntityInfoList = local_16;
             local_56.AliveCount = local_17;
             Remove local_60;
             local_60.opCall();
-            FString local_68 = "EntityGroupSystem: InitEntityGroup success. ";
-            FString local_64 = GroupEntity.ToString();
-            FString local_68_2 = (local_72 + " EntityNum:");
+            FString local_68 = ((FString("EntityGroupSystem: InitEntityGroup success. ") + GroupEntity.ToString()) + " EntityNum:");
             int local_18 = local_16.Num();
-            (local_68_2 + int(local_72));
-            FString local_64_2 = (local_72 + " ChildActorNum:");
-            int local_18_2 = local_12.Num();
-            (local_64_2 + int(local_72));
+            FString local_72_2 = (local_68 + local_18);
+            XLog(ELog(0), ((local_72_2 + " ChildActorNum:") + local_12.Num()));
         }
         return;
     }

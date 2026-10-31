@@ -1,11 +1,9 @@
-﻿
 enum EPlayerGenderType
 {
     All,
     Male,
     Female,
 }
-
 
 struct FDialogueVOSource
 {
@@ -18,10 +16,9 @@ struct FDialogueVOSource
     UPROPERTY()
     float32 Duration;
 
-
     bool IsSame(const FDialogueVOSource &inout Other) const
     {
-        return (FString(this) == Other.VOFile) && (int(this.PlayerGender) == int(Other.PlayerGender)) && (this.StartDelay == Other.StartDelay) && (this.Duration == Other.Duration);
+        return ((this.VOFile == Other.VOFile) && (int(this.PlayerGender) == int(Other.PlayerGender)) && (this.StartDelay == Other.StartDelay) && (this.Duration == Other.Duration));
     }
 }
 

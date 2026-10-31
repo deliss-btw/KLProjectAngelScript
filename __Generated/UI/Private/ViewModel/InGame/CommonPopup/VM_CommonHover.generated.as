@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommonHoverContent_Helpers
 {
 UFUNCTION()

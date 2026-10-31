@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AvatarBuildBarItem
 {
     const int ModelId = 0;
@@ -45,7 +44,7 @@ struct FVM_AvatarBuildBarItem : FEUIViewModel
     }
     FSoftBrush GetAvatarIcon() const
     {
-        // body not fully recovered вЂ” stub [no-return]
+        // body not fully recovered — stub [no-return]
         FSoftBrush __r; return __r;
     }
     bool IsSelected() const
@@ -113,7 +112,6 @@ struct __GeneratedProperties_FVM_AvatarBuildBarItem
     bool IsSelected;
     UPROPERTY()
     TEUIModelRef<FVM_AvatarBuildBarItem> Self;
-
 
 }
 

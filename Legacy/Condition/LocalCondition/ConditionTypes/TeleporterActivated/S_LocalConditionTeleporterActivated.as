@@ -1,5 +1,3 @@
-﻿
-
 class US_LocalConditionTeleporterActivated : UECSScriptSystem
 {
     US_LocalConditionTeleporterActivated()

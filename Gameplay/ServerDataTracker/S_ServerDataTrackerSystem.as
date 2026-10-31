@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_DataTracker_DebugEnableInPIE = FConsoleVariable();
 const FConsoleVariable CVar_DataTracker_FlushBatchSize = FConsoleVariable();
 const FConsoleVariable CVar_DataTracker_FlushInterval = FConsoleVariable();

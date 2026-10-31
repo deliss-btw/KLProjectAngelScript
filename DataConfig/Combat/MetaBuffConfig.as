@@ -1,5 +1,3 @@
-﻿
-
 struct FMetaBuffConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -12,7 +10,6 @@ struct FMetaBuffConfig : FDataObject
     UPROPERTY()
     int Duration;
 
-
 }
 
 struct FMetaBuffCapabilityConfig : FDataObject
@@ -24,7 +21,6 @@ struct FMetaBuffCapabilityConfig : FDataObject
     FDataObjectPtr m_CapabilityConfig;
     UPROPERTY()
     int Level = 1;
-
 
     const TDataObjectPtr<FCapabilityConfig> GetCapabilityConfig() const property
     {

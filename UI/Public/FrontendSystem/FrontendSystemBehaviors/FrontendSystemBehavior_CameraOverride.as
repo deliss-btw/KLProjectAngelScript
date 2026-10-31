@@ -1,5 +1,3 @@
-﻿
-
 class UFrontendSystemBehavior_CameraOverride : UFrontendSystemBehaviorBase
 {
     UPROPERTY()

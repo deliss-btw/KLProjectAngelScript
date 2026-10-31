@@ -1,5 +1,3 @@
-﻿
-
 class US_EcosimAIV2TokenSystem : UECSScriptSystem
 {
     US_EcosimAIV2TokenSystem()

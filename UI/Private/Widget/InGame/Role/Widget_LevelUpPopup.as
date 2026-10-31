@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_LevelUpPopup
 {
     const int ViewID = 0;
@@ -12,7 +11,6 @@ class UWidget_LevelUpPopup : UEUIUserWidget
     float32 ShowDuration = 3.0f;
     UPROPERTY()
     FGetEUIModelRef LevelUpDelegate;
-
 
     UFUNCTION()
     void Construct_Implementation()
@@ -47,6 +45,7 @@ namespace UWidget_LevelUpPopup
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_LevelUpPopup;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

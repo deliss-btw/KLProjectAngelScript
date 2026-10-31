@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_DivineSkill_NS
 {
     const TECSComponentDerivedPtr<FC_DivineSkill> DerivedPtr = TECSComponentDerivedPtr<FC_DivineSkill>();
@@ -54,7 +53,8 @@ struct FDivineSkillModifierIds
     }
     void SetModifierIds(const TArray<int> &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_ModifierIds = __Value;
+        return;
     }
 }
 
@@ -79,7 +79,8 @@ struct FDivineSkillCapabilityIds
     }
     void SetCapabilityIds(const TArray<FCapabilityInstanceId> &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_CapabilityIds = __Value;
+        return;
     }
 }
 
@@ -114,7 +115,8 @@ struct FDivineSkillData
     }
     void SetSkillConfig(const TDataObjectPtr<FDivineSkillConfig> &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_SkillConfig = __Value;
+        return;
     }
 }
 
@@ -130,11 +132,20 @@ struct FDivineSkillCDSnapshot
 
     FDivineSkillCDSnapshot()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_CDDuration = 0.0f;
+        return;
     }
     FDivineSkillCDSnapshot(const FDivineSkillCDSnapshot &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_CDDuration = 0.0f;
+        this.m_SnapshotTime = Other.m_SnapshotTime;
+        this.m_CDEndTime = Other.m_CDEndTime;
+        this.m_CDDuration = Other.m_CDDuration;
+        return;
     }
     FDivineSkillCDSnapshot opAssign(const FDivineSkillCDSnapshot &inout Other)
     {
@@ -230,11 +241,23 @@ struct FC_DivineSkill : FECSComponent
 
     FC_DivineSkill()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bHasSuitableCharacter = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_DivineSkill(const FC_DivineSkill &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bHasSuitableCharacter = false;
+        this.__InitDirtyFlags();
+        this.m_bHasSuitableCharacter = Other.m_bHasSuitableCharacter;
+        this.m_ModifierIdByPawnEntityId = Other.m_ModifierIdByPawnEntityId;
+        this.m_CapabilityIdByPawnEntityId = Other.m_CapabilityIdByPawnEntityId;
+        this.m_CDSnapshot = Other.m_CDSnapshot;
+        return;
     }
     FC_DivineSkill opAssign(const FC_DivineSkill &inout Other)
     {
@@ -377,7 +400,6 @@ struct FCE_OnChangeDivineSkillReq : FECSEvent
     UPROPERTY()
     bool bNeedReply;
 
-
 }
 
 struct FCE_ChangeDivineSkillWithOutGS : FECSEvent
@@ -400,11 +422,15 @@ struct FC_OverrideDivineLiteraryType : FECSComponent
 
     FC_OverrideDivineLiteraryType()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_OverrideDivineLiteraryType(const FC_OverrideDivineLiteraryType &inout Other)
     {
+        FRootDirtyFlags8 local_25;
+        this.__DirtyFlags = local_25;
         this.__InitDirtyFlags();
         this.m_DivineLiteraryType = Other.m_DivineLiteraryType;
         return;
@@ -516,37 +542,37 @@ bool RemoveDivineSkill(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorDivineSkillOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_DivineSkill, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_DivineSkill, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDivineSkillOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_DivineSkill, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_DivineSkill, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDivineSkillOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_DivineSkill, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_DivineSkill, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDivineSkillOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_DivineSkill, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_DivineSkill, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDivineSkillOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_DivineSkill, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_DivineSkill, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorDivineSkillLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_DivineSkill, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_DivineSkill, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDivineSkillActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_DivineSkill, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_DivineSkill, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDivineSkillModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_DivineSkill, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_DivineSkill, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_DivineSkillSuitableUpdateTag
@@ -626,37 +652,37 @@ bool RemoveDivineSkillSuitableUpdateTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorDivineSkillSuitableUpdateTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_DivineSkillSuitableUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_DivineSkillSuitableUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDivineSkillSuitableUpdateTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_DivineSkillSuitableUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_DivineSkillSuitableUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDivineSkillSuitableUpdateTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_DivineSkillSuitableUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_DivineSkillSuitableUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDivineSkillSuitableUpdateTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_DivineSkillSuitableUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_DivineSkillSuitableUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDivineSkillSuitableUpdateTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_DivineSkillSuitableUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_DivineSkillSuitableUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorDivineSkillSuitableUpdateTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_DivineSkillSuitableUpdateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_DivineSkillSuitableUpdateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDivineSkillSuitableUpdateTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_DivineSkillSuitableUpdateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_DivineSkillSuitableUpdateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDivineSkillSuitableUpdateTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_DivineSkillSuitableUpdateTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_DivineSkillSuitableUpdateTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_DivineSkillCommissionEnterResetPending
@@ -739,37 +765,37 @@ bool RemoveDivineSkillCommissionEnterResetPending(const FECSEntity &inout Entity
 }
 FECSMonitorRuntimeView __GetMonitorDivineSkillCommissionEnterResetPendingOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_DivineSkillCommissionEnterResetPending, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_DivineSkillCommissionEnterResetPending, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDivineSkillCommissionEnterResetPendingOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_DivineSkillCommissionEnterResetPending, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_DivineSkillCommissionEnterResetPending, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDivineSkillCommissionEnterResetPendingOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_DivineSkillCommissionEnterResetPending, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_DivineSkillCommissionEnterResetPending, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDivineSkillCommissionEnterResetPendingOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_DivineSkillCommissionEnterResetPending, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_DivineSkillCommissionEnterResetPending, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDivineSkillCommissionEnterResetPendingOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_DivineSkillCommissionEnterResetPending, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_DivineSkillCommissionEnterResetPending, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorDivineSkillCommissionEnterResetPendingLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_DivineSkillCommissionEnterResetPending, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_DivineSkillCommissionEnterResetPending, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDivineSkillCommissionEnterResetPendingActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_DivineSkillCommissionEnterResetPending, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_DivineSkillCommissionEnterResetPending, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDivineSkillCommissionEnterResetPendingModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_DivineSkillCommissionEnterResetPending, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_DivineSkillCommissionEnterResetPending, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_RaceStartDivineSkillResetPendingTag
@@ -857,17 +883,17 @@ bool RemoveRaceStartDivineSkillResetPendingTag(const FECSWorldPtr &inout World)
 }
 void __MonitorRaceStartDivineSkillResetPendingTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_RaceStartDivineSkillResetPendingTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_RaceStartDivineSkillResetPendingTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRaceStartDivineSkillResetPendingTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_RaceStartDivineSkillResetPendingTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_RaceStartDivineSkillResetPendingTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRaceStartDivineSkillResetPendingTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_RaceStartDivineSkillResetPendingTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_RaceStartDivineSkillResetPendingTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_OverrideDivineLiteraryType
@@ -947,37 +973,37 @@ bool RemoveOverrideDivineLiteraryType(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorOverrideDivineLiteraryTypeOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_OverrideDivineLiteraryType, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_OverrideDivineLiteraryType, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorOverrideDivineLiteraryTypeOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_OverrideDivineLiteraryType, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_OverrideDivineLiteraryType, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorOverrideDivineLiteraryTypeOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_OverrideDivineLiteraryType, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_OverrideDivineLiteraryType, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorOverrideDivineLiteraryTypeOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_OverrideDivineLiteraryType, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_OverrideDivineLiteraryType, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorOverrideDivineLiteraryTypeOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_OverrideDivineLiteraryType, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_OverrideDivineLiteraryType, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorOverrideDivineLiteraryTypeLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_OverrideDivineLiteraryType, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_OverrideDivineLiteraryType, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorOverrideDivineLiteraryTypeActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_OverrideDivineLiteraryType, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_OverrideDivineLiteraryType, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorOverrideDivineLiteraryTypeModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_OverrideDivineLiteraryType, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_OverrideDivineLiteraryType, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

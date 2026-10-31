@@ -1,12 +1,9 @@
-﻿
-
 struct FDialogModelCallback : FEUIModelDelegate
 {
-    FEUIModelDelegate _base_FEUIModelDelegate;
+    FEUIModelDelegate _base_FEUIModelDelegate = FEUIModelDelegate("bool", "FCommonDialogAnswer");
 
     FDialogModelCallback()
     {
-        FEUIModelDelegate local_26 = FEUIModelDelegate("bool", "FCommonDialogAnswer");
         return;
     }
     bool Execute(const FCommonDialogAnswer &inout Arg0) const

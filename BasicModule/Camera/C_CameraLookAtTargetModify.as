@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_CameraLockPointModify_NS
 {
     const TECSComponentDerivedPtr<FC_CameraLockPointModify> DerivedPtr = TECSComponentDerivedPtr<FC_CameraLockPointModify>();
@@ -19,11 +18,27 @@ struct FLockPointModifyConfig
 
     FLockPointModifyConfig()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bValidConfig = true;
+        this.m_StableHeightTargetOffset = 0.0f;
+        this.m_StableHeightTargetMinMaxRatio = 1.0f;
+        this.m_LockPointHeightOffset = 0.0f;
+        return;
     }
     FLockPointModifyConfig(const FLockPointModifyConfig &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_bValidConfig = true;
+        this.m_StableHeightTargetOffset = 0.0f;
+        this.m_StableHeightTargetMinMaxRatio = 1.0f;
+        this.m_LockPointHeightOffset = 0.0f;
+        this.m_bValidConfig = Other.m_bValidConfig;
+        this.m_StableHeightTargetOffset = Other.m_StableHeightTargetOffset;
+        this.m_StableHeightTargetMinMaxRatio = Other.m_StableHeightTargetMinMaxRatio;
+        this.m_LockPointHeightOffset = Other.m_LockPointHeightOffset;
+        return;
     }
     FLockPointModifyConfig opAssign(const FLockPointModifyConfig &inout Other)
     {
@@ -111,11 +126,20 @@ struct FCameraLookPointModify
 
     FCameraLookPointModify()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_LockPointIndex = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        return;
     }
     FCameraLookPointModify(const FCameraLookPointModify &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_LockPointIndex = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_LockPointIndex = int(Other.m_LockPointIndex);
+        this.m_SourceKey = Other.m_SourceKey;
+        this.m_ModifyConfig = Other.m_ModifyConfig;
+        return;
     }
     FCameraLookPointModify opAssign(const FCameraLookPointModify &inout Other)
     {
@@ -182,11 +206,11 @@ struct FC_CameraLockPointModify : FECSComponent
     FLockPointModifyConfig GetModifyItem(const int LockPointId) const
     {
         int local_1 = 0;
-        for (; local_1 < this.Num(); ++local_1)
+        for (; local_1 < this.ModifyItem.Num(); ++local_1)
         {
-            if (this[local_1].GetLockPointIndex() == LockPointId)
+            if (this.ModifyItem[local_1].GetLockPointIndex() == LockPointId)
             {
-                return this[local_1].GetModifyConfig();
+                return this.ModifyItem[local_1].GetModifyConfig();
             }
         }
         FLockPointModifyConfig local_10;
@@ -200,25 +224,25 @@ struct FC_CameraLockPointModify : FECSComponent
         local_10.SetLockPointIndex(LockPointId);
         local_10.SetModifyConfig(ModifyConfig);
         int local_11 = 0;
-        for (; local_11 < this.Num(); ++local_11)
+        for (; local_11 < this.ModifyItem.Num(); ++local_11)
         {
-            if ((this[local_11].GetSourceKey() == SourceKey))
+            if ((this.ModifyItem[local_11].GetSourceKey() == SourceKey))
             {
-                this[local_11] = local_10;
+                this.ModifyItem[local_11] = local_10;
                 return;
             }
         }
-        this.Add(local_10);
+        this.ModifyItem.Add(local_10);
         return;
     }
     void RemoveModifyItem(const FName &inout SourceKey)
     {
         int local_1 = 0;
-        for (; local_1 < this.Num(); ++local_1)
+        for (; local_1 < this.ModifyItem.Num(); ++local_1)
         {
-            if ((this[local_1].GetSourceKey() == SourceKey))
+            if ((this.ModifyItem[local_1].GetSourceKey() == SourceKey))
             {
-                this.RemoveAt(local_1);
+                this.ModifyItem.RemoveAt(local_1);
                 break;
             }
         }
@@ -306,37 +330,37 @@ bool RemoveCameraLockPointModify(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCameraLockPointModifyOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CameraLockPointModify, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CameraLockPointModify, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraLockPointModifyOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CameraLockPointModify, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CameraLockPointModify, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraLockPointModifyOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CameraLockPointModify, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CameraLockPointModify, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraLockPointModifyOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CameraLockPointModify, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CameraLockPointModify, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraLockPointModifyOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CameraLockPointModify, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CameraLockPointModify, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCameraLockPointModifyLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CameraLockPointModify, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CameraLockPointModify, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraLockPointModifyActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CameraLockPointModify, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CameraLockPointModify, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraLockPointModifyModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CameraLockPointModify, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CameraLockPointModify, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

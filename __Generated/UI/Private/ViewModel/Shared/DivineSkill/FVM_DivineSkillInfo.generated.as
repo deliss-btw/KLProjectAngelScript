@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_DivineSkillInfo_Helpers
 {
 UFUNCTION()

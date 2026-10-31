@@ -1,4 +1,3 @@
-﻿
 namespace FVM_IndicatorList
 {
     const int ModelId = 0;

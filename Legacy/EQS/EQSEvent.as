@@ -1,4 +1,3 @@
-﻿
 enum EAIEQSProxyEventDataType
 {
     None,

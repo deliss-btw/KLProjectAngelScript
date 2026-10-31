@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_DebugEntityDir = FConsoleVariable();
 
 class US_DebugEntityDir : UECSScriptSystem

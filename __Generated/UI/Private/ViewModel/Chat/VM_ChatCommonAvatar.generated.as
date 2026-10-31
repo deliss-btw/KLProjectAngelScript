@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ChatCommonAvatar_Helpers
 {
 UFUNCTION()

@@ -1,5 +1,3 @@
-﻿
-
 class UHTNT_Teleport : UHTNTask_ECSScriptBase
 {
     UPROPERTY()
@@ -93,7 +91,7 @@ class UHTNT_Teleport : UHTNTask_ECSScriptBase
         {
             return false;
         }
-        UESMBaseState local_24 = local_20.GetBaseState(local_6.Player.GetSMRuntime()[].GetStateIndex());
+        UESMBaseState local_24 = local_20.GetBaseState(local_6.Player.GetSMRuntime()[local_2].GetStateIndex());
         return local_24 != nullptr && (local_24.GetDataName() == n"TeleportArea");
     }
     bool IsTeleportBlocked(const FECSEntity &inout Entity) const

@@ -1,5 +1,3 @@
-﻿
-
 class US_EcologyScheduler : UECSScriptSystem
 {
     US_EcologyScheduler()

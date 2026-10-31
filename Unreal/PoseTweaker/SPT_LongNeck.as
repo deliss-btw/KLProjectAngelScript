@@ -1,16 +1,12 @@
-﻿
-
 struct FHeadLocalRotationLimit
 {
     UPROPERTY()
-    FVector2f YawLimit;
+    FVector2f YawLimit = FVector2f(-85.0f, 85.0f);
     UPROPERTY()
-    FVector2f PitchLimit;
+    FVector2f PitchLimit = FVector2f(-30.0f, 40.0f);
 
     FHeadLocalRotationLimit()
     {
-        FVector2f local_2 = FVector2f(-85.0f, 85.0f);
-        this.PitchLimit = FVector2f(-30.0f, 40.0f);
         return;
     }
 }
@@ -18,45 +14,30 @@ struct FHeadLocalRotationLimit
 struct FNeckIKFailureSetting
 {
     UPROPERTY()
-    FVector DeadZoneCenterCS;
+    FVector DeadZoneCenterCS = FVector(240.0, 0.0, 0.0);
     UPROPERTY()
-    float32 DeadZoneRadius;
+    float32 DeadZoneRadius = 0.1f;
     UPROPERTY()
-    float32 LookAtYawFailureMin;
+    float32 LookAtYawFailureMin = -179.9f;
     UPROPERTY()
-    float32 LookAtYawFailureMax;
+    float32 LookAtYawFailureMax = 179.9f;
     UPROPERTY()
-    float32 LookAtYawClampMin;
+    float32 LookAtYawClampMin = -85.0f;
     UPROPERTY()
-    float32 LookAtYawClampMax;
+    float32 LookAtYawClampMax = 85.0f;
     UPROPERTY()
-    float32 LookAtPitchFailureMin;
+    float32 LookAtPitchFailureMin = -90.0f;
     UPROPERTY()
-    float32 LookAtPitchFailureMax;
+    float32 LookAtPitchFailureMax = 90.0f;
     UPROPERTY()
-    float32 LookAtPitchClampMin;
+    float32 LookAtPitchClampMin = -30.0f;
     UPROPERTY()
-    float32 LookAtPitchClampMax;
+    float32 LookAtPitchClampMax = 40.0f;
     UPROPERTY()
     FHeadLocalRotationLimit HeadLocalRotationLimit;
     UPROPERTY()
-    float32 RestoreSpeed;
+    float32 RestoreSpeed = 20.0f;
 
-    FNeckIKFailureSetting()
-    {
-        FVector local_6 = FVector(240.0, 0.0, 0.0);
-        this.DeadZoneRadius = 0.1f;
-        this.LookAtYawFailureMin = -179.9f;
-        this.LookAtYawFailureMax = 179.9f;
-        this.LookAtYawClampMin = -85.0f;
-        this.LookAtYawClampMax = 85.0f;
-        this.LookAtPitchFailureMin = -90.0f;
-        this.LookAtPitchFailureMax = 90.0f;
-        this.LookAtPitchClampMin = -30.0f;
-        this.LookAtPitchClampMax = 40.0f;
-        this.RestoreSpeed = 20.0f;
-        return;
-    }
 }
 
 struct FDebugDrawSetting
@@ -72,7 +53,6 @@ struct FDebugDrawSetting
     UPROPERTY()
     bool bDrawPBDSolver = false;
 
-
 }
 
 struct FNeckTailTwistSetting
@@ -85,7 +65,6 @@ struct FNeckTailTwistSetting
     float32 FastLerpAlpha = 0.15f;
     UPROPERTY()
     float32 SlowLerpAlpha = 0.05f;
-
 
 }
 
@@ -105,7 +84,6 @@ struct FNeckWaveSettings
     bool bHitHigh = false;
     UPROPERTY()
     float32 MinFrameTime = 0.016666668f;
-
 
     float32 GetNeckTailTangent(const bool bIsTargetMoving, const float32 CurrentTangent, const float32 TangentBaseline, const float32 DeltaSeconds)
     {
@@ -196,7 +174,6 @@ class USPT_LongNeckIKBase : USPT_HeadControlTemplate
     FBoneChainTranformArrayView CombinedChainTMs;
     FBox ChainCompSpaceBounds;
 
-
     UFUNCTION()
     void OnInitialization_Implementation()
     {
@@ -280,11 +257,8 @@ class USPT_LongNeckIKBase : USPT_HeadControlTemplate
             bool local_9 = false;
             local_94.bTraceComplex = local_9;
             local_94.AddIgnoredComponent(this.OwnerComponent);
-            float local_104 = local_52.GetSphere().W;
-            TArray<FOverlapResult> local_109;
-            FCollisionShape::MakeSphere(local_109);
-            FSphere local_102 = local_52.GetSphere();
-            UWorld local_112 = this.OwnerComponent.GetWorld();
+            FCollisionResponseParams local_120;
+            FPhysicsUtils::OverlapMulti(this.OwnerComponent.GetWorld(), EPhysicsTraceTag(6), local_56, local_52.GetSphere().Center, FQuat::Identity, ECollisionChannel(0), FCollisionShape::MakeSphere(float32(local_52.GetSphere().W)), local_94, local_120);
             for (auto& local_136 : local_56)
             {
                 local_138 = local_136.GetActor();

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_SubmitRechargeTier
 {
     const int ModelId = 0;
@@ -139,7 +138,6 @@ struct __GeneratedProperties_FVM_SubmitRechargeTier
     FSoftBrush VoucherIcon;
     UPROPERTY()
     TEUIModelRef<FVM_SubmitRechargeTier> Self;
-
 
 }
 

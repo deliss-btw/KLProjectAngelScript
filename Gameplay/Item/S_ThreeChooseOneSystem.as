@@ -1,5 +1,3 @@
-﻿
-
 class US_ThreeChooseOneSystem : UECSScriptSystem
 {
     US_ThreeChooseOneSystem()
@@ -52,7 +50,6 @@ class US_ThreeChooseOneSystem : UECSScriptSystem
             const FC_PlayerController& local_62 = local_60.opCall();
             if (local_62)
             {
-                FECSEntity local_158;
                 FTraitCapabilities local_70;
                 local_23 = local_12.GetLevel();
                 if (local_14.CapabilitiesByLevel.Find(local_23, local_70))
@@ -80,8 +77,7 @@ class US_ThreeChooseOneSystem : UECSScriptSystem
                 }
                 ::FEcologyLevelEventBuffUtils::GetSelectedRuntimeRandomEventInfo(Event.Sender);
                 CastTo local_134;
-                local_134.opCall();
-                if (local_158)
+                if (local_134.opCall())
                 {
                     FLevelEventTypeAttribute local_316;
                     if (local_184 != nullptr && local_184.GetTypeAttribute(ELevelRandomEventType(local_317), local_316))
@@ -128,8 +124,7 @@ class US_ThreeChooseOneSystem : UECSScriptSystem
             FECSEntityScopeCycleCounter local_65 = FECSEntityScopeCycleCounter(local_64.Sender);
             if (local_64.Validate() == false)
             {
-                FString local_74 = "Validate Failed: FCE_ThreeChooseOneRequest, sender";
-                FString local_70 = local_64.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_ThreeChooseOneRequest, sender") + local_64.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_64.GetHandleTime());

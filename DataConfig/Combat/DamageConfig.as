@@ -1,5 +1,3 @@
-﻿
-
 struct FSpecialDamageTextConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -7,7 +5,6 @@ struct FSpecialDamageTextConfig : FDataObject
     float32 FontScale = 1.0f;
     UPROPERTY()
     float32 Duration = 3.0f;
-
 
 }
 

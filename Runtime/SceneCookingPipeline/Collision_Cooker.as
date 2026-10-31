@@ -1,5 +1,3 @@
-﻿
-
 class AKLCollisionProxy : AKLBakedCollision
 {
     UPROPERTY()

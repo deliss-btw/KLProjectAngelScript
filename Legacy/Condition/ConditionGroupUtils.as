@@ -1,4 +1,3 @@
-﻿
 namespace ConditionGroupUtils
 {
 bool IsReached(const FConditionInstanceHandle &inout ConditionGroupInstance)

@@ -1,4 +1,3 @@
-﻿
 enum ESocialViewPageOperatorType
 {
     None,
@@ -12,7 +11,6 @@ enum ESocialViewPageOperatorType
     KickOutTeam,
     GiveTeamLeader,
 }
-
 
 struct FSocialViewPageButtonConfig : FDataObject
 {
@@ -29,7 +27,6 @@ struct FSocialViewPageButtonConfig : FDataObject
     ESocialViewPageOperatorType OperatorType = ESocialViewPageOperatorType(0);
     UPROPERTY()
     TSoftClassPtr<UEUIUserWidget> PageWidget;
-
 
     bool ShowPageConfig() const
     {
@@ -50,7 +47,6 @@ struct FSocialViewPageData : FDataObject
     TArray<FDataObjectPtr> m_SmallButtons;
     UPROPERTY()
     TArray<FDataObjectPtr> m_HiddenSmallButtons;
-
 
     const TArray<TDataObjectPtr<FSocialViewPageButtonConfig>> GetBigButtons() const property
     {

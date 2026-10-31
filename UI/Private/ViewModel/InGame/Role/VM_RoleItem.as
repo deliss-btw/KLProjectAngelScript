@@ -1,4 +1,3 @@
-﻿
 namespace FVM_RoleItem
 {
     const int ModelId = 0;

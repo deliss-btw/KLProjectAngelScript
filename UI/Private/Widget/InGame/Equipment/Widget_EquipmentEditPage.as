@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_EquipmentEditPage
 {
     const int ViewID = 0;
@@ -198,6 +197,7 @@ namespace UWidget_EquipmentEditPage
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_EquipmentEditPage;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedEquipmentInfoChange"));
     return;
 }

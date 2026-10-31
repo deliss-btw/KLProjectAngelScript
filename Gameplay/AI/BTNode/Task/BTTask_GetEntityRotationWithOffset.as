@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_GetEntityRotationWithOffset : UBTTask_ECSScriptBase
 {
     UPROPERTY()

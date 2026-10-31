@@ -1,4 +1,3 @@
-﻿
 const FConsoleCommand CVar_ResetLoadingPassFromJson = FConsoleCommand();
 
 namespace FLevelDebugUtils

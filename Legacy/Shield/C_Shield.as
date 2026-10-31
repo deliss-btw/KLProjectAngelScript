@@ -1,4 +1,3 @@
-﻿
 enum EShieldType
 {
     InherentShield,
@@ -82,11 +81,77 @@ struct FShieldBaseData
 
     FShieldBaseData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags40 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bRecoverWhenActive = false;
+        this.m_RecoverDelay_Active = 0.0f;
+        this.m_RecoverValuePerSecond_Active = 0.0f;
+        this.m_RecoverPercentPerSecond_Active = 0.0f;
+        this.m_RecoverMaxValue_Active = 0.0f;
+        this.m_RecoverMaxPercent_Active = 0.0f;
+        this.m_bRecoverWhenDeactive = false;
+        this.m_RecoverDelay_Deactive = 0.0f;
+        this.m_RecoverValuePerSecond_Deactive = 0.0f;
+        this.m_RecoverPercentPerSecond_Deactive = 0.0f;
+        this.m_RecoverMaxValue_Deactive = 0.0f;
+        this.m_RecoverMaxPercent_Deactive = 0.0f;
+        this.m_bDestoryAfterBrokenNonRecoverable = false;
+        this.m_bRecoverAfterBroken = false;
+        this.m_bHasRecoverMaxCountAfterBroken = true;
+        this.m_RecoverDelay_Broken = 0.0f;
+        this.m_RecoverMaxValue_Broken = 0.0f;
+        this.m_RecoverMaxPercent_Broken = 0.0f;
+        this.m_RecoverCD_Broken = 0.0f;
+        this.m_RecoverMaxCount_Broken = 1;
+        return;
     }
     FShieldBaseData(const FShieldBaseData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags40 local_5;
+        this.__DirtyFlags = local_5;
+        this.m_bRecoverWhenActive = false;
+        this.m_RecoverDelay_Active = 0.0f;
+        this.m_RecoverValuePerSecond_Active = 0.0f;
+        this.m_RecoverPercentPerSecond_Active = 0.0f;
+        this.m_RecoverMaxValue_Active = 0.0f;
+        this.m_RecoverMaxPercent_Active = 0.0f;
+        this.m_bRecoverWhenDeactive = false;
+        this.m_RecoverDelay_Deactive = 0.0f;
+        this.m_RecoverValuePerSecond_Deactive = 0.0f;
+        this.m_RecoverPercentPerSecond_Deactive = 0.0f;
+        this.m_RecoverMaxValue_Deactive = 0.0f;
+        this.m_RecoverMaxPercent_Deactive = 0.0f;
+        this.m_bDestoryAfterBrokenNonRecoverable = false;
+        this.m_bRecoverAfterBroken = false;
+        this.m_bHasRecoverMaxCountAfterBroken = true;
+        this.m_RecoverDelay_Broken = 0.0f;
+        this.m_RecoverMaxValue_Broken = 0.0f;
+        this.m_RecoverMaxPercent_Broken = 0.0f;
+        this.m_RecoverCD_Broken = 0.0f;
+        this.m_RecoverMaxCount_Broken = 1;
+        this.m_AbsorbRatio = Other.m_AbsorbRatio;
+        this.m_DamageRatio = Other.m_DamageRatio;
+        this.m_bRecoverWhenActive = Other.m_bRecoverWhenActive;
+        this.m_RecoverDelay_Active = Other.m_RecoverDelay_Active;
+        this.m_RecoverValuePerSecond_Active = Other.m_RecoverValuePerSecond_Active;
+        this.m_RecoverPercentPerSecond_Active = Other.m_RecoverPercentPerSecond_Active;
+        this.m_RecoverMaxValue_Active = Other.m_RecoverMaxValue_Active;
+        this.m_RecoverMaxPercent_Active = Other.m_RecoverMaxPercent_Active;
+        this.m_bRecoverWhenDeactive = Other.m_bRecoverWhenDeactive;
+        this.m_RecoverDelay_Deactive = Other.m_RecoverDelay_Deactive;
+        this.m_RecoverValuePerSecond_Deactive = Other.m_RecoverValuePerSecond_Deactive;
+        this.m_RecoverPercentPerSecond_Deactive = Other.m_RecoverPercentPerSecond_Deactive;
+        this.m_RecoverMaxValue_Deactive = Other.m_RecoverMaxValue_Deactive;
+        this.m_RecoverMaxPercent_Deactive = Other.m_RecoverMaxPercent_Deactive;
+        this.m_bDestoryAfterBrokenNonRecoverable = Other.m_bDestoryAfterBrokenNonRecoverable;
+        this.m_bRecoverAfterBroken = Other.m_bRecoverAfterBroken;
+        this.m_bHasRecoverMaxCountAfterBroken = Other.m_bHasRecoverMaxCountAfterBroken;
+        this.m_RecoverDelay_Broken = Other.m_RecoverDelay_Broken;
+        this.m_RecoverMaxValue_Broken = Other.m_RecoverMaxValue_Broken;
+        this.m_RecoverMaxPercent_Broken = Other.m_RecoverMaxPercent_Broken;
+        this.m_RecoverCD_Broken = Other.m_RecoverCD_Broken;
+        this.m_RecoverMaxCount_Broken = int(Other.m_RecoverMaxCount_Broken);
+        return;
     }
     FShieldBaseData opAssign(const FShieldBaseData &inout Other)
     {
@@ -461,11 +526,49 @@ struct FC_Shield : FECSComponent
 
     FC_Shield()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags64 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_ShieldType = EShieldType(0);
+        this.m_bShieldActive = true;
+        this.m_bBroken = false;
+        this.m_LastTakenDamageTime = -1;
+        this.m_LastBreakRecoverTime = -1;
+        this.m_BrokenRecorverCount = 0;
+        this.m_DeactivateTime = -1;
+        this.m_DestroyTime = -1;
+        this.m_AssignTime = -1;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_Shield(const FC_Shield &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags64 local_5;
+        this.__DirtyFlags = local_5;
+        this.m_ShieldType = EShieldType(0);
+        this.m_bShieldActive = true;
+        this.m_bBroken = false;
+        this.m_LastTakenDamageTime = -1;
+        this.m_LastBreakRecoverTime = -1;
+        this.m_BrokenRecorverCount = 0;
+        this.m_DeactivateTime = -1;
+        this.m_DestroyTime = -1;
+        this.m_AssignTime = -1;
+        this.__InitDirtyFlags();
+        this.m_ShieldOwner = Other.m_ShieldOwner;
+        this.m_ShieldName = Other.m_ShieldName;
+        this.m_BaseData = Other.m_BaseData;
+        this.m_ShieldType = Other.m_ShieldType;
+        this.m_ShieldMaxHP = Other.m_ShieldMaxHP;
+        this.m_ShieldHP = Other.m_ShieldHP;
+        this.m_bShieldActive = Other.m_bShieldActive;
+        this.m_bBroken = Other.m_bBroken;
+        this.m_LastTakenDamageTime = Other.m_LastTakenDamageTime;
+        this.m_LastBreakRecoverTime = Other.m_LastBreakRecoverTime;
+        this.m_BrokenRecorverCount = int(Other.m_BrokenRecorverCount);
+        this.m_DeactivateTime = Other.m_DeactivateTime;
+        this.m_DestroyTime = Other.m_DestroyTime;
+        this.m_AssignTime = Other.m_AssignTime;
+        return;
     }
     FC_Shield opAssign(const FC_Shield &inout Other)
     {
@@ -757,11 +860,15 @@ struct FC_ShieldOwner : FECSComponent
 
     FC_ShieldOwner()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_ShieldOwner(const FC_ShieldOwner &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_NamedInherentShields = Other.m_NamedInherentShields;
         return;
@@ -923,37 +1030,37 @@ bool RemoveShield(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorShieldOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_Shield, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_Shield, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorShieldOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_Shield, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_Shield, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorShieldOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_Shield, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_Shield, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorShieldOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_Shield, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_Shield, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorShieldOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_Shield, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_Shield, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorShieldLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_Shield, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_Shield, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorShieldActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_Shield, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_Shield, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorShieldModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_Shield, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_Shield, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ShieldOwner
@@ -1033,37 +1140,37 @@ bool RemoveShieldOwner(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorShieldOwnerOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ShieldOwner, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ShieldOwner, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorShieldOwnerOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ShieldOwner, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ShieldOwner, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorShieldOwnerOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ShieldOwner, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ShieldOwner, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorShieldOwnerOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ShieldOwner, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ShieldOwner, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorShieldOwnerOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ShieldOwner, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ShieldOwner, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorShieldOwnerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ShieldOwner, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ShieldOwner, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorShieldOwnerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ShieldOwner, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ShieldOwner, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorShieldOwnerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ShieldOwner, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ShieldOwner, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

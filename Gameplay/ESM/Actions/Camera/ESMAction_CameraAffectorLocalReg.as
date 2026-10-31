@@ -1,15 +1,9 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: UESMAction_CameraAffectorLocalReg (default scalar field UESMAction.ActionFilterType has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
-
 class UESMAction_CameraAffectorLocalReg : UESMBPBaseSpanAction
 {
     UPROPERTY()
     FCameraAffectorItem AffectorItem;
     UPROPERTY()
     bool bSuppressWarningWithoutValidAffector = false;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const
@@ -34,7 +28,23 @@ class UESMAction_CameraAffectorLocalReg : UESMBPBaseSpanAction
     UFUNCTION()
     void ViewEnter_Implementation(const FESMViewContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        if (!(this.GetDefaultEntity(Context).IsValid()))
+        {
+            return;
+        }
+        Modify local_14;
+        FC_CameraAffector& local_16 = local_14.opCall();
+        if (local_16)
+        {
+            local_16.PushOverride(this.AffectorItem, this.GetDataPathName());
+        }
+        else
+        {
+            if (this.bSuppressWarningWithoutValidAffector)
+            {
+            }
+        }
+        return;
     }
     UFUNCTION()
     void ViewExit_Implementation(const FESMViewContext &inout Context, const FESMActionTime &inout Time) const

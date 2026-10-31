@@ -1,5 +1,3 @@
-﻿
-
 class US_AITeammateSystem : UECSScriptSystem
 {
     US_AITeammateSystem()

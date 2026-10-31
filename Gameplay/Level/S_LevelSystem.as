@@ -1,5 +1,3 @@
-﻿
-
 class US_LevelSystemAS : UECSScriptSystem
 {
     US_LevelSystemAS()
@@ -38,14 +36,13 @@ class US_LevelSystemAS : UECSScriptSystem
     {
         const AActor local_4;
         USkeletalMeshComponent local_12;
-        FName local_22;
         local_4 = Event.Target.GetActor();
         if (local_4 != nullptr)
         {
             local_12 = (Cast<USkeletalMeshComponent>(local_4.GetDefaultAttachComponent()));
             if (local_12 != nullptr)
             {
-                Event.Target.ModifyActorComponent(local_12.GetFName()).CastToMeshComponent();
+                FECSMeshComponentProxy local_22 = Event.Target.ModifyActorComponent(local_12.GetFName()).CastToMeshComponent();
                 if ((!((Event.TargetMaterial == nullptr))))
                 {
                     local_22.SetMaterial(int(Event.MaterialIndex), Event.TargetMaterial);
@@ -107,15 +104,13 @@ class US_LevelSystemAS : UECSScriptSystem
     void ServerJob_CustomLevelEventCallback(const FCE_CustomLevelEvent &inout CustomLevelEvent) const
     {
         bool local_27;
-        AActor local_30;
-        AKLLevelScriptTutorialActor local_32;
+        AKLLevelScriptTutorialActor local_30;
         TArray<AActor> local_6 = FKLLevelUtils::GetAllLevelScriptActors(ECS::GetUEWorld());
         for (auto local_26 : local_6)
         {
             local_27 = true;
             local_30 = Cast<AKLLevelScriptTutorialActor>(local_26);
-            local_32 = Cast<AKLLevelScriptTutorialActor>(local_30);
-            if ((CustomLevelEvent.bIsTutorialEvent && !((local_32 != nullptr))))
+            if ((CustomLevelEvent.bIsTutorialEvent && !((local_30 != nullptr))))
             {
                 local_27 = false;
             }

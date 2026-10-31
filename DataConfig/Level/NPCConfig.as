@@ -1,4 +1,3 @@
-﻿
 enum ENPCCombatPriority
 {
     Low,
@@ -19,14 +18,12 @@ enum ENPCComponentSwitchAction
     ForceDisable,
 }
 
-
 struct FNPCComponentSwitchOverride
 {
     UPROPERTY()
     ENPCRuntimeComponentFeature Feature = ENPCRuntimeComponentFeature(2);
     UPROPERTY()
     ENPCComponentSwitchAction Action = ENPCComponentSwitchAction(0);
-
 
 }
 
@@ -35,7 +32,6 @@ struct FNPCRoleConfig : FDataObject
     FDataObject _base_FDataObject;
     UPROPERTY()
     uint DataId;
-
 
 }
 
@@ -48,7 +44,6 @@ struct FNPCPresentationConfig : FPresentationConfig
 
     FNPCPresentationConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -89,7 +84,6 @@ struct FNPCMainConfig : FCreatureUnitConfig
     FDataObjectPtr m_WorldMapRegion;
     UPROPERTY()
     TArray<FNPCComponentSwitchOverride> ComponentSwitchOverrides;
-
 
     FText GetNpcName() const
     {
@@ -166,7 +160,6 @@ struct FNPCBaseConfig : FCombatUnitBaseConfig
 
     FNPCBaseConfig()
     {
-        super();
         return;
     }
 }

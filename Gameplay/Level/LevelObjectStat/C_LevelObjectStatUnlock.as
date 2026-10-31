@@ -1,4 +1,3 @@
-﻿
 namespace LevelObjectStatUnlockCondition
 {
 enum ETwoHandOperator
@@ -37,7 +36,6 @@ class ULevelObjectStatUnlockCondition_PlayerLevel : ULevelObjectStatUnlockCondit
     LevelObjectStatUnlockCondition::ETwoHandOperator Operator = LevelObjectStatUnlockCondition::ETwoHandOperator(2);
     UPROPERTY()
     int RequiredLevel = 0;
-
 
     bool CheckCondition(const FECSEntity &inout PlayerPawnEntity) const
     {
@@ -78,7 +76,7 @@ struct FC_LevelObjectStatUnlockConditionConfig : FECSComponent
     bool CheckUnlockConditions(const FECSEntity &inout PlayerPawnEntity) const
     {
         bool local_17;
-        for (auto& local_16 : this)
+        for (auto& local_16 : this.UnlockConditions)
         {
             local_17 = true;
             for (auto local_32 : local_16.UnlockConditions)
@@ -243,36 +241,36 @@ bool RemoveLevelObjectStatUnlockConditionConfig(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorLevelObjectStatUnlockConditionConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_LevelObjectStatUnlockConditionConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_LevelObjectStatUnlockConditionConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLevelObjectStatUnlockConditionConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_LevelObjectStatUnlockConditionConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_LevelObjectStatUnlockConditionConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLevelObjectStatUnlockConditionConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_LevelObjectStatUnlockConditionConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_LevelObjectStatUnlockConditionConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLevelObjectStatUnlockConditionConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_LevelObjectStatUnlockConditionConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_LevelObjectStatUnlockConditionConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLevelObjectStatUnlockConditionConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_LevelObjectStatUnlockConditionConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_LevelObjectStatUnlockConditionConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorLevelObjectStatUnlockConditionConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_LevelObjectStatUnlockConditionConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_LevelObjectStatUnlockConditionConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelObjectStatUnlockConditionConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_LevelObjectStatUnlockConditionConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_LevelObjectStatUnlockConditionConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelObjectStatUnlockConditionConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_LevelObjectStatUnlockConditionConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_LevelObjectStatUnlockConditionConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

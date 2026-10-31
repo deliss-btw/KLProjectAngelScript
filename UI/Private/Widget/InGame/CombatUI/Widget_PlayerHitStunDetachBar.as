@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PlayerHitStunDetachBar
 {
     const int ViewID = 0;
@@ -17,7 +16,6 @@ class UWidget_PlayerHitStunDetachBar : UEUIUserWidget
     FEUIModelWeakRef __PlayerHitStunDetachBar;
     UPROPERTY()
     FGetEUIModelRef PlayerHitStunDetachBarDelegate;
-
 
     UFUNCTION()
     void HandleMaxMaintainTriggerCounterChanged(const int MaxMaintainTriggerCounter)
@@ -95,6 +93,7 @@ namespace UWidget_PlayerHitStunDetachBar
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PlayerHitStunDetachBar;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleMaxMaintainTriggerCounterChanged"));
     return;
 }

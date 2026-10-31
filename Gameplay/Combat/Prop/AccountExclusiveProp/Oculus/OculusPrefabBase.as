@@ -1,5 +1,3 @@
-﻿
-
 class AOculusPrefabBase : AAccountExclusivePropPrefabBase
 {
     UPROPERTY()

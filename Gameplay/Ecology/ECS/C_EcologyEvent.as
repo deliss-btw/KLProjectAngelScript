@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_RefreshFlockSpawnerSlot_NS
 {
     const TECSEventDerivedPtr<FCE_RefreshFlockSpawnerSlot> DerivedPtr = TECSEventDerivedPtr<FCE_RefreshFlockSpawnerSlot>();
@@ -63,7 +62,6 @@ struct FCE_RefreshFlockSpawnerSlot : FECSEvent
     FECSEntity FlockSpanwer;
     UPROPERTY()
     int Slot;
-
 
 }
 
@@ -195,7 +193,6 @@ struct FCE_OnFlockStateChangeLevelEvent : FECSEvent
     UPROPERTY()
     EFlockBehaviorState OldState;
 
-
 }
 
 struct FCE_FlockLeaderReachedTargetResourceLevelEvent : FECSEvent
@@ -225,7 +222,6 @@ struct FCE_EcologySpawnerCreateEntityInited : FECSEvent
     FCreatureConfigProxy CreatureConfigProxy;
     UPROPERTY()
     bool bLazyLoad;
-
 
 }
 

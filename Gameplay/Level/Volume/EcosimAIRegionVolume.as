@@ -1,5 +1,3 @@
-﻿
-
 class AEcosimAIRegionVolume : AECSRegionVolumeBase
 {
     UPROPERTY()
@@ -7,7 +5,6 @@ class AEcosimAIRegionVolume : AECSRegionVolumeBase
     TArray<FECSEntity> ContainedMarkEntities;
     bool bIsAreaMarked = false;
     FString AreaCustomName;
-
 
     UFUNCTION()
     void ConstructionScript_Implementation()

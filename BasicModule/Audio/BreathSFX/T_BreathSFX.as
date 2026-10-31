@@ -1,5 +1,3 @@
-﻿
-
 struct FT_BreathSFX : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -9,7 +7,6 @@ struct FT_BreathSFX : FECSTrait
     bool bHas_FC_SFXStateConfig = true;
     UPROPERTY()
     FC_SFXStateConfig Config_FC_SFXStateConfig;
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_LayeredBlendMask_NS
 {
     const TECSComponentDerivedPtr<FC_LayeredBlendMask> DerivedPtr = TECSComponentDerivedPtr<FC_LayeredBlendMask>();
@@ -25,11 +24,30 @@ struct FC_LayeredBlendMask : FECSComponent
 
     FC_LayeredBlendMask()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_BlendWeight = 0.0f;
+        this.m_BlendTime = 0.2f;
+        this.m_bIsMeshSpaceBlend = false;
+        this.m_bIsRootSpaceBlend = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_LayeredBlendMask(const FC_LayeredBlendMask &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_BlendWeight = 0.0f;
+        this.m_BlendTime = 0.2f;
+        this.m_bIsMeshSpaceBlend = false;
+        this.m_bIsRootSpaceBlend = false;
+        this.__InitDirtyFlags();
+        this.m_BlendWeight = Other.m_BlendWeight;
+        this.m_BlendTime = Other.m_BlendTime;
+        this.m_bIsMeshSpaceBlend = Other.m_bIsMeshSpaceBlend;
+        this.m_bIsRootSpaceBlend = Other.m_bIsRootSpaceBlend;
+        this.m_BlendMaskStandalonePath = Other.m_BlendMaskStandalonePath;
+        return;
     }
     FC_LayeredBlendMask opAssign(const FC_LayeredBlendMask &inout Other)
     {
@@ -135,7 +153,6 @@ class UESMAction_LayeredBlend : UESMBPBaseSpanTickAction
     UPROPERTY()
     UBlendProfileStandalone BlendMaskStandalone;
 
-
     UFUNCTION()
     void PreviewClear_Implementation(const FESMPreviewContext &inout Context)
     {
@@ -191,7 +208,7 @@ class UESMAction_LayeredBlend : UESMBPBaseSpanTickAction
     {
         if (this.BlendMaskStandalone == nullptr)
         {
-            Info.AddDataInvalidComment(EESMDataValidType(1), "BlendMaskStandalone жњЄй…ЌзЅ®пјЊж··еђ€е°†дёЌз”џж•€");
+            Info.AddDataInvalidComment(EESMDataValidType(1), "BlendMaskStandalone 未配置，混合将不生效");
         }
         return;
     }
@@ -208,8 +225,8 @@ class UESMAction_LayeredBlend : UESMBPBaseSpanTickAction
         }
         Mask.SetBlendWeight(this.BlendWeight);
         Mask.SetBlendTime(this.BlendTime);
-        Mask.SetbIsMeshSpaceBlend(this.bIsMeshSpaceBlend);
-        Mask.SetbIsRootSpaceBlend(this.bIsRootSpaceBlend);
+        Mask.SetbIsMeshSpaceBlend((this.bIsMeshSpaceBlend));
+        Mask.SetbIsRootSpaceBlend((this.bIsRootSpaceBlend));
         Mask.SetBlendMaskStandalonePath(FSoftObjectPath(this.BlendMaskStandalone));
         return;
     }
@@ -305,37 +322,37 @@ bool RemoveLayeredBlendMask(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorLayeredBlendMaskOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_LayeredBlendMask, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_LayeredBlendMask, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLayeredBlendMaskOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_LayeredBlendMask, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_LayeredBlendMask, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLayeredBlendMaskOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_LayeredBlendMask, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_LayeredBlendMask, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLayeredBlendMaskOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_LayeredBlendMask, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_LayeredBlendMask, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLayeredBlendMaskOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_LayeredBlendMask, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_LayeredBlendMask, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorLayeredBlendMaskLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_LayeredBlendMask, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_LayeredBlendMask, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLayeredBlendMaskActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_LayeredBlendMask, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_LayeredBlendMask, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLayeredBlendMaskModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_LayeredBlendMask, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_LayeredBlendMask, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

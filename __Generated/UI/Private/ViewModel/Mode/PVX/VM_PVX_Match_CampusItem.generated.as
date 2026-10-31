@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_PVX_Match_CampusItem_Helpers
 {
 UFUNCTION()

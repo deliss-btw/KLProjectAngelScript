@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_OcclusionFadeNearCamera = FConsoleVariable();
 const FConsoleVariable CVar_OcclusionDebugActors = FConsoleVariable();
 const FName NAME_PlayerHeadPosForMPC = n"PlayerPosition_Head";
@@ -28,7 +27,6 @@ class US_CameraOcclusionFadeSystem : UECSScriptSystem
     UPROPERTY()
     float32 DefaultOutlineCheckInterval = 0.5f;
 
-
     UFUNCTION()
     bool IsDisabled_Implementation() const
     {
@@ -50,17 +48,15 @@ class US_CameraOcclusionFadeSystem : UECSScriptSystem
         float32 local_219;
         FVector local_6(Player.UEPlayerController.PlayerCameraManager.GetCameraLocation());
         FRotator local_18 = FRotator(Player.UEPlayerController.PlayerCameraManager.GetCameraRotation());
-        float32 local_29 = this.DefaultNearCameraSweepSphereRadius;
-        FQuat local_33;
-        FCollisionShape::MakeSphere(local_33);
+        FCollisionShape local_33 = FCollisionShape::MakeSphere(this.DefaultNearCameraSweepSphereRadius);
         FCollisionQueryParams local_72;
         local_72.bTraceComplex = false;
         TArray<FHitResult> local_78;
         FVector local_84 = local_6;
         FVector local_90(FVector::ZeroVector);
         FVector local_96(local_18.GetForwardVector());
-        float32 local_29_2 = this.DefaultNearCameraFadeRange;
-        float32 local_97 = local_29_2;
+        float32 local_29 = this.DefaultNearCameraFadeRange;
+        float32 local_97 = local_29;
         FECSEntity local_102 = Player.GetPlayerPawnEntity();
         if (local_102.IsValid())
         {
@@ -70,9 +66,9 @@ class US_CameraOcclusionFadeSystem : UECSScriptSystem
             if (local_108)
             {
                 FVector local_12 = FTransformUtils::GetLocation(Player.GetPlayerPawnEntity(), FFPTime(-1));
-                local_29_2 = local_108.GetScaledHalfHeight();
-                local_29_2 = local_29_2 * 0.5f;
-                local_90 = (local_12 + FVector::UpVector.opMul_r(local_29_2));
+                local_29 = local_108.GetScaledHalfHeight();
+                local_29 = local_29 * 0.5f;
+                local_90 = (local_12 + FVector::UpVector.opMul_r(local_29));
                 FVector local_114 = (local_90 - local_6);
                 local_96 = local_114.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector);
                 local_123 = this.DefaultNearCameraMaxSweepDistance;
@@ -80,8 +76,8 @@ class US_CameraOcclusionFadeSystem : UECSScriptSystem
             }
         }
         FVector local_132 = (local_6 + (local_96 * local_97));
-        local_18.Quaternion();
-        ECS::GetUEWorld();
+        FCollisionResponseParams local_156;
+        FPhysicsUtils::SweepMulti(ECS::GetUEWorld(), EPhysicsTraceTag(16), local_78, local_84, local_132, local_18.Quaternion(), ECollisionChannel(26), local_33, local_72, local_156);
         TMap<AActor, float32> local_180;
         TArray<AActor> local_184;
         FECSWorldPtr local_186 = this.GetECSWorld();
@@ -132,8 +128,8 @@ class US_CameraOcclusionFadeSystem : UECSScriptSystem
             }
             if (local_219 > 0.0f)
             {
-                local_29_2 = 0.0f;
-                float32 local_220_2 = local_180.FindOrAdd(local_206.GetActor(), local_29_2);
+                local_29 = 0.0f;
+                float32 local_220_2 = local_180.FindOrAdd(local_206.GetActor(), local_29);
                 float32 local_222 = FMath::Max(local_220_2, local_219);
                 local_206.GetActor().GetAttachedActors(local_184, true, true);
                 for (auto local_236 : local_184)
@@ -147,7 +143,7 @@ class US_CameraOcclusionFadeSystem : UECSScriptSystem
         {
             TWeakObjectPtr<AActor> local_256 = TWeakObjectPtr<AActor>(local_254.GetKey());
             FCameraOcclusionFadeItem local_258;
-            local_258.OcclusionFadeTargetWeight = local_29_2;
+            local_258.OcclusionFadeTargetWeight = local_29;
         }
         UMaterialParameterCollection local_262 = ::UCombatGlobalSettings::Get().GlobalEnvStateMPC;
         if (local_262 != nullptr)
@@ -165,14 +161,12 @@ class US_CameraOcclusionFadeSystem : UECSScriptSystem
             return;
         }
         FVector local_8(Player.UEPlayerController.PlayerCameraManager.GetCameraLocation());
-        float32 local_19 = this.DefaultBossNearCameraRadius;
-        FVector local_23;
-        FCollisionShape::MakeSphere(local_23);
+        FCollisionShape local_23 = FCollisionShape::MakeSphere(this.DefaultBossNearCameraRadius);
         FCollisionQueryParams local_62;
         local_62.bTraceComplex = false;
         TArray<FOverlapResult> local_68;
-        FCollisionResponseParams local_76 = FCollisionResponseParams();
-        FECSEntity local_82 = Player.GetPlayerPawnEntity();
+        FCollisionResponseParams local_76;
+        FPhysicsUtils::OverlapMulti(Player.GetPlayerPawnEntity(), false, EPhysicsTraceTag(16), local_68, local_8, FQuat::Identity, ECollisionChannel(26), local_23, local_62, local_76);
         bool local_84 = false;
         FName local_86(n"OutlinerOccluder");
         for (auto& local_102 : local_68)
@@ -188,7 +182,10 @@ class US_CameraOcclusionFadeSystem : UECSScriptSystem
             }
         }
         FECSWorldPtr local_106 = ECS::GetECSWorld();
-        if ((!(local_84) == !(false) && ::CharacterOutline::ShouldShowTeamOutline(local_112)))
+        bool local_83 = !(local_84);
+        bool local_1 = !(false);
+        local_83 = local_83 == local_1 && ::CharacterOutline::ShouldShowTeamOutline(local_112);
+        if (local_83)
         {
             Get local_120;
             const FC_TeamInfo& local_122 = local_120.opCall();
@@ -200,10 +197,10 @@ class US_CameraOcclusionFadeSystem : UECSScriptSystem
                     {
                         continue;
                     }
-                    FECSEntity local_82_2 = ::FTeamUtils::GetPawnEntityFromTeamMember(local_136.GetEntity(), true);
-                    if (local_82_2)
+                    FECSEntity local_82 = ::FTeamUtils::GetPawnEntityFromTeamMember(local_136.GetEntity(), true);
+                    if (local_82)
                     {
-                        if ((FTransformUtils::GetLocation(local_82_2, FFPTime(-1)).DistSquared(local_8)) < (this.DefaultTeammateOutlineCameraRadius * this.DefaultTeammateOutlineCameraRadius))
+                        if ((FTransformUtils::GetLocation(local_82, FFPTime(-1)).DistSquared(local_8)) < (this.DefaultTeammateOutlineCameraRadius * this.DefaultTeammateOutlineCameraRadius))
                         {
                             local_84 = true;
                             break;
@@ -373,8 +370,7 @@ class US_CameraOcclusionFadeSystem : UECSScriptSystem
                 int local_38 = local_26.CachedFadeComponents.Num() - 1;
                 for (; local_38 >= 0; --local_38)
                 {
-                    UPrimitiveComponent local_40 = local_26.CachedFadeComponents[local_38];
-                    if (local_40.GetNumMaterials() == 0)
+                    if (local_26.CachedFadeComponents[local_38].GetNumMaterials() == 0)
                     {
                         local_26.CachedFadeComponents.RemoveAt(local_38);
                     }

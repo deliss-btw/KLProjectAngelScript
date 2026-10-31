@@ -1,12 +1,9 @@
-﻿
-
 struct FBTDitherTeleportInstanceData
 {
     UPROPERTY()
     float32 ElapsedTime = 0.0f;
     UPROPERTY()
     uint8 Phase = false;
-
 
 }
 
@@ -38,7 +35,6 @@ class UBTTask_EcologyDitherTeleport : UBTTask_ECSScriptBase
     bool bIncludeWeapon = false;
 
     default SetNodeName("Ecology Dither Teleport");
-
 
     UFUNCTION()
     UScriptStruct GetNodeMemoryType_Implementation() const

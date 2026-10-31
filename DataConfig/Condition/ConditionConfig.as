@@ -1,4 +1,3 @@
-﻿
 enum ECondType
 {
     None,
@@ -30,7 +29,6 @@ enum ECondGroupLogicType
     MaxCount,
 }
 
-
 struct FConditionConfig : FServerConditionConfigBase
 {
     FServerConditionConfigBase _base_FServerConditionConfigBase;
@@ -61,7 +59,6 @@ struct FConditionConfig : FServerConditionConfigBase
 
     FConditionConfig()
     {
-        super();
         this.DataId = 0;
         this.CmpType = ECondCmpType(0);
         this.CmpValue = 0;
@@ -71,7 +68,7 @@ struct FConditionConfig : FServerConditionConfigBase
     }
     UScriptStruct GetCondRefDataType() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         return nullptr;
     }
     const TArray<TDataObjectPtr<FDataObject>> GetRefData() const property
@@ -101,7 +98,6 @@ struct FGsConditionGroupConfig : FServerConditionConfigBase
 
     FGsConditionGroupConfig()
     {
-        super();
         this.DataId = 0;
         this.LogicType = ECondGroupLogicType(0);
         this.__InitDefaults();

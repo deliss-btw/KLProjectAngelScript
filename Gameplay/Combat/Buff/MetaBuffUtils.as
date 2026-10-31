@@ -1,4 +1,3 @@
-﻿
 namespace FMetaBuffUtils
 {
 TDataObjectPtr<FMetaBuffConfig> GetMetaBuffBySlot(const FECSEntity &inout Entity, const EMetaBuffSlot MetaBuffSlot)
@@ -339,8 +338,7 @@ void AddMetaBuffToPawn(const FECSEntity &inout PlayerEntity, const FBuffConfigRe
     {
         Has local_6;
         local_6.opCall();
-        TDataObjectPtr<FBuffConfig> local_30;
-        local_1 = !(local_30.opArrow().bAttrModToAllCharacter);
+        local_1 = !(TDataObjectPtr<FBuffConfig>(BuffConfig).opArrow().bAttrModToAllCharacter);
         Get local_38;
         FBuffUtils::AddBuff(FECSEntity(local_38.opCall().GetPlayerPawnEntity()), BuffConfig, ECS::GetContextTime(), ENTITY_NULL, false, 0.0f, 1, true);
     }

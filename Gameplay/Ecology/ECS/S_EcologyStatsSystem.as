@@ -1,5 +1,3 @@
-﻿
-
 class US_EcologyStatsSystem : UECSScriptSystem
 {
     US_EcologyStatsSystem()

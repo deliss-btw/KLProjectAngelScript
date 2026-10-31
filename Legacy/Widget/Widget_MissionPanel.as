@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_MissionPanel
 {
     const int ViewID = 0;
@@ -27,7 +26,7 @@ class UWidget_MissionPanel : UEUIUserWidget
     UFUNCTION()
     void ShowInfoContent(const FName &inout MissionName)
     {
-        this.AllHintInfoData[MissionName].InfoImage.LoadBrush();
+        this.ShowImage.SetBrush(this.AllHintInfoData[MissionName].InfoImage.LoadBrush());
         this.ShowTextContent.SetText(this.AllHintInfoData[MissionName].InfoContent);
         return;
     }
@@ -49,6 +48,7 @@ namespace UWidget_MissionPanel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MissionPanel;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

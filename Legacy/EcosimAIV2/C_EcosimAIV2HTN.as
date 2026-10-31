@@ -1,4 +1,3 @@
-﻿
 enum EEcosimAIV2HTNPlanOperator
 {
     None,

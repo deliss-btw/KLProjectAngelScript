@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ExecuteAvatarIcon
 {
     const int ModelId = 0;

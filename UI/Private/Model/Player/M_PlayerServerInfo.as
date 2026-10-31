@@ -1,4 +1,3 @@
-﻿
 namespace FM_PlayerDSInfo
 {
     const int ModelId = 0;
@@ -51,7 +50,52 @@ struct FM_PlayerDSInfo : FEUIModel
     }
     void SyncRealtimeToOwner()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_6 = 0;
+        if (!(this.GetOwnerPlayer().IsValid()))
+        {
+            return;
+        }
+        TEUIModelWeakRef<FM_Player> local_2 = this.GetOwnerPlayer();
+        Get local_10;
+        const FC_DSPlayerInfo& local_12 = local_10.opCall();
+        if (local_12)
+        {
+            local_6.GetModify_NickNameAttr().Set(EPlayerInfoTrust(3), local_12.GetNickName());
+            local_6.GetModify_GenderAttr().Set(EPlayerInfoTrust(3), local_12.GetGender());
+            if (local_6.IsLocalPlayer())
+            {
+                if (::PlayerDataIsOnlineDbg::Enabled())
+                {
+                    ::PlayerDataIsOnlineDbg::Emit(FString().Append("Source=DSInfo(LocalPlayer) Uid=").Append(local_6.GetPlayerUid()).Append(" Trust=Realtime IsOnline=true"));
+                }
+                local_6.GetModify_IsOnlineAttr().Set(EPlayerInfoTrust(3), true);
+            }
+        }
+        if (this.GetCachedAvatarConfig())
+        {
+            local_6.GetModify_CurrentAvatarAttr().Set(EPlayerInfoTrust(3), this.GetCachedAvatarConfig());
+        }
+        TDataObjectPtr<FLevelInfoConfig> local_44 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+        if (local_44)
+        {
+            local_6.GetModify_CurrentWorldAttr().Set(EPlayerInfoTrust(3), local_44.opArrow().GetMapConfig());
+        }
+        TDataObjectPtr<FDivineSkillConfig> local_92 = ::DivineSkillUtils::GetDivineSkill(this.GetPlayerEntity());
+        if (local_92)
+        {
+            local_6.GetModify_DivineSkillAttr().Set(EPlayerInfoTrust(3), local_92);
+        }
+        Get local_120;
+        const FC_PlayerInGameState& local_122 = local_120.opCall();
+        if (local_122)
+        {
+            if (local_122.GetCurLevel() > 0)
+            {
+                local_6.GetModify_LevelAttr().Set(EPlayerInfoTrust(3), local_122.GetCurLevel());
+            }
+        }
+        local_6.NotifyPlayerEntitiesUpdatedFromDS(this.GetPlayerEntity(), this.GetPlayerPawnEntity());
+        return;
     }
     void PostConstruct()
     {
@@ -311,7 +355,19 @@ void __OnPlayerOwnerChanged(FM_PlayerDSInfo &inout Model)
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    ECSWorld.__MonitorPlayerControllerLifetime(EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    ECSWorld.__MonitorPlayerControllerModification(EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorDSPlayerInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorDSPlayerInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerInGameStateLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerInGameStateModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPrefabConfigOverrideLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPrefabConfigOverrideModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPrefabConfigLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPrefabConfigModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorDivineSkillLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorDivineSkillModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_OwnerPlayer()
 {

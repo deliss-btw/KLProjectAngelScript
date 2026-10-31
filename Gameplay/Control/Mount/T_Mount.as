@@ -1,5 +1,3 @@
-﻿
-
 struct FT_Mount : FECSTrait
 {
     FECSTrait _base_FECSTrait;

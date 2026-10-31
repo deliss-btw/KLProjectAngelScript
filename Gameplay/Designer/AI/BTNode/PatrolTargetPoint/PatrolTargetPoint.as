@@ -1,12 +1,9 @@
-﻿
-
 class APatrolTargetPoint : ATargetPoint
 {
     UPROPERTY()
     TArray<FPatrolTargetPointData> NextPatrolPointList;
     UPROPERTY()
     float32 StayTimeInCurrentPoint = 0.0f;
-
 
     UFUNCTION()
     void ConstructionScript_Implementation()

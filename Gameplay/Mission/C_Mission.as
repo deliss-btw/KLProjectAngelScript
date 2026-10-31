@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_TrackingMission_NS
 {
     const TECSComponentDerivedPtr<FC_TrackingMission> DerivedPtr = TECSComponentDerivedPtr<FC_TrackingMission>();
@@ -62,11 +61,30 @@ struct FStatusTransitionInfo
 
     FStatusTransitionInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_MissionId = 0;
+        this.m_MissionPhaseId = 0;
+        this.m_ExecutionEntryId = 0;
+        this.m_OldStatus = EMissionStatus(0);
+        this.m_NewStatus = EMissionStatus(0);
+        FSubDirtyFlags8 local_4;
+        this.__DirtyFlags = local_4;
+        return;
     }
     FStatusTransitionInfo(const FStatusTransitionInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_MissionId = 0;
+        this.m_MissionPhaseId = 0;
+        this.m_ExecutionEntryId = 0;
+        this.m_OldStatus = EMissionStatus(0);
+        this.m_NewStatus = EMissionStatus(0);
+        FSubDirtyFlags8 local_4;
+        this.__DirtyFlags = local_4;
+        this.m_MissionId = int(Other.m_MissionId);
+        this.m_MissionPhaseId = int(Other.m_MissionPhaseId);
+        this.m_ExecutionEntryId = int(Other.m_ExecutionEntryId);
+        this.m_OldStatus = Other.m_OldStatus;
+        this.m_NewStatus = Other.m_NewStatus;
+        return;
     }
     FStatusTransitionInfo(const uint InMissionId, const uint InMissionPhaseId, const EMissionStatus InOldStatus, const EMissionStatus InNewStatus)
     {
@@ -75,6 +93,8 @@ struct FStatusTransitionInfo
         this.m_ExecutionEntryId = 0;
         this.m_OldStatus = EMissionStatus(0);
         this.m_NewStatus = EMissionStatus(0);
+        FSubDirtyFlags8 local_4;
+        this.__DirtyFlags = local_4;
         this.SetMissionId(InMissionId);
         this.SetMissionPhaseId(InMissionPhaseId);
         this.SetOldStatus(EMissionStatus(InOldStatus));
@@ -172,7 +192,6 @@ struct FMissionTransitionInfo
     UPROPERTY()
     TArray<FStatusTransitionInfo> PhaseTransitionInfos;
 
-
 }
 
 struct FMissionObjectiveInfo
@@ -191,11 +210,30 @@ struct FMissionObjectiveInfo
 
     FMissionObjectiveInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_InstanceId = 0;
+        this.m_ObjectiveId = 0;
+        this.m_ObjectiveStatus = EObjectiveStatus(0);
+        this.m_FinishProgressValue = 0;
+        this.m_FailProgressValue = 0;
+        FSubDirtyFlags8 local_4;
+        this.__DirtyFlags = local_4;
+        return;
     }
     FMissionObjectiveInfo(const FMissionObjectiveInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_InstanceId = 0;
+        this.m_ObjectiveId = 0;
+        this.m_ObjectiveStatus = EObjectiveStatus(0);
+        this.m_FinishProgressValue = 0;
+        this.m_FailProgressValue = 0;
+        FSubDirtyFlags8 local_4;
+        this.__DirtyFlags = local_4;
+        this.m_InstanceId = int(Other.m_InstanceId);
+        this.m_ObjectiveId = int(Other.m_ObjectiveId);
+        this.m_ObjectiveStatus = Other.m_ObjectiveStatus;
+        this.m_FinishProgressValue = int(Other.m_FinishProgressValue);
+        this.m_FailProgressValue = int(Other.m_FailProgressValue);
+        return;
     }
     FMissionObjectiveInfo(const uint InInstanceId, const uint InObjectiveId, const EObjectiveStatus InObjectiveStatus)
     {
@@ -204,6 +242,8 @@ struct FMissionObjectiveInfo
         this.m_ObjectiveStatus = EObjectiveStatus(0);
         this.m_FinishProgressValue = 0;
         this.m_FailProgressValue = 0;
+        FSubDirtyFlags8 local_4;
+        this.__DirtyFlags = local_4;
         this.SetInstanceId(InInstanceId);
         this.SetObjectiveId(InObjectiveId);
         this.SetObjectiveStatus(EObjectiveStatus(InObjectiveStatus));
@@ -309,11 +349,16 @@ struct FMissionDetail
 
     FMissionDetail()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_MissionStatus = EMissionStatus(0);
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        return;
     }
     FMissionDetail(const FMissionDetail &inout Other)
     {
         this.m_MissionStatus = EMissionStatus(0);
+        FSubDirtyFlags8 local_51;
+        this.__DirtyFlags = local_51;
         this.m_MissionConfig = Other.m_MissionConfig;
         this.m_MissionStatus = Other.m_MissionStatus;
         this.m_ActivePhaseConfig = Other.m_ActivePhaseConfig;
@@ -480,11 +525,15 @@ struct FC_TrackingMission : FECSComponent
 
     FC_TrackingMission()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_TrackingMission(const FC_TrackingMission &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_TrackingMissionMap = Other.m_TrackingMissionMap;
         return;
@@ -529,11 +578,15 @@ struct FC_PlayerMissionInfo : FECSComponent
 
     FC_PlayerMissionInfo()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_PlayerMissionInfo(const FC_PlayerMissionInfo &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_ActiveMissionStatus = Other.m_ActiveMissionStatus;
         this.m_FinishedMissionStatus = Other.m_FinishedMissionStatus;
@@ -640,7 +693,6 @@ struct FCE_MissionTriggerEvent : FECSEvent
     UPROPERTY()
     TDataObjectPtr<FMissionPhaseConfig> MissionPhaseConfig;
 
-
 }
 
 struct FCE_NotifyClientMissionTransited : FECSEvent
@@ -650,7 +702,6 @@ struct FCE_NotifyClientMissionTransited : FECSEvent
     uint MissionId;
     UPROPERTY()
     TArray<FStatusTransitionInfo> TransitionInfos;
-
 
 }
 
@@ -703,7 +754,6 @@ struct FCE_MissionRequestToggleTrack : FECSEvent
     bool bIsTracking;
     UPROPERTY()
     bool bOpenMapAndSelect;
-
 
     bool Validate() const
     {
@@ -788,37 +838,37 @@ bool RemoveTrackingMission(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTrackingMissionOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TrackingMission, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TrackingMission, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTrackingMissionOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TrackingMission, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TrackingMission, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTrackingMissionOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TrackingMission, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TrackingMission, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTrackingMissionOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TrackingMission, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TrackingMission, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTrackingMissionOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TrackingMission, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TrackingMission, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTrackingMissionLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TrackingMission, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TrackingMission, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTrackingMissionActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TrackingMission, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TrackingMission, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTrackingMissionModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TrackingMission, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TrackingMission, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_PlayerMissionInfo
@@ -898,37 +948,37 @@ bool RemovePlayerMissionInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPlayerMissionInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerMissionInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerMissionInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerMissionInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerMissionInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerMissionInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerMissionInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerMissionInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerMissionInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerMissionInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerMissionInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerMissionInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerMissionInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerMissionInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerMissionInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPlayerMissionInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PlayerMissionInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PlayerMissionInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerMissionInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PlayerMissionInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PlayerMissionInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerMissionInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PlayerMissionInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PlayerMissionInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

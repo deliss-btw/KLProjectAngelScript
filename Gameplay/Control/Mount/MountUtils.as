@@ -1,4 +1,3 @@
-﻿
 namespace FMountUtils
 {
 UClass GetEquipedMountPrefabClass(const FECSEntity &inout Entity)
@@ -119,7 +118,7 @@ void ClearMountResidualMoveState(const FECSEntity &inout MountEntity)
     {
         return;
     }
-    ECS::GetContextTime();
+    FAIInputUtils::ChangeMoveStance(ECharacterMoveStance(0), MountEntity, ECS::GetContextTime(), ECharacterMoveStanceLayer(3));
     FAIInputUtils::SimulateMoveInputLocal(MountEntity, FVector::ZeroVector, EAIMoveSimulateType(0), true);
     Has local_10;
     bool local_1 = local_10.opCall();

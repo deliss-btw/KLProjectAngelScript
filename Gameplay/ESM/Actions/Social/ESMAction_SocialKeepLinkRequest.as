@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_SocialKeepLinkRequest : UESMBPBaseSpanAction
 {
     UESMAction_SocialKeepLinkRequest()

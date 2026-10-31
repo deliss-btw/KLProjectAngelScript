@@ -1,5 +1,3 @@
-﻿
-
 class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
 {
     US_ASGameModeSystemPVX()
@@ -114,7 +112,7 @@ class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
                 FECSWorldPtr local_2_8 = this.GetECSWorld();
                 SendEvent local_54;
                 local_54.opCall(ENTITY_NULL, local_30_2);
-                local_46.SetStageType(EFCS_GameStageType(EFCS_GameStageType(2)));
+                local_46.SetStageType(EFCS_GameStageType(2));
             }
         }
         return;
@@ -160,7 +158,7 @@ class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
         if (int(local_30.GetStageType()) != 0)
         {
             this.TickCreatePlayerController();
-            if ((int(local_30.GetStageType())) == 2)
+            if (int(local_30.GetStageType()) == 2)
             {
                 local_34 = false;
                 FECSRuntimeView local_72 = this.GetECSWorld().GetRuntimeView(EECSRuntimeViewType(2));
@@ -177,7 +175,7 @@ class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
                 if ((local_77 == 0.GetPlayerEntries().Num()))
                 {
                     this.TickStart();
-                    local_30.SetStageType(EFCS_GameStageType(EFCS_GameStageType(3)));
+                    local_30.SetStageType(EFCS_GameStageType(3));
                 }
             }
         }
@@ -200,7 +198,6 @@ class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
         int local_154 = 0;
         int local_164 = 0;
         int local_174 = 0;
-        FECSEntity local_192;
         FECSEntityId local_193;
         int local_204 = 0;
         int local_262;
@@ -248,9 +245,8 @@ class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
                 local_184 = local_174.GetRandomTeamSpawnersByRandomGroup(local_179);
                 if (local_184.IsValidIndex(local_180))
                 {
-                    local_192 = FECSEntity(local_184[local_180]);
-                    local_154.SetSpawnPoint(local_192);
-                    local_154.GetSpawnPoint().GetEntityName();
+                    local_154.SetSpawnPoint(FECSEntity(local_184[local_180]));
+                    FName local_196 = local_154.GetSpawnPoint().GetEntityName();
                     int local_194 = local_154.GetPlayerInTeamIndex();
                     int local_22 = local_154.GetPlayerTeamID();
                     local_142.GetId();
@@ -264,7 +260,6 @@ class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
             int local_22_2 = local_154.GetBossPrefabIdx();
             int local_197 = int(local_154.GetFaction());
             local_142.GetId();
-            this.SpawnPVXPlayer(local_192, local_193, local_22_2, local_154.GetSpawnPoint(), "");
             int local_194_2 = local_154.GetBossPrefabIdx();
             int local_197_2 = int(local_154.GetFaction());
             local_142.GetId();
@@ -619,7 +614,7 @@ class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
     bool SpawnPVXPlayer(const FECSEntity &inout PlayerEntity, const EFaction Faction, const int BossPrefabIdx = -1, const FECSEntity &inout SpawnPoint = ENTITY_NULL, const FString &inout UserNameOverride = "") const
     {
         int local_6 = 0;
-        FString local_22;
+        APlayerStartPIE local_22;
         Get local_60;
         const FC_Transform& local_62;
         FVector local_12(FVector::ZeroVector);
@@ -752,7 +747,18 @@ class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
             FC_InitInfoPVX& local_8 = local_6.opCall();
             if (local_8)
             {
-                if ((Event.bIsInvader || (int(Event.BossPrefabIdx) >= 0)))
+                int local_11;
+                local_11 = int(Event.bIsInvader);
+                if (local_11 != 0)
+                {
+                    local_11 = 1;
+                }
+                else
+                {
+                    bool local_1 = (int(Event.BossPrefabIdx) >= 0);
+                    local_11 = local_1;
+                }
+                if (local_11 != 0)
                 {
                     local_12 = 2;
                 }
@@ -868,7 +874,350 @@ class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
     }
     void DeathProcess(const FCE_DeathEvent &inout Event, const FECSEntity &inout DeadEntity, const FFPTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_38 = 0;
+        bool local_279;
+        int local_324 = 0;
+        int local_461;
+        FECSEntity& local_494;
+        int local_551;
+        int local_556 = 0;
+        UAS_GameModeSettingsPVX local_8 = (Cast<UAS_GameModeSettingsPVX>(UECSGameModeSettingsBase::Get(ECS::GetUEWorld())));
+        if (!((local_8 != nullptr)))
+        {
+            XError(ELog(33), "we need a UAS_GameModeSettingsPVX!");
+            return;
+        }
+        bool local_11 = false;
+        int local_12 = 0;
+        Has local_18;
+        bool local_9 = local_18.opCall();
+        if (local_9)
+        {
+            const FECSEntity& local_86;
+            Get local_46;
+            int local_41;
+            int local_40;
+            int local_39;
+            int local_29;
+            Get local_28;
+            local_29 = int(local_28.opCall().GetFaction());
+            FECSWorldPtr local_32 = this.GetECSWorld();
+            local_39 = local_38.GetExp();
+            if (!(local_38.GetbInLevelProtect()))
+            {
+                local_40 = local_38.GetLevel();
+                if (local_38.GetLevel() > 1)
+                {
+                    local_41 = local_38.GetLevel();
+                    local_41 = local_41 - 1;
+                    local_38.SetLevel(local_41);
+                    local_38.SetExp(::PVXUtil::GetLevelRequiredExp(local_38.GetLevel(), EFaction(local_29)));
+                }
+                else
+                {
+                    local_38.SetLevel(1);
+                    local_38.SetExp(0);
+                }
+                if (local_38.GetLevel() != local_40)
+                {
+                    const FC_PlayerController& local_48 = local_46.opCall();
+                    if (local_48)
+                    {
+                        FDataObjectPtr local_72 = FDataObjectPtr(local_38.GetLastOverrideAttributeData());
+                        auto local_78 = local_48.GetAllPlayerPawnEntities().Iterator();
+                        for (; local_78.CanProceed;)
+                        {
+                            local_86 = local_78.Proceed();
+                            local_38.SetLastOverrideAttributeData(local_72);
+                            ::PVXUtil::OverrideGameAttributeByDelta(local_86, local_38.GetLevel());
+                        }
+                    }
+                }
+                local_38.SetbInLevelProtect(true);
+            }
+            else
+            {
+                local_38.SetExp(::PVXUtil::GetLevelRequiredExp(local_38.GetLevel(), EFaction(local_29)));
+            }
+            int local_13 = local_39 - local_38.GetExp();
+            local_12 = local_13 + 300;
+            int local_87 = local_38.GetDeaths();
+            local_13 = local_87 + 1;
+            local_38.SetDeaths(local_13);
+            local_11 = true;
+        }
+        FECSEntity local_92 = FECSEntity(Event.KilledByEntity);
+        TDataObjectPtr<FBasePrefabConfig> local_120 = ::GetPrefabConfigPtr(DeadEntity);
+        if ((local_120.GetDataName() == local_8.HelpMonsterPrefab.GetDataName()))
+        {
+            FECSEntity local_304;
+            Get local_154;
+            bool local_149;
+            int local_40;
+            int local_39;
+            local_149 = false;
+            FVector local_160(local_154.opCall().GetPosition());
+            FRotator local_172 = local_154.opCall().GetRotation().Rotator();
+            FVector local_178 = local_160;
+            FVector local_202 = (local_160 - FVector(0.0, 0.0, 1000000.0));
+            TArray<AActor> local_206;
+            FHitResult local_272;
+            local_40 = 20;
+            local_39 = 0;
+            for (; local_39 < 20; ++local_39)
+            {
+                bool local_299 = System::LineTraceSingle(__GetWorldContext(), local_178, local_202, ETraceTypeQuery(5), false, local_206, EDrawDebugTrace(0), local_272, true, FLinearColor(1.0f, 0.0f, 0.0f, 1.0f), FLinearColor(0.0f, 1.0f, 0.0f, 1.0f), 5.0f);
+                if (local_299)
+                {
+                    local_160 = local_272.ImpactPoint;
+                    break;
+                }
+            }
+            UClass local_306;
+            ::BlueprintFunctions_Common::SpawnProp(FECSEntityAdapter(local_92), TSoftClassPtr<APropPrefab>(local_306), local_160, local_172, local_304, false, 1000.0f, 50.0f);
+            ::FLevelUtils::SendCustomLevelEvent(DeadEntity, n"PVXBossDeath");
+        }
+        FECSWorldPtr local_32_2 = this.GetECSWorld();
+        XLog(ELog(0), "PVX DeathProcess: Received death event for entity");
+        FECSEntity local_96 = FECSEntity(FECSEntityId(Event.KilledByEntity));
+        if (local_96)
+        {
+            FECSEntity local_304;
+            Get local_154;
+            bool local_149;
+            const FECSEntity& local_86;
+            Get local_46;
+            int local_41;
+            int local_40;
+            int local_39;
+            int local_29;
+            Get local_28;
+            bool local_297;
+            local_297 = local_18.opCall();
+            if (local_297)
+            {
+                int local_437;
+                FECSWorldPtr local_32_3 = this.GetECSWorld();
+                TDataObjectPtr<FBasePrefabConfig> local_144 = ::GetPrefabConfigPtr(DeadEntity);
+                local_29 = int(local_28.opCall().GetFaction());
+                FECSRuntimeView local_364 = this.GetECSWorld().GetRuntimeView(EECSRuntimeViewType(2));
+                Include local_368;
+                local_368.opCall();
+                local_39 = 0;
+                FECSRuntimeViewIterator local_402 = local_364.Iterator();
+                for (; local_402.CanProceed;)
+                {
+                    FECSEntity local_24 = local_402.Proceed();
+                    ++local_39;
+                }
+                local_40 = 0;
+                local_437 = 0;
+                TArray<FPVX_MonsterKillExpConfig> local_442;
+                local_8.MonsterKillExpDataTable.GetAllRows(local_442);
+                local_149 = false;
+                for (auto& local_456 : local_442)
+                {
+                    if ((local_456.GetMonsterConfig().GetDataName() == local_144.GetDataName()))
+                    {
+                        local_149 = true;
+                        local_279 = local_456.UseExpMul;
+                        if (local_279)
+                        {
+                            FECSWorldPtr local_32_4 = this.GetECSWorld();
+                            Get local_460;
+                            float local_287 = local_460.opCall().GetExpMultiplier();
+                            local_461 = int(local_287);
+                            local_287 = int(local_456.Exp);
+                            local_40 = uint((local_287 * local_461));
+                            local_287 = int(local_456.Coin) * local_461;
+                            local_437 = uint(local_287);
+                        }
+                        else
+                        {
+                            local_40 = int(local_456.Exp);
+                            local_437 = int(local_456.Coin);
+                        }
+                        break;
+                    }
+                }
+                int local_462 = 0;
+                if (local_12 > 0)
+                {
+                    local_462 = 1;
+                    local_40 = local_40 + local_12;
+                    int local_87_2 = local_38.GetKills() + 1;
+                    local_38.SetKills(local_87_2);
+                }
+                else
+                {
+                    if (!(local_149))
+                    {
+                        local_462 = 2;
+                        local_40 = 100;
+                    }
+                }
+                if (local_40 > 0)
+                {
+                    int local_479;
+                    FVector local_160_2(FVector::ZeroVector);
+                    Has local_466;
+                    local_297 = local_466.opCall();
+                    if (local_297)
+                    {
+                        local_160_2 = local_154.opCall().GetPosition();
+                    }
+                    TArray<FECSEntity> local_470;
+                    local_470 = ::BlueprintFunctions_Common::GetAllPlayerEntitiesInRangeAS(local_160_2, 1000000.0f, false);
+                    TArray<FECSEntity> local_478;
+                    local_479 = local_46.opCall().GetTeam();
+                    auto local_486 = local_470.Iterator();
+                    for (; local_486.CanProceed;)
+                    {
+                        FECSEntity local_24_2 = local_486.Proceed();
+                        Has local_498;
+                        bool local_9_2 = local_498.opCall();
+                        local_297 = local_9_2 && ((local_46.opCall().GetTeam() == local_479));
+                        if (local_297)
+                        {
+                            local_478.Add(local_494);
+                        }
+                    }
+                    local_279 = local_462 == 1 && (local_478.Num() > 0);
+                    if (local_279)
+                    {
+                        local_40 = uint((local_40 / local_478.Num()));
+                    }
+                    TDataObjectPtr<FItemConfig> local_522 = local_8.CurrencyItemConfig;
+                    if (local_522)
+                    {
+                        if (local_462 != 1)
+                        {
+                            local_279 = false;
+                        }
+                        else
+                        {
+                            local_279 = local_18.opCall();
+                        }
+                        if (local_279 && (local_478.Num() > 0))
+                        {
+                            Get local_22;
+                            local_304 = FECSEntity(local_22.opCall().GetPlayerEntity());
+                            int local_87_3 = ::InventoryUtils::GetInventoryItemNumber(local_304, local_522);
+                            int local_547 = FMath::IntegerDivisionTrunc(local_87_3, 4);
+                            if (local_547 > 0)
+                            {
+                                ::InventoryUtils::RemoveInventoryItem(local_304, local_522, local_547);
+                                local_324.GetModify_PlayerInfoMap()[local_304].SetCurrencyAmount(::InventoryUtils::GetInventoryItemNumber(local_304, local_522));
+                                int local_548 = local_478.Num();
+                                local_41 = FMath::IntegerDivisionTrunc(local_547, local_548);
+                                int local_550 = local_547 - (local_41 * local_548);
+                                int local_552 = 0;
+                                for (; local_552 < local_478.Num(); ++local_552)
+                                {
+                                    if (local_552 < local_550)
+                                    {
+                                        local_551 = 1;
+                                    }
+                                    else
+                                    {
+                                        local_551 = 0;
+                                    }
+                                    int local_13_2 = local_41 + local_551;
+                                    if (local_13_2 > 0)
+                                    {
+                                        ::InventoryUtils::AddInventoryItem(local_478[local_552], local_522, local_13_2);
+                                        local_324.GetModify_PlayerInfoMap()[local_478[local_552]].SetCurrencyAmount(::InventoryUtils::GetInventoryItemNumber(local_478[local_552], local_522));
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (local_437 > 0)
+                            {
+                                auto local_492 = local_478.Iterator();
+                                for (; local_492.CanProceed;)
+                                {
+                                    FECSEntity local_24_3 = local_492.Proceed();
+                                    ::InventoryUtils::AddInventoryItem(local_24_3, local_522, local_437);
+                                    local_324.GetModify_PlayerInfoMap()[local_24_3].SetCurrencyAmount(::InventoryUtils::GetInventoryItemNumber(local_24_3, local_522));
+                                }
+                            }
+                        }
+                    }
+                    local_461 = 6000.0f;
+                    auto local_486_2 = local_478.Iterator();
+                    for (; local_486_2.CanProceed;)
+                    {
+                        FECSEntity local_24_4 = local_486_2.Proceed();
+                        FECSWorldPtr local_32_5 = this.GetECSWorld();
+                        if (local_462 == 1 && !((local_24_4 == local_86)))
+                        {
+                            local_304 = FECSEntity(local_46.opCall().GetPlayerPawnEntity());
+                            local_297 = local_304.IsValid() && local_96.IsValid();
+                            if (local_297 && (::FASCommonUtils::CalculateEntityDistance3D(local_96, local_304) <= 6000.0f))
+                            {
+                                local_556.SetAssists(local_556.GetAssists() + 1);
+                            }
+                        }
+                        local_41 = local_556.GetLevel();
+                        local_556.SetExp((local_556.GetExp() + local_40));
+                        local_556.SetLevel(::PVXUtil::GetLevelByExp(local_556.GetExp(), EFaction(local_29)));
+                        if (local_41 < local_556.GetLevel())
+                        {
+                            int local_571;
+                            local_556.SetbInLevelProtect(false);
+                            local_304 = FECSEntity(local_46.opCall().GetPlayerPawnEntity());
+                            Has local_560;
+                            bool local_9_3 = local_560.opCall();
+                            if (local_9_3 && (local_29 != 6))
+                            {
+                                TArray<FECSEntity> local_564 = local_46.opCall().GetAllPlayerPawnEntities();
+                                auto local_492_2 = local_564.Iterator();
+                                for (; local_492_2.CanProceed;)
+                                {
+                                    local_494 = local_492_2.Proceed();
+                                    if (!((local_494 == local_304)))
+                                    {
+                                        local_304 = local_494;
+                                        break;
+                                    }
+                                }
+                            }
+                            ::PVXUtil::OverrideGameAttributeByDelta(local_304, local_556.GetLevel());
+                            local_571 = int(local_28.opCall().GetFaction());
+                            ::PVXUtil::ApplyLevelUpBuff(local_304, EFaction(local_571), local_8.LevelUpBuff_Player, local_8.LevelUpBuff_Boss);
+                            if (local_571 == 6)
+                            {
+                                FPVXBossEvolveSettings local_622;
+                                local_556.SetLastEvolveLevel_Boss(::PVXUtil::TryEvolveBoss(local_8.UpgradeMonsterDatas, local_41, local_556.GetLevel(), local_556.GetLastEvolveLevel_Boss(), local_304, local_622));
+                            }
+                        }
+                    }
+                    if (local_11)
+                    {
+                        if (!(local_96))
+                        {
+                            local_297 = false;
+                        }
+                        else
+                        {
+                            local_297 = local_18.opCall();
+                        }
+                        if (local_297)
+                        {
+                            TArray<FTextArgument> local_630;
+                            Make local_636;
+                            local_630.Add(local_636.opImplConv());
+                            Make local_648;
+                            local_630.Add(local_648.opImplConv());
+                            ::BlueprintFunctions_Level::Level_SendMessageHint(FECSEntityAdapter(local_96), local_8.MessageHintConfig_PlayerKill, local_630);
+                        }
+                    }
+                }
+            }
+        }
+        return;
     }
     UFUNCTION()
     void ServerJob_InitFakeCharacter_PVX(const FECSEntity &inout FakeEntity, const FC_FakeCharacterInit &inout FakeCharacterInit, const FCS_FixedTime &inout Time) const
@@ -1227,8 +1576,7 @@ class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_PlayerSelectInfoPVX, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_PlayerSelectInfoPVX, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());

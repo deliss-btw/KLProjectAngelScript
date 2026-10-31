@@ -1,5 +1,3 @@
-﻿
-
 class AGameMechanismActor : AGameActor
 {
     UPROPERTY()

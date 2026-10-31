@@ -1,4 +1,3 @@
-﻿
 namespace FVM_NavSampleListItem
 {
     const int ModelId = 0;
@@ -183,10 +182,7 @@ struct FVM_NavSampleList : FEUIViewModel
         int local_4 = 0;
         for (; local_4 < local_1; )
         {
-            FText::FromString(FString().Append("List item ").Append((local_4 + 1)));
-            FText::FromString(FString().Append("Generated FEUIModelRef item. Arrow keys move through the virtualized list entry ").Append((local_4 + 1)).Append("."));
-            FEUIModelRef local_24;
-            this.GetModify_Items().Add(local_24);
+            this.GetModify_Items().Add(FEUIModelRef(::FVM_NavSampleListItem::Create(this.GetContext().Manager, local_4, FText::FromString(FString().Append("List item ").Append((local_4 + 1))), FText::FromString(FString().Append("Generated FEUIModelRef item. Arrow keys move through the virtualized list entry ").Append((local_4 + 1)).Append(".")))));
             ++local_4;
         }
         return;

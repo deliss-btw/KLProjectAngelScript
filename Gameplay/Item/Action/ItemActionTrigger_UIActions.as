@@ -1,5 +1,3 @@
-﻿
-
 class UItemActionTrigger_ClosePage : UItemActionTriggerBase
 {
     UPROPERTY()

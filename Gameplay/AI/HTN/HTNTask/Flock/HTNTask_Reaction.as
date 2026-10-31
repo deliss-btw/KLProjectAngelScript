@@ -1,5 +1,3 @@
-﻿
-
 class UHTNTask_SetReactionBaseInfo : UHTNTask_ECSScriptBase
 {
     UPROPERTY()
@@ -19,8 +17,7 @@ class UHTNTask_SetReactionBaseInfo : UHTNTask_ECSScriptBase
         FReactionRuningContextBase local_6;
         local_6.BaseReason = Context.GetWorldStateAsName(this.ReactionNameKey);
         local_6.SourceEntity = Context.GetWorldStateAsEntityId(this.SourceEntityIdKey);
-        FName local_14;
-        FInstancedStruct::Make(local_14);
+        ::SetEcologyBlob(Context.PawnEntity, FEcologyReactioConst::ReactionRuningContextKnowledgeKey, FInstancedStruct::Make(local_6));
         this.FinishExecute(true);
         return;
     }
@@ -35,8 +32,8 @@ class UHTNTask_ResetReactionBaseInfo : UHTNTask_ECSScriptBase
     UFUNCTION()
     void Execute_Implementation(const FHTNContext &inout Context)
     {
-        FName local_10;
-        FInstancedStruct::Make(local_10);
+        FReactionRuningContextBase local_6;
+        ::SetEcologyBlob(Context.PawnEntity, FEcologyReactioConst::ReactionRuningContextKnowledgeKey, FInstancedStruct::Make(local_6));
         this.FinishExecute(true);
         return;
     }

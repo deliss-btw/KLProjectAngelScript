@@ -1,5 +1,3 @@
-﻿
-
 class US_AnimSampleTrajectorySystem : UECSScriptSystem
 {
     US_AnimSampleTrajectorySystem()

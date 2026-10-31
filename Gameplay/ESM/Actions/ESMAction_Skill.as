@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_SkillLifespan : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ class UESMAction_SkillLifespan : UESMBPBaseSpanAction
     bool bActivateOnBeginOnly = true;
     UPROPERTY()
     TArray<FName> ExcludeStateForActivate;
-
 
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const
@@ -88,7 +85,6 @@ class UESMAction_SkillLifespanBySlot : UESMBPBaseSpanAction
     bool bActivateOnBeginOnly = true;
     UPROPERTY()
     TArray<FName> ExcludeStateForActivate;
-
 
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const
@@ -173,7 +169,6 @@ class UESMAction_AddSkill : UESMBPBaseSpanAction
     bool bActivateOnEnter = false;
     UPROPERTY()
     ESkillSlot Slot = ESkillSlot(0);
-
 
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const

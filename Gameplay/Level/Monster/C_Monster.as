@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_MonsterInfo_NS
 {
     const TECSComponentDerivedPtr<FC_MonsterInfo> DerivedPtr = TECSComponentDerivedPtr<FC_MonsterInfo>();
@@ -19,11 +18,25 @@ struct FC_MonsterInfo : FECSComponent
 
     FC_MonsterInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_MonsterLevel = 1;
+        this.m_MonsterRank = EMonsterRank(0);
+        this.__InitDirtyFlags();
+        return;
     }
     FC_MonsterInfo(const FC_MonsterInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_51;
+        this.__DirtyFlags = local_51;
+        this.m_MonsterLevel = 1;
+        this.m_MonsterRank = EMonsterRank(0);
+        this.__InitDirtyFlags();
+        this.m_MonsterConfig = Other.m_MonsterConfig;
+        this.m_PresentationConfig = Other.m_PresentationConfig;
+        this.m_MonsterLevel = int(Other.m_MonsterLevel);
+        this.m_MonsterRank = Other.m_MonsterRank;
+        return;
     }
     FC_MonsterInfo opAssign(const FC_MonsterInfo &inout Other)
     {
@@ -185,37 +198,37 @@ bool RemoveMonsterInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorMonsterInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_MonsterInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_MonsterInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMonsterInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_MonsterInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_MonsterInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMonsterInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_MonsterInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_MonsterInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMonsterInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_MonsterInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_MonsterInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMonsterInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_MonsterInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_MonsterInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorMonsterInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_MonsterInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_MonsterInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorMonsterInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_MonsterInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_MonsterInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorMonsterInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_MonsterInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_MonsterInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

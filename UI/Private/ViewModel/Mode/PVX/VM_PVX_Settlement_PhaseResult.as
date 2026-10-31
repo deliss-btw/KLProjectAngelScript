@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PVX_Settlement_PhaseResult
 {
     const int ModelId = 0;
@@ -59,7 +58,7 @@ struct FVM_PVX_Settlement_PhaseResult : FEUIViewModel
     void PostConstruct()
     {
         int local_52 = 0;
-        FName local_114;
+        FPvxRewardFactorData local_114;
         int local_549 = 0;
         int local_573;
         FECSWorldPtr local_4 = ECS::GetECSWorld();
@@ -71,10 +70,11 @@ struct FVM_PVX_Settlement_PhaseResult : FEUIViewModel
                 FECSEntity local_50 = this.GetContext().GetLocalPlayer();
                 this.SetLocalPlayerInfo(TEUIModelRef<FVM_PVX_Settlement_PlayerInfo>(::FVM_PVX_Settlement_PlayerInfo::Create(this.GetContext().Manager, this.GetContext().GetLocalPlayer(), local_52)));
                 TMap<TDataObjectPtr<FItemConfig>, int> local_74;
-                for (auto& local_88 : local_52.GetPendingSettlementEvents())
+                auto local_80 = local_52.GetPendingSettlementEvents().Iterator();
+                for (; local_80.CanProceed;)
                 {
                     FPVXGameModeFlowSettings local_532 = ::PVXGameModeUtils::GetFlowSettings();
-                    if (local_532.PvxRewardArray.Find(local_114, local_88))
+                    if (local_532.PvxRewardArray.Find(local_80.Proceed(), local_114))
                     {
                         if (local_114.Reward)
                         {
@@ -190,7 +190,7 @@ namespace FVM_PVX_Settlement_PhaseResult
 {
 FVM_PVX_Settlement_PhaseResult& Create(const UObject ContextObject, const EFaction LocalPlayerFaction, const bool bIsSuccess)
 {
-    return FVM_PVX_Settlement_PhaseResult::CreateByManager(EUIInternal::GetContextManager(ContextObject), bIsSuccess);
+    return FVM_PVX_Settlement_PhaseResult::CreateByManager(EUIInternal::GetContextManager(ContextObject), EFaction(LocalPlayerFaction), bIsSuccess);
 }
 FVM_PVX_Settlement_PhaseResult CreateByManager(const UEUIManagerSubsystem Manager, const EFaction LocalPlayerFaction, const bool bIsSuccess)
 {

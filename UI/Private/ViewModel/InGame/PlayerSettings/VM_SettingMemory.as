@@ -1,11 +1,7 @@
-﻿
 namespace FVM_SettingMemory
 {
     const int ModelId = 0;
     const FEUIModelCallbackSignature RefreshVideoMemory = FEUIModelCallbackSignature();
-
-// NOTE: class defaults are not authored in this module: FVM_SettingMemory (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
 
 }
 struct FVM_SettingMemory : FEUIViewModel
@@ -101,7 +97,7 @@ struct FVM_SettingMemory : FEUIViewModel
     }
     void PostConstruct()
     {
-        this.SetName(NSLOCTEXT("SettingPage", "MemoryName", "жѕе­"));
+        this.SetName(NSLOCTEXT("SettingPage", "MemoryName", "显存"));
         this.RefreshVideoMemory();
         ::FVMS_SettingPage::Get(this.GetContext().UELocalPlayer).GetOnSettingsChanged().Add(this, FVM_SettingMemory::RefreshVideoMemory);
         return;
@@ -147,7 +143,7 @@ struct FVM_SettingMemory : FEUIViewModel
         if (this.GetbIsFull())
         {
             this.SetSelfColor(FLinearColor(0.51f, 0.05f, 0.05f, 1.0f));
-            this.SetIsFullText(NSLOCTEXT("SettingPage", "IsFullText", "жѕе­еЌ з”Ёиѕѓе¤§пјЊеЏЇиѓЅеј•еЏ‘иїђиЎЊеј‚еёёж€–жЂ§иѓЅй—®йў"));
+            this.SetIsFullText(NSLOCTEXT("SettingPage", "IsFullText", "显存占用较大，可能引发运行异常或性能问题"));
             return;
         }
         this.SetSelfColor(FLinearColor(1.0f, 0.658f, 0.15f, 1.0f));

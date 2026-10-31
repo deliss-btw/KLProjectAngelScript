@@ -1,10 +1,7 @@
-﻿
-
 class US_SocialSystem : UECSScriptSystem
 {
     UPROPERTY()
     float32 EnemyHeadUIInfoVisibleDistance = 500000.0f;
-
 
     UFUNCTION()
     bool IsDisabled_Implementation() const
@@ -90,7 +87,7 @@ class US_SocialSystem : UECSScriptSystem
         {
             if (PawnEntity.MatchGameplayTag(GameplayTags::ESM_Social_RequestInteractAction) && !((local_8 == local_4)) && ((FECSEntity(local_28.GetRequestInteractActionTargetPlayerEntity()) == ENTITY_NULL) || (FECSEntity(local_28.GetRequestInteractActionTargetPlayerEntity()) == local_8)))
             {
-                local_18 = NSLOCTEXT("SocialInfo", "InvitingToInteract", "дє¤дє’й‚ЂиЇ·...");
+                local_18 = NSLOCTEXT("SocialInfo", "InvitingToInteract", "交互邀请...");
             }
         }
         if (local_40 && !(local_40.GetShowBehaviorStringOnHead().IsEmpty()))
@@ -130,7 +127,7 @@ class US_SocialSystem : UECSScriptSystem
     {
         int local_14 = 0;
         UTextBlock local_18;
-        int local_31 = 0;
+        int local_31;
         FECSEntity local_8 = ::FASCommonUtils::GetUniquePlayerEntity(PawnEntity);
         if (!(local_14))
         {
@@ -185,7 +182,7 @@ class US_SocialSystem : UECSScriptSystem
                     {
                         local_31 = 2;
                     }
-                    SocialInteractionPresentationInfo.SocialHeadInfoWidget.opArrow().AS_TeamMasterMask.SetVisibility();
+                    SocialInteractionPresentationInfo.SocialHeadInfoWidget.opArrow().AS_TeamMasterMask.SetVisibility(ESlateVisibility(local_31));
                 }
                 else
                 {
@@ -199,9 +196,9 @@ class US_SocialSystem : UECSScriptSystem
     void ServerJob_HandleSocialActionEvent(const FCE_SocialActionAnimEvent &inout Event) const
     {
         const USocialViewPageSettings local_16;
-        EMotionType local_23;
+        int local_23;
         int local_36 = 0;
-        EInteractionSocialTypeForESM local_37;
+        int local_37;
         int local_44 = 0;
         int local_52 = 0;
         FECSEntity local_4 = FECSEntity(Event.Sender);
@@ -237,7 +234,7 @@ class US_SocialSystem : UECSScriptSystem
         local_36.SetSocialAnimName(EInteractionSocialTypeForESM(local_37));
         if (local_12.IsValid())
         {
-            local_37 = local_36.GetSocialAnimName();
+            local_37 = int(local_36.GetSocialAnimName());
             local_44.SetSocialAnimName(EInteractionSocialTypeForESM(local_37));
         }
         FECSWorldPtr local_46 = local_4.GetWorld();
@@ -261,9 +258,9 @@ class US_SocialSystem : UECSScriptSystem
     void ServerJob_HandleSocialRequestInteractActionEvent(const FCE_SocialRequestInteractActionEvent &inout Event) const
     {
         const USocialViewPageSettings local_16;
-        EMotionType local_26;
+        int local_26;
         int local_34 = 0;
-        EInteractionSocialTypeForESM local_39;
+        int local_39;
         FECSEntity local_4 = Event.RequestInteractAnimSourceEntity;
         FECSEntity local_12 = ::FASCommonUtils::GetUniquePlayerEntity(local_4);
         if (local_12.IsValid())
@@ -317,8 +314,7 @@ class US_SocialSystem : UECSScriptSystem
         {
             return;
         }
-        FFPTime local_6 = FFPTime(0.1);
-        ECS::GetContextTime();
+        FESMTriggerUtils::ActivateESMTrigger(Event.Entity, Event.TriggerName, ECS::GetContextTime(), FFPTime(0.1), 0);
         return;
     }
     void ReportAvatarActionTrigger(const FECSEntity &inout PawnEntity, const TDataObjectPtr<FMotionData> &inout MotionData) const
@@ -388,7 +384,7 @@ class US_SocialSystem : UECSScriptSystem
         }
         if (local_16.IsEmpty())
         {
-            local_16 = NSLOCTEXT("Social", "SocialActionConditionFailed", "еЅ“е‰ЌзЉ¶жЂЃж— жі•дЅїз”ЁиЇҐеЉЁдЅњ");
+            local_16 = NSLOCTEXT("Social", "SocialActionConditionFailed", "当前状态无法使用该动作");
         }
         FCommonTipsParam local_26;
         ::CommonPopup::Tips(local_16, local_26);
@@ -410,7 +406,11 @@ class US_SocialSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_HandleSocialSpawnProp(const FCE_SocialSpawnProp &inout SocialSpawnPropEvent) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        bool local_1;
+        FSocialSpawnPropItemConfig local_8;
+        ::FSocialUtils::GetSocialSpawnPropConfigByKey(SocialSpawnPropEvent.PlayerEntity, SocialSpawnPropEvent.SpawnPropKey, local_1, local_8);
+        ECS::RequestEntityByPrefabDeferred(local_8.Prefab, SocialSpawnPropEvent.Location, FRotator(SocialSpawnPropEvent.Rotator), EPrefabCollisionAlignment(2), EECSRegType(0), false);
+        return;
     }
     UFUNCTION()
     void Job_HandleSetSocialExpressionContent(const FCE_SetSocialExpressionContent &inout Event) const
@@ -675,8 +675,7 @@ class US_SocialSystem : UECSScriptSystem
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_TryTriggerESM, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_TryTriggerESM, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());

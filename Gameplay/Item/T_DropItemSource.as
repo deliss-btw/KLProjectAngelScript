@@ -1,5 +1,3 @@
-﻿
-
 struct FT_DropItemSource : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -16,7 +14,6 @@ struct FT_DropItemSource : FECSTrait
     UPROPERTY()
     FC_DropEnergyBallSource Config_FC_DropEnergyBallSource;
 
-
 }
 
 struct FT_DropItem : FECSTrait
@@ -29,7 +26,6 @@ struct FT_DropItem : FECSTrait
     UPROPERTY()
     FC_Collision Config_FC_Collision;
 
-
 }
 
 struct FT_DropItemSpawner : FECSTrait
@@ -40,7 +36,7 @@ struct FT_DropItemSpawner : FECSTrait
     UPROPERTY()
     FC_DropItemConfig Config_FC_DropItemConfig;
 
-    default CustomName = FName("жЋ‰иђЅз‰© (FT_DropItemSpawner)");
+    default CustomName = FName("掉落物 (FT_DropItemSpawner)");
 
     FT_DropItemSpawner()
     {
@@ -72,7 +68,7 @@ struct FT_TreasureBoxDropItemSpawner : FECSTrait
     UPROPERTY()
     FC_TreasureBoxDropItemConfig Config_FC_TreasureBoxDropItemConfig;
 
-    default CustomName = FName("е®ќз®±жЋ‰иђЅз‰© (FT_TreasureBoxDropItemSpawner)");
+    default CustomName = FName("宝箱掉落物 (FT_TreasureBoxDropItemSpawner)");
 
     FT_TreasureBoxDropItemSpawner()
     {

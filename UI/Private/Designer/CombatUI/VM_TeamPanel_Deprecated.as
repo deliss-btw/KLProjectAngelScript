@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_TeamPanel
 {
     const int ModelId = 0;
@@ -13,7 +12,6 @@ struct FTeamUIPlayerInfo
     uint PlayerUid;
     UPROPERTY()
     int SocialTeamMemberIdx = -1;
-
 
 }
 
@@ -116,8 +114,7 @@ struct FVMS_TeamPanel : FEUIViewModelSingleton
                 {
                     for (auto& local_50 : local_36.GetMembers())
                     {
-                        local_50;
-                        this.GetModify_TeamInfoList().Add(FEUIModelRef());
+                        this.GetModify_TeamInfoList().Add(FEUIModelRef(::FVM_TeamInfo::Create(this.GetContext().Manager, local_50.GetEntity(), 0)));
                     }
                 }
             }

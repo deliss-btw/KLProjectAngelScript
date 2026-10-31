@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_EquipableSkillListItem
 {
     const int ViewID = 0;
@@ -34,9 +33,7 @@ class UWidget_EquipableSkillListItem : UEUIUserWidget
         if (local_24)
         {
             int64 local_58 = local_24.opArrow().DataId;
-            FRedDotNodeData local_54 = FRedDotNodeData(GameplayTags::RedDotSystem_Partner_NewDivineSkill, local_58);
-            FEUIModelRef local_60;
-            this.RedDotVM = local_60;
+            this.RedDotVM = FEUIModelRef(::FVM_RedDot::Create(this, FRedDotNodeData(GameplayTags::RedDotSystem_Partner_NewDivineSkill, local_58)));
         }
         return;
     }
@@ -126,6 +123,7 @@ namespace UWidget_EquipableSkillListItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_EquipableSkillListItem;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedChanged"));
     return;
 }

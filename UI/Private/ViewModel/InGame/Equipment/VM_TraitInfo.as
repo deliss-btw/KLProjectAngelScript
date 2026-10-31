@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TraitSourceInfo
 {
     const int ModelId = 0;
@@ -223,7 +222,7 @@ struct FVM_TraitInfo : FEUIViewModel
     {
         if (this.GetTraitLevel() > this.GetTraitMaxLevel())
         {
-            return NSLOCTEXT("TraitLevelOutOfLimit", "жєўе‡є");
+            return NSLOCTEXT("TraitLevelOutOfLimit", "溢出");
         }
         if (this.GetTraitLevel() == this.GetTraitMaxLevel())
         {
@@ -407,7 +406,6 @@ struct __GeneratedProperties_FVM_TraitInfo
     bool IsRandomTrait;
     UPROPERTY()
     TEUIModelRef<FVM_TraitInfo> Self;
-
 
 }
 

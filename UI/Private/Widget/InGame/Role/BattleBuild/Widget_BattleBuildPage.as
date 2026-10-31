@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_BattleBuildPage
 {
     const int ViewID = 0;
@@ -42,12 +41,12 @@ class UWidget_BattleBuildPage : UEUIActivatableWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        // body not fully recovered вЂ” stub [unresolved-operand]
+        // body not fully recovered — stub [unresolved-operand]
     }
     UFUNCTION()
     void OnSelectedQuickSlotChanged(const TDataObjectPtr<FItemQuickSlotConfig> &inout QuickSlot)
     {
-        TDataObjectPtr<FItemQuickSlotConfig> local_2;
+        UWidget_BattleBuildEntry local_2;
         if (this.QuickSlotToEntryMap.Find(QuickSlot, local_2))
         {
             local_2.SetFocus();
@@ -197,6 +196,7 @@ namespace UWidget_BattleBuildPage
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_BattleBuildPage;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedQuickSlotChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnQuickSlotChanged"));
     return;

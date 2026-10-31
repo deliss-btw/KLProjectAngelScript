@@ -1,4 +1,3 @@
-﻿
 namespace FM_CommissionTier
 {
     const int ModelId = 0;
@@ -301,7 +300,7 @@ namespace FM_CommissionTier
 {
 FM_CommissionTier& Create(const UObject ContextObject, const TEUIModelRef<FM_Commission> &inout Commission, const ECommissionTier Tier)
 {
-    return FM_CommissionTier::CreateByManager(EUIInternal::GetContextManager(ContextObject), Commission);
+    return FM_CommissionTier::CreateByManager(EUIInternal::GetContextManager(ContextObject), Commission, ECommissionTier(Tier));
 }
 FM_CommissionTier CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Commission> &inout Commission, const ECommissionTier Tier)
 {

@@ -1,5 +1,3 @@
-﻿
-
 class US_LookRequestNPCWatchPlayerProducerSystemAS : UECSScriptSystem
 {
     US_LookRequestNPCWatchPlayerProducerSystemAS()
@@ -134,7 +132,40 @@ class US_LookRequestNPCWatchPlayerProducerSystemAS : UECSScriptSystem
     UFUNCTION()
     void ClientJob_WatchNearestPlayer(const FECSEntity &inout Entity, const FC_Transform &inout NPCTransform, const FC_NPCInfo &inout NPCInfo, FC_LookRequestViewLocal &inout ViewLocal) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        float32 local_59 = 0.0f;
+        if (!(NPCInfo.GetMainConfig().IsSet()))
+        {
+            ::FC_LookRequest::ReleaseViewBySource(Entity, EAnimLookSource(10));
+            return;
+        }
+        if (!(GetWatchPlayerLookPreset().IsSet()))
+        {
+            ::FC_LookRequest::ReleaseViewBySource(Entity, EAnimLookSource(10));
+            return;
+        }
+        FNPCWatchPlayerLookPresetConfig local_52;
+        if (!(::FNPCWatchPlayerLookUtils::ShouldWatchPlayerNow(Entity, ::FNPCWatchPlayerLookUtils::ResolveWatchPlayerLookMode(Entity, local_52))))
+        {
+            ::FC_LookRequest::ReleaseViewBySource(Entity, EAnimLookSource(10));
+            return;
+        }
+        float32 local_58 = FMath::Max(0.0f, local_52.EnterRange);
+        float32 local_55 = FMath::Max(local_58, local_52.ExitRange);
+        if (this.IsTracking(Entity))
+        {
+        }
+        else
+        {
+        }
+        float32 local_60 = local_59;
+        FVector local_68(FVector::ZeroVector);
+        if (this.TryFindNearestPlayerTarget(NPCTransform, local_52, local_60 * local_60, true, local_68))
+        {
+            ::FC_LookRequest::PushOrUpdateViewBySource(Entity, EAnimLookSource(10), int(local_52.Priority), uint8(::FAnimSnapshot::MakeSnapshotTypeMask(EAnimSnapshotType(0))), nullptr, local_68, 0.2f, FRotator::ZeroRotator);
+            return;
+        }
+        ::FC_LookRequest::ReleaseViewBySource(Entity, EAnimLookSource(10));
+        return;
     }
     UFUNCTION()
     void Run_ClientJob_WatchNearestPlayer() const

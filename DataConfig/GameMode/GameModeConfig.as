@@ -1,5 +1,3 @@
-﻿
-
 struct FGameModeProfileConfig : FDataObject
 {
     FDataObject _base_FDataObject;

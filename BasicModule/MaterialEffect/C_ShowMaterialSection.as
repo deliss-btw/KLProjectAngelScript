@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_SyncShowMaterialSectionRequests_NS
 {
     const TECSComponentDerivedPtr<FC_SyncShowMaterialSectionRequests> DerivedPtr = TECSComponentDerivedPtr<FC_SyncShowMaterialSectionRequests>();
@@ -27,11 +26,22 @@ struct FMaterialSlotOrIndex
 
     FMaterialSlotOrIndex()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_MaterialIndex = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bUseSlotName = false;
+        return;
     }
     FMaterialSlotOrIndex(const FMaterialSlotOrIndex &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_MaterialIndex = 0;
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_bUseSlotName = false;
+        this.m_bUseSlotName = Other.m_bUseSlotName;
+        this.m_MaterialIndex = int(Other.m_MaterialIndex);
+        this.m_MaterialSlotName = Other.m_MaterialSlotName;
+        return;
     }
     FMaterialSlotOrIndex opAssign(const FMaterialSlotOrIndex &inout Other)
     {
@@ -89,14 +99,26 @@ struct FShowMaterialSectionSingleRequest
 {
     FSubDirtyFlags8 __DirtyFlags;
     UPROPERTY()
-    FName m_MeshName = n"ViewMesh";
+    FName m_MeshName;
     UPROPERTY()
     TArray<FMaterialSlotOrIndex> m_Materials;
     UPROPERTY()
-    bool m_bShouldShow = false;
+    bool m_bShouldShow;
 
+    FShowMaterialSectionSingleRequest()
+    {
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_MeshName = n"ViewMesh";
+        this.m_bShouldShow = false;
+        return;
+    }
     FShowMaterialSectionSingleRequest(const FShowMaterialSectionSingleRequest &inout Other)
     {
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_MeshName = n"ViewMesh";
+        this.m_bShouldShow = false;
         this.m_MeshName = Other.m_MeshName;
         this.m_Materials = Other.m_Materials;
         this.m_bShouldShow = Other.m_bShouldShow;
@@ -175,11 +197,12 @@ struct FShowMaterialSectionRequest
     }
     FName GetRequestName() const property
     {
-        return this;
+        return this.m_RequestName;
     }
     void SetRequestName(const FName &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_RequestName = __Value;
+        return;
     }
     const TArray<FShowMaterialSectionSingleRequest> GetSections() const property
     {
@@ -206,11 +229,15 @@ struct FC_SyncShowMaterialSectionRequests : FECSComponent
 
     FC_SyncShowMaterialSectionRequests()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_SyncShowMaterialSectionRequests(const FC_SyncShowMaterialSectionRequests &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_Requests = Other.m_Requests;
         return;
@@ -262,7 +289,6 @@ struct FSingleShowMaterialSection
     UPROPERTY()
     bool bShouldShow = true;
 
-
 }
 
 struct FC_BackupShowMaterialSection : FECSComponent
@@ -277,9 +303,9 @@ struct FC_BackupShowMaterialSection : FECSComponent
     int GetMaterialBackupIndex(const FName &inout MeshName, const int MaterialIndex) const
     {
         int local_1 = 0;
-        for (; local_1 < this.Num(); ++local_1)
+        for (; local_1 < this.Materials.Num(); ++local_1)
         {
-            if ((FName(this[local_1].MeshName) == MeshName) && (this[local_1].MaterialIdx == MaterialIndex))
+            if ((FName(this.Materials[local_1].MeshName) == MeshName) && (this.Materials[local_1].MaterialIdx == MaterialIndex))
             {
                 return local_1;
             }
@@ -365,37 +391,37 @@ bool RemoveSyncShowMaterialSectionRequests(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorSyncShowMaterialSectionRequestsOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_SyncShowMaterialSectionRequests, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_SyncShowMaterialSectionRequests, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSyncShowMaterialSectionRequestsOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_SyncShowMaterialSectionRequests, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_SyncShowMaterialSectionRequests, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSyncShowMaterialSectionRequestsOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_SyncShowMaterialSectionRequests, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_SyncShowMaterialSectionRequests, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSyncShowMaterialSectionRequestsOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_SyncShowMaterialSectionRequests, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_SyncShowMaterialSectionRequests, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSyncShowMaterialSectionRequestsOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_SyncShowMaterialSectionRequests, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_SyncShowMaterialSectionRequests, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorSyncShowMaterialSectionRequestsLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_SyncShowMaterialSectionRequests, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_SyncShowMaterialSectionRequests, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSyncShowMaterialSectionRequestsActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_SyncShowMaterialSectionRequests, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_SyncShowMaterialSectionRequests, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSyncShowMaterialSectionRequestsModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_SyncShowMaterialSectionRequests, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_SyncShowMaterialSectionRequests, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_UpdateShowMaterialSectionTag
@@ -475,37 +501,37 @@ bool RemoveUpdateShowMaterialSectionTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorUpdateShowMaterialSectionTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_UpdateShowMaterialSectionTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_UpdateShowMaterialSectionTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorUpdateShowMaterialSectionTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_UpdateShowMaterialSectionTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_UpdateShowMaterialSectionTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorUpdateShowMaterialSectionTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_UpdateShowMaterialSectionTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_UpdateShowMaterialSectionTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorUpdateShowMaterialSectionTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_UpdateShowMaterialSectionTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_UpdateShowMaterialSectionTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorUpdateShowMaterialSectionTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_UpdateShowMaterialSectionTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_UpdateShowMaterialSectionTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorUpdateShowMaterialSectionTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_UpdateShowMaterialSectionTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_UpdateShowMaterialSectionTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorUpdateShowMaterialSectionTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_UpdateShowMaterialSectionTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_UpdateShowMaterialSectionTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorUpdateShowMaterialSectionTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_UpdateShowMaterialSectionTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_UpdateShowMaterialSectionTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_BackupShowMaterialSection
@@ -588,37 +614,37 @@ bool RemoveBackupShowMaterialSection(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorBackupShowMaterialSectionOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_BackupShowMaterialSection, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_BackupShowMaterialSection, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBackupShowMaterialSectionOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_BackupShowMaterialSection, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_BackupShowMaterialSection, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBackupShowMaterialSectionOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_BackupShowMaterialSection, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_BackupShowMaterialSection, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBackupShowMaterialSectionOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_BackupShowMaterialSection, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_BackupShowMaterialSection, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBackupShowMaterialSectionOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_BackupShowMaterialSection, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_BackupShowMaterialSection, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorBackupShowMaterialSectionLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_BackupShowMaterialSection, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_BackupShowMaterialSection, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBackupShowMaterialSectionActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_BackupShowMaterialSection, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_BackupShowMaterialSection, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBackupShowMaterialSectionModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_BackupShowMaterialSection, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_BackupShowMaterialSection, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

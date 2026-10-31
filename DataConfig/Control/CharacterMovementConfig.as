@@ -1,5 +1,3 @@
-﻿
-
 struct FDTCharacterMovementConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -99,7 +97,6 @@ struct FDTCharacterMovementConfig : FDataObject
     FRuntimeFloatCurve FlyPitchSpeedCurve = FRuntimeCurveUtils::CreateLinear(0.0f, 0.1f, 1.0f, 1.0f);
     UPROPERTY()
     float32 ExternalForceMaxSpeed = 1000.0f;
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace FMS_PresentationSpotPlayerLocationTracker
 {
     const int ModelId = 0;

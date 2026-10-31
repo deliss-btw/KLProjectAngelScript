@@ -1,5 +1,3 @@
-﻿
-
 struct FT_LevelObjectStat : FECSTrait
 {
     FECSTrait _base_FECSTrait;

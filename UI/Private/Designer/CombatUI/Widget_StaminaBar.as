@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_StaminaBar
 {
     const int ViewID = 0;
@@ -104,6 +103,7 @@ namespace UWidget_StaminaBar
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_StaminaBar;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnStaminaLowChanged"));
     return;
 }

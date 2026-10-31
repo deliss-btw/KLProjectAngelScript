@@ -1,4 +1,3 @@
-﻿
 namespace FVM_DialogueOptionItem
 {
     const int ModelId = 0;

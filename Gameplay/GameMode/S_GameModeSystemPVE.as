@@ -1,5 +1,3 @@
-﻿
-
 class US_ASGameModeSystemPVE : US_ECSScriptGameModeSystemBase
 {
     US_ASGameModeSystemPVE()

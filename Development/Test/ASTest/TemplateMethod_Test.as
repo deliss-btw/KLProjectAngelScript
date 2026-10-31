@@ -1,5 +1,3 @@
-﻿
-
 struct FTestArraySorter
 {
     FTestArraySorter()
@@ -14,7 +12,7 @@ struct FTestArraySorter
 
 void Test_ArrayTemplateMethod(FUnitTest &inout T)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
 }
 void Test_ECSComponentTemplateMethod(FUnitTest &inout T)
 {

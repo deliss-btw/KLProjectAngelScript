@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CookCostItem
 {
     const int ModelId = 0;
@@ -820,7 +819,6 @@ struct __GeneratedProperties_FVM_CookCostItem
     UPROPERTY()
     TEUIModelRef<FVM_CookCostItem> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_WaitCookItem
@@ -847,7 +845,6 @@ struct __GeneratedProperties_FVM_WaitCookItem
     ESlateVisibility Myself;
     UPROPERTY()
     TEUIModelRef<FVM_WaitCookItem> Self;
-
 
 }
 
@@ -950,7 +947,9 @@ void __OnInventoryChanged(FVM_CookCostItem &inout Model, const FMsg_PlayerInvent
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorCookPropLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorCookPropModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 bool __UIGetter_bIsValid(const FVM_CookCostItem &inout Model)
 {

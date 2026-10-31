@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_NavigationBarIcon_Helpers
 {
 UFUNCTION()

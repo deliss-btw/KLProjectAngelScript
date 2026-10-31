@@ -1,11 +1,9 @@
-﻿
 enum EClientConditionTriggerReason
 {
     None,
     MonsterExecutionBreak,
     InitialLockedFashionUnlocked,
 }
-
 
 struct FClientConditionBase
 {
@@ -23,7 +21,6 @@ struct FClientCond_WidgetTag : FClientConditionBase
 
     FClientCond_WidgetTag()
     {
-        super();
         return;
     }
 }
@@ -36,7 +33,6 @@ struct FClientCond_CommissionInMap : FClientConditionBase
 
     FClientCond_CommissionInMap()
     {
-        super();
         return;
     }
 }
@@ -47,7 +43,6 @@ struct FClientCond_LevelType : FClientConditionBase
     UPROPERTY()
     ELevelType LevelType;
 
-
 }
 
 struct FClientCond_InputType : FClientConditionBase
@@ -55,7 +50,6 @@ struct FClientCond_InputType : FClientConditionBase
     FClientConditionBase _base_FClientConditionBase;
     UPROPERTY()
     EEUIInputType InputType;
-
 
 }
 
@@ -65,7 +59,6 @@ struct FClientCond_TriggerReason : FClientConditionBase
     UPROPERTY()
     EClientConditionTriggerReason Reason;
 
-
 }
 
 struct FClientCond_InTeam : FClientConditionBase
@@ -73,7 +66,6 @@ struct FClientCond_InTeam : FClientConditionBase
     FClientConditionBase _base_FClientConditionBase;
     UPROPERTY()
     bool bRequireInTeam;
-
 
 }
 

@@ -1,10 +1,7 @@
-﻿
-
 struct FESMHitStateInstanceData
 {
     UPROPERTY()
     int HitStateIndex = -1;
-
 
 }
 
@@ -12,7 +9,6 @@ class UESMAction_HitState : UESMBPBaseSpanAction
 {
     UPROPERTY()
     EHitReactionState HitState = EHitReactionState(0);
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const
@@ -34,7 +30,7 @@ class UESMAction_HitState : UESMBPBaseSpanAction
     {
         if (int(this.HitState) == 0)
         {
-            Info.AddDataInvalidComment(EESMDataValidType(2), "дёЌеЏЇй…ЌзЅ®HitStateдёєNone");
+            Info.AddDataInvalidComment(EESMDataValidType(2), "不可配置HitState为None");
         }
         return;
     }

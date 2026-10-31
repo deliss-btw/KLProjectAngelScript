@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_BattleBuildPage
 {
     const int ModelId = 0;
@@ -127,20 +126,19 @@ struct FVMS_BattleBuildPage : FEUIViewModelSingleton
     }
     void UpdateSelectListEntries()
     {
-        FEUIModelRef local_56;
         this.GetModify_SelectListEntries().Empty(0);
         if (!(this.GetSelectedQuickSlot()))
         {
             return;
         }
-        if (::InventoryUtils::GetQuickSlotItem(this.GetContext().GetLocalPlayer(), this.GetSelectedQuickSlot()))
+        TDataObjectPtr<FItemConfig> local_30 = ::InventoryUtils::GetQuickSlotItem(this.GetContext().GetLocalPlayer(), this.GetSelectedQuickSlot());
+        if (local_30)
         {
-            this.GetModify_SelectListEntries().Add(local_56);
+            this.GetModify_SelectListEntries().Add(FEUIModelRef(::FVM_BattleBuildSelectListEntry::Create(this.GetContext().Manager, local_30)));
         }
         for (auto& local_74 : ::InventoryUtils::GetAllValidItemsForQuickSlot(this.GetContext().GetLocalPlayer(), this.GetSelectedQuickSlot()))
         {
-            local_74;
-            this.GetModify_SelectListEntries().Add(local_56);
+            this.GetModify_SelectListEntries().Add(FEUIModelRef(::FVM_BattleBuildSelectListEntry::Create(this.GetContext().Manager, local_74)));
         }
         return;
     }
@@ -242,7 +240,6 @@ struct __GeneratedProperties_FVMS_BattleBuildPage
     bool CanChangeQuickSlot;
     UPROPERTY()
     TEUIModelRef<FVMS_BattleBuildPage> Self;
-
 
 }
 

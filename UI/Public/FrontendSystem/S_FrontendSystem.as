@@ -1,5 +1,3 @@
-﻿
-
 class US_FrontendSystem : UECSScriptSystem
 {
     US_FrontendSystem()
@@ -102,12 +100,72 @@ namespace FrontendSystem_Internal
 {
 void EnterSystem(const FECSEntity &inout PlayerEntity, const UFrontendSystemConfig FrontendSystem)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    UFrontendSystemConfig local_22;
+    if (!(!(FrontendSystem.bForbitOnDeath)) && FECSEntity::Has<FC_DeathTag>(FASCommonUtils::GetUniqueAvatarPawnEntity(PlayerEntity)).opCall())
+    {
+        return;
+    }
+    Get local_14;
+    const FC_FrontendSystem& local_16 = local_14.opCall();
+    if (local_16)
+    {
+        EFrontendSystemAllowMultipleInstance local_17;
+        local_17 = FrontendSystem.AllowMultipleInstance;
+        switch (int(local_17))
+        {
+        case 0:
+        {
+            local_22 = local_16.OpenedSystemInstances.Last(0).Config;
+            if (local_22 != FrontendSystem)
+            {
+                FrontendSystem_Internal::CreateAndEnterNewSystem(PlayerEntity, FrontendSystem);
+            }
+            break;
+        }
+        case 1:
+        {
+            FrontendSystem_Internal::CreateAndEnterNewSystem(PlayerEntity, FrontendSystem);
+            break;
+        }
+        case 2:
+        {
+            if (FrontendSystem_Internal::FindLastIndexByConfig(PlayerEntity, FrontendSystem) == INDEX_NONE)
+            {
+                FrontendSystem_Internal::CreateAndEnterNewSystem(PlayerEntity, FrontendSystem);
+            }
+            break;
+        }
+        case 3:
+        {
+            int local_19 = FrontendSystem_Internal::FindLastIndexByConfig(PlayerEntity, FrontendSystem);
+            if (local_19 == INDEX_NONE)
+            {
+                FrontendSystem_Internal::CreateAndEnterNewSystem(PlayerEntity, FrontendSystem);
+            }
+            else
+            {
+                if (local_19 != (local_16.OpenedSystemInstances.Num() - 1))
+                {
+                    FrontendSystem_Internal::ReenterExistingSystemByIndex(PlayerEntity, local_19);
+                }
+            }
+            break;
+        }
+        }
+        return;
+    }
+    FrontendSystem_Internal::CreateAndEnterNewSystem(PlayerEntity, FrontendSystem);
+    return;
 }
 bool ExitSystem(const FECSEntity &inout PlayerEntity, const UFrontendSystemConfig FrontendSystem)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    bool __r; return __r;
+    int local_2 = FrontendSystem_Internal::FindLastIndexByConfig(PlayerEntity, FrontendSystem);
+    if (local_2 != INDEX_NONE)
+    {
+        FrontendSystem_Internal::ExitByIndex(PlayerEntity, local_2);
+        return true;
+    }
+    return false;
 }
 bool ExitSystemByHandle(const FECSEntity &inout PlayerEntity, const int SystemInstanceHandle)
 {
@@ -129,8 +187,22 @@ bool ExitSystemByHandle(const FECSEntity &inout PlayerEntity, const int SystemIn
 }
 int FindLastIndexByConfig(const FECSEntity &inout PlayerEntity, const UFrontendSystemConfig Config)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    int __r; return __r;
+    UFrontendSystemConfig local_14;
+    Get local_4;
+    const FC_FrontendSystem& local_6 = local_4.opCall();
+    if (local_6)
+    {
+        int local_11 = local_6.OpenedSystemInstances.Num() - 1;
+        for (; local_11 >= 0; --local_11)
+        {
+            local_14 = local_6.OpenedSystemInstances[local_11].Config;
+            if (local_14 == Config)
+            {
+                return local_11;
+            }
+        }
+    }
+    return INDEX_NONE;
 }
 void CreateAndEnterNewSystem(const FECSEntity &inout PlayerEntity, const UFrontendSystemConfig Config)
 {

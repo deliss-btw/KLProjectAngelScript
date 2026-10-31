@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_StoreEntityBB : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -35,7 +33,7 @@ float32 GetStoredFloatValue(const FECSEntity &inout Entity, const FNameHandle_En
     bIsExisted = false;
     if (local_8)
     {
-        FName local_10;
+        float32 local_10;
         bIsExisted = local_8.GetFloatStore().Find(NameHandle.Name, local_10);
         return local_10;
     }

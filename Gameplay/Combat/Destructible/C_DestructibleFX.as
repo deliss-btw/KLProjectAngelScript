@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_DestructibleFX_NS
 {
     const TECSComponentDerivedPtr<FC_DestructibleFX> DerivedPtr = TECSComponentDerivedPtr<FC_DestructibleFX>();
@@ -17,11 +16,24 @@ struct FC_DestructibleFX : FECSComponent
 
     FC_DestructibleFX()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_ImpactType = EImpactType(0);
+        this.m_ImpactStrength = EImpactStrength(0);
+        this.__InitDirtyFlags();
+        return;
     }
     FC_DestructibleFX(const FC_DestructibleFX &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_ImpactType = EImpactType(0);
+        this.m_ImpactStrength = EImpactStrength(0);
+        this.__InitDirtyFlags();
+        this.m_ImpactType = Other.m_ImpactType;
+        this.m_ImpactStrength = Other.m_ImpactStrength;
+        this.m_ForceDirection = Other.m_ForceDirection;
+        return;
     }
     FC_DestructibleFX opAssign(const FC_DestructibleFX &inout Other)
     {
@@ -160,37 +172,37 @@ bool RemoveDestructibleFX(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorDestructibleFXOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_DestructibleFX, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_DestructibleFX, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDestructibleFXOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_DestructibleFX, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_DestructibleFX, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDestructibleFXOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_DestructibleFX, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_DestructibleFX, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDestructibleFXOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_DestructibleFX, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_DestructibleFX, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDestructibleFXOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_DestructibleFX, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_DestructibleFX, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorDestructibleFXLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_DestructibleFX, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_DestructibleFX, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDestructibleFXActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_DestructibleFX, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_DestructibleFX, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDestructibleFXModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_DestructibleFX, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_DestructibleFX, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

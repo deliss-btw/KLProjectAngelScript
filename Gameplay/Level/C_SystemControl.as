@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_LBPDisableSystemControl_NS
 {
     const TECSEventDerivedPtr<FCE_LBPDisableSystemControl> DerivedPtr = TECSEventDerivedPtr<FCE_LBPDisableSystemControl>();
@@ -16,7 +15,6 @@ struct FCE_LBPDisableSystemControl : FECSEvent
     UPROPERTY()
     FString ForbiddenTips;
 
-
 }
 
 struct FCE_LBPEnableSystemControl : FECSEvent
@@ -24,7 +22,6 @@ struct FCE_LBPEnableSystemControl : FECSEvent
     FECSEvent _base_FECSEvent;
     UPROPERTY()
     uint SystemDataId;
-
 
 }
 

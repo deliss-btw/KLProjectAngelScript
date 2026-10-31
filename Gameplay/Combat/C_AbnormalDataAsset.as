@@ -1,5 +1,3 @@
-﻿
-
 class UAbnormalDataAsset : UDataAsset
 {
     UPROPERTY()

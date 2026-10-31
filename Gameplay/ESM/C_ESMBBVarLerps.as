@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_ESMBBVarLerps_NS
 {
     const TECSComponentDerivedPtr<FC_ESMBBVarLerps> DerivedPtr = TECSComponentDerivedPtr<FC_ESMBBVarLerps>();
@@ -21,12 +20,18 @@ struct FESMBBVarLerpKey
 
     FESMBBVarLerpKey()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_FromValue = 0.0f;
+        this.m_TargetValue = 0.0f;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        return;
     }
     FESMBBVarLerpKey(const FESMBBVarLerpKey &inout Other)
     {
         this.m_FromValue = 0.0f;
         this.m_TargetValue = 0.0f;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.m_TimeStart = Other.m_TimeStart;
         this.m_TimeEnd = Other.m_TimeEnd;
         this.m_VarName = Other.m_VarName;
@@ -140,11 +145,15 @@ struct FC_ESMBBVarLerps : FECSComponent
 
     FC_ESMBBVarLerps()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_ESMBBVarLerps(const FC_ESMBBVarLerps &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_LerpKeys = Other.m_LerpKeys;
         return;
@@ -256,37 +265,37 @@ bool RemoveESMBBVarLerps(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorESMBBVarLerpsOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ESMBBVarLerps, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ESMBBVarLerps, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorESMBBVarLerpsOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ESMBBVarLerps, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ESMBBVarLerps, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorESMBBVarLerpsOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ESMBBVarLerps, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ESMBBVarLerps, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorESMBBVarLerpsOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ESMBBVarLerps, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ESMBBVarLerps, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorESMBBVarLerpsOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ESMBBVarLerps, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ESMBBVarLerps, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorESMBBVarLerpsLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ESMBBVarLerps, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ESMBBVarLerps, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorESMBBVarLerpsActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ESMBBVarLerps, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ESMBBVarLerps, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorESMBBVarLerpsModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ESMBBVarLerps, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ESMBBVarLerps, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

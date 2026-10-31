@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_FootPlacement_NS
 {
     const TECSComponentDerivedPtr<FC_FootPlacement> DerivedPtr = TECSComponentDerivedPtr<FC_FootPlacement>();
@@ -19,11 +18,23 @@ struct FC_FootPlacement : FECSComponent
 
     FC_FootPlacement()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_EnableCount = 0;
+        this.m_Weight = 0.0f;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_FootPlacement(const FC_FootPlacement &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_EnableCount = 0;
+        this.m_Weight = 0.0f;
+        this.__InitDirtyFlags();
+        this.m_EnableCount = int(Other.m_EnableCount);
+        this.m_Weight = Other.m_Weight;
+        return;
     }
     FC_FootPlacement opAssign(const FC_FootPlacement &inout Other)
     {
@@ -148,37 +159,37 @@ bool RemoveFootPlacement(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorFootPlacementOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_FootPlacement, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_FootPlacement, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFootPlacementOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_FootPlacement, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_FootPlacement, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFootPlacementOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_FootPlacement, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_FootPlacement, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFootPlacementOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_FootPlacement, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_FootPlacement, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFootPlacementOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_FootPlacement, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_FootPlacement, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorFootPlacementLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_FootPlacement, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_FootPlacement, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFootPlacementActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_FootPlacement, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_FootPlacement, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFootPlacementModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_FootPlacement, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_FootPlacement, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

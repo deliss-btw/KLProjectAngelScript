@@ -1,4 +1,3 @@
-﻿
 namespace FPresentationSpotMinimapStats
 {
     const FStatID StatID_OnTransformModified = FStatID();
@@ -26,7 +25,6 @@ struct FMinimapIconData : FEUIMinimapIconData
     TEUIModelRef<FM_Spot> Spot;
     UPROPERTY()
     EPresentationSpotUsage SpotUsage = EPresentationSpotUsage(0);
-
 
 }
 
@@ -281,7 +279,31 @@ FMS_PresentationSpotMinimapIconManager GetByManager(const UEUIManagerSubsystem M
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    FEUIModelMetaPropertyModelRef local_6;
+    local_6.PropertyName = FName("SpotView");
+    int local_2_2 = FM_SpotView::ModelId;
+    Result.FunctionalPropertyModelRefs.Add(local_6);
+    FEUIModelMsgHandleDefine local_18;
+    local_18.FunctionName = "__OnSpotPresentationDataModified";
+    local_18.MessageTypeName = "Msg_SpotPresentationDataModified";
+    local_18.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_18);
+    local_18.FunctionName = "__OnSpotTransformModified";
+    local_18.MessageTypeName = "Msg_SpotTransformModified";
+    local_18.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_18);
+    local_18.FunctionName = "__OnMinimapIconAdded";
+    local_18.MessageTypeName = "Msg_InterestedSpotAdded";
+    local_18.SourcePropertyModelRefs = FBitSet64(1);
+    Result.MessageHandleFunctions.Add(local_18);
+    local_18.FunctionName = "__OnMinimapIconRemoved";
+    local_18.MessageTypeName = "Msg_InterestedSpotRemoved";
+    local_18.SourcePropertyModelRefs = FBitSet64(1);
+    Result.MessageHandleFunctions.Add(local_18);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

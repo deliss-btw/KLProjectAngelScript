@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PlayerBasicItemExtend
 {
     const int ModelId = 0;
@@ -570,7 +569,6 @@ struct __GeneratedProperties_FVM_PlayerBasicItem
     bool IsLocalPlayer;
     UPROPERTY()
     TEUIModelRef<FVM_PlayerBasicItem> Self;
-
 
 }
 

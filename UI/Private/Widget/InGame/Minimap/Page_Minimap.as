@@ -1,4 +1,3 @@
-﻿
 namespace UPage_Minimap
 {
     const int ViewID = 0;
@@ -39,7 +38,6 @@ class UPage_Minimap : UEUIActivatableWidget
     UPROPERTY()
     FGetEUIModelRef CameraModifierDelegate;
 
-
     UFUNCTION()
     void OnViewBind_Implementation()
     {
@@ -55,13 +53,13 @@ class UPage_Minimap : UEUIActivatableWidget
             XWarning(ELog(16), FString().Append("Minimap config for level ").Append(this.GetWorld()).Append(" not found"));
             return;
         }
-        this.MinimapWidget.SetBaseMapScale(int(local_24.opArrow().BaseMapScale));
+        this.MinimapWidget.SetBaseMapScale(local_24.opArrow().BaseMapScale);
         this.MinimapWidget.SetMapConfig(local_62);
         if (!(local_24.opArrow().DefaultIconRegistry.IsNull()))
         {
             this.MinimapWidget.AddIconRegistry(TSubclassOf<UMinimapIconRegistryAsset>(System::LoadClassAsset_Blocking(local_24.opArrow().DefaultIconRegistry)));
         }
-        this.MinimapWidget.SetMapScale(int(local_24.opArrow().DefaultMapScale));
+        this.MinimapWidget.SetMapScale(local_24.opArrow().DefaultMapScale);
         return;
     }
     UFUNCTION()
@@ -487,6 +485,7 @@ namespace UPage_Minimap
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UPage_Minimap;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnDisplayPathsChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnDisplayBorderChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnMinimapCenterChanged"));

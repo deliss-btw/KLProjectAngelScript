@@ -1,5 +1,3 @@
-﻿
-
 struct FActionImpactConfigSFX : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -30,12 +28,12 @@ struct FActionImpactConfigSFX : FDataObject
     }
     const FActionImpactSFXData GetDataRaw(const ELandedMaterialType Value) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FActionImpactSFXData __r; return __r;
     }
     FActionImpactSFXData ModifyDataRaw(const ELandedMaterialType Value)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         FActionImpactSFXData __r; return __r;
     }
     const FActionImpactSFXData GetDataRawByName(const FName &inout EnumName) const
@@ -118,22 +116,26 @@ struct FActionImpactConfigSFX : FDataObject
     }
     const FActionSFXData& GetData(const ELandedMaterialType FirstType, const EPrefabSize SecondType, const EActionImpactType ThirdType) const
     {
-        const FActionSFXData& local_6 = this.GetDataRawByThirdType(this.GetDataRawBySecondType(this.GetDataRaw(ELandedMaterialType(FirstType)), EPrefabSize(SecondType)), EActionImpactType(ThirdType));
+        const FActionImpactSFXData& local_2 = this.GetDataRaw(ELandedMaterialType(FirstType));
+        const FAICharacterSizeSFXData& local_4 = this.GetDataRawBySecondType(local_2, EPrefabSize(SecondType));
+        const FActionSFXData& local_6 = this.GetDataRawByThirdType(local_4, EActionImpactType(ThirdType));
         return local_6;
     }
     const FActionSFXData& GetData(const FName &inout FirstType, const EPrefabSize SecondType, const EActionImpactType ThirdType) const
     {
-        const FActionSFXData& local_6 = this.GetDataRawByThirdType(this.GetDataRawBySecondType(this.GetDataRawByName(FirstType), EPrefabSize(SecondType)), EActionImpactType(ThirdType));
+        const FActionImpactSFXData& local_2 = this.GetDataRawByName(FirstType);
+        const FAICharacterSizeSFXData& local_4 = this.GetDataRawBySecondType(local_2, EPrefabSize(SecondType));
+        const FActionSFXData& local_6 = this.GetDataRawByThirdType(local_4, EActionImpactType(ThirdType));
         return local_6;
     }
     const FAICharacterSizeSFXData GetDataRawBySecondType(const FActionImpactSFXData &inout Data, const EPrefabSize Value) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FAICharacterSizeSFXData __r; return __r;
     }
     const FActionSFXData GetDataRawByThirdType(const FAICharacterSizeSFXData &inout Data, const EActionImpactType Value) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FActionSFXData __r; return __r;
     }
     void CopyFallbackData(const ELandedMaterialType Src, const ELandedMaterialType Dst)
@@ -156,13 +158,13 @@ struct FActionImpactConfigSFX : FDataObject
             const FActionImpactSFXData& local_22 = this.GetDataRaw(ELandedMaterialType(local_19));
             if (local_22.bFallBack)
             {
+                int local_14 = int(local_22.FallBack);
                 ELandedMaterialType local_23;
-                local_23 = local_22.FallBack;
-                ELandedMaterialType local_14 = local_22.FallBack;
-                FName local_11 = local_2.GetNameByValue(int(local_14));
+                local_23 = ELandedMaterialType(local_14);
+                FName local_11 = local_2.GetNameByValue(int(local_22.FallBack));
                 if (local_2.GetIndexByName(local_11, EGetByNameFlags(0)) < local_7)
                 {
-                    local_14 = local_22.FallBack;
+                    local_14 = int(local_22.FallBack);
                     this.CopyFallbackData(ELandedMaterialType(local_14), ELandedMaterialType(local_19));
                     continue;
                 }
@@ -204,12 +206,12 @@ struct FActionImpactConfigVFX : FDataObject
     }
     const FActionImpactVFXData GetDataRaw(const ELandedMaterialType Value) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FActionImpactVFXData __r; return __r;
     }
     FActionImpactVFXData ModifyDataRaw(const ELandedMaterialType Value)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         FActionImpactVFXData __r; return __r;
     }
     const FActionImpactVFXData GetDataRawByName(const FName &inout EnumName) const
@@ -292,22 +294,26 @@ struct FActionImpactConfigVFX : FDataObject
     }
     const FActionVFXData& GetData(const ELandedMaterialType FirstType, const EPrefabSize SecondType, const EActionImpactType ThirdType) const
     {
-        const FActionVFXData& local_6 = this.GetDataRawByThirdType(this.GetDataRawBySecondType(this.GetDataRaw(ELandedMaterialType(FirstType)), EPrefabSize(SecondType)), EActionImpactType(ThirdType));
+        const FActionImpactVFXData& local_2 = this.GetDataRaw(ELandedMaterialType(FirstType));
+        const FAICharacterSizeVFXData& local_4 = this.GetDataRawBySecondType(local_2, EPrefabSize(SecondType));
+        const FActionVFXData& local_6 = this.GetDataRawByThirdType(local_4, EActionImpactType(ThirdType));
         return local_6;
     }
     const FActionVFXData& GetData(const FName &inout FirstType, const EPrefabSize SecondType, const EActionImpactType ThirdType) const
     {
-        const FActionVFXData& local_6 = this.GetDataRawByThirdType(this.GetDataRawBySecondType(this.GetDataRawByName(FirstType), EPrefabSize(SecondType)), EActionImpactType(ThirdType));
+        const FActionImpactVFXData& local_2 = this.GetDataRawByName(FirstType);
+        const FAICharacterSizeVFXData& local_4 = this.GetDataRawBySecondType(local_2, EPrefabSize(SecondType));
+        const FActionVFXData& local_6 = this.GetDataRawByThirdType(local_4, EActionImpactType(ThirdType));
         return local_6;
     }
     const FAICharacterSizeVFXData GetDataRawBySecondType(const FActionImpactVFXData &inout Data, const EPrefabSize Value) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FAICharacterSizeVFXData __r; return __r;
     }
     const FActionVFXData GetDataRawByThirdType(const FAICharacterSizeVFXData &inout Data, const EActionImpactType Value) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FActionVFXData __r; return __r;
     }
     void CopyFallbackData(const ELandedMaterialType Src, const ELandedMaterialType Dst)
@@ -330,13 +336,13 @@ struct FActionImpactConfigVFX : FDataObject
             const FActionImpactVFXData& local_22 = this.GetDataRaw(ELandedMaterialType(local_19));
             if (local_22.bFallBack)
             {
+                int local_14 = int(local_22.FallBack);
                 ELandedMaterialType local_23;
-                local_23 = local_22.FallBack;
-                ELandedMaterialType local_14 = local_22.FallBack;
-                FName local_11 = local_2.GetNameByValue(int(local_14));
+                local_23 = ELandedMaterialType(local_14);
+                FName local_11 = local_2.GetNameByValue(int(local_22.FallBack));
                 if (local_2.GetIndexByName(local_11, EGetByNameFlags(0)) < local_7)
                 {
-                    local_14 = local_22.FallBack;
+                    local_14 = int(local_22.FallBack);
                     this.CopyFallbackData(ELandedMaterialType(local_14), ELandedMaterialType(local_19));
                     continue;
                 }

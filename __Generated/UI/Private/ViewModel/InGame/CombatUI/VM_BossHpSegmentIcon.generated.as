@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_BossHpSegmentIcon_Helpers
 {
 UFUNCTION()

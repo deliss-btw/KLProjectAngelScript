@@ -1,5 +1,3 @@
-﻿
-
 class US_LevelObjectStatSystem : UECSScriptSystem
 {
     US_LevelObjectStatSystem()

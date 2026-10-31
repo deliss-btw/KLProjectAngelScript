@@ -1,5 +1,3 @@
-﻿
-
 struct FShopConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -15,7 +13,6 @@ struct FShopConfig : FDataObject
     TArray<FDataObjectPtr> m_ShowCostTypes;
     UPROPERTY()
     TArray<FDataObjectPtr> m_GoodsLists;
-
 
     const TDataObjectPtr<FServerConditionConfigBase> GetUnlockCondition() const property
     {

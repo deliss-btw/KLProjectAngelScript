@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AvatarUnlockCondition
 {
     const int ModelId = 0;
@@ -66,7 +65,7 @@ struct FVM_AvatarUnlockCondition : FEUIViewModel
     }
     FText GetConditionText() const
     {
-        // body not fully recovered вЂ” stub [no-return]
+        // body not fully recovered — stub [no-return]
         FText __r; return __r;
     }
     bool GetIsUnlock() const
@@ -261,7 +260,6 @@ struct __GeneratedProperties_FVM_AvatarUnlockCondition
     int UnlockStateIndex;
     UPROPERTY()
     TEUIModelRef<FVM_AvatarUnlockCondition> Self;
-
 
 }
 

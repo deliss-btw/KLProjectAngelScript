@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommonRewardList
 {
     const int ViewID = 0;
@@ -63,6 +62,7 @@ namespace UWidget_CommonRewardList
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonRewardList;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

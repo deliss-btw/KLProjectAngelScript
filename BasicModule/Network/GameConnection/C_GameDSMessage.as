@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_PlayerPendingLogin_NS
 {
     const TECSComponentDerivedPtr<FC_PlayerPendingLogin> DerivedPtr = TECSComponentDerivedPtr<FC_PlayerPendingLogin>();
@@ -103,7 +102,6 @@ struct FC_PlayerPendingLogin : FECSComponent
     UPROPERTY()
     bool bIsReconnect = false;
 
-
 }
 
 struct FC_PlayerPendingLogoutTag : FECSComponent
@@ -122,11 +120,20 @@ struct FC_PlayerPendingChangeLevel : FECSComponent
 
     FC_PlayerPendingChangeLevel()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_LevelKey = 0;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_PlayerPendingChangeLevel(const FC_PlayerPendingChangeLevel &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_LevelKey = 0;
+        this.__InitDirtyFlags();
+        this.m_LevelKey = int(Other.m_LevelKey);
+        return;
     }
     FC_PlayerPendingChangeLevel opAssign(const FC_PlayerPendingChangeLevel &inout Other)
     {
@@ -176,7 +183,6 @@ struct FCE_DSErrorCode : FECSEvent
     UPROPERTY()
     int ErrorCode = 0;
 
-
 }
 
 struct FCE_PlayerLoginEvent : FECSEvent
@@ -185,17 +191,16 @@ struct FCE_PlayerLoginEvent : FECSEvent
     UPROPERTY()
     bool bIsReconnect = false;
 
-
 }
 
 struct FC_DestroyDisconnectedPlayerTimer : FECSComponent
 {
     UPROPERTY()
-    FFPTime TriggerTime;
+    FFPTime TriggerTime = -1;
 
     FC_DestroyDisconnectedPlayerTimer()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        return;
     }
 }
 
@@ -204,7 +209,6 @@ struct FCE_PlayerRequestEnterLevel : FECSEvent
     FECSEvent _base_FECSEvent;
     UPROPERTY()
     uint LevelKey = 0;
-
 
 }
 
@@ -250,7 +254,6 @@ struct FCE_PlayerRequestMoveToTeleporter : FECSEvent
     UPROPERTY()
     ELoadingScreenAction Action = ELoadingScreenAction(0);
 
-
 }
 
 struct FCE_AssembleTravelToTeammate : FECSEvent
@@ -280,7 +283,6 @@ struct FC_PlayerExitDSReason : FECSComponent
     UPROPERTY()
     EDisconnectReason Reason;
 
-
 }
 
 struct FC_PlayerAddItemRequestPendingFlushTag : FECSComponent
@@ -297,7 +299,6 @@ struct FCE_ServerPlayerRequestEnterLevel : FECSEvent
     UPROPERTY()
     uint LevelKey = 0;
 
-
 }
 
 struct FCE_PlayerEnterDSFailed : FECSEvent
@@ -306,7 +307,6 @@ struct FCE_PlayerEnterDSFailed : FECSEvent
     UPROPERTY()
     int ErrorCode = 0;
 
-
 }
 
 struct FCE_SendErrorCodeToPlayer : FECSEvent
@@ -314,7 +314,6 @@ struct FCE_SendErrorCodeToPlayer : FECSEvent
     FECSEvent _base_FECSEvent;
     UPROPERTY()
     int ErrorCode;
-
 
 }
 
@@ -326,7 +325,6 @@ struct FCE_FinishTrainingResult : FECSEvent
     UPROPERTY()
     TDataObjectPtr<FTrainingInfoConfig> TrainingInfo;
 
-
 }
 
 struct FCE_NotifyDSPlayerErrorCode : FECSEvent
@@ -334,7 +332,6 @@ struct FCE_NotifyDSPlayerErrorCode : FECSEvent
     FECSEvent _base_FECSEvent;
     UPROPERTY()
     int ErrorCode;
-
 
 }
 
@@ -425,37 +422,37 @@ bool RemovePlayerPendingLogin(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPlayerPendingLoginOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerPendingLogin, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerPendingLogin, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerPendingLoginOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerPendingLogin, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerPendingLogin, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerPendingLoginOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerPendingLogin, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerPendingLogin, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerPendingLoginOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerPendingLogin, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerPendingLogin, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerPendingLoginOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerPendingLogin, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerPendingLogin, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPlayerPendingLoginLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PlayerPendingLogin, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PlayerPendingLogin, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerPendingLoginActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PlayerPendingLogin, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PlayerPendingLogin, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerPendingLoginModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PlayerPendingLogin, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PlayerPendingLogin, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_PlayerPendingLogoutTag
@@ -535,37 +532,37 @@ bool RemovePlayerPendingLogoutTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPlayerPendingLogoutTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerPendingLogoutTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerPendingLogoutTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerPendingLogoutTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerPendingLogoutTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerPendingLogoutTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerPendingLogoutTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerPendingLogoutTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerPendingLogoutTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerPendingLogoutTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerPendingLogoutTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerPendingLogoutTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerPendingLogoutTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerPendingLogoutTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerPendingLogoutTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPlayerPendingLogoutTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PlayerPendingLogoutTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PlayerPendingLogoutTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerPendingLogoutTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PlayerPendingLogoutTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PlayerPendingLogoutTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerPendingLogoutTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PlayerPendingLogoutTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PlayerPendingLogoutTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_PlayerPendingChangeLevel
@@ -645,37 +642,37 @@ bool RemovePlayerPendingChangeLevel(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPlayerPendingChangeLevelOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerPendingChangeLevel, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerPendingChangeLevel, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerPendingChangeLevelOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerPendingChangeLevel, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerPendingChangeLevel, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerPendingChangeLevelOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerPendingChangeLevel, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerPendingChangeLevel, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerPendingChangeLevelOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerPendingChangeLevel, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerPendingChangeLevel, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerPendingChangeLevelOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerPendingChangeLevel, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerPendingChangeLevel, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPlayerPendingChangeLevelLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PlayerPendingChangeLevel, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PlayerPendingChangeLevel, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerPendingChangeLevelActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PlayerPendingChangeLevel, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PlayerPendingChangeLevel, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerPendingChangeLevelModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PlayerPendingChangeLevel, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PlayerPendingChangeLevel, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_DestroyDisconnectedPlayerTimer
@@ -758,37 +755,37 @@ bool RemoveDestroyDisconnectedPlayerTimer(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorDestroyDisconnectedPlayerTimerOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_DestroyDisconnectedPlayerTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_DestroyDisconnectedPlayerTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDestroyDisconnectedPlayerTimerOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_DestroyDisconnectedPlayerTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_DestroyDisconnectedPlayerTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDestroyDisconnectedPlayerTimerOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_DestroyDisconnectedPlayerTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_DestroyDisconnectedPlayerTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDestroyDisconnectedPlayerTimerOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_DestroyDisconnectedPlayerTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_DestroyDisconnectedPlayerTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDestroyDisconnectedPlayerTimerOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_DestroyDisconnectedPlayerTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_DestroyDisconnectedPlayerTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorDestroyDisconnectedPlayerTimerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_DestroyDisconnectedPlayerTimer, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_DestroyDisconnectedPlayerTimer, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDestroyDisconnectedPlayerTimerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_DestroyDisconnectedPlayerTimer, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_DestroyDisconnectedPlayerTimer, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDestroyDisconnectedPlayerTimerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_DestroyDisconnectedPlayerTimer, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_DestroyDisconnectedPlayerTimer, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_PlayerExitDSReason
@@ -868,37 +865,37 @@ bool RemovePlayerExitDSReason(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPlayerExitDSReasonOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerExitDSReason, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerExitDSReason, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerExitDSReasonOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerExitDSReason, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerExitDSReason, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerExitDSReasonOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerExitDSReason, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerExitDSReason, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerExitDSReasonOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerExitDSReason, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerExitDSReason, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerExitDSReasonOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerExitDSReason, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerExitDSReason, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPlayerExitDSReasonLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PlayerExitDSReason, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PlayerExitDSReason, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerExitDSReasonActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PlayerExitDSReason, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PlayerExitDSReason, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerExitDSReasonModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PlayerExitDSReason, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PlayerExitDSReason, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_PlayerAddItemRequestPendingFlushTag
@@ -978,37 +975,37 @@ bool RemovePlayerAddItemRequestPendingFlushTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPlayerAddItemRequestPendingFlushTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerAddItemRequestPendingFlushTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerAddItemRequestPendingFlushTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerAddItemRequestPendingFlushTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerAddItemRequestPendingFlushTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerAddItemRequestPendingFlushTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerAddItemRequestPendingFlushTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerAddItemRequestPendingFlushTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerAddItemRequestPendingFlushTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerAddItemRequestPendingFlushTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerAddItemRequestPendingFlushTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerAddItemRequestPendingFlushTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerAddItemRequestPendingFlushTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerAddItemRequestPendingFlushTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerAddItemRequestPendingFlushTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPlayerAddItemRequestPendingFlushTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PlayerAddItemRequestPendingFlushTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PlayerAddItemRequestPendingFlushTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerAddItemRequestPendingFlushTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PlayerAddItemRequestPendingFlushTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PlayerAddItemRequestPendingFlushTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerAddItemRequestPendingFlushTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PlayerAddItemRequestPendingFlushTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PlayerAddItemRequestPendingFlushTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

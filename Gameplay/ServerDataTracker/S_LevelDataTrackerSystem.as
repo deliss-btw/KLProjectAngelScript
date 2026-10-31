@@ -1,10 +1,8 @@
-﻿
 enum EExploreUnlockType
 {
     CollectionPrefab,
     Teleporter,
 }
-
 
 class US_LevelDataTrackerSystem : UECSScriptSystem
 {

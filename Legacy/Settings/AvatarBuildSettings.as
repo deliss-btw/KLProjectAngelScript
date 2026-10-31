@@ -1,10 +1,8 @@
-﻿
 enum EAttributeDisplayType
 {
     Numeric,
     Percentage,
 }
-
 
 struct FAttributeDisplayConfig
 {
@@ -12,7 +10,6 @@ struct FAttributeDisplayConfig
     FGameAttributeRef Attribute;
     UPROPERTY()
     EAttributeDisplayType DisplayType;
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace FMS_ItemQuickSlotHoverCache
 {
     const int ModelId = 0;
@@ -134,8 +133,8 @@ struct FVM_ItemQuickSlot : FEUIViewModel
         {
             return FText();
         }
-        EESMTriggerInputSlot local_7 = this.GetQuickSlot().opArrow().InputSlot;
-        local_16 = FCharacterInputUtils::GetInputActionByInputSlot(this.GetContext().GetLocalPlayerPawn());
+        int local_7 = this.GetQuickSlot().opArrow().InputSlot;
+        local_16 = FCharacterInputUtils::GetInputActionByInputSlot(this.GetContext().GetLocalPlayerPawn(), EESMTriggerInputSlot(local_7));
         if ((!((local_16 != nullptr))))
         {
             return FText();
@@ -153,9 +152,9 @@ struct FVM_ItemQuickSlot : FEUIViewModel
         TArray<FEUIInputAction> local_4;
         if (this.CanResolveInputAction())
         {
-            EESMTriggerInputSlot local_6;
+            int local_6;
             local_6 = this.GetQuickSlot().opArrow().InputSlot;
-            local_16 = FCharacterInputUtils::GetInputActionByInputSlot(this.GetContext().GetLocalPlayerPawn());
+            local_16 = FCharacterInputUtils::GetInputActionByInputSlot(this.GetContext().GetLocalPlayerPawn(), EESMTriggerInputSlot(local_6));
             if (local_16 != nullptr)
             {
                 local_4.Add(FEUIInputAction(local_16));
@@ -288,6 +287,7 @@ struct FVM_ItemQuickSlot : FEUIViewModel
         FItemTipData local_68 = ::CommonItemTip::MakeSimpleFromItemData(ItemDataModel);
         FSimpleModelEvent local_90;
         local_90.Add(this, FVM_ItemQuickSlot::OpenSelectList);
+        ::CommonItemTip::AddAction(local_68, EItemTipActionId(6), local_90);
         this.SetTipHoverModels(::CommonItemTip::MakeModels(this.GetContext().Manager, local_68));
         return;
     }
@@ -296,6 +296,7 @@ struct FVM_ItemQuickSlot : FEUIViewModel
         FItemTipData local_68 = ::CommonItemTip::MakeSimpleFromDisplayData(DisplayDataModel);
         FSimpleModelEvent local_90;
         local_90.Add(this, FVM_ItemQuickSlot::OpenSelectList);
+        ::CommonItemTip::AddAction(local_68, EItemTipActionId(6), local_90);
         this.SetTipHoverModels(::CommonItemTip::MakeModels(this.GetContext().Manager, local_68));
         return;
     }

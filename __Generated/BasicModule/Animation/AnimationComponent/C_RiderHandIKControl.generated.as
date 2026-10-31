@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_RiderHandIKControlHistory_NS
 {
     const TECSComponentDerivedPtr<FC_RiderHandIKControlHistory> DerivedPtr = TECSComponentDerivedPtr<FC_RiderHandIKControlHistory>();
@@ -38,7 +37,7 @@ struct FC_RiderHandIKControlHistory : FECSComponent
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_RiderHandIKControl &inout OutValue) const
     {
-        return this.GetInterpoValue(WorldTime, OutValue);
+        return this.History.GetInterpoValue(WorldTime, OutValue);
     }
 }
 
@@ -122,36 +121,36 @@ bool RemoveRiderHandIKControlHistory(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorRiderHandIKControlHistoryOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_RiderHandIKControlHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_RiderHandIKControlHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRiderHandIKControlHistoryOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_RiderHandIKControlHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_RiderHandIKControlHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRiderHandIKControlHistoryOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_RiderHandIKControlHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_RiderHandIKControlHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRiderHandIKControlHistoryOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_RiderHandIKControlHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_RiderHandIKControlHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRiderHandIKControlHistoryOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_RiderHandIKControlHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_RiderHandIKControlHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorRiderHandIKControlHistoryLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_RiderHandIKControlHistory, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_RiderHandIKControlHistory, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRiderHandIKControlHistoryActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_RiderHandIKControlHistory, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_RiderHandIKControlHistory, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRiderHandIKControlHistoryModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_RiderHandIKControlHistory, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_RiderHandIKControlHistory, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

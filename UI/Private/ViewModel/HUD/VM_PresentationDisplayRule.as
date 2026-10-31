@@ -1,4 +1,3 @@
-﻿
 enum EPresentationDisplayRuleIndex
 {
     HeadsUpDisplay_NameDisplayRule,
@@ -79,13 +78,30 @@ struct FVM_PresentationDisplayRule : FEUIViewModel
     }
     const FPresentationDisplayRule GetRule()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FPresentationDisplayRule __r; return __r;
     }
     bool ComputeMatchesDisplayRule(const FPresentationDisplayRule &inout DisplayRule)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        bool __r; return __r;
+        if (!(this.GetSpot()))
+        {
+            return false;
+        }
+        FVector local_18 = ::FMS_PresentationSpotPlayerLocationTracker::Get(this.GetManager()).GetRulePlayerPosition();
+        int local_19 = this.FindFirstMatchDisplayRuleIndex(DisplayRule.ConditionalRules);
+        if (local_19 != INDEX_NONE)
+        {
+            return this.MatchesDisplayRuleBasic(DisplayRule.ConditionalRules[local_19].Rule, local_18);
+        }
+        if (DisplayRule.bDisplayOnlyInCombat && !(::FASCommonUtils::IsInCombat(this.GetSpot().opArrow().GetContext().GetLocalPlayerPawn())))
+        {
+            return false;
+        }
+        if (!(DisplayRule.bEnableDisplay))
+        {
+            return false;
+        }
+        return this.MatchesDistanceRule(DisplayRule.MinDistance, DisplayRule.MaxDistance, local_18);
     }
     bool MatchesDisplayRuleBasic(const FPresentationDisplayRuleBasic &inout BasicRule, const FVector &inout RulePlayerPosition)
     {
@@ -110,8 +126,47 @@ struct FVM_PresentationDisplayRule : FEUIViewModel
     }
     int FindFirstMatchDisplayRuleIndex(const TArray<FPresentationDisplayConditionalRule> &inout ConditionalRules)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        bool local_9;
+        int local_1 = 0;
+        for (; local_1 < ConditionalRules.Num(); ++local_1)
+        {
+            const FPresentationDisplayConditionalRule& local_6 = ConditionalRules[local_1];
+            if (int(local_6.Condition.PlayerInCombat) != 0)
+            {
+                local_9 = false;
+                TEUIModelRef<FM_Spot> local_12 = this.GetSpot();
+                FECSEntity local_16 = FECSEntity(local_12.opArrow().GetContext().GetLocalPlayerPawn());
+                if (local_16)
+                {
+                    local_9 = ::FASCommonUtils::IsInCombat(local_16);
+                }
+                if (!(this.ConditionRequirementToBool(EPresentationDisplayConditionRequirement(local_6.Condition.PlayerInCombat))) != !(local_9))
+                {
+                    continue;
+                }
+            }
+            if (int(local_6.Condition.EntityInCombat) != 0)
+            {
+                local_9 = false;
+                TEUIModelRef<FM_Spot> local_12_2 = this.GetSpot();
+                FECSEntity local_16_2 = FECSEntity(::GetOwnerEntityId(local_12_2.opArrow()));
+                if (local_16_2)
+                {
+                    FECSEntity local_26 = ::FASCommonUtils::GetControlledPawnEntity(local_16_2);
+                    if (local_26)
+                    {
+                        local_9 = ::FASCommonUtils::IsInCombat(local_26);
+                    }
+                }
+                bool local_4 = !(local_9);
+                if (!(this.ConditionRequirementToBool(EPresentationDisplayConditionRequirement(local_6.Condition.EntityInCombat))) != local_4)
+                {
+                    continue;
+                }
+            }
+            return local_1;
+        }
+        return INDEX_NONE;
     }
     bool ConditionRequirementToBool(const EPresentationDisplayConditionRequirement Requirement)
     {
@@ -189,7 +244,7 @@ namespace FVM_PresentationDisplayRule
 {
 FVM_PresentationDisplayRule& Create(const UObject ContextObject, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationDisplayRuleIndex Index)
 {
-    return FVM_PresentationDisplayRule::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot);
+    return FVM_PresentationDisplayRule::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot, EPresentationDisplayRuleIndex(Index));
 }
 FVM_PresentationDisplayRule CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationDisplayRuleIndex Index)
 {

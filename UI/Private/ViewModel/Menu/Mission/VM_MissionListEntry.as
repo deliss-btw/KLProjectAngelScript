@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MissionListEntry
 {
     const int ModelId = 0;
@@ -163,7 +162,7 @@ struct FVM_MissionListEntry : FEUIViewModel
     void ApplyGuideDistance(const int Meters)
     {
         this.SetDistanceToTarget(Meters);
-        this.SetSubTitle(FText::Format(NSLOCTEXT("MissionListEntry", "DistanceInfo", "{0} з±і"), Meters));
+        this.SetSubTitle(FText::Format(NSLOCTEXT("MissionListEntry", "DistanceInfo", "{0} 米"), Meters));
         return;
     }
     void ApplyGuideLevelName(const FText &inout LevelName)
@@ -175,7 +174,7 @@ struct FVM_MissionListEntry : FEUIViewModel
     void ApplyGuideDefaultText()
     {
         this.SetDistanceToTarget(-1);
-        this.SetSubTitle(NSLOCTEXT("MissionListEntry", "GuideDefaultSubTitle", "еѕ…жЋўзґў"));
+        this.SetSubTitle(NSLOCTEXT("MissionListEntry", "GuideDefaultSubTitle", "待探索"));
         return;
     }
     bool IsChapterEntry() const
@@ -494,7 +493,6 @@ struct __GeneratedProperties_FVM_MissionListEntry
     FText MainTitle;
     UPROPERTY()
     TEUIModelRef<FVM_MissionListEntry> Self;
-
 
 }
 

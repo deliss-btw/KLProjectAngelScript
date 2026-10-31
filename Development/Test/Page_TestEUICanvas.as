@@ -1,4 +1,3 @@
-﻿
 namespace UPage_TestEUICanvas
 {
     const int ViewID = 0;
@@ -167,6 +166,7 @@ namespace UPage_TestEUICanvas
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UPage_TestEUICanvas;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

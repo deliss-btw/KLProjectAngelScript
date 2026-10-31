@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_NotifyUI_OpenTutorial_NS
 {
     const TECSEventDerivedPtr<FCE_NotifyUI_OpenTutorial> DerivedPtr = TECSEventDerivedPtr<FCE_NotifyUI_OpenTutorial>();
@@ -18,7 +17,6 @@ struct FTutorialStepProgress
     int m_CurrentProgress;
     UPROPERTY()
     int m_MaxProgress;
-
 
     int GetCurrentProgress() const property
     {
@@ -52,11 +50,16 @@ struct FTutorialInfo
 
     FTutorialInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Countdown = 0.0f;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        return;
     }
     FTutorialInfo(const FTutorialInfo &inout Other)
     {
         this.m_Countdown = 0.0f;
+        FSubDirtyFlags8 local_26;
+        this.__DirtyFlags = local_26;
         this.m_TutorialInfoId = Other.m_TutorialInfoId;
         this.m_StepProgress = Other.m_StepProgress;
         this.m_Countdown = Other.m_Countdown;

@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommonTitleWithHover
 {
     const int ViewID = 0;
@@ -17,7 +16,6 @@ class UWidget_CommonTitleWithHover : UEUIUserWidget
     FGameplayTag SubPageTag;
     UPROPERTY()
     FGetEUIModelRef HoverTipsVMDelegate;
-
 
     UFUNCTION()
     void OnViewBind_Implementation()
@@ -60,6 +58,7 @@ namespace UWidget_CommonTitleWithHover
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonTitleWithHover;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

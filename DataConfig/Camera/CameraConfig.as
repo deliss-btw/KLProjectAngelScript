@@ -1,5 +1,3 @@
-﻿
-
 struct FFixedCameraConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -13,7 +11,6 @@ struct FFixedCameraConfig : FDataObject
     float32 FOV = 75.0f;
     UPROPERTY()
     FCameraBlendConfig BlendConfig;
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_UserKeySelector
 {
     const int ViewID = 0;
@@ -108,13 +107,8 @@ class UWidget_UserKeySelector : UEUIUserListItemWidget
     {
         TEUIModelRef<FVM_PlayerKeyMapping> local_2;
         local_2.GetMapping0();
-        if (local_2.IsValid())
-        {
-        }
-        else
-        {
-        }
-        SetHoverIndex0();
+        int local_4 = local_2.IsValid() ? 1 : 0;
+        local_4.SetHoverIndex0();
         return;
     }
     UFUNCTION()
@@ -122,13 +116,8 @@ class UWidget_UserKeySelector : UEUIUserListItemWidget
     {
         TEUIModelRef<FVM_PlayerKeyMapping> local_2;
         local_2.GetMapping1();
-        if (local_2.IsValid())
-        {
-        }
-        else
-        {
-        }
-        SetHoverIndex1();
+        int local_4 = local_2.IsValid() ? 1 : 0;
+        local_4.SetHoverIndex1();
         return;
     }
     UFUNCTION()
@@ -510,6 +499,7 @@ namespace UWidget_UserKeySelector
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_UserKeySelector;
     Result.ObservedModelChangesSubscriberNames.Add(FString("ChangeButtonVisibility0"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("ChangeButtonVisibility1"));
     return;

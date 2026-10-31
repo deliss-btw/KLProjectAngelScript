@@ -1,4 +1,3 @@
-﻿
 enum EDraftPlayerReplyDisplayType
 {
     None,
@@ -154,7 +153,6 @@ struct __GeneratedProperties_FVM_DraftPlayerInfo
     FSoftBrush DivineSkillTypeIcon;
     UPROPERTY()
     TEUIModelRef<FVM_DraftPlayerInfo> Self;
-
 
 }
 

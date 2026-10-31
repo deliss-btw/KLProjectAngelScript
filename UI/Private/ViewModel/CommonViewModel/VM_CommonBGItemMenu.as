@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonBGItemMenu
 {
     const int ModelId = 0;

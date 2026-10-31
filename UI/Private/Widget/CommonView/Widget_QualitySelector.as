@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_QualitySelector
 {
     const int ViewID = 0;
@@ -88,8 +87,7 @@ class UWidget_QualitySelector : UEUIUserWidget
         FString local_8 = Text.ToString();
         if (local_8.IsNumeric())
         {
-            int local_11 = String::Conv_StringToInt(local_8);
-            SetCurrentNumValue();
+            String::Conv_StringToInt(local_8).SetCurrentNumValue();
         }
         if (this.w_editBox_num != nullptr)
         {
@@ -205,6 +203,7 @@ namespace UWidget_QualitySelector
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_QualitySelector;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

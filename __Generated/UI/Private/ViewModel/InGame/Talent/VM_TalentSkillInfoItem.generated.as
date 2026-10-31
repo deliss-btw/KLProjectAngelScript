@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TalentSkillInfoItem_Helpers
 {
 UFUNCTION()

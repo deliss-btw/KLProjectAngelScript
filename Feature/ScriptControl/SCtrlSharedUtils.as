@@ -1,4 +1,3 @@
-﻿
 namespace ScriptControlSharedUtils
 {
 bool CheckAndResolveEntityId(const FECSEntityId &inout EntityId, FECSEntity &out OutEntity)

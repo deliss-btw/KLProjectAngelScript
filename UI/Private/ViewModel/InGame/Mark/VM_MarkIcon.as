@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MarkIcon
 {
     const int ModelId = 0;

@@ -1,5 +1,3 @@
-﻿
-
 struct FPlayerLevelConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -25,7 +23,6 @@ struct FPlayerLevelConfig : FDataObject
     bool bIsStigmataLevel = false;
     UPROPERTY()
     int FakeStigmataPointNum = 0;
-
 
     const TArray<TDataObjectPtr<FServerConditionConfigBase>> GetBreakthroughCondition() const property
     {
@@ -91,7 +88,6 @@ struct FExpOverflowConfig : FDataObject
     UPROPERTY()
     FDataObjectPtr m_HotSpringExpRefreshRule;
 
-
     const TDataObjectPtr<FVirtualItemConfig> GetConvertResourceType() const property
     {
         const TDataObjectPtr<FVirtualItemConfig> __r;
@@ -127,7 +123,6 @@ struct FPlayerLevelScheduleConfig : FDataObject
     FDataObjectPtr m_RefreshRule;
     UPROPERTY()
     FString LevelCapUnlockTime;
-
 
     const TDataObjectPtr<FRefreshRuleConfig> GetRefreshRule() const property
     {

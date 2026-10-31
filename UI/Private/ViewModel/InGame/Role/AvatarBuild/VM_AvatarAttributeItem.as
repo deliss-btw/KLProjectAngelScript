@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AvatarAttributeItem
 {
     const int ModelId = 0;
@@ -43,11 +42,10 @@ struct FVM_AvatarAttributeItem : FEUIViewModel
         this.SetAttribute(InAttribute);
         if (this.GetbIsCategory())
         {
-            this.SetInnerModel(FEUIModelRef());
+            this.SetInnerModel(FEUIModelRef(::FVM_Text::Create(this.GetContext().Manager, InCategoryName)));
             return;
         }
-        TEUIModelRef<FM_Attribute> local_8 = this.GetAttribute();
-        this.SetInnerModel(FEUIModelRef());
+        this.SetInnerModel(FEUIModelRef(::FVM_AttributeDisplay::Create(this.GetContext().Manager, this.GetAttribute())));
         this.UpdateAvatarAttribute();
         return;
     }
@@ -226,7 +224,9 @@ void __OnPlayerAttributeChanged(FVM_AvatarAttributeItem &inout Model, const FECS
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    ECSWorld.__MonitorGameAttributeViewLifetime(EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    ECSWorld.__MonitorGameAttributeViewModification(EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 FEUIModelRef __UIGetter_InnerModel(const FVM_AvatarAttributeItem &inout Model)
 {

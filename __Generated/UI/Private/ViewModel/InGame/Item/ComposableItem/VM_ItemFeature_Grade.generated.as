@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ItemFeature_Grade_Helpers
 {
 UFUNCTION()

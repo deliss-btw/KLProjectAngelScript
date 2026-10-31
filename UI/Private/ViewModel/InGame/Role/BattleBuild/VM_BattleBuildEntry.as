@@ -1,4 +1,3 @@
-﻿
 namespace FVM_BattleBuildEntry
 {
     const int ModelId = 0;
@@ -106,8 +105,7 @@ struct FVM_BattleBuildEntry : FEUIViewModel
         {
             return;
         }
-        UEUIManagerSubsystem local_4 = this.GetManager();
-        FEUIWidget::AddWidget(this.GetLocalPlayer(), GameplayTags::UI_Type_InventoryQuickSlotAssembly, FEUIModelRef());
+        FEUIWidget::AddWidget(this.GetLocalPlayer(), GameplayTags::UI_Type_InventoryQuickSlotAssembly, FEUIModelRef(::FVM_InventoryQuickSlotsFocus::Create(this.GetManager(), this.GetQuickSlot())));
         return;
     }
     const TDataObjectPtr<FItemQuickSlotConfig> GetQuickSlot() const property
@@ -205,7 +203,6 @@ struct __GeneratedProperties_FVM_BattleBuildEntry
     bool IsEmpty;
     UPROPERTY()
     TEUIModelRef<FVM_BattleBuildEntry> Self;
-
 
 }
 

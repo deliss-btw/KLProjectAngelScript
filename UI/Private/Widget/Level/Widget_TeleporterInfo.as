@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TeleporterInfo
 {
     const int ViewID = 0;
@@ -46,6 +45,7 @@ namespace UWidget_TeleporterInfo
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TeleporterInfo;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

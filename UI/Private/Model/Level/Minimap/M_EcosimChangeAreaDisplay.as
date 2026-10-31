@@ -1,4 +1,3 @@
-﻿
 namespace FM_EcosimChangeAreaDisplay
 {
     const int ModelId = 0;
@@ -514,7 +513,9 @@ void __DS_OnBossMonsterChangeAreaSummaryChanged(FMS_EcosimChangeAreaDisplayManag
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorBossMonsterChangeAreaSummaryLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorBossMonsterChangeAreaSummaryModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_MonsterChangeAreaDisplays()
 {

@@ -1,4 +1,3 @@
-﻿
 enum EItemQuickSlotMutuallyExclusiveCondition
 {
     Never,
@@ -7,14 +6,12 @@ enum EItemQuickSlotMutuallyExclusiveCondition
     SubCategoryEqual,
 }
 
-
 struct FItemQuickSlotFilter
 {
     UPROPERTY()
     EItemType AllowedItemType;
     UPROPERTY()
     FGameplayTagContainer AllowedItemCategories;
-
 
     int opCmp(const FItemQuickSlotFilter &inout Other) const
     {
@@ -47,7 +44,6 @@ struct FItemQuickSlotConfig : FDataObject
     bool bAllowUnownedItem;
     UPROPERTY()
     EESMTriggerInputSlot InputSlot;
-
 
     const TDataObjectPtr<FItemConfig> GetDefaultItem() const property
     {

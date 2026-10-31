@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_BeHitZone : UESMBPBaseSpanAction
 {
     UESMAction_BeHitZone()

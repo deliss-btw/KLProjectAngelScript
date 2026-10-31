@@ -1,5 +1,3 @@
-﻿
-
 struct FFashionGlobalConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -7,7 +5,6 @@ struct FFashionGlobalConfig : FDataObject
     uint DataId;
     UPROPERTY()
     FDataObjectPtr m_DefaultMount;
-
 
     const TDataObjectPtr<FMountFashionConfig> GetDefaultMount() const property
     {

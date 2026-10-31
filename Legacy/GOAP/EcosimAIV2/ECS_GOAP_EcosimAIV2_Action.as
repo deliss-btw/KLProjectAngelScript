@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class UECSGOAPEcosimAIV2InstanceBase : UGOAP_InstanceBase
 {
@@ -59,7 +57,6 @@ class UGOAPAction_EcosimAIV2_Test : UGOAP_ActionScriptableBase
     UPROPERTY()
     float32 Duration = 2.0f;
     float32 TimeCounter = 0.0f;
-
 
     UFUNCTION()
     void WhenActionActivated_Implementation()

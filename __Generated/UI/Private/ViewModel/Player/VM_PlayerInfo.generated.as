@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_PlayerInfo_Helpers
 {
 UFUNCTION()

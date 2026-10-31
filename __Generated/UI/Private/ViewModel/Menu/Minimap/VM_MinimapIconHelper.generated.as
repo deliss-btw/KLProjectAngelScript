@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_MinimapIconHelper_Helpers
 {
 UFUNCTION()

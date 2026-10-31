@@ -1,5 +1,3 @@
-﻿
-
 struct FSpawnAppendantEntityParam
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ struct FSpawnAppendantEntityParam
     FVector Position = FVector::ZeroVector;
     UPROPERTY()
     FQuat Rotation = FQuat::Identity;
-
 
 }
 

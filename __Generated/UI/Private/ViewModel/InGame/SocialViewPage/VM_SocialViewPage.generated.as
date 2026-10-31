@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_SocialViewPage_Helpers
 {
 UFUNCTION()

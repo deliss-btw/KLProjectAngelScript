@@ -1,5 +1,3 @@
-﻿
-
 class US_LevelEntryInteractSystem : UECSScriptSystem
 {
     US_LevelEntryInteractSystem()

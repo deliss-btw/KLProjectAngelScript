@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TeamMemberConfirm_Helpers
 {
 UFUNCTION()

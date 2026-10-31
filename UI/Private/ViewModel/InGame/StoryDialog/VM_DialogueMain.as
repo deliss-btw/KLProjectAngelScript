@@ -1,12 +1,8 @@
-﻿
 namespace FVMS_DialogueMain
 {
     const int ModelId = 0;
     const FEUIModelCallbackSignature NextSection = FEUIModelCallbackSignature();
     const FEUIModelCallbackSignature HandleEscape = FEUIModelCallbackSignature();
-
-// NOTE: class defaults are not authored in this module: FVMS_DialogueMain (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
 
 struct FDialogueTextArgSpan
 {
@@ -90,8 +86,73 @@ struct FVMS_DialogueMain : FEUIViewModelSingleton
     }
     FText ResolveDialogueArgText(const FText &inout InText)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        FText __r; return __r;
+        const UDialogueSettings local_2;
+        GetGameplaySettings<UDialogueSettings> local_4;
+        local_2 = local_4;
+        if (!((local_2 != nullptr)) || local_2.DialogueArgTextMap.IsEmpty())
+        {
+            return InText;
+        }
+        FString local_16 = InText.ToString();
+        TArray<FVMS_DialogueMain::FDialogueTextArgSpan> local_20;
+        int local_21 = 0;
+        while (true)
+        {
+            int local_22 = local_16.Find("{", ESearchCase(1), ESearchDir(0), local_21);
+            if (local_22 == INDEX_NONE)
+            {
+                break;
+            }
+            int local_27 = local_16.Find("}", ESearchCase(1), ESearchDir(0), local_22 + 1);
+            if (local_27 == INDEX_NONE)
+            {
+                break;
+            }
+            FString local_32;
+            FString local_36;
+            int local_23 = local_16.Find("#", ESearchCase(1), ESearchDir(0), local_22 + 1);
+            if (local_23 != INDEX_NONE && (local_23 < local_27))
+            {
+                local_32 = local_16.Mid(local_22 + 1, local_23 - local_22);
+                local_36 = local_16.Mid(local_23 + 1, ((local_27 - local_23) - 1));
+            }
+            else
+            {
+                local_32 = local_16.Mid(local_22 + 1, ((local_27 - local_22) - 1));
+            }
+            local_21 = local_27 + 1;
+            FString local_42;
+            if (!(this.GetEvaluatedCache().Find(local_32, local_42)))
+            {
+                FDialogueArgTextConfig local_52;
+                if (!(local_2.DialogueArgTextMap.Find(local_32, local_52)))
+                {
+                    continue;
+                }
+                local_42 = this.EvaluateDialogueArgConfig(local_52, local_36).ToString();
+                if (local_52.bNeedCache)
+                {
+                    this.GetModify_EvaluatedCache().Add(local_32, local_42);
+                }
+            }
+            local_20.Add(FVMS_DialogueMain::FDialogueTextArgSpan(local_22, ((local_27 - local_22) + 1), local_42));
+        }
+        if (local_20.IsEmpty())
+        {
+            return InText;
+        }
+        int local_63 = local_20.Num() - 1;
+        for (; local_63 >= 0; )
+        {
+            FDialogueTextArgSpan& local_66 = local_20[local_63];
+            int local_22_2 = int(local_66.Start);
+            FString local_70 = (local_16.Left(local_22_2) + local_66.Value);
+            local_22_2 = int(local_66.Start);
+            local_22_2 = local_22_2 + int(local_66.Length);
+            local_16 = (local_70 + local_16.Mid(local_22_2, 2147483647));
+            --local_63;
+        }
+        return FText::FromString(local_16);
     }
     FText EvaluateDialogueArgConfig(const FDialogueArgTextConfig &inout ArgConfig, const FString &inout InText)
     {

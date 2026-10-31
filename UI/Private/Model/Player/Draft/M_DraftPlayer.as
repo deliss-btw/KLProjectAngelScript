@@ -1,4 +1,3 @@
-﻿
 namespace FM_DraftPlayer
 {
     const int ModelId = 0;

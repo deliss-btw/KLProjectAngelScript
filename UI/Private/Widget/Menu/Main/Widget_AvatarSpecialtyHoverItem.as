@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_AvatarSpecialtyHoverItem
 {
     const int ViewID = 0;
@@ -65,6 +64,7 @@ namespace UWidget_AvatarSpecialtyHoverItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_AvatarSpecialtyHoverItem;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

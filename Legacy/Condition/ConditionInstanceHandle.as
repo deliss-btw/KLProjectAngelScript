@@ -1,28 +1,27 @@
-﻿
-
 struct FConditionInstanceHandle
 {
     UPROPERTY()
     TDataObjectPtr<FConditionConfigBase> m_m_ConditionConfig;
     UPROPERTY()
-    int m_LocalConditionOrConditionGroupInstanceID;
+    int m_LocalConditionOrConditionGroupInstanceID = INDEX_NONE;
 
-    FConditionInstanceHandle()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
     FConditionInstanceHandle(const TDataObjectPtr<FLocalConditionConfig> &inout InConditionConfig, const int InLocalConditionInstanceID)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        CastTo local_4;
+        this.Setm_ConditionConfig(local_4.opCall());
+        this.SetLocalConditionOrConditionGroupInstanceID(InLocalConditionInstanceID);
+        return;
     }
     FConditionInstanceHandle(const TDataObjectPtr<FConditionGroupConfig> &inout InConditionGroupConfig, const int InLocalConditionGroupInstanceID)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        CastTo local_4;
+        this.Setm_ConditionConfig(local_4.opCall());
+        this.SetLocalConditionOrConditionGroupInstanceID(InLocalConditionGroupInstanceID);
+        return;
     }
     bool IsValid() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        bool __r; return __r;
+        return this.Getm_ConditionConfig() && (this.GetLocalConditionOrConditionGroupInstanceID() != INDEX_NONE);
     }
     EConditionConfigType GetConditionConfigType() const property
     {
@@ -48,13 +47,19 @@ struct FConditionInstanceHandle
     }
     int GetLocalConditionInstanceID() const property
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        if ((int(this.GetLocalConditionType())) == 1)
+        {
+            return this.GetLocalConditionOrConditionGroupInstanceID();
+        }
+        return INDEX_NONE;
     }
     int GetLocalConditionGroupInstanceID() const property
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        if ((int(this.GetLocalConditionType())) == 2)
+        {
+            return this.GetLocalConditionOrConditionGroupInstanceID();
+        }
+        return INDEX_NONE;
     }
     int opCmp(const FConditionInstanceHandle &inout Other) const
     {
@@ -76,7 +81,8 @@ struct FConditionInstanceHandle
     }
     void Setm_ConditionConfig(const TDataObjectPtr<FConditionConfigBase> &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_m_ConditionConfig = __Value;
+        return;
     }
     int GetLocalConditionOrConditionGroupInstanceID() const property
     {

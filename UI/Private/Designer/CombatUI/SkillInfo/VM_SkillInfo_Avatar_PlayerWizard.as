@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_SkillInfo_Avatar_PlayerWizard
 {
     const int ModelId = 0;
@@ -90,14 +89,14 @@ struct FVMS_SkillInfo_Avatar_PlayerWizard : FEUIViewModelSingleton
     void PostConstruct()
     {
         this.SetPlayerPawnEntity(this.GetContext().GetLocalPlayerPawn());
-        this.SetVM_SimpleSkillButton(FEUIModelRef());
-        this.SetVM_ExtraSkill1Button(FEUIModelRef());
-        this.SetVM_ExtraSkill2Button(FEUIModelRef());
+        this.SetVM_SimpleSkillButton(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
+        this.SetVM_ExtraSkill1Button(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
+        this.SetVM_ExtraSkill2Button(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
         Get local_10;
         local_10.opCall().SetSkillProgressType(ESkillProgressType(1));
         local_10.opCall().SetSkillProgressType(ESkillProgressType(1));
         local_10.opCall().SetSkillProgressType(ESkillProgressType(1));
-        this.SetVM_UltraSkillButton(FEUIModelRef());
+        this.SetVM_UltraSkillButton(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
         local_10.opCall().SetSkillProgressType(ESkillProgressType(2));
         return;
     }

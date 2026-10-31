@@ -1,5 +1,3 @@
-﻿
-
 struct FT_PropAddBuffToPlayer : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -8,7 +6,7 @@ struct FT_PropAddBuffToPlayer : FECSTrait
     UPROPERTY()
     FC_PropAddBuffConfig Config_FC_PropAddBuffConfig;
 
-    default CustomName = FName("дёєзЋ©е®¶ж·»еЉ Buff (FT_PropAddBuffToPlayer)");
+    default CustomName = FName("为玩家添加Buff (FT_PropAddBuffToPlayer)");
 
     FT_PropAddBuffToPlayer()
     {

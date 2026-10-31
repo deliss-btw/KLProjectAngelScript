@@ -1,4 +1,3 @@
-﻿
 enum ECommonDropdownExpandDirection
 {
     Up,
@@ -53,7 +52,6 @@ class UWidget_CommonDropdown : UEUIUserWidget
     UPROPERTY()
     FGetEUIModelRef CommonDropdownDelegate;
 
-
     UFUNCTION()
     void PreConstruct_Implementation(const bool IsDesignTime)
     {
@@ -102,7 +100,7 @@ class UWidget_CommonDropdown : UEUIUserWidget
         this.CloseDropdownList();
         FEUIModelRef local_4;
         local_4;
-        FEUIWidget::AddWidget(this.GetOwningLocalPlayer(), GameplayTags::UI_Type_CommonDropdownListCanvas, this.CommonDropdown.opArrow().GetDropdownList().opImplConv(), FEUIModelRef(), local_4);
+        FEUIWidget::AddWidget(this.GetOwningLocalPlayer(), GameplayTags::UI_Type_CommonDropdownListCanvas, this.CommonDropdown.opArrow().GetDropdownList().opImplConv(), FEUIModelRef(::FVM_WidgetRef::Create(this, this)), local_4);
         return;
     }
     void CloseDropdownList()
@@ -200,7 +198,6 @@ class UWidget_CommonDropdownList : UEUIUserWidget
     UPROPERTY()
     FGetEUIModelRef DropdownWidgetRefDelegate;
 
-
     UFUNCTION()
     void OnInitialized_Implementation()
     {
@@ -233,8 +230,7 @@ class UWidget_CommonDropdownList : UEUIUserWidget
     {
         if (this.CommonDropdownList.opArrow().GetOptions().Num() > this.CommonDropdownList.opArrow().GetDropdown().opArrow().GetSelectedIndex())
         {
-            int local_1 = this.CommonDropdownList.opArrow().GetDropdown().opArrow().GetSelectedIndex();
-            this.ListView.NavigateToItem(this.CommonDropdownList.opArrow().GetOptions()[]);
+            this.ListView.NavigateToItem(this.CommonDropdownList.opArrow().GetOptions()[this.CommonDropdownList.opArrow().GetDropdown().opArrow().GetSelectedIndex()]);
         }
         return;
     }
@@ -386,7 +382,7 @@ class UWidget_CommonDropdownListCanvas : UEUIActivatableWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     UFUNCTION()
     void CloseDropdown()
@@ -636,6 +632,7 @@ namespace UWidget_CommonDropdown
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonDropdown;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnDropdownOpenChanged"));
     return;
 }
@@ -652,6 +649,7 @@ namespace UWidget_CommonDropdownList
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonDropdownList;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnDropdownWidgetRefChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("SyncDropdownListFocus"));
     return;
@@ -669,6 +667,7 @@ namespace UWidget_CommonDropdownListCanvas
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonDropdownListCanvas;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -684,6 +683,7 @@ namespace UWidget_CommonDropdownOption
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonDropdownOption;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -699,6 +699,7 @@ namespace UWidget_CommonDropdownButton
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonDropdownButton;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -714,6 +715,7 @@ namespace UWidget_TextDropdownOption
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TextDropdownOption;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -729,6 +731,7 @@ namespace UWidget_TextDropdownButton
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TextDropdownButton;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

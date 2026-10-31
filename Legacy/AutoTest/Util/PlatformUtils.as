@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::PlatformUtils
 {
 int CreateProc(const FString &inout Path, const FString &inout Params, const bool bLaunchDetached, const bool bLaunchHidden, const bool bLaunchReallyHidden, const int Priority = 0, const FString &inout WorkingDir = "")

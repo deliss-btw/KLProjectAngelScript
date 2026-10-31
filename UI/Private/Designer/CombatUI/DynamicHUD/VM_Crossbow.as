@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_Crossbow
 {
     const int ModelId = 0;
@@ -48,9 +47,7 @@ struct FVMS_Crossbow : FEUIViewModelSingleton
         if (local_12.MatchGameplayTag(GameplayTags::CombatState_Special_Crossbow))
         {
             this.SetPanelVisible(true);
-            UCombatGlobalSettings local_16 = ::UCombatGlobalSettings::Get();
-            TDataObjectPtr<FItemConfig> local_40;
-            this.SetItemNumber(::InventoryUtils::GetInventoryItemNumber(local_12, local_40));
+            this.SetItemNumber(::InventoryUtils::GetInventoryItemNumber(local_12, TDataObjectPtr<FItemConfig>(::UCombatGlobalSettings::Get().ArrowItem)));
         }
         else
         {

@@ -1,5 +1,3 @@
-﻿
-
 struct FTalentUpgradeAutoLineRouteOverride
 {
     UPROPERTY()
@@ -16,7 +14,6 @@ struct FTalentUpgradeAutoLineRouteOverride
     float32 ToExtend = 1.0f;
     UPROPERTY()
     EEUIAutoLineRouteMode RouteMode = EEUIAutoLineRouteMode(0);
-
 
 }
 

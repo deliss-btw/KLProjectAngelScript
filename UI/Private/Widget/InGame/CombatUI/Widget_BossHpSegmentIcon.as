@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_BossHpSegmentIcon
 {
     const int ViewID = 0;
@@ -115,6 +114,7 @@ namespace UWidget_BossHpSegmentIcon
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_BossHpSegmentIcon;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleIconActiveChanged"));
     return;
 }

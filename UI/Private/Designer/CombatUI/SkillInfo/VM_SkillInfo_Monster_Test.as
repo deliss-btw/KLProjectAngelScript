@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_SkillInfo_Monster_Test
 {
     const int ModelId = 0;

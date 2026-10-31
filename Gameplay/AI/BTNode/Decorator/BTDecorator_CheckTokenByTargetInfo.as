@@ -1,5 +1,3 @@
-﻿
-
 class UBTDecorator_CheckTokenByTarget : UBTDecorator_ECSScriptBase
 {
     UPROPERTY()
@@ -7,7 +5,7 @@ class UBTDecorator_CheckTokenByTarget : UBTDecorator_ECSScriptBase
     UPROPERTY()
     TDataObjectPtr<FAITokenByTargetConfig> TokenConfig;
 
-    default SetNodeName("жЈЂжџҐTokenByTarget");
+    default SetNodeName("检查TokenByTarget");
 
     UBTDecorator_CheckTokenByTarget()
     {
@@ -102,7 +100,7 @@ class UBTDecorator_CheckTokenByTarget : UBTDecorator_ECSScriptBase
         local_48.LastConsumedTime = ECS::GetContextTime();
         if (0 == 1)
         {
-            local_48.ParallelRecoverTimers.Add(0);
+            local_48.ParallelRecoverTimers.Add(0.0);
         }
         return;
     }

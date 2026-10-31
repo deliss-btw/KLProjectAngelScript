@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_StigmataDetail_Helpers
 {
 UFUNCTION()

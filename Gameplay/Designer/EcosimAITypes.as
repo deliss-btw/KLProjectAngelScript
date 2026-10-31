@@ -1,4 +1,3 @@
-﻿
 enum EEcosimAICreatureName
 {
     qiongqi,

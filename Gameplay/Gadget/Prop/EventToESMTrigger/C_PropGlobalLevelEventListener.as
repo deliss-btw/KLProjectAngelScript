@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_PropGlobalLevelEventListener_NS
 {
     const TECSComponentDerivedPtr<FC_PropGlobalLevelEventListener> DerivedPtr = TECSComponentDerivedPtr<FC_PropGlobalLevelEventListener>();
@@ -13,7 +12,6 @@ struct FPropGlobalLevelEventLisenerConfigItem
     FNameHandle_ESMBBTrigger ESMTriggerToActivate;
     UPROPERTY()
     float32 ValidTime = 0.1f;
-
 
 }
 
@@ -108,36 +106,36 @@ bool RemovePropGlobalLevelEventListener(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPropGlobalLevelEventListenerOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PropGlobalLevelEventListener, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PropGlobalLevelEventListener, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPropGlobalLevelEventListenerOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PropGlobalLevelEventListener, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PropGlobalLevelEventListener, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPropGlobalLevelEventListenerOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PropGlobalLevelEventListener, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PropGlobalLevelEventListener, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPropGlobalLevelEventListenerOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PropGlobalLevelEventListener, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PropGlobalLevelEventListener, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPropGlobalLevelEventListenerOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PropGlobalLevelEventListener, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PropGlobalLevelEventListener, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPropGlobalLevelEventListenerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PropGlobalLevelEventListener, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PropGlobalLevelEventListener, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPropGlobalLevelEventListenerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PropGlobalLevelEventListener, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PropGlobalLevelEventListener, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPropGlobalLevelEventListenerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PropGlobalLevelEventListener, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PropGlobalLevelEventListener, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

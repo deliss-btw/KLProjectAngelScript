@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ChallengeDungeonInfo
 {
     const int ModelId = 0;
@@ -48,7 +47,7 @@ struct FVM_ChallengeDungeonInfo : FEUIViewModel
     }
     FSoftBrush GetDungeonIcon() const
     {
-        // body not fully recovered вЂ” stub [no-return]
+        // body not fully recovered — stub [no-return]
         FSoftBrush __r; return __r;
     }
     void StartDungeon()

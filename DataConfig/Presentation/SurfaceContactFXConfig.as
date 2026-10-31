@@ -1,4 +1,3 @@
-﻿
 enum ESurfaceMaterialType
 {
     Default,
@@ -22,7 +21,6 @@ enum ECharacterBodySize
     ExtraLarge,
 }
 
-
 struct FImpactFXData
 {
     UPROPERTY()
@@ -37,7 +35,6 @@ struct FImpactFXData
     FRotator3f RotationOffset = FRotator3f::ZeroRotator;
     UPROPERTY()
     float32 RandomRotationAngle = 0.0f;
-
 
     void OnDataTableRowChanged()
     {
@@ -62,10 +59,9 @@ struct FCharacterSizeVFXData
     UPROPERTY()
     ESurfaceMaterialType FallBack = ESurfaceMaterialType(0);
 
-
     void Preload()
     {
-        ::FPreloadAssetUtils::LoadFXActor(this.FXActor);
+        ::FPreloadAssetUtils::LoadFXActor(this.Default.FXActor);
         ::FPreloadAssetUtils::LoadFXActor(this.Small.FXActor);
         ::FPreloadAssetUtils::LoadFXActor(this.Medium.FXActor);
         ::FPreloadAssetUtils::LoadFXActor(this.Large.FXActor);
@@ -91,10 +87,9 @@ struct FArealStrikeEnvSurfaceVFXData
     UPROPERTY()
     ECharacterBodySize FallBack = ECharacterBodySize(0);
 
-
     void Preload()
     {
-        ::FPreloadAssetUtils::LoadFXActor(this.FXActor);
+        ::FPreloadAssetUtils::LoadFXActor(this.Default.FXActor);
         ::FPreloadAssetUtils::LoadFXActor(this.WithSparks.FXActor);
         ::FPreloadAssetUtils::LoadFXActor(this.WithoutSparks.FXActor);
         return;
@@ -112,14 +107,12 @@ struct FEnableDisableColliderItem1
     UPROPERTY()
     bool bColliderEnabled = true;
 
-
 }
 
 struct FVFXCode
 {
     UPROPERTY()
     int Code;
-
 
 }
 
@@ -131,7 +124,6 @@ struct FVFXCodeData
     bool bFallBack;
     UPROPERTY()
     ESurfaceMaterialType FallBack;
-
 
 }
 

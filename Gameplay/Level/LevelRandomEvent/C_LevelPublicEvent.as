@@ -1,4 +1,3 @@
-﻿
 enum EPublicEventStatus
 {
     PrepareToInteract,
@@ -43,6 +42,8 @@ struct FC_LevelPublicEventInfo : FECSComponent
     FC_LevelPublicEventInfo()
     {
         this.m_Status = EPublicEventStatus(0);
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.m_ChangeStatusTime = -1;
         this.m_InStatusTime = -1;
         this.__InitDirtyFlags();
@@ -51,6 +52,8 @@ struct FC_LevelPublicEventInfo : FECSComponent
     FC_LevelPublicEventInfo(const FC_LevelPublicEventInfo &inout Other)
     {
         this.m_Status = EPublicEventStatus(0);
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.m_ChangeStatusTime = -1;
         this.m_InStatusTime = -1;
         this.__InitDirtyFlags();
@@ -152,11 +155,15 @@ struct FC_LevelPublicEventInteractTarget : FECSComponent
 
     FC_LevelPublicEventInteractTarget()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_LevelPublicEventInteractTarget(const FC_LevelPublicEventInteractTarget &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_LevelPublicEventEntity = Other.m_LevelPublicEventEntity;
         return;
@@ -202,18 +209,16 @@ struct FRuntimePublicEventLBPData
     UPROPERTY()
     int Priority = 0;
 
-
 }
 
 struct FRuntimePublicEventPointData
 {
     UPROPERTY()
-    ALevelPublicEventPoint PublicEventPoint;
+    ALevelPublicEventPoint PublicEventPoint = nullptr;
     UPROPERTY()
     int SelectedLBPIndex = -1;
     UPROPERTY()
     TArray<TSoftClassPtr<AKLLevelScriptPublicEvent>> LBPs;
-
 
 }
 
@@ -229,7 +234,6 @@ struct FCS_LevelPublicEventData : FECSSingleton
     int CurrentEventCount;
     UPROPERTY()
     TMap<TSoftClassPtr<AKLLevelScriptPublicEvent>, FRuntimePublicEventLBPData> RuntimePublicEventLBPDatas;
-
 
 }
 
@@ -326,37 +330,37 @@ bool RemoveLevelPublicEventInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorLevelPublicEventInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_LevelPublicEventInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_LevelPublicEventInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLevelPublicEventInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_LevelPublicEventInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_LevelPublicEventInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLevelPublicEventInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_LevelPublicEventInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_LevelPublicEventInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLevelPublicEventInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_LevelPublicEventInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_LevelPublicEventInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLevelPublicEventInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_LevelPublicEventInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_LevelPublicEventInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorLevelPublicEventInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_LevelPublicEventInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_LevelPublicEventInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelPublicEventInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_LevelPublicEventInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_LevelPublicEventInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelPublicEventInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_LevelPublicEventInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_LevelPublicEventInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_LevelPublicEventInteractTarget
@@ -436,37 +440,37 @@ bool RemoveLevelPublicEventInteractTarget(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorLevelPublicEventInteractTargetOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_LevelPublicEventInteractTarget, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_LevelPublicEventInteractTarget, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLevelPublicEventInteractTargetOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_LevelPublicEventInteractTarget, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_LevelPublicEventInteractTarget, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLevelPublicEventInteractTargetOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_LevelPublicEventInteractTarget, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_LevelPublicEventInteractTarget, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLevelPublicEventInteractTargetOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_LevelPublicEventInteractTarget, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_LevelPublicEventInteractTarget, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLevelPublicEventInteractTargetOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_LevelPublicEventInteractTarget, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_LevelPublicEventInteractTarget, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorLevelPublicEventInteractTargetLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_LevelPublicEventInteractTarget, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_LevelPublicEventInteractTarget, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelPublicEventInteractTargetActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_LevelPublicEventInteractTarget, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_LevelPublicEventInteractTarget, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelPublicEventInteractTargetModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_LevelPublicEventInteractTarget, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_LevelPublicEventInteractTarget, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_LevelPublicEventData
@@ -557,17 +561,17 @@ bool RemoveLevelPublicEventData(const FECSWorldPtr &inout World)
 }
 void __MonitorLevelPublicEventDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_LevelPublicEventData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_LevelPublicEventData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelPublicEventDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_LevelPublicEventData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_LevelPublicEventData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelPublicEventDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_LevelPublicEventData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_LevelPublicEventData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

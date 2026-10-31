@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_LinkSkillInfo
 {
     const int ModelId = 0;
@@ -29,7 +28,7 @@ struct FVMS_LinkSkillInfo : FEUIViewModelSingleton
     }
     void PostConstruct()
     {
-        this.SetVM_LinkSkillButton(FEUIModelRef());
+        this.SetVM_LinkSkillButton(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
         Get local_6;
         local_6.opCall().SetSkillButtonType(ESkillButtonType(5));
         local_6.opCall().SetSkillProgressType(ESkillProgressType(0));
@@ -138,7 +137,9 @@ void __OnQuickSlotChanged(FVMS_LinkSkillInfo &inout Model, const FECSEntity &ino
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorDivineSkillLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorDivineSkillModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 FEUIModelRef __UIGetter_VM_LinkSkillButton(const FVMS_LinkSkillInfo &inout Model)
 {

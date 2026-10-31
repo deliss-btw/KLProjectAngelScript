@@ -1,5 +1,3 @@
-﻿
-
 struct FBuffConfigRefSet
 {
     UPROPERTY()
@@ -68,7 +66,35 @@ class US_PropAddBuffToPlayer : UECSScriptSystem
     UFUNCTION()
     void ServerJob_HandlePropAddBuffToPlayerEvent(const FCE_PropAddBuffToPlayerEvent &inout Event, const FCS_FixedTime &inout FixedTime) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        FC_PropAddBuffConfig local_14;
+        bool local_24 = false;
+        FECSEntity local_4 = Event.TriggerPlayer;
+        FECSEntity local_8 = Event.BuffConfigSourceEntity;
+        if (local_14)
+        {
+            if (!(!(local_4)) && local_8)
+            {
+                Get local_20;
+                const FC_Transform& local_22 = local_20.opCall();
+                if (local_22)
+                {
+                    if (Event.bIncludeDefault)
+                    {
+                        this.AddBuffToPlayers(local_22.GetPosition(), local_14.PlayerDetectSphereRadius, local_14.AddBuffConfigs, local_4, local_8, FixedTime.Time);
+                    }
+                    local_24 = false;
+                    for (auto& local_38 : local_14.TagNameToBuffConfigList)
+                    {
+                        if (Event.BuffTagNames.IndexOfByKey(local_38.TagName) != INDEX_NONE)
+                        {
+                            local_24 = true;
+                            this.AddBuffToPlayers(local_22.GetPosition(), local_14.PlayerDetectSphereRadius, local_38.AddBuffConfigs, local_4, local_8, FixedTime.Time);
+                        }
+                    }
+                }
+            }
+        }
+        return;
     }
     UFUNCTION()
     void Run_ServerJob_HandlePropAddBuffToPlayerEvent() const

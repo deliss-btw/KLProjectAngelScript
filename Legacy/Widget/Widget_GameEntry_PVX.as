@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_GameEntry_PVX
 {
     const int ViewID = 0;
@@ -22,7 +21,6 @@ class UWidget_GameEntry_PVX : UEUIActivatableWidget
     UEUIButton Button_Enter;
     TArray<FECSEntity> SpawnPoints;
     bool bSpawnPointInitilized = false;
-
 
     UFUNCTION()
     void OnViewBind_Implementation()
@@ -211,6 +209,7 @@ namespace UWidget_GameEntry_PVX
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_GameEntry_PVX;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

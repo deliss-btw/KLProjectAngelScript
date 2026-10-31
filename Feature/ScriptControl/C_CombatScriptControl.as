@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_CombatScriptControl_NS
 {
     const TECSComponentDerivedPtr<FC_CombatScriptControl> DerivedPtr = TECSComponentDerivedPtr<FC_CombatScriptControl>();
@@ -28,13 +27,12 @@ struct FC_CombatScriptControl : FECSComponent
     UPROPERTY()
     int NextEntryId = 1;
 
-
     int FindSlotIndex(const EScriptControlSourceType SourceType) const
     {
         int local_1 = 0;
-        for (; local_1 < this.Num(); ++local_1)
+        for (; local_1 < this.Slots.Num(); ++local_1)
         {
-            if (int(this[local_1].SourceType) == int(SourceType))
+            if (int(this.Slots[local_1].SourceType) == int(SourceType))
             {
                 return local_1;
             }
@@ -46,28 +44,28 @@ struct FC_CombatScriptControl : FECSComponent
         int local_2 = this.FindSlotIndex(EScriptControlSourceType(SourceType));
         if (local_2 >= 0)
         {
-            return this[local_2];
+            return this.Slots[local_2];
         }
         FScriptControlQueueSlot local_72;
         local_72.SourceType = SourceType;
         local_72.Priority = ::ScriptControlSourceConfig::GetPriority(EScriptControlSourceType(SourceType));
         int local_73 = 0;
         int local_74 = 0;
-        for (; local_74 < this.Num(); ++local_74)
+        for (; local_74 < this.Slots.Num(); ++local_74)
         {
-            if (this[local_74].Priority >= int(local_72.Priority))
+            if (this.Slots[local_74].Priority >= int(local_72.Priority))
             {
                 local_73 = local_74 + 1;
                 continue;
             }
             break;
         }
-        this.Insert(local_72, local_73);
+        this.Slots.Insert(local_72, local_73);
         if (this.ActiveSlotIndex >= local_73)
         {
             ++this.ActiveSlotIndex;
         }
-        return this[local_73];
+        return this.Slots[local_73];
     }
     void RemoveSlot(const EScriptControlSourceType SourceType)
     {
@@ -76,7 +74,7 @@ struct FC_CombatScriptControl : FECSComponent
         {
             return;
         }
-        this.RemoveAt(local_2);
+        this.Slots.RemoveAt(local_2);
         if (this.ActiveSlotIndex == local_2)
         {
             this.ActiveSlotIndex = -1;
@@ -90,14 +88,14 @@ struct FC_CombatScriptControl : FECSComponent
     }
     bool HasActiveSlot() const
     {
-        return this.ActiveSlotIndex >= 0 && (this.ActiveSlotIndex < this.Num());
+        return this.ActiveSlotIndex >= 0 && (this.ActiveSlotIndex < this.Slots.Num());
     }
     void RefreshBBBehaviorNames()
     {
         EScriptControlBehaviorName local_5;
         if (this.HasActiveSlot())
         {
-            FScriptControlQueueSlot& local_4 = this[this.ActiveSlotIndex];
+            FScriptControlQueueSlot& local_4 = this.Slots[this.ActiveSlotIndex];
             if (local_4.bHasCurrentAction)
             {
                 local_5 = local_4.CurrentAction.BehaviorName;
@@ -115,7 +113,7 @@ struct FC_CombatScriptControl : FECSComponent
     }
     void DisableAndClearAll()
     {
-        this.Reset(0);
+        this.Slots.Reset(0);
         this.ActiveSlotIndex = -1;
         this.bEnabled = false;
         this.PreferBehavior = EScriptControlPreferBehavior(0);
@@ -207,36 +205,36 @@ bool RemoveCombatScriptControl(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCombatScriptControlOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CombatScriptControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CombatScriptControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCombatScriptControlOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CombatScriptControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CombatScriptControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCombatScriptControlOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CombatScriptControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CombatScriptControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCombatScriptControlOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CombatScriptControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CombatScriptControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCombatScriptControlOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CombatScriptControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CombatScriptControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCombatScriptControlLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CombatScriptControl, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CombatScriptControl, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCombatScriptControlActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CombatScriptControl, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CombatScriptControl, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCombatScriptControlModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CombatScriptControl, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CombatScriptControl, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

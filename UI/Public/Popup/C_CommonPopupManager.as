@@ -1,4 +1,3 @@
-﻿
 enum ECommonPopupQueueType
 {
     Default,
@@ -42,12 +41,12 @@ struct FCommonPopupInfo
 
     FCommonPopupInfo()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.PopupId = INDEX_NONE;
+        this.Priority = 0;
+        return;
     }
     FCommonPopupInfo(const int InPopupId, const FGameplayTag &inout InPopupType, const int InPriority = 0)
     {
-        this.PopupId = 0;
-        this.Priority = 0;
         this.PopupId = InPopupId;
         this.PopupType = InPopupType;
         this.Priority = InPriority;
@@ -55,8 +54,7 @@ struct FCommonPopupInfo
     }
     bool IsValid() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        bool __r; return __r;
+        return this.PopupId != INDEX_NONE && this.PopupType.IsValid();
     }
 }
 
@@ -130,9 +128,9 @@ struct FCS_CommonPopupManager : FECSSingleton
     UPROPERTY()
     TSet<int> StuckWarnedPopupIds;
 
-
     void EnsureInitialized()
     {
+        FCommonPopupQueueRuleList local_36;
         TArrayIterator<FFilteredGameplayTag> local_42;
         if (this.bInitialized)
         {
@@ -141,20 +139,21 @@ struct FCS_CommonPopupManager : FECSSingleton
         this.bInitialized = true;
         for (auto& local_24 : ::CommonPopupSettings::Get().ShardQueueRules)
         {
+            this.QueuedPopups.Add(local_24.GetKey(), local_36);
             for (; local_42.CanProceed;)
             {
                 FFilteredGameplayTag& local_50 = local_42.Proceed();
                 if (!(this.CachedPopupTypes.Contains(local_50.opImplConv())))
                 {
-                    FGameplayTag local_52 = local_50.opImplConv();
+                    FCommonPopupQueueTypeList local_56;
+                    this.CachedPopupTypes.Add(local_50.opImplConv(), local_56);
                 }
                 this.CachedPopupTypes[local_50.opImplConv()].QueueTypes.AddUnique(local_24.GetKey());
             }
         }
         if (!(this.QueuedPopups.Contains(ECommonPopupQueueType(0))))
         {
-            ECommonPopupQueueType local_36;
-            this.QueuedPopups.Add(local_36, 0);
+            this.QueuedPopups.Add(ECommonPopupQueueType(0), local_36);
         }
         return;
     }
@@ -312,17 +311,17 @@ bool RemoveCommonPopupManager(const FECSWorldPtr &inout World)
 }
 void __MonitorCommonPopupManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_CommonPopupManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_CommonPopupManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommonPopupManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_CommonPopupManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_CommonPopupManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommonPopupManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_CommonPopupManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_CommonPopupManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_CommonPopupManagerRecord
@@ -413,16 +412,16 @@ bool RemoveCommonPopupManagerRecord(const FECSWorldPtr &inout World)
 }
 void __MonitorCommonPopupManagerRecordLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_CommonPopupManagerRecord, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_CommonPopupManagerRecord, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommonPopupManagerRecordActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_CommonPopupManagerRecord, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_CommonPopupManagerRecord, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommonPopupManagerRecordModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_CommonPopupManagerRecord, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_CommonPopupManagerRecord, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

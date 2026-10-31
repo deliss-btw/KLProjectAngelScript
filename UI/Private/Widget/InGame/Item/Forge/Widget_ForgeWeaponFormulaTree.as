@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ForgeWeaponFormulaTree
 {
     const int ViewID = 0;
@@ -33,7 +32,6 @@ class UWidget_ForgeWeaponFormulaTree : UEUIUserWidget
     FEUIModelWeakRef __FormulaTree;
     UPROPERTY()
     FGetEUIModelRef FormulaTreeDelegate;
-
 
     UFUNCTION()
     void OnViewUnbind_Implementation()
@@ -102,8 +100,7 @@ class UWidget_ForgeWeaponFormulaTree : UEUIUserWidget
             {
                 TEUIModelWeakRef<FVM_WeaponForge> local_26;
                 int local_17 = ::ForgeCommonUtil::ConvertForgeNodeLevel2Row(GetConfig().ForgeLv);
-                EForgeTreeBranchType local_19 = GetBranchType();
-                int local_9 = ::ForgeCommonUtil::ConvertForgeTreeBranchType2Column(GetBranchType());
+                int local_9 = ::ForgeCommonUtil::ConvertForgeTreeBranchType2Column(GetBranchType(), GetBranchType());
                 local_26.GetWeaponForgeVM();
                 if (local_26.IsValid())
                 {
@@ -133,7 +130,7 @@ class UWidget_ForgeWeaponFormulaTree : UEUIUserWidget
                         local_60.SetVerticalAlignment(EVerticalAlignment(2));
                     }
                 }
-                if ((int(GetBranchType())) == 1 && (local_17 < local_6))
+                if (int(GetBranchType()) == 1 && (local_17 < local_6))
                 {
                     local_6 = local_17;
                     local_8 = (TEUIModelWeakRef<FVM_ForgeWeaponItem>(local_24));
@@ -222,6 +219,7 @@ namespace UWidget_ForgeWeaponFormulaTree
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ForgeWeaponFormulaTree;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleFormulaTreeNodeListChanged"));
     return;
 }

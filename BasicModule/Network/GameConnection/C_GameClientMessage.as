@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_PostClientFastTravelToSameMap_NS
 {
     const TECSEventDerivedPtr<FCE_PostClientFastTravelToSameMap> DerivedPtr = TECSEventDerivedPtr<FCE_PostClientFastTravelToSameMap>();

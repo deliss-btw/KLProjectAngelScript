@@ -1,5 +1,3 @@
-﻿
-
 struct FForgeNodeConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -15,7 +13,6 @@ struct FForgeNodeConfig : FDataObject
     TArray<FItemParamConfig> Cost;
     UPROPERTY()
     FDataObjectPtr m_Craft;
-
 
     bool ContainsCost(const TDataObjectPtr<FItemConfig> &inout Item) const
     {

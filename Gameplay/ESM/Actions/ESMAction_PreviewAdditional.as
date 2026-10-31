@@ -1,5 +1,3 @@
-﻿
-
 struct FESMPreviewAdditionalData
 {
     UPROPERTY()
@@ -14,7 +12,6 @@ struct FESMPreviewAdditionalData
     FName AttachSocket;
     UPROPERTY()
     TWeakObjectPtr<AActor> ActorInstance;
-
 
 }
 

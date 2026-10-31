@@ -1,5 +1,3 @@
-﻿
-
 class US_LifeCycleSystem : UECSScriptSystem
 {
     US_LifeCycleSystem()

@@ -1,4 +1,3 @@
-﻿
 namespace FTeamUtils
 {
 FECSEntity GetPawnEntityFromTeamMember(const FECSEntity &inout TeamMemberEntity, const bool bIfRidingGetRider = true)
@@ -426,7 +425,7 @@ void TickTeamManagerExtraInfo(const FCS_TeamManager &inout TeamManager)
 {
     int local_22;
     int local_82 = 0;
-    for (auto& local_16 : TeamManager)
+    for (auto& local_16 : TeamManager.AllTeams)
     {
         local_16;
         for (auto& local_36 : local_22.GetModify_Members())
@@ -441,7 +440,7 @@ void TickTeamManagerExtraInfo(const FCS_TeamManager &inout TeamManager)
             {
                 Get local_52;
                 local_36.SetPosition(local_52.opCall().GetPosition());
-                local_36.SetAvatarConfig(TDataObjectPtr<FAvatarPrefabConfig>());
+                local_36.SetAvatarConfig(TDataObjectPtr<FAvatarPrefabConfig>(GetDefaultedAvatarConfig(local_44)));
                 if (!(local_82) || !((local_82.GetAttributeSet() != nullptr)))
                 {
                     continue;

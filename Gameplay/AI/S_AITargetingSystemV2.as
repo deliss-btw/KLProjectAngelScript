@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_AI_EnableCombatLOD = FConsoleVariable();
 
 class US_AITargetingSystemV2 : UECSScriptSystem
@@ -14,9 +13,9 @@ class US_AITargetingSystemV2 : UECSScriptSystem
     UPROPERTY()
     FName TauntFXTopName;
     UPROPERTY()
-    FRuntimeFloatCurve DefaultAlertnessRatioCurveByDistance;
+    FRuntimeFloatCurve DefaultAlertnessRatioCurveByDistance = FRuntimeCurveUtils::CreateLinear(0.0f, 1.0f, 5000.0f, 0.0f);
     UPROPERTY()
-    FRuntimeFloatCurve DefaultAlertnessRatioCurveByAngleOffset;
+    FRuntimeFloatCurve DefaultAlertnessRatioCurveByAngleOffset = FRuntimeCurveUtils::CreateLinear(0.0f, 1.0f, 90.0f, 0.0f);
     UPROPERTY()
     UAIAlertnessConfigDataAsset CommonAIAlertnessConfig;
     UPROPERTY()
@@ -24,22 +23,125 @@ class US_AITargetingSystemV2 : UECSScriptSystem
     UPROPERTY()
     TDataObjectPtr<FAITargetingQueryConfig> TemplateQueryConfig;
     UPROPERTY()
-    TArray<float32> AIPlayerDistLODDistances;
+    TArray<float32> AIPlayerDistLODDistances = {10000.0f, 20000.0f};
     UPROPERTY()
-    float32 AIPlayerDistLODBuffer;
+    float32 AIPlayerDistLODBuffer = 3000.0f;
     UPROPERTY()
     FAIVisibilityPriorityConfig VisibilityPriorityConfig;
     UPROPERTY()
     FAIVisibilityCacheConfig VisibilityCacheConfig;
-    float AnimLength;
+    float AnimLength = 0.4;
 
-    US_AITargetingSystemV2()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
     void UpdateAlertnessV2(const FECSEntity &inout SelfEntity, const FC_Transform &inout SelfTransform, const FECSEntity &inout TargetableEntity, const FC_AIKnowledge &inout AIKnowledge, FC_AITargetingV2 &inout AITargetingV2, const bool bIsInSight, const float32 DeltaTime) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        float32 local_212;
+        if ((SelfEntity == TargetableEntity))
+        {
+            return;
+        }
+        if (::FAIKnowledgeUtils::CanMuteCombat(SelfEntity))
+        {
+            return;
+        }
+        if (!(::FAIKnowledgeUtils::CanEntityBeCombatTarget(TargetableEntity)))
+        {
+            return;
+        }
+        UAIAlertnessConfigDataAsset local_4 = ::FAIPerceptionUtils::GetCurrentAlertConfig(SelfEntity, AIKnowledge);
+        if (local_4 == nullptr)
+        {
+            local_4 = this.CommonAIAlertnessConfig;
+        }
+        if (bIsInSight)
+        {
+            float32 local_213;
+            float32 local_157;
+            EAIThreatType local_19;
+            FC_AIThreatConfig local_18;
+            FVector local_12 = SelfTransform.GetPosition();
+            local_19 = EAIThreatType(0);
+            if (local_18)
+            {
+                local_19 = local_18.AIThreatType;
+            }
+            FRuntimeFloatCurve local_54 = this.DefaultAlertnessRatioCurveByDistance;
+            FRuntimeFloatCurve local_88 = this.DefaultAlertnessRatioCurveByAngleOffset;
+            FAIAlertnessCurveConfig local_156;
+            if (local_4 != nullptr)
+            {
+                if (local_4.AlertnessRatioMap.Find(local_19, local_156))
+                {
+                    local_54 = local_156.AlertnessRatioCurveByDistance;
+                    local_88 = local_156.AlertnessRatioCurveByAngleOffset;
+                }
+            }
+            float32 local_160 = FMath::Max(AITargetingV2.SightMaxDistance, 1.0f);
+            Get local_170;
+            FVector local_166 = local_170.opCall().GetPosition();
+            FQuat local_200 = (local_166 - local_12).VectorPlaneProject(FVector::UpVector).ToOrientationQuat();
+            float local_204 = local_12.Distance(local_166);
+            float32 local_207 = local_54.GetFloatValue((FMath::Clamp(float32(local_204) / local_160, 0.0f, 1.0f)), 0.0f);
+            float32 local_211 = local_88.GetFloatValue(float32(FMath::RadiansToDegrees(SelfTransform.GetRotation().AngularDistance(local_200))), 0.0f);
+            if (local_4 != nullptr)
+            {
+                local_212 = local_4.AlertnessIncreaseSpeed;
+            }
+            else
+            {
+                local_212 = 10.0f;
+            }
+            local_157 = local_211 + local_207;
+            local_213 = local_157 * local_212;
+            local_157 = local_213 * DeltaTime;
+            if (local_157 > 0.0f)
+            {
+                FTargetEntity local_216 = TargetableEntity;
+                if (!(AITargetingV2.EntityAlertnessMap.Contains(local_216)))
+                {
+                    Has local_220;
+                    if (!(local_220.opCall()))
+                    {
+                        FC_AINeedBroadcastAlertTargetsTag local_226;
+                        Assign local_224;
+                        local_224.opCall(local_226);
+                    }
+                }
+                FAIKnowledgeAlertness& local_228 = AITargetingV2.EntityAlertnessMap.FindOrAdd(local_216);
+                float32 local_214 = local_228.AlertnessValue + local_157;
+                local_213 = AITargetingV2.AlertnessMax;
+                local_228.AlertnessValue = FMath::Min(local_213, local_214);
+            }
+            return;
+        }
+        FTargetEntity local_216_2 = TargetableEntity;
+        FAIKnowledgeAlertness local_234;
+        if (AITargetingV2.EntityAlertnessMap.Find(local_216_2, local_234) && (local_234.AlertnessValue < AITargetingV2.AlertnessMax))
+        {
+            float32 local_213;
+            float32 local_157;
+            if (local_4 != nullptr)
+            {
+                local_213 = local_4.AlertnessDecreaseSpeed;
+            }
+            else
+            {
+                local_213 = 10.0f;
+            }
+            float32 local_214_2 = local_213 * DeltaTime;
+            if (local_214_2 > 0.0f)
+            {
+                local_157 = local_234.AlertnessValue;
+                float32 local_159 = FMath::Max(0.0f, local_157 - local_214_2);
+                if (local_159 <= 0.0f)
+                {
+                }
+                else
+                {
+                    AITargetingV2.EntityAlertnessMap[local_216_2].AlertnessValue = local_159;
+                }
+            }
+        }
+        return;
     }
     UFUNCTION()
     void Job_CheckCurrentTargetValidationV2(const FCS_FixedTime &inout FixedTime, const FECSEntity &inout Entity, FC_AITargetingV2 &inout AITargeting) const
@@ -3170,7 +3272,8 @@ struct __Lambda_Gameplay_AI_S_AITargetingSystemV2_201
     }
     __Lambda_Gameplay_AI_S_AITargetingSystemV2_201(const FECSEntity &inout _InEntity)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.__Entity = _InEntity;
+        return;
     }
     FECSEntity GetEntity() property
     {

@@ -1,11 +1,9 @@
-﻿
 enum ELoadingScreenAction
 {
     None,
     NATIVE_MAX = 0,
     CloseUI,
 }
-
 
 struct FTeleporterConfig : FDataObject
 {
@@ -40,7 +38,6 @@ struct FTeleporterConfig : FDataObject
     FVector2D WorldLocation;
     UPROPERTY()
     FDataObjectPtr m_TargetDungeonInfoConfig;
-
 
     TDataObjectPtr<FPresentationConfig> GetPresentationConfig() const property
     {

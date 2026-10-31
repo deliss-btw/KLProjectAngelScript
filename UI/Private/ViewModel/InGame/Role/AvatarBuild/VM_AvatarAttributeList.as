@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AvatarAttributeList
 {
     const int ModelId = 0;

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CookBuffInfo
 {
     const int ModelId = 0;
@@ -261,8 +260,7 @@ struct FVM_CookCompleted : FEUIViewModel
                             local_544.Desc = ::MessageHintUtils::ParseText(local_402.opArrow().DefaultAttributeDesc, local_648);
                         }
                         local_378.Add(local_544);
-                        int local_693 = int(local_572.Value);
-                        this.GetModify_CurCookBuffInfos().Add(TEUIModelRef<FVM_CookBuffInfo>(::FVM_CookBuffInfo::Create(this.GetContext().Manager, local_544.Icon, local_544.Desc)));
+                        this.GetModify_CurCookBuffInfos().Add(TEUIModelRef<FVM_CookBuffInfo>(::FVM_CookBuffInfo::Create(this.GetContext().Manager, local_544.Icon, local_544.Desc, uint(int(local_572.Value)))));
                     }
                 }
             }
@@ -323,7 +321,7 @@ struct FVM_CookCompleted : FEUIViewModel
         }
         if (local_49)
         {
-            return FText::AsCultureInvariant("ж— ж•€Buff");
+            return FText::AsCultureInvariant("无效Buff");
         }
         int local_105 = local_106;
         local_106 = FMath::FloorToInt((local_105 / 60.0f));
@@ -337,7 +335,7 @@ struct FVM_CookCompleted : FEUIViewModel
         {
             local_134 = (FString("") + local_107);
         }
-        FString local_118 = (FString("ж•€жћњж—¶й—ґ:") + local_106);
+        FString local_118 = (FString("效果时间:") + local_106);
         return FText::AsCultureInvariant(((local_118 + ":") + local_134));
     }
     ESlateVisibility GetNowMetaBuff() const
@@ -521,7 +519,6 @@ struct __GeneratedProperties_FVM_CookBuffInfo
     UPROPERTY()
     TEUIModelRef<FVM_CookBuffInfo> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_CookCompleted
@@ -538,7 +535,6 @@ struct __GeneratedProperties_FVM_CookCompleted
     FText GeDescription;
     UPROPERTY()
     TEUIModelRef<FVM_CookCompleted> Self;
-
 
 }
 

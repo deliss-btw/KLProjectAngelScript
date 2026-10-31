@@ -1,4 +1,3 @@
-﻿
 namespace UICommonUtil
 {
     const FConsoleVariable CVar_UI_DebugEnableNewMiniHpBar = FConsoleVariable();
@@ -44,13 +43,13 @@ TSoftClassPtr<UUserWidget> WidgetPathFromString(const FString &inout ObjectPath)
 {
     FString local_4 = (ObjectPath + "_C");
     FSoftClassPath local_12 = FSoftClassPath(local_4);
-    return TSoftClassPtr<UUserWidget>();
+    return TSoftClassPtr<UUserWidget>(local_12);
 }
 TSoftClassPtr<UEUIUserWidget> EUIWidgetPathFromString(const FString &inout ObjectPath)
 {
     FString local_4 = (ObjectPath + "_C");
     FSoftClassPath local_12 = FSoftClassPath(local_4);
-    return TSoftClassPtr<UEUIUserWidget>();
+    return TSoftClassPtr<UEUIUserWidget>(local_12);
 }
 UFUNCTION()
 bool IsValid(const FDataObjectPtr &inout DataObject)
@@ -93,7 +92,7 @@ bool GetInputActionKeyName(const ULocalPlayer LocalPlayer, const UInputAction In
 FText InputActionToText(const ULocalPlayer LocalPlayer, const FEUIInputAction &inout InputAction)
 {
     FText local_8 = InputAction.GetDisplayName();
-    FText local_14 = local_8.IsEmptyOrWhitespace() ? NSLOCTEXT("NoDescriptionInputAction", "<жњЄе‘ЅеђЌ>") : local_8;
+    FText local_14 = local_8.IsEmptyOrWhitespace() ? NSLOCTEXT("NoDescriptionInputAction", "<未命名>") : local_8;
     return FText::Format(FText::AsCultureInvariant("[{0}]{1}"), UICommonUtil::GetFirstKeyForCurrentInputType(LocalPlayer, InputAction).GetDisplayName(false), local_14);
 }
 FText InputActionToText(const ULocalPlayer LocalPlayer, const UInputAction InputAction)

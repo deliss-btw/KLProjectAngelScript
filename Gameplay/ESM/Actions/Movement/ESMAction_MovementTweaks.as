@@ -1,12 +1,9 @@
-﻿
-
 class UESMAction_PassThroughCharacter : UESMBPBaseSpanAction
 {
     UPROPERTY()
     bool DisableMoveCollision = true;
     UPROPERTY()
     bool DisablePushCollider = true;
-
 
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
@@ -103,7 +100,6 @@ class UESMAction_MovementSideSlideTweaks : UESMBPBaseSpanAction
     float32 SlideDecayRatioForStatic = 0.0f;
     UPROPERTY()
     float32 SlideDecayRatioForDynamic = 0.0f;
-
 
     UFUNCTION()
     void GetRestriction_Implementation(FESMNotifyRestriction &inout OutParam) const

@@ -1,4 +1,3 @@
-﻿
 namespace FMS_RewardPopupManager
 {
     const int ModelId = 0;
@@ -50,7 +49,7 @@ struct FMS_RewardPopupManager : FEUIModelSingleton
             FText local_132 = FText();
             FText local_136 = FText();
             TArray<FRewardItemEntry> local_120 = local_116.Build();
-            FText local_124 = NSLOCTEXT("DefaultTitle", "иЋ·еѕ—");
+            FText local_124 = NSLOCTEXT("DefaultTitle", "获得");
             FDialogCallback local_168;
             ::CommonPopup::RewardDialog_Confirm(local_124, local_120, local_168, local_136, local_132, FText());
         }
@@ -90,7 +89,7 @@ struct FMS_RewardPopupManager : FEUIModelSingleton
         else
         {
             FDialogCallback local_96;
-            ::CommonPopup::RewardDialog_Confirm(NSLOCTEXT("DefaultTitle", "иЋ·еѕ—"), local_36, local_96, FText(), FText(), FText());
+            ::CommonPopup::RewardDialog_Confirm(NSLOCTEXT("DefaultTitle", "获得"), local_36, local_96, FText(), FText(), FText());
         }
         return;
     }
@@ -104,7 +103,7 @@ struct FMS_RewardPopupManager : FEUIModelSingleton
         this.GetModify_PendingDelayedRewards().Reset(0);
         FText local_20 = FText();
         FText local_24 = FText();
-        FText local_12 = NSLOCTEXT("DefaultTitle", "иЋ·еѕ—");
+        FText local_12 = NSLOCTEXT("DefaultTitle", "获得");
         FDialogCallback local_56;
         ::CommonPopup::RewardDialog_Confirm(local_12, local_6, local_56, local_24, local_20, FText());
         return;

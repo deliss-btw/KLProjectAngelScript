@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CurrentDivineSkill
 {
     const int ModelId = 0;
@@ -47,7 +46,7 @@ struct FVM_CurrentDivineSkill : FEUIViewModel
         if (local_6)
         {
             local_12 = local_6.GetDivineSkillTypeDesc();
-            return FText::Format(NSLOCTEXT("DivineSkillNotSuitHint", "зҐћж јжЉЂдёЋеЅ“е‰ЌйџдјЌи§’и‰Іеќ‡дёЌеЊ№й…ЌпјЊе»єи®®дёЉйµ{0}и§’и‰ІжїЂжґ»зҐћж јжЉЂ"), local_12);
+            return FText::Format(NSLOCTEXT("DivineSkillNotSuitHint", "神格技与当前队伍角色均不匹配，建议上阵{0}角色激活神格技"), local_12);
         }
         return local_12;
     }
@@ -63,7 +62,6 @@ struct __GeneratedProperties_FVM_CurrentDivineSkill
     FText EquipableSkillNotSuitHint;
     UPROPERTY()
     TEUIModelRef<FVM_CurrentDivineSkill> Self;
-
 
 }
 

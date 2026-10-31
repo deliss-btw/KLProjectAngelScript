@@ -1,4 +1,3 @@
-﻿
 namespace PostProcessUtils
 {
 void PlayCameraPostProcessAnim(const FECSEntity &inout ToEntity, const FECSEntity &inout AttachEntity, const bool bUpdateAttach, const UCameraPostProcessAnimConfig AnimConfig, const float32 Duration, const FName &inout AttachSocketName = NAME_None, const FVector &inout AttachOffset = FVector::ZeroVector)
@@ -90,7 +89,7 @@ void PlayCameraPostProcessRadius(const FECSEntity &inout Entity, const float32 R
     local_96.opCall();
     if (local_102 && (int(local_102.GetFactionId()) != 0))
     {
-        local_52 = local_52.FilterByFaction(EFaction(local_102.GetFactionId()));
+        local_52 = local_52.FilterByFaction(local_102.GetFactionId(), uint8(RelationMask));
     }
     FECSRuntimeQueryIterator local_130 = local_52.Iterator();
     for (; local_130.CanProceed;)

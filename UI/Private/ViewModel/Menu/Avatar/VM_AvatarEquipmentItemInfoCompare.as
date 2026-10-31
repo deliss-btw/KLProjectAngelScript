@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AvatarEquipmentItemInfoCompare
 {
     const int ModelId = 0;
@@ -122,7 +121,7 @@ struct FVM_AvatarEquipmentItemInfoCompare : FEUIViewModel
         this.SetbShowEquiptingAvatarText(CurrentEquiptingAvatarCfg.IsSet());
         if (this.GetbShowEquiptingAvatarText())
         {
-            NSLOCTEXT("EquiptingAvatarText", "{0}иЈ…е¤‡дё­");
+            NSLOCTEXT("EquiptingAvatarText", "{0}装备中");
             FText local_10;
             this.SetEquiptingAvatarText(local_10);
         }
@@ -150,7 +149,7 @@ struct FVM_AvatarEquipmentItemInfoCompare : FEUIViewModel
                 if (this.GetbShowCompareEquiptingAvatarText())
                 {
                     local_10.GetEquipment();
-                    NSLOCTEXT("CompareEquiptingAvatarText", "{0}иЈ…е¤‡дё­");
+                    NSLOCTEXT("CompareEquiptingAvatarText", "{0}装备中");
                     FText local_18;
                     this.SetCompareEquiptingAvatarText(local_18);
                 }
@@ -166,7 +165,60 @@ struct FVM_AvatarEquipmentItemInfoCompare : FEUIViewModel
     }
     void RefreshCompareAttributeList(const TEUIModelRef<FVM_EquipmentInfo> &inout InCompareEquipmentInfo)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        TEUIModelRef<FM_Attribute> local_46;
+        int local_48 = 0;
+        float32 local_50 = 0.0f;
+        int local_51;
+        this.GetModify_CompareAttributeList().Reset(0);
+        if (!(InCompareEquipmentInfo.IsValid()) || !(this.GetCurEquipmentInfo().IsValid()))
+        {
+            return;
+        }
+        TMap<FGameAttributeRef, float32> local_26;
+        for (auto& local_40 : GetEquipmentAttributes())
+        {
+            if (TEUIModelRef<FVM_AttributeDisplay>(local_40).IsValid())
+            {
+                local_46.GetAttribute();
+                local_26.Add(local_48.GetAttribute());
+            }
+        }
+        TEUIModelRef<FVM_EquipmentInfo> local_4 = this.GetCurEquipmentInfo();
+        for (auto& local_40 : GetEquipmentAttributes())
+        {
+            TEUIModelRef<FVM_AttributeDisplay> local_42_2 = TEUIModelRef<FVM_AttributeDisplay>(local_40);
+            if (!(local_42_2.IsValid()))
+            {
+                continue;
+            }
+            local_46.GetAttribute();
+            float32 local_49 = 0.0f;
+            local_26.Find(local_48.GetAttribute(), local_49);
+            local_51 = INDEX_NONE;
+            if (local_50 > local_49)
+            {
+                local_51 = 1;
+            }
+            else
+            {
+                if (local_50 < local_49)
+                {
+                    local_51 = 0;
+                }
+            }
+            FVM_AttributeDisplayExtend& local_54 = ::FVM_AttributeDisplayExtend::Create(this.GetContext().Manager);
+            local_54.SetAttributeCompareStateIndex(local_51);
+            FEUIModelContainer local_68;
+            local_68.AddModel(local_42_2.opImplConv(), false);
+            local_68.AddModel(FEUIModelRef(local_54), false);
+            this.GetModify_CompareAttributeList().Add(local_68);
+        }
+        if (this.GetCurEquipItemInfoDetail().IsValid())
+        {
+            TEUIModelRef<FVM_AvatarEquipmentItemInfoDetail> local_72 = this.GetCurEquipItemInfoDetail();
+            this.GetCompareAttributeList().SetAttributeList();
+        }
+        return;
     }
     TEUIModelRef<FVM_EquipmentInfo> GetCurEquipmentInfo() const property
     {

@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_VisualScaleModifyBlendInAndHold_NS
 {
     const TECSComponentDerivedPtr<FC_VisualScaleModifyBlendInAndHold> DerivedPtr = TECSComponentDerivedPtr<FC_VisualScaleModifyBlendInAndHold>();
@@ -25,12 +24,16 @@ struct FC_VisualScaleModifyBlendInAndHold : FECSComponent
     FC_VisualScaleModifyBlendInAndHold()
     {
         this.m_BlendInTime = 0.0f;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FC_VisualScaleModifyBlendInAndHold(const FC_VisualScaleModifyBlendInAndHold &inout Other)
     {
         this.m_BlendInTime = 0.0f;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_InitialVisualScale = Other.m_InitialVisualScale;
         this.m_TargetVisualScale = Other.m_TargetVisualScale;
@@ -146,12 +149,16 @@ struct FC_VisualScaleModifyBlendOut : FECSComponent
     FC_VisualScaleModifyBlendOut()
     {
         this.m_BlendOutTime = 0.0f;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FC_VisualScaleModifyBlendOut(const FC_VisualScaleModifyBlendOut &inout Other)
     {
         this.m_BlendOutTime = 0.0f;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_InitialVisualScale = Other.m_InitialVisualScale;
         this.m_TargetVisualScale = Other.m_TargetVisualScale;
@@ -351,37 +358,37 @@ bool RemoveVisualScaleModifyBlendInAndHold(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorVisualScaleModifyBlendInAndHoldOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_VisualScaleModifyBlendInAndHold, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_VisualScaleModifyBlendInAndHold, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorVisualScaleModifyBlendInAndHoldOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_VisualScaleModifyBlendInAndHold, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_VisualScaleModifyBlendInAndHold, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorVisualScaleModifyBlendInAndHoldOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_VisualScaleModifyBlendInAndHold, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_VisualScaleModifyBlendInAndHold, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorVisualScaleModifyBlendInAndHoldOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_VisualScaleModifyBlendInAndHold, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_VisualScaleModifyBlendInAndHold, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorVisualScaleModifyBlendInAndHoldOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_VisualScaleModifyBlendInAndHold, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_VisualScaleModifyBlendInAndHold, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorVisualScaleModifyBlendInAndHoldLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_VisualScaleModifyBlendInAndHold, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_VisualScaleModifyBlendInAndHold, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorVisualScaleModifyBlendInAndHoldActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_VisualScaleModifyBlendInAndHold, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_VisualScaleModifyBlendInAndHold, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorVisualScaleModifyBlendInAndHoldModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_VisualScaleModifyBlendInAndHold, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_VisualScaleModifyBlendInAndHold, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_VisualScaleModifyBlendOut
@@ -461,37 +468,37 @@ bool RemoveVisualScaleModifyBlendOut(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorVisualScaleModifyBlendOutOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_VisualScaleModifyBlendOut, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_VisualScaleModifyBlendOut, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorVisualScaleModifyBlendOutOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_VisualScaleModifyBlendOut, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_VisualScaleModifyBlendOut, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorVisualScaleModifyBlendOutOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_VisualScaleModifyBlendOut, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_VisualScaleModifyBlendOut, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorVisualScaleModifyBlendOutOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_VisualScaleModifyBlendOut, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_VisualScaleModifyBlendOut, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorVisualScaleModifyBlendOutOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_VisualScaleModifyBlendOut, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_VisualScaleModifyBlendOut, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorVisualScaleModifyBlendOutLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_VisualScaleModifyBlendOut, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_VisualScaleModifyBlendOut, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorVisualScaleModifyBlendOutActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_VisualScaleModifyBlendOut, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_VisualScaleModifyBlendOut, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorVisualScaleModifyBlendOutModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_VisualScaleModifyBlendOut, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_VisualScaleModifyBlendOut, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

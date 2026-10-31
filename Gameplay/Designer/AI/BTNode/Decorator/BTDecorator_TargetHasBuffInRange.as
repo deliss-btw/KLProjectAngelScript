@@ -1,5 +1,3 @@
-﻿
-
 class UBTDecorator_TargetHasBuffInRange : UBTDecorator_ECSScriptBase
 {
     UPROPERTY()
@@ -11,7 +9,7 @@ class UBTDecorator_TargetHasBuffInRange : UBTDecorator_ECSScriptBase
     UPROPERTY()
     bool bForceLockTarget;
 
-    default SetNodeName("жЈЂжџҐиЊѓе›ґе†…з›®ж ‡жЇеђ¦жњ‰Buff");
+    default SetNodeName("检查范围内目标是否有Buff");
 
     UBTDecorator_TargetHasBuffInRange()
     {
@@ -25,18 +23,18 @@ class UBTDecorator_TargetHasBuffInRange : UBTDecorator_ECSScriptBase
     UFUNCTION()
     FString GetStaticDescription_Implementation() const
     {
-        FString local_14 = (FString("жЈЂжµ‹Buff: ") + this.BuffConfig.GetBuffName());
-        FString local_4 = (FString("\nжђњзґўиЊѓе›ґ: ") + this.SearchDistance2D);
-        FString local_8 = (local_4 + " еЋз±і");
+        FString local_14 = (FString("检测Buff: ") + this.BuffConfig.GetBuffName());
+        FString local_4 = (FString("\n搜索范围: ") + this.SearchDistance2D);
+        FString local_8 = (local_4 + " 厘米");
         local_14 += local_8;
         if (!(this.ResultEntityKey.SelectedKeyName.IsNone()))
         {
-            FString local_8_2 = (FString("\nиѕ“е‡єBBй”®: ") + this.ResultEntityKey.SelectedKeyName);
+            FString local_8_2 = (FString("\n输出BB键: ") + this.ResultEntityKey.SelectedKeyName);
             local_14 += local_8_2;
         }
         if (this.bForceLockTarget)
         {
-            local_14 += "\n[е­ђж ‘жњџй—ґй”Ѓе®љз›®ж ‡]";
+            local_14 += "\n[子树期间锁定目标]";
         }
         return local_14;
     }

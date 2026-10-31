@@ -1,5 +1,3 @@
-﻿
-
 struct FHitDecalConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -17,7 +15,6 @@ struct FHitDecalConfig : FDataObject
     float32 FadeStartTime = 2.0f;
     UPROPERTY()
     float32 Emissive = 0.0f;
-
 
 }
 

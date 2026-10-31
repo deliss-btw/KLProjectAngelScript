@@ -1,4 +1,3 @@
-﻿
 namespace CutSceneUtils
 {
 void PlayCutScene(const FECSEntity &inout PlayerPawnEntity, const FName &inout PlayerTag, const TDataObjectPtr<FCutSceneData> &inout CutSceneData, const TMap<FName, FECSEntity> &inout Entities, const FVector &inout OriginLocation, const FRotator &inout OriginRotation, const bool bCrossDS = false)

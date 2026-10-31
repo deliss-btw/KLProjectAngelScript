@@ -1,9 +1,14 @@
-﻿
 namespace AttributeSampleUtils
 {
 void AddAttributeSample(const FECSEntity &inout SampledEntity, const EAttributeSampleType SampledAttribute, const EAttributeSampleRequester Requester, const FECSEntity &inout Sampler = ENTITY_NULL)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    ModifyOrAdd local_4;
+    FC_AttributeSample& local_6 = local_4.opCall();
+    if (local_6)
+    {
+        local_6.AttributeSamples.FindOrAdd(SampledAttribute).AddSample(EAttributeSampleRequester(Requester), Sampler);
+    }
+    return;
 }
 void RemoveAttributeSample(const FECSEntity &inout SampledEntity, const EAttributeSampleType SampledAttribute, const EAttributeSampleRequester Requester, const FECSEntity &inout Sampler = ENTITY_NULL)
 {
@@ -14,6 +19,7 @@ void RemoveAttributeSample(const FECSEntity &inout SampledEntity, const EAttribu
         TRawPtr<FAttributeSampleInfo> local_10 = local_6.AttributeSamples.Find(SampledAttribute);
         if (local_10)
         {
+            local_10.opArrow().RemoveSample(EAttributeSampleRequester(Requester), Sampler);
             if (local_10.opArrow().IsEmpty())
             {
                 if (local_6.AttributeSamples.IsEmpty())
@@ -35,7 +41,7 @@ void RemoveAllAttributeSamples(const FECSEntity &inout SampledEntity, const EAtt
         for (auto& local_26 : local_6.AttributeSamples)
         {
             local_26;
-            ENTITY_NULL.RemoveSample();
+            Requester.RemoveSample(ENTITY_NULL);
             if (local_6.AttributeSamples.IsEmpty())
             {
                 Remove local_30;
@@ -204,7 +210,22 @@ bool Client_IsAttributeSampled(const FECSEntityId &inout SampledEntityId, const 
 }
 bool Client_IsAttributeSampledByPlayer(const FECSEntity &inout PlayerEntity, const FECSEntityId &inout SampledEntityId, const EAttributeSampleType SampledAttribute)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    bool __r; return __r;
+    if (AttributeSampleUtils_Internal::Client_IsAttributeSampled(SampledEntityId, EAttributeSampleType(SampledAttribute), PlayerEntity))
+    {
+        return true;
+    }
+    if (AttributeSampleUtils_Internal::Client_IsAttributeSampled(SampledEntityId, EAttributeSampleType(SampledAttribute), ENTITY_NULL))
+    {
+        return true;
+    }
+    FECSEntity local_6 = FTeamUtils::GetTeamEntityForController(PlayerEntity);
+    if (local_6)
+    {
+        if (AttributeSampleUtils_Internal::Client_IsAttributeSampled(SampledEntityId, EAttributeSampleType(SampledAttribute), local_6))
+        {
+            return true;
+        }
+    }
+    return false;
 }
 }

@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_MonsterThrowDetect_NS
 {
     const TECSComponentDerivedPtr<FC_MonsterThrowDetect> DerivedPtr = TECSComponentDerivedPtr<FC_MonsterThrowDetect>();
@@ -24,6 +23,8 @@ struct FC_MonsterThrowDetect : FECSComponent
         this.m_bHasThrow = false;
         this.m_bCanCatchMonsterPrefab = false;
         this.m_bCanCatchAvatarPrefab = false;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
@@ -32,6 +33,8 @@ struct FC_MonsterThrowDetect : FECSComponent
         this.m_bHasThrow = false;
         this.m_bCanCatchMonsterPrefab = false;
         this.m_bCanCatchAvatarPrefab = false;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_bHasThrow = Other.m_bHasThrow;
         this.m_TargetEntity = Other.m_TargetEntity;
@@ -215,37 +218,37 @@ bool RemoveMonsterThrowDetect(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorMonsterThrowDetectOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_MonsterThrowDetect, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_MonsterThrowDetect, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMonsterThrowDetectOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_MonsterThrowDetect, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_MonsterThrowDetect, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMonsterThrowDetectOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_MonsterThrowDetect, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_MonsterThrowDetect, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMonsterThrowDetectOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_MonsterThrowDetect, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_MonsterThrowDetect, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMonsterThrowDetectOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_MonsterThrowDetect, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_MonsterThrowDetect, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorMonsterThrowDetectLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_MonsterThrowDetect, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_MonsterThrowDetect, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorMonsterThrowDetectActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_MonsterThrowDetect, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_MonsterThrowDetect, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorMonsterThrowDetectModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_MonsterThrowDetect, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_MonsterThrowDetect, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

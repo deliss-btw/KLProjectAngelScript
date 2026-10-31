@@ -1,5 +1,3 @@
-﻿
-
 class US_EcosimAIV2SpeakSystem : UECSScriptSystem
 {
     US_EcosimAIV2SpeakSystem()

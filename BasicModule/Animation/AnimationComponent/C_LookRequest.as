@@ -1,4 +1,3 @@
-﻿
 enum EAnimLookSource
 {
     Default,
@@ -50,7 +49,6 @@ struct FLookRequestEntry
     UPROPERTY()
     FRotator TargetRotationCS = FRotator::ZeroRotator;
 
-
 }
 
 struct FAnimSnapshot
@@ -69,11 +67,30 @@ struct FAnimSnapshot
 
     FAnimSnapshot()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags40 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_Source = EAnimLookSource(0);
+        this.m_Priority = 0;
+        this.m_AnimSnapshotTypeMask = false;
+        this.m_Position = FVector::ZeroVector;
+        this.m_Rotator = FRotator::ZeroRotator;
+        return;
     }
     FAnimSnapshot(const FAnimSnapshot &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags40 local_5;
+        this.__DirtyFlags = local_5;
+        this.m_Source = EAnimLookSource(0);
+        this.m_Priority = 0;
+        this.m_AnimSnapshotTypeMask = false;
+        this.m_Position = FVector::ZeroVector;
+        this.m_Rotator = FRotator::ZeroRotator;
+        this.m_Source = Other.m_Source;
+        this.m_Priority = int(Other.m_Priority);
+        this.m_AnimSnapshotTypeMask = (int(Other.m_AnimSnapshotTypeMask) != 0);
+        this.m_Position = Other.m_Position;
+        this.m_Rotator = Other.m_Rotator;
+        return;
     }
     FAnimSnapshot opAssign(const FAnimSnapshot &inout Other)
     {
@@ -179,18 +196,16 @@ struct FLookSnapshot : FAnimSnapshot
 
     FLookSnapshot()
     {
-        super();
         return;
     }
     FLookSnapshot(const FLookSnapshot &inout Other)
     {
-        super();
-        Super::opAssign(Other._base_FAnimSnapshot);
+        this._base_FAnimSnapshot = Other._base_FAnimSnapshot;
         return;
     }
     FLookSnapshot& opAssign(const FLookSnapshot &inout Other)
     {
-        return Super::opAssign(Other._base_FAnimSnapshot);
+        return Other._base_FAnimSnapshot;
     }
 }
 
@@ -204,11 +219,21 @@ struct FC_LookRequest : FECSComponent
 
     FC_LookRequest()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bTopValid = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_LookRequest(const FC_LookRequest &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bTopValid = false;
+        this.__InitDirtyFlags();
+        this.m_TopRequest = Other.m_TopRequest;
+        this.m_bTopValid = Other.m_bTopValid;
+        return;
     }
     FC_LookRequest opAssign(const FC_LookRequest &inout Other)
     {
@@ -513,37 +538,37 @@ bool RemoveLookRequest(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorLookRequestOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_LookRequest, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_LookRequest, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLookRequestOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_LookRequest, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_LookRequest, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLookRequestOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_LookRequest, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_LookRequest, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLookRequestOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_LookRequest, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_LookRequest, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLookRequestOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_LookRequest, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_LookRequest, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorLookRequestLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_LookRequest, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_LookRequest, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLookRequestActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_LookRequest, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_LookRequest, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLookRequestModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_LookRequest, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_LookRequest, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

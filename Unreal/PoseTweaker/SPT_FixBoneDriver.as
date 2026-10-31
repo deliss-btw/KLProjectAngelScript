@@ -1,19 +1,17 @@
-﻿
-
 struct FFixBoneRuntimeTarget
 {
     UPROPERTY()
     FPT_BoneRef Bone;
     UPROPERTY()
-    int OwnerControllerIndex;
+    int OwnerControllerIndex = INDEX_NONE;
     UPROPERTY()
-    int ParentType;
+    int ParentType = 1;
     UPROPERTY()
     FVector StaticOffsetPos_Maya;
     UPROPERTY()
     FVector StaticOffsetRot_Maya;
     UPROPERTY()
-    FVector StaticOffsetSca_Maya;
+    FVector StaticOffsetSca_Maya = FVector::OneVector;
     UPROPERTY()
     FVector AccOffsetPos_Maya;
     UPROPERTY()
@@ -21,10 +19,6 @@ struct FFixBoneRuntimeTarget
     UPROPERTY()
     FVector AccOffsetScale_Maya;
 
-    FFixBoneRuntimeTarget()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
 }
 
 struct FFixBoneRuntimeController
@@ -83,7 +77,6 @@ class USPT_FixBoneDriver : USkeletalPoseTweaker
     FString Suffix_Orig = "Orig";
     FString Suffix_Half = "Half";
     FString Suffix_Targ = "Targ";
-
 
     UFUNCTION()
     void OnInitialization_Implementation()

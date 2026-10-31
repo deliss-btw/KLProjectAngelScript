@@ -1,10 +1,8 @@
-﻿
 enum EInteractMode
 {
     InteractMode_F,
     InteractMode_Z,
 }
-
 
 struct FInteractionPointTypeConfig : FDataObject
 {
@@ -13,7 +11,6 @@ struct FInteractionPointTypeConfig : FDataObject
     TArray<TSubclassOf<UInteractionBehaviorBase>> Behaviors;
     UPROPERTY()
     EInteractMode InteractMode = EInteractMode(0);
-
 
 }
 

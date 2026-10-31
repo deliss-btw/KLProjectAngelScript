@@ -1,4 +1,3 @@
-﻿
 namespace FVM_LoginButton
 {
     const int ModelId = 0;
@@ -150,14 +149,13 @@ struct __GeneratedProperties_FVM_LoginButton
     UPROPERTY()
     TEUIModelRef<FVM_LoginButton> Self;
 
-
 }
 
 namespace FVM_LoginButton
 {
 FVM_LoginButton& Create(const UObject ContextObject, const ELoginButtonType ButtonType)
 {
-    return FVM_LoginButton::CreateByManager(EUIInternal::GetContextManager(ContextObject));
+    return FVM_LoginButton::CreateByManager(EUIInternal::GetContextManager(ContextObject), ELoginButtonType(ButtonType));
 }
 FVM_LoginButton CreateByManager(const UEUIManagerSubsystem Manager, const ELoginButtonType ButtonType)
 {

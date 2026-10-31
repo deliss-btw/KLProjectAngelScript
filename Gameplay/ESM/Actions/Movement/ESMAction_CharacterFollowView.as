@@ -1,10 +1,7 @@
-﻿
-
 struct FESMCharacterFollowViewInstanceData
 {
     UPROPERTY()
     float YawVelocity = 0.0;
-
 
 }
 
@@ -14,7 +11,6 @@ struct FESMCharacterFollowViewViewInstanceData
     float OffsetYaw = 0.0;
     UPROPERTY()
     float YawVelocity = 0.0;
-
 
 }
 
@@ -26,7 +22,6 @@ class UESMAction_CharacterFollowView : UESMBPBaseSpanTickAction
     float32 DampingRatio = 1.0f;
     UPROPERTY()
     FVector2D DeviationRange = FVector2D(-60.0, 60.0);
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const

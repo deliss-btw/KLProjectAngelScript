@@ -1,4 +1,3 @@
-﻿
 const int SettlementPlayerState_InGame = 0;
 const int SettlementPlayerState_Success = 1;
 const int SettlementPlayerState_Failure = 2;
@@ -189,8 +188,7 @@ struct FVM_PVX_Settlement_PlayerInfo : FEUIViewModel
             this.SetCurrentPlayerStateIndex(2);
             this.SetPlayerName(FText::FromString(this.GetPlayerData().GetPlayerName()));
             this.SetPlayerLevel(FText::Format(FText::AsCultureInvariant("Lv.{0}"), this.GetPlayerData().GetLevel()));
-            int local_175_2 = int(this.GetPlayerFaction());
-            int local_177 = ::PVXGameModeUtils::GetLevelRequiredExp((this.GetPlayerData().GetLevel() + 1));
+            int local_177 = ::PVXGameModeUtils::GetLevelRequiredExp((this.GetPlayerData().GetLevel() + 1), this.GetPlayerFaction());
             if (local_177 != -1)
             {
                 this.SetPlayerExperience(FText::Format(FText::AsCultureInvariant("{0}/{1}"), this.GetPlayerData().GetExp(), local_177));
@@ -539,7 +537,87 @@ FVM_PVX_Settlement_PlayerInfo CreateByManager(const UEUIManagerSubsystem Manager
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "TeammateInfo";
+    local_14.TypeName = "TEUIModelRef<FVM_TeammateInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PlayerBasicItem";
+    local_14.TypeName = "TEUIModelRef<FVM_PlayerBasicItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PlayerBasicItemExtend";
+    local_14.TypeName = "TEUIModelRef<FVM_PlayerBasicItemExtend>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Avatar";
+    local_14.TypeName = "TEUIModelRef<FVM_ChatCommonAvatar>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bIsLocalPlayer";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurrentPlayerStateIndex";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PlayerName";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PlayerLevel";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PlayerExperience";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PlayerKDA";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PlayerCoinValue";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_PVX_Settlement_PlayerInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_PVX_Settlement_PlayerInfo;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(14);
+    local_22.AddRefPropertyDirty(0, 0, FVM_TeammateInfo::__IndexOf_PlayerBasicItem());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("TeammateInfo");
+    int local_2_2 = FVM_TeammateInfo::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FVM_TeammateInfo::__IndexOf_PlayerBasicItem(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnTeammatePlayerBasicItemChanged";
+    local_40.DirtyFlags.Set(FVM_PVX_Settlement_PlayerInfo::__IndexOf_TeammateInfo());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

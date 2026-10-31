@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_GiveEcho
 {
     const int ViewID = 0;
@@ -141,6 +140,7 @@ namespace UWidget_GiveEcho
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_GiveEcho;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnShouldClose"));
     return;
 }

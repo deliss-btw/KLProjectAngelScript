@@ -1,5 +1,3 @@
-﻿
-
 class US_EcologyConditionSystem : UECSScriptSystem
 {
     US_EcologyConditionSystem()
@@ -57,7 +55,7 @@ class US_EcologyConditionSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_HandleWeatherChanged(const FCE_RegionWeatherChanged &inout Event) const
     {
-        int local_16;
+        int local_16 = 0;
         AActor local_18;
         bool local_19;
         int local_26 = 0;

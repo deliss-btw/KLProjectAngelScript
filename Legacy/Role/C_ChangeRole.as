@@ -1,4 +1,3 @@
-﻿
 enum EChangeRoleFailReason
 {
     None,
@@ -67,7 +66,6 @@ struct FCE_ClientToServerChangeRole : FECSEvent
     UPROPERTY()
     bool bForceChangeRole = false;
 
-
     bool Validate() const
     {
         Has local_4;
@@ -82,7 +80,6 @@ struct FCE_ClientChangeSpecialty : FECSEvent
     uint FromAvatarId;
     UPROPERTY()
     uint ToAvatarId;
-
 
     bool Validate() const
     {
@@ -101,7 +98,6 @@ struct FCE_ServerToClientChangeRole : FECSEvent
     UPROPERTY()
     FECSEntity NewPawnEntity;
 
-
 }
 
 struct FCE_ServerToClientChangeRoleResult : FECSEvent
@@ -118,7 +114,6 @@ struct FCE_ServerToClientChangeRoleResult : FECSEvent
     UPROPERTY()
     ESwitchPlayerBlockReason BlockReason = ESwitchPlayerBlockReason(0);
 
-
 }
 
 struct FCE_SwitchMainAvatarGender : FECSEvent
@@ -128,7 +123,6 @@ struct FCE_SwitchMainAvatarGender : FECSEvent
     uint CurAvatarId;
     UPROPERTY()
     uint SwitchAvatarId;
-
 
 }
 
@@ -242,16 +236,16 @@ bool RemoveAvatarConfigTable(const FECSWorldPtr &inout World)
 }
 void __MonitorAvatarConfigTableLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_AvatarConfigTable, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_AvatarConfigTable, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAvatarConfigTableActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_AvatarConfigTable, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_AvatarConfigTable, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAvatarConfigTableModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_AvatarConfigTable, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_AvatarConfigTable, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

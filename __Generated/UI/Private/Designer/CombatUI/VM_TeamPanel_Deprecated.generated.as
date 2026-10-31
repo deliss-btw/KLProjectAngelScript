@@ -1,5 +1,3 @@
-﻿
-
 struct FVMS_TeamPanelConfigDefault : FConfigEUIModelDefaultBase
 {
     UPROPERTY()

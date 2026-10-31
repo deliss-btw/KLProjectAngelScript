@@ -1,4 +1,3 @@
-﻿
 namespace FEcologySchedulerUtils
 {
     const int UpdateDurationForHigh = 10;
@@ -16,14 +15,15 @@ void AddFlockToScheduler(const FECSEntity &inout Entity, FC_EcologyFlockComponen
 void UpdateEntityToScheduler(const FECSEntity &inout Entity, const EEcologySchedulerLevel NewLevel, FCS_EcologyScheduler &inout Scheduler = ECS::ECSWorld.Modify<FCS_EcologyScheduler>())
 {
     FC_EcologySchedulerUnit local_6;
-    EEcologySchedulerLevel local_7 = local_6.CurrentScedulerLevel;
+    int local_7 = local_6.CurrentScedulerLevel;
     local_6.CurrentScedulerLevel = NewLevel;
-    if (int(local_7) == int(NewLevel))
+    if (local_7 == int(NewLevel))
     {
         return;
     }
-    Scheduler.UpdateSchedulerUnit(FECSEntity(Entity.GetId()));
-    if (int(local_7) == 4)
+    FECSEntity local_16 = FECSEntity(Entity.GetId());
+    Scheduler.UpdateSchedulerUnit(local_16, EEcologySchedulerLevel(NewLevel), EEcologySchedulerLevel(local_7));
+    if (local_7 == 4)
     {
         FC_ControlByEcologySchedulerTag local_22;
         Assign local_20;
@@ -39,7 +39,7 @@ void UpdateEntityToScheduler(const FECSEntity &inout Entity, const EEcologySched
 void RemoveEntityFromScheduler(const FECSEntity &inout Entity, const EEcologySchedulerLevel ExitLevel, FCS_EcologyScheduler &inout Scheduler = ECS::ECSWorld.Modify<FCS_EcologyScheduler>())
 {
     FECSEntity local_6 = FECSEntity(Entity.GetId());
-    Scheduler.UpdateSchedulerUnit(local_6, EEcologySchedulerLevel(4));
+    Scheduler.UpdateSchedulerUnit(local_6, EEcologySchedulerLevel(4), EEcologySchedulerLevel(ExitLevel));
     Remove local_10;
     local_10.opCall();
     return;

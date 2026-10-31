@@ -1,17 +1,34 @@
-﻿
 namespace __FSpawnAreaPoolConfigFunctions
 {
 UFUNCTION()
 FText __FSpawnAreaPoolConfig_GetDescription(const TDataObjectPtr<FSpawnAreaPoolConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FText __r; return __r;
+    FText __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Description' from a null 'FSpawnAreaPoolConfig' DataObject!");
+        }
+        FSpawnAreaPoolConfig local_24;
+        return local_24.Description;
+    }
+    return __r;
 }
 UFUNCTION()
 TArray<FSpawnAreaRandomFactor> __FSpawnAreaPoolConfig_GetTargetRandomPool(const TDataObjectPtr<FSpawnAreaPoolConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TArray<FSpawnAreaRandomFactor> __r; return __r;
+    TArray<FSpawnAreaRandomFactor> __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'TargetRandomPool' from a null 'FSpawnAreaPoolConfig' DataObject!");
+        }
+        FSpawnAreaPoolConfig local_24;
+        return local_24.TargetRandomPool;
+    }
+    return __r;
 }
 UFUNCTION()
 FSpawnAreaPoolConfig CastToFSpawnAreaPoolConfig(const TDataObjectPtr<FSpawnAreaPoolConfig> &inout DataObject)
@@ -25,14 +42,31 @@ namespace __FWeatherAreaTemplateFactorConfigFunctions
 UFUNCTION()
 TDataObjectPtr<FWorldAreaConfig> __FWeatherAreaTemplateFactorConfig_GetAreaConfig(const TDataObjectPtr<FWeatherAreaTemplateFactorConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TDataObjectPtr<FWorldAreaConfig> __r; return __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'AreaConfig' from a null 'FWeatherAreaTemplateFactorConfig' DataObject!");
+        }
+        FWeatherAreaTemplateFactorConfig local_44;
+        return local_44.GetAreaConfig();
+    }
+    return GetAreaConfig();
 }
 UFUNCTION()
 TArray<FWeatherTemplateRandomFactor> __FWeatherAreaTemplateFactorConfig_GetWeatherTemplateTargetRandomPool(const TDataObjectPtr<FWeatherAreaTemplateFactorConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TArray<FWeatherTemplateRandomFactor> __r; return __r;
+    TArray<FWeatherTemplateRandomFactor> __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'WeatherTemplateTargetRandomPool' from a null 'FWeatherAreaTemplateFactorConfig' DataObject!");
+        }
+        FWeatherAreaTemplateFactorConfig local_44;
+        return local_44.WeatherTemplateTargetRandomPool;
+    }
+    return __r;
 }
 UFUNCTION()
 FWeatherAreaTemplateFactorConfig CastToFWeatherAreaTemplateFactorConfig(const TDataObjectPtr<FWeatherAreaTemplateFactorConfig> &inout DataObject)
@@ -46,20 +80,46 @@ namespace __FCommissionWeatherPoolConfigFunctions
 UFUNCTION()
 FText __FCommissionWeatherPoolConfig_GetDescription(const TDataObjectPtr<FCommissionWeatherPoolConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FText __r; return __r;
+    FText __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Description' from a null 'FCommissionWeatherPoolConfig' DataObject!");
+        }
+        FCommissionWeatherPoolConfig local_28;
+        return local_28.Description;
+    }
+    return __r;
 }
 UFUNCTION()
 TArray<FWeatherRandomFactor> __FCommissionWeatherPoolConfig_GetWeatherRandomPool(const TDataObjectPtr<FCommissionWeatherPoolConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TArray<FWeatherRandomFactor> __r; return __r;
+    TArray<FWeatherRandomFactor> __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'WeatherRandomPool' from a null 'FCommissionWeatherPoolConfig' DataObject!");
+        }
+        FCommissionWeatherPoolConfig local_28;
+        return local_28.WeatherRandomPool;
+    }
+    return __r;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FWeatherAreaTemplateFactorConfig>> __FCommissionWeatherPoolConfig_GetWeatherAreaTemplateFactors(const TDataObjectPtr<FCommissionWeatherPoolConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TArray<TDataObjectPtr<FWeatherAreaTemplateFactorConfig>> __r; return __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'WeatherAreaTemplateFactors' from a null 'FCommissionWeatherPoolConfig' DataObject!");
+        }
+        FCommissionWeatherPoolConfig local_28;
+        return local_28.GetWeatherAreaTemplateFactors();
+    }
+    return GetWeatherAreaTemplateFactors();
 }
 UFUNCTION()
 FCommissionWeatherPoolConfig CastToFCommissionWeatherPoolConfig(const TDataObjectPtr<FCommissionWeatherPoolConfig> &inout DataObject)
@@ -73,14 +133,32 @@ namespace __FIntrusionPolicyPoolConfigFunctions
 UFUNCTION()
 FText __FIntrusionPolicyPoolConfig_GetDescription(const TDataObjectPtr<FIntrusionPolicyPoolConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FText __r; return __r;
+    FText __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Description' from a null 'FIntrusionPolicyPoolConfig' DataObject!");
+        }
+        FIntrusionPolicyPoolConfig local_24;
+        return local_24.Description;
+    }
+    return __r;
 }
 UFUNCTION()
 TArray<FIntrusionPolicyRandomFactor> __FIntrusionPolicyPoolConfig_GetTargetRandomPool(const TDataObjectPtr<FIntrusionPolicyPoolConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TArray<FIntrusionPolicyRandomFactor> __r; return __r;
+    TArray<FIntrusionPolicyRandomFactor> __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'TargetRandomPool' from a null 'FIntrusionPolicyPoolConfig' DataObject!");
+        }
+        FIntrusionPolicyPoolConfig local_24;
+        return local_24.TargetRandomPool;
+    }
+    return __r;
 }
 UFUNCTION()
 FIntrusionPolicyPoolConfig CastToFIntrusionPolicyPoolConfig(const TDataObjectPtr<FIntrusionPolicyPoolConfig> &inout DataObject)
@@ -94,14 +172,32 @@ namespace __FCommissionSubTargetPoolConfigFunctions
 UFUNCTION()
 FText __FCommissionSubTargetPoolConfig_GetDescription(const TDataObjectPtr<FCommissionSubTargetPoolConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FText __r; return __r;
+    FText __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Description' from a null 'FCommissionSubTargetPoolConfig' DataObject!");
+        }
+        FCommissionSubTargetPoolConfig local_24;
+        return local_24.Description;
+    }
+    return __r;
 }
 UFUNCTION()
 TArray<FCommissionSubTargetRandomFactor> __FCommissionSubTargetPoolConfig_GetTargetRandomPool(const TDataObjectPtr<FCommissionSubTargetPoolConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TArray<FCommissionSubTargetRandomFactor> __r; return __r;
+    TArray<FCommissionSubTargetRandomFactor> __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'TargetRandomPool' from a null 'FCommissionSubTargetPoolConfig' DataObject!");
+        }
+        FCommissionSubTargetPoolConfig local_24;
+        return local_24.TargetRandomPool;
+    }
+    return __r;
 }
 UFUNCTION()
 FCommissionSubTargetPoolConfig CastToFCommissionSubTargetPoolConfig(const TDataObjectPtr<FCommissionSubTargetPoolConfig> &inout DataObject)
@@ -115,14 +211,32 @@ namespace __FCommissionTimePoolConfigFunctions
 UFUNCTION()
 FText __FCommissionTimePoolConfig_GetDescription(const TDataObjectPtr<FCommissionTimePoolConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FText __r; return __r;
+    FText __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Description' from a null 'FCommissionTimePoolConfig' DataObject!");
+        }
+        FCommissionTimePoolConfig local_24;
+        return local_24.Description;
+    }
+    return __r;
 }
 UFUNCTION()
 TArray<FCommissionTimeRandomFactor> __FCommissionTimePoolConfig_GetTargetRandomPool(const TDataObjectPtr<FCommissionTimePoolConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TArray<FCommissionTimeRandomFactor> __r; return __r;
+    TArray<FCommissionTimeRandomFactor> __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'TargetRandomPool' from a null 'FCommissionTimePoolConfig' DataObject!");
+        }
+        FCommissionTimePoolConfig local_24;
+        return local_24.TargetRandomPool;
+    }
+    return __r;
 }
 UFUNCTION()
 FCommissionTimePoolConfig CastToFCommissionTimePoolConfig(const TDataObjectPtr<FCommissionTimePoolConfig> &inout DataObject)
@@ -136,14 +250,32 @@ namespace __FCommissionEntryRulePoolConfigFunctions
 UFUNCTION()
 FText __FCommissionEntryRulePoolConfig_GetDescription(const TDataObjectPtr<FCommissionEntryRulePoolConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FText __r; return __r;
+    FText __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Description' from a null 'FCommissionEntryRulePoolConfig' DataObject!");
+        }
+        FCommissionEntryRulePoolConfig local_24;
+        return local_24.Description;
+    }
+    return __r;
 }
 UFUNCTION()
 TArray<FCommissionEntryRuleRandomFactor> __FCommissionEntryRulePoolConfig_GetTargetRandomPool(const TDataObjectPtr<FCommissionEntryRulePoolConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TArray<FCommissionEntryRuleRandomFactor> __r; return __r;
+    TArray<FCommissionEntryRuleRandomFactor> __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'TargetRandomPool' from a null 'FCommissionEntryRulePoolConfig' DataObject!");
+        }
+        FCommissionEntryRulePoolConfig local_24;
+        return local_24.TargetRandomPool;
+    }
+    return __r;
 }
 UFUNCTION()
 FCommissionEntryRulePoolConfig CastToFCommissionEntryRulePoolConfig(const TDataObjectPtr<FCommissionEntryRulePoolConfig> &inout DataObject)
@@ -157,8 +289,17 @@ namespace __FRandomPolicyConfigFunctions
 UFUNCTION()
 TArray<FRandomFactorConfig> __FRandomPolicyConfig_GetRandomFactorConfig(const TDataObjectPtr<FRandomPolicyConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TArray<FRandomFactorConfig> __r; return __r;
+    TArray<FRandomFactorConfig> __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'RandomFactorConfig' from a null 'FRandomPolicyConfig' DataObject!");
+        }
+        FRandomPolicyConfig local_22;
+        return local_22.RandomFactorConfig;
+    }
+    return __r;
 }
 UFUNCTION()
 FRandomPolicyConfig CastToFRandomPolicyConfig(const TDataObjectPtr<FRandomPolicyConfig> &inout DataObject)
@@ -172,14 +313,31 @@ namespace __FRandomSeedConfigFunctions
 UFUNCTION()
 FText __FRandomSeedConfig_GetRandomSeedName(const TDataObjectPtr<FRandomSeedConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FText __r; return __r;
+    FText __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'RandomSeedName' from a null 'FRandomSeedConfig' DataObject!");
+        }
+        FRandomSeedConfig local_24;
+        return local_24.RandomSeedName;
+    }
+    return __r;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FRandomPolicyConfig>> __FRandomSeedConfig_GetRandomPolicyConfig(const TDataObjectPtr<FRandomSeedConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TArray<TDataObjectPtr<FRandomPolicyConfig>> __r; return __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'RandomPolicyConfig' from a null 'FRandomSeedConfig' DataObject!");
+        }
+        FRandomSeedConfig local_24;
+        return local_24.GetRandomPolicyConfig();
+    }
+    return GetRandomPolicyConfig();
 }
 UFUNCTION()
 FRandomSeedConfig CastToFRandomSeedConfig(const TDataObjectPtr<FRandomSeedConfig> &inout DataObject)
@@ -202,8 +360,17 @@ namespace __FRandomPolicyBlacklistSingleConfigFunctions
 UFUNCTION()
 TArray<FRandomFactorBlacklistConfig> __FRandomPolicyBlacklistSingleConfig_GetRandomFactorBlacklistConfig(const TDataObjectPtr<FRandomPolicyBlacklistSingleConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TArray<FRandomFactorBlacklistConfig> __r; return __r;
+    TArray<FRandomFactorBlacklistConfig> __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'RandomFactorBlacklistConfig' from a null 'FRandomPolicyBlacklistSingleConfig' DataObject!");
+        }
+        FRandomPolicyBlacklistSingleConfig local_20;
+        return local_20.RandomFactorBlacklistConfig;
+    }
+    return __r;
 }
 UFUNCTION()
 FRandomPolicyBlacklistSingleConfig CastToFRandomPolicyBlacklistSingleConfig(const TDataObjectPtr<FRandomPolicyBlacklistSingleConfig> &inout DataObject)
@@ -217,8 +384,16 @@ namespace __FRandomPolicyBlacklistGroupConfigFunctions
 UFUNCTION()
 TArray<TDataObjectPtr<FRandomPolicyBlacklistSingleConfig>> __FRandomPolicyBlacklistGroupConfig_GetBlacklistSingleConfigs(const TDataObjectPtr<FRandomPolicyBlacklistGroupConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TArray<TDataObjectPtr<FRandomPolicyBlacklistSingleConfig>> __r; return __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'BlacklistSingleConfigs' from a null 'FRandomPolicyBlacklistGroupConfig' DataObject!");
+        }
+        FRandomPolicyBlacklistGroupConfig local_20;
+        return local_20.GetBlacklistSingleConfigs();
+    }
+    return GetBlacklistSingleConfigs();
 }
 UFUNCTION()
 FRandomPolicyBlacklistGroupConfig CastToFRandomPolicyBlacklistGroupConfig(const TDataObjectPtr<FRandomPolicyBlacklistGroupConfig> &inout DataObject)
@@ -232,20 +407,48 @@ namespace __FRandomConstraintConfigFunctions
 UFUNCTION()
 ECommissionType __FRandomConstraintConfig_GetCommissionType(const TDataObjectPtr<FRandomConstraintConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    ECommissionType __r; return __r;
+    int local_23 = 0;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'CommissionType' from a null 'FRandomConstraintConfig' DataObject!");
+        }
+        FRandomConstraintConfig local_22;
+        local_23 = int(local_22.CommissionType);
+        return ECommissionType(local_23);
+    }
+    return ECommissionType(local_23);
 }
 UFUNCTION()
 ERandomFactorType __FRandomConstraintConfig_GetRandomFactorType(const TDataObjectPtr<FRandomConstraintConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    ERandomFactorType __r; return __r;
+    int local_23 = 0;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'RandomFactorType' from a null 'FRandomConstraintConfig' DataObject!");
+        }
+        FRandomConstraintConfig local_22;
+        local_23 = int(local_22.RandomFactorType);
+        return ERandomFactorType(local_23);
+    }
+    return ERandomFactorType(local_23);
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FDataObject>> __FRandomConstraintConfig_GetRandomFactor(const TDataObjectPtr<FRandomConstraintConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TArray<TDataObjectPtr<FDataObject>> __r; return __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'RandomFactor' from a null 'FRandomConstraintConfig' DataObject!");
+        }
+        FRandomConstraintConfig local_22;
+        return local_22.GetRandomFactor();
+    }
+    return GetRandomFactor();
 }
 UFUNCTION()
 FRandomConstraintConfig CastToFRandomConstraintConfig(const TDataObjectPtr<FRandomConstraintConfig> &inout DataObject)

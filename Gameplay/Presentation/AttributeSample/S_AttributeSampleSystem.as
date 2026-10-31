@@ -1,5 +1,3 @@
-﻿
-
 class US_AttributeSampleSystem : UECSScriptSystem
 {
     US_AttributeSampleSystem()
@@ -9,7 +7,7 @@ class US_AttributeSampleSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_AttributeSampleChanged(const FECSEntity &inout Entity, const FC_AttributeSample &inout C_AttributeSample) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     UFUNCTION()
     void Monitor_AttributeSampleRemoved(const FECSEntity &inout Entity, const FC_AttributeSample &inout C_AttributeSample) const
@@ -25,7 +23,7 @@ class US_AttributeSampleSystem : UECSScriptSystem
                 auto local_38 = local_32.Iterator();
                 for (; local_38.CanProceed;)
                 {
-                    this.OnAttributeSampleRemove(local_38.Proceed(), Entity.GetId(), EAttributeSampleType(local_28.GetKey()));
+                    this.OnAttributeSampleRemove(local_38.Proceed(), Entity.GetId(), local_28.GetKey());
                 }
             }
             Remove local_52;
@@ -67,7 +65,7 @@ class US_AttributeSampleSystem : UECSScriptSystem
     }
     void OnAttributeSampleRemove(const FECSEntity &inout Sampler, const FECSEntityId &inout SampledEntityId, const EAttributeSampleType SampledAttribute) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     void SyncAttributes(const FECSEntity &inout SampledEntity, const FBitSet32 &inout SampledAttributes) const
     {

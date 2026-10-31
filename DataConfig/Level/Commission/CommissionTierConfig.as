@@ -1,5 +1,3 @@
-﻿
-
 struct FCommissionTierConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -9,7 +7,6 @@ struct FCommissionTierConfig : FDataObject
     FText TierName;
     UPROPERTY()
     FLinearColor TierColor;
-
 
 }
 

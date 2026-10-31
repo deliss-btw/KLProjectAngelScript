@@ -1,4 +1,3 @@
-﻿
 namespace FVM_EquipmentSelectDetail
 {
     const int ModelId = 0;
@@ -91,9 +90,9 @@ struct FVM_EquipmentSelectDetail : FEUIViewModel
     {
         if (this.GetbShowCompare())
         {
-            return NSLOCTEXT("HideCompare", "еЏ–ж¶€еЇ№жЇ”");
+            return NSLOCTEXT("HideCompare", "取消对比");
         }
-        return NSLOCTEXT("ShowCompare", "еЇ№жЇ”ж­¦е™Ё");
+        return NSLOCTEXT("ShowCompare", "对比武器");
     }
     void OnShouldUpdateEquipmentSelectList()
     {
@@ -239,7 +238,6 @@ struct __GeneratedProperties_FVM_EquipmentSelectDetail
     UPROPERTY()
     TEUIModelRef<FVM_EquipmentSelectDetail> Self;
 
-
 }
 
 namespace FVM_EquipmentSelectDetail
@@ -323,7 +321,9 @@ void __OnAvatarEquipmentChanged(FVM_EquipmentSelectDetail &inout Model, const FE
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorDSPlayerAvatarInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorDSPlayerAvatarInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TEUIModelRef<FVM_EquipmentInfo> __UIGetter_SelectedEquipmentInfo(const FVM_EquipmentSelectDetail &inout Model)
 {

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MarkMinimapIconTips
 {
     const int ModelId = 0;
@@ -88,7 +87,7 @@ struct FVM_MarkMinimapIconTips : FEUIViewModel
         if (this.GetbCanConvertToConstant())
         {
             ::CommonPopup::CloseAllHover();
-            ::CommonPopup::HoverCustom(this.GetMarkIconWidget(), ::MarkUtil::GetMarkConfigSetting().MinimapMarkDialog, FEUIModelContainer(), true, true, ECommonHoverLayout(0), EEUILayoutLayer(0), false);
+            ::CommonPopup::HoverCustom(this.GetMarkIconWidget(), ::MarkUtil::GetMarkConfigSetting().MinimapMarkDialog, FEUIModelContainer(::FVM_MinimapMarkDialog::Create(this.GetContext().Manager, this.GetMarkEntityID(), FVector2D::ZeroVector)), true, true, ECommonHoverLayout(0), EEUILayoutLayer(0), false);
         }
         return;
     }

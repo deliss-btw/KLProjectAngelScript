@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MissionTabEntry
 {
     const int ModelId = 0;
@@ -152,14 +151,13 @@ struct __GeneratedProperties_FVM_MissionTabEntry
     UPROPERTY()
     TEUIModelRef<FVM_MissionTabEntry> Self;
 
-
 }
 
 namespace FVM_MissionTabEntry
 {
 FVM_MissionTabEntry& Create(const UObject ContextObject, const FText &inout TabTittle, const EMissionTabType TabType)
 {
-    return FVM_MissionTabEntry::CreateByManager(EUIInternal::GetContextManager(ContextObject), TabTittle);
+    return FVM_MissionTabEntry::CreateByManager(EUIInternal::GetContextManager(ContextObject), TabTittle, EMissionTabType(TabType));
 }
 FVM_MissionTabEntry CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout TabTittle, const EMissionTabType TabType)
 {

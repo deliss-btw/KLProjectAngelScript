@@ -1,12 +1,9 @@
-﻿
-
 class UESMAction_ExecutionDamage : UESMBPBaseInstantAction
 {
     UPROPERTY()
     float32 DamageRatio = 1.0f;
     UPROPERTY()
     bool FinalExecutionDamage = false;
-
 
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const
@@ -51,7 +48,7 @@ class UESMAction_ExecutionDamage : UESMBPBaseInstantAction
                         }
                         if (local_1_2)
                         {
-                            int local_237;
+                            float32 local_237;
                             local_77 = !local_77;
                             if (local_77)
                             {
@@ -61,12 +58,12 @@ class UESMAction_ExecutionDamage : UESMBPBaseInstantAction
                             FBuffConfigRef local_154 = local_76.GetExecuteBuff();
                             TDataObjectPtr<FMessageHintConfig> local_202 = local_76.GetMessageHintConfig();
                             FFPTime local_236 = (FFPTime(Time.WorldTime) + FFPTime(local_69));
-                            local_237 = 0;
+                            local_237 = 0.0f;
                             if (local_154.IsValid())
                             {
                                 TDataObjectPtr<FBuffConfig> local_262;
                                 local_69 = local_262.opArrow().BuffDuration;
-                                local_237 = int(local_69);
+                                local_237 = local_69;
                             }
                             FVector local_268;
                             ::BlueprintFunctions_Level::GetEntityLocation(FECSEntityAdapter(Context.GetEntity()), local_268);

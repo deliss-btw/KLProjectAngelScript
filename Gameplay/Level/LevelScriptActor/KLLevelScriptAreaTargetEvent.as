@@ -1,5 +1,3 @@
-﻿
-
 class AKLLevelScriptAreaTargetEvent : AKLLevelScriptAreaEventBase
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ class AKLLevelScriptAreaTargetEvent : AKLLevelScriptAreaEventBase
     float32 AreaFirstEnterSideHintRange = 5000.0f;
 
     default bUseLevelEventAttribute = true;
-
 
     UFUNCTION()
     void OnInitLevelScriptEntity_Implementation()
@@ -198,7 +195,6 @@ struct FLevelAreaEventUnitConfig : FLevelBPUnitConfig
     TDataObjectPtr<FMessageHintConfig> EventSuccessMessageHint;
     UPROPERTY()
     int EventTargetNumber = 1;
-
 
     void SetupByActor(const AKLLevelScriptAreaTargetEvent Actor)
     {

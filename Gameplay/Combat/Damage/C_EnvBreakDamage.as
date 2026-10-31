@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_EnvBreakDamageReceiver_NS
 {
     const TECSComponentDerivedPtr<FC_EnvBreakDamageReceiver> DerivedPtr = TECSComponentDerivedPtr<FC_EnvBreakDamageReceiver>();
@@ -19,11 +18,23 @@ struct FEvnBreakDamageData
 
     FEvnBreakDamageData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_EnvBreakDamage = 0.0f;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bHasResolved = false;
+        return;
     }
     FEvnBreakDamageData(const FEvnBreakDamageData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_EnvBreakDamage = 0.0f;
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_bHasResolved = false;
+        this.m_Time = Other.m_Time;
+        this.m_bHasResolved = Other.m_bHasResolved;
+        this.m_EnvBreakDamage = Other.m_EnvBreakDamage;
+        this.m_FinalDamageSource = Other.m_FinalDamageSource;
+        return;
     }
     FEvnBreakDamageData opAssign(const FEvnBreakDamageData &inout Other)
     {
@@ -116,11 +127,15 @@ struct FC_EnvBreakDamageReceiver : FECSComponent
 
     FC_EnvBreakDamageReceiver()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_EnvBreakDamageReceiver(const FC_EnvBreakDamageReceiver &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_EnvBreakDamageDatas = Other.m_EnvBreakDamageDatas;
         return;
@@ -249,37 +264,37 @@ bool RemoveEnvBreakDamageReceiver(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEnvBreakDamageReceiverOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EnvBreakDamageReceiver, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EnvBreakDamageReceiver, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEnvBreakDamageReceiverOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EnvBreakDamageReceiver, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EnvBreakDamageReceiver, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEnvBreakDamageReceiverOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EnvBreakDamageReceiver, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EnvBreakDamageReceiver, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEnvBreakDamageReceiverOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EnvBreakDamageReceiver, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EnvBreakDamageReceiver, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEnvBreakDamageReceiverOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EnvBreakDamageReceiver, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EnvBreakDamageReceiver, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEnvBreakDamageReceiverLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EnvBreakDamageReceiver, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EnvBreakDamageReceiver, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEnvBreakDamageReceiverActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EnvBreakDamageReceiver, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EnvBreakDamageReceiver, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEnvBreakDamageReceiverModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EnvBreakDamageReceiver, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EnvBreakDamageReceiver, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

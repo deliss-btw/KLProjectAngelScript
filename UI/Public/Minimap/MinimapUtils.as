@@ -1,4 +1,3 @@
-﻿
 namespace MinimapUtils
 {
 TDataObjectPtr<FMinimapDisplayConfig> GetCurrentMinimapDisplayConfig()

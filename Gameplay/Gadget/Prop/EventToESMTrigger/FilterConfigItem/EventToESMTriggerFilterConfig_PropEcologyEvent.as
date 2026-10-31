@@ -1,5 +1,3 @@
-﻿
-
 struct FEventToESMTriggerFilterConfigItem_PropEcologyEvent : FEventToESMTriggerFilterConfigItemBase
 {
     FEventToESMTriggerFilterConfigItemBase _base_FEventToESMTriggerFilterConfigItemBase;
@@ -12,7 +10,6 @@ struct FEventToESMTriggerFilterConfigItem_PropEcologyEvent : FEventToESMTriggerF
 
     FEventToESMTriggerFilterConfigItem_PropEcologyEvent()
     {
-        super();
         return;
     }
     bool EvaluateAndTrigger(const FECSEntity &inout Entity, bool &out bEcologyInfoReady) const

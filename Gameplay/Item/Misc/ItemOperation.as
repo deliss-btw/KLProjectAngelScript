@@ -1,5 +1,3 @@
-﻿
-
 struct FItemOperationExpandInfo
 {
     UPROPERTY()

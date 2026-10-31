@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_EnvSurfaceImpactFXRecord_NS
 {
     const TECSComponentDerivedPtr<FC_EnvSurfaceImpactFXRecord> DerivedPtr = TECSComponentDerivedPtr<FC_EnvSurfaceImpactFXRecord>();
@@ -79,7 +78,6 @@ struct FEnvSurfaceLineTraceConfig
     UPROPERTY()
     float32 MinTraceTimeOffset = 0.0f;
 
-
 }
 
 struct FCE_CheckEnvSurfaceHit : FECSEvent
@@ -95,7 +93,6 @@ struct FCE_CheckEnvSurfaceHit : FECSEvent
     float32 MinTraceDistanceOffset = 0.0f;
     UPROPERTY()
     float32 MinTraceTimeOffset = 0.0f;
-
 
 }
 
@@ -117,13 +114,12 @@ struct FCE_EnvSurfaceImpactFXEvent : FECSEvent
     UPROPERTY()
     EArealStrikeEnvSurfaceFXStyle_Sparks FXStyle_Sparks;
 
-
 }
 
 struct FEnvHitPresentationData
 {
     UPROPERTY()
-    UPrimitiveComponent HitPrimitiveComp;
+    UPrimitiveComponent HitPrimitiveComp = nullptr;
     UPROPERTY()
     FVector HitFanPlaneNormal;
     UPROPERTY()
@@ -223,36 +219,36 @@ bool RemoveEnvSurfaceImpactFXRecord(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEnvSurfaceImpactFXRecordOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EnvSurfaceImpactFXRecord, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EnvSurfaceImpactFXRecord, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEnvSurfaceImpactFXRecordOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EnvSurfaceImpactFXRecord, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EnvSurfaceImpactFXRecord, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEnvSurfaceImpactFXRecordOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EnvSurfaceImpactFXRecord, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EnvSurfaceImpactFXRecord, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEnvSurfaceImpactFXRecordOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EnvSurfaceImpactFXRecord, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EnvSurfaceImpactFXRecord, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEnvSurfaceImpactFXRecordOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EnvSurfaceImpactFXRecord, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EnvSurfaceImpactFXRecord, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEnvSurfaceImpactFXRecordLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EnvSurfaceImpactFXRecord, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EnvSurfaceImpactFXRecord, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEnvSurfaceImpactFXRecordActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EnvSurfaceImpactFXRecord, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EnvSurfaceImpactFXRecord, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEnvSurfaceImpactFXRecordModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EnvSurfaceImpactFXRecord, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EnvSurfaceImpactFXRecord, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

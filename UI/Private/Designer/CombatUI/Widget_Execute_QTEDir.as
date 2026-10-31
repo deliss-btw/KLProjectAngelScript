@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_Execute_QTEDir
 {
     const int ViewID = 0;
@@ -23,7 +22,6 @@ class UWidget_Execute_QTEDir : UEUIUserWidget
     UPROPERTY()
     ESlateVisibility HintVisibility = ESlateVisibility(0);
     FEUIModelWeakRef __VMS_ProgressOperation;
-
 
     UFUNCTION()
     void Construct_Implementation()
@@ -68,7 +66,7 @@ class UWidget_Execute_QTEDir : UEUIUserWidget
         }
         else
         {
-            if ((int(State) == 4 || (int(State) == 5)))
+            if (int(State) == 4 || (int(State) == 5))
             {
                 this.HintVisibility = ESlateVisibility(2);
                 this.PlayAnimation(this.Anim_Failed, 0.0f, 1, EUMGSequencePlayMode(0), 1.0f, false);
@@ -172,6 +170,7 @@ namespace UWidget_Execute_QTEDir
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_Execute_QTEDir;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnStateChanged"));
     return;
 }

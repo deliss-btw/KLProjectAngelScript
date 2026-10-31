@@ -1,5 +1,3 @@
-﻿
-
 class AKLLevelScriptTutorialLevelItem : AKLLevelScriptTutorialActor
 {
     UPROPERTY()
@@ -68,11 +66,10 @@ class AKLLevelScriptTutorialLevelItem : AKLLevelScriptTutorialActor
     TArray<FECSEntityId> ExplodeBarrelRemainingIds;
     int LastStep = 10;
 
-
     UFUNCTION()
     void OnTutorialStep_Implementation(const int InStepIndex)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     UFUNCTION()
     void OnStepCompleted_Implementation()
@@ -160,19 +157,19 @@ class AKLLevelScriptTutorialLevelItem : AKLLevelScriptTutorialActor
     }
     FTutorialInfo GetStepInfo(const int InStepIndex)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         FTutorialInfo __r; return __r;
     }
     void SetupStep_LifeChain()
     {
         Super::BeginStepTutorial(this.Step1Info);
-        this.StartBuffStackListen(this.PlayerPawnEntity, this.LifeChainBuffConfig, "step1 з”џе‘Ѕй”Ѓй“ѕ", false);
+        this.StartBuffStackListen(this.PlayerPawnEntity, this.LifeChainBuffConfig, "step1 生命锁链", false);
         return;
     }
     void SetupStep_AttackDisc()
     {
         Super::BeginStepTutorial(this.Step2Info);
-        this.StartBuffStackListen(this.PlayerPawnEntity, this.StaminaBuffConfig, "step2 иЂђеЉ›жЏђеЌ‡", false);
+        this.StartBuffStackListen(this.PlayerPawnEntity, this.StaminaBuffConfig, "step2 耐力提升", false);
         return;
     }
     UFUNCTION()
@@ -201,12 +198,11 @@ class AKLLevelScriptTutorialLevelItem : AKLLevelScriptTutorialActor
         {
             this.Step3Info.GetModify_StepProgress().SetNum(1);
         }
-        int local_1 = this.GetProgressLineIndex(this.Step3Info);
-        this.Step3Info.GetModify_StepProgress()[].SetMaxProgress();
+        this.Step3Info.GetModify_StepProgress()[this.GetProgressLineIndex(this.Step3Info)].SetMaxProgress(local_2);
         Super::BeginStepTutorial(this.Step3Info);
         if (local_2 == 0)
         {
-            XWarning(ELog(22), "[TutorialLevelItem] step3 жњЄи®ѕзЅ®зџїзџіе®ћдЅ“(EnvDestroyOres)пјЊиЇ·е…€и°ѓз”Ё SetEnvDestroyOresпјЊиЇҐж­ҐйЄ¤е°†ж— жі•е®Њж€ђ");
+            XWarning(ELog(22), "[TutorialLevelItem] step3 未设置矿石实体(EnvDestroyOres)，请先调用 SetEnvDestroyOres，该步骤将无法完成");
         }
         for (auto& local_18 : this.EnvDestroyOres)
         {
@@ -233,7 +229,7 @@ class AKLLevelScriptTutorialLevelItem : AKLLevelScriptTutorialActor
         this.CurrentStep = 4;
         this.MonsterEntity = BossEntity;
         Super::BeginStepTutorial(this.Step4Info);
-        this.StartBuffStackListen(BossEntity, this.PoisonBuffConfig, "step4 жЇ’ињ—з‰›дё­жЇ’", true);
+        this.StartBuffStackListen(BossEntity, this.PoisonBuffConfig, "step4 毒蜗牛中毒", true);
         Super::SetupMonster(BossEntity, true, true, -1);
         return;
     }
@@ -305,8 +301,7 @@ class AKLLevelScriptTutorialLevelItem : AKLLevelScriptTutorialActor
         {
             return;
         }
-        int local_26 = local_24.GetValues().Num();
-        int local_28 = FMath::Min(local_18.ScalerResourceConfigData.Num());
+        int local_28 = FMath::Min(local_18.ScalerResourceConfigData.Num(), local_24.GetValues().Num());
         int local_29 = 0;
         for (; local_29 < local_28; )
         {
@@ -356,7 +351,7 @@ class AKLLevelScriptTutorialLevelItem : AKLLevelScriptTutorialActor
         this.PoisonSnailRemainingIds = this.BindUsedUpWatch(Snails, n"OnPoisonSnailUsedUp");
         if (this.PoisonSnailRemainingIds.Num() == 0)
         {
-            XWarning(ELog(22), "[TutorialLevelItem] WatchPoisonSnailsUsedUp дј е…Ґзљ„жЇ’ињ—з‰›е®ћдЅ“еќ‡ж— ж•€пјЊе€·ж–°е›ћи°ѓе°†дёЌдјљи§¦еЏ‘");
+            XWarning(ELog(22), "[TutorialLevelItem] WatchPoisonSnailsUsedUp 传入的毒蜗牛实体均无效，刷新回调将不会触发");
         }
         return;
     }
@@ -385,7 +380,7 @@ class AKLLevelScriptTutorialLevelItem : AKLLevelScriptTutorialActor
         this.ExplodeBarrelRemainingIds = this.BindUsedUpWatch(Barrels, n"OnExplodeBarrelUsedUp");
         if (this.ExplodeBarrelRemainingIds.Num() == 0)
         {
-            XWarning(ELog(22), "[TutorialLevelItem] WatchExplodeBarrelsUsedUp дј е…Ґзљ„з€†з‚ёжЎ¶е®ћдЅ“еќ‡ж— ж•€пјЊе€·ж–°е›ћи°ѓе°†дёЌдјљи§¦еЏ‘");
+            XWarning(ELog(22), "[TutorialLevelItem] WatchExplodeBarrelsUsedUp 传入的爆炸桶实体均无效，刷新回调将不会触发");
         }
         return;
     }
@@ -463,13 +458,13 @@ class AKLLevelScriptTutorialLevelItem : AKLLevelScriptTutorialActor
         if (!(Target.IsValid()))
         {
             FString local_18 = (FString("[TutorialLevelItem] ") + StepDesc);
-            FString local_14 = (local_18 + " з›‘еђ¬з›®ж ‡е®ћдЅ“ж— ж•€пјЊиЇҐж­ҐйЄ¤е°†ж— жі•е®Њж€ђ");
+            FString local_14 = (local_18 + " 监听目标实体无效，该步骤将无法完成");
             XWarning(ELog(22), local_14);
         }
         if (!(BuffConfig.IsValid()))
         {
             FString local_18_2 = (FString("[TutorialLevelItem] ") + StepDesc);
-            FString local_14_2 = (local_18_2 + " Buff жњЄй…ЌзЅ®пјЊиЇҐж­ҐйЄ¤е°†ж— жі•е®Њж€ђ");
+            FString local_14_2 = (local_18_2 + " Buff 未配置，该步骤将无法完成");
             XWarning(ELog(22), local_14_2);
         }
         this.BuffStackCheckTimer.BindUFunction(this, n"OnBuffStackCheckTick");
@@ -557,7 +552,7 @@ class AKLLevelScriptTutorialLevelItem : AKLLevelScriptTutorialActor
             {
                 continue;
             }
-            UESMBaseState local_36 = local_32.GetBaseState(local_26.Player.GetSMRuntime()[].GetStateIndex());
+            UESMBaseState local_36 = local_32.GetBaseState(local_26.Player.GetSMRuntime()[local_27].GetStateIndex());
             if (local_36 != nullptr && this.TrapESMStateNames.Contains(local_36.GetDataName()))
             {
                 UECSLevelTimerFunctions::ECSLevelClearTimer(this, this.TrapESMCheckTimer);

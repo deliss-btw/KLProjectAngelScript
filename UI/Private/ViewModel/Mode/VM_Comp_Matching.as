@@ -1,4 +1,3 @@
-﻿
 namespace FVM_Comp_Matching
 {
     const int ModelId = 0;
@@ -120,7 +119,6 @@ struct __GeneratedProperties_FVM_Comp_Matching
     bool IsMatching;
     UPROPERTY()
     TEUIModelRef<FVM_Comp_Matching> Self;
-
 
 }
 

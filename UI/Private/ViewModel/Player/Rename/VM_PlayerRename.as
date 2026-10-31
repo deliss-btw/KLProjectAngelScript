@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PlayerRename
 {
     const int ModelId = 0;
@@ -203,7 +202,6 @@ struct __GeneratedProperties_FVM_PlayerRename
     FText ErrorMessage;
     UPROPERTY()
     TEUIModelRef<FVM_PlayerRename> Self;
-
 
 }
 

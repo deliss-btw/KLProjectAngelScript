@@ -1,17 +1,35 @@
-﻿
 namespace __FConditionGroupConfigFunctions
 {
 UFUNCTION()
 EConditionGroupOperator __FConditionGroupConfig_GetOperator(const TDataObjectPtr<FConditionGroupConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    EConditionGroupOperator __r; return __r;
+    int local_25 = 0;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Operator' from a null 'FConditionGroupConfig' DataObject!");
+        }
+        FConditionGroupConfig local_24;
+        local_25 = int(local_24.Operator);
+        return EConditionGroupOperator(local_25);
+    }
+    return EConditionGroupOperator(local_25);
 }
 UFUNCTION()
 TArray<FConditionSpec> __FConditionGroupConfig_GetConditionSpecs(const TDataObjectPtr<FConditionGroupConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TArray<FConditionSpec> __r; return __r;
+    TArray<FConditionSpec> __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'ConditionSpecs' from a null 'FConditionGroupConfig' DataObject!");
+        }
+        FConditionGroupConfig local_24;
+        return local_24.ConditionSpecs;
+    }
+    return __r;
 }
 UFUNCTION()
 FConditionGroupConfig CastToFConditionGroupConfig(const TDataObjectPtr<FConditionGroupConfig> &inout DataObject)

@@ -1,4 +1,3 @@
-﻿
 enum EPlayerCacheUser
 {
     Chat,

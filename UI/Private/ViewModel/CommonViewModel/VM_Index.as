@@ -1,4 +1,3 @@
-﻿
 namespace FVM_Index
 {
     const int ModelId = 0;
@@ -69,7 +68,6 @@ struct __GeneratedProperties_FVM_Index
     int DisplayIndex;
     UPROPERTY()
     TEUIModelRef<FVM_Index> Self;
-
 
 }
 

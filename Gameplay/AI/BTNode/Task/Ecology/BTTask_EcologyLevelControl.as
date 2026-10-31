@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_ResetEcologyLevelControl : UBTTask_ECSScriptBase
 {
     default SetNodeName("ResetEcologyLevelControl");

@@ -1,5 +1,3 @@
-﻿
-
 class UHTNService_EcologyStateTimer : UHTNService_ECSScriptBase
 {
     UPROPERTY()
@@ -36,7 +34,6 @@ class UHTNService_EcologyCountdown : UHTNService_ECSScriptBase
     float32 InitCountdown = 20.0f;
     UPROPERTY()
     FBlackboardKeySelector CountdownKey;
-
 
     UFUNCTION()
     void Tick_Implementation(const FHTNContext &inout Context, const float32 DeltaTime)

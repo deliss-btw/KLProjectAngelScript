@@ -1,4 +1,3 @@
-﻿
 namespace FVM_GuideTargetIcon
 {
     const int ModelId = 0;
@@ -103,13 +102,8 @@ struct FVM_GuideTargetMinimapIcon : FEUIViewModel
     }
     void PostConstruct()
     {
-        if ((this.GetContext().GetLocalPlayer() == this.GetCreater()))
-        {
-        }
-        else
-        {
-        }
-        this.SetIcon(FEUIModelRef());
+        int local_6 = (this.GetContext().GetLocalPlayer() == this.GetCreater()) ? 0 : 1;
+        this.SetIcon(FEUIModelRef(::FVM_GuideTargetIcon::Create(this.GetContext().Manager, local_6)));
         return;
     }
     void RemoveGuideTarget()

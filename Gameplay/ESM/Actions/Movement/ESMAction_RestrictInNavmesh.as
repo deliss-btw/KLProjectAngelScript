@@ -1,10 +1,7 @@
-﻿
-
 class UESMAction_RestrictCharacterMovementInNavmesh : UESMBPBaseSpanAction
 {
     UPROPERTY()
     bool bEnable = true;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const

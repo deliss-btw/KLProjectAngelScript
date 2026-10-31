@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_AbnormalInfo_Helpers
 {
 UFUNCTION()

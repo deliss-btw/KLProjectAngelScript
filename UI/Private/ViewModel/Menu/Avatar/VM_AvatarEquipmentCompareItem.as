@@ -1,4 +1,3 @@
-﻿
 const int COMPARE_STATE_EQUAL = 0;
 const int COMPARE_STATE_BETTER = 1;
 const int COMPARE_STATE_WORSE = 2;

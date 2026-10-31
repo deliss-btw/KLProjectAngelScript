@@ -1,5 +1,3 @@
-﻿
-
 struct FT_EcologyResourceConfigTrait : FECSTrait
 {
     FECSTrait _base_FECSTrait;

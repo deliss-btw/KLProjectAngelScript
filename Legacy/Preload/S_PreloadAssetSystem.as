@@ -1,5 +1,3 @@
-﻿
-
 class US_PrelodAssetSystem : UECSScriptSystem
 {
     US_PrelodAssetSystem()

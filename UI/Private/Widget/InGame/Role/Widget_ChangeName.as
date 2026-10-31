@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ChangeName
 {
     const int ViewID = 0;
@@ -40,7 +39,7 @@ class UWidget_ChangeName : UEUIActivatableWidget
         if (local_16 <= 0)
         {
             FCommonTipsParam local_22;
-            ::CommonPopup::Tips(NSLOCTEXT("ChangeName", "ChangeName_NameShouldNotEmpty", "еђЌе­—дёЌиѓЅдёєз©є"), local_22);
+            ::CommonPopup::Tips(NSLOCTEXT("ChangeName", "ChangeName_NameShouldNotEmpty", "名字不能为空"), local_22);
             return;
         }
         if (local_16 > 20)
@@ -118,6 +117,7 @@ namespace UWidget_ChangeName
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ChangeName;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCloseByVM"));
     return;
 }

@@ -1,5 +1,3 @@
-﻿
-
 class UHTNDecorator_EcologyCheckFlockState : UHTNDecorator_ECSScriptBase
 {
     UPROPERTY()

@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FConditionBodyPartDestroyConfig (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
-
 class UConditionBodyPartDestroy : ULocalConditionTypeDefineBase
 {
     UConditionBodyPartDestroy()
@@ -72,9 +67,10 @@ struct FConditionBodyPartDestroyConfig : FLocalConditionTypeDefineConfigBase
     UPROPERTY()
     TDataObjectPtr<FBasePrefabConfig> PrefabConfig;
 
+    default _base_FLocalConditionTypeDefineConfigBase = UConditionBodyPartDestroy;
+
     FConditionBodyPartDestroyConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }

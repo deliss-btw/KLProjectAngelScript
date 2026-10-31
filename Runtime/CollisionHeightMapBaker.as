@@ -1,5 +1,3 @@
-﻿
-
 class AKLHeightFieldActor : AActor
 {
     UPROPERTY()
@@ -18,7 +16,6 @@ class AKLHeightFieldTracer : AKLEditorTickableActor
     UPROPERTY()
     bool bTraceComplex = true;
 
-
 }
 
 class AKLHeightMapVisibleProbe : AKLEditorTickableActor
@@ -27,7 +24,6 @@ class AKLHeightMapVisibleProbe : AKLEditorTickableActor
     UBillboardComponent Billboard;
     UPROPERTY()
     int FloorIndex = 0;
-
 
     UFUNCTION()
     void ConstructionScript_Implementation()

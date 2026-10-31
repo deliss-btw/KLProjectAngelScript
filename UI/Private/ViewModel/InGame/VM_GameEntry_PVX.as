@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_GameEntry_PVX
 {
     const int ModelId = 0;

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_SuiXiSkillResource
 {
     const int ModelId = 0;
@@ -725,7 +724,6 @@ struct __GeneratedProperties_FVM_SuiXiSkillResource
     float32 MainPercent;
     UPROPERTY()
     TEUIModelRef<FVM_SuiXiSkillResource> Self;
-
 
 }
 

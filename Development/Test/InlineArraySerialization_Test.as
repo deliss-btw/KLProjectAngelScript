@@ -1,5 +1,3 @@
-﻿
-
 struct FInlineArraySerializationTestAS
 {
     UPROPERTY()
@@ -15,5 +13,5 @@ struct FInlineArraySerializationTestAS
 
 void Test_InlineArraySerialization(FUnitTest &inout T)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
 }

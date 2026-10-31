@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_MainMenuCategory_Helpers
 {
 UFUNCTION()

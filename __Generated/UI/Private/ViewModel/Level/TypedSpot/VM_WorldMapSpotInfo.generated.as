@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_WorldMapSpotInfo_Helpers
 {
 UFUNCTION()

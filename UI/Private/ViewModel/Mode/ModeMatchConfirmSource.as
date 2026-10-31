@@ -1,4 +1,3 @@
-﻿
 namespace FM_ModeMatchConfirm
 {
     const int ModelId = 0;
@@ -256,10 +255,9 @@ class UModeMatchConfirmSource : UTeamMemberConfirmSourceBase
         }
         if (GetMatchMode() == 2)
         {
-            UObject local_16;
-            int local_12 = GetCommissionId();
-            ::FMS_CommissionData::Get(Context.Manager).FindCommissionByConfigDataId(local_16);
-            if (local_16.IsValid() && GetCommissionConfig().IsSet())
+            int local_13;
+            local_13 = GetCommissionId();
+            if (::FMS_CommissionData::Get(Context.Manager).FindCommissionByConfigDataId(local_13).IsValid() && GetCommissionConfig().IsSet())
             {
             }
             else
@@ -492,9 +490,7 @@ class UModeMatchConfirmSource : UTeamMemberConfirmSourceBase
     TArray<TEUIModelRef<FM_Player>> CollectPlayers(const FEUIModelContext &inout Context) const
     {
         TArray<TEUIModelRef<FM_Player>> local_4;
-        UObject local_8;
-        ::FMS_PlayerSocialTeamData::Get(Context.Manager).GetLocalPlayerTeam();
-        if (local_8.IsValid() && !(GetMembers().IsEmpty()))
+        if (::FMS_PlayerSocialTeamData::Get(Context.Manager).GetLocalPlayerTeam().IsValid() && !(GetMembers().IsEmpty()))
         {
             TEUIModelRef<FM_Player> local_26;
             for (auto& local_24 : GetMembers())
@@ -525,18 +521,16 @@ class UModeMatchConfirmSource : UTeamMemberConfirmSourceBase
         {
             return TEUIModelRef<FM_Commission>();
         }
-        int local_2 = GetCommissionId();
-        return ::FMS_CommissionData::Get(Context.Manager).FindCommissionByConfigDataId();
+        return ::FMS_CommissionData::Get(Context.Manager).FindCommissionByConfigDataId(GetCommissionId());
     }
     TEUIModelRef<FVM_TeamMemberPrepareItem> BuildMemberItem(const FEUIModelContext &inout Context, const TEUIModelRef<FM_Player> &inout Player, const TEUIModelRef<FM_ModeMatchConfirm> &inout Data) const
     {
         TEUIModelRef<FVM_TeammateInfo> local_2;
         int local_14 = 0;
-        UObject local_4;
-        ::FMS_LocalPlayerTeamData::Get(Context.Manager).GetTeamMemberInAnyTeam(local_4);
+        TEUIModelRef<FM_TeamMember> local_4 = ::FMS_LocalPlayerTeamData::Get(Context.Manager).GetTeamMemberInAnyTeam(Player);
         if (local_4.IsValid())
         {
-            local_2 = TEUIModelRef<FVM_TeammateInfo>(::FVM_TeammateInfo::Create(local_4, Context.Manager));
+            local_2 = TEUIModelRef<FVM_TeammateInfo>(::FVM_TeammateInfo::Create(Context.Manager, local_4));
         }
         else
         {

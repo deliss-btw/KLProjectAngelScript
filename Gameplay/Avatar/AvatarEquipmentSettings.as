@@ -1,5 +1,3 @@
-﻿
-
 struct FRarityDescConfig
 {
     UPROPERTY()

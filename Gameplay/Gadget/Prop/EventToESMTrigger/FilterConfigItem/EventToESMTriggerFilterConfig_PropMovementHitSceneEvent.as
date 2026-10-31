@@ -1,11 +1,9 @@
-﻿
 enum EPropMovementHitSceneEventFilterType
 {
     Self,
     HitEntity,
     SelfAndHitEntity,
 }
-
 
 struct FEventToESMTriggerFilterConfigItem_PropMovementHitSceneEvent : FEventToESMTriggerFilterConfigItemBase
 {
@@ -16,7 +14,6 @@ struct FEventToESMTriggerFilterConfigItem_PropMovementHitSceneEvent : FEventToES
     TArray<FESMBlackboardCondition> ConditionsForSelf;
     UPROPERTY()
     TArray<FESMBlackboardCondition> ConditionsForHitEntity;
-
 
     bool ShouldEvaluateSelf() const
     {

@@ -1,4 +1,3 @@
-﻿
 void SetEcologyBlob(const FECSEntity &inout Entity, const FName &inout Key, const FInstancedStruct &inout Value)
 {
     0.SetBlob(FEcologyKnowledgeKey(Key), Value);

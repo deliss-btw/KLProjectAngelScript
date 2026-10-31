@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_AvatarBuildPage
 {
     const int ViewID = 0;
@@ -89,6 +88,7 @@ namespace UWidget_AvatarBuildPage
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_AvatarBuildPage;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

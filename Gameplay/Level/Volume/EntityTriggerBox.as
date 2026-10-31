@@ -1,5 +1,3 @@
-﻿
-
 class AEntityTriggerBox : AEntityTriggerSimpleShape
 {
     UPROPERTY()

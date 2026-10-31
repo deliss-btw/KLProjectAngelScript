@@ -1,12 +1,9 @@
-﻿
-
 struct FItemSelected : FEUIModelDelegate
 {
-    FEUIModelDelegate _base_FEUIModelDelegate;
+    FEUIModelDelegate _base_FEUIModelDelegate = FEUIModelDelegate("bool", "FEUIModelRef");
 
     FItemSelected()
     {
-        FEUIModelDelegate local_26 = FEUIModelDelegate("bool", "FEUIModelRef");
         return;
     }
     bool Execute(const FEUIModelRef &inout Arg0) const

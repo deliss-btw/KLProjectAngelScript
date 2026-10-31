@@ -1,5 +1,3 @@
-﻿
-
 class UHTNTask_Quest_Plan_GetPoint : UHTNTask_ECSScriptBase
 {
     UPROPERTY()
@@ -31,7 +29,7 @@ class UHTNTask_Quest_Plan_GetPoint : UHTNTask_ECSScriptBase
                 {
                     if (int(this.TagQueryType) == 0)
                     {
-                        local_116.GetId();
+                        HTNNode::SetWorldStateValueAsEntityId(Context, this.PointEntityID, local_116.GetId());
                         this.SubmitPlanStep(1, "");
                     }
                 }
@@ -39,7 +37,7 @@ class UHTNTask_Quest_Plan_GetPoint : UHTNTask_ECSScriptBase
                 {
                     if (int(this.TagQueryType) == 2)
                     {
-                        local_116.GetId();
+                        HTNNode::SetWorldStateValueAsEntityId(Context, this.PointEntityID, local_116.GetId());
                         this.SubmitPlanStep(1, "");
                     }
                 }
@@ -49,7 +47,7 @@ class UHTNTask_Quest_Plan_GetPoint : UHTNTask_ECSScriptBase
             {
                 if (FGameplayTagsUtils::MatchAll(local_116, this.Tags))
                 {
-                    local_116.GetId();
+                    HTNNode::SetWorldStateValueAsEntityId(Context, this.PointEntityID, local_116.GetId());
                     this.SubmitPlanStep(1, "");
                 }
             }

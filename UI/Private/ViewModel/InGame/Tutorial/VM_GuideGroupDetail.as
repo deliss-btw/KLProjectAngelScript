@@ -1,4 +1,3 @@
-﻿
 namespace FVM_GuideGroupDetail
 {
     const int ModelId = 0;
@@ -265,7 +264,6 @@ struct __GeneratedProperties_FVM_GuideGroupDetail
     bool IsLastPage;
     UPROPERTY()
     TEUIModelRef<FVM_GuideGroupDetail> Self;
-
 
 }
 

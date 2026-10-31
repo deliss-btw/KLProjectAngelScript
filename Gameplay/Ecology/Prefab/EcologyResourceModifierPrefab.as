@@ -1,5 +1,3 @@
-﻿
-
 struct FT_EcologyModifierConfig : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -24,7 +22,6 @@ struct FEcologyModifierUnitConfig : FEcologyUnitConfig
 
     FEcologyModifierUnitConfig()
     {
-        super();
         return;
     }
 }
@@ -48,6 +45,7 @@ class AEcologyModifierPrefab : AEcologyUnitECSPrefab
             local_92.SetupByActor(this);
             local_92.Scope = this.Config.Config_FC_EcologyResourceModifierConfig.Scope;
             local_92.Type = EEcologyUnitType(2);
+            Context.SetUnitConfig(FEcologyModifierUnitConfig, local_92);
         }
         return;
     }

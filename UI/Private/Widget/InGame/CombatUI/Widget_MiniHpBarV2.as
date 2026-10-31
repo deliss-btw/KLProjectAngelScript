@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_MiniHpBarV2
 {
     const int ViewID = 0;
@@ -19,7 +18,6 @@ class UWidget_MiniHpBarV2 : UEUIUserWidget
     UPROPERTY()
     FGetEUIModelRef MiniHpBarDelegate;
 
-
     UFUNCTION()
     void SetEntity_Implementation(const FECSEntity &inout Entity)
     {
@@ -31,6 +29,7 @@ class UWidget_MiniHpBarV2 : UEUIUserWidget
     {
         FVector local_6;
         OverrideLocation = local_6;
+        int local_7 = this.DefaultDisplayOffsetType;
         FVector local_14(FVector::ZeroVector);
         Get local_18;
         const FC_PrefabInfoDisplayConfig& local_20 = local_18.opCall();
@@ -38,10 +37,11 @@ class UWidget_MiniHpBarV2 : UEUIUserWidget
         {
             if (local_20.bOverrideDisplayOffset)
             {
+                local_7 = local_20.OverrideDisplayOffsetType;
                 local_14 = local_20.OverrideDisplayOffset;
             }
         }
-        OverrideLocation = FTransformUtils::GetOffsetRefLocation(Entity, FTransformUtils::GetTransform(Entity, FFPTime(-1)));
+        OverrideLocation = FTransformUtils::GetOffsetRefLocation(Entity, FTransformUtils::GetTransform(Entity, FFPTime(-1)), EOffsetRefType(local_7));
         OverrideLocation += local_14;
         return true;
     }
@@ -130,6 +130,7 @@ namespace UWidget_MiniHpBarV2
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MiniHpBarV2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleIconActiveChanged"));
     return;
 }

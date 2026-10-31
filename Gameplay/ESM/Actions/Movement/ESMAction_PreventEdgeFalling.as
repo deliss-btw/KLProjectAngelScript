@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_PreventEdgeFalling : UESMBPBaseSpanAction
 {
     UESMAction_PreventEdgeFalling()

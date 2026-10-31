@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonTips
 {
     const int ModelId = 0;
@@ -197,7 +196,6 @@ struct __GeneratedProperties_FVM_ImportantTips
     UPROPERTY()
     TEUIModelRef<FVM_ImportantTips> Self;
 
-
 }
 
 namespace FVM_CommonTips
@@ -268,7 +266,7 @@ namespace FVM_ImportantTips
 {
 FVM_ImportantTips& Create(const UObject ContextObject, const EImportantTipsStyle Style)
 {
-    return FVM_ImportantTips::CreateByManager(EUIInternal::GetContextManager(ContextObject));
+    return FVM_ImportantTips::CreateByManager(EUIInternal::GetContextManager(ContextObject), EImportantTipsStyle(Style));
 }
 FVM_ImportantTips CreateByManager(const UEUIManagerSubsystem Manager, const EImportantTipsStyle Style)
 {

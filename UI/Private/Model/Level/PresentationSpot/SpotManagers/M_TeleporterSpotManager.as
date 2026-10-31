@@ -1,4 +1,3 @@
-﻿
 namespace FM_TeleporterSpotUpdater
 {
     const int ModelId = 0;
@@ -560,7 +559,9 @@ void __OnEntityLoadOrUnloadOnClient(FM_TeleporterSpotUpdater &inout Model, const
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    ECSWorld.__MonitorTransformLifetime(EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    ECSWorld.__MonitorTransformModification(EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_Spot()
 {
@@ -630,7 +631,9 @@ void __OnTeleporterStateChanged(FMS_TeleporterSpotManager &inout Model, const FM
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorTeleportersLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorTeleportersModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_TeleporterSpots()
 {

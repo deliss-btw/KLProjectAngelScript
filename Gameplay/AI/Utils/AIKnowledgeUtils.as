@@ -1,4 +1,3 @@
-﻿
 enum ETargetUnavailableReason
 {
     Available,
@@ -881,31 +880,26 @@ bool IsInteractionFullyOccupied(const FECSEntity &inout TargetEntity)
         }
         TDataObjectPtr<FInteractionPointTypeConfig> local_46 = TDataObjectPtr<FInteractionPointTypeConfig>(local_20.PointType);
         int local_47 = 0;
-        while (local_47 < 0)
+        for (; local_47 < local_22.Behaviors.Num(); ++local_47)
         {
             TSubclassOf<UInteractionBehaviorBase> local_50 = TSubclassOf<UInteractionBehaviorBase>(local_22.Behaviors[local_47]);
             if ((local_50 == nullptr))
             {
+                continue;
             }
-            else
+            UInteractionBehaviorBase local_54 = local_50.GetDefaultObject();
+            if (local_54 == nullptr)
             {
-                UInteractionBehaviorBase local_54 = local_50.GetDefaultObject();
-                if (local_54 == nullptr)
-                {
-                }
-                else
-                {
-                    if (int(local_54.MaxInteractSourceCount) <= 0)
-                    {
-                        return false;
-                    }
-                    if (FInteractUtils::CheckWithinInteractSourceMaxNumber(TargetEntity, local_54, local_15, local_47))
-                    {
-                        return false;
-                    }
-                }
+                continue;
             }
-            ++local_47;
+            if (int(local_54.MaxInteractSourceCount) <= 0)
+            {
+                return false;
+            }
+            if (FInteractUtils::CheckWithinInteractSourceMaxNumber(TargetEntity, local_54, local_15, local_47))
+            {
+                return false;
+            }
         }
     }
     return true;

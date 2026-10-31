@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_WorldEventMinimapIcon
 {
     const int ViewID = 0;
@@ -122,6 +121,7 @@ namespace UWidget_WorldEventMinimapIcon
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_WorldEventMinimapIcon;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -137,6 +137,7 @@ namespace UWidget_WorldEventMinimapIconTooltip
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_WorldEventMinimapIconTooltip;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

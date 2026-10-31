@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_MinimapIconDecoratorTooltip
 {
     const int ViewID = 0;
@@ -99,7 +98,6 @@ class UWidget_MinimapIconDecoratorTooltipPanel : UEUIActivatableWidget
     FGetEUIModelRef TooltipDelegate;
     UPROPERTY()
     FGetEUIModelRef ExtraModelDelegate;
-
 
     UFUNCTION()
     void PreConstruct_Implementation(const bool IsDesignTime)
@@ -267,6 +265,7 @@ namespace UWidget_MinimapIconDecoratorTooltip
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MinimapIconDecoratorTooltip;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -282,6 +281,7 @@ namespace UWidget_MinimapIconDecoratorTooltipPanel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MinimapIconDecoratorTooltipPanel;
     Result.ObservedModelChangesSubscriberNames.Add(FString("UpdateDesiredWidth"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("UpdateExtraModel"));
     return;

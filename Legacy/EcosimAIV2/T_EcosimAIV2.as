@@ -1,5 +1,3 @@
-﻿
-
 struct FT_EcosimAIV2StaticPoint : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -45,7 +43,6 @@ struct FT_EcosimAIV2Chain : FECSTrait
     bool bHas_FC_EcosimAIV2ChainChildConfig = false;
     UPROPERTY()
     FC_EcosimAIV2ChainChildConfig Config_FC_EcosimAIV2ChainChildConfig;
-
 
 }
 

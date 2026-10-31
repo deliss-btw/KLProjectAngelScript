@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_PVXPhaseState_NS
 {
     const TECSComponentDerivedPtr<FCS_PVXPhaseState> DerivedPtr = TECSComponentDerivedPtr<FCS_PVXPhaseState>();
@@ -46,11 +45,42 @@ struct FCS_PVXPhaseState : FECSSingleton
 
     FCS_PVXPhaseState()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_ActiveObjectiveInstanceId = 0;
+        this.m_PlayerObjectiveInstanceId = 0;
+        this.m_BossObjectiveInstanceId = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bInitialized = false;
+        this.m_bMonitoringHP = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FCS_PVXPhaseState(const FCS_PVXPhaseState &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_ActiveObjectiveInstanceId = 0;
+        this.m_PlayerObjectiveInstanceId = 0;
+        this.m_BossObjectiveInstanceId = 0;
+        FRootDirtyFlags8 local_53;
+        this.__DirtyFlags = local_53;
+        this.m_bInitialized = false;
+        this.m_bMonitoringHP = false;
+        this.__InitDirtyFlags();
+        this.m_ActiveObjectiveInstanceId = int(Other.m_ActiveObjectiveInstanceId);
+        this.m_ActiveObjective = Other.m_ActiveObjective;
+        this.m_PendingObjective = Other.m_PendingObjective;
+        this.m_bInitialized = Other.m_bInitialized;
+        this.m_MonitoredMonsterConfig = Other.m_MonitoredMonsterConfig;
+        this.m_bMonitoringHP = Other.m_bMonitoringHP;
+        this.m_MonitoredMonsterEntity = Other.m_MonitoredMonsterEntity;
+        this.m_PlayerObjective = Other.m_PlayerObjective;
+        this.m_BossObjective = Other.m_BossObjective;
+        this.m_PlayerProgress = Other.m_PlayerProgress;
+        this.m_BossProgress = Other.m_BossProgress;
+        this.m_PlayerChildProgress = Other.m_PlayerChildProgress;
+        this.m_BossChildProgress = Other.m_BossChildProgress;
+        this.m_PlayerObjectiveInstanceId = int(Other.m_PlayerObjectiveInstanceId);
+        this.m_BossObjectiveInstanceId = int(Other.m_BossObjectiveInstanceId);
+        return;
     }
     FCS_PVXPhaseState opAssign(const FCS_PVXPhaseState &inout Other)
     {
@@ -326,11 +356,20 @@ struct FCS_PVXMonsterHPDisplay : FECSSingleton
 
     FCS_PVXMonsterHPDisplay()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_HPPercent = 100;
+        this.__InitDirtyFlags();
+        return;
     }
     FCS_PVXMonsterHPDisplay(const FCS_PVXMonsterHPDisplay &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_HPPercent = 100;
+        this.__InitDirtyFlags();
+        this.m_HPPercent = int(Other.m_HPPercent);
+        return;
     }
     FCS_PVXMonsterHPDisplay opAssign(const FCS_PVXMonsterHPDisplay &inout Other)
     {
@@ -439,17 +478,17 @@ bool RemovePVXPhaseState(const FECSWorldPtr &inout World)
 }
 void __MonitorPVXPhaseStateLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_PVXPhaseState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_PVXPhaseState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVXPhaseStateActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_PVXPhaseState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_PVXPhaseState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVXPhaseStateModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_PVXPhaseState, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_PVXPhaseState, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_PVXMonsterHPDisplay
@@ -537,17 +576,17 @@ bool RemovePVXMonsterHPDisplay(const FECSWorldPtr &inout World)
 }
 void __MonitorPVXMonsterHPDisplayLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_PVXMonsterHPDisplay, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_PVXMonsterHPDisplay, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVXMonsterHPDisplayActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_PVXMonsterHPDisplay, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_PVXMonsterHPDisplay, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVXMonsterHPDisplayModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_PVXMonsterHPDisplay, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_PVXMonsterHPDisplay, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

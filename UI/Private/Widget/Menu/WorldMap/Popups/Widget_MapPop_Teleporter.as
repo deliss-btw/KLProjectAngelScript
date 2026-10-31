@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_MapPop_Teleporter
 {
     const int ViewID = 0;
@@ -101,6 +100,7 @@ namespace UWidget_MapPop_Teleporter
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MapPop_Teleporter;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnTeleporterStateChanged"));
     return;
 }

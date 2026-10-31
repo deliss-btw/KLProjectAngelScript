@@ -1,12 +1,9 @@
-﻿
-
 class UESMAction_SetIgnoreHitAttackTag : UESMBPBaseSpanAction
 {
     UPROPERTY()
     bool bInverseIgnore = false;
     UPROPERTY()
     TArray<FName> AttackTagNames;
-
 
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const
@@ -17,7 +14,7 @@ class UESMAction_SetIgnoreHitAttackTag : UESMBPBaseSpanAction
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
         int local_6 = 0;
-        local_6.SetbInverseIgnore(this.bInverseIgnore);
+        local_6.SetbInverseIgnore((this.bInverseIgnore));
         for (auto& local_22 : this.AttackTagNames)
         {
             int local_23 = 1;

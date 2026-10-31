@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommissionInfo
 {
     const int ViewID = 0;
@@ -190,6 +189,7 @@ namespace UWidget_CommissionInfo
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionInfo;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -205,6 +205,7 @@ namespace UWidget_CommissionInfoEntry
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionInfoEntry;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -220,6 +221,7 @@ namespace UWidget_CommissionInfoAndMonsterInfo
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionInfoAndMonsterInfo;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

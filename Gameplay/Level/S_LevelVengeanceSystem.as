@@ -1,5 +1,3 @@
-﻿
-
 class US_LevelVengeanceAS : UECSScriptSystem
 {
     US_LevelVengeanceAS()

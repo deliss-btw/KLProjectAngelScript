@@ -1,5 +1,3 @@
-﻿
-
 class ALevelScriptActor_Xibei_NPC_PatrolTeam : AKLLevelScriptBaseActor
 {
     UPROPERTY()
@@ -37,7 +35,6 @@ class ALevelScriptActor_Xibei_NPC_PatrolTeam : AKLLevelScriptBaseActor
     int TotalSpawnedEntityNumber = 0;
     bool bTeamCreated = false;
     FLevelTimerCallback StreamingPollTimer;
-
 
     UFUNCTION()
     void ECSBeginPlayBP_Implementation()
@@ -144,8 +141,6 @@ class ALevelScriptActor_Xibei_NPC_PatrolTeam : AKLLevelScriptBaseActor
     {
         TSubclassOf<AECSPrefab> local_44;
         TSubclassOf<AECSPrefab> local_62;
-        FECSEntity local_284;
-        bool local_390;
         if (this.CreateEntityBatchConfig.Num() == 0)
         {
             XWarning(ELog(22), "Xibei_NPC_PatrolTeam: CreateEntityBatchConfig is empty");
@@ -249,8 +244,7 @@ class ALevelScriptActor_Xibei_NPC_PatrolTeam : AKLLevelScriptBaseActor
                     }
                     FEntityCreateFinishDelegate local_248;
                     local_248 = FEntityCreateFinishDelegate(this, n"OnEntityCreateFinish");
-                    FRotator local_262 = FRotator(local_200.GetRotation());
-                    FECSEntityAdapter local_278 = FECSEntityAdapter();
+                    FECSEntity local_284 = ::BlueprintFunctions_Ecology::BP_SpawnMonsterByMonsterIdInValidPos(FECSEntityAdapter(), local_40, local_206, FRotator(local_200.GetRotation()), local_248, 1000.0f, 50.0f, true, local_24_2.SpawnInitEntryName, false);
                     FString local_288 = FString().Append("Mount [").Append(local_22).Append("] Slot[").Append(local_2).Append("] Loc=").Append(local_200.GetLocation());
                     XLog(ELog(22), FString().Append("Xibei_NPC_PatrolTeam: Spawn ").Append(local_288).Append(", Entity=").Append(local_284));
                     FECSDebugDraw::DrawDebugString(n"XibeiPatrolTeam", (local_200.GetLocation() + FVector(0.0, 0.0, 100.0)), local_288, FColor::Green, 1.0f, FColor(uint8(0), uint8(0), uint8(0), uint8(0)), 20.0f);
@@ -258,7 +252,7 @@ class ALevelScriptActor_Xibei_NPC_PatrolTeam : AKLLevelScriptBaseActor
                     FVector local_244 = (local_200.GetLocation() + FVector(0.0, 0.0, 2000.0));
                     FVector local_300 = (local_200.GetLocation() - FVector(0.0, 0.0, 2000.0));
                     FHitResult local_376;
-                    local_390 = System::LineTraceSingle(__GetWorldContext(), local_244, local_300, ETraceTypeQuery(5), false, TArray<AActor>(), EDrawDebugTrace(0), local_376, true, FLinearColor(1.0f, 0.0f, 0.0f, 1.0f), FLinearColor(0.0f, 1.0f, 0.0f, 1.0f), 5.0f);
+                    bool local_390 = System::LineTraceSingle(__GetWorldContext(), local_244, local_300, ETraceTypeQuery(5), false, TArray<AActor>(), EDrawDebugTrace(0), local_376, true, FLinearColor(1.0f, 0.0f, 0.0f, 1.0f), FLinearColor(0.0f, 1.0f, 0.0f, 1.0f), 5.0f);
                     if (local_390)
                     {
                         FString local_394 = FString().Append("GroundHit=").Append(local_376.ImpactPoint).Append(" DistToSpawn=").Append((FVector(local_376.ImpactPoint) - local_200.GetLocation()).Size()).Append(" cm");
@@ -333,9 +327,7 @@ class ALevelScriptActor_Xibei_NPC_PatrolTeam : AKLLevelScriptBaseActor
             ::BlueprintFunctions_Level::Level_EcosimAIV2GetSlotWorldTransform(this.TeamEntity, local_2, local_172, local_200);
             FEntityCreateFinishDelegate local_248;
             local_248 = FEntityCreateFinishDelegate(this, n"OnCartEntityCreateFinish");
-            FRotator local_262_2 = FRotator(local_200.GetRotation());
-            FVector local_306 = local_200.GetLocation();
-            this.CartEntity = local_284;
+            this.CartEntity = ::FLevelUtils::CreateEntityByPrefabDeferred(this.SelectedCartPrefab, local_200.GetLocation(), FRotator(local_200.GetRotation()), local_248, EPrefabCollisionAlignment(2), EECSRegType(0));
             this.SlotEntities.Add(this.CartEntity);
             if (this.CartEntity.IsValid())
             {
@@ -350,14 +342,11 @@ class ALevelScriptActor_Xibei_NPC_PatrolTeam : AKLLevelScriptBaseActor
         }
         if (this.SelectedCartMountConfig.IsSet())
         {
-            FVector local_306_2 = (FRotator(local_200.GetRotation()).GetForwardVector() * 200.0);
-            FVector local_244_2 = (local_200.GetLocation() + local_306_2);
-            FRotator local_262_3 = FRotator(local_200.GetRotation());
+            FVector local_244_2 = (local_200.GetLocation() + (FRotator(local_200.GetRotation()).GetForwardVector() * 200.0));
+            FRotator local_262 = FRotator(local_200.GetRotation());
             FEntityCreateFinishDelegate local_248;
             local_248 = FEntityCreateFinishDelegate(this, n"OnCartMountEntityCreateFinish");
-            local_390 = true;
-            FECSEntityAdapter local_278_2 = FECSEntityAdapter();
-            this.CartMountEntity = local_284;
+            this.CartMountEntity = ::BlueprintFunctions_Ecology::BP_SpawnMonsterByMonsterIdInValidPos(FECSEntityAdapter(), this.SelectedCartMountConfig, local_244_2, local_262, local_248, 1000.0f, 50.0f, true, NAME_None, false);
             this.SlotEntities.Add(this.CartMountEntity);
             if (this.CartMountEntity.IsValid())
             {
@@ -424,7 +413,7 @@ class ALevelScriptActor_Xibei_NPC_PatrolTeam : AKLLevelScriptBaseActor
         if (this.CartEntity.IsValid() && this.CartMountEntity.IsValid() && this.CartMountInteractClass.IsValid())
         {
             ::BlueprintFunctions_Level::Level_TriggerInteractToTarget(this.CartMountEntity, this.CartEntity, this.CartMountInteractClass, 0, 0, false);
-            XLog(ELog(22), FString().Append("Xibei_NPC_PatrolTeam: Triggered mountв†’cart interact, source=").Append(this.CartMountEntity).Append(", target=").Append(this.CartEntity));
+            XLog(ELog(22), FString().Append("Xibei_NPC_PatrolTeam: Triggered mount→cart interact, source=").Append(this.CartMountEntity).Append(", target=").Append(this.CartEntity));
         }
         if (this.NextPoint != nullptr)
         {

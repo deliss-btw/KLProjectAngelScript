@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CookReadyHeadAvatar
 {
     const int ModelId = 0;
@@ -356,7 +355,6 @@ struct __GeneratedProperties_FVM_CookReadyHeadAvatar
     UPROPERTY()
     TEUIModelRef<FVM_CookReadyHeadAvatar> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_CookReady
@@ -367,7 +365,6 @@ struct __GeneratedProperties_FVM_CookReady
     int ReadyAnimSwitch;
     UPROPERTY()
     TEUIModelRef<FVM_CookReady> Self;
-
 
 }
 
@@ -526,7 +523,9 @@ void __OnCookPropChanged(FVM_CookReady &inout Model, const FECSEntity &inout Ent
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorCookPropLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorCookPropModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TArray<TEUIModelRef<FVM_CookReadyHeadAvatar>> __UIGetter_CurrentHeadAvatars(const FVM_CookReady &inout Model)
 {

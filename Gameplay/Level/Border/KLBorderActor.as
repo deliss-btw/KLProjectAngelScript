@@ -1,5 +1,3 @@
-﻿
-
 class AKLBorderActor : AKLBorder
 {
     UPROPERTY()
@@ -28,7 +26,6 @@ class AKLBorderActor : AKLBorder
     TArray<FSingleMaterialParamRequestData> FadingInMaterial;
     UPROPERTY()
     TArray<FSingleMaterialParamRequestData> FadingOutMaterial;
-
 
     FMinimapBorderInfo GetBorderMinimapInfo() const
     {

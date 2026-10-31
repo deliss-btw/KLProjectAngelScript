@@ -1,5 +1,3 @@
-﻿
-
 class US_LevelEventSystem : UECSScriptSystem
 {
     US_LevelEventSystem()

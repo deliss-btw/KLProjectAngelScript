@@ -1,5 +1,3 @@
-﻿
-
 class AStaticAirwallVolume : ANavModifierVolume
 {
     AStaticAirwallVolume()

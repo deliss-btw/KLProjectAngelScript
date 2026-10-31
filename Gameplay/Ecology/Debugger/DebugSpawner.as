@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FSingleMonsterSpawnerConfig (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FSingleMonsterSpawnerConfig : FEcologyConfig
 {
     FEcologyConfig _base_FEcologyConfig;

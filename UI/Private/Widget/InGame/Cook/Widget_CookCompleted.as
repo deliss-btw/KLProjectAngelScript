@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CookBuffInfo
 {
     const int ViewID = 0;
@@ -50,7 +49,6 @@ class UWidget_CookCompleted : UEUIActivatableWidget
     UPROPERTY()
     FGetEUIModelRef CookReadyDelegate;
 
-
     UFUNCTION()
     void Construct_Implementation()
     {
@@ -77,7 +75,7 @@ class UWidget_CookCompleted : UEUIActivatableWidget
         }
         if (this.ActionBindingTimer <= this.ACTIONBINDING_TIME)
         {
-            this.EatAction.SetOverrideDisplayText(FText::Format(NSLOCTEXT("Cook", "Cook_Complete_BtnConfirm", "йЈџз”Ёпј€{0}пј‰"), FMath::FloorToInt(this.ActionBindingTimer)));
+            this.EatAction.SetOverrideDisplayText(FText::Format(NSLOCTEXT("Cook", "Cook_Complete_BtnConfirm", "食用（{0}）"), FMath::FloorToInt(this.ActionBindingTimer)));
         }
         return;
     }
@@ -137,6 +135,7 @@ namespace UWidget_CookBuffInfo
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CookBuffInfo;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -152,6 +151,7 @@ namespace UWidget_CookCompleted
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CookCompleted;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

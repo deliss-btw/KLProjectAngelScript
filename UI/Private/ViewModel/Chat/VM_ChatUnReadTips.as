@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ChatUnReadTips
 {
     const int ModelId = 0;
@@ -225,7 +224,6 @@ struct __GeneratedProperties_FVM_ChatUnReadTips
     UPROPERTY()
     TEUIModelRef<FVM_ChatUnReadTips> Self;
 
-
 }
 
 namespace FVM_ChatUnReadTips
@@ -242,7 +240,52 @@ FVM_ChatUnReadTips CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "bIsShowUnReadMessageTips";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "UnReadMessageCount";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "UnReadMessageTips";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_ChatUnReadTips>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_ChatUnReadTips;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(5);
+    local_22.AddRefPropertyDirty(0, 0, FMS_ChatDataModel::__IndexOf_RecentMessages());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("ChatDataModel");
+    int local_2_2 = FMS_ChatDataModel::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FMS_ChatDataModel::__IndexOf_RecentMessages(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelMsgHandleDefine local_42;
+    local_42.FunctionName = "__OnChatReadAllMessagesUpdate";
+    local_42.MessageTypeName = "Msg_ChatReadAllMessagesUpdate";
+    local_42.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_42);
+    FEUIModelDirtyDefine local_54;
+    local_54.FunctionName = "__OnRecentMessagesUpdated";
+    local_54.DirtyFlags.Set(FVM_ChatUnReadTips::__IndexOf_ChatDataModel());
+    local_54.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_54);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

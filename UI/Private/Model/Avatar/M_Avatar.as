@@ -1,4 +1,3 @@
-﻿
 namespace FM_Avatar
 {
     const int ModelId = 0;

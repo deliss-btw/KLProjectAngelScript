@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ItemAction
 {
     const int ModelId = 0;
@@ -45,7 +44,73 @@ struct FVM_ItemAction : FEUIViewModel
     }
     FVM_ItemAction(const TEUIModelRef<FM_ItemData> &inout ItemDataModel)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        FM_ItemData& local_6;
+        EItemActionType local_44;
+        this.m_MainActionType = EItemActionType(0);
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        if (local_6)
+        {
+            int local_42;
+            int local_41;
+            this.SetItemConfig(local_6.GetConfig());
+            this.SetItemActionSource(::FItemActionSource::InvokeFromInventory(this.GetContext(), local_6));
+            local_42 = 0;
+            local_41 = local_42;
+            for (; local_41 < 4; ++local_41)
+            {
+                local_44 = local_41;
+                FEUIInputAction local_52;
+                if (!(::InventoryUtils::GetGlobalItemSettings().ItemActionInputActions.Find(local_44, local_52)))
+                {
+                    continue;
+                }
+                if (::ItemActionUtils::CanExecuteAction(this.GetItemConfig(), this.GetItemActionSource(), EItemActionType(local_44)))
+                {
+                    FSimpleModelEvent local_76;
+                    switch (int(local_44))
+                    {
+                    case 0:
+                    {
+                        local_76.Add(this, FVM_ItemAction::UseItem);
+                        break;
+                    }
+                    case 1:
+                    {
+                        local_76.Add(this, FVM_ItemAction::DropItem);
+                        break;
+                    }
+                    case 2:
+                    {
+                        local_76.Add(this, FVM_ItemAction::DestroyItem);
+                        break;
+                    }
+                    case 3:
+                    {
+                        local_76.Add(this, FVM_ItemAction::EquipItem);
+                        break;
+                    }
+                    }
+                    this.GetModify_ItemActionButtons().Add(FEUIModelRef(::FVM_InputAction::Create(this.GetContext().Manager, local_52, local_76)));
+                }
+            }
+            TSubclassOf<UItemActionConfigBase> local_80;
+            ::ItemActionUtils::FindMainActionConfig(this.GetItemConfig(), local_80, local_44);
+            if (local_80.IsValid())
+            {
+                this.SetMainActionType(EItemActionType(local_44));
+                FEUIInputAction local_52;
+                if (::InventoryUtils::GetGlobalItemSettings().ItemActionInputActions.Find(EItemActionType(this.GetMainActionType()), local_52))
+                {
+                    FSimpleModelEvent local_76;
+                    local_76.Add(this, FVM_ItemAction::OnMainAction);
+                    this.SetMainActionButton(TEUIModelRef<FVM_InputAction>(::FVM_InputAction::Create(this.GetContext().Manager, local_52, local_76)));
+                }
+            }
+        }
+        return;
     }
     FVM_ItemAction opAssign(const FVM_ItemAction &inout Other)
     {
@@ -93,7 +158,7 @@ struct FVM_ItemAction : FEUIViewModel
     }
     void OnItemAction(const EItemActionType ItemActionType)
     {
-        ::ItemActionUtils::ExecuteActionFromUI(this.GetItemConfig(), this.GetItemActionSource());
+        ::ItemActionUtils::ExecuteActionFromUI(this.GetItemConfig(), this.GetItemActionSource(), EItemActionType(ItemActionType));
         return;
     }
     TDataObjectPtr<FItemConfig> GetItemConfig() const property
@@ -205,7 +270,6 @@ struct __GeneratedProperties_FVM_ItemAction
     bool HasMainAction;
     UPROPERTY()
     TEUIModelRef<FVM_ItemAction> Self;
-
 
 }
 

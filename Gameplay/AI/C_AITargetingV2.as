@@ -1,4 +1,3 @@
-﻿
 enum EAIExternalTargetPriority
 {
     Low,
@@ -50,9 +49,6 @@ namespace __INTENRAL_FCE_AITargetListChanged_NS
 {
     const TECSEventDerivedPtr<FCE_AITargetListChanged> DerivedPtr = TECSEventDerivedPtr<FCE_AITargetListChanged>();
 
-// NOTE: class defaults are not authored in this module: FAITargetingFilter_FactionRelation (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
-
 }
 struct FAISmartEntityIdRecord
 {
@@ -78,7 +74,6 @@ struct FAIExternalTargetInfo
     UPROPERTY()
     FName SourceName;
 
-
 }
 
 struct FAINavPathLengthCache
@@ -87,7 +82,6 @@ struct FAINavPathLengthCache
     float32 PathLength = -1.0f;
     UPROPERTY()
     FFPTime LastUpdateTime = -1;
-
 
 }
 
@@ -108,7 +102,6 @@ struct FAISmartEntityScore
     FAISmart_EntityId Entity;
     UPROPERTY()
     float32 Score = 0.0f;
-
 
 }
 
@@ -135,7 +128,8 @@ struct FAISmartEntityValue
     }
     void SetTargetId(const FAISmart_EntityId &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_TargetId = __Value;
+        return;
     }
     FECSEntityId GetValue() const property
     {
@@ -166,7 +160,6 @@ struct FAITargetingQueryInstance
     int64 Handle = 0;
     UPROPERTY()
     FName SourceName;
-
 
 }
 
@@ -206,7 +199,6 @@ struct FC_AITargetingV2 : FECSComponent
     int HoldTargetRefCount = 0;
     UPROPERTY()
     int64 NextQueryHandle = 0;
-
 
 }
 
@@ -875,13 +867,12 @@ struct FAITargetingScorer_DamageReceived : FAITargetingScorer
             {
                 float32 local_5_2 = 0.0f;
                 int local_18_2 = 0;
-                while (local_18_2 < 0)
+                for (; local_18_2 < DamageStatistic.DamageRecords.Num(); ++local_18_2)
                 {
                     if ((FECSEntity(DamageStatistic.DamageRecords[local_18_2].DamageSource) == DamageSourceEntity))
                     {
                         local_5_2 = local_5_2 + DamageStatistic.DamageRecords[local_18_2].DamageAmount;
                     }
-                    ++local_18_2;
                 }
                 return local_5_2;
             }
@@ -1437,37 +1428,37 @@ bool RemoveAITargetingQueryDataCache(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAITargetingQueryDataCacheOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AITargetingQueryDataCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AITargetingQueryDataCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAITargetingQueryDataCacheOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AITargetingQueryDataCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AITargetingQueryDataCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAITargetingQueryDataCacheOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AITargetingQueryDataCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AITargetingQueryDataCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAITargetingQueryDataCacheOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AITargetingQueryDataCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AITargetingQueryDataCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAITargetingQueryDataCacheOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AITargetingQueryDataCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AITargetingQueryDataCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAITargetingQueryDataCacheLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AITargetingQueryDataCache, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AITargetingQueryDataCache, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAITargetingQueryDataCacheActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AITargetingQueryDataCache, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AITargetingQueryDataCache, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAITargetingQueryDataCacheModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AITargetingQueryDataCache, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AITargetingQueryDataCache, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AITargetingV2
@@ -1550,37 +1541,37 @@ bool RemoveAITargetingV2(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAITargetingV2OnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AITargetingV2, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AITargetingV2, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAITargetingV2OnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AITargetingV2, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AITargetingV2, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAITargetingV2OnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AITargetingV2, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AITargetingV2, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAITargetingV2OnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AITargetingV2, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AITargetingV2, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAITargetingV2OnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AITargetingV2, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AITargetingV2, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAITargetingV2Lifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AITargetingV2, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AITargetingV2, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAITargetingV2Activity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AITargetingV2, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AITargetingV2, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAITargetingV2Modification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AITargetingV2, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AITargetingV2, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AITargetingSync
@@ -1663,36 +1654,36 @@ bool RemoveAITargetingSync(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAITargetingSyncOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AITargetingSync, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AITargetingSync, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAITargetingSyncOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AITargetingSync, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AITargetingSync, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAITargetingSyncOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AITargetingSync, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AITargetingSync, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAITargetingSyncOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AITargetingSync, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AITargetingSync, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAITargetingSyncOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AITargetingSync, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AITargetingSync, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAITargetingSyncLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AITargetingSync, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AITargetingSync, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAITargetingSyncActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AITargetingSync, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AITargetingSync, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAITargetingSyncModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AITargetingSync, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AITargetingSync, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_AnimPostProcessEnable : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -18,7 +16,6 @@ class UESMAction_AnimPostProcessEnable : UESMBPBaseSpanAction
     bool bNaviDynamicMoveLean = false;
     UPROPERTY()
     bool bFootPlacement = false;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const

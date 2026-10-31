@@ -1,4 +1,3 @@
-﻿
 enum ESocketType
 {
     None,
@@ -19,7 +18,6 @@ enum ESocketType
     R_Weapon_Root,
 }
 
-
 class UESMAction_ParentSocketControl : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
@@ -28,7 +26,6 @@ class UESMAction_ParentSocketControl : UESMBPBaseSpanTickAction
     ESocketType OriginalSocketType = ESocketType(0);
     UPROPERTY()
     ESocketType TargetSocketType = ESocketType(0);
-
 
     UFUNCTION()
     EESMActionType GetActionType_Implementation() const

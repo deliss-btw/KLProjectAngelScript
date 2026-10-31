@@ -1,5 +1,3 @@
-﻿
-
 class UBTService_GetEntityLocation : UBTService_ECSScriptBase
 {
     UPROPERTY()

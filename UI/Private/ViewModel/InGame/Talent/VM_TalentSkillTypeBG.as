@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TalentSkillTypeBG
 {
     const int ModelId = 0;
@@ -107,14 +106,13 @@ struct __GeneratedProperties_FVM_TalentSkillTypeBG
     UPROPERTY()
     TEUIModelRef<FVM_TalentSkillTypeBG> Self;
 
-
 }
 
 namespace FVM_TalentSkillTypeBG
 {
 FVM_TalentSkillTypeBG& Create(const UObject ContextObject, const ESkillType SkillType)
 {
-    return FVM_TalentSkillTypeBG::CreateByManager(EUIInternal::GetContextManager(ContextObject));
+    return FVM_TalentSkillTypeBG::CreateByManager(EUIInternal::GetContextManager(ContextObject), ESkillType(SkillType));
 }
 FVM_TalentSkillTypeBG CreateByManager(const UEUIManagerSubsystem Manager, const ESkillType SkillType)
 {

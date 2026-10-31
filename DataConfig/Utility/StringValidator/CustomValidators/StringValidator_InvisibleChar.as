@@ -1,10 +1,8 @@
-﻿
 enum EInvisibleCharValidationMode
 {
     DisallowAny,
     DisallowAllInvisible,
 }
-
 
 class UStringValidator_InvisibleChar : UStringValidatorBase
 {
@@ -12,7 +10,6 @@ class UStringValidator_InvisibleChar : UStringValidatorBase
     EInvisibleCharValidationMode ValidationMode = EInvisibleCharValidationMode(0);
     UPROPERTY()
     FText ErrorMessage;
-
 
     EStringValidationResult ValidateString(const FString &inout String, FStringValidationContext &inout Context) const
     {

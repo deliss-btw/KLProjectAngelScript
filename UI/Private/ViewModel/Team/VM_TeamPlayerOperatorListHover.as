@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TeamPlayerOperatorListHover
 {
     const int ModelId = 0;

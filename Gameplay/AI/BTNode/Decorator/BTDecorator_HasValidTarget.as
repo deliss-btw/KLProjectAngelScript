@@ -1,11 +1,9 @@
-﻿
-
 class UBTDecorator_HasValidTarget : UBTDecorator_ECSScriptBase
 {
     UPROPERTY()
     FAISmart_EntityId EntityToCheck = FAISmart_EntityId(n"SelfEntity", EAISmartValue(0));
 
-    default SetNodeName("жЇеђ¦ж‹Ґжњ‰еђ€жі•з›®ж ‡");
+    default SetNodeName("是否拥有合法目标");
 
     UBTDecorator_HasValidTarget()
     {

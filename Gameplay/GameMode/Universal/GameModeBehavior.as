@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FGameModeBehaviorSettings_Timer (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
-
 UCLASS(Abstract)
 class UGameModeBehavior : UObject
 {
@@ -58,9 +53,10 @@ struct FGameModeBehaviorSettings_Timer : FGameModeBehaviorSettings
     UPROPERTY()
     TArray<FGameModeTimerEntrySetup> TimerEntrySetups;
 
+    default _base_FGameModeBehaviorSettings = UGameModeBehavior_Timer;
+
     FGameModeBehaviorSettings_Timer()
     {
-        super();
         this.__InitDefaults();
         return;
     }

@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class UAS_GameModeSettingsTraining : UAS_GameModeSettings
 {
@@ -7,7 +5,6 @@ class UAS_GameModeSettingsTraining : UAS_GameModeSettings
     TArray<TDataObjectPtr<FTrainingInfoConfig>> TrainingInfos;
     UPROPERTY()
     int SelectIndex = 0;
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace ComposableItemUtility
 {
     const int COMPOSABLE_ITEM_STATE_NORMAL = 0;

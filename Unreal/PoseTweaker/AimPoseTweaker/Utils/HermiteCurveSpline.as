@@ -1,5 +1,3 @@
-﻿
-
 struct FHermiteCoeff
 {
     UPROPERTY()
@@ -342,7 +340,7 @@ struct FHermiteCurveSpline
     }
     float GetLength(const float32 ParamT) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         float __r; return __r;
     }
     FVector ProjectNormalToTangentPlane(const FVector &inout RefUp, const FVector &inout Tangent, const FVector &inout PrevNormal) const
@@ -358,7 +356,7 @@ struct FHermiteCurveSpline
     }
     float ComputeHermiteArcLength(const FVector &inout P0, const FVector &inout P1, const FVector &inout T0, const FVector &inout T1) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         float __r; return __r;
     }
     float SolveTangentScale(const FVector &inout P0, const FVector &inout P1, const FVector &inout T0, const FVector &inout T1, const float DesiredLength, const int Iterations = 16, const float MaxScale = 10.0) const
@@ -431,7 +429,6 @@ struct FHermite2DPoint
     UPROPERTY()
     FVector2D Tangent;
 
-
     float32 GetAngle() const
     {
         return float32((FMath::RadiansToDegrees(FMath::Atan2(this.Tangent.Y, this.Tangent.X))));
@@ -472,7 +469,7 @@ struct FHermiteCurve2D
     }
     void Build(const FVector2D &inout InP0, const FVector2D &inout InP1, const FVector2D &inout InT0, const FVector2D &inout InT1, const float Step)
     {
-        this.Empty(0);
+        this.CurvePts.Empty(0);
         float local_4 = 0.0;
         while (local_4 < 1.0)
         {
@@ -485,10 +482,10 @@ struct FHermiteCurve2D
             local_30 = ((local_30 + local_34) + local_34);
             local_34 = (InT1 * local_16.T1);
             local_26.Location = (local_30 + local_34);
-            this.Add(local_26);
+            this.CurvePts.Add(local_26);
             local_4 = local_4 + Step;
         }
-        if (this.Num() == 0 || !(FMath::IsNearlyEqual(this.Last(0).Param, 1.0, 9.99999993922529e-9)))
+        if (this.CurvePts.Num() == 0 || !(FMath::IsNearlyEqual(this.CurvePts.Last(0).Param, 1.0, 9.99999993922529e-9)))
         {
             FHermiteCoeff local_16_2 = FHermiteCoeff(1.0);
             FHermite2DPoint local_26;
@@ -500,28 +497,28 @@ struct FHermiteCurve2D
             FVector2D local_38_3 = (local_34_2 + local_30_3);
             FVector2D local_30_4 = (InT1 * local_16_2.T1);
             local_26.Location = (local_38_3 + local_30_4);
-            this.Add(local_26);
+            this.CurvePts.Add(local_26);
         }
-        this[0].Tangent = InT0;
-        this[(this.Num() - 1)].Tangent = InT1;
+        this.CurvePts[0].Tangent = InT0;
+        this.CurvePts[(this.CurvePts.Num() - 1)].Tangent = InT1;
         int local_46 = 1;
-        for (; local_46 < (this.Num() - 1); )
+        for (; local_46 < (this.CurvePts.Num() - 1); )
         {
-            FHermite2DPoint& local_50 = this[local_46 - 1];
-            FHermite2DPoint& local_52 = this[local_46 + 1];
+            FHermite2DPoint& local_50 = this.CurvePts[local_46 - 1];
+            FHermite2DPoint& local_52 = this.CurvePts[local_46 + 1];
             FVector2D local_34_3 = local_52.Location;
             FVector2D local_38_4 = (local_34_3 - local_50.Location);
             float local_6_2 = local_52.Param - local_50.Param;
-            this[local_46].Tangent = (local_38_4 / local_6_2);
+            this.CurvePts[local_46].Tangent = (local_38_4 / local_6_2);
             ++local_46;
         }
         this.LengthRatios.Empty(0);
         this.LengthRatios.Add(0.0);
         int local_46_2 = 1;
-        for (; local_46_2 < this.Num(); )
+        for (; local_46_2 < this.CurvePts.Num(); )
         {
             float local_42_2 = this.LengthRatios.Last(0);
-            FVector2D local_38_5 = (FVector2D(this[local_46_2].Location) - this[(local_46_2 - 1)].Location);
+            FVector2D local_38_5 = (FVector2D(this.CurvePts[local_46_2].Location) - this.CurvePts[(local_46_2 - 1)].Location);
             this.LengthRatios.Add(local_42_2 + local_38_5.Size());
             ++local_46_2;
         }
@@ -529,7 +526,7 @@ struct FHermiteCurve2D
         if (local_54 > 9.999999747378752e-5)
         {
             int local_46_3 = 1;
-            for (; local_46_3 < this.Num(); )
+            for (; local_46_3 < this.CurvePts.Num(); )
             {
                 float local_42_3 = this.LengthRatios[local_46_3] / local_54;
                 ++local_46_3;
@@ -547,13 +544,13 @@ struct FHermiteCurve2D
             if ((local_8 >= this.LengthRatios[local_19] && (local_8 <= this.LengthRatios[local_19 + 1])))
             {
                 float local_2 = local_8 - this.LengthRatios[local_19];
-                local_18.LerpBy(this[local_19], this[local_19 + 1], local_2 / (float(this.LengthRatios[local_19 + 1]) - this.LengthRatios[local_19]));
+                local_18.LerpBy(this.CurvePts[local_19], this.CurvePts[local_19 + 1], local_2 / (float(this.LengthRatios[local_19 + 1]) - this.LengthRatios[local_19]));
                 return local_18;
             }
         }
-        if (this.Num() > 0)
+        if (this.CurvePts.Num() > 0)
         {
-            return this.Last(0);
+            return this.CurvePts.Last(0);
         }
         return local_18;
     }
@@ -563,22 +560,22 @@ struct FHermiteCurve2D
     }
     float GetLength() const
     {
-        if (this.Num() < 2)
+        if (this.CurvePts.Num() < 2)
         {
             return 0.0;
         }
         float local_8 = 0.0;
         int local_9 = 1;
-        for (; local_9 < this.Num(); )
+        for (; local_9 < this.CurvePts.Num(); )
         {
-            local_8 = local_8 + (FVector2D(this[local_9].Location) - this[(local_9 - 1)].Location).Size();
+            local_8 = local_8 + (FVector2D(this.CurvePts[local_9].Location) - this.CurvePts[(local_9 - 1)].Location).Size();
             ++local_9;
         }
         return local_8;
     }
     float ComputeArcLength2D(const FVector2D &inout P0, const FVector2D &inout P1, const FVector2D &inout T0, const FVector2D &inout T1) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         float __r; return __r;
     }
     float SolveP1X(const FVector2D &inout P0, const FVector2D &inout T0, const FVector2D &inout Target2D, const float P1_Lateral, const float TailIntensity, const float DesiredLength, const int Iterations = 16)

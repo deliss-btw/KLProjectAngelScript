@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_SkillInfo_Monster_Test_Helpers
 {
 UFUNCTION()

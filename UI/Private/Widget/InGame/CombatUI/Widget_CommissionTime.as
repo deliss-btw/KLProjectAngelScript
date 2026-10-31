@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommissionTime
 {
     const int ViewID = 0;
@@ -95,6 +94,7 @@ namespace UWidget_CommissionTime
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionTime;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -110,6 +110,7 @@ namespace UWidget_CommissionTimeHover
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionTimeHover;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

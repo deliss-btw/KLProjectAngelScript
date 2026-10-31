@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_AITargetting_DebugAttackTarget = FConsoleVariable();
 
 namespace FAITargetingUtils
@@ -449,9 +448,9 @@ void ApplyTopQuery(const FECSEntity &inout Entity, FC_AITargetingV2 &inout AITar
         FAITargetingUtils::SyncCurrentQueryOutput(Entity, AITargetingV2);
         return;
     }
-    FAITargetingQueryConfig::CreateBehaviorTreeContextForEntity(Entity);
+    FAIBehaviorTreeContext local_72 = FAITargetingQueryConfig::CreateBehaviorTreeContextForEntity(Entity);
     FAITargetingQueryResult local_92;
-    TArray<FAISmartEntityValue> local_102 = FAITargetingUtils::BuildQueryOutputs(Entity, local_4.QueryConfig, local_4.TargetIDs, FAISmartValueContext(), local_92);
+    TArray<FAISmartEntityValue> local_102 = FAITargetingUtils::BuildQueryOutputs(Entity, local_4.QueryConfig, local_4.TargetIDs, FAISmartValueContext(local_72), local_92);
     for (auto& local_116 : local_102)
     {
         FAITargetingUtils::SetSmartEntityIdValueForEntity(Entity, local_116.GetTargetId());
@@ -881,7 +880,102 @@ void ClearSelfTargeting(const FECSEntity &inout Entity)
 }
 void ClearOthersRelatedTargeting(const FECSEntity &inout Entity)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    int local_10 = 0;
+    if (!(Entity.IsValid()))
+    {
+        return;
+    }
+    FECSWorldPtr local_4 = ECS::GetECSWorld();
+    if (!(local_10))
+    {
+        return;
+    }
+    FTargetEntity local_12 = Entity;
+    FAIAttackTargetInfo local_32;
+    FECSEntityId local_80;
+    if (local_10.AttackerCountMap.Find(local_12, local_32))
+    {
+        Get local_92;
+        Modify local_58;
+        for (auto& local_50 : local_32.AttackTargetSet)
+        {
+            if (!(local_50.GetEntity().IsValid()))
+            {
+                continue;
+            }
+            FECSEntity local_54 = local_50.GetEntity();
+            FC_AITargetingV2& local_60 = local_58.opCall();
+            if (local_60)
+            {
+                for (auto& local_74 : local_60.CurrentQueryOutput)
+                {
+                    if ((local_80 == local_12.GetEntity().GetId()))
+                    {
+                        FTargetEntity local_82 = local_12;
+                        FAITargetingUtils::SetSmartEntityIdValueForEntity(local_50.GetEntity(), local_74.GetTargetId(), ENTITY_ID_NULL);
+                        FAITargetingUtils::SendAITargetChangedEventV2(local_50.GetEntity(), local_82, FTargetEntity(), local_74.GetTargetId());
+                    }
+                }
+                if (local_60.TargetsHostilityMap.Contains(local_12))
+                {
+                }
+                if (local_60.AllTargets.Contains(local_12))
+                {
+                }
+                int local_88 = local_60.ExternalTargets.Num() - 1;
+                for (; local_88 >= 0; --local_88)
+                {
+                    if ((FTargetEntity(local_60.ExternalTargets[local_88].Target) == local_12))
+                    {
+                        local_60.ExternalTargets.RemoveAt(local_88);
+                    }
+                }
+            }
+            FECSEntity local_78 = local_50.GetEntity();
+            const FC_LockTarget& local_94 = local_92.opCall();
+            if (local_94)
+            {
+                if ((FECSEntity(local_94.GetTargetEntity()) == local_12.GetEntity()))
+                {
+                    FLockTargetUtils::ClearLockTarget(local_50.GetEntity());
+                }
+            }
+        }
+    }
+    FAIAttackTargetInfo local_118;
+    if (local_10.BeEngagingedTargetCountMap.Find(local_12, local_118))
+    {
+        Get local_92;
+        Modify local_58;
+        for (auto& local_50 : local_118.AttackTargetSet)
+        {
+            if (!(local_50.GetEntity().IsValid()))
+            {
+                continue;
+            }
+            FECSEntity local_54_2 = local_50.GetEntity();
+            FC_AITargetingV2& local_60_2 = local_58.opCall();
+            if (local_60_2)
+            {
+                if (local_60_2.EntityAlertnessMap.Contains(local_12))
+                {
+                }
+                if (local_60_2.AllTargets.Contains(local_12))
+                {
+                }
+            }
+            FECSEntity local_78_2 = local_50.GetEntity();
+            const FC_LockTarget& local_94_2 = local_92.opCall();
+            if (local_94_2)
+            {
+                if ((FECSEntity(local_94_2.GetTargetEntity()) == local_12.GetEntity()))
+                {
+                    FLockTargetUtils::ClearLockTarget(local_50.GetEntity());
+                }
+            }
+        }
+    }
+    return;
 }
 FECSEntity GetSwitchTargetForMultiPlayer(const FECSEntity &inout Entity, const float32 TargetDistance = 2000.0, const float32 MaxSearchDistance = 10000.0)
 {

@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_SideHintEntry_LargeBuff
 {
     const int ViewID = 0;
@@ -139,6 +138,7 @@ namespace UWidget_SideHintEntry_LargeBuff
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SideHintEntry_LargeBuff;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -154,6 +154,7 @@ namespace UWidget_CommonSideHintEntry_SmallWithBuffStack
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonSideHintEntry_SmallWithBuffStack;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -169,6 +170,7 @@ namespace UWidget_SideHintEntry_LargeBuffDescItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SideHintEntry_LargeBuffDescItem;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

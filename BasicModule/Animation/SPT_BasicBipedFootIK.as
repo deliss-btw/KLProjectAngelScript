@@ -1,5 +1,3 @@
-﻿
-
 class USPT_BasicBipedFootIK : USkeletalPoseTweaker
 {
     UPROPERTY()
@@ -82,12 +80,12 @@ class USPT_BasicBipedFootIK : USkeletalPoseTweaker
             this.SetBoneTransformCS(this.Bone_M_Body_Root_01, local_200);
             if (local_150_2)
             {
-                this.InterpTo(this.LOffsetWSLastFrame, local_48, int(this.CurrentDeltaSeconds), local_202);
+                this.InterpTo(this.LOffsetWSLastFrame, local_48, this.CurrentDeltaSeconds, local_202);
                 this.PerformLegIKCS(local_148, this.LOffsetWSLastFrame, this.LeftLegSolver);
             }
             if (local_149_2)
             {
-                this.InterpTo(this.ROffsetWSLastFrame, local_72, int(this.CurrentDeltaSeconds), local_202);
+                this.InterpTo(this.ROffsetWSLastFrame, local_72, this.CurrentDeltaSeconds, local_202);
                 this.PerformLegIKCS(local_176, this.ROffsetWSLastFrame, this.RightLegSolver);
             }
         }

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MainMenuCategory
 {
     const int ModelId = 0;

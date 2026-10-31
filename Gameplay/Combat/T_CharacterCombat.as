@@ -1,5 +1,3 @@
-﻿
-
 struct FT_CharacterCombat : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -61,7 +59,6 @@ struct FT_CharacterCombat : FECSTrait
     bool bHas_FC_ExecutionPresentationInfo = false;
     UPROPERTY()
     FC_ExecutionPresentationInfo Config_FC_ExecutionPresentationInfo;
-
 
 }
 

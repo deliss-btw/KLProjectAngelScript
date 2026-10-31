@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_MissionList
 {
     const int ViewID = 0;
@@ -44,7 +43,7 @@ class UWidget_MissionList : UEUIUserWidget
         {
             return;
         }
-        OnMissionEntryIndexSelectionChanged();
+        Index.OnMissionEntryIndexSelectionChanged();
         this.RefreshMissionButtons();
         return;
     }
@@ -212,6 +211,7 @@ namespace UWidget_MissionList
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MissionList;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnHighlightedChapterExpandedChanged"));
     return;
 }

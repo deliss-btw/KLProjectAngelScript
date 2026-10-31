@@ -1,4 +1,3 @@
-﻿
 namespace FEcologyLifeCycleUtils
 {
 void RegisterEcologyRuntimeEntity(const FECSEntity &inout ConfigEntity, const FECSEntity &inout RuntimeEntity, const bool bSyncDataLayer = true)

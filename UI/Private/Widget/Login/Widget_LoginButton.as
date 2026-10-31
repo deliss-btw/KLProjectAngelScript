@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_LoginButton
 {
     const int ViewID = 0;
@@ -17,7 +16,6 @@ class UWidget_LoginButton : UEUIUserWidget
     bool bIsHover = false;
     UPROPERTY()
     FGetEUIModelRef LoginButtonVMDelegate;
-
 
     UFUNCTION()
     void OnHover()
@@ -78,6 +76,7 @@ namespace UWidget_LoginButton
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_LoginButton;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

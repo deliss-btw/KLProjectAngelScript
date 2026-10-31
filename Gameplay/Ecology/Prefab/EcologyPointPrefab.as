@@ -1,5 +1,3 @@
-﻿
-
 class AEcologyPointPrefab : AEcologyUnitECSPrefab
 {
     UPROPERTY()

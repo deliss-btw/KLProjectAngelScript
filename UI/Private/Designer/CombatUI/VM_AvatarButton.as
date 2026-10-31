@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AvatarButton
 {
     const int ModelId = 0;

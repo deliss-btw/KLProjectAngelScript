@@ -1,5 +1,3 @@
-﻿
-
 struct FAutoDeltaInheritBaseAS
 {
     FSubDirtyFlags40 __DirtyFlags;
@@ -10,11 +8,21 @@ struct FAutoDeltaInheritBaseAS
 
     FAutoDeltaInheritBaseAS()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_BaseA = 0;
+        this.m_BaseB = 0;
+        FSubDirtyFlags40 local_3;
+        this.__DirtyFlags = local_3;
+        return;
     }
     FAutoDeltaInheritBaseAS(const FAutoDeltaInheritBaseAS &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_BaseA = 0;
+        this.m_BaseB = 0;
+        FSubDirtyFlags40 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_BaseA = int(Other.m_BaseA);
+        this.m_BaseB = int(Other.m_BaseB);
+        return;
     }
     FAutoDeltaInheritBaseAS opAssign(const FAutoDeltaInheritBaseAS &inout Other)
     {
@@ -61,15 +69,14 @@ struct FAutoDeltaInheritDerivedAS : FAutoDeltaInheritBaseAS
 
     FAutoDeltaInheritDerivedAS(const FAutoDeltaInheritDerivedAS &inout Other)
     {
-        super();
-        Super::opAssign(Other._base_FAutoDeltaInheritBaseAS);
+        this._base_FAutoDeltaInheritBaseAS = Other._base_FAutoDeltaInheritBaseAS;
         this.m_DerivedX = int(Other.m_DerivedX);
         return;
     }
     FAutoDeltaInheritDerivedAS opAssign(const FAutoDeltaInheritDerivedAS &inout Other)
     {
         FAutoDeltaInheritDerivedAS __r;
-        Super::opAssign(Other._base_FAutoDeltaInheritBaseAS);
+        this._base_FAutoDeltaInheritBaseAS = Other._base_FAutoDeltaInheritBaseAS;
         this.SetDerivedX(Other.GetDerivedX());
         return __r;
     }
@@ -83,7 +90,7 @@ struct FAutoDeltaInheritDerivedAS : FAutoDeltaInheritBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(2);
+        this._base_FAutoDeltaInheritBaseAS.__GetSharedDirtyFlags().MarkDirty(2);
         this.m_DerivedX = __Value;
         return;
     }
@@ -97,15 +104,14 @@ struct FAutoDeltaInheritMidAS : FAutoDeltaInheritBaseAS
 
     FAutoDeltaInheritMidAS(const FAutoDeltaInheritMidAS &inout Other)
     {
-        super();
-        Super::opAssign(Other._base_FAutoDeltaInheritBaseAS);
+        this._base_FAutoDeltaInheritBaseAS = Other._base_FAutoDeltaInheritBaseAS;
         this.m_MidValue = int(Other.m_MidValue);
         return;
     }
     FAutoDeltaInheritMidAS opAssign(const FAutoDeltaInheritMidAS &inout Other)
     {
         FAutoDeltaInheritMidAS __r;
-        Super::opAssign(Other._base_FAutoDeltaInheritBaseAS);
+        this._base_FAutoDeltaInheritBaseAS = Other._base_FAutoDeltaInheritBaseAS;
         this.SetMidValue(Other.GetMidValue());
         return __r;
     }
@@ -119,7 +125,7 @@ struct FAutoDeltaInheritMidAS : FAutoDeltaInheritBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(2);
+        this._base_FAutoDeltaInheritBaseAS.__GetSharedDirtyFlags().MarkDirty(2);
         this.m_MidValue = __Value;
         return;
     }
@@ -133,15 +139,14 @@ struct FAutoDeltaInheritChildAS : FAutoDeltaInheritMidAS
 
     FAutoDeltaInheritChildAS(const FAutoDeltaInheritChildAS &inout Other)
     {
-        super();
-        Super::opAssign(Other._base_FAutoDeltaInheritMidAS);
+        this._base_FAutoDeltaInheritMidAS = Other._base_FAutoDeltaInheritMidAS;
         this.m_ChildValue = int(Other.m_ChildValue);
         return;
     }
     FAutoDeltaInheritChildAS opAssign(const FAutoDeltaInheritChildAS &inout Other)
     {
         FAutoDeltaInheritChildAS __r;
-        Super::opAssign(Other._base_FAutoDeltaInheritMidAS);
+        this._base_FAutoDeltaInheritMidAS = Other._base_FAutoDeltaInheritMidAS;
         this.SetChildValue(Other.GetChildValue());
         return __r;
     }
@@ -155,7 +160,7 @@ struct FAutoDeltaInheritChildAS : FAutoDeltaInheritMidAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(3);
+        this._base_FAutoDeltaInheritMidAS.__GetSharedDirtyFlags().MarkDirty(3);
         this.m_ChildValue = __Value;
         return;
     }
@@ -167,18 +172,16 @@ struct FAutoDeltaInheritFromCppAS : FAutoDeltaInheritBase
     UPROPERTY()
     int m_ScriptValue;
 
-    FAutoDeltaInheritFromCppAS()
-    {
-        this.m_ScriptValue = 0;
-        return;
-    }
     FAutoDeltaInheritFromCppAS(const FAutoDeltaInheritFromCppAS &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this._base_FAutoDeltaInheritBase = Other._base_FAutoDeltaInheritBase;
+        this.m_ScriptValue = int(Other.m_ScriptValue);
+        return;
     }
     FAutoDeltaInheritFromCppAS opAssign(const FAutoDeltaInheritFromCppAS &inout Other)
     {
         FAutoDeltaInheritFromCppAS __r;
+        this._base_FAutoDeltaInheritBase = Other._base_FAutoDeltaInheritBase;
         this.SetScriptValue(Other.GetScriptValue());
         return __r;
     }
@@ -192,7 +195,7 @@ struct FAutoDeltaInheritFromCppAS : FAutoDeltaInheritBase
         {
             return;
         }
-        this.__GetSharedDirtyFlags().MarkDirty(3);
+        this._base_FAutoDeltaInheritBase.__GetSharedDirtyFlags().MarkDirty(3);
         this.m_ScriptValue = __Value;
         return;
     }
@@ -211,12 +214,16 @@ struct FAutoDeltaInheritRootHolderAS
     FAutoDeltaInheritRootHolderAS()
     {
         this.m_RootValue = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FAutoDeltaInheritRootHolderAS(const FAutoDeltaInheritRootHolderAS &inout Other)
     {
         this.m_RootValue = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_Flatten = Other.m_Flatten;
         this.m_Nested = Other.m_Nested;
@@ -290,12 +297,16 @@ struct FAutoDeltaInheritMixedHolderAS
     FAutoDeltaInheritMixedHolderAS()
     {
         this.m_RootTail = 0;
+        FRootDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FAutoDeltaInheritMixedHolderAS(const FAutoDeltaInheritMixedHolderAS &inout Other)
     {
         this.m_RootTail = 0;
+        FRootDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_Child = Other.m_Child;
         this.m_FromCpp = Other.m_FromCpp;
@@ -369,12 +380,16 @@ struct FMultiLevelNestedHolderAS
     FMultiLevelNestedHolderAS()
     {
         this.m_HolderVal = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FMultiLevelNestedHolderAS(const FMultiLevelNestedHolderAS &inout Other)
     {
         this.m_HolderVal = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_FlattenChild = Other.m_FlattenChild;
         this.m_NestedChild = Other.m_NestedChild;
@@ -441,18 +456,16 @@ struct FAutoDeltaInheritEmptyDerivedAS : FAutoDeltaInheritBaseAS
 
     FAutoDeltaInheritEmptyDerivedAS()
     {
-        super();
         return;
     }
     FAutoDeltaInheritEmptyDerivedAS(const FAutoDeltaInheritEmptyDerivedAS &inout Other)
     {
-        super();
-        Super::opAssign(Other._base_FAutoDeltaInheritBaseAS);
+        this._base_FAutoDeltaInheritBaseAS = Other._base_FAutoDeltaInheritBaseAS;
         return;
     }
     FAutoDeltaInheritEmptyDerivedAS& opAssign(const FAutoDeltaInheritEmptyDerivedAS &inout Other)
     {
-        return Super::opAssign(Other._base_FAutoDeltaInheritBaseAS);
+        return Other._base_FAutoDeltaInheritBaseAS;
     }
 }
 
@@ -466,11 +479,16 @@ struct FInheritBaseWithNameAS
 
     FInheritBaseWithNameAS()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_BaseInt = 0;
+        FSubDirtyFlags40 local_3;
+        this.__DirtyFlags = local_3;
+        return;
     }
     FInheritBaseWithNameAS(const FInheritBaseWithNameAS &inout Other)
     {
         this.m_BaseInt = 0;
+        FSubDirtyFlags40 local_3;
+        this.__DirtyFlags = local_3;
         this.m_BaseName = Other.m_BaseName;
         this.m_BaseInt = int(Other.m_BaseInt);
         return;
@@ -520,20 +538,18 @@ struct FInheritDerivedWithNameAS : FInheritBaseWithNameAS
 
     FInheritDerivedWithNameAS()
     {
-        super();
         return;
     }
     FInheritDerivedWithNameAS(const FInheritDerivedWithNameAS &inout Other)
     {
-        super();
-        Super::opAssign(Other._base_FInheritBaseWithNameAS);
+        this._base_FInheritBaseWithNameAS = Other._base_FInheritBaseWithNameAS;
         this.m_DerivedName = Other.m_DerivedName;
         return;
     }
     FInheritDerivedWithNameAS opAssign(const FInheritDerivedWithNameAS &inout Other)
     {
         FInheritDerivedWithNameAS __r;
-        Super::opAssign(Other._base_FInheritBaseWithNameAS);
+        this._base_FInheritBaseWithNameAS = Other._base_FInheritBaseWithNameAS;
         this.SetDerivedName(Other.GetDerivedName());
         return __r;
     }
@@ -547,7 +563,7 @@ struct FInheritDerivedWithNameAS : FInheritBaseWithNameAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(2);
+        this._base_FInheritBaseWithNameAS.__GetSharedDirtyFlags().MarkDirty(2);
         this.m_DerivedName = __Value;
         return;
     }
@@ -564,12 +580,16 @@ struct FInheritNameHolderAS
     FInheritNameHolderAS()
     {
         this.m_Tail = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FInheritNameHolderAS(const FInheritNameHolderAS &inout Other)
     {
         this.m_Tail = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_NameData = Other.m_NameData;
         this.m_Tail = int(Other.m_Tail);
@@ -639,11 +659,45 @@ struct FInheritCapBaseAS
 
     FInheritCapBaseAS()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_B0 = 0;
+        this.m_B1 = 0;
+        this.m_B2 = 0;
+        this.m_B3 = 0;
+        this.m_B4 = 0;
+        this.m_B5 = 0;
+        this.m_B6 = 0;
+        this.m_B7 = 0;
+        this.m_B8 = 0;
+        this.m_B9 = 0;
+        FSubDirtyFlags40 local_3;
+        this.__DirtyFlags = local_3;
+        return;
     }
     FInheritCapBaseAS(const FInheritCapBaseAS &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_B0 = 0;
+        this.m_B1 = 0;
+        this.m_B2 = 0;
+        this.m_B3 = 0;
+        this.m_B4 = 0;
+        this.m_B5 = 0;
+        this.m_B6 = 0;
+        this.m_B7 = 0;
+        this.m_B8 = 0;
+        this.m_B9 = 0;
+        FSubDirtyFlags40 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_B0 = int(Other.m_B0);
+        this.m_B1 = int(Other.m_B1);
+        this.m_B2 = int(Other.m_B2);
+        this.m_B3 = int(Other.m_B3);
+        this.m_B4 = int(Other.m_B4);
+        this.m_B5 = int(Other.m_B5);
+        this.m_B6 = int(Other.m_B6);
+        this.m_B7 = int(Other.m_B7);
+        this.m_B8 = int(Other.m_B8);
+        this.m_B9 = int(Other.m_B9);
+        return;
     }
     FInheritCapBaseAS opAssign(const FInheritCapBaseAS &inout Other)
     {
@@ -852,8 +906,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
 
     FInheritCapDerivedAS(const FInheritCapDerivedAS &inout Other)
     {
-        super();
-        Super::opAssign(Other._base_FInheritCapBaseAS);
+        this._base_FInheritCapBaseAS = Other._base_FInheritCapBaseAS;
         this.m_D0 = int(Other.m_D0);
         this.m_D1 = int(Other.m_D1);
         this.m_D2 = int(Other.m_D2);
@@ -881,7 +934,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
     FInheritCapDerivedAS opAssign(const FInheritCapDerivedAS &inout Other)
     {
         FInheritCapDerivedAS __r;
-        Super::opAssign(Other._base_FInheritCapBaseAS);
+        this._base_FInheritCapBaseAS = Other._base_FInheritCapBaseAS;
         this.SetD0(Other.GetD0());
         this.SetD1(Other.GetD1());
         this.SetD2(Other.GetD2());
@@ -916,7 +969,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(10);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(10);
         this.m_D0 = __Value;
         return;
     }
@@ -930,7 +983,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(11);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(11);
         this.m_D1 = __Value;
         return;
     }
@@ -944,7 +997,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(12);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(12);
         this.m_D2 = __Value;
         return;
     }
@@ -958,7 +1011,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(13);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(13);
         this.m_D3 = __Value;
         return;
     }
@@ -972,7 +1025,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(14);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(14);
         this.m_D4 = __Value;
         return;
     }
@@ -986,7 +1039,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(15);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(15);
         this.m_D5 = __Value;
         return;
     }
@@ -1000,7 +1053,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(16);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(16);
         this.m_D6 = __Value;
         return;
     }
@@ -1014,7 +1067,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(17);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(17);
         this.m_D7 = __Value;
         return;
     }
@@ -1028,7 +1081,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(18);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(18);
         this.m_D8 = __Value;
         return;
     }
@@ -1042,7 +1095,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(19);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(19);
         this.m_D9 = __Value;
         return;
     }
@@ -1056,7 +1109,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(20);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(20);
         this.m_D10 = __Value;
         return;
     }
@@ -1070,7 +1123,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(21);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(21);
         this.m_D11 = __Value;
         return;
     }
@@ -1084,7 +1137,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(22);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(22);
         this.m_D12 = __Value;
         return;
     }
@@ -1098,7 +1151,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(23);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(23);
         this.m_D13 = __Value;
         return;
     }
@@ -1112,7 +1165,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(24);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(24);
         this.m_D14 = __Value;
         return;
     }
@@ -1126,7 +1179,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(25);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(25);
         this.m_D15 = __Value;
         return;
     }
@@ -1140,7 +1193,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(26);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(26);
         this.m_D16 = __Value;
         return;
     }
@@ -1154,7 +1207,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(27);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(27);
         this.m_D17 = __Value;
         return;
     }
@@ -1168,7 +1221,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(28);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(28);
         this.m_D18 = __Value;
         return;
     }
@@ -1182,7 +1235,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(29);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(29);
         this.m_D19 = __Value;
         return;
     }
@@ -1196,7 +1249,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(30);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(30);
         this.m_D20 = __Value;
         return;
     }
@@ -1210,7 +1263,7 @@ struct FInheritCapDerivedAS : FInheritCapBaseAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(31);
+        this._base_FInheritCapBaseAS.__GetSharedDirtyFlags().MarkDirty(31);
         this.m_D21 = __Value;
         return;
     }
@@ -1227,12 +1280,16 @@ struct FInheritCapHolderAS
     FInheritCapHolderAS()
     {
         this.m_CapTail = 0;
+        FRootDirtyFlags64 local_3;
+        this.__DirtyFlags = local_3;
         this.__InitDirtyFlags();
         return;
     }
     FInheritCapHolderAS(const FInheritCapHolderAS &inout Other)
     {
         this.m_CapTail = 0;
+        FRootDirtyFlags64 local_3;
+        this.__DirtyFlags = local_3;
         this.__InitDirtyFlags();
         this.m_CapData = Other.m_CapData;
         this.m_CapTail = int(Other.m_CapTail);
@@ -1289,12 +1346,16 @@ struct FCppNestedHolderAS
     FCppNestedHolderAS()
     {
         this.m_HolderVal = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FCppNestedHolderAS(const FCppNestedHolderAS &inout Other)
     {
         this.m_HolderVal = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_FlattenCpp = Other.m_FlattenCpp;
         this.m_NestedCpp = Other.m_NestedCpp;
@@ -1365,11 +1426,21 @@ struct FInheritBase64AS
 
     FInheritBase64AS()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Base64A = 0;
+        this.m_Base64B = 0;
+        FSubDirtyFlags72 local_4;
+        this.__DirtyFlags = local_4;
+        return;
     }
     FInheritBase64AS(const FInheritBase64AS &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Base64A = 0;
+        this.m_Base64B = 0;
+        FSubDirtyFlags72 local_4;
+        this.__DirtyFlags = local_4;
+        this.m_Base64A = int(Other.m_Base64A);
+        this.m_Base64B = int(Other.m_Base64B);
+        return;
     }
     FInheritBase64AS opAssign(const FInheritBase64AS &inout Other)
     {
@@ -1416,15 +1487,14 @@ struct FInheritDerived64AS : FInheritBase64AS
 
     FInheritDerived64AS(const FInheritDerived64AS &inout Other)
     {
-        super();
-        Super::opAssign(Other._base_FInheritBase64AS);
+        this._base_FInheritBase64AS = Other._base_FInheritBase64AS;
         this.m_Derived64X = int(Other.m_Derived64X);
         return;
     }
     FInheritDerived64AS opAssign(const FInheritDerived64AS &inout Other)
     {
         FInheritDerived64AS __r;
-        Super::opAssign(Other._base_FInheritBase64AS);
+        this._base_FInheritBase64AS = Other._base_FInheritBase64AS;
         this.SetDerived64X(Other.GetDerived64X());
         return __r;
     }
@@ -1438,7 +1508,7 @@ struct FInheritDerived64AS : FInheritBase64AS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(2);
+        this._base_FInheritBase64AS.__GetSharedDirtyFlags().MarkDirty(2);
         this.m_Derived64X = __Value;
         return;
     }
@@ -1455,12 +1525,16 @@ struct FInheritHolder64AS
     FInheritHolder64AS()
     {
         this.m_Tail = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FInheritHolder64AS(const FInheritHolder64AS &inout Other)
     {
         this.m_Tail = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_Data = Other.m_Data;
         this.m_Tail = int(Other.m_Tail);
@@ -1514,11 +1588,21 @@ struct FInheritBase96AS
 
     FInheritBase96AS()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Base96A = 0;
+        this.m_Base96B = 0;
+        FSubDirtyFlags104 local_5;
+        this.__DirtyFlags = local_5;
+        return;
     }
     FInheritBase96AS(const FInheritBase96AS &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Base96A = 0;
+        this.m_Base96B = 0;
+        FSubDirtyFlags104 local_5;
+        this.__DirtyFlags = local_5;
+        this.m_Base96A = int(Other.m_Base96A);
+        this.m_Base96B = int(Other.m_Base96B);
+        return;
     }
     FInheritBase96AS opAssign(const FInheritBase96AS &inout Other)
     {
@@ -1565,15 +1649,14 @@ struct FInheritDerived96AS : FInheritBase96AS
 
     FInheritDerived96AS(const FInheritDerived96AS &inout Other)
     {
-        super();
-        Super::opAssign(Other._base_FInheritBase96AS);
+        this._base_FInheritBase96AS = Other._base_FInheritBase96AS;
         this.m_Derived96X = int(Other.m_Derived96X);
         return;
     }
     FInheritDerived96AS opAssign(const FInheritDerived96AS &inout Other)
     {
         FInheritDerived96AS __r;
-        Super::opAssign(Other._base_FInheritBase96AS);
+        this._base_FInheritBase96AS = Other._base_FInheritBase96AS;
         this.SetDerived96X(Other.GetDerived96X());
         return __r;
     }
@@ -1587,7 +1670,7 @@ struct FInheritDerived96AS : FInheritBase96AS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(2);
+        this._base_FInheritBase96AS.__GetSharedDirtyFlags().MarkDirty(2);
         this.m_Derived96X = __Value;
         return;
     }
@@ -1604,12 +1687,16 @@ struct FInheritHolder96AS
     FInheritHolder96AS()
     {
         this.m_Tail = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FInheritHolder96AS(const FInheritHolder96AS &inout Other)
     {
         this.m_Tail = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_Data = Other.m_Data;
         this.m_Tail = int(Other.m_Tail);
@@ -1665,11 +1752,24 @@ struct FSubDataForRisk2Test
 
     FSubDataForRisk2Test()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_SubVal1 = 0;
+        this.m_SubVal2 = 0;
+        this.m_SubVal3 = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        return;
     }
     FSubDataForRisk2Test(const FSubDataForRisk2Test &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_SubVal1 = 0;
+        this.m_SubVal2 = 0;
+        this.m_SubVal3 = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_SubVal1 = int(Other.m_SubVal1);
+        this.m_SubVal2 = int(Other.m_SubVal2);
+        this.m_SubVal3 = int(Other.m_SubVal3);
+        return;
     }
     FSubDataForRisk2Test opAssign(const FSubDataForRisk2Test &inout Other)
     {
@@ -1733,11 +1833,19 @@ struct FBaseWithSubDataAS
 
     FBaseWithSubDataAS()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_BaseVal = 0;
+        FSubDirtyFlags40 local_3;
+        this.__DirtyFlags = local_3;
+        return;
     }
     FBaseWithSubDataAS(const FBaseWithSubDataAS &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_BaseVal = 0;
+        FSubDirtyFlags40 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_BaseVal = int(Other.m_BaseVal);
+        this.m_BaseSub = Other.m_BaseSub;
+        return;
     }
     FBaseWithSubDataAS opAssign(const FBaseWithSubDataAS &inout Other)
     {
@@ -1787,8 +1895,7 @@ struct FDerivedWithSubDataAS : FBaseWithSubDataAS
 
     FDerivedWithSubDataAS(const FDerivedWithSubDataAS &inout Other)
     {
-        super();
-        Super::opAssign(Other._base_FBaseWithSubDataAS);
+        this._base_FBaseWithSubDataAS = Other._base_FBaseWithSubDataAS;
         this.m_DerivedVal = int(Other.m_DerivedVal);
         this.m_DerivedSub = Other.m_DerivedSub;
         return;
@@ -1796,7 +1903,7 @@ struct FDerivedWithSubDataAS : FBaseWithSubDataAS
     FDerivedWithSubDataAS opAssign(const FDerivedWithSubDataAS &inout Other)
     {
         FDerivedWithSubDataAS __r;
-        Super::opAssign(Other._base_FBaseWithSubDataAS);
+        this._base_FBaseWithSubDataAS = Other._base_FBaseWithSubDataAS;
         this.SetDerivedVal(Other.GetDerivedVal());
         this.SetDerivedSub(Other.GetDerivedSub());
         return __r;
@@ -1811,7 +1918,7 @@ struct FDerivedWithSubDataAS : FBaseWithSubDataAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(4);
+        this._base_FBaseWithSubDataAS.__GetSharedDirtyFlags().MarkDirty(4);
         this.m_DerivedVal = __Value;
         return;
     }
@@ -1845,12 +1952,16 @@ struct FRootForRisk2TestAS
     FRootForRisk2TestAS()
     {
         this.m_RootVal = 0;
+        FRootDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FRootForRisk2TestAS(const FRootForRisk2TestAS &inout Other)
     {
         this.m_RootVal = 0;
+        FRootDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_Flatten = Other.m_Flatten;
         this.m_Nested = Other.m_Nested;
@@ -1921,11 +2032,19 @@ struct FBaseWithNestedSubAS
 
     FBaseWithNestedSubAS()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_BaseVal = 0;
+        FSubDirtyFlags40 local_3;
+        this.__DirtyFlags = local_3;
+        return;
     }
     FBaseWithNestedSubAS(const FBaseWithNestedSubAS &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_BaseVal = 0;
+        FSubDirtyFlags40 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_BaseVal = int(Other.m_BaseVal);
+        this.m_BaseNested = Other.m_BaseNested;
+        return;
     }
     FBaseWithNestedSubAS opAssign(const FBaseWithNestedSubAS &inout Other)
     {
@@ -1975,8 +2094,7 @@ struct FDerivedWithBothNestedAS : FBaseWithNestedSubAS
 
     FDerivedWithBothNestedAS(const FDerivedWithBothNestedAS &inout Other)
     {
-        super();
-        Super::opAssign(Other._base_FBaseWithNestedSubAS);
+        this._base_FBaseWithNestedSubAS = Other._base_FBaseWithNestedSubAS;
         this.m_DerivedVal = int(Other.m_DerivedVal);
         this.m_DerivedNested = Other.m_DerivedNested;
         return;
@@ -1984,7 +2102,7 @@ struct FDerivedWithBothNestedAS : FBaseWithNestedSubAS
     FDerivedWithBothNestedAS opAssign(const FDerivedWithBothNestedAS &inout Other)
     {
         FDerivedWithBothNestedAS __r;
-        Super::opAssign(Other._base_FBaseWithNestedSubAS);
+        this._base_FBaseWithNestedSubAS = Other._base_FBaseWithNestedSubAS;
         this.SetDerivedVal(Other.GetDerivedVal());
         this.SetDerivedNested(Other.GetDerivedNested());
         return __r;
@@ -1999,7 +2117,7 @@ struct FDerivedWithBothNestedAS : FBaseWithNestedSubAS
         {
             return;
         }
-        Super::__GetSharedDirtyFlags().MarkDirty(2);
+        this._base_FBaseWithNestedSubAS.__GetSharedDirtyFlags().MarkDirty(2);
         this.m_DerivedVal = __Value;
         return;
     }
@@ -2033,12 +2151,16 @@ struct FRootWithNestedSubHolderAS
     FRootWithNestedSubHolderAS()
     {
         this.m_HolderVal = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FRootWithNestedSubHolderAS(const FRootWithNestedSubHolderAS &inout Other)
     {
         this.m_HolderVal = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_SubFlatten = Other.m_SubFlatten;
         this.m_SubNested = Other.m_SubNested;
@@ -2192,7 +2314,7 @@ void Test_AutoDeltaASInheritance(FUnitTest &inout UnitTest)
     AutoDelta::InitDirtyFlags(local_34);
     AutoDelta::ClearDirtyFlags(local_34);
     local_34.GetFlatten().SetDerivedX(42);
-    UnitTest.AssertFalse(AutoDelta::IsNoDirty(local_34.GetFlatten()), "RISK1: Flattenе­ђж•°жЌ®и„Џдє†жґѕз”џе±ћжЂ§пјЊIsNoDirtyеє”иї”е›ћfalse");
+    UnitTest.AssertFalse(AutoDelta::IsNoDirty(local_34.GetFlatten()), "RISK1: Flatten子数据脏了派生属性，IsNoDirty应返回false");
     AutoDelta::InitDirtyFlags(local_16);
     AutoDelta::ClearDirtyFlags(local_16);
     local_16.GetFlatten().SetDerivedX(0);
@@ -2377,7 +2499,8 @@ void Test_AutoDeltaASInheritance(FUnitTest &inout UnitTest)
     int local_113_2 = 0;
     for (; local_113_2 < 3; )
     {
-        UnitTest.AssertTrue(AutoDelta::IsDirty(local_34.GetNested(), local_113_2), (FString("INH24-1: Nested SetAllDirty bit ") + local_113_2));
+        FString local_324 = (FString("INH24-1: Nested SetAllDirty bit ") + local_113_2);
+        UnitTest.AssertTrue(AutoDelta::IsDirty(local_34.GetNested(), local_324));
         ++local_113_2;
     }
     UnitTest.AssertTrue(AutoDelta::IsDirty(local_34, 3), "INH24-1: Nested slot propagated to root");
@@ -2446,17 +2569,17 @@ void Test_AutoDeltaRisk2(FUnitTest &inout UnitTest)
     AutoDelta::InitDirtyFlags(local_32);
     AutoDelta::ClearDirtyFlags(local_32);
     local_32.GetFlatten().GetDerivedSub().SetSubVal1(100);
-    UnitTest.AssertFalse(AutoDelta::IsNoDirty(local_32), "RISK2-Init: DerivedSub.SubVal1 и„Џ в†’ root дёЌе№Іе‡Ђ");
-    UnitTest.AssertTrue(AutoDelta::IsDirty(local_32, 5), "RISK2-Init: DerivedSub.SubVal1 в†’ root idx 5");
+    UnitTest.AssertFalse(AutoDelta::IsNoDirty(local_32), "RISK2-Init: DerivedSub.SubVal1 脏 → root 不干净");
+    UnitTest.AssertTrue(AutoDelta::IsDirty(local_32, 5), "RISK2-Init: DerivedSub.SubVal1 → root idx 5");
     AutoDelta::InitDirtyFlags(local_32);
     AutoDelta::ClearDirtyFlags(local_32);
     local_32.GetNested().GetDerivedSub().SetSubVal2(200);
-    UnitTest.AssertFalse(AutoDelta::IsNoDirty(local_32.GetNested()), "RISK2-Clear: Nested и„Џ");
+    UnitTest.AssertFalse(AutoDelta::IsNoDirty(local_32.GetNested()), "RISK2-Clear: Nested 脏");
     AutoDelta::ClearDirtyFlags(local_32);
-    UnitTest.AssertTrue(AutoDelta::IsNoDirty(local_32.GetNested()), "RISK2-Clear: Nested cascade clear еђЋеє”е№Іе‡Ђ");
+    UnitTest.AssertTrue(AutoDelta::IsNoDirty(local_32.GetNested()), "RISK2-Clear: Nested cascade clear 后应干净");
     local_32.GetFlatten().GetBaseSub().SetSubVal3(300);
     AutoDelta::ClearDirtyFlags(local_32);
-    UnitTest.AssertTrue(AutoDelta::IsNoDirty(local_32), "RISK2-Clear: BaseSub жё…зђ†еђЋ root еє”е№Іе‡Ђ");
+    UnitTest.AssertTrue(AutoDelta::IsNoDirty(local_32), "RISK2-Clear: BaseSub 清理后 root 应干净");
     FRootForRisk2TestAS local_66;
     AutoDelta::InitDirtyFlags(local_32);
     AutoDelta::InitDirtyFlags(local_66);
@@ -2472,7 +2595,7 @@ void Test_AutoDeltaRisk2(FUnitTest &inout UnitTest)
     UnitTest.AssertEquals(111, local_66.GetFlatten().GetDerivedSub().GetSubVal1(), "RISK2-RT: derived sub-data synced");
     UnitTest.AssertEquals(222, local_66.GetFlatten().GetBaseSub().GetSubVal1(), "RISK2-RT: base sub-data synced");
     UnitTest.AssertEquals(333, local_66.GetRootVal(), "RISK2-RT: root val synced");
-    UnitTest.AssertEquals(-2, local_66.GetFlatten().GetDerivedSub().GetSubVal2(), "RISK2-RT: жњЄи„Џе±ћжЂ§дїќз•™жњ¬ењ°еЂј");
+    UnitTest.AssertEquals(-2, local_66.GetFlatten().GetDerivedSub().GetSubVal2(), "RISK2-RT: 未脏属性保留本地值");
     AutoDelta::InitDirtyFlags(local_66);
     AutoDelta::InitDirtyFlags(local_32);
     AutoDelta::ClearDirtyFlags(local_66);

@@ -1,12 +1,9 @@
-﻿
-
 struct FMinimapActionCallback : FEUIModelDelegate
 {
-    FEUIModelDelegate _base_FEUIModelDelegate;
+    FEUIModelDelegate _base_FEUIModelDelegate = FEUIModelDelegate("bool", "");
 
     FMinimapActionCallback()
     {
-        FEUIModelDelegate local_26 = FEUIModelDelegate("bool", "");
         return;
     }
     bool Execute() const

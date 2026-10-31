@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PlayerKeyMapping
 {
     const int ModelId = 0;
@@ -156,8 +155,9 @@ struct FVM_PlayerKeyMapping : FEUIViewModel
     }
     TArray<TEUIModelRef<FVM_PlayerMappableKey>> GetMappableKeys()
     {
+        int local_46;
+        int local_47;
         TArray<TEUIModelRef<FVM_PlayerMappableKey>> local_4;
-        int local_47 = 0;
         UGameInputLocalPlayerSubsystem local_8 = UGameInputLocalPlayerSubsystem::Get(this.GetContext().UELocalPlayer);
         if (local_8 != nullptr)
         {
@@ -167,12 +167,14 @@ struct FVM_PlayerKeyMapping : FEUIViewModel
                 if (int(this.GetCategory()) == 3)
                 {
                     local_47 = 1;
+                    local_46 = local_47;
                 }
                 else
                 {
                     local_47 = 0;
+                    local_46 = local_47;
                 }
-                local_4.Add(TEUIModelRef<FVM_PlayerMappableKey>(::FVM_PlayerMappableKey::Create(this.GetContext().Manager, local_44)));
+                local_4.Add(TEUIModelRef<FVM_PlayerMappableKey>(::FVM_PlayerMappableKey::Create(this.GetContext().Manager, local_44, EEUIInputType(local_46))));
             }
         }
         return local_4;
@@ -210,8 +212,7 @@ struct FVM_PlayerKeyMapping : FEUIViewModel
         if (!((NewKey == this.GetCurrentKey())) && this.IsValid(NewKey))
         {
             FVMS_PlayerKeyMappings& local_14 = ::FVMS_PlayerKeyMappings::Get(this.GetContext().Manager);
-            int local_15 = int(this.GetCategory());
-            TEUIModelRef<FVM_PlayerKeyMapping> local_18 = local_14.FindInUsingKeyMapping(NewKey, this.GetChordKey());
+            TEUIModelRef<FVM_PlayerKeyMapping> local_18 = local_14.FindInUsingKeyMapping(NewKey, this.GetChordKey(), this.GetCategory());
             if (local_18)
             {
                 if (local_18.opArrow().GetbConfigurable())
@@ -251,8 +252,7 @@ struct FVM_PlayerKeyMapping : FEUIViewModel
         if (local_4 != nullptr)
         {
             FVMS_PlayerKeyMappings& local_8 = ::FVMS_PlayerKeyMappings::Get(this.GetContext().Manager);
-            int local_19 = int(this.GetCategory());
-            bool local_5 = local_4.IsValidKey(local_8.GetDefaultKey(this.GetCategory(), this.GetIndex()), NewKey);
+            bool local_5 = local_4.IsValidKey(local_8.GetDefaultKey(this.GetCategory(), this.GetIndex()), NewKey, this.GetCategory());
             if (!(local_5))
             {
                 local_8.SetbShowInvalidKeyError(true);
@@ -493,8 +493,7 @@ struct FVM_PlayerMappableKey : FEUIViewModel
     }
     FSlateBrush GetKeyIcon() const
     {
-        int local_1 = int(this.GetInputType());
-        return EUIWidget::GetKeyBrush(this.GetKey());
+        return EUIWidget::GetKeyBrush(this.GetKey(), this.GetInputType());
     }
     void InvokeOnSelect() const
     {
@@ -1068,13 +1067,13 @@ struct FVM_PlayerKeyMappingPair : FEUIViewModel
     void OnUnConfigurableKeySelecting()
     {
         FCommonTipsParam local_4;
-        ::CommonPopup_Internal::OpenTipsWithoutECSWorld(this.GetContext().UELocalPlayer, NSLOCTEXT("SettingPage", "KeyCannotModify", "иЇҐжЊ‰й”®ж— жі•дї®ж”№"), local_4, ECommonTipsType(0), FEUIModelContainer());
+        ::CommonPopup_Internal::OpenTipsWithoutECSWorld(this.GetContext().UELocalPlayer, NSLOCTEXT("SettingPage", "KeyCannotModify", "该按键无法修改"), local_4, ECommonTipsType(0), FEUIModelContainer());
         return;
     }
     void OnUnConfigurableKeySelectingByGamepad()
     {
         FCommonTipsParam local_4;
-        ::CommonPopup_Internal::OpenTipsWithoutECSWorld(this.GetContext().UELocalPlayer, NSLOCTEXT("SettingPage", "PleaseUseKeyboardOrMouse", "иЇ·дЅїз”Ёй”®йј ж“ЌдЅњ"), local_4, ECommonTipsType(0), FEUIModelContainer());
+        ::CommonPopup_Internal::OpenTipsWithoutECSWorld(this.GetContext().UELocalPlayer, NSLOCTEXT("SettingPage", "PleaseUseKeyboardOrMouse", "请使用键鼠操作"), local_4, ECommonTipsType(0), FEUIModelContainer());
         return;
     }
     void SetKeySelectingWithCheck0()
@@ -1585,7 +1584,6 @@ struct FPlayerKeyMappingModification
     UPROPERTY()
     TEUIModelRef<FVM_PlayerKeyMapping> KeyMapping1;
 
-
     void Backup(const FVM_PlayerKeyMapping &inout InMapping)
     {
         ++this.ModificationNum;
@@ -1839,7 +1837,7 @@ struct FVMS_PlayerKeyMappings : FEUIViewModelSingleton
             local_134.Add(FCommonDialogOption(ECommonDialogAnswerType(2), local_126, FText()));
             local_134.Add(FCommonDialogOption(ECommonDialogAnswerType(1), local_120, FText()));
             FCommonDialogParam local_148;
-            ::CommonPopup_Internal::OpenDialogForLocalPlayer(this.GetContext().UELocalPlayer, NSLOCTEXT("PlayerSettings", "SwitchKeyTitle", "й”®дЅЌдє’жЌў"), local_80, local_134, FDialogCallback(local_110), local_148);
+            ::CommonPopup_Internal::OpenDialogForLocalPlayer(this.GetContext().UELocalPlayer, NSLOCTEXT("PlayerSettings", "SwitchKeyTitle", "键位互换"), local_80, local_134, FDialogCallback(local_110), local_148);
         }
         if (this.GetSelectingKey().IsValid())
         {
@@ -1973,7 +1971,7 @@ struct FVMS_PlayerKeyMappings : FEUIViewModelSingleton
             {
                 TEUIModelRef<FVM_PlayerKeyMapping> local_18 = local_16.opArrow().GetMapping0();
                 0.SetbHasChanged();
-                bool local_1 = false;
+                int local_1 = 0;
                 TEUIModelRef<FVM_PlayerKeyMapping> local_18_2 = local_16.opArrow().GetMapping1();
                 local_1.SetbHasChanged();
             }
@@ -2042,7 +2040,6 @@ struct FVMS_PlayerKeyMappings : FEUIViewModelSingleton
     void InitKeys(TArray<TEUIModelRef<FVM_PlayerKeyMappingPair>> &inout ResultKeys, TArray<FEUIModelRef> &inout KeyItems, const EGameUseKeyCategory KeyCategory0, const TArray<FGameUserKeyMapping> &inout Key0, const EGameUseKeyCategory KeyCategory1 = EGameUseKeyCategory::Invalid, const TArray<FGameUserKeyMapping> &inout Key1 = TArray<FGameUserKeyMapping>())
     {
         FEUIInputAction local_112;
-        TEUIModelRef<FVM_PlayerKeyMapping> local_106;
         TDataObjectPtr<FGameUserMappableInputActionCategory> local_24;
         int local_28 = FMath::Max(Key0.Num(), Key1.Num());
         int local_29 = 0;
@@ -2053,15 +2050,15 @@ struct FVMS_PlayerKeyMappings : FEUIViewModelSingleton
             local_104.SetActionName(local_54.opArrow().Action.ActionDescription);
             if (Key0.IsValidIndex(local_29))
             {
-                local_104.SetMapping0(local_106);
-                local_106 = local_104.GetMapping0();
+                local_104.SetMapping0(TEUIModelRef<FVM_PlayerKeyMapping>(::FVM_PlayerKeyMapping::Create(this.GetContext().Manager, local_29, EGameUseKeyCategory(KeyCategory0), Key0[local_29])));
+                TEUIModelRef<FVM_PlayerKeyMapping> local_106 = local_104.GetMapping0();
                 local_112.SetInputAction();
             }
             if (Key1.IsValidIndex(local_29))
             {
-                local_104.SetMapping1(local_106);
+                local_104.SetMapping1(TEUIModelRef<FVM_PlayerKeyMapping>(::FVM_PlayerKeyMapping::Create(this.GetContext().Manager, local_29, EGameUseKeyCategory(KeyCategory1), Key1[local_29])));
                 TDataObjectPtr<FGameUserMappableInputAction> local_136 = TDataObjectPtr<FGameUserMappableInputAction>(Key1[local_29].InputAction);
-                local_106 = local_104.GetMapping1();
+                TEUIModelRef<FVM_PlayerKeyMapping> local_106_2 = local_104.GetMapping1();
                 local_112.SetInputAction();
             }
             ResultKeys.Add(TEUIModelRef<FVM_PlayerKeyMappingPair>(local_104));
@@ -2104,7 +2101,7 @@ struct FVMS_PlayerKeyMappings : FEUIViewModelSingleton
     }
     const FGameUserKeyMapping GetMapping(const EGameUseKeyCategory Category, const int Index) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FGameUserKeyMapping __r; return __r;
     }
     void ResetAllKeys(const TArray<TEUIModelRef<FVM_PlayerKeyMappingPair>> &inout Keys) const
@@ -2512,7 +2509,6 @@ struct __GeneratedProperties_FVM_PlayerKeyMapping
     UPROPERTY()
     TEUIModelRef<FVM_PlayerKeyMapping> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_PlayerMappableKey
@@ -2559,7 +2555,6 @@ struct __GeneratedProperties_FVM_PlayerKeyMappingPair
     UPROPERTY()
     TEUIModelRef<FVM_PlayerKeyMappingPair> Self;
 
-
 }
 
 struct __GeneratedProperties_FVMS_PlayerKeyMappings
@@ -2577,15 +2572,13 @@ struct __GeneratedProperties_FVMS_PlayerKeyMappings
     UPROPERTY()
     TEUIModelRef<FVMS_PlayerKeyMappings> Self;
 
-
 }
 
 namespace FVM_PlayerKeyMapping
 {
-FVM_PlayerKeyMapping Create(const UObject ContextObject, const int Index, const EGameUseKeyCategory Category, const FGameUserKeyMapping &inout UserKeyMapping)
+FVM_PlayerKeyMapping& Create(const UObject ContextObject, const int Index, const EGameUseKeyCategory Category, const FGameUserKeyMapping &inout UserKeyMapping)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    FVM_PlayerKeyMapping __r; return __r;
+    return FVM_PlayerKeyMapping::CreateByManager(EUIInternal::GetContextManager(ContextObject), Index, EGameUseKeyCategory(Category), UserKeyMapping);
 }
 FVM_PlayerKeyMapping CreateByManager(const UEUIManagerSubsystem Manager, const int Index, const EGameUseKeyCategory Category, const FGameUserKeyMapping &inout UserKeyMapping)
 {
@@ -2745,7 +2738,7 @@ namespace FVM_PlayerMappableKey
 {
 FVM_PlayerMappableKey& Create(const UObject ContextObject, const FKey &inout Key, const EEUIInputType InputType)
 {
-    return FVM_PlayerMappableKey::CreateByManager(EUIInternal::GetContextManager(ContextObject), Key);
+    return FVM_PlayerMappableKey::CreateByManager(EUIInternal::GetContextManager(ContextObject), Key, EEUIInputType(InputType));
 }
 FVM_PlayerMappableKey CreateByManager(const UEUIManagerSubsystem Manager, const FKey &inout Key, const EEUIInputType InputType)
 {
@@ -2832,7 +2825,220 @@ FVM_PlayerKeyMappingPair CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostLoad(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "ActionName";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bIsKeyMapping";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bIsGamepadSelector";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Mapping0";
+    local_14.TypeName = "TEUIModelRef<FVM_PlayerKeyMapping>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Mapping1";
+    local_14.TypeName = "TEUIModelRef<FVM_PlayerKeyMapping>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "KeyboardTag";
+    local_14.TypeName = "FGameplayTag";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "GamepadTag";
+    local_14.TypeName = "FGameplayTag";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "RenderOpacity0";
+    local_14.TypeName = "float32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "RenderOpacity1";
+    local_14.TypeName = "float32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SwitchKeyIndex0";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SwitchKeyIndex1";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SwitchVisibleIndex0";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SwitchVisibleIndex1";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HoverIndex0";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HoverIndex1";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bHasChanged";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bNeedRefreshHover";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bHasChordKey0";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bHasChordKey1";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Key0";
+    local_14.TypeName = "FKey";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Key1";
+    local_14.TypeName = "FKey";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "KeyEnabled0";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "KeyEnabled1";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "KeyDisabled0";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "KeyDisabled1";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "KeyConfigurableVisibility0";
+    local_14.TypeName = "ESlateVisibility";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "KeyConfigurableVisibility1";
+    local_14.TypeName = "ESlateVisibility";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "KeyModified0";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "KeyModified1";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AnyKeyModified";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ChordKey0";
+    local_14.TypeName = "FKey";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ChordKey1";
+    local_14.TypeName = "FKey";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_PlayerKeyMappingPair>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_PlayerKeyMappingPair;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(21);
+    local_22.AddRefPropertyDirty(0, 1, FVM_PlayerKeyMapping::__IndexOf_bNeedRefreshHover());
+    local_22.AddRefPropertyDirty(1, 1, FVM_PlayerKeyMapping::__IndexOf_bHasChanged());
+    local_22.AddRefPropertyDirty(2, 1, FVM_PlayerKeyMapping::__IndexOf_CurrentKey());
+    local_22.AddRefPropertyDirty(3, 0, FVM_PlayerKeyMapping::__IndexOf_bHasChanged());
+    local_22.AddRefPropertyDirty(4, 0, FVM_PlayerKeyMapping::__IndexOf_bNeedRefreshHover());
+    local_22.AddRefPropertyDirty(5, 0, FVM_PlayerKeyMapping::__IndexOf_ChordKey());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("Mapping1");
+    int local_2_2 = FVM_PlayerKeyMapping::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(1);
+    local_30.RelatedDirtyMask.SetBit(FVM_PlayerKeyMapping::__IndexOf_bNeedRefreshHover(), true);
+    local_30.RelatedDirtyMask.SetBit(FVM_PlayerKeyMapping::__IndexOf_bHasChanged(), true);
+    local_30.RelatedDirtyMask.SetBit(FVM_PlayerKeyMapping::__IndexOf_CurrentKey(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    local_30.PropertyName = FName("Mapping0");
+    int local_23 = FVM_PlayerKeyMapping::ModelId;
+    int local_23_2 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FVM_PlayerKeyMapping::__IndexOf_bHasChanged(), true);
+    local_30.RelatedDirtyMask.SetBit(FVM_PlayerKeyMapping::__IndexOf_bNeedRefreshHover(), true);
+    local_30.RelatedDirtyMask.SetBit(FVM_PlayerKeyMapping::__IndexOf_ChordKey(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnChordKeyChanged";
+    local_40.DirtyFlags.Set(FVM_PlayerKeyMappingPair::__IndexOf_Mapping1());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(2));
+    local_40.DirtyFlags.Set(FVM_PlayerKeyMappingPair::__IndexOf_Mapping0());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(5));
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnKeyChanged";
+    local_40.DirtyFlags.Set(FVM_PlayerKeyMappingPair::__IndexOf_Mapping1());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(1));
+    local_40.DirtyFlags.Set(FVM_PlayerKeyMappingPair::__IndexOf_Mapping0());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(3));
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnNeedRefreshHoverChanged";
+    local_40.DirtyFlags.Set(FVM_PlayerKeyMappingPair::__IndexOf_Mapping1());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    local_40.DirtyFlags.Set(FVM_PlayerKeyMappingPair::__IndexOf_Mapping0());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(4));
+    Result.DirtyFunctions.Add(local_40);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

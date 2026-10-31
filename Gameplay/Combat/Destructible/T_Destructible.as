@@ -1,5 +1,3 @@
-﻿
-
 struct FT_Destructible : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -18,13 +16,12 @@ struct FT_Destructible : FECSTrait
     UPROPERTY()
     FC_VisualComponentToggleConfig Config_FC_VisualComponentToggleConfig;
 
-
     FString ValidateConfig(const AECSPrefab Prefab) const
     {
         if ((!(this.bHas_FC_VisualComponentToggleConfig) && (int(this.Config_FC_DestructibleConfig.BreakType) == 1)))
         {
             FString local_10 = Prefab.GetPathName(nullptr);
-            return FString().Append("Prefab [").Append(local_10).Append("] ValidateConfig Fail: HideComponentжЁЎејЏдё‹еї…йЎ»й…ЌзЅ®VisualComponentToggleConfig");
+            return FString().Append("Prefab [").Append(local_10).Append("] ValidateConfig Fail: HideComponent模式下必须配置VisualComponentToggleConfig");
         }
         return "";
     }

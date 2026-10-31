@@ -1,5 +1,3 @@
-﻿
-
 class UStringValidator_CharNum : UStringValidatorBase
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ class UStringValidator_CharNum : UStringValidatorBase
     FText LargerThanMaxNumErrorMessage;
     UPROPERTY()
     FText LessThanMinNumErrorMessage;
-
 
     EStringValidationResult ValidateString(const FString &inout String, FStringValidationContext &inout Context) const
     {

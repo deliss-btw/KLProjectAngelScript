@@ -1,14 +1,9 @@
-﻿
 enum EGameplayTagChangedMonitorType
 {
     OnTagAdded,
     OnTagRemoved,
     OnTagChanged,
 }
-
-
-// NOTE: class defaults are not authored in this module: FConditionGameplayTagChangedConfig (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
 
 class UConditionGameplayTagChanged : ULocalConditionTypeDefineBase
 {
@@ -83,9 +78,10 @@ struct FConditionGameplayTagChangedConfig : FLocalConditionTypeDefineConfigBase
     UPROPERTY()
     ELocalConditionPlayerFilter PlayerFilter;
 
+    default _base_FLocalConditionTypeDefineConfigBase = UConditionGameplayTagChanged;
+
     FConditionGameplayTagChangedConfig()
     {
-        super();
         this.MonitorType = EGameplayTagChangedMonitorType(0);
         this.PlayerFilter = ELocalConditionPlayerFilter(0);
         this.__InitDefaults();

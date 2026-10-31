@@ -1,10 +1,8 @@
-﻿
 enum EGameModeEntryMode
 {
     Match,
     Room,
 }
-
 
 struct FCombatRestrictionSettings
 {
@@ -14,7 +12,6 @@ struct FCombatRestrictionSettings
     int PotionMaxCount = 0;
     UPROPERTY()
     FName DivineSkillFilterTag = NAME_None;
-
 
     bool HasFlag(const ECombatRestrictionFlags Flag) const
     {
@@ -48,12 +45,9 @@ struct FGameModeFlowSettings
     UPROPERTY()
     int PostShutdownDelaySeconds = 5;
 
-
     bool IsValid() const
     {
-        TSubclassOf<UGameModeFlow> local_2;
-        local_2 = this;
-        return (!((local_2 == nullptr)));
+        return (!((this.FlowClass == nullptr)));
     }
 }
 
@@ -68,9 +62,7 @@ struct FGameModeBehaviorSettings
     }
     bool IsValid() const
     {
-        TSubclassOf<UGameModeBehavior> local_2;
-        local_2 = this;
-        return (!((local_2 == nullptr)));
+        return (!((this.BehaviorClass == nullptr)));
     }
 }
 

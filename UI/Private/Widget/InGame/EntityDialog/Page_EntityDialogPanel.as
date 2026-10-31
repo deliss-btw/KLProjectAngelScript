@@ -1,4 +1,3 @@
-﻿
 namespace UPage_EntityDialogPanel
 {
     const int ViewID = 0;
@@ -46,6 +45,7 @@ namespace UPage_EntityDialogPanel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UPage_EntityDialogPanel;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

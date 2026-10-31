@@ -1,5 +1,3 @@
-﻿
-
 class UWidget_SmallHPBar : UASUserWidget
 {
     UPROPERTY()

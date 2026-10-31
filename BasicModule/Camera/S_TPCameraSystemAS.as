@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Camera_DebugLookAtTarget = FConsoleVariable();
 const FConsoleVariable CVar_Camera_DebugCameraAffector = FConsoleVariable();
 const FConsoleVariable CVar_Camera_ForegroundDitherParam_StartK = FConsoleVariable();
@@ -93,7 +92,65 @@ class US_TPCameraSystemAS : UECSScriptSystem
     UFUNCTION()
     void Job_HandleTPCameraSystemASLockInput(const FECSEntity &inout Entity, const FC_Input &inout Input, const FCS_FixedTime &inout FixedTime, FC_ESMTrigger &inout ESMTrigger) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_24 = 0;
+        if ((this.CameraAdditionalInput == nullptr))
+        {
+            return;
+        }
+        ::FASCommonUtils::GetUniqueAvatarPawnEntity(Entity);
+        GetDefaulted local_16;
+        ECameraAdditionalInputModifierCategory local_18 = local_16.opCall().AdditionalInputModifierCategory;
+        int local_17 = local_18;
+        FECSEntity local_8 = ::FASCommonUtils::GetUniquePlayerEntity(Entity);
+        FActiveTriggerResult local_46 = this.CameraAdditionalInput.opArrow().TestTrigger(Input.State, FixedTime.LastTime, FixedTime.Time, ESMTrigger.Storage);
+        if (local_46.bClear)
+        {
+            FESMTriggerUtils::ClearTrigger(Entity, ESMTrigger.Storage, this.CameraAdditionalInput.opArrow().OutputTrigger);
+        }
+        else
+        {
+            if (local_46.bActive || ((local_17 != int(local_24.GetModifierCategory()))) || (local_24.GetDesiredModifierIndex() != local_24.GetModifierIndex()))
+            {
+                TArray<FDataObjectPtr> local_84;
+                int local_51;
+                int local_50;
+                if (!(this.CameraAdditionalInputModifiers.Contains(ECameraAdditionalInputModifierCategory(local_17))))
+                {
+                    return;
+                }
+                local_50 = local_24.GetModifierCategory();
+                local_51 = local_24.GetModifierIndex();
+                if (local_51 != -1)
+                {
+                    const FDataObjectPtr& local_54 = this.CameraAdditionalInputModifiers[ECameraAdditionalInputModifierCategory(local_50)].ModifierConfigs[local_51];
+                    FCameraUtils::StopModifier(local_8, FixedTime.Time, local_54.GetDataName(), TDataObjectPtr<FTPCameraModifierConfig>(local_54), -1.0f, true);
+                }
+                local_24.SetModifierCategory(ECameraAdditionalInputModifierCategory(local_17));
+                if (local_24.GetDesiredModifierIndex() != local_24.GetModifierIndex())
+                {
+                    local_24.SetModifierIndex(local_24.GetDesiredModifierIndex());
+                }
+                else
+                {
+                    if (local_46.bActive)
+                    {
+                        if (local_51 == -1)
+                        {
+                            local_24.SetModifierIndex(0);
+                        }
+                        local_24.SetModifierIndex((local_24.GetModifierIndex() + 1));
+                    }
+                }
+                if (local_24.GetModifierIndex() < 0 || (local_24.GetModifierIndex() >= local_84.Num()))
+                {
+                    local_24.SetModifierIndex(0);
+                }
+                local_24.SetDesiredModifierIndex(local_24.GetModifierIndex());
+                const FDataObjectPtr& local_54_2 = local_84[local_24.GetModifierIndex()];
+                FCameraUtils::StartModifier(local_8, FixedTime.Time, local_54_2.GetDataName(), TDataObjectPtr<FTPCameraModifierConfig>(local_54_2), -1.0f);
+            }
+        }
+        return;
     }
     UFUNCTION()
     void ClientJob_HandleCameraFreezeAndLookAtFollowTarget(const FCE_CameraFreezeAndLookAtFollowTarget &inout Event, const FCS_LocalPlayer &inout LocalPlayer) const
@@ -606,8 +663,7 @@ class US_TPCameraSystemAS : UECSScriptSystem
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_SetAdditionalInputModifierIndexNotify, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_SetAdditionalInputModifierIndexNotify, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());

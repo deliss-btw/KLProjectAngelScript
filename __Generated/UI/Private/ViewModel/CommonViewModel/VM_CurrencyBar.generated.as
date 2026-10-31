@@ -1,5 +1,3 @@
-﻿
-
 struct FConfigVM_CurrencyBar : FConfigEUIModelBase
 {
     UPROPERTY()

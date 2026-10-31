@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_SideHint
 {
     const int ModelId = 0;
@@ -189,10 +188,9 @@ struct FVMS_SideHint : FEUIViewModelSingleton
     }
     void SetupTimmer(const FVM_SideHintItem &inout SideHintItem, const EHUDSideHintType SideHintType, const float32 ShowHintTime)
     {
-        FEUIModelRef local_6;
         if (int(SideHintType) == 0)
         {
-            this.GetModify_SideHintArray().Add(local_6);
+            this.GetModify_SideHintArray().Add(FEUIModelRef(SideHintItem));
             this.GetModify_SideHintEndTimeArray().Add((float32(ECS::GetECSWorld().GetLocalTime().Time.ToSeconds()) + ShowHintTime));
             if (this.GetSideHintArray().Num() > this.GetMaxSideHintNum())
             {
@@ -201,7 +199,7 @@ struct FVMS_SideHint : FEUIViewModelSingleton
             }
             return;
         }
-        this.GetModify_ImportantSideHintArray().Add(local_6);
+        this.GetModify_ImportantSideHintArray().Add(FEUIModelRef(SideHintItem));
         this.GetModify_ImportantSideHintEndTimeArray().Add((float32(ECS::GetECSWorld().GetLocalTime().Time.ToSeconds()) + ShowHintTime));
         if (this.GetImportantSideHintArray().Num() > this.GetMaxImportantSideHintNum())
         {

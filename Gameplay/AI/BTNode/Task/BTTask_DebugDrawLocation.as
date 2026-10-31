@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_DebugDrawLocation : UBTTask_ECSScriptBase
 {
     UPROPERTY()

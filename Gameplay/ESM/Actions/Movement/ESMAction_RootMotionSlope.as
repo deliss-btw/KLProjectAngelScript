@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_RootMotionSlope : UESMBPBaseSpanAction
 {
     UESMAction_RootMotionSlope()

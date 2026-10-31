@@ -1,4 +1,3 @@
-﻿
 enum ECameraType
 {
     None,
@@ -8,7 +7,6 @@ enum ECameraType
     AnimatedCamera,
     NATIVE_MAX = 4,
 }
-
 
 struct FCameraRuntimeDataBasic
 {
@@ -53,14 +51,14 @@ struct FCameraParamsBasic
     UPROPERTY()
     EPresentationCameraLayer m_Layer;
 
-
     FName GetCameraName() const property
     {
-        return this;
+        return this.m_CameraName;
     }
     void SetCameraName(const FName &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_CameraName = __Value;
+        return;
     }
     EPresentationCameraLayer GetLayer() const property
     {

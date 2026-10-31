@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TraitDetailList
 {
     const int ModelId = 0;
@@ -70,9 +69,7 @@ struct FVM_TraitDetailList : FEUIViewModel
                 continue;
             }
             FM_Trait& local_68 = ::FM_Trait::Create(this.GetContext().Manager, local_26, local_55);
-            local_58 = (local_55 == local_51);
-            TEUIModelRef<FM_Trait> local_2_3 = TEUIModelRef<FM_Trait>(local_68);
-            FEUIModelRef local_70;
+            FEUIModelRef local_70 = FEUIModelRef(::FVM_TraitDetailListItem::Create(this.GetContext().Manager, TEUIModelRef<FM_Trait>(local_68), (local_55 == local_51)));
             this.GetModify_ListItems().Add(local_70);
         }
         return;

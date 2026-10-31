@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PendingConfirmBubble
 {
     const int ViewID = 0;
@@ -41,7 +40,6 @@ class UWidget_PendingConfirmBubble : UEUIUserWidget
     UPROPERTY()
     FGetEUIModelRef BubbleDelegate;
 
-
     UFUNCTION()
     void OnViewBind_Implementation()
     {
@@ -52,16 +50,16 @@ class UWidget_PendingConfirmBubble : UEUIUserWidget
             this.BP_KeyPrompt_AcceptHandle.SetVisibility(ESlateVisibility(0));
             this.BP_KeyPrompt_Refuse.SetVisibility(ESlateVisibility(1));
             this.BP_KeyPrompt_Accept.SetVisibility(ESlateVisibility(1));
-            this.w_txt_accept.SetText(NSLOCTEXT("PendingConfirm", "AcceptTextGamepad", "й•їжЊ‰жЋҐеЏ—"));
-            this.w_txt_refuse.SetText(NSLOCTEXT("PendingConfirm", "RefuseTextGamepad", "й•їжЊ‰ж‹’з»ќ"));
+            this.w_txt_accept.SetText(NSLOCTEXT("PendingConfirm", "AcceptTextGamepad", "长按接受"));
+            this.w_txt_refuse.SetText(NSLOCTEXT("PendingConfirm", "RefuseTextGamepad", "长按拒绝"));
             return;
         }
         this.BP_KeyPrompt_RefuseHandle.SetVisibility(ESlateVisibility(1));
         this.BP_KeyPrompt_AcceptHandle.SetVisibility(ESlateVisibility(1));
         this.BP_KeyPrompt_Refuse.SetVisibility(ESlateVisibility(0));
         this.BP_KeyPrompt_Accept.SetVisibility(ESlateVisibility(0));
-        this.w_txt_accept.SetText(NSLOCTEXT("PendingConfirm", "AcceptTextKeyMouse", "жЋҐеЏ—"));
-        this.w_txt_refuse.SetText(NSLOCTEXT("PendingConfirm", "RefuseTextKeyMouse", "ж‹’з»ќ"));
+        this.w_txt_accept.SetText(NSLOCTEXT("PendingConfirm", "AcceptTextKeyMouse", "接受"));
+        this.w_txt_refuse.SetText(NSLOCTEXT("PendingConfirm", "RefuseTextKeyMouse", "拒绝"));
         return;
     }
     UFUNCTION()
@@ -202,6 +200,7 @@ namespace UWidget_PendingConfirmBubble
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PendingConfirmBubble;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectMainTabUpdated"));
     return;
 }

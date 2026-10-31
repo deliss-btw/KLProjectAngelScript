@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class UAimPoseBoneProcessor : UObject
 {
@@ -10,7 +8,6 @@ class UAimPoseBoneProcessor : UObject
     bool bEnableDebugDraw = false;
     bool CfgEnabled = false;
     float32 CfgWeight = 1.0f;
-
 
     void ResetToConfigDefaults()
     {

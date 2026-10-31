@@ -1,4 +1,3 @@
-﻿
 enum EBreathAudioState
 {
     Idle,
@@ -13,14 +12,12 @@ enum ECharacterReactionSoundType
     WaitForBreath,
 }
 
-
 struct FBreathAudioWeightConfig
 {
     UPROPERTY()
     float32 MaxBreathWeight = 0.0f;
     UPROPERTY()
     TSoftObjectPtr<UAkAudioEvent> BreathAudioEvent;
-
 
 }
 
@@ -52,18 +49,14 @@ class UBreathAudioSettings : UDataAsset
     UPROPERTY()
     TSoftObjectPtr<UAkAudioEvent> BreathStopAudioEvent;
     UPROPERTY()
-    TMap<EBreathAudioState, float32> BreathAudioStateWeightMap;
+    TMap<EBreathAudioState, float32> BreathAudioStateWeightMap = {{EBreathAudioState(0), 0.0f}, {EBreathAudioState(1), 0.1f}, {EBreathAudioState(2), 0.3f}, {EBreathAudioState(3), 0.6f}};
     UPROPERTY()
-    float32 CombatAdditiveWeight;
+    float32 CombatAdditiveWeight = 0.3f;
     UPROPERTY()
     TMap<FBreathAudioBlendKey, float32> CustomBlendSpeeds;
     UPROPERTY()
-    float32 DefaultBlendSpeed;
+    float32 DefaultBlendSpeed = 0.02f;
 
-    UBreathAudioSettings()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
 }
 
 class UBreathAudioSubsystem : UWorldSubsystem
@@ -76,8 +69,9 @@ class UBreathAudioSubsystem : UWorldSubsystem
     }
     int PlayNextAudio(const FECSEntity &inout Entity, const TSoftObjectPtr<UAkAudioEvent> &inout NextBreathAudioEvent)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        int local_3_2 = FGameAudioUtils::PlayEventOnEmitter(NextBreathAudioEvent, Entity, FGameAudioUtils::CreateWiseEndCallback(FOnWiseEndCallback(this, n"OnBreathAudioEnd")), EGameAudioEmitterPartType(0), true, false, false, FGameAudioUtils::GetCachedAudioWorld(), true);
+        this.BreathAudioMap.Add(local_3_2, Entity);
+        return local_3_2;
     }
     UFUNCTION()
     void OnBreathAudioEnd(const int SoundId)
@@ -132,6 +126,38 @@ void PlayBreathSound(const FECSEntity &inout Entity, const TSoftObjectPtr<UAkAud
 }
 void PlayCharacterReactionSound(const FECSEntity &inout Entity, const TSoftObjectPtr<UAkAudioEvent> &inout Event, const TSoftObjectPtr<UAkAudioEvent> &inout StopAudioEvent, const ECharacterReactionSoundType ReactionSoundType)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    bool local_1 = !(!(Event.IsNull()) == !(false));
+    if (local_1)
+    {
+        return;
+    }
+    if (int(ReactionSoundType) == 0)
+    {
+        FC_BreathAudio local_8;
+        if (int(local_8.CurrentSoundId) != INDEX_NONE)
+        {
+            UBreathAudioSubsystem local_12 = UBreathAudioSubsystem::Get();
+            if (!(local_8.CurrentStopAudioEvent.IsNull()) == !(false))
+            {
+                FGameAudioUtils::PlayEventOnEmitter(local_8.CurrentStopAudioEvent, Entity, FLoadEventCallback(), EGameAudioEmitterPartType(0), true, false, false, FGameAudioUtils::GetCachedAudioWorld(), true);
+            }
+            else
+            {
+                FGameAudioUtils::StopSound(int(local_8.CurrentSoundId));
+            }
+        }
+        local_8.CurrentAudioEvent = Event;
+        local_8.CurrentStopAudioEvent = StopAudioEvent;
+        local_8.CurrentSoundId = UBreathAudioSubsystem::Get().PlayNextAudio(Entity, Event);
+        local_8.NextReactionAudioEvent.Reset();
+        return;
+    }
+    if (int(ReactionSoundType) == 1)
+    {
+        FC_BreathAudio local_8;
+        local_8.NextReactionAudioEvent = Event;
+        local_8.NextReactionStopAudioEvent = StopAudioEvent;
+    }
+    return;
 }
 }

@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ChatPlayerItem
 {
     const int ViewID = 0;
@@ -156,6 +155,7 @@ namespace UWidget_ChatPlayerItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ChatPlayerItem;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelected"));
     return;
 }

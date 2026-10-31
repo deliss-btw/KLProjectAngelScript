@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TrainingItem_Helpers
 {
 UFUNCTION()

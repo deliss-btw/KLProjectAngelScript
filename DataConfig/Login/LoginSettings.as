@@ -1,4 +1,3 @@
-﻿
 enum EGameStartPhase
 {
     CompanyLogo,
@@ -45,7 +44,6 @@ enum ELoginErrorTipType
     Generic,
 }
 
-
 struct FGameStartPhaseInfo
 {
     UPROPERTY()
@@ -57,14 +55,12 @@ struct FGameStartPhaseInfo
     UPROPERTY()
     float32 FadeOutTime = 0.25f;
 
-
 }
 
 struct FSkipInfo
 {
     UPROPERTY()
     bool bIsSkip = false;
-
 
 }
 
@@ -75,7 +71,6 @@ struct FLoginButtonInfo
     UPROPERTY()
     bool bHidden = false;
 
-
 }
 
 struct FHotUpdateInfo
@@ -85,7 +80,6 @@ struct FHotUpdateInfo
     UPROPERTY()
     TDataObjectPtr<FKLTextData> HotUpdateProgressTextData;
 
-
 }
 
 struct FPSOPrecompileInfo
@@ -94,7 +88,6 @@ struct FPSOPrecompileInfo
     bool bDisablePSOPrecompile = false;
     UPROPERTY()
     TDataObjectPtr<FKLTextData> PSOPrecompileTextData;
-
 
 }
 
@@ -134,7 +127,6 @@ struct FCreatePlayerStepConfig
     UPROPERTY()
     TArray<FName> EnabledLightTags;
 
-
 }
 
 class ULoginSettings : UGameplaySettingsBase
@@ -165,7 +157,6 @@ class ULoginSettings : UGameplaySettingsBase
     FLoginErrorTipInfo LoginErrorTips;
     UPROPERTY()
     float32 LoginTimeoutSeconds = 20.0f;
-
 
 }
 

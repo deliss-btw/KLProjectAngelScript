@@ -1,4 +1,3 @@
-﻿
 namespace FVM_WorldMapUtils
 {
     const int ModelId = 0;

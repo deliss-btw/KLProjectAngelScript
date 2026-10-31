@@ -1,5 +1,3 @@
-﻿
-
 class UEQC_TargetEcosimWanderPoint : UEnvQueryContext_ECS_BlueprintBase
 {
     UEQC_TargetEcosimWanderPoint()

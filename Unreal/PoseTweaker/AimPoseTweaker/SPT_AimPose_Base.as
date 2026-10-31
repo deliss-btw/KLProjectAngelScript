@@ -1,5 +1,3 @@
-﻿
-
 class USPT_AimPose_Base : USkeletalPoseTweaker
 {
     UPROPERTY()
@@ -15,7 +13,6 @@ class USPT_AimPose_Base : USkeletalPoseTweaker
     bool bConfigInitialized = false;
     bool bBoneRefsInitialized = false;
 
-
     UFUNCTION()
     void OnInitialization_Implementation()
     {
@@ -24,7 +21,59 @@ class USPT_AimPose_Base : USkeletalPoseTweaker
     UFUNCTION()
     void EvaluatePose_Implementation()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FAnimAimPoseConfig local_20;
+        TDataObjectPtr<FAnimAimPoseConfig> local_44;
+        local_44 = this.AimPoseConfig.GetConfigPtr();
+        if (!((local_44 == nullptr)))
+        {
+        }
+        else
+        {
+            return;
+        }
+        this.InitializeFromConfig(local_20, !(this.bConfigInitialized));
+        this.ApplyOutputOverrides(this.AimPoseInput);
+        if (FMath::IsNearlyZero(this.AimPoseInput.GetWeight(), 1e-8f))
+        {
+            return;
+        }
+        float32 local_72 = this.CurrentDeltaSeconds;
+        for (auto local_86 : this.Compensators)
+        {
+            local_86.Snapshot();
+        }
+        TArray<FAimPoseSegmentContext> local_90;
+        local_90.SetNum(this.Segments.Num());
+        int local_92 = 0;
+        for (; local_92 < this.Segments.Num(); )
+        {
+            FAnimSnapshot local_112;
+            if (this.AnimResolved && !(this.AnimResolved.SnapshotMap.IsEmpty()))
+            {
+                if (!(this.AnimResolved.SnapshotMap.Find(this.Segments[local_92].ChannelKey, local_112)))
+                {
+                    return;
+                }
+            }
+            else
+            {
+                if (this.LookResolved)
+                {
+                    local_112 = this.LookResolved.Snapshot;
+                }
+            }
+            FAimPoseSegmentContext local_148 = this.FindParentContext(local_92, local_90);
+            this.Segments[local_92].SolveTarget(uint8(local_112.GetAnimSnapshotTypeMask()), local_112.GetPosition(), local_112.GetRotator(), local_72, local_148);
+            local_90[local_92] = local_148;
+            ++local_92;
+        }
+        FAimPoseCompensatorExecContext local_152;
+        local_152.DeltaTime = local_72;
+        for (auto local_86 : this.Compensators)
+        {
+            local_86.Execute(local_152);
+        }
+        return;
     }
     void InitializeFromConfig(const FAnimAimPoseConfig &inout Config, const bool ResetAttr)
     {
@@ -43,14 +92,13 @@ class USPT_AimPose_Base : USkeletalPoseTweaker
             for (auto local_16 : this.Segments)
             {
                 int local_17 = 0;
-                while (local_17 < 0)
+                for (; local_17 < Config.Segments.Num(); ++local_17)
                 {
                     if ((FName(Config.Segments[local_17].SegmentName) == local_16.ProcessorName))
                     {
                         local_16.InitFromConfig(Config.Segments[local_17], false);
                         break;
                     }
-                    ++local_17;
                 }
             }
             this.ApplyCompensatorConfig(Config, false);
@@ -73,7 +121,7 @@ class USPT_AimPose_Base : USkeletalPoseTweaker
     {
         this.Segments.Empty(0);
         int local_2 = 0;
-        while (local_2 < 0)
+        for (; local_2 < Config.Segments.Num(); )
         {
             const FAimPoseSegmentConfig& local_6 = Config.Segments[local_2];
             UAimPoseSegmentSolver local_12 = ::AimPoseSolverFactory::Create(local_6.SolverMode);
@@ -94,10 +142,9 @@ class USPT_AimPose_Base : USkeletalPoseTweaker
     }
     void BuildCompensatorsFromConfig(const FAnimAimPoseConfig &inout Config)
     {
-        int local_3 = 0;
         this.Compensators.Empty(0);
         int local_2 = 0;
-        while (local_2 < local_3)
+        for (; local_2 < Config.Compensators.Num(); )
         {
             const FAimPoseCompensatorConfig& local_6 = Config.Compensators[local_2];
             UAimPoseCompensator local_12 = ::AimPoseCompensatorFactory::Create(local_6.Method);
@@ -105,7 +152,6 @@ class USPT_AimPose_Base : USkeletalPoseTweaker
             local_12.InitFromConfig(local_6, true);
             this.Compensators.Add(local_12);
             ++local_2;
-            local_3 = Config.Compensators.Num();
         }
         return;
     }
@@ -119,7 +165,7 @@ class USPT_AimPose_Base : USkeletalPoseTweaker
             local_16 = local_6.Proceed();
             local_17 = false;
             int local_18 = 0;
-            while (local_18 < 0)
+            for (; local_18 < Config.Compensators.Num(); ++local_18)
             {
                 if ((FName(Config.Compensators[local_18].Name) == local_16.ProcessorName))
                 {
@@ -127,7 +173,6 @@ class USPT_AimPose_Base : USkeletalPoseTweaker
                     local_17 = true;
                     break;
                 }
-                ++local_18;
             }
             if (!(local_17))
             {

@@ -1,5 +1,3 @@
-﻿
-
 struct FFogCardSetting
 {
     UPROPERTY()
@@ -20,7 +18,6 @@ struct FFogCardSetting
     float32 NearFadeSmooth = 1000.0f;
     UPROPERTY()
     float32 WindSpeed = 0.1f;
-
 
 }
 
@@ -73,15 +70,15 @@ class ASceneFogCard2D : AActor
         {
             return;
         }
-        this.MID.SetScalarParameterValue(n"Alpha", int(this.FogSetting.Alpha));
+        this.MID.SetScalarParameterValue(n"Alpha", this.FogSetting.Alpha);
         this.MID.SetVectorParameterValue(n"Base Color Tint", this.FogSetting.Albedo);
         this.MID.SetVectorParameterValue(n"EmissiveColor", this.FogSetting.EmissiveColor);
-        this.MID.SetScalarParameterValue(n"NoiseTilling", int(this.FogSetting.FogNoiseUV));
-        this.MID.SetScalarParameterValue(n"NoiseScale", int(this.FogSetting.NoiseScale));
+        this.MID.SetScalarParameterValue(n"NoiseTilling", this.FogSetting.FogNoiseUV);
+        this.MID.SetScalarParameterValue(n"NoiseScale", this.FogSetting.NoiseScale);
         this.MID.SetTextureParameterValue(n"Opacity", this.FogSetting.Tex);
-        this.MID.SetScalarParameterValue(n"Camera Fading Distance", int(this.FogSetting.NearFadeDistance));
-        this.MID.SetScalarParameterValue(n"Camera Fading Range", int(this.FogSetting.NearFadeSmooth));
-        this.MID.SetScalarParameterValue(n"WindSpeed", int(this.FogSetting.WindSpeed));
+        this.MID.SetScalarParameterValue(n"Camera Fading Distance", this.FogSetting.NearFadeDistance);
+        this.MID.SetScalarParameterValue(n"Camera Fading Range", this.FogSetting.NearFadeSmooth);
+        this.MID.SetScalarParameterValue(n"WindSpeed", this.FogSetting.WindSpeed);
         return;
     }
 }

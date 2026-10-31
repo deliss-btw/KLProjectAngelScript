@@ -1,4 +1,3 @@
-﻿
 namespace FVM_BonfirePage_Supply
 {
     const int ModelId = 0;
@@ -189,13 +188,14 @@ struct FVM_BonfirePage_Supply : FEUIViewModel
     }
     void InitData()
     {
+        int local_69;
         float local_72;
-        this.SetTitleText(NSLOCTEXT("Bonfire", "зЇќзЃ«"));
-        this.SetTipsTitleText(NSLOCTEXT("Bonfire", "зЇќзЃ«"));
-        this.SetTipsText(NSLOCTEXT("<key id=\"Enter\"/>View Details", "<key id=\"Enter\"/>жџҐзњ‹иЇ¦жѓ…"));
-        this.SetButtonText(NSLOCTEXT("Supply", "иЎҐз»™"));
-        this.SetConsumeKeyText(NSLOCTEXT("HoldToSupply", "й•їжЊ‰иЎҐз»™"));
-        this.SetResidualText(NSLOCTEXT("ResidualSupplyTimes:", "е‰©дЅ™иЎҐз»™ж•°й‡Џпјљ"));
+        this.SetTitleText(NSLOCTEXT("Bonfire", "篝火"));
+        this.SetTipsTitleText(NSLOCTEXT("Bonfire", "篝火"));
+        this.SetTipsText(NSLOCTEXT("<key id=\"Enter\"/>View Details", "<key id=\"Enter\"/>查看详情"));
+        this.SetButtonText(NSLOCTEXT("Supply", "补给"));
+        this.SetConsumeKeyText(NSLOCTEXT("HoldToSupply", "长按补给"));
+        this.SetResidualText(NSLOCTEXT("ResidualSupplyTimes:", "剩余补给数量："));
         UGlobalItemSettings local_6 = ::UGlobalItemSettings::Get();
         int local_56 = ::InventoryUtils::GetInventoryItemNumber(this.GetLocalPlayerPawn(), local_6.CoinConfig);
         FNameHandle_EntityBBVarInt local_62;
@@ -226,10 +226,19 @@ struct FVM_BonfirePage_Supply : FEUIViewModel
         int local_89 = 0;
         for (; local_89 < this.GetAbilityGroup().GroupItems.Num(); ++local_89)
         {
-            if ((local_89 != 0 && (local_89 != 1)))
+            if (local_89 == 0)
             {
-                bool local_91 = this.GetAbilityGroup().GroupItems[local_89].bIsInteractTarget;
-                this.GetModify_ItemRefs().Add(FEUIModelRef(::FVM_CommonBGItemMenu::Create(this.GetContext().Manager, n"Bonfire", local_89, this.GetAbilityGroup().GroupItems[local_89].Signal, local_91, this.GetAbilityGroup().GroupItems[local_89].bSetVisibility)));
+                local_69 = 0;
+            }
+            else
+            {
+                bool local_91 = (local_89 != 1);
+                local_69 = local_91;
+            }
+            if (local_69 != 0)
+            {
+                local_69 = this.GetAbilityGroup().GroupItems[local_89].bSetVisibility;
+                this.GetModify_ItemRefs().Add(FEUIModelRef(::FVM_CommonBGItemMenu::Create(this.GetContext().Manager, n"Bonfire", local_89, this.GetAbilityGroup().GroupItems[local_89].Signal, this.GetAbilityGroup().GroupItems[local_89].bIsInteractTarget, (local_69 != 0))));
             }
         }
         return;
@@ -271,8 +280,8 @@ struct FVM_BonfirePage_Supply : FEUIViewModel
         }
         if (local_1 < 0)
         {
-            this.SetRemainedRefillTimes(INVTEXT("в€ћ"));
-            this.SetHintText(NSLOCTEXT("RefillSufficientHint", "ењ°и„‰е……з›€"));
+            this.SetRemainedRefillTimes(INVTEXT("∞"));
+            this.SetHintText(NSLOCTEXT("RefillSufficientHint", "地脉充盈"));
             this.SetBonfireState(0);
             this.SetAddButtonVisibility(ESlateVisibility(2));
         }
@@ -301,18 +310,18 @@ struct FVM_BonfirePage_Supply : FEUIViewModel
             FNameHandle_EntityBBVarInt local_12;
             FText local_28;
             FText local_24;
-            this.SetHintText(NSLOCTEXT("RefillLackHint", "ењ°и„‰зґЉд№±"));
+            this.SetHintText(NSLOCTEXT("RefillLackHint", "地脉紊乱"));
             local_12;
             int local_3 = this.GetLocalPlayer().GetBB_Int(local_12);
             FText::AsNumber(local_4, local_24);
             FText::AsNumber(local_2, local_28);
-            this.SetSupplyHintText(FText::Format(NSLOCTEXT("CampsiteProvisions_Lack", "ењ°и„‰зґЉд№±жњџењ°и„‰иЎҐз»™еЏ—й»пјЊд»…еЏЇжЏђдѕ›<Yellow20>{0}</>ж¬ЎжµЃжµ†з“¶е…Ќиґ№иЎҐз»™гЂ‚\nеЏЇж¶€иЂ—<Yellow20>{1}</>и•ґеђ«зєЇе‡ЂдёќзєїеЉ›й‡Џзљ„з‰©е“Ѓи‡ЄиЎЊиЎҐз»™пјЊжЃўе¤ЌеЅ“е‰ЌжµЃжµ†з“¶е№¶иЎҐе……<Yellow20>{2}</>ж¬ЎиЎҐз»™гЂ‚"), local_28, FNumberFormattingOptions::DefaultNoGrouping(), local_24));
+            this.SetSupplyHintText(FText::Format(NSLOCTEXT("CampsiteProvisions_Lack", "地脉紊乱期地脉补给受阻，仅可提供<Yellow20>{0}</>次流浆瓶免费补给。\n可消耗<Yellow20>{1}</>蕴含纯净丝线力量的物品自行补给，恢复当前流浆瓶并补充<Yellow20>{2}</>次补给。"), local_28, FNumberFormattingOptions::DefaultNoGrouping(), local_24));
             this.SetBonfireState(1);
         }
         else
         {
-            this.SetHintText(NSLOCTEXT("RefillSufficientHint", "ењ°и„‰е……з›€"));
-            this.SetSupplyHintText(NSLOCTEXT("CampsiteProvisions_Full", "ењ°и„‰е……з›€жњџењ°и„‰иЎҐз»™еЏЇжЏђдѕ›<Yellow20>в€ћ</>ж¬ЎжµЃжµ†з“¶е…Ќиґ№иЎҐз»™гЂ‚"));
+            this.SetHintText(NSLOCTEXT("RefillSufficientHint", "地脉充盈"));
+            this.SetSupplyHintText(NSLOCTEXT("CampsiteProvisions_Full", "地脉充盈期地脉补给可提供<Yellow20>∞</>次流浆瓶免费补给。"));
             this.SetBonfireState(0);
         }
         this.SetRefillCostHint(FText::AsNumber(local_4, FNumberFormattingOptions::DefaultNoGrouping()));

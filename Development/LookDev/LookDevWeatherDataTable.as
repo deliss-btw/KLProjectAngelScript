@@ -1,5 +1,3 @@
-﻿
-
 struct FLookDevWeatherItem
 {
     UPROPERTY()
@@ -16,7 +14,6 @@ struct FLookDevWeatherItem
     float32 InitTime = 12.0f;
     UPROPERTY()
     float32 InitLogicTime = 12.0f;
-
 
 }
 

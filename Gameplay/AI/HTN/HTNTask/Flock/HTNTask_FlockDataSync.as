@@ -1,5 +1,3 @@
-﻿
-
 class UHTNTask_FlockDataSync : UHTNTask_ECSScriptBase
 {
     UHTNTask_FlockDataSync()

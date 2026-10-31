@@ -1,5 +1,3 @@
-﻿
-
 class UECSTestCounter : UObject
 {
     int Count;

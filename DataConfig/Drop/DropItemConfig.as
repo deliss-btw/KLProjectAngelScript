@@ -1,5 +1,3 @@
-﻿
-
 struct FDropItemConfigBase : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -17,16 +15,13 @@ struct FDropItemPackage
     UPROPERTY()
     TDataObjectPtr<FItemConfig> Item;
     UPROPERTY()
-    int Num;
+    int Num = 1;
 
-    FDropItemPackage()
-    {
-        this.Num = 1;
-        return;
-    }
     FDropItemPackage(const TDataObjectPtr<FItemConfig> &inout InItem, const int InNum = 1)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.Item = InItem;
+        this.Num = InNum;
+        return;
     }
 }
 
@@ -36,7 +31,6 @@ struct FDropItemData
     TArray<FDropItemPackage> DropItemPackages;
     UPROPERTY()
     int Weight = 100;
-
 
 }
 
@@ -49,7 +43,6 @@ struct FDropItemGroundBagConfig : FDataObject
     FText GroundBagInteractText;
     UPROPERTY()
     bool bShowRewardPopup = false;
-
 
 }
 
@@ -66,7 +59,6 @@ struct FDropItemConfig : FDropItemConfigBase
     EDSDropType DropType = EDSDropType(0);
     UPROPERTY()
     FDataObjectPtr m_GroundBagConfig;
-
 
     const TDataObjectPtr<FDropItemGroundBagConfig> GetGroundBagConfig() const property
     {
@@ -90,7 +82,6 @@ struct FDropGroupItemData
     UPROPERTY()
     bool bUseBadWeatherDropRateUpRule;
 
-
 }
 
 struct FDropItemGroupConfig : FDropItemConfigBase
@@ -108,7 +99,6 @@ struct FDropItemGroupConfig : FDropItemConfigBase
     EDSDropType DropType = EDSDropType(0);
     UPROPERTY()
     FDataObjectPtr m_GroundBagConfig;
-
 
     const TDataObjectPtr<FDropItemGroundBagConfig> GetGroundBagConfig() const property
     {

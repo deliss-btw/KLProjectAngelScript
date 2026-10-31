@@ -1,4 +1,3 @@
-﻿
 namespace FVM_BindCompPosition
 {
     const int ModelId = 0;

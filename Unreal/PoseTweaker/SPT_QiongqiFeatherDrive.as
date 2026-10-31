@@ -1,5 +1,3 @@
-﻿
-
 struct FFeatherDriveConfig
 {
     UPROPERTY()
@@ -11,6 +9,7 @@ struct FFeatherDriveConfig
 
     FFeatherDriveConfig(const FName &inout Driver, const FName &inout Follower, const float InScale)
     {
+        this.DriverBone = Driver;
         this.FollowerBone = Follower;
         this.Scale = InScale;
         return;
@@ -26,7 +25,6 @@ struct FActiveFeatherPair
     UPROPERTY()
     float Scale;
 
-
 }
 
 class USPT_QiongqiFeatherDrive : USkeletalPoseTweaker
@@ -37,7 +35,7 @@ class USPT_QiongqiFeatherDrive : USkeletalPoseTweaker
 
     USPT_QiongqiFeatherDrive()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     UFUNCTION()
     void OnInitialization_Implementation()

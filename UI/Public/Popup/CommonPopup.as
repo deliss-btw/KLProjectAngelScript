@@ -1,4 +1,3 @@
-﻿
 enum ECommonHoverLayout
 {
     Right,
@@ -47,11 +46,11 @@ struct FDialogCallback
     {
         if (this.bBoundModelCallback)
         {
-            int local_2;
+            bool local_2;
             local_2 = true;
-            if (this.ExecuteIfBound(Answer, local_2))
+            if (this.ModelCallback.ExecuteIfBound(Answer, local_2))
             {
-                return (local_2 != 0);
+                return local_2;
             }
         }
         else
@@ -88,7 +87,6 @@ struct FCommonDialogParam
     UPROPERTY()
     bool bIsForbidIgnored = false;
 
-
 }
 
 struct FCommonHoverHandle
@@ -102,20 +100,24 @@ struct FCommonHoverHandle
     }
     FCommonHoverHandle(const FEUIWidgetRef &inout InWidgetRef)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.WidgetRef = InWidgetRef;
+        return;
     }
     int opCmp(const FCommonHoverHandle &inout Other) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
-        int __r; return __r;
+        if ((this.WidgetRef == Other.WidgetRef))
+        {
+            return 0;
+        }
+        return 1;
     }
     bool opConv() const
     {
-        return this.IsValid();
+        return this.WidgetRef.IsValid();
     }
     bool IsValid() const
     {
-        return this.IsValid();
+        return this.WidgetRef.IsValid();
     }
 }
 
@@ -150,6 +152,7 @@ struct FCommonHoverInfo
 
     FCommonHoverInfo(const FBox2D &inout InAnchorsViewportSpace, const TSoftClassPtr<UUserWidget> &inout InContentWidget, const FEUIModelContainer &inout InContentModels = FEUIModelContainer())
     {
+        this.AnchorsViewportSpace = InAnchorsViewportSpace;
         this.ContentWidget = InContentWidget;
         this.ContentModels = InContentModels;
         this.bClickClose = false;
@@ -257,7 +260,7 @@ struct FCommonHoverInfo
     }
     bool opConv() const
     {
-        return this.bIsValid && !(this.ContentWidget.IsNull());
+        return this.AnchorsViewportSpace.bIsValid && !(this.ContentWidget.IsNull());
     }
     bool HasBlockingCloseMask() const
     {
@@ -342,7 +345,42 @@ void WeakTips(const FText &inout Content, const FCommonTipsParam &inout ExtraPar
 }
 void Banner(const FGameplayTag &inout PopupType, const FText &inout Title, const EBannerBGType BGType, const FSoftBrush &inout Icon, const FText &inout Tips = FText(), const bool bEnd = false, const float32 LifetimeOverride = 0, const EBannerWidgetType BannerType = EBannerWidgetType::Default, const int Priority = CommonPopupUtils::CommonPopupPriorityUnset)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    float32 local_77;
+    if (!(CommonPopupUtils::EnsureECSWorldReady("Banner", true)))
+    {
+        return;
+    }
+    FECSWorldPtr local_4 = ECS::GetECSWorld();
+    ModifyOrAdd local_8;
+    FCS_CommonBannerManager& local_10 = local_8.opCall();
+    if (local_10)
+    {
+        int local_12 = CommonPopupUtils::ResolveEffectivePriority(PopupType, Priority);
+        int local_11 = CommonPopupUtils::TryEnqueuePopup(PopupType, local_12);
+        if (local_11 == INDEX_NONE)
+        {
+            return;
+        }
+        FCommonBannerInfo local_72;
+        local_72.Title = Title;
+        local_72.BGType = BGType;
+        local_72.Icon = Icon;
+        local_72.bEnd = bEnd;
+        local_72.Tips = Tips;
+        local_72.BannerType = BannerType;
+        if (LifetimeOverride > 0.0f)
+        {
+            local_77 = LifetimeOverride;
+        }
+        else
+        {
+            local_77 = CommonPopupSettings::Get().DefaultBannerLifetime;
+        }
+        local_72.Lifetime = local_77;
+        local_72.Priority = local_12;
+        local_10.PendingBanners.Add(local_11, local_72);
+    }
+    return;
 }
 void LevelUpBanner(const FText &inout Title, const FText &inout Tips = FText(), const float32 LifetimeOverride = 0, const int Priority = CommonPopupUtils::CommonPopupPriorityUnset)
 {
@@ -356,11 +394,106 @@ void SystemUnlockBanner(const FText &inout Title, const FSoftBrush &inout Icon, 
 }
 void NewsTicker(const FText &inout Content, const FCommonHintParam &inout ExtraParam = FCommonHintParam(), const int Priority = CommonPopupUtils::CommonPopupPriorityUnset, const int RepeatCount = 1, const UObject WorldContext = nullptr)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    UObject local_6;
+    if (!(ECS::GetECSWorld().IsValid()))
+    {
+        if (!(IsValid(local_6)))
+        {
+            local_6 = Cast<UObject>(FASCommonUtils::GetLocalPlayerController());
+        }
+        if (!(IsValid(local_6)))
+        {
+            local_6 = Cast<UObject>(ECS::GetUEWorld());
+        }
+        if (IsValid(local_6))
+        {
+            FMS_CommonNewsTickerPending::Get(local_6).CachePendingNewsTicker(Content, Priority, RepeatCount);
+        }
+        else
+        {
+            XWarning(ELog(16), "[CommonPopup] NewsTicker dropped: ECSWorld invalid and no WorldContext");
+        }
+        return;
+    }
+    FECSWorldPtr local_2 = ECS::GetECSWorld();
+    ModifyOrAdd local_16;
+    FCS_CommonNewsTickerManager& local_18 = local_16.opCall();
+    if (local_18)
+    {
+        FGameplayTag local_23 = FGameplayTag::RequestGameplayTag(n"UI.Type.Commonpupop.NewsTicker", true);
+        int local_21 = CommonPopupUtils::ResolveEffectivePriority(local_23, Priority);
+        int local_24 = CommonPopupUtils::TryEnqueuePopup(local_23, local_21);
+        if (local_24 == INDEX_NONE)
+        {
+            return;
+        }
+        FCommonNewsTickerInfo local_32;
+        local_32.Content = Content;
+        local_32.RepeatCount = FMath::Max(RepeatCount, 1);
+        local_32.Priority = local_21;
+        local_18.PendingTickers.Add(local_24, local_32);
+    }
+    return;
 }
 void Loading(const FGameplayTag &inout PopupType, const float32 DisplayTime, const float32 FadeInTime = -1, const float32 FadeOutTime = -1)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    float32 local_14;
+    float32 local_16;
+    float32 local_17;
+    float32 local_18;
+    if (!(CommonPopupUtils::EnsureECSWorldReady("Loading", true)))
+    {
+        return;
+    }
+    FECSWorldPtr local_4 = ECS::GetECSWorld();
+    ModifyOrAdd local_8;
+    FCS_CommonLoadingManager& local_10 = local_8.opCall();
+    if (local_10)
+    {
+        int local_13 = CommonPopupUtils::TryEnqueuePopup(PopupType, -2000000000);
+        if (local_13 == INDEX_NONE)
+        {
+            return;
+        }
+        local_10.PopupId = local_13;
+        local_10.QueuedPopupDisplayTime = DisplayTime;
+        if (FadeInTime > 0.0f)
+        {
+            local_14 = 1.0f;
+            local_17 = local_14 / FadeInTime;
+        }
+        else
+        {
+            if (FadeInTime == 0.0f)
+            {
+                local_16 = 100000.0f;
+            }
+            else
+            {
+                local_16 = 0.0f;
+            }
+            local_17 = local_16;
+        }
+        local_10.QueuedBlendInSpeed = local_17;
+        if (FadeOutTime > 0.0f)
+        {
+            local_18 = 1.0f / FadeOutTime;
+        }
+        else
+        {
+            if (FadeOutTime == 0.0f)
+            {
+                local_14 = 100000.0f;
+            }
+            else
+            {
+                local_14 = 0.0f;
+            }
+            local_18 = local_14;
+        }
+        local_10.QueuedBlendOutSpeed = local_18;
+    }
+    return;
 }
 void LargeHint(const FSoftBrush &inout Icon, const FText &inout Title, const FText &inout Content, const FCommonHintParam &inout ExtraParam = FCommonHintParam(), const int Priority = 0)
 {
@@ -380,8 +513,7 @@ void LargeHint(const FSoftBrush &inout Icon, const FText &inout Title, const FTe
     local_100.Lifetime = local_107;
     local_100.Priority = Priority;
     Make local_124;
-    local_124;
-    UCommonPopupSettings local_106 = CommonPopupSettings::Get();
+    CommonPopup::LargeHintCustom(CommonPopupSettings::Get().DefaultLargeSideHintWidget, local_124.opImplConv(), Priority);
     return;
 }
 void LargeHintWithAction(const FSoftBrush &inout Icon, const FText &inout Title, const FText &inout Content, const FInputActionListConstructParam &inout Actions, const FCommonHintParam &inout ExtraParam = FCommonHintParam(), const int Priority = 0)
@@ -402,13 +534,12 @@ void LargeHintWithAction(const FSoftBrush &inout Icon, const FText &inout Title,
     local_104.Lifetime = local_111;
     local_104.Priority = Priority;
     Make local_128;
-    local_128;
-    UCommonPopupSettings local_110 = CommonPopupSettings::Get();
+    CommonPopup::LargeHintCustom(CommonPopupSettings::Get().DefaultLargeSideHintWithActionWidget, local_128.opImplConv(), Priority);
     return;
 }
 void LargeHintCustom(const TSoftClassPtr<UEUIUserWidget> &inout LargeSideHintWidget, const FEUIModelContainer &inout WidgetModels, const int Priority = 0)
 {
-    UScriptAsToCppModelFunctionRouter::Get().OnShowLargeHint.Execute(LargeSideHintWidget, WidgetModels);
+    UScriptAsToCppModelFunctionRouter::Get().OnShowLargeHint.Execute(LargeSideHintWidget, WidgetModels, Priority);
     return;
 }
 void SmallHint(const FSoftBrush &inout Icon, const FText &inout Content, const FCommonHintParam &inout ExtraParam = FCommonHintParam(), const int Priority = 0)
@@ -428,13 +559,12 @@ void SmallHint(const FSoftBrush &inout Icon, const FText &inout Content, const F
     local_96.Lifetime = local_103;
     local_96.Priority = Priority;
     Make local_120;
-    local_120;
-    UCommonPopupSettings local_102 = CommonPopupSettings::Get();
+    CommonPopup::SmallHintCustom(CommonPopupSettings::Get().DefaultSmallSideHintWidget, local_120.opImplConv(), Priority);
     return;
 }
 void SmallHintCustom(const TSoftClassPtr<UEUIUserWidget> &inout SmallSideHintWidget, const FEUIModelContainer &inout WidgetModels, const int Priority = 0)
 {
-    UScriptAsToCppModelFunctionRouter::Get().OnShowSmallHint.Execute(SmallSideHintWidget, WidgetModels);
+    UScriptAsToCppModelFunctionRouter::Get().OnShowSmallHint.Execute(SmallSideHintWidget, WidgetModels, Priority);
     return;
 }
 void Dialog(const FText &inout Title, const FText &inout Message, const TArray<FCommonDialogOption> &inout Options, const FDialogCallback &inout Callback, const FCommonDialogParam &inout ExtraParam = FCommonDialogParam())
@@ -533,6 +663,7 @@ void Dialog_Decision(const ULocalPlayer LocalPlayer, const FText &inout Title, c
 }
 FCommonHoverHandle HoverCustom(const UWidget HoverForWidget, const TSoftClassPtr<UUserWidget> &inout HoverWidget, const FEUIModelContainer &inout Models = FEUIModelContainer(), const bool bClickClose = false, const bool bFocusHover = true, const ECommonHoverLayout HoverLayout = ECommonHoverLayout::Right, const EEUILayoutLayer TargetLayer = EEUILayoutLayer::Invalid, const bool bPinned = false)
 {
+    int local_110;
     FCommonHoverHandle __r;
     FCommonHoverInfo local_52 = FCommonHoverInfo::MakeForWidget(HoverForWidget, HoverWidget, Models);
     if (!(!(!(local_52))))
@@ -542,17 +673,19 @@ FCommonHoverHandle HoverCustom(const UWidget HoverForWidget, const TSoftClassPtr
     {
         if (int(TargetLayer) == 0)
         {
-            int local_109 = int(FEUIWidget::GetWidgetLayoutLayer(HoverForWidget));
+            local_110 = int(FEUIWidget::GetWidgetLayoutLayer(HoverForWidget));
         }
         else
         {
+            local_110 = TargetLayer;
         }
-        CommonPopup::HoverWithCustomHoverInfo(HoverForWidget, local_52.SetClickClose(bClickClose).SetPinned(bPinned).SetFocusHover(bFocusHover).SetHoverLayout().SetTargetLayer());
+        CommonPopup::HoverWithCustomHoverInfo(HoverForWidget, local_52.SetClickClose(bClickClose).SetPinned(bPinned).SetFocusHover(bFocusHover).SetHoverLayout(ECommonHoverLayout(HoverLayout)).SetTargetLayer(EEUILayoutLayer(local_110)));
     }
     return __r;
 }
 FCommonHoverHandle HoverPinnedPassThrough(const UWidget HoverForWidget, const TSoftClassPtr<UUserWidget> &inout HoverWidget, const FEUIModelContainer &inout Models = FEUIModelContainer(), const bool bFocusHover = true, const ECommonHoverLayout HoverLayout = ECommonHoverLayout::Right, const EEUILayoutLayer TargetLayer = EEUILayoutLayer::Invalid)
 {
+    int local_110;
     FCommonHoverHandle __r;
     FCommonHoverInfo local_52 = FCommonHoverInfo::MakeForWidget(HoverForWidget, HoverWidget, Models);
     if (!(!(!(local_52))))
@@ -562,48 +695,57 @@ FCommonHoverHandle HoverPinnedPassThrough(const UWidget HoverForWidget, const TS
     {
         if (int(TargetLayer) == 0)
         {
-            int local_109 = int(FEUIWidget::GetWidgetLayoutLayer(HoverForWidget));
+            local_110 = int(FEUIWidget::GetWidgetLayoutLayer(HoverForWidget));
         }
         else
         {
+            local_110 = TargetLayer;
         }
-        CommonPopup::HoverWithCustomHoverInfo(HoverForWidget, local_52.SetOutsideCloseMode(ECommonHoverOutsideCloseMode(2)).SetPinned(true).SetFocusHover(bFocusHover).SetHoverLayout().SetTargetLayer());
+        CommonPopup::HoverWithCustomHoverInfo(HoverForWidget, local_52.SetOutsideCloseMode(ECommonHoverOutsideCloseMode(2)).SetPinned(true).SetFocusHover(bFocusHover).SetHoverLayout(ECommonHoverLayout(HoverLayout)).SetTargetLayer(EEUILayoutLayer(local_110)));
     }
     return __r;
 }
 FCommonHoverHandle HoverChildCustom(const FCommonHoverHandle &inout ParentHoverHandle, const UWidget HoverForWidget, const TSoftClassPtr<UUserWidget> &inout HoverWidget, const FEUIModelContainer &inout Models = FEUIModelContainer(), const bool bClickClose = false, const bool bFocusHover = true, const ECommonHoverLayout HoverLayout = ECommonHoverLayout::Right, const EEUILayoutLayer TargetLayer = EEUILayoutLayer::Invalid, const bool bPinned = false)
 {
+    int local_110;
     FCommonHoverHandle __r;
-    if (!(!(!(FCommonHoverInfo::MakeForWidget(HoverForWidget, HoverWidget, Models)))))
+    FCommonHoverInfo local_52 = FCommonHoverInfo::MakeForWidget(HoverForWidget, HoverWidget, Models);
+    if (!(!(!(local_52))))
     {
     }
     else
     {
         if (int(TargetLayer) == 0)
         {
-            int local_109 = int(FEUIWidget::GetWidgetLayoutLayer(HoverForWidget));
+            local_110 = int(FEUIWidget::GetWidgetLayoutLayer(HoverForWidget));
         }
         else
         {
+            local_110 = TargetLayer;
         }
+        CommonPopup::HoverWithCustomHoverInfo(HoverForWidget, local_52.SetClickClose(bClickClose).SetPinned(bPinned).SetFocusHover(bFocusHover).SetHoverLayout(ECommonHoverLayout(HoverLayout)).SetTargetLayer(EEUILayoutLayer(local_110)).SetParentHoverHandle(ParentHoverHandle));
     }
     return __r;
 }
 FCommonHoverHandle HoverChildPinnedPassThrough(const FCommonHoverHandle &inout ParentHoverHandle, const UWidget HoverForWidget, const TSoftClassPtr<UUserWidget> &inout HoverWidget, const FEUIModelContainer &inout Models = FEUIModelContainer(), const bool bFocusHover = true, const ECommonHoverLayout HoverLayout = ECommonHoverLayout::Right, const EEUILayoutLayer TargetLayer = EEUILayoutLayer::Invalid)
 {
+    int local_110;
     FCommonHoverHandle __r;
-    if (!(!(!(FCommonHoverInfo::MakeForWidget(HoverForWidget, HoverWidget, Models)))))
+    FCommonHoverInfo local_52 = FCommonHoverInfo::MakeForWidget(HoverForWidget, HoverWidget, Models);
+    if (!(!(!(local_52))))
     {
     }
     else
     {
         if (int(TargetLayer) == 0)
         {
-            int local_109 = int(FEUIWidget::GetWidgetLayoutLayer(HoverForWidget));
+            local_110 = int(FEUIWidget::GetWidgetLayoutLayer(HoverForWidget));
         }
         else
         {
+            local_110 = TargetLayer;
         }
+        CommonPopup::HoverWithCustomHoverInfo(HoverForWidget, local_52.SetOutsideCloseMode(ECommonHoverOutsideCloseMode(2)).SetPinned(true).SetFocusHover(bFocusHover).SetHoverLayout(ECommonHoverLayout(HoverLayout)).SetTargetLayer(EEUILayoutLayer(local_110)).SetParentHoverHandle(ParentHoverHandle));
     }
     return __r;
 }
@@ -616,7 +758,7 @@ FCommonHoverHandle HoverCustom(const FGeometry &inout HoverForGeometry, const TS
     }
     else
     {
-        CommonPopup::HoverWithCustomHoverInfo(Context, local_52.SetClickClose(bClickClose).SetPinned(bPinned).SetFocusHover(bFocusHover).SetHoverLayout().SetTargetLayer());
+        CommonPopup::HoverWithCustomHoverInfo(Context, local_52.SetClickClose(bClickClose).SetPinned(bPinned).SetFocusHover(bFocusHover).SetHoverLayout(ECommonHoverLayout(HoverLayout)).SetTargetLayer(EEUILayoutLayer(TargetLayer)));
     }
     return __r;
 }
@@ -629,7 +771,7 @@ FCommonHoverHandle HoverCustom(const FVector2D &inout HoverPosition, const TSoft
     }
     else
     {
-        CommonPopup::HoverWithCustomHoverInfo(nullptr, local_52.SetHoverLayout(ECommonHoverLayout(HoverLayout)).SetTargetLayer());
+        CommonPopup::HoverWithCustomHoverInfo(nullptr, local_52.SetHoverLayout(ECommonHoverLayout(HoverLayout)).SetTargetLayer(EEUILayoutLayer(TargetLayer)));
     }
     return __r;
 }
@@ -647,7 +789,7 @@ FCommonHoverHandle HoverWithCustomHoverInfo(const UObject ContextObject, const F
             local_6 = ContextObject.GetName();
         }
         FBox2D local_20 = HoverInfo.AnchorsViewportSpace;
-        float local_23 = int(HoverInfo.HoverLayout);
+        int local_23 = int(HoverInfo.HoverLayout);
         FString local_10 = HoverInfo.ContentWidget.GetAssetName();
         XLog(ELog(16), FString().Append("CommonHover Open: Widget=").Append(local_6).Append(" AnchorsMin=(").Append(local_20.Min.X).Append(", ").Append(local_20.Min.Y).Append(") AnchorsMax=(").Append(local_20.Max.X).Append(", ").Append(local_10).Append(") Layout=").Append(local_23).Append(" Content=").Append(local_10));
         FCommonHoverHandle local_34 = UScriptAsToCppModelFunctionRouter::Get().OnHoverCustom.Execute(HoverInfo, ContextObject);
@@ -660,10 +802,9 @@ void SetHoverClickClose(const FCommonHoverHandle &inout Handle, const bool bClic
     {
         return;
     }
-    FCommonHoverHandle local_56;
-    UScriptAsToCppModelFunctionRouter::Get().OnGetHoverInfo.Execute(local_56, Handle);
+    FCommonHoverInfo local_56 = UScriptAsToCppModelFunctionRouter::Get().OnGetHoverInfo.Execute(Handle, ContextObject);
     local_56.SetClickClose(bClickClose);
-    UScriptAsToCppModelFunctionRouter local_4 = UScriptAsToCppModelFunctionRouter::Get();
+    UScriptAsToCppModelFunctionRouter::Get().OnSetHoverInfo.Execute(Handle, local_56, ContextObject);
     return;
 }
 void SetHover(const FCommonHoverHandle &inout Handle, const FEUIModelContainer &inout Models, const UObject ContextObject = nullptr)
@@ -673,8 +814,7 @@ void SetHover(const FCommonHoverHandle &inout Handle, const FEUIModelContainer &
         return;
     }
     FCommonHoverInfo local_54;
-    UObject local_110;
-    UScriptAsToCppModelFunctionRouter::Get().OnGetHoverInfo.Execute(Handle, local_110);
+    FCommonHoverInfo local_110 = UScriptAsToCppModelFunctionRouter::Get().OnGetHoverInfo.Execute(Handle, ContextObject);
     local_54.ContentModels = Models;
     UScriptAsToCppModelFunctionRouter::Get().OnSetHoverInfo.Execute(Handle, local_54, ContextObject);
     return;
@@ -685,11 +825,10 @@ void PinHoverPassThrough(const FCommonHoverHandle &inout Handle, const UObject C
     {
         return;
     }
-    FCommonHoverHandle local_56;
-    UScriptAsToCppModelFunctionRouter::Get().OnGetHoverInfo.Execute(local_56, Handle);
+    FCommonHoverInfo local_56 = UScriptAsToCppModelFunctionRouter::Get().OnGetHoverInfo.Execute(Handle, ContextObject);
     local_56.SetOutsideCloseMode(ECommonHoverOutsideCloseMode(2));
     local_56.SetPinned(true);
-    UScriptAsToCppModelFunctionRouter local_4 = UScriptAsToCppModelFunctionRouter::Get();
+    UScriptAsToCppModelFunctionRouter::Get().OnSetHoverInfo.Execute(Handle, local_56, ContextObject);
     return;
 }
 void SetHover(const FCommonHoverHandle &inout Handle, const UWidget HoverForWidget, const UObject ContextObject = nullptr)
@@ -700,11 +839,10 @@ void SetHover(const FCommonHoverHandle &inout Handle, const UWidget HoverForWidg
     }
     FGeometry local_16 = HoverForWidget.GetTickSpaceGeometry();
     FGeometry local_32 = WidgetLayout::GetViewportWidgetGeometry(__GetWorldContext());
-    FCommonHoverHandle local_100;
-    UScriptAsToCppModelFunctionRouter::Get().OnGetHoverInfo.Execute(local_100, Handle);
+    FCommonHoverInfo local_100 = UScriptAsToCppModelFunctionRouter::Get().OnGetHoverInfo.Execute(Handle, ContextObject);
     local_100.AnchorsViewportSpace.Min = local_32.AbsoluteToLocal(local_16.LocalToAbsolute(FVector2D::ZeroVector));
     local_100.AnchorsViewportSpace.Max = local_32.AbsoluteToLocal(local_16.LocalToAbsolute(local_16.GetLocalSize()));
-    UScriptAsToCppModelFunctionRouter local_48 = UScriptAsToCppModelFunctionRouter::Get();
+    UScriptAsToCppModelFunctionRouter::Get().OnSetHoverInfo.Execute(Handle, local_100, ContextObject);
     return;
 }
 bool IsHoverDisplayed(const FCommonHoverHandle &inout Handle, const UObject ContextObject = nullptr)

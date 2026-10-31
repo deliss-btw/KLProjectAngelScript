@@ -1,5 +1,3 @@
-﻿
-
 class US_CameraPostProcess : UECSScriptSystem
 {
     US_CameraPostProcess()
@@ -29,7 +27,74 @@ class US_CameraPostProcess : UECSScriptSystem
     UFUNCTION()
     void ClientJob_UpdateCameraPostProcessAnim(const FECSEntity &inout Entity, const FC_CameraPostProcessAnim &inout CameraPostProcessAnim, const FCS_LocalPlayer &inout Player) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_10 = 0;
+        int local_16 = 0;
+        UCameraPostProcessAnimConfig local_72;
+        UCameraPostProcessAnimConfig local_74;
+        UMaterialInstanceDynamic local_86;
+        const AActor local_94;
+        const TArray<FCameraPostProcessAnimRange>& local_2 = CameraPostProcessAnim.GetAnims();
+        FECSWorldPtr local_4 = this.GetECSWorld();
+        TSet<UCameraPostProcessAnimConfig> local_36;
+        FFPTime local_42 = FECSInterpoUtils::GetInterpoTime(Player.GetPlayerPawnEntity());
+        for (auto& local_60 : local_2)
+        {
+            if (local_42.opCmp(local_60.GetStartTime()) >= 0 && (local_42.opCmp((FFPTime(local_60.GetStartTime()) + local_60.GetDuration())) < 0 || (FFPTime(local_60.GetDuration()).opCmp(0.0) < 0)))
+            {
+                if (local_74 != nullptr)
+                {
+                    FCameraPostProcessAnimResourceData local_78;
+                    local_36.Add(local_74);
+                    TWeakObjectPtr<UCameraPostProcessAnimConfig> local_76 = TWeakObjectPtr<UCameraPostProcessAnimConfig>(local_74);
+                    if (!((local_78.StartTime == local_60.GetStartTime())))
+                    {
+                        local_78.StartTime = local_60.GetStartTime();
+                        local_78.bAttachLocationIsSet = false;
+                    }
+                    if (!(local_78.Material.IsValid()) == !(false))
+                    {
+                        UMaterialInstanceDynamic local_88 = Material::CreateDynamicMaterialInstance(__GetWorldContext(), local_74.PostProcessAnim.BlendMaterial, NAME_None, EMIDCreationFlags(0));
+                        local_10.AddBlendable(local_88, 1.0f);
+                        TWeakObjectPtr<UMaterialInstanceDynamic> local_80 = local_88;
+                    }
+                    if (local_60.GetbUpdateAttach() || ((!(local_78.bAttachLocationIsSet) == !(false))))
+                    {
+                        local_94 = local_60.GetAttachEntity().GetActor();
+                        if (local_94 != nullptr)
+                        {
+                            local_78.AttachLocation = local_94.GetActorLocation();
+                            if ((!((local_60.GetAttachSocketName() == NAME_None))))
+                            {
+                                local_78.AttachLocation = local_94.GetSocketTransform(local_60.GetAttachSocketName(), ERelativeTransformSpace(0)).TransformPosition(local_60.GetAttachOffset());
+                            }
+                            local_78.bAttachLocationIsSet = true;
+                        }
+                        else
+                        {
+                            const AFXActor local_132 = ECSFX::GetFXActor(local_60.GetAttachEntity());
+                            if (local_132 != nullptr)
+                            {
+                                local_78.AttachLocation = local_132.GetActorLocation();
+                                local_78.bAttachLocationIsSet = true;
+                            }
+                        }
+                    }
+                    local_74.PostProcessAnim.UpdateAnim(local_86, local_78.AttachLocation, Player.GetPlayerPawnEntity(), (local_42 - local_60.GetStartTime()).ToSeconds(), local_60.GetDuration().ToSeconds(), local_42);
+                }
+            }
+        }
+        auto local_142 = local_16.DataMap.Iterator();
+        for (; local_142.CanProceed;)
+        {
+            local_142.Proceed();
+            if (local_142.GetKey().IsValid() && local_36.Contains(local_72))
+            {
+                continue;
+            }
+            local_10.RemoveBlendable(local_86);
+            local_142.RemoveCurrent();
+        }
+        return;
     }
     UFUNCTION()
     void Monitor_ClearCameraPostProcess(const FC_CameraPostProcessAnimResource &inout Resource) const

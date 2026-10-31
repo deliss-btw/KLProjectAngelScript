@@ -1,5 +1,3 @@
-﻿
-
 class US_ConditionPublicEventCompleteSystem : UECSScriptSystem
 {
     US_ConditionPublicEventCompleteSystem()

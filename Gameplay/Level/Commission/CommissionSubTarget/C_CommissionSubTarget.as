@@ -1,4 +1,3 @@
-﻿
 enum ECommissionSubTargetStatus
 {
     Pending,
@@ -22,7 +21,6 @@ struct FCommissionSubTargetProgress
     int m_SuccessProgressValue;
     UPROPERTY()
     int m_FailedProgressValue;
-
 
     int GetSuccessProgressValue() const property
     {
@@ -50,7 +48,6 @@ struct FCE_CommissionSubTargetFinished : FECSEvent
     UPROPERTY()
     ECommissionSubTargetStatus Status;
 
-
 }
 
 struct FCS_CommissionSubTarget : FECSSingleton
@@ -69,11 +66,26 @@ struct FCS_CommissionSubTarget : FECSSingleton
 
     FCS_CommissionSubTarget()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_ObjectiveInstanceId = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_Status = ECommissionSubTargetStatus(0);
+        this.__InitDirtyFlags();
+        return;
     }
     FCS_CommissionSubTarget(const FCS_CommissionSubTarget &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_ObjectiveInstanceId = 0;
+        FRootDirtyFlags8 local_27;
+        this.__DirtyFlags = local_27;
+        this.m_Status = ECommissionSubTargetStatus(0);
+        this.__InitDirtyFlags();
+        this.m_SubTargetConfig = Other.m_SubTargetConfig;
+        this.m_Status = Other.m_Status;
+        this.m_ObjectiveInstanceId = int(Other.m_ObjectiveInstanceId);
+        this.m_Progress = Other.m_Progress;
+        this.m_ChildProgress = Other.m_ChildProgress;
+        return;
     }
     FCS_CommissionSubTarget opAssign(const FCS_CommissionSubTarget &inout Other)
     {
@@ -274,17 +286,17 @@ bool RemoveCommissionSubTarget(const FECSWorldPtr &inout World)
 }
 void __MonitorCommissionSubTargetLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_CommissionSubTarget, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_CommissionSubTarget, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionSubTargetActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_CommissionSubTarget, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_CommissionSubTarget, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionSubTargetModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_CommissionSubTarget, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_CommissionSubTarget, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_GameModeProfile_NS
 {
     const TECSComponentDerivedPtr<FCS_GameModeProfile> DerivedPtr = TECSComponentDerivedPtr<FCS_GameModeProfile>();
@@ -33,7 +32,7 @@ struct FCS_GameModeProfile : FECSSingleton
     }
     UGameModeFlow GetGameModeFlow() const
     {
-        if (!(this.IsValid()))
+        if (!(this.GameModeFlowSettings.IsValid()))
         {
             return nullptr;
         }
@@ -65,11 +64,33 @@ struct FGameModePlayerMatchDataBase
 
     FGameModePlayerMatchDataBase()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_UID = 0;
+        this.m_TeamID = (255 != 0);
+        this.m_PlayerInTeamIndex = -1;
+        this.m_Faction = EFaction(1);
+        this.m_BossPrefabIdx = -1;
+        this.m_PlayerPrefabIdx = -1;
+        return;
     }
     FGameModePlayerMatchDataBase(const FGameModePlayerMatchDataBase &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_5;
+        this.__DirtyFlags = local_5;
+        this.m_UID = 0;
+        this.m_TeamID = (255 != 0);
+        this.m_PlayerInTeamIndex = -1;
+        this.m_Faction = EFaction(1);
+        this.m_BossPrefabIdx = -1;
+        this.m_PlayerPrefabIdx = -1;
+        this.m_UID = int(Other.m_UID);
+        this.m_TeamID = (int(Other.m_TeamID) != 0);
+        this.m_PlayerInTeamIndex = int(Other.m_PlayerInTeamIndex);
+        this.m_Faction = Other.m_Faction;
+        this.m_BossPrefabIdx = int(Other.m_BossPrefabIdx);
+        this.m_PlayerPrefabIdx = int(Other.m_PlayerPrefabIdx);
+        return;
     }
     FGameModePlayerMatchDataBase opAssign(const FGameModePlayerMatchDataBase &inout Other)
     {
@@ -182,11 +203,15 @@ struct FCS_GameMode_MatchData : FECSSingleton
 
     FCS_GameMode_MatchData()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FCS_GameMode_MatchData(const FCS_GameMode_MatchData &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_PlayerMatchDatas = Other.m_PlayerMatchDatas;
         this.m_TeamPlayerCounts = Other.m_TeamPlayerCounts;
@@ -396,11 +421,30 @@ struct FGameModePlayerScoreDataBase
 
     FGameModePlayerScoreDataBase()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Kills = 0;
+        this.m_Deaths = 0;
+        this.m_Assists = 0;
+        this.m_DamageDealt = 0.0f;
+        this.m_DamageTaken = 0.0f;
+        return;
     }
     FGameModePlayerScoreDataBase(const FGameModePlayerScoreDataBase &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_Kills = 0;
+        this.m_Deaths = 0;
+        this.m_Assists = 0;
+        this.m_DamageDealt = 0.0f;
+        this.m_DamageTaken = 0.0f;
+        this.m_Kills = int(Other.m_Kills);
+        this.m_Deaths = int(Other.m_Deaths);
+        this.m_Assists = int(Other.m_Assists);
+        this.m_DamageDealt = Other.m_DamageDealt;
+        this.m_DamageTaken = Other.m_DamageTaken;
+        return;
     }
     FGameModePlayerScoreDataBase opAssign(const FGameModePlayerScoreDataBase &inout Other)
     {
@@ -506,11 +550,29 @@ struct FCS_GameMode_ScoreData : FECSSingleton
 
     FCS_GameMode_ScoreData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bPlayersKicked = false;
+        this.m_bDSExitRequested = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FCS_GameMode_ScoreData(const FCS_GameMode_ScoreData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bPlayersKicked = false;
+        this.m_bDSExitRequested = false;
+        this.__InitDirtyFlags();
+        this.m_PlayerScores = Other.m_PlayerScores;
+        this.m_WinnerTeamIds = Other.m_WinnerTeamIds;
+        this.m_LoserTeamIds = Other.m_LoserTeamIds;
+        this.m_FinishStartTime = Other.m_FinishStartTime;
+        this.m_MatchStartTime = Other.m_MatchStartTime;
+        this.m_MatchEndTime = Other.m_MatchEndTime;
+        this.m_bPlayersKicked = Other.m_bPlayersKicked;
+        this.m_bDSExitRequested = Other.m_bDSExitRequested;
+        return;
     }
     FCS_GameMode_ScoreData opAssign(const FCS_GameMode_ScoreData &inout Other)
     {
@@ -783,17 +845,17 @@ bool RemoveGameModeProfile(const FECSWorldPtr &inout World)
 }
 void __MonitorGameModeProfileLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_GameModeProfile, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_GameModeProfile, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameModeProfileActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_GameModeProfile, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_GameModeProfile, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameModeProfileModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_GameModeProfile, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_GameModeProfile, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_GameMode_MatchData
@@ -881,17 +943,17 @@ bool RemoveGameMode_MatchData(const FECSWorldPtr &inout World)
 }
 void __MonitorGameMode_MatchDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_GameMode_MatchData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_GameMode_MatchData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameMode_MatchDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_GameMode_MatchData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_GameMode_MatchData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameMode_MatchDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_GameMode_MatchData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_GameMode_MatchData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_GameMode_ScoreData
@@ -979,17 +1041,17 @@ bool RemoveGameMode_ScoreData(const FECSWorldPtr &inout World)
 }
 void __MonitorGameMode_ScoreDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_GameMode_ScoreData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_GameMode_ScoreData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameMode_ScoreDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_GameMode_ScoreData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_GameMode_ScoreData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameMode_ScoreDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_GameMode_ScoreData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_GameMode_ScoreData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_GameModeFirstTickTag
@@ -1077,17 +1139,17 @@ bool RemoveGameModeFirstTickTag(const FECSWorldPtr &inout World)
 }
 void __MonitorGameModeFirstTickTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_GameModeFirstTickTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_GameModeFirstTickTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameModeFirstTickTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_GameModeFirstTickTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_GameModeFirstTickTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameModeFirstTickTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_GameModeFirstTickTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_GameModeFirstTickTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

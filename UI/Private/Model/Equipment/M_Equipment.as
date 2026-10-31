@@ -1,4 +1,3 @@
-﻿
 namespace FM_Equipment
 {
     const int ModelId = 0;
@@ -356,11 +355,174 @@ struct FMS_EquipmentDataCache : FEUIModelSingleton
     }
     void ConsumeTalismanSlotRedDotIfNoEquippable()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_39;
+        int local_46;
+        FDSAvatarEquipmentInfo local_100;
+        if (!(this.GetbInventoryInited()))
+        {
+            return;
+        }
+        FECSEntity local_6 = this.GetContext().GetLocalPlayer();
+        Has local_10;
+        if (!(local_10.opCall()))
+        {
+            return;
+        }
+        bool local_1 = false;
+        if (!(::FMS_SystemControl::Get(this.GetContext().Manager).IsSystemUnlock(ESystemModule(9), local_1)))
+        {
+            return;
+        }
+        int local_13 = 0;
+        for (auto& local_32 : this.GetCachedEquipments())
+        {
+            local_32;
+            const TDataObjectPtr<FEquipmentConfig>& local_34 = GetEquipmentConfig();
+            if (local_34.IsSet() && (0 == 7) && !(GetEquiptingAvatar().IsSet()))
+            {
+                ++local_13;
+            }
+        }
+        if (local_13 > 0)
+        {
+            return;
+        }
+        FMS_RedDotSystem& local_38 = ::FMS_RedDotSystem::Get(this.GetContext().Manager);
+        local_39 = ::FMS_Talisman::Get(this.GetContext().Manager).GetUnlockSlotCount();
+        FECSEntity local_6_2 = this.GetContext().GetLocalPlayer();
+        bool local_47 = false;
+        for (auto& local_62 : local_46.GetAvatarList())
+        {
+            int64 local_64 = 2;
+            for (; local_64 <= 5; ++local_64)
+            {
+                int64 local_70 = local_39;
+                if ((local_64 - 2) >= local_70)
+                {
+                    continue;
+                }
+                if (!(!(local_62.GetEquipmentInfos().Find(EEquipSlotType(local_64), local_100)) || !(local_100.GetEquipmentData().GetEquipmentConfig().IsSet())))
+                {
+                    continue;
+                }
+                int local_40 = 32;
+                local_70 = local_64 << local_40;
+                local_70 = local_70 | local_62.GetAvatarId();
+                if (local_38.HasRedDotByEvent(ERedPointEvent(11), local_70))
+                {
+                    local_38.ConsumeRedDotByEvent(ERedPointEvent(11), local_70);
+                    local_38.ConsumeRedDotByEvent(ERedPointEvent(23), local_70);
+                    local_47 = true;
+                }
+            }
+        }
+        if (local_47)
+        {
+            ::FMS_PlayerAvatarData::Get(this.GetContext().Manager).RefreshAvatarListEntryRedDot();
+        }
+        return;
     }
     void GS_OnInventoryItemUpdate(const FPbInventoryItemNotify &inout Notify)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        bool local_32;
+        TArray<uint64> local_4;
+        int local_156 = 0;
+        TArray<uint64> local_8;
+        TSet<EWeaponType> local_28;
+        int local_29 = 0;
+        for (; local_29 < Notify.GetItemList_Num(); ++local_29)
+        {
+            FPbItem local_42 = Notify.GetItemList_Index(local_29);
+            ::FItemConfig::GetByDataId(local_42.GetItemId());
+            CastTo local_128;
+            TDataObjectPtr<FEquipmentConfig> local_152 = local_128.opCall();
+            if (local_152)
+            {
+                if (!(this.GetCachedEquipments().Contains(local_42.GetGuid())) && !(local_42.HasStackableItem()))
+                {
+                    if (local_156 == 2)
+                    {
+                        local_4.Add(local_42.GetGuid());
+                    }
+                    else
+                    {
+                        if (local_156 == 7)
+                        {
+                            local_8.Add(local_42.GetGuid());
+                        }
+                    }
+                }
+                this.CacheEquipmentData(local_152, local_42);
+                if (local_156 == 2)
+                {
+                    CastTo local_186;
+                    if (local_186.opCall())
+                    {
+                    }
+                }
+            }
+        }
+        if (!(local_4.IsEmpty()))
+        {
+            ::FMS_RedDotSystem::Get(this.GetContext().Manager).GenerateRedDot(ERedPointEvent(13), local_4);
+        }
+        if (!(!(local_8.IsEmpty())))
+        {
+            local_32 = false;
+        }
+        else
+        {
+            local_32 = false;
+            local_32 = ::FMS_SystemControl::Get(this.GetContext().Manager).IsSystemUnlock(ESystemModule(9), local_32);
+        }
+        if (local_32)
+        {
+            int local_264;
+            ::FMS_RedDotSystem::Get(this.GetContext().Manager).GenerateRedDot(ERedPointEvent(12), local_8);
+            TArray<uint64> local_218;
+            local_29 = ::FMS_Talisman::Get(this.GetContext().Manager).GetUnlockSlotCount();
+            TSet<uint> local_238;
+            for (auto& local_254 : ::FVMS_PlayerOwnedAvatarInfo::Get(this.GetManager()).GetUnLockAvatarList())
+            {
+                if (local_254.IsValid() && GetAvatarConfig().IsSet())
+                {
+                }
+            }
+            FECSEntity local_258 = this.GetContext().GetLocalPlayer();
+            for (auto& local_278 : local_264.GetAvatarList())
+            {
+                if (local_238.Contains(local_278.GetAvatarId()))
+                {
+                    int64 local_280 = 2;
+                    for (; local_280 <= 5; ++local_280)
+                    {
+                        int64 local_284 = local_29;
+                        if ((local_280 - 2) < local_284)
+                        {
+                            FDSAvatarEquipmentInfo local_314;
+                            if (!(local_278.GetEquipmentInfos().Find(EEquipSlotType(local_280), local_314)) || !(local_314.GetEquipmentData().GetEquipmentConfig().IsSet()))
+                            {
+                                local_284 = local_280 << 32;
+                                local_284 = local_284 | local_278.GetAvatarId();
+                                if (!(::FMS_RedDotSystem::Get(this.GetContext().Manager).HasRedDotByEvent(ERedPointEvent(11), local_284)))
+                                {
+                                    local_218.Add(local_284);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (!(local_218.IsEmpty()))
+            {
+                ::FMS_RedDotSystem::Get(this.GetContext().Manager).GenerateRedDot(ERedPointEvent(23), local_218);
+            }
+        }
+        if (!(local_28.IsEmpty()))
+        {
+            this.RefreshWeaponCanChangeRedDot(true, true, local_28);
+        }
+        return;
     }
     void GS_OnInventoryItemRemoved(const FPbInventoryDelItemNotify &inout Notify)
     {
@@ -658,7 +820,56 @@ struct FMS_Talisman : FEUIModelSingleton
     }
     void GenerateNewTalismanSlotRedDots(const uint OldSlotCount, const uint NewSlotCount)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        bool local_5;
+        TEUIModelRef<FM_Avatar> local_26;
+        TArray<uint64> local_4;
+        if (NewSlotCount > OldSlotCount)
+        {
+            FVMS_PlayerOwnedAvatarInfo& local_10 = ::FVMS_PlayerOwnedAvatarInfo::Get(this.GetManager());
+            for (auto& local_24 : local_10.GetUnLockAvatarList())
+            {
+                if (!(local_24.IsValid()))
+                {
+                    local_5 = false;
+                }
+                else
+                {
+                    local_26.GetAvatar();
+                    local_5 = local_26.IsValid();
+                }
+                if (!(local_5))
+                {
+                    local_5 = false;
+                }
+                else
+                {
+                    local_26.GetAvatar();
+                    local_5 = GetAvatarConfig().IsSet();
+                }
+                if (local_5)
+                {
+                    int64 local_30 = OldSlotCount;
+                    for (; local_30 < NewSlotCount; ++local_30)
+                    {
+                        int64 local_34 = local_30 + 2;
+                        int local_37 = 32;
+                        local_34 = local_34 << local_37;
+                        local_26.GetAvatar();
+                        local_34 = local_34 | local_37;
+                        if (!(::FMS_RedDotSystem::Get(this.GetContext().Manager).HasRedDotByEvent(ERedPointEvent(11), local_34)))
+                        {
+                            local_4.Add(local_34);
+                        }
+                    }
+                }
+            }
+        }
+        if (!(local_4.IsEmpty()))
+        {
+            ::FMS_RedDotSystem::Get(this.GetContext().Manager).GenerateRedDot(ERedPointEvent(11), local_4);
+        }
+        ::FMS_PlayerAvatarData::Get(this.GetContext().Manager).RefreshAvatarListEntryRedDot();
+        return;
     }
     void GS_RequestManageTalisman(const uint AvatarId, const uint64 TalismanGuid, const uint SlotId) const
     {
@@ -809,7 +1020,9 @@ void __OnAvatarEquipmentChanged(FMS_EquipmentDataCache &inout Model, const FECSE
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorDSPlayerAvatarInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorDSPlayerAvatarInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_CachedEquipments()
 {

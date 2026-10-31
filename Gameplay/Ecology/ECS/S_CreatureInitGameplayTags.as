@@ -1,5 +1,3 @@
-﻿
-
 class US_CreatureInitGameplayTagsSystem : UECSScriptSystem
 {
     US_CreatureInitGameplayTagsSystem()

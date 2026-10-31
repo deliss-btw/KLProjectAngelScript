@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_BreathSFXSystem_EnableDebug = FConsoleVariable();
 const FConsoleVariable CVar_BreathSFXSystem_ShowBitFlag = FConsoleVariable();
 
@@ -62,31 +61,31 @@ class US_BreathSFX : UECSScriptSystem
         {
             return;
         }
-        XLogIf(CVar_BreathSFXSystem_EnableDebug.GetBool(), ELog(1), FString().Append("Monitor_SFXStateRemove: е®ћдЅ“ ").Append(Entity.ToString()).Append(" зљ„FC_SFXStateз»„д»¶иў«з§»й™¤"));
+        XLogIf(CVar_BreathSFXSystem_EnableDebug.GetBool(), ELog(1), FString().Append("Monitor_SFXStateRemove: 实体 ").Append(Entity.ToString()).Append(" 的FC_SFXState组件被移除"));
         Has local_22;
         bool local_1 = local_22.opCall();
         if (local_1)
         {
-            XLogIf(CVar_BreathSFXSystem_EnableDebug.GetBool(), ELog(1), FString().Append("Monitor_SFXStateRemove: жЈЂжџҐеЃњж­ўжЁЎејЏпјЊж•°й‡Џ: ").Append(local_28.BreathDisablePatterns.Num()));
+            XLogIf(CVar_BreathSFXSystem_EnableDebug.GetBool(), ELog(1), FString().Append("Monitor_SFXStateRemove: 检查停止模式，数量: ").Append(local_28.BreathDisablePatterns.Num()));
             int local_30 = 0;
             for (; local_30 < local_28.BreathDisablePatterns.Num(); ++local_30)
             {
                 int64 local_36 = local_8.LastEnableBitFlags & (1 << local_30);
                 if (local_36 != 0)
                 {
-                    XLogIf(CVar_BreathSFXSystem_EnableDebug.GetBool(), ELog(1), FString().Append("Monitor_SFXStateRemove: з»„д»¶ ").Append(local_30).Append(" д№‹е‰ЌжЇеђЇз”Ёзљ„пјЊе‡†е¤‡ж’­ж”ѕеЃњж­ўйџіж•€"));
+                    XLogIf(CVar_BreathSFXSystem_EnableDebug.GetBool(), ELog(1), FString().Append("Monitor_SFXStateRemove: 组件 ").Append(local_30).Append(" 之前是启用的，准备播放停止音效"));
                     ::BreathSFXUtils::PlayDisableBreathAudio(Entity, local_30);
                     continue;
                 }
-                XLogIf(CVar_BreathSFXSystem_EnableDebug.GetBool(), ELog(1), FString().Append("Monitor_SFXStateRemove: з»„д»¶ ").Append(local_30).Append(" д№‹е‰ЌдёЌжЇеђЇз”Ёзљ„пјЊи·іиї‡еЃњж­ўйџіж•€"));
+                XLogIf(CVar_BreathSFXSystem_EnableDebug.GetBool(), ELog(1), FString().Append("Monitor_SFXStateRemove: 组件 ").Append(local_30).Append(" 之前不是启用的，跳过停止音效"));
             }
         }
         else
         {
-            XLogIf(CVar_BreathSFXSystem_EnableDebug.GetBool(), ELog(1), FString().Append("Monitor_SFXStateRemove: е®ћдЅ“ ").Append(Entity.ToString()).Append(" жІЎжњ‰FC_SFXStateConfigз»„д»¶"));
+            XLogIf(CVar_BreathSFXSystem_EnableDebug.GetBool(), ELog(1), FString().Append("Monitor_SFXStateRemove: 实体 ").Append(Entity.ToString()).Append(" 没有FC_SFXStateConfig组件"));
         }
         local_8.LastEnableBitFlags = 0;
-        XLogIf(CVar_BreathSFXSystem_EnableDebug.GetBool(), ELog(1), FString().Append("Monitor_SFXStateRemove: е·Іжё…й›¶LastEnableBitFlags"));
+        XLogIf(CVar_BreathSFXSystem_EnableDebug.GetBool(), ELog(1), FString().Append("Monitor_SFXStateRemove: 已清零LastEnableBitFlags"));
         return;
     }
     UFUNCTION()
@@ -116,30 +115,28 @@ class US_BreathSFX : UECSScriptSystem
                 ++local_314;
             }
         }
-        Print(FString().Append("=== е®ћдЅ“: ").Append(local_6).Append(" (ID: ").Append(Entity.GetId().GetIdValue()).Append(") ==="), 99999.0f, FLinearColor::Yellow);
-        Print(FString().Append("жЂ»з»„д»¶ж•°: ").Append(local_9).Append(" | жґ»и·ѓ: ").Append(local_314).Append(" | йќћжґ»и·ѓ: ").Append((local_9 - local_314)), 99999.0f, FLinearColor::White);
-        int local_8 = Config.AudioComponentNames.Num();
-        if (local_8 > 0)
+        Print(FString().Append("=== 实体: ").Append(local_6).Append(" (ID: ").Append(Entity.GetId().GetIdValue()).Append(") ==="), 99999.0f, FLinearColor::Yellow);
+        Print(FString().Append("总组件数: ").Append(local_9).Append(" | 活跃: ").Append(local_314).Append(" | 非活跃: ").Append((local_9 - local_314)), 99999.0f, FLinearColor::White);
+        if (Config.AudioComponentNames.Num() > 0)
         {
-            Print("йџійў‘з»„д»¶е€—иЎЁ:", 99999.0f, FLinearColor(FColor::Cyan));
+            Print("音频组件列表:", 99999.0f, FLinearColor(FColor::Cyan));
             int local_315_2 = 0;
-            while (local_315_2 < local_8)
+            for (; local_315_2 < Config.AudioComponentNames.Num(); )
             {
-                Print(FString().Append("  з»„д»¶ ").Append(local_315_2).Append(": ").Append(Config.AudioComponentNames[local_315_2]), 99999.0f, FLinearColor(FColor::Cyan));
+                Print(FString().Append("  组件 ").Append(local_315_2).Append(": ").Append(Config.AudioComponentNames[local_315_2]), 99999.0f, FLinearColor(FColor::Cyan));
                 ++local_315_2;
-                local_8 = Config.AudioComponentNames.Num();
             }
         }
         if (State.GetEnableCountersNum() > 0)
         {
-            Print("з»„д»¶зЉ¶жЂЃиЇ¦жѓ…:", 99999.0f, FLinearColor::Green);
+            Print("组件状态详情:", 99999.0f, FLinearColor::Green);
             int local_315_3 = 0;
             for (; local_315_3 < State.GetEnableCountersNum(); )
             {
                 bool local_1 = State.IsSFXActive(local_315_3);
                 int local_323 = State.GetEnableCounterValue(local_315_3);
                 int local_325 = State.GetDisableCounterValue(local_315_3);
-                FString local_330 = "жњЄзџҐз»„д»¶";
+                FString local_330 = "未知组件";
                 if (local_315_3 < Config.AudioComponentNames.Num())
                 {
                     local_330 = Config.AudioComponentNames[local_315_3].ToString();
@@ -165,26 +162,26 @@ class US_BreathSFX : UECSScriptSystem
                         }
                     }
                 }
-                FString local_348 = "жњЄзџҐ";
+                FString local_348 = "未知";
                 if (local_315_3 < Config.DefaultStates.Num())
                 {
                     if (Config.DefaultStates[local_315_3])
                     {
-                        local_312 = "еђЇз”Ё";
+                        local_312 = "启用";
                     }
                     else
                     {
-                        local_312 = "з¦Ѓз”Ё";
+                        local_312 = "禁用";
                     }
                     local_348 = local_312;
                 }
                 if (local_1)
                 {
-                    local_312 = "жґ»и·ѓ";
+                    local_312 = "活跃";
                 }
                 else
                 {
-                    local_312 = "йќћжґ»и·ѓ";
+                    local_312 = "非活跃";
                 }
                 if (local_1)
                 {
@@ -193,17 +190,17 @@ class US_BreathSFX : UECSScriptSystem
                 {
                 }
                 FLinearColor local_356;
-                Print(FString().Append("  [").Append(local_315_3).Append("] ").Append(local_330).Append(": ").Append(local_312).Append(" (еђЇз”Ё:").Append(local_323).Append(" з¦Ѓз”Ё:").Append(local_325).Append(" й»и®¤:").Append(local_348).Append(")"), 99999.0f, local_356);
-                Print(FString().Append("      дє‹д»¶: ").Append(local_334).Append(", жєђ: ").Append(local_340), 99999.0f, FLinearColor::Gray);
+                Print(FString().Append("  [").Append(local_315_3).Append("] ").Append(local_330).Append(": ").Append(local_312).Append(" (启用:").Append(local_323).Append(" 禁用:").Append(local_325).Append(" 默认:").Append(local_348).Append(")"), 99999.0f, local_356);
+                Print(FString().Append("      事件: ").Append(local_334).Append(", 源: ").Append(local_340), 99999.0f, FLinearColor::Gray);
                 ++local_315_3;
             }
         }
-        Print("й…ЌзЅ®дїЎжЃЇ:", 99999.0f, FLinearColor::Blue);
-        Print(FString().Append("  еђЇз”ЁжЁЎејЏж•°й‡Џ: ").Append(Config.BreathEnablePatterns.Num()), 99999.0f, FLinearColor::Blue);
-        Print(FString().Append("  з¦Ѓз”ЁжЁЎејЏж•°й‡Џ: ").Append(Config.BreathDisablePatterns.Num()), 99999.0f, FLinearColor::Blue);
-        Print(FString().Append("  й»и®¤зЉ¶жЂЃж•°й‡Џ: ").Append(Config.DefaultStates.Num()), 99999.0f, FLinearColor::Blue);
-        Print(FString().Append("  з»„д»¶еђЌз§°ж•°й‡Џ: ").Append(Config.AudioComponentNames.Num()), 99999.0f, FLinearColor::Blue);
-        Print("=== и°ѓиЇ•дїЎжЃЇз»“жќџ ===", 99999.0f, FLinearColor::Yellow);
+        Print("配置信息:", 99999.0f, FLinearColor::Blue);
+        Print(FString().Append("  启用模式数量: ").Append(Config.BreathEnablePatterns.Num()), 99999.0f, FLinearColor::Blue);
+        Print(FString().Append("  禁用模式数量: ").Append(Config.BreathDisablePatterns.Num()), 99999.0f, FLinearColor::Blue);
+        Print(FString().Append("  默认状态数量: ").Append(Config.DefaultStates.Num()), 99999.0f, FLinearColor::Blue);
+        Print(FString().Append("  组件名称数量: ").Append(Config.AudioComponentNames.Num()), 99999.0f, FLinearColor::Blue);
+        Print("=== 调试信息结束 ===", 99999.0f, FLinearColor::Yellow);
         return;
     }
     void HandleSFXStateChange(const FECSEntity &inout Entity, const FC_SFXState &inout State, const uint64 CurrentBitFlags, const uint64 OldBitFlags) const
@@ -212,9 +209,9 @@ class US_BreathSFX : UECSScriptSystem
         {
             FString local_10 = this.ConvertToBinaryString(OldBitFlags);
             FString local_6 = this.ConvertToBinaryString(CurrentBitFlags);
-            Print(FString().Append("HandleSFXStateChange: OldBitFlags = ").Append(OldBitFlags).Append(" (дєЊиї›е€¶: ").Append(local_10).Append(")"), 99999.0f, FLinearColor(FColor::Orange));
+            Print(FString().Append("HandleSFXStateChange: OldBitFlags = ").Append(OldBitFlags).Append(" (二进制: ").Append(local_10).Append(")"), 99999.0f, FLinearColor(FColor::Orange));
             FString local_14_2 = FString();
-            Print(local_14_2.Append("HandleSFXStateChange: CurrentBitFlags = ").Append(CurrentBitFlags).Append(" (дєЊиї›е€¶: ").Append(local_6).Append(")"), 99999.0f, FLinearColor(FColor::Red));
+            Print(local_14_2.Append("HandleSFXStateChange: CurrentBitFlags = ").Append(CurrentBitFlags).Append(" (二进制: ").Append(local_6).Append(")"), 99999.0f, FLinearColor(FColor::Red));
         }
         int local_23 = FMath::Min(State.GetEnableCountersNum(), 64);
         int local_24 = 0;

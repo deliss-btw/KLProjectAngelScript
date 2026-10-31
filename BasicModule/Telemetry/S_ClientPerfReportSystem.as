@@ -1,4 +1,3 @@
-﻿
 const int PERF_ACTION_DEVICE_INFO = 100001;
 const int PERF_ACTION_HEARTBEAT = 100002;
 const int PERF_ACTION_SHADER_COMPILE = 100003;
@@ -15,9 +14,6 @@ const FString PERF_NAME_STREAM_1S = FString();
 const FString PERF_NAME_RUNTIME_5S = FString();
 const FConsoleVariable CVar_PerfReport_TestSdkError = FConsoleVariable();
 const FConsoleVariable CVar_PerfReport_TestSdkFatal = FConsoleVariable();
-
-// NOTE: class defaults are not authored in this module: US_ClientPerfReportSystem (default scalar field UECSSystem.SystemNetMode has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
 
 struct FPerfHeartbeatBody
 {
@@ -108,7 +104,6 @@ struct FPerfHeartbeatBody
     UPROPERTY()
     int input_delay_ms = 0;
 
-
 }
 
 struct FPerfShaderCompileBody
@@ -134,7 +129,6 @@ struct FPerfShaderCompileBody
     UPROPERTY()
     bool from_cache = false;
 
-
 }
 
 struct FPerfLevelLoadingBody
@@ -157,7 +151,6 @@ struct FPerfLevelLoadingBody
     int loading_ms = 0;
     UPROPERTY()
     int ds_load_ms = 0;
-
 
 }
 
@@ -183,7 +176,6 @@ struct FPerfPSOHitchItem
     FString type;
     UPROPERTY()
     FString source;
-
 
 }
 

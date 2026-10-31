@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FGTCESMStateSampler (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FGTCTimeESMState
 {
     UPROPERTY()
@@ -13,7 +8,6 @@ struct FGTCTimeESMState
     float32 PlaySpeed;
     UPROPERTY()
     FString AssetName;
-
 
 }
 
@@ -41,7 +35,7 @@ struct FGTCTimeESMStateCollection
     }
     void Clear()
     {
-        this.Empty(0);
+        this.EsmStateRecords.Empty(0);
         return;
     }
 }
@@ -60,7 +54,6 @@ struct FGTCStateRecord : FGTCSampleRecord
     UPROPERTY()
     int ClientTimeOffsetFrame = 0;
 
-
 }
 
 struct FGTCESMStateSampleResult : FGTCSampleResult
@@ -73,7 +66,6 @@ struct FGTCESMStateSampleResult : FGTCSampleResult
 
     FGTCESMStateSampleResult()
     {
-        super();
         return;
     }
     void Clear()
@@ -113,7 +105,6 @@ struct FGTCESMStateSampler : FGTCSampler
 
     FGTCESMStateSampler()
     {
-        super();
         this.TargetAnimLayer = "MainLayer";
         this.bSampleViewState = true;
         this.bSampleEsmStates = true;

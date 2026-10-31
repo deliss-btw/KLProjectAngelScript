@@ -1,5 +1,3 @@
-﻿
-
 class UCharacterGlobalSetting : UCharacterGlobalSettingsBase
 {
     UPROPERTY()
@@ -18,7 +16,6 @@ class UCharacterGlobalSetting : UCharacterGlobalSettingsBase
     TObjectPtr<UESMInputTriggerAsset> MountInputTrigger = nullptr;
     UPROPERTY()
     FESMBlackboardConditionAndArray TeleportCondition;
-
 
 }
 

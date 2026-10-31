@@ -1,5 +1,3 @@
-﻿
-
 class US_CommissionStatsSystem : UECSScriptSystem
 {
     US_CommissionStatsSystem()

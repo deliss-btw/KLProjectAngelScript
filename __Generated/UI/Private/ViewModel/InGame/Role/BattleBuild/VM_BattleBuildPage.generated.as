@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_BattleBuildPage_Helpers
 {
 UFUNCTION()

@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::API::GS::GSCommissionAPI
 {
     const FString CommissionData_JobId = FString();

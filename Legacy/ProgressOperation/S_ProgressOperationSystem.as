@@ -1,5 +1,3 @@
-﻿
-
 class US_ProgressOperationSystem : UECSScriptSystem
 {
     US_ProgressOperationSystem()

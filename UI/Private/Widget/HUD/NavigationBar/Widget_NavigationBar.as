@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_NavigationBar
 {
     const int ViewID = 0;
@@ -233,6 +232,7 @@ FVector GetEntityPosition(const FECSEntity &inout Entity, const FECSEntity &inou
 }
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_NavigationBar;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnHasLockTargetChanged"));
     return;
 }

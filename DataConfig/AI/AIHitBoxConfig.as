@@ -1,5 +1,3 @@
-﻿
-
 struct FAIHitTestConfig : FDataObject
 {
     FDataObject _base_FDataObject;

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ChatMainTab
 {
     const int ModelId = 0;

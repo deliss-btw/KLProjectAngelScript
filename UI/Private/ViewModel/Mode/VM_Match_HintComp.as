@@ -1,4 +1,3 @@
-﻿
 namespace FVM_Match_HintComp
 {
     const int ModelId = 0;
@@ -102,15 +101,18 @@ struct FVM_Match_HintComp : FEUIViewModel
         {
             if (::FMS_CommissionData::Get(this.GetContext().Manager).FindCommissionByConfigDataId(this.GetCommissionId()).IsValid() && GetCommissionConfig().IsSet())
             {
-                int local_2 = this.GetCommissionId();
-                FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_CommissionPanel, FEUIModelRef());
+                int local_10;
+                ECommissionType local_11;
+                local_10 = local_11;
+                FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_CommissionPanel, FEUIModelRef(::FVM_CommissionPanel::Create(this.GetContext().Manager, ECommissionType(local_10), this.GetCommissionId())));
             }
             return;
         }
         int local_1 = this.GetMatchId();
         if (local_1 != 0)
         {
-            TEUIModelRef<FM_ModeItem> local_22 = TEUIModelRef<FM_ModeItem>(::FM_ModeItem::Create(this.GetContext().Manager, this.GetMatchId()));
+            FM_ModeItem& local_18 = ::FM_ModeItem::Create(this.GetContext().Manager, this.GetMatchId());
+            TEUIModelRef<FM_ModeItem> local_22 = TEUIModelRef<FM_ModeItem>(local_18);
             FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_Mode_PVX_Match, FEUIModelRef(local_24));
         }
         return;
@@ -215,7 +217,6 @@ struct __GeneratedProperties_FVM_Match_HintComp
     FText MatchHintTime;
     UPROPERTY()
     TEUIModelRef<FVM_Match_HintComp> Self;
-
 
 }
 

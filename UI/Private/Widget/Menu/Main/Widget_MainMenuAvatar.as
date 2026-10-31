@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_AvatarBuildTypeEntry
 {
     const int ViewID = 0;
@@ -223,7 +222,6 @@ class UWidget_MainMenuAvatar : UEUIActivatableWidget
     FGetEUIModelRef WardrobeEntranceDelegate;
     UPROPERTY()
     FGetEUIModelRef ReturnBtnStateDelegate;
-
 
     UFUNCTION()
     void OnViewBind_Implementation()
@@ -559,6 +557,7 @@ namespace UWidget_AvatarBuildTypeEntry
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_AvatarBuildTypeEntry;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -574,6 +573,7 @@ namespace UWidget_MainMenuAvatar
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MainMenuAvatar;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedAvatarIndexChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnDisplayAttributeOrSkillChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnAvatarTraitListChanged"));

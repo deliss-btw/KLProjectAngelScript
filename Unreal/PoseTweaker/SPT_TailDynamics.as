@@ -1,11 +1,9 @@
-﻿
 enum ETailKawaiiTreat
 {
     BeforeObstacleAvoid,
     AfterObstacleAvoid,
     Disable,
 }
-
 
 UCLASS(Abstract)
 class USPT_TailDynamics_Base : USkeletalPoseTweaker
@@ -22,7 +20,6 @@ class USPT_TailDynamics_Base : USkeletalPoseTweaker
     FVector UpVector = FVector(0.0, 0.0, 1.0);
     UPROPERTY()
     ETailKawaiiTreat TailKawaiiTreat = ETailKawaiiTreat(2);
-
 
     UFUNCTION()
     void OnInitialization_Implementation()

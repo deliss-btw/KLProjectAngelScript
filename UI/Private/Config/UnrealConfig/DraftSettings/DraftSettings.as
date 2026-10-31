@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class UDraftTypeAdapterBase : UObject
 {
@@ -62,7 +60,6 @@ class UDraftSettings : UGameplaySettingsBase
     float32 DraftSuccessWaitTime = 3.0f;
     UPROPERTY()
     float32 DraftFailWaitTime = 3.0f;
-
 
     UFUNCTION()
     FInstancedStruct ComputeCacheData_Implementation() const

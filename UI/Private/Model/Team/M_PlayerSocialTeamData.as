@@ -1,4 +1,3 @@
-﻿
 namespace FMS_PlayerSocialTeamData
 {
     const int ModelId = 0;
@@ -180,7 +179,7 @@ struct FMS_PlayerSocialTeamData : FEUIModelSingleton
                     local_46 = this.GetMyTeam().opArrow().GetTeamCommonData().Members[local_140.Proceed()].opArrow().GetPlayer();
                     if (local_148 && !(local_148.opArrow().IsLocalPlayer()))
                     {
-                        ::CommonPopup::Tips(FText::Format(NSLOCTEXT("MemberJoined", "{0} е·ІеЉ е…ҐйџдјЌ"), FText::FromString(local_148.opArrow().GetNickName())), local_164);
+                        ::CommonPopup::Tips(FText::Format(NSLOCTEXT("MemberJoined", "{0} 已加入队伍"), FText::FromString(local_148.opArrow().GetNickName())), local_164);
                     }
                 }
             }
@@ -194,11 +193,11 @@ struct FMS_PlayerSocialTeamData : FEUIModelSingleton
                         {
                             if (local_44.opArrow().GetPlayer().opArrow().IsLocalPlayer())
                             {
-                                ::CommonPopup::Tips(NSLOCTEXT("CaptainChangeToSelf", "е·Іж€ђдёєйџй•ї"), local_164);
+                                ::CommonPopup::Tips(NSLOCTEXT("CaptainChangeToSelf", "已成为队长"), local_164);
                             }
                             else
                             {
-                                ::CommonPopup::Tips(FText::Format(NSLOCTEXT("CaptainChange", "{0} е·Іж€ђдёєйџй•ї"), FText::FromString(local_44.opArrow().GetPlayer().opArrow().GetNickName())), local_164);
+                                ::CommonPopup::Tips(FText::Format(NSLOCTEXT("CaptainChange", "{0} 已成为队长"), FText::FromString(local_44.opArrow().GetPlayer().opArrow().GetNickName())), local_164);
                             }
                         }
                     }
@@ -222,19 +221,19 @@ struct FMS_PlayerSocialTeamData : FEUIModelSingleton
                         FText local_152 = FText::FromString(local_46.opArrow().GetNickName());
                         if (Notify.GetReason() == 1)
                         {
-                            ::CommonPopup::Tips(FText::Format(NSLOCTEXT("OtherTeamSelfLeave", "{0} е·Із¦»ејЂйџдјЌ"), local_152), local_164);
+                            ::CommonPopup::Tips(FText::Format(NSLOCTEXT("OtherTeamSelfLeave", "{0} 已离开队伍"), local_152), local_164);
                         }
                         else
                         {
                             if (Notify.GetReason() == 2)
                             {
-                                ::CommonPopup::Tips(FText::Format(NSLOCTEXT("OtherTeamKicked", "{0} е·Іиў«иЇ·з¦»йџдјЌ"), local_152), local_164);
+                                ::CommonPopup::Tips(FText::Format(NSLOCTEXT("OtherTeamKicked", "{0} 已被请离队伍"), local_152), local_164);
                             }
                             else
                             {
                                 if (Notify.GetReason() == 3)
                                 {
-                                    ::CommonPopup::Tips(FText::Format(NSLOCTEXT("OtherTeamDisbanded", "{0} е·Іи§Јж•ЈйџдјЌ"), local_152), local_164);
+                                    ::CommonPopup::Tips(FText::Format(NSLOCTEXT("OtherTeamDisbanded", "{0} 已解散队伍"), local_152), local_164);
                                 }
                             }
                         }
@@ -248,19 +247,19 @@ struct FMS_PlayerSocialTeamData : FEUIModelSingleton
             TEUIModelRef<FM_SocialTeam> local_128;
             if (Notify.GetReason() == 1)
             {
-                ::CommonPopup::Tips(NSLOCTEXT("TeamSelfLeave", "дЅ е·Із¦»ејЂйџдјЌ"), local_164);
+                ::CommonPopup::Tips(NSLOCTEXT("TeamSelfLeave", "你已离开队伍"), local_164);
             }
             else
             {
                 if (Notify.GetReason() == 2)
                 {
-                    ::CommonPopup::Tips(NSLOCTEXT("TeamKicked", "дЅ е·Іиў«иЇ·з¦»йџдјЌ"), local_164);
+                    ::CommonPopup::Tips(NSLOCTEXT("TeamKicked", "你已被请离队伍"), local_164);
                 }
                 else
                 {
                     if (Notify.GetReason() == 3)
                     {
-                        ::CommonPopup::Tips(NSLOCTEXT("TeamDisbanded", "йџдјЌе·Іи§Јж•Ј"), local_164);
+                        ::CommonPopup::Tips(NSLOCTEXT("TeamDisbanded", "队伍已解散"), local_164);
                     }
                 }
             }
@@ -353,18 +352,18 @@ struct FMS_PlayerSocialTeamData : FEUIModelSingleton
         if (Notify.GetAccepted())
         {
             FCommonTipsParam local_10;
-            ::CommonPopup::Tips(NSLOCTEXT("InviteAccepted", "еЇ№ж–№е·ІжЋҐеЏ—й‚ЂиЇ·"), local_10);
+            ::CommonPopup::Tips(NSLOCTEXT("InviteAccepted", "对方已接受邀请"), local_10);
         }
         else
         {
             FCommonTipsParam local_10;
             if (Notify.GetResult() == 3)
             {
-                ::CommonPopup::Tips(NSLOCTEXT("ApplyTimeOutRejected", "з»„йџй‚ЂиЇ·е·Іи¶…ж—¶"), local_10);
+                ::CommonPopup::Tips(NSLOCTEXT("ApplyTimeOutRejected", "组队邀请已超时"), local_10);
             }
             else
             {
-                ::CommonPopup::Tips(NSLOCTEXT("InviteRejected", "еЇ№ж–№ж‹’з»ќдє†й‚ЂиЇ·"), local_10);
+                ::CommonPopup::Tips(NSLOCTEXT("InviteRejected", "对方拒绝了邀请"), local_10);
             }
         }
         FMsg_TeamInviteResult local_20;
@@ -395,18 +394,18 @@ struct FMS_PlayerSocialTeamData : FEUIModelSingleton
         if (Notify.GetAccepted())
         {
             FCommonTipsParam local_10;
-            ::CommonPopup::Tips(NSLOCTEXT("ApplyAccepted", "йџй•їеђЊж„Џдє†дЅ зљ„е…Ґйџз”іиЇ·"), local_10);
+            ::CommonPopup::Tips(NSLOCTEXT("ApplyAccepted", "队长同意了你的入队申请"), local_10);
         }
         else
         {
             FCommonTipsParam local_10;
             if (Notify.GetResult() == 4)
             {
-                ::CommonPopup::Tips(NSLOCTEXT("ApplyTimeOutRejected", "е…Ґйџз”іиЇ·е·Іи¶…ж—¶"), local_10);
+                ::CommonPopup::Tips(NSLOCTEXT("ApplyTimeOutRejected", "入队申请已超时"), local_10);
             }
             else
             {
-                ::CommonPopup::Tips(NSLOCTEXT("ApplyRejected", "йџй•їж‹’з»ќдє†дЅ зљ„е…Ґйџз”іиЇ·"), local_10);
+                ::CommonPopup::Tips(NSLOCTEXT("ApplyRejected", "队长拒绝了你的入队申请"), local_10);
             }
         }
         FMsg_TeamApplyResult local_22;
@@ -464,7 +463,6 @@ struct FMsg_QueryTargetTeamStatusRsp : FEUIMessage
     UPROPERTY()
     bool bHasTeam;
 
-
 }
 
 struct FMsg_TeamInviteReceived : FEUIMessage
@@ -476,7 +474,6 @@ struct FMsg_TeamInviteReceived : FEUIMessage
     UPROPERTY()
     uint ExpireSeconds;
 
-
 }
 
 struct FMsg_TeamInviteResult : FEUIMessage
@@ -485,7 +482,6 @@ struct FMsg_TeamInviteResult : FEUIMessage
     uint InviteeUid;
     UPROPERTY()
     bool bAccepted;
-
 
 }
 
@@ -498,7 +494,6 @@ struct FMsg_TeamApplyReceived : FEUIMessage
     UPROPERTY()
     uint ExpireSeconds;
 
-
 }
 
 struct FMsg_TeamApplyResult : FEUIMessage
@@ -507,7 +502,6 @@ struct FMsg_TeamApplyResult : FEUIMessage
     uint64 TeamId;
     UPROPERTY()
     bool bAccepted;
-
 
 }
 

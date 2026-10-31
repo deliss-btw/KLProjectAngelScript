@@ -1,5 +1,3 @@
-﻿
-
 struct FSimpleAudioSet
 {
     UPROPERTY()
@@ -30,7 +28,6 @@ struct FDefaultCombatBGMConfig
     UPROPERTY()
     TSoftObjectPtr<UAkAudioEvent> DefaultTraceBGMEventRef;
 
-
 }
 
 struct FMapConfig : FDataObject
@@ -54,7 +51,6 @@ struct FMapConfig : FDataObject
     TMap<int, FDefaultCombatBGMConfig> DefaultCombatBGM;
     UPROPERTY()
     FDataObjectPtr m_MinimapDisplayConfig;
-
 
     void OnDataTableChangedInternal(const UDataTable DataTable, const FName &inout InRowName)
     {

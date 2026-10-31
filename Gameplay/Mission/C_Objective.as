@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_ObjectiveManager_NS
 {
     const TECSComponentDerivedPtr<FCS_ObjectiveManager> DerivedPtr = TECSComponentDerivedPtr<FCS_ObjectiveManager>();
@@ -33,11 +32,16 @@ struct FObjectiveContext
 
     FObjectiveContext()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.ContextEntity = ENTITY_NULL;
+        this.ConditionUsage = EConditionUsage(0);
+        return;
     }
     FObjectiveContext(const FECSEntity &inout InContextEntity, const EConditionUsage InConditionUsage = EConditionUsage::None, const uint InUniqueIdForUsage = 0)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.ContextEntity = InContextEntity;
+        this.ConditionUsage = InConditionUsage;
+        this.UniqueIdForUsage = InUniqueIdForUsage;
+        return;
     }
 }
 
@@ -55,7 +59,6 @@ struct FObjectiveConditionInfo
     int ProgressValue;
     UPROPERTY()
     int TargetProgressValue;
-
 
     bool IsSet() const
     {
@@ -103,7 +106,6 @@ struct FObjectiveInstance
     UPROPERTY()
     FObjectiveContext Context;
 
-
     int GetFinishProgressValue() const
     {
         int local_2;
@@ -139,7 +141,6 @@ struct FCS_ObjectiveManager : FECSSingleton
     UPROPERTY()
     TMap<uint, FObjectiveInstance> ActiveObjectives;
 
-
 }
 
 struct FCS_ManualSetObjectiveStatus : FECSSingleton
@@ -165,7 +166,6 @@ struct FCE_ObjectiveProgressUpdated : FECSEvent
     UPROPERTY()
     int NewProgressValue;
 
-
 }
 
 struct FCE_ObjectiveStatusChanged : FECSEvent
@@ -178,7 +178,6 @@ struct FCE_ObjectiveStatusChanged : FECSEvent
     UPROPERTY()
     EObjectiveStatus Status;
 
-
 }
 
 struct FCE_ObjectiveGroupNewChildActivated : FECSEvent
@@ -188,7 +187,6 @@ struct FCE_ObjectiveGroupNewChildActivated : FECSEvent
     uint GroupInstanceId;
     UPROPERTY()
     uint NewChildInstanceId;
-
 
 }
 
@@ -280,17 +278,17 @@ bool RemoveObjectiveManager(const FECSWorldPtr &inout World)
 }
 void __MonitorObjectiveManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_ObjectiveManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_ObjectiveManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorObjectiveManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_ObjectiveManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_ObjectiveManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorObjectiveManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_ObjectiveManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_ObjectiveManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_ManualSetObjectiveStatus
@@ -381,16 +379,16 @@ bool RemoveManualSetObjectiveStatus(const FECSWorldPtr &inout World)
 }
 void __MonitorManualSetObjectiveStatusLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_ManualSetObjectiveStatus, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_ManualSetObjectiveStatus, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorManualSetObjectiveStatusActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_ManualSetObjectiveStatus, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_ManualSetObjectiveStatus, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorManualSetObjectiveStatusModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_ManualSetObjectiveStatus, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_ManualSetObjectiveStatus, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

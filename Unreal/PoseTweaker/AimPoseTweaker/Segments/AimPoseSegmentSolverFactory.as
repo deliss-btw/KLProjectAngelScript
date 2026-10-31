@@ -1,4 +1,3 @@
-﻿
 namespace AimPoseSolverFactory
 {
 UAimPoseSegmentSolver Create(const EAimPoseSolverMode SolverMode)

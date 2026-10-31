@@ -1,4 +1,3 @@
-﻿
 namespace FEcosimAIV2Utils
 {
 void InitEcosimAIV2()

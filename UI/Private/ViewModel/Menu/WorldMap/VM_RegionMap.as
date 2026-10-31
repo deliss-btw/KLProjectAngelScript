@@ -1,4 +1,3 @@
-﻿
 namespace FVM_RegionMap
 {
     const int ModelId = 0;
@@ -74,8 +73,8 @@ struct FRegionMapSpotDisplayPrioritySorter
         if (local_1)
         {
             bool local_2;
-            TEUIModelRef<FM_PresentationData_Teleporter> local_12 = ::GetTeleporterData(A.opArrow(), FSpotViewAdapter(this));
-            TEUIModelRef<FM_PresentationData_Teleporter> local_14 = ::GetTeleporterData(B.opArrow(), FSpotViewAdapter(this));
+            TEUIModelRef<FM_PresentationData_Teleporter> local_12 = ::GetTeleporterData(A.opArrow(), FSpotViewAdapter(this.SpotView));
+            TEUIModelRef<FM_PresentationData_Teleporter> local_14 = ::GetTeleporterData(B.opArrow(), FSpotViewAdapter(this.SpotView));
             if (!(local_12))
             {
                 local_2 = false;
@@ -104,7 +103,8 @@ struct FWorldMapTeleporterIconData
     }
     FWorldMapTeleporterIconData(const TDataObjectPtr<FTeleporterConfig> &inout InTeleporterConfig)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.TeleporterConfig = InTeleporterConfig;
+        return;
     }
 }
 
@@ -363,8 +363,7 @@ struct FVM_RegionMap : FEUIViewModel
             {
                 FEUIDynamicWidgetData local_90;
                 local_90.WidgetClass = local_2.RegionMapTextTitleWidget;
-                FEUIModelContainer local_104;
-                local_90.ModelContainer = local_104;
+                local_90.ModelContainer = FEUIModelContainer(::FVM_Text::Create(this.GetContext().Manager, local_66));
                 this.GetModify_SpotList().Add(local_90);
             }
             FEUIModelContainer local_118;
@@ -409,7 +408,7 @@ struct FVM_RegionMap : FEUIViewModel
             local_96;
             if (((local_48 == local_96) && (int(local_24.LevelType) == 1 || (int(local_24.LevelType) == 2))) && !(local_24.bIsDevLevel))
             {
-                local_4.Add(TDataObjectPtr<FLevelInfoConfig>());
+                local_4.Add(TDataObjectPtr<FLevelInfoConfig>(local_24));
             }
             local_20.Next();
         }
@@ -812,7 +811,6 @@ struct __GeneratedProperties_FVM_RegionMap
     bool HasSelectedSpot;
     UPROPERTY()
     TEUIModelRef<FVM_RegionMap> Self;
-
 
 }
 

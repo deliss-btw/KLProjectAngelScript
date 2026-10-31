@@ -1,4 +1,3 @@
-﻿
 enum ECountCompareType
 {
     GreaterThan,
@@ -9,7 +8,6 @@ enum ECountCompareType
     Always,
 }
 
-
 class UBTDecorator_CountCombatTargetsInRange : UBTDecorator_ECSScriptBase
 {
     UPROPERTY()
@@ -19,8 +17,7 @@ class UBTDecorator_CountCombatTargetsInRange : UBTDecorator_ECSScriptBase
     UPROPERTY()
     int CompareValue = 0;
 
-    default SetNodeName("з»џи®ЎиЊѓе›ґе†…ж€ж–—з›®ж ‡ж•°й‡Џ");
-
+    default SetNodeName("统计范围内战斗目标数量");
 
     UFUNCTION()
     FString GetStaticDescription_Implementation() const

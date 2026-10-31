@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ItemQuickSlotSelectListEntry_Helpers
 {
 UFUNCTION()

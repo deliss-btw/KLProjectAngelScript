@@ -1,4 +1,3 @@
-﻿
 namespace FPresentationDataOverride
 {
     const FPresentationDataOverride None = FPresentationDataOverride();
@@ -14,7 +13,6 @@ struct FPresentationDataOverride
     bool bOverrideDescription;
     UPROPERTY()
     FText OverrideDescription;
-
 
 }
 
@@ -52,8 +50,7 @@ void SetSpotName(FM_Spot &inout Spot, const FText &inout Name, const TEUIModelRe
     FSpotViewAdapter local_8 = FSpotViewAdapter(Registry);
     local_20.bOverrideName = true;
     local_20.OverrideName = Name;
-    EPresentationDataType local_38;
-    FInstancedStruct::Make(local_38);
+    PresentationDataUtils::AddPresentationData(Spot, EPresentationDataType(5), FInstancedStruct::Make(local_20), Registry);
     return;
 }
 void ResetSpotName(FM_Spot &inout Spot, const TEUIModelRef<FM_SpotRegistry> &inout Registry = FEUIModelRef())
@@ -66,8 +63,7 @@ void ResetSpotName(FM_Spot &inout Spot, const TEUIModelRef<FM_SpotRegistry> &ino
     }
     local_20.bOverrideName = false;
     local_20.OverrideName = FText();
-    EPresentationDataType local_42;
-    FInstancedStruct::Make(local_42);
+    PresentationDataUtils::AddPresentationData(Spot, EPresentationDataType(5), FInstancedStruct::Make(local_20), Registry);
     return;
 }
 void SetSpotDescription(FM_Spot &inout Spot, const FText &inout Description, const TEUIModelRef<FM_SpotRegistry> &inout Registry = FEUIModelRef())
@@ -76,8 +72,7 @@ void SetSpotDescription(FM_Spot &inout Spot, const FText &inout Description, con
     FSpotViewAdapter local_8 = FSpotViewAdapter(Registry);
     local_20.bOverrideDescription = true;
     local_20.OverrideDescription = Description;
-    EPresentationDataType local_38;
-    FInstancedStruct::Make(local_38);
+    PresentationDataUtils::AddPresentationData(Spot, EPresentationDataType(5), FInstancedStruct::Make(local_20), Registry);
     return;
 }
 namespace PresentationDataOverrideUtils

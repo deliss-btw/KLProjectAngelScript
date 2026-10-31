@@ -1,5 +1,3 @@
-﻿
-
 class UMessageHintHandler_LargeHint : UMessageHintHandler
 {
     UMessageHintHandler_LargeHint()

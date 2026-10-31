@@ -1,5 +1,3 @@
-﻿
-
 namespace GuideUtilsPrivate
 {
 struct FOpenMapWithSpotData

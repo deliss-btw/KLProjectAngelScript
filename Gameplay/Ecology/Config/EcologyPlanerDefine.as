@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class UBaseEcologyPlanerDefine : UEcologyDataAssetBase
 {
@@ -17,7 +15,6 @@ class UBaseEcologyPlanerDefine : UEcologyDataAssetBase
     ENoResourcePivotLocationPolicy NoResourceActivityPivotPolicy = ENoResourcePivotLocationPolicy(0);
     UPROPERTY()
     EFlockNoResourceUpdatePolicy NoResourceFlockUpdatePolicy = EFlockNoResourceUpdatePolicy(0);
-
 
     UFUNCTION()
     void SetupEcologyPlanerEntity_Implementation(const FECSEntity &inout PlanerEntity, FC_EcologyPlaner &inout EcologyPlaner) const

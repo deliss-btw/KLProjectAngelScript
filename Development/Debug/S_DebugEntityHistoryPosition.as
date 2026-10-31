@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_DebugEntityHistoryPosition = FConsoleVariable();
 
 class US_DebugEntityHistoryPosition : UECSScriptSystem

@@ -1,10 +1,8 @@
-﻿
 enum EPresentationCameraLookAtRotationType
 {
     TargetEntityRotation,
     TargetToSourceRotation,
 }
-
 
 UCLASS(Abstract)
 class UInteractionStateActionBase : UObject
@@ -54,7 +52,6 @@ class UInteractionStateAction_CameraOverride : UInteractionStateActionBase
     FDataObjectPtr LookAtConfig;
     UPROPERTY()
     FDataObjectPtr OverrideCameraState;
-
 
     void OnActionBegin(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
@@ -190,7 +187,6 @@ class UInteractionStateAction_AddSkill : UInteractionStateActionBase
     UPROPERTY()
     ESkillSlot SkillSlot = ESkillSlot(8);
 
-
     void OnActionBegin(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
         if (ECS::GetRuntimeInfo().IsServer && ((this.SkillConfig != nullptr)) && InteractSource.IsValid())
@@ -222,7 +218,6 @@ class UInteractionStatePresentationAction_AnimatedCamera : UInteractionStatePres
     UPROPERTY()
     FAnimatedCameraParamsInput AnimatedCameraParamsInput;
 
-
     void OnActionBeginPresentation(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
         FName local_2 = this.CameraName;
@@ -253,7 +248,6 @@ class UInteractionStatePresentationAction_TPCameraState : UInteractionStatePrese
     EPresentationCameraLayer PresentationLayer = EPresentationCameraLayer(3);
     UPROPERTY()
     TDataObjectPtr<FTPCameraStateConfig> CameraConfig;
-
 
     void OnActionBeginPresentation(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
@@ -351,17 +345,15 @@ class UInteractionStatePresentationAction_CameraLookAt : UInteractionStatePresen
     UPROPERTY()
     bool bContributeToInput = true;
 
-
     void OnActionBeginPresentation(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
-        Get local_40;
         FNameHandle_EntityBBVarEntity local_8;
         local_8;
         FECSEntity local_12 = InteractSource.GetBB_Entity(local_8);
         if (local_12.IsValid())
         {
             int local_14;
-            bool local_13 = false;
+            int local_13 = 0;
             local_14 = local_13;
             FVector local_20(FVector::ZeroVector);
             if (int(this.RotationType) == 1)
@@ -372,6 +364,7 @@ class UInteractionStatePresentationAction_CameraLookAt : UInteractionStatePresen
                 {
                     if (local_30.GetTargetEntity().IsValid())
                     {
+                        Get local_40;
                         FRotator local_64 = (FVector(local_40.opCall().GetPosition()) - FVector(local_40.opCall().GetPosition())).Rotation();
                         if (this.bCustomLookAtRotationMutePitch)
                         {
@@ -379,12 +372,13 @@ class UInteractionStatePresentationAction_CameraLookAt : UInteractionStatePresen
                             local_64.Roll = 0.0;
                         }
                         local_20 = local_64.Vector();
-                        local_13 = true;
+                        local_13 = 1;
                         local_14 = local_13;
                     }
                 }
             }
-            ::FPresentationCameraModificationUtils::ApplyPresentationCameraLookAtTarget(InteractSource, local_12, this.LookAtTargetOffset, this.LookAtTargetSocketName, this.bContributeToInput, this.LookAtConfig, (local_14 != 0), local_20);
+            local_13 = this.bContributeToInput;
+            ::FPresentationCameraModificationUtils::ApplyPresentationCameraLookAtTarget(InteractSource, local_12, this.LookAtTargetOffset, this.LookAtTargetSocketName, (local_13 != 0), this.LookAtConfig, (local_14 != 0), local_20);
         }
         else
         {

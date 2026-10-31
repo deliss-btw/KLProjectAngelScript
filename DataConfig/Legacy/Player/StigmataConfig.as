@@ -1,4 +1,3 @@
-﻿
 enum EStigmataType
 {
     None,
@@ -8,13 +7,11 @@ enum EStigmataType
     MaxCount,
 }
 
-
 struct FStigmataAddHealLimitConfig : FDataObject
 {
     FDataObject _base_FDataObject;
     UPROPERTY()
     int Value = 1;
-
 
 }
 
@@ -39,7 +36,6 @@ struct FStigmataConfig : FDataObject
     EStigmataType NodeType;
     UPROPERTY()
     FDataObjectPtr m_NodeEffect;
-
 
     UScriptStruct GetNodeDataType() const
     {

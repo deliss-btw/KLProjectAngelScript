@@ -1,5 +1,3 @@
-﻿
-
 class UMovieSceneDialogueSection : UMovieSceneDialogueSectionBase
 {
     UPROPERTY()

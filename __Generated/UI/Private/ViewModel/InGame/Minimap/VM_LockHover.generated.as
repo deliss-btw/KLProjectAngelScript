@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_LockHover_Helpers
 {
 UFUNCTION()

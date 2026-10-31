@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TalentDivisionTypeIcon
 {
     const int ModelId = 0;
@@ -88,14 +87,13 @@ struct __GeneratedProperties_FVM_TalentDivisionTypeIcon
     UPROPERTY()
     TEUIModelRef<FVM_TalentDivisionTypeIcon> Self;
 
-
 }
 
 namespace FVM_TalentDivisionTypeIcon
 {
 FVM_TalentDivisionTypeIcon& Create(const UObject ContextObject, const ETalentDivision DivisionType)
 {
-    return FVM_TalentDivisionTypeIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject));
+    return FVM_TalentDivisionTypeIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), ETalentDivision(DivisionType));
 }
 FVM_TalentDivisionTypeIcon CreateByManager(const UEUIManagerSubsystem Manager, const ETalentDivision DivisionType)
 {

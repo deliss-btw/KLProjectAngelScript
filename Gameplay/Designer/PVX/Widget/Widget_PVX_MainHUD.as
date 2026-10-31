@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PVX_MainHUD
 {
     const int ViewID = 0;
@@ -21,7 +20,6 @@ class UWidget_PVX_MainHUD : UEUIUserWidget
     UPROPERTY()
     bool bEscapeConfigPassed = false;
     FEUIModelWeakRef __VMS_PVX_MainHUD;
-
 
     UFUNCTION()
     void Construct_Implementation()
@@ -308,6 +306,7 @@ namespace UWidget_PVX_MainHUD
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PVX_MainHUD;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnTriggerAddExpAnim"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnWinnerFactionTextChanged"));
     return;

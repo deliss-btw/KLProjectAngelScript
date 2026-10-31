@@ -1,5 +1,3 @@
-﻿
-
 class UBTDecorator_HasScenePointInRange : UBTDecorator_ECSScriptBase
 {
     UPROPERTY()
@@ -19,10 +17,9 @@ class UBTDecorator_HasScenePointInRange : UBTDecorator_ECSScriptBase
     UPROPERTY()
     FKLGameplayTagQuery TagFilter;
 
-    default SetNodeName("е‘Ёе›ґжЇеђ¦жњ‰жЊ‡е®љиµ„жєђз‚№");
+    default SetNodeName("周围是否有指定资源点");
     default SetbAllowAbortLowerPri(true);
     default SetbAllowAbortChildNodes(true);
-
 
     UFUNCTION()
     bool CalculateRawConditionValue_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const

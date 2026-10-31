@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_GameEntry_PVX_Helpers
 {
 UFUNCTION()

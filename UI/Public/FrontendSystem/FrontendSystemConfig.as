@@ -1,4 +1,3 @@
-﻿
 enum EFrontendSystemAllowMultipleInstance
 {
     AllowIfNotFocused,
@@ -14,14 +13,12 @@ enum EFrontendSystemState
     Backgrounded,
 }
 
-
 struct FFrontendSystemBehavior
 {
     UPROPERTY()
     EFrontendSystemState State;
     UPROPERTY()
     UFrontendSystemBehaviorBase Behavior = nullptr;
-
 
 }
 

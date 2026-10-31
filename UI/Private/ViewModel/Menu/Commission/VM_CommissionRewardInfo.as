@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommissionRewardInfo
 {
     const int ModelId = 0;
@@ -99,8 +98,7 @@ struct FVM_CommissionRewardInfo : FEUIViewModel
         TArray<TEUIModelRef<FM_CommissionTier>> local_118 = this.GetCommissionModel().opArrow().GetCommissionTiers();
         for (auto& local_136 : local_118)
         {
-            int local_139 = int(local_136.opArrow().GetTier());
-            FName local_141 = this.GetTierTagKey(ECommissionTier(local_139));
+            FName local_141 = this.GetTierTagKey(local_136.opArrow().GetTier());
             FText local_150;
             if (local_136.opArrow().GetCommissionTierConfig())
             {
@@ -110,8 +108,7 @@ struct FVM_CommissionRewardInfo : FEUIViewModel
             {
                 local_150 = FText();
             }
-            local_139 = int(local_136.opArrow().GetTier());
-            bool local_7 = this.GetCommissionModel().opArrow().IsTierAchieved();
+            bool local_7 = this.GetCommissionModel().opArrow().IsTierAchieved(ECommissionTier(local_136.opArrow().GetTier()));
             for (auto& local_166 : local_136.opArrow().GetRewardItems())
             {
                 if (local_166.opArrow().GetConfig().IsSet())
@@ -137,7 +134,7 @@ struct FVM_CommissionRewardInfo : FEUIViewModel
     void AddDropRewardItems(FCommonRewardListBuilder &inout Builder, const TDataObjectPtr<FDropItemConfigBase> &inout DropReward)
     {
         FDropItemConfigParser local_20;
-        bool local_37 = false;
+        int local_37 = 0;
         int local_41;
         int local_42 = 0;
         int local_44 = 0;
@@ -148,10 +145,10 @@ struct FVM_CommissionRewardInfo : FEUIViewModel
             local_41 = local_42;
             if (0 > 0)
             {
-                local_37 = false;
-                Builder.AddItem(local_41, local_44, FName(), FText(), local_37);
+                local_37 = 0;
+                Builder.AddItem(local_41, local_44, FName(), FText(), (local_37 != 0));
             }
-            if (local_37)
+            if (local_37 != 0)
             {
                 Builder.AddItem(local_41, 0, n"CommissionDrop", FText(), false);
             }
@@ -270,7 +267,6 @@ struct __GeneratedProperties_FVM_CommissionRewardInfo
     bool IsRaceCommission;
     UPROPERTY()
     TEUIModelRef<FVM_CommissionRewardInfo> Self;
-
 
 }
 

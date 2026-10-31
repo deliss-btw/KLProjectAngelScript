@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_EcosimAIV2PublicSpeakByData_NS
 {
     const TECSEventDerivedPtr<FCE_EcosimAIV2PublicSpeakByData> DerivedPtr = TECSEventDerivedPtr<FCE_EcosimAIV2PublicSpeakByData>();

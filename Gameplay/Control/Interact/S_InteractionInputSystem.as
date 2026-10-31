@@ -1,5 +1,3 @@
-﻿
-
 class US_InteractionInputSystem : UECSScriptSystem
 {
     US_InteractionInputSystem()
@@ -315,7 +313,7 @@ class US_InteractionInputSystem : UECSScriptSystem
         {
             if (local_14.TargetEntity.IsValid())
             {
-                this.SendBeginInteractEvent(local_4, local_14.TargetEntity, local_14.InteractTargetPointAndBehaviorIndex, ::FInteractUtils::GetInteractionBehaviorFromEntity(local_14.TargetEntity, local_14.InteractTargetPointAndBehaviorIndex), FFPTime(-1), local_14.bIsSecondaryTarget, EInteractMode(0));
+                this.SendBeginInteractEvent(local_4, local_14.TargetEntity, local_14.InteractTargetPointAndBehaviorIndex, ::FInteractUtils::GetInteractionBehaviorFromEntity(local_14.TargetEntity, local_14.InteractTargetPointAndBehaviorIndex), FFPTime(-1), (int(local_14.bIsSecondaryTarget) != 0), EInteractMode(0));
             }
         }
         return;

@@ -1,9 +1,6 @@
-﻿
-
 class US_LookRequestLongNeckSystemAS : UECSScriptSystem
 {
     EAnimLookSource LongNeckLookSource = EAnimLookSource(55);
-
 
     UFUNCTION()
     bool IsDisabled_Implementation() const

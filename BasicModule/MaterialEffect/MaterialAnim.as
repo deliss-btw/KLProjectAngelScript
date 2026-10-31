@@ -1,11 +1,9 @@
-﻿
 enum EMaterialAnimCurveSource
 {
     Time,
     EntityBB,
     Attribute,
 }
-
 
 struct FMaterialAnimCurveFloat
 {
@@ -22,7 +20,6 @@ struct FMaterialAnimCurveFloat
     UPROPERTY()
     float32 InterpoSpeed = 0.0f;
 
-
 }
 
 struct FMaterialAnimCurveVector
@@ -36,7 +33,6 @@ struct FMaterialAnimCurveVector
     UPROPERTY()
     FGameAttributeSelectorView Attribute;
 
-
 }
 
 struct FMaterialAnimCurveColor
@@ -49,7 +45,6 @@ struct FMaterialAnimCurveColor
     FNameHandle_EntityBBVarFloat BBVarName;
     UPROPERTY()
     FGameAttributeSelectorView Attribute;
-
 
 }
 
@@ -74,7 +69,7 @@ struct FMaterialAnimCurve
             FECSMeshComponentProxy local_36 = Entity.ModifyActorComponent(local_26.GetFName()).CastToMeshComponent();
             if (local_36)
             {
-                for (auto& local_58 : this)
+                for (auto& local_58 : this.FloatCurves)
                 {
                     FMaterialAnimCurveFloat local_62;
                     local_36.SetScalarParameterValueOnMaterials(local_58.GetKey(), local_62.DefaultValue);
@@ -92,7 +87,7 @@ struct FMaterialAnimCurve
         {
             return;
         }
-        for (auto& local_26 : this)
+        for (auto& local_26 : this.FloatCurves)
         {
             const FName& local_28 = local_26.GetKey();
             float local_36 = this.GetSampleTime(local_30.Source, Entity, Time, local_30.BBVarName, local_30.Attribute.AttributeClass, WorldTime);

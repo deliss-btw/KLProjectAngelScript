@@ -1,12 +1,9 @@
-﻿
-
 class UESMAction_ToggleComponentsForDuration : UESMBPBaseSpanAction
 {
     UPROPERTY()
     bool bHidden = true;
     UPROPERTY()
     FNameToComponentLogicNames LogicNames;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const
@@ -21,12 +18,12 @@ class UESMAction_ToggleComponentsForDuration : UESMBPBaseSpanAction
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
 }
 
@@ -34,7 +31,6 @@ struct FESMToggleComponentsWithConditionData
 {
     UPROPERTY()
     bool bActive = false;
-
 
 }
 
@@ -48,7 +44,6 @@ class UESMAction_ToggleComponentsWithCondition : UESMBPBaseSpanTickAction
     FESMBlackboardConditionAndArray ActiveCondition;
     UPROPERTY()
     float32 CheckInterval = -1.0f;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const
@@ -171,7 +166,7 @@ class UESMAction_ToggleComponentsWithCondition : UESMBPBaseSpanTickAction
     }
     bool UpdateHidden(const FESMContext &inout Context, const FESMActionTime &inout Time, const bool bFlag) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
         bool __r; return __r;
     }
 }
@@ -182,7 +177,6 @@ class UESMAction_ToggleComponentsInstantly : UESMBPBaseInstantAction
     bool bHidden = true;
     UPROPERTY()
     FNameToComponentLogicNames LogicNames;
-
 
     UFUNCTION()
     EESMActionType GetActionType_Implementation() const
@@ -197,7 +191,7 @@ class UESMAction_ToggleComponentsInstantly : UESMBPBaseInstantAction
     UFUNCTION()
     void Do_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
 }
 

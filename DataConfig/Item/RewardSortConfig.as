@@ -1,5 +1,3 @@
-﻿
-
 struct FRewardSortTagPriorityConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -9,7 +7,6 @@ struct FRewardSortTagPriorityConfig : FDataObject
     int Priority = 0;
     UPROPERTY()
     FText DisplayText;
-
 
 }
 
@@ -22,7 +19,6 @@ struct FRewardSortItemOverrideConfig : FDataObject
     float32 SortOrder = 0.0f;
     UPROPERTY()
     int SubOrder = 0;
-
 
     TDataObjectPtr<FItemConfig> GetItemId() const property
     {

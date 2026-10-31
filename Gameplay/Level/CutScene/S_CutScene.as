@@ -1,5 +1,3 @@
-﻿
-
 class US_CutScene : UECSScriptSystem
 {
     US_CutScene()
@@ -89,12 +87,12 @@ class US_CutScene : UECSScriptSystem
     UFUNCTION()
     void ClientJob_PlayCutScene(const FECSEntity &inout PlayerEntity, const FC_CutSceneLogicData &inout CutSceneLogicData) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     UFUNCTION()
     void ClientJob_StopCutScene(const FECSEntity &inout PlayerEntity, FCS_CutSceneViewData &inout CutSceneViewData) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     UFUNCTION()
     void Job_OnCrossServerCutScenePlayerSpawned(const FCE_CrossServerCutScenePlayerSpawned &inout CrossServerCutScenePlayerSpawned) const

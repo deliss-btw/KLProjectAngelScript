@@ -1,5 +1,3 @@
-﻿
-
 struct FESMSyncStateInstanceData
 {
     UPROPERTY()
@@ -25,7 +23,6 @@ class UESMAction_SyncState : UESMBPBaseSpanTickAction
     EESMBlackboardConditionTagQueryType CheckTagCondition = EESMBlackboardConditionTagQueryType(2);
     UPROPERTY()
     FGameplayTagContainer TagToCheck;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const

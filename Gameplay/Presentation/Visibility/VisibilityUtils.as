@@ -1,4 +1,3 @@
-﻿
 namespace FVisibilityUtils
 {
 UFUNCTION()

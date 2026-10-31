@@ -1,5 +1,3 @@
-﻿
-
 struct FFriendSettingsConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -13,7 +11,6 @@ struct FFriendSettingsConfig : FDataObject
     int FriendApplyExpireHours;
     UPROPERTY()
     int FriendApplyMaxCount;
-
 
 }
 

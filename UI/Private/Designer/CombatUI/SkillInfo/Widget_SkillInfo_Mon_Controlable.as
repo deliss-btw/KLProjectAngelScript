@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_SkillInfo_Mon_Controlable
 {
     const int ViewID = 0;
@@ -107,6 +106,7 @@ namespace UWidget_SkillInfo_Mon_Controlable
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SkillInfo_Mon_Controlable;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

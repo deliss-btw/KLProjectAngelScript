@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CustomWheelOptionButton
 {
     const int ModelId = 0;
@@ -22,7 +21,6 @@ struct FMsg_CustomWheelOptionSelected : FEUIMessage
 {
     UPROPERTY()
     int SelectedIndex;
-
 
 }
 
@@ -181,11 +179,31 @@ struct FVMS_CustomWheel : FEUIViewModelSingleton
 
     FVMS_CustomWheel()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_bShouldClose = false;
+        this.m_SelectedIndex = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVMS_CustomWheel(const FVMS_CustomWheel &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_bShouldClose = false;
+        this.m_SelectedIndex = INDEX_NONE;
+        this.m_OptionConfigs = Other.m_OptionConfigs;
+        this.m_Up = Other.m_Up;
+        this.m_RightUp = Other.m_RightUp;
+        this.m_Right = Other.m_Right;
+        this.m_RightDown = Other.m_RightDown;
+        this.m_Down = Other.m_Down;
+        this.m_LeftDown = Other.m_LeftDown;
+        this.m_Left = Other.m_Left;
+        this.m_LeftUp = Other.m_LeftUp;
+        this.m_bShouldClose = Other.m_bShouldClose;
+        this.m_Buttons = Other.m_Buttons;
+        this.m_SelectedIndex = int(Other.m_SelectedIndex);
+        return;
     }
     FVMS_CustomWheel opAssign(const FVMS_CustomWheel &inout Other)
     {
@@ -271,13 +289,39 @@ struct FVMS_CustomWheel : FEUIViewModelSingleton
     }
     FText GetSelectedOptionName() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        FText __r; return __r;
+        if (this.GetSelectedIndex() == INDEX_NONE)
+        {
+            return FText::FromString("");
+        }
+        int local_1 = this.GetSelectedIndex();
+        return FText();
     }
     FText GetSelectedOptionContextName() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        FText __r; return __r;
+        if (this.GetSelectedIndex() != INDEX_NONE)
+        {
+            FCustomWheelOptionConfig local_92;
+            int local_1 = this.GetSelectedIndex();
+            if (int(local_92.OptionType) == 0)
+            {
+            }
+            else
+            {
+                if (int(local_92.OptionType) == 1)
+                {
+                }
+                else
+                {
+                    if (int(local_92.OptionType) == 2)
+                    {
+                    }
+                    else
+                    {
+                    }
+                }
+            }
+        }
+        return FText::FromString("");
     }
     ESlateVisibility GetSelectedVisible() const
     {
@@ -294,11 +338,20 @@ struct FVMS_CustomWheel : FEUIViewModelSingleton
     }
     void OnConfirmButtonClicked()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (this.GetSelectedIndex() != INDEX_NONE && this.GetButtons()[this.GetSelectedIndex()].IsValid())
+        {
+            int local_2 = this.GetSelectedIndex();
+            OnButtonClicked();
+        }
+        return;
     }
     void ChangeSelectedState(const bool bSelected, const int ButtonIndex)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (ButtonIndex != INDEX_NONE && this.GetButtons()[ButtonIndex].IsValid())
+        {
+            bSelected.ChangeSelectedState();
+        }
+        return;
     }
     const TArray<TDataObjectPtr<FCustomWheelOptionConfig>> GetOptionConfigs() const property
     {
@@ -538,7 +591,6 @@ struct __GeneratedProperties_FVMS_CustomWheel
     UPROPERTY()
     TEUIModelRef<FVMS_CustomWheel> Self;
 
-
 }
 
 namespace FVMS_CustomWheel
@@ -558,8 +610,7 @@ void SendCustonWheelOption(const FCustomWheelOptionConfig &inout OptionConfig)
         FSocialUtils::PlaySocialAction(local_4, local_8, local_40);
     }
     FECSWorldPtr local_66 = local_4.GetWorld();
-    TDataObjectPtr<FCustomWheelOptionConfig> local_98;
-    local_70.OptionConfig = local_98;
+    local_70.OptionConfig = TDataObjectPtr<FCustomWheelOptionConfig>(OptionConfig);
     return;
 }
 }

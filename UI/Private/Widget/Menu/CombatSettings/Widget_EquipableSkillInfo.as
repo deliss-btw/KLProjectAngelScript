@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_EquipableSkillInfo
 {
     const int ViewID = 0;
@@ -36,7 +35,6 @@ class UWidget_EquipableSkillInfo : UEUIUserWidget
     UPROPERTY()
     FGetEUIModelRef RedDotVMDelegate;
 
-
     UFUNCTION()
     void OnViewBind_Implementation()
     {
@@ -48,9 +46,7 @@ class UWidget_EquipableSkillInfo : UEUIUserWidget
         }
         if (this.bIsEntrance)
         {
-            FRedDotNodeData local_12 = FRedDotNodeData(GameplayTags::RedDotSystem_Partner_DivineSkillEntrance, 0);
-            FEUIModelRef local_16;
-            this.RedDotVM = local_16;
+            this.RedDotVM = FEUIModelRef(::FVM_RedDot::Create(this, FRedDotNodeData(GameplayTags::RedDotSystem_Partner_DivineSkillEntrance, 0)));
         }
         return;
     }
@@ -187,6 +183,7 @@ namespace UWidget_EquipableSkillInfo
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_EquipableSkillInfo;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

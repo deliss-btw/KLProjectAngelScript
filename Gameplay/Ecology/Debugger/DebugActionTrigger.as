@@ -1,11 +1,9 @@
-﻿
 enum EDebugLevelUnitAction
 {
     Load,
     Unload,
     UnloadAndLoad,
 }
-
 
 struct FDebugTriggerActionBase
 {
@@ -23,7 +21,6 @@ struct FDebugTriggerAction_ConsoleCommand : FDebugTriggerActionBase
 
     FDebugTriggerAction_ConsoleCommand()
     {
-        super();
         return;
     }
 }
@@ -38,7 +35,6 @@ struct FDebugTriggerAction_SpawnMonster : FDebugTriggerActionBase
 
     FDebugTriggerAction_SpawnMonster()
     {
-        super();
         return;
     }
 }
@@ -50,7 +46,6 @@ struct FDebugTriggerAction_LevelUnit : FDebugTriggerActionBase
     FLevelUnitReference UnitRef;
     UPROPERTY()
     EDebugLevelUnitAction Action = EDebugLevelUnitAction(0);
-
 
 }
 
@@ -92,7 +87,7 @@ class ADebugActionTriggerBox : AEntityTriggerBox
     }
     void DispatchAction(const FInstancedStruct &inout ActionStruct, const FECSContext &inout Context, const FECSEntity &inout Entity)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     void ExecuteLevelUnitAction(const FLevelUnitReference &inout UnitRef, const EDebugLevelUnitAction Action)
     {

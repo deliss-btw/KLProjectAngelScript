@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_GuideManual_Suppress = FConsoleVariable();
 const FConsoleCommand CCmd_GuideManual_FinishQueue = FConsoleCommand();
 const FConsoleCommand CCmd_GuideManual_TriggerGuide = FConsoleCommand();
@@ -14,7 +13,6 @@ struct FGuideCondIndexEntry
     uint CondDataId;
     UPROPERTY()
     TDataObjectPtr<FGuideGroupConfig> GuideConfig;
-
 
 }
 
@@ -496,8 +494,7 @@ struct FMS_GuideManual : FEUIModelSingleton
         }
         FName local_7;
         float32 local_8 = -1.0f;
-        bool local_3 = false;
-        float32 local_10 = local_3;
+        bool local_10 = false;
         bool local_11 = false;
         if (this.GetTutorialHudVM().IsValid())
         {
@@ -1059,7 +1056,8 @@ struct FMS_GuideManual : FEUIModelSingleton
     bool IsVisibleInManual(const TDataObjectPtr<FGuideGroupConfig> &inout Config) const
     {
         const FGuideGroupConfig& local_2;
-        if (!(::FMS_ClientCondition::Get(this.GetManager()).AreInputTypeConditionsMet(local_2.ClientConditions)))
+        FMS_ClientCondition& local_6 = ::FMS_ClientCondition::Get(this.GetManager());
+        if (!(local_6.AreInputTypeConditionsMet(local_2.ClientConditions)))
         {
             return false;
         }

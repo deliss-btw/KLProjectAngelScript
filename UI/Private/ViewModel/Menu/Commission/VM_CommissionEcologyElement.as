@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommissionEcologyElement
 {
     const int ModelId = 0;
@@ -331,14 +330,13 @@ struct __GeneratedProperties_FVM_CommissionEcologyElement
     UPROPERTY()
     TEUIModelRef<FVM_CommissionEcologyElement> Self;
 
-
 }
 
 namespace FVM_CommissionEcologyElement
 {
 FVM_CommissionEcologyElement& Create(const UObject ContextObject, const TEUIModelWeakRef<FVM_CommissionEcologyInfo> &inout EcologyInfo, const EEcologyElementType ElementType)
 {
-    return FVM_CommissionEcologyElement::CreateByManager(EUIInternal::GetContextManager(ContextObject), EcologyInfo);
+    return FVM_CommissionEcologyElement::CreateByManager(EUIInternal::GetContextManager(ContextObject), EcologyInfo, EEcologyElementType(ElementType));
 }
 FVM_CommissionEcologyElement CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVM_CommissionEcologyInfo> &inout EcologyInfo, const EEcologyElementType ElementType)
 {

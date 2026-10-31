@@ -1,5 +1,3 @@
-﻿
-
 struct FT_AccountExclusiveProp : FECSTrait
 {
     FECSTrait _base_FECSTrait;

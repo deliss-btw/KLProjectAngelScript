@@ -1,4 +1,3 @@
-﻿
 namespace ItemConfigUtils_Internal
 {
     const TArray<EItemType> DSItemTypes = TArray<EItemType>();
@@ -131,7 +130,7 @@ namespace ItemConfigUtils_Internal
 {
 uint GetTrunkSlotNum(const EItemTrunk ItemTrunk)
 {
-    TDataObjectPtr<FItemTrunkConfig> local_26 = UGlobalItemSettings::Get().GetItemTrunkConfig();
+    TDataObjectPtr<FItemTrunkConfig> local_26 = UGlobalItemSettings::Get().GetItemTrunkConfig(EItemTrunk(ItemTrunk));
     if (local_26)
     {
         return local_26.opArrow().MaxSlotNum;

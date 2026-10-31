@@ -1,5 +1,3 @@
-﻿
-
 class US_NearDeathSystem : UECSScriptSystem
 {
     US_NearDeathSystem()

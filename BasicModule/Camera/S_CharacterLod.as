@@ -1,4 +1,3 @@
-﻿
 namespace CharacterLod
 {
     const FConsoleVariable CVar_EnableCityMinLod = FConsoleVariable();
@@ -129,7 +128,7 @@ class US_CharacterLod : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_CharacterLodOverride(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = ::__GetMonitorCharacterLodOverrideOnRemoveView(this.GetECSWorld(), EECSRegType(0), false, true);
+        FECSMonitorRuntimeView local_56 = ::__GetMonitorCharacterLodOverrideOnRemoveView(this.GetECSWorld(), EECSRegType(0), (0 != 0), true);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {
@@ -164,7 +163,7 @@ class US_CharacterLod : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_UpdateTeam(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = ::__GetMonitorPlayerInTeamOnRemoveView(this.GetECSWorld(), EECSRegType(0), false, true);
+        FECSMonitorRuntimeView local_56 = ::__GetMonitorPlayerInTeamOnRemoveView(this.GetECSWorld(), EECSRegType(0), (0 != 0), true);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {
@@ -199,7 +198,7 @@ class US_CharacterLod : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_MountDrivenByUpdate(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = ::__GetMonitorMountIsDrivenByOnRemoveView(this.GetECSWorld(), EECSRegType(0), false, true);
+        FECSMonitorRuntimeView local_56 = ::__GetMonitorMountIsDrivenByOnRemoveView(this.GetECSWorld(), EECSRegType(0), (0 != 0), true);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {
@@ -241,11 +240,70 @@ bool IsPlayerOrPlayerPawn(const FECSEntity &inout Entity)
 }
 int GetMinLod(const FECSEntity &inout Entity)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    int __r; return __r;
+    int local_30 = 0;
+    FECSEntity local_8 = CharacterLod::GetLodReferenceEntity(Entity);
+    if (!(local_8.IsValid()))
+    {
+        return INDEX_NONE;
+    }
+    if (FASCommonUtils::IsBossPrefab(local_8))
+    {
+        return 1;
+    }
+    if (FASCommonUtils::IsNPC(Entity))
+    {
+        return 1;
+    }
+    FECSEntity local_4 = FASCommonUtils::GetLocalUniquePlayerEntity();
+    FECSEntity local_14 = FASCommonUtils::GetUniquePlayerEntity(local_4);
+    FECSEntity local_18 = FASCommonUtils::GetUniquePlayerEntity(local_8);
+    if (local_14.IsValid() && local_18.IsValid() && (local_14 == local_18))
+    {
+        return 1;
+    }
+    if (local_14.IsValid() && local_18.IsValid() && FTeamUtils::IsInSameTeam(local_14, local_18))
+    {
+        return 2;
+    }
+    if (CharacterLod::IsPlayerOrPlayerPawn(local_8))
+    {
+        if (local_30 && local_30.GetbOtherPlayerUseBetterLOD())
+        {
+            return 2;
+        }
+        if (CharacterLod::CVar_EnableCityMinLod.GetBool() && (int(FLevelUtils::GetCurrentLevelType()) == 1))
+        {
+            return 2;
+        }
+        return 3;
+    }
+    return INDEX_NONE;
 }
 void UpdateCharacterLod(const FECSEntity &inout Entity)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    UClass local_36;
+    if (!(Entity))
+    {
+        return;
+    }
+    FECSActorProxy local_6 = Entity.ModifyActor();
+    if (!(local_6))
+    {
+        return;
+    }
+    int local_11 = CharacterLod::GetMinLod(Entity);
+    if (local_11 == INDEX_NONE)
+    {
+        return;
+    }
+    for (auto& local_30 : local_6.GetComponentDataByName())
+    {
+        const FName& local_32 = local_30.GetKey();
+        if (local_36.IsChildOf(USkeletalMeshComponent))
+        {
+            Entity.ModifyActorComponent(local_32).CastToSkeletalMeshComponent().OverrideMinLOD(local_11);
+        }
+    }
+    return;
 }
 }

@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_LinkSkillEnergyCrossbow
 {
     const int ModelId = 0;
@@ -288,7 +287,11 @@ void __OnTurretResourceChanged(FVMS_LinkSkillEnergyCrossbow &inout Model, const 
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    ECSWorld.__MonitorPropManipulatorLifetime(EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    ECSWorld.__MonitorPropManipulatorModification(EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorScalerResourceRuntimeLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorScalerResourceRuntimeModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 float32 __UIGetter_EnergyRatio(const FVMS_LinkSkillEnergyCrossbow &inout Model)
 {

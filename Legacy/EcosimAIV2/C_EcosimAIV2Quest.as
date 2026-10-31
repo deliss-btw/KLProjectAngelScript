@@ -1,5 +1,3 @@
-﻿
-
 struct FEcsoimAIV2QuestData
 {
     UPROPERTY()

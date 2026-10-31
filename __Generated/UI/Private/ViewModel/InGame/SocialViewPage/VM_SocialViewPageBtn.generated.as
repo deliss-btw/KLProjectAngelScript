@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_SocialViewPageBigBtn_Helpers
 {
 UFUNCTION()

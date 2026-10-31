@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_BodyPartDestroyConditionManager_NS
 {
     const TECSComponentDerivedPtr<FCS_BodyPartDestroyConditionManager> DerivedPtr = TECSComponentDerivedPtr<FCS_BodyPartDestroyConditionManager>();
@@ -115,16 +114,16 @@ bool RemoveBodyPartDestroyConditionManager(const FECSWorldPtr &inout World)
 }
 void __MonitorBodyPartDestroyConditionManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_BodyPartDestroyConditionManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_BodyPartDestroyConditionManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBodyPartDestroyConditionManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_BodyPartDestroyConditionManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_BodyPartDestroyConditionManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBodyPartDestroyConditionManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_BodyPartDestroyConditionManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_BodyPartDestroyConditionManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

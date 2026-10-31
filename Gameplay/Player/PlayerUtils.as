@@ -1,4 +1,3 @@
-﻿
 namespace FPlayerUtils
 {
 void GetAllPlayerPawnEntitiesInRange(TArray<FECSEntity> &inout OutAllEntities, const FECSWorldPtr &inout World, const FVector &inout Location, const float32 Range, const bool bIncludeBackGround = true)
@@ -18,6 +17,6 @@ void GetAllPlayerPawnEntitiesInRange(TArray<FECSEntity> &inout OutAllEntities, c
 }
 void OverridePlayerAvatarBuild(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FAvatarBuildOverrideConfig> &inout Config)
 {
-    // body not fully recovered вЂ” stub [unresolved-operand]
+    // body not fully recovered — stub [unresolved-operand]
 }
 }

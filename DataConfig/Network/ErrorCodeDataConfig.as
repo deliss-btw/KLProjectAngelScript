@@ -1,5 +1,3 @@
-﻿
-
 struct FErrorCodeConfig : FDataObject
 {
     FDataObject _base_FDataObject;

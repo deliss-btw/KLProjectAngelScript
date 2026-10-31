@@ -1,4 +1,3 @@
-﻿
 namespace FWeatherUtils
 {
 FName GetWeatherNameFromRegionVolume(const AECSRegionVolume RegionVolume = nullptr)
@@ -795,12 +794,12 @@ void RemoveWeatherBuffFromPlayer(const FECSEntity &inout PlayerEntity, const TDa
 }
 void DebugWeatherLog(const FString &inout LogString)
 {
-    float32 local_4 = FTimeOfDayUtils::GetTimeOfDayInHoursClamp24(FTimeOfDayUtils::GetCurrentTimeOfDayInSeconds());
-    ELog local_12;
-    (FString(" DebugWeather: Time:") + local_12);
-    FString local_8 = (local_12 + "(");
-    (local_8 + int(local_12));
-    FString local_8_2 = (local_12 + ")	 ");
+    int local_2 = FTimeOfDayUtils::GetCurrentTimeOfDayInSeconds();
+    float32 local_4 = FTimeOfDayUtils::GetTimeOfDayInHoursClamp24(local_2);
+    FString local_8 = ((FString(" DebugWeather: Time:") + local_4) + "(");
+    FString local_12_2 = (local_8 + local_2);
+    FString local_8_2 = (local_12_2 + ")	 ");
+    XLog(ELog(44), (local_8_2 + LogString));
     return;
 }
 int64 GetPlayerControllerWeatherDataId(const FECSEntity &inout PlayerEntity)

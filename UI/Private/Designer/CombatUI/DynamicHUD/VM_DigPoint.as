@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_DigPoint
 {
     const int ModelId = 0;

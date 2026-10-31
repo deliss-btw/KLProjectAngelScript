@@ -1,9 +1,6 @@
-﻿
-
 class US_TestECSAccessAnalyzeASSystem : UECSScriptSystem
 {
     bool bRunTestAnalyzeAS = false;
-
 
     UFUNCTION()
     bool IsDisabled_Implementation() const

@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::API::GS::GSPlayerAPI
 {
     const FString GetPlayerUidByName_JobId = FString();

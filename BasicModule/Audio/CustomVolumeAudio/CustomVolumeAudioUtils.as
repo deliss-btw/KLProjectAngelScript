@@ -1,4 +1,3 @@
-﻿
 namespace FCustomVolumeAudioUtils
 {
 UFUNCTION()
@@ -465,7 +464,22 @@ void UpdateAudioPlayback(const FECSEntity &inout Entity, FC_CustomVolumeAudio &i
 UFUNCTION()
 void StartCustomVolumeAudio(const FECSEntity &inout Entity, FC_CustomVolumeAudio &inout VolumeAudio)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    FSimpleAudioSet local_102 = FCustomVolumeAudioUtils::GetAudioSetByAreaType(VolumeAudio.VolumeAreaType);
+    int local_104 = FCustomVolumeAudioUtils::PlayCustomVolumeAudioSet(Entity, VolumeAudio.AudioPosition, local_102);
+    if (local_104 >= 0)
+    {
+        VolumeAudio.CurrentAudioID = local_104;
+        VolumeAudio.bIsAudioPlaying = true;
+        VolumeAudio.LastAudioPosition = VolumeAudio.AudioPosition;
+        VolumeAudio.AttenuationRadius = FGameAudioSettings::Get().DefaultCustomVolumeAudioAttenuationRadius;
+        XLogIf(FCustomVolumeAudioUtils::EnableLog(), ELog(1), FString().Append("StartCustomVolumeAudio: Started audio ").Append(FName(local_102.Event.GetAssetName())).Append(" with ID ").Append(local_104).Append(" for entity ").Append(Entity.GetEntityName()));
+    }
+    else
+    {
+        FName local_111 = Entity.GetEntityName();
+        XWarning(ELog(1), FString().Append("StartCustomVolumeAudio: Failed to start audio for area type ").Append(local_111).Append(" for entity ").Append(local_111));
+    }
+    return;
 }
 UFUNCTION()
 void StopCustomVolumeAudioForEntity(const FECSEntity &inout Entity, FC_CustomVolumeAudio &inout VolumeAudio)

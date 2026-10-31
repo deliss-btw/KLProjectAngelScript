@@ -1,4 +1,3 @@
-﻿
 namespace FShieldUtils
 {
     const FString EntityNamePrefix_Shield = FString();
@@ -8,7 +7,7 @@ FECSEntity CreateShield(const FECSEntity &inout ShieldOwnerEntity, const FName &
     FECSEntity local_4;
     int local_12 = 0;
     int local_138 = 0;
-    if (ECS::GetRuntimeInfo().IsClient)
+    if (int(ECS::GetRuntimeInfo().IsClient) != 0)
     {
         return local_4;
     }
@@ -114,7 +113,7 @@ void SetShieldActiveByName(const FECSEntity &inout ShieldOwnerEntity, const FNam
 }
 void DestoryShield(const FECSEntity &inout ShieldEntity, FC_Shield &inout Shield, const FFPTime &inout Time)
 {
-    if (ECS::GetRuntimeInfo().IsClient)
+    if (int(ECS::GetRuntimeInfo().IsClient) != 0)
     {
         return;
     }

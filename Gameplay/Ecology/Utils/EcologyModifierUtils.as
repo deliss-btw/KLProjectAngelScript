@@ -1,4 +1,3 @@
-﻿
 namespace FEcologyModifierConst
 {
     const FEcologyResourceModifierConfig EmptyEcologyModiferConfig = FEcologyResourceModifierConfig();
@@ -43,8 +42,7 @@ void TryAddModifierToEntity(const FEcologyModifierSummary &inout Summary, const 
     {
         return;
     }
-    FECSEntity local_6;
-    if (!(local_6.IsValid()))
+    if (!(FECSEntity(Summary.ConfigRef).IsValid()))
     {
         return;
     }
@@ -58,7 +56,7 @@ void TryAddModifierToEntity(const FC_EcologyResourceModifierConfig &inout Config
     {
         return;
     }
-    if (!(Config.Filter.CheckTargetEntity(Target)))
+    if (!(Config.Modifier.Filter.CheckTargetEntity(Target)))
     {
         return;
     }

@@ -1,5 +1,3 @@
-﻿
-
 namespace FProjectileTimelineUtils
 {
 struct FProjectileTimelineActionContext
@@ -26,7 +24,6 @@ struct FProjectileTimelineActionContext
     FECSEntity ContextEntity;
     UPROPERTY()
     FFPTime WorldTime;
-
 
 }
 
@@ -139,12 +136,12 @@ void TryClearMovementComponent(const FECSEntity &inout Entity, const UScriptStru
 }
 FQuat4f GetRotationByConfig(const FECSEntity &inout Entity, const EProjectileTimelineRotationBaseType RotationBaseType, const EProjectileTimelineTransformOffsetType RotationOffsetType, const FQuat4f &inout ContextRotation, const FQuat4f &inout RotationOffset)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     FQuat4f __r; return __r;
 }
 bool GetPositionByConfig(const FECSEntity &inout Entity, const EProjectileTimelinePositionBaseType PositionBaseType, const EProjectileTimelineTransformOffsetType PositionOffsetType, const FVector &inout ContextPosition, const FVector &inout PositionOffset, const FQuat4f &inout Rotation, const float32 GroundHeightCheck, FVector &inout OutPosition)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     bool __r; return __r;
 }
 FECSEntity FindAbilityOwner(const FECSEntity &inout Entity)
@@ -177,18 +174,17 @@ void BeginAction_ReplaceComponent(const FProjectileTimelineUtils::FProjectileTim
     int local_148 = 0;
     if (int(ECS::GetECSComponentType(ActionType)) == 5)
     {
-        FSyncStructRef local_18 = FSyncStructRef(Ctx.Asset, Ctx.ActionDataWithTime.Data.GetName());
+        FProjectileTimelineUtils::ReplaceComponentAssign(Ctx.Entity, ActionType, FSyncStructRef(Ctx.Asset, Ctx.ActionDataWithTime.Data.GetName()), Ctx.WorldTime);
         if ((FC_ProjectileHitConfig == ActionType))
         {
-            FECSEntity::Remove<FC_ProjectileHitTestDisableTag> local_24;
-            local_24.opCall();
+            FECSEntity::Remove<FC_ProjectileHitTestDisableTag>(Ctx.Entity).opCall();
             if (!(local_30.GetbAttackDataOverride()))
             {
                 Get local_34;
                 local_30.GetModify_AttackInfo().AttackData = local_34.opCall().AttackDataConfig;
                 if (local_30.GetAttackInfo().AttackData)
                 {
-                    FECSEntity local_42;
+                    FECSEntity local_42 = FCombatUtils::GetAttackSourceEntity(Ctx.Entity);
                     TDataObjectPtr<FAttackData> local_66 = TDataObjectPtr<FAttackData>(local_30.GetAttackInfo().AttackData);
                     local_30.SetDamage(FDamageUtils::CalcAttackBaseDamageValue(local_42, local_68, Ctx.WorldTime, false, FCapabilityInstanceId()));
                     local_76 = FDamageUtils::CalcAttackBaseDamageValue(local_42, local_68, Ctx.WorldTime, true, FCapabilityInstanceId());
@@ -210,6 +206,7 @@ void BeginAction_ReplaceComponent(const FProjectileTimelineUtils::FProjectileTim
                     FDataObjectPtr local_116 = FDataObjectPtr(local_92.AttackDataAfterPenetration);
                     if (local_116)
                     {
+                        FCombatUtils::GetAttackSourceEntity(Ctx.Entity);
                         local_30.GetModify_AttackInfoAfterPenetration().AttackData = local_116;
                         local_30.SetDamageAfterPenetration(local_76);
                         local_30.SetDamageToAvatarAfterPenetration(local_76);
@@ -253,20 +250,186 @@ void BeginAction_ReplaceComponent(const FProjectileTimelineUtils::FProjectileTim
         return;
     }
     Get local_154;
-    ECSInternal::Assign(Ctx.GetWorld(), Ctx.GetId(), ActionType, FECSComponentPtr(local_154.opCall()));
+    ECSInternal::Assign(Ctx.Entity.GetWorld(), Ctx.Entity.GetId(), ActionType, FECSComponentPtr(local_154.opCall()));
     return;
 }
 void BeginAction_PlayFX(const FProjectileTimelineUtils::FProjectileTimelineActionContext &inout Ctx, FC_ProjectileTimelineController &inout Controller, const FProjectileTimelineActionData_PlayFX &inout PlayFXData)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    FECSEntity local_4;
+    int local_316 = 0;
+    int local_422 = 0;
+    int local_454 = 0;
+    switch (int(PlayFXData.TransformRefEntity))
+    {
+    case 1:
+    {
+        local_4 = Ctx.Entity;
+        break;
+    }
+    case 2:
+    {
+        Get local_12;
+        const FC_Owner& local_14 = local_12.opCall();
+        if (local_14)
+        {
+            local_4 = local_14.GetOwnerEntity();
+        }
+        else
+        {
+            local_4 = Ctx.Entity;
+        }
+        break;
+    }
+    case 3:
+    {
+        local_4 = Ctx.ContextEntity;
+        break;
+    }
+    }
+    FQuat4f local_44 = FProjectileTimelineUtils::GetRotationByConfig(local_4, PlayFXData.RotationBaseType, PlayFXData.RotationOffsetType, Ctx.ContextRotation, FQuat4f(PlayFXData.FXConfig.RotationOffset.Quaternion()));
+    FVector local_50;
+    if (!(FProjectileTimelineUtils::GetPositionByConfig(local_4, PlayFXData.PositionBaseType, PlayFXData.PositionOffsetType, Ctx.ContextPosition, PlayFXData.FXConfig.LocationOffset, local_44, PlayFXData.GroundHeightCheck, local_50)))
+    {
+        return;
+    }
+    FFXConfig local_284 = PlayFXData.FXConfig.GetFXConfig();
+    FQuat local_32 = FQuat(local_44);
+    local_284.SetbUseWorldOriginAsBaseTransformSource(true);
+    local_284.SetLocationOffsetSpace(EFXOffsetSpace(2));
+    local_284.SetRotationOffsetSpace(EFXOffsetSpace(2));
+    FTransform local_308;
+    if (!(PlayFXData.FXConfig.bDetach))
+    {
+        local_308 = local_308.GetRelativeTransform(local_316.ToFTransform());
+        local_284.SetbUseWorldOriginAsBaseTransformSource(false);
+        local_284.SetLocationOffsetSpace(EFXOffsetSpace(0));
+        local_284.SetRotationOffsetSpace(EFXOffsetSpace(0));
+    }
+    local_284.SetLocationOffset(local_308.GetLocation());
+    local_284.SetRotationOffset(local_308.Rotator());
+    if (Ctx.ActionDataWithTime.bInstant)
+    {
+        FECSEntity local_20 = ECSFX::PlayFXInstantEx(Ctx.Entity, local_284, Ctx.WorldTime, 1.0f, true, true, local_4);
+    }
+    else
+    {
+        int local_379;
+        int local_378;
+        local_379 = 0;
+        local_378 = local_379;
+        if (int(PlayFXData.FXConfig.FXLifeTime) == 1)
+        {
+            local_379 = 0;
+            local_378 = local_379;
+        }
+        else
+        {
+            if (int(PlayFXData.FXConfig.FXLifeTime) == 2)
+            {
+                local_379 = 1;
+                local_378 = local_379;
+            }
+        }
+        FECSEntity local_20_2 = ECSFX::PlayFXDurationalEx(Ctx.Entity, local_284, Ctx.WorldTime, 1.0f, true, local_4, EAttachFXStopMethod(local_378), false);
+        if (local_20_2.IsValid())
+        {
+            FFPTime local_386 = FFPTime(Ctx.ActionDataWithTime.BeginTime);
+            if ((local_386 == 0.0) && ((FFPTime(Controller.GetTimelineInfos()[int(Ctx.TimelineIndexInArray)].GetTimeOffset()) == 0.0)))
+            {
+                Get local_392;
+                const FC_ProjectileInfo& local_394 = local_392.opCall();
+                if (local_394)
+                {
+                    local_422.SetPosition(local_394.GetSpawnPosition());
+                    local_422.SetRotation(local_394.GetSpawnRotation());
+                    local_422.SetInitTickDeltaSeconds(float32(FECSWorld::FixedFrameInterval.ToSeconds()));
+                }
+            }
+        }
+        if (!(PlayFXData.ParamChangePoints.IsEmpty()))
+        {
+            local_454.SetParamChangePoints(PlayFXData.ParamChangePoints);
+        }
+        Controller.GetModify_TimelineInfos()[int(Ctx.TimelineIndexInArray)].GetModify_RelativeDatas().Add(Ctx.ActionIndex, FProjectileTimelineActionRelativeData(local_20_2));
+    }
+    return;
 }
 void BeginAction_HitTest(const FProjectileTimelineUtils::FProjectileTimelineActionContext &inout Ctx, const FProjectileTimelineActionData_HitTest &inout HitTestData)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    FQuat4f local_12 = FProjectileTimelineUtils::GetRotationByConfig(Ctx.Entity, HitTestData.RotationBaseType, HitTestData.RotationOffsetType, Ctx.ContextRotation, HitTestData.RotationOffset);
+    FVector local_18;
+    if (!(FProjectileTimelineUtils::GetPositionByConfig(Ctx.Entity, HitTestData.PositionBaseType, HitTestData.PositionOffsetType, Ctx.ContextPosition, HitTestData.PositionOffset, local_12, HitTestData.GroundHeightCheck, local_18)))
+    {
+        return;
+    }
+    FECSEntity local_26;
+    while (Ctx.Entity)
+    {
+        Has local_30;
+        bool local_21 = local_30.opCall();
+        if (local_21)
+        {
+            break;
+        }
+        Get local_34;
+        const FC_Owner& local_36 = local_34.opCall();
+        if (local_36)
+        {
+            local_26 = local_36.GetOwnerEntity();
+        }
+        else
+        {
+            break;
+        }
+    }
+    SendEvent local_44;
+    FCE_ArealStrikeRequestEvent& local_46 = local_44.opCall(Ctx.WorldTime);
+    if (local_46)
+    {
+        local_46.TransformPos = local_18;
+        local_46.TransformRot = local_12;
+        local_46.SweepFromOffset = FVector3f::ZeroVector;
+        local_46.Shape = HitTestData.HitTestShape;
+        local_46.AttackInfo.HitType = (2 != 0);
+        local_46.AttackInfo.AttackData = HitTestData.AttackData;
+        local_46.StrikeEventData.StrikeShape = HitTestData.StrikeShape;
+        local_46.StrikeEventData.StrikeDirection = FQuat(local_12).GetForwardVector();
+        local_46.StrikeEventData.bUseHitTestPosStrikeOrigin = true;
+        local_46.SetbIgnoreSender(false);
+    }
+    return;
 }
 void BeginAction_CreateArealEffect(const FProjectileTimelineUtils::FProjectileTimelineActionContext &inout Ctx, FC_ProjectileTimelineController &inout Controller, const FProjectileTimelineActionData_CreateArealEffectEntity &inout CreateArealEffectData)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    int local_72 = 0;
+    FQuat4f local_12 = FProjectileTimelineUtils::GetRotationByConfig(Ctx.Entity, CreateArealEffectData.RotationBaseType, CreateArealEffectData.RotationOffsetType, Ctx.ContextRotation, CreateArealEffectData.RotationOffset);
+    FVector local_18;
+    if (!(FProjectileTimelineUtils::GetPositionByConfig(Ctx.Entity, CreateArealEffectData.PositionBaseType, CreateArealEffectData.PositionOffsetType, Ctx.ContextPosition, CreateArealEffectData.PositionOffset, local_12, CreateArealEffectData.GroundHeightCheck, local_18)))
+    {
+        return;
+    }
+    FECSEntity local_30 = FCombatUtils::GetAttackSourceEntity(Ctx.Entity);
+    bool local_21 = false;
+    FECSEntity local_26 = FEntityPoolUtils::PopFromPoolOrSpawnEntity(local_21, EEntityPoolType(4), local_30, CreateArealEffectData.ArealEffectPrefabClass.GetDefaultObject());
+    if (local_26.IsValid())
+    {
+        ECS::MarkEntityPrefabPendingInit(local_26, CreateArealEffectData.ArealEffectPrefabClass, local_18, FQuat(local_12), EPrefabCollisionAlignment(2), false);
+        FFPTime local_52 = CreateArealEffectData.Duration;
+        if (CreateArealEffectData.bLifeTimeWithAction && (FFPTime(Ctx.ActionDataWithTime.EndTime).opCmp(Ctx.ActionDataWithTime.BeginTime) > 0))
+        {
+            local_52 = (FFPTime(Ctx.ActionDataWithTime.EndTime) - Ctx.ActionDataWithTime.BeginTime);
+        }
+        local_72.SetSpawnTime(Ctx.WorldTime);
+        local_72.SetLifeDuration(FFPTime(local_52));
+        Assign local_76;
+        local_76.opCall(FC_LifeTimeCommonControlTag());
+        if (CreateArealEffectData.bLifeTimeWithAction)
+        {
+            Controller.GetModify_TimelineInfos()[int(Ctx.TimelineIndexInArray)].GetModify_RelativeDatas().Add(Ctx.ActionIndex, FProjectileTimelineActionRelativeData(local_26));
+        }
+        ECS::MakeDelayDestroyRef(local_30, local_26);
+    }
+    return;
 }
 void BeginAction_AbilitySignal(const FECSEntity &inout Entity, const FProjectileTimelineActionData_AbilitySignal &inout AbilitySignalData)
 {
@@ -444,7 +607,7 @@ void EndAction_AbilityEffectEvent(const FECSEntity &inout Entity, const FProject
 }
 void EndAction_ChangeMaterialParam(const FECSEntity &inout Entity, const FProjectileTimelineActionData_ChangeMaterialParamSpan &inout ChangeMaterialParamData)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    // body not fully recovered — stub [argmismatch:argtype]
 }
 void EndAction_DurationalSFX(const FECSEntity &inout Entity, const int TimelineIndex, const int ActionIndex)
 {
@@ -502,7 +665,108 @@ void EndAction_KeepRtpcValue(const FECSEntity &inout Entity, const int TimelineI
 }
 void BeginTimelineAction(const FProjectileTimelineUtils::FProjectileTimelineActionContext &inout Ctx, FC_ProjectileTimelineController &inout Controller)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    if (Ctx.Asset == nullptr)
+    {
+        return;
+    }
+    const FInstancedStruct& local_6 = Ctx.Asset.GetActionData(Ctx.ActionDataWithTime.Data);
+    UScriptStruct local_10 = local_6.GetScriptStruct();
+    if (local_10.IsChildOf(FECSComponent))
+    {
+        FProjectileTimelineUtils::BeginAction_ReplaceComponent(Ctx, Controller, local_10, local_6);
+    }
+    else
+    {
+        if (local_10.IsChildOf(FProjectileTimelineActionData_PlayFX))
+        {
+            Get local_16;
+            FProjectileTimelineUtils::BeginAction_PlayFX(Ctx, Controller, local_16.opCall());
+        }
+        else
+        {
+            if (local_10.IsChildOf(FProjectileTimelineActionData_HitTest))
+            {
+                Get local_20;
+                FProjectileTimelineUtils::BeginAction_HitTest(Ctx, local_20.opCall());
+            }
+            else
+            {
+                if (local_10.IsChildOf(FProjectileTimelineActionData_CreateArealEffectEntity))
+                {
+                    FProjectileTimelineUtils::BeginAction_CreateArealEffect(Ctx, Controller, FInstancedStruct::Get<FProjectileTimelineActionData_CreateArealEffectEntity>(local_6).opCall());
+                }
+                else
+                {
+                    if (local_10.IsChildOf(FProjectileTimelineActionData_AbilitySignal))
+                    {
+                        Get local_28;
+                        FProjectileTimelineUtils::BeginAction_AbilitySignal(Ctx.Entity, local_28.opCall());
+                    }
+                    else
+                    {
+                        if (local_10.IsChildOf(FProjectileTimelineActionData_AbilityEffectEvent))
+                        {
+                            Get local_32;
+                            FProjectileTimelineUtils::BeginAction_AbilityEffectEvent(Ctx.Entity, local_32.opCall());
+                        }
+                        else
+                        {
+                            if (local_10.IsChildOf(FProjectileTimelineActionData_ChangeMaterialParam))
+                            {
+                                Get local_36;
+                                FProjectileTimelineUtils::BeginAction_ChangeMaterialParam(Ctx.Entity, local_36.opCall());
+                            }
+                            else
+                            {
+                                if (local_10.IsChildOf(FProjectileTimelineActionData_InstantSFX))
+                                {
+                                    Get local_40;
+                                    FProjectileTimelineUtils::BeginAction_InstantSFX(Ctx, local_40.opCall());
+                                }
+                                else
+                                {
+                                    if (local_10.IsChildOf(FProjectileTimelineActionData_DurationalSFX))
+                                    {
+                                        Get local_44;
+                                        FProjectileTimelineUtils::BeginAction_DurationalSFX(Ctx, local_44.opCall());
+                                    }
+                                    else
+                                    {
+                                        if (local_10.IsChildOf(FProjectileTimelineActionData_KeepSwitchValue))
+                                        {
+                                            Get local_48;
+                                            FProjectileTimelineUtils::BeginAction_KeepSwitchValue(Ctx, local_48.opCall());
+                                        }
+                                        else
+                                        {
+                                            if (local_10.IsChildOf(FProjectileTimelineActionData_KeepRtpcValue))
+                                            {
+                                                Get local_52;
+                                                FProjectileTimelineUtils::BeginAction_KeepRtpcValue(Ctx, local_52.opCall());
+                                            }
+                                            else
+                                            {
+                                                if (local_10.IsChildOf(FProjectileTimelineActionData_TrunToState))
+                                                {
+                                                    Get local_56;
+                                                    FProjectileTimelineUtils::TurnToState(Ctx.Entity, Ctx.Config, local_56.opCall().StateName.StateName, Ctx.WorldTime);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (Ctx.ActionDataWithTime.bNeedDeactivate)
+    {
+        Controller.GetModify_TimelineInfos()[int(Ctx.TimelineIndexInArray)].GetModify_ActiveActionIndexes().Add(Ctx.ActionIndex);
+    }
+    return;
 }
 void EndTimelineAction(const FECSEntity &inout Entity, FC_ProjectileTimelineController &inout Controller, const FInstancedStruct &inout ActionData, const int TimelineIndex, const int ActionIndex)
 {
@@ -701,7 +965,7 @@ void TurnToState(const FECSEntity &inout Entity, const FProjectileTimelineConfig
 }
 void HandleReactionTrigger(const FProjectileEventTriggerConfig &inout ReactionTrigger, const FECSEntity &inout Entity, const FProjectileTimelineConfigData &inout Config, const FVector &inout ContextPosition, const FQuat4f &inout ContextRotation, const FECSEntity &inout ContextEntity, const FFPTime &inout WorldTime)
 {
-    for (auto& local_16 : ReactionTrigger)
+    for (auto& local_16 : ReactionTrigger.TriggerEvents)
     {
         if (!(local_16.EventName.IsNone()))
         {

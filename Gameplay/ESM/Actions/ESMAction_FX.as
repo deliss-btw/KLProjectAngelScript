@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Debug_EnableFx = FConsoleVariable();
 
 class UESMAction_PlayFX : UESMFXAction
@@ -10,17 +9,16 @@ class UESMAction_PlayFX : UESMFXAction
     UPROPERTY()
     bool bShowNameInSlot = true;
 
-
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const
     {
         if (this.FXConfig.AttachRefName.Name.IsNone() || !(this.bShowNameInSlot))
         {
-            return FString().Append("ж’­ж”ѕз‰№ж•€: ").Append(this.FXConfig.Asset.GetAssetName());
+            return FString().Append("播放特效: ").Append(this.FXConfig.Asset.GetAssetName());
         }
         else
         {
-            return FString().Append("<").Append(this.FXConfig.AttachRefName.Name).Append("> з‰№ж•€: ").Append(this.FXConfig.Asset.GetAssetName());
+            return FString().Append("<").Append(this.FXConfig.AttachRefName.Name).Append("> 特效: ").Append(this.FXConfig.Asset.GetAssetName());
         }
     }
     UFUNCTION()

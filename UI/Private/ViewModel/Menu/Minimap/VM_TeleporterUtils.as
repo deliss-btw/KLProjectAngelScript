@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TeleporterUtilsDelegateHelper
 {
     const int ModelId = 0;
@@ -118,7 +117,7 @@ struct FVM_TeleporterUtils : FEUIViewModelSingleton
             this.RequestTeleportWithSpecialCaseComfirm(TeleporterConfig);
             return;
         }
-        this.TeleportWithConfirm(TeleporterConfig, FText::Format(NSLOCTEXT("TeleportToOtherLevelConfirm", "жЇеђ¦зЎ®и®¤е‰ЌеѕЂењ°еЊє[{0}]пјџ"), TeleporterConfig.opArrow().DisplayName));
+        this.TeleportWithConfirm(TeleporterConfig, FText::Format(NSLOCTEXT("TeleportToOtherLevelConfirm", "是否确认前往地区[{0}]？"), TeleporterConfig.opArrow().DisplayName));
         return;
     }
     void RequestTeleportWithSpecialCaseComfirm(const TDataObjectPtr<FTeleporterConfig> &inout TeleporterConfig)
@@ -129,10 +128,10 @@ struct FVM_TeleporterUtils : FEUIViewModelSingleton
         }
         if (this.IsTeleporterInSameDS(TeleporterConfig))
         {
-            this.TeleportWithConfirm(TeleporterConfig, NSLOCTEXT("TeleportWithSpecialCaseComfirm", "жЇеђ¦дј йЂЃи‡іиЇҐдј йЂЃз‚№пјџ"));
+            this.TeleportWithConfirm(TeleporterConfig, NSLOCTEXT("TeleportWithSpecialCaseComfirm", "是否传送至该传送点？"));
             return;
         }
-        this.TeleportWithConfirm(TeleporterConfig, FText::Format(NSLOCTEXT("TeleportToOtherLevelConfirm", "жЇеђ¦зЎ®и®¤е‰ЌеѕЂењ°еЊє[{0}]пјџ"), TeleporterConfig.opArrow().DisplayName));
+        this.TeleportWithConfirm(TeleporterConfig, FText::Format(NSLOCTEXT("TeleportToOtherLevelConfirm", "是否确认前往地区[{0}]？"), TeleporterConfig.opArrow().DisplayName));
         return;
     }
     void RequestTeleportDirectly(const TDataObjectPtr<FTeleporterConfig> &inout TeleporterConfig)
@@ -167,7 +166,7 @@ struct FVM_TeleporterUtils : FEUIViewModelSingleton
         FText local_70 = FText();
         FText local_74 = FText();
         FDialogCallback local_60 = FDialogCallback(local_28);
-        FText local_64 = NSLOCTEXT("TeleportToOtherLevelConfirmTitle", "жЏђз¤є");
+        FText local_64 = NSLOCTEXT("TeleportToOtherLevelConfirmTitle", "提示");
         FCommonDialogParam local_66;
         ::CommonPopup::Dialog_Decision(local_64, Content, local_60, local_74, local_70, local_66);
         return;

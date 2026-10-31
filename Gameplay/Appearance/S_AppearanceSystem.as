@@ -1,5 +1,3 @@
-﻿
-
 class US_AppearanceSystem : UECSScriptSystem
 {
     US_AppearanceSystem()
@@ -228,8 +226,7 @@ class US_AppearanceSystem : UECSScriptSystem
                 XWarning(ELog(79), FString().Append("[ApplyAvatarFashionNotifyFromDS] no matching pawn AvatarId=").Append(local_26.GetAvatarId()));
             }
         }
-        int local_91 = Event.Snapshot.GetMountDecoId();
-        this.ApplyPlayerFashionSnapshot(local_4, Event.Snapshot.GetMountId(), "[ApplyAvatarFashionNotifyFromDS]");
+        this.ApplyPlayerFashionSnapshot(local_4, Event.Snapshot.GetMountId(), Event.Snapshot.GetMountDecoId(), "[ApplyAvatarFashionNotifyFromDS]");
         XLog(ELog(79), FString().Append("[ApplyAvatarFashionNotifyFromDS] PlayerEntity=").Append(local_4).Append(" AvatarFashionCount=").Append(Event.Snapshot.GetAvatarFashions().Num()));
         return;
     }

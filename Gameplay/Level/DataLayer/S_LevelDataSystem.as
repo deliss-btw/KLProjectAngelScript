@@ -1,5 +1,3 @@
-﻿
-
 class US_LevelDataSystem : UECSScriptSystem
 {
     US_LevelDataSystem()
@@ -78,9 +76,7 @@ class US_LevelDataSystem : UECSScriptSystem
         FCS_LevelDataManager& local_8 = local_6.opCall();
         if (local_8)
         {
-            Entity.GetId();
-            FConfigGUID local_10;
-            local_8.RegisterUnitEntity(local_10, Component.TargetUnitConfig);
+            local_8.RegisterUnitEntity(Component.TargetUnitConfig, Entity.GetId());
         }
         this.SetLevelUnitActive(Entity, Component, true);
         FECSEntity local_14 = FECSEntity(Component.ChildEntity);
@@ -107,9 +103,7 @@ class US_LevelDataSystem : UECSScriptSystem
         FCS_LevelDataManager& local_8 = local_6.opCall();
         if (local_8)
         {
-            Entity.GetId();
-            FConfigGUID local_10;
-            local_8.UnregisterUnitEntity(local_10, Component.TargetUnitConfig);
+            local_8.UnregisterUnitEntity(Component.TargetUnitConfig, Entity.GetId());
         }
         if (FECSEntity(Component.ChildEntity))
         {
@@ -327,7 +321,17 @@ class US_LevelDataSystem : UECSScriptSystem
         int local_54 = 0;
         const FCS_FixedTime& local_2 = this.GetECSRuntime().FixedTime.__AsFCS_FixedTime();
         ECS::GetContextJob();
-        if (this.GetECSRuntime().IsClient && !(local_2.bFirstTimeTick))
+        int local_6 = int(this.GetECSRuntime().IsClient);
+        if (local_6 == 0)
+        {
+            local_6 = 0;
+        }
+        else
+        {
+            bool local_5 = !(local_2.bFirstTimeTick);
+            local_6 = local_5;
+        }
+        if (local_6 != 0)
         {
             return;
         }

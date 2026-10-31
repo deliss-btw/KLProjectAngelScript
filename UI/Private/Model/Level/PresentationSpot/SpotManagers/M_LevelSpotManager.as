@@ -1,4 +1,3 @@
-﻿
 enum ELevelSpotViewerSource
 {
     None,
@@ -291,7 +290,7 @@ struct FM_LevelSpotClientCache : FEUIModel
             }
             FPresentationSpotTransform local_22;
             this.ResolveEntityTransform(ViewerPlayer, local_6.opArrow().GetOwnerEntityId(), this.GetSpotId(), local_22);
-            this.UpdateFromViewer(local_22, local_6.opArrow().GetData(), ELevelSpotViewerSource(local_9));
+            this.UpdateFromViewer(local_22, local_6.opArrow().GetData(), ELevelSpotViewerSource(Source), local_9);
             return true;
         }
         TConstRawPtr<FPositionLevelSpotViewData> local_24 = ViewerData.GetPositionSpots().Find(this.GetSpotId());
@@ -306,7 +305,7 @@ struct FM_LevelSpotClientCache : FEUIModel
             }
             FPresentationSpotTransform local_22;
             local_22.SetPosition(local_24.opArrow().GetPosition());
-            this.UpdateFromViewer(local_22, local_24.opArrow().GetData(), ELevelSpotViewerSource(local_9));
+            this.UpdateFromViewer(local_22, local_24.opArrow().GetData(), ELevelSpotViewerSource(Source), local_9);
             return true;
         }
         return false;
@@ -707,8 +706,7 @@ struct FMS_LevelSpotManager : FEUIModelSingleton
     }
     void DS_OnNotifyNewLevelSpotEntity(const FCE_NotifyNewLevelSpotEntity &inout C_NotifyNewLevelSpotEntity)
     {
-        C_NotifyNewLevelSpotEntity.Entity.GetId();
-        FLevelSpotId local_2 = ::EntityLevelSpotUtils::GetMainSpotId(C_NotifyNewLevelSpotEntity.Entity);
+        this.RequireCacheForEntity(::EntityLevelSpotUtils::GetMainSpotId(C_NotifyNewLevelSpotEntity.Entity), C_NotifyNewLevelSpotEntity.Entity.GetId());
         return;
     }
     void ManualAsyncTick()
@@ -1340,7 +1338,9 @@ void __DS_OnEntityLevelSpotChanged(FM_ActiveEntityLevelSpotUpdater &inout Model,
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorLevelSpotLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorLevelSpotModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_Entity()
 {
@@ -1464,7 +1464,13 @@ void __DS_OnNotifyNewLevelSpotEntity(FMS_LevelSpotManager &inout Model, const FC
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorPlayerInTeamLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerInTeamModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorLevelSpotTeamViewerLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorLevelSpotTeamViewerModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorLevelSpotPlayerViewerLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorLevelSpotPlayerViewerModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_SpotRegistry()
 {

@@ -1,5 +1,3 @@
-﻿
-
 struct FT_Hittable : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -18,7 +16,7 @@ struct FT_Hittable : FECSTrait
     UPROPERTY()
     FECSInternalTraitCompDefinition FC_HitBoxBoundingBuffer_Defination;
 
-    default CustomName = FName("еЏ—е‡»еЉџиѓЅй…ЌзЅ® (FT_Hittable)");
+    default CustomName = FName("受击功能配置 (FT_Hittable)");
 
     FT_Hittable()
     {

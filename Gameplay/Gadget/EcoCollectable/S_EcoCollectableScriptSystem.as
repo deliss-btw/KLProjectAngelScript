@@ -1,5 +1,3 @@
-﻿
-
 class US_EcoCollectableScriptSystem : UECSScriptSystem
 {
     FName NAME_FruitDither = FName("FruitDither");
@@ -100,7 +98,7 @@ class US_EcoCollectableScriptSystem : UECSScriptSystem
     }
     void SetDitherMaterialAnim(const FECSEntity &inout CollectableNonSyncedEntity, const FC_EcoCollectableConfig &inout CollectableConfig, const TArray<FName> &inout Names, const FName &inout RequestName) const
     {
-        if (CollectableConfig.bUseDefaultCollectedDitherMaterialConfig)
+        if CollectableConfig.bUseDefaultCollectedDitherMaterialConfig
         {
             TArray<FSingleMaterialParamRequestData> local_6;
             for (auto& local_20 : Names)
@@ -111,7 +109,7 @@ class US_EcoCollectableScriptSystem : UECSScriptSystem
                 local_52.SetbIsOverlayMaterial(false);
                 local_52.SetbApplyToAllSlot(true);
                 FFloatParamRequestData local_76;
-                local_76.ParamName = FName("Dither йЂЏжЋеє¦");
+                local_76.ParamName = FName("Dither 透明度");
                 local_76.bUseNormalizedBlendInCurve = true;
                 local_52.GetModify_FloatParams().Add(local_76);
                 local_6.Add(local_52);
@@ -124,7 +122,7 @@ class US_EcoCollectableScriptSystem : UECSScriptSystem
     }
     void SetShakeMaterialAnim(const FECSEntity &inout CollectableNonSyncedEntity, const FC_EcoCollectableConfig &inout CollectableConfig, const TArray<FName> &inout Names, const FName &inout RequestName) const
     {
-        if (CollectableConfig.bUseDefaultCollectedShakeMaterialConfig)
+        if CollectableConfig.bUseDefaultCollectedShakeMaterialConfig
         {
             TArray<FSingleMaterialParamRequestData> local_6;
             for (auto& local_20 : Names)
@@ -221,7 +219,17 @@ class US_EcoCollectableScriptSystem : UECSScriptSystem
     }
     void StopInteractTipDurationalFX(const FECSEntity &inout CollectableNonSyncedEntity, const FC_EcoCollectableConfig &inout EcoCollectableConfig, FC_EcoCollectableNonSyncedVisualStatus &inout VisualStatus, const FC_VisualComponentToggleConfig &inout VisualComponentToggleConfig, const bool bIgnoreIfAlreadyInactive = true) const
     {
-        if ((bIgnoreIfAlreadyInactive && !(VisualStatus.bInteractTipDurationalFXActive)))
+        int local_2;
+        if (!(bIgnoreIfAlreadyInactive))
+        {
+            local_2 = 0;
+        }
+        else
+        {
+            bool local_1 = !(VisualStatus.bInteractTipDurationalFXActive);
+            local_2 = local_1;
+        }
+        if (local_2 != 0)
         {
             return;
         }
@@ -231,7 +239,7 @@ class US_EcoCollectableScriptSystem : UECSScriptSystem
     }
     void PlayInteractTipDurationalFX(const FECSEntity &inout CollectableNonSyncedEntity, const FC_EcoCollectableConfig &inout EcoCollectableConfig, FC_EcoCollectableNonSyncedVisualStatus &inout VisualStatus, const FC_VisualComponentToggleConfig &inout VisualComponentToggleConfig, const bool bResetNSState = true) const
     {
-        if (VisualStatus.bInteractTipDurationalFXActive)
+        if VisualStatus.bInteractTipDurationalFXActive
         {
             return;
         }
@@ -250,7 +258,6 @@ class US_EcoCollectableScriptSystem : UECSScriptSystem
     }
     void StopEnvDurationalFX(const FECSEntity &inout CollectableNonSyncedEntity, const FC_EcoCollectableConfig &inout EcoCollectableConfig, FC_EcoCollectableNonSyncedVisualStatus &inout VisualStatus, const FC_VisualComponentToggleConfig &inout VisualComponentToggleConfig, const bool bIgnoreIfAlreadyInactive = true) const
     {
-        int local_19 = 0;
         if (bIgnoreIfAlreadyInactive && VisualStatus.EnvDurationalFXActiveIndices.IsEmpty())
         {
             return;
@@ -272,11 +279,10 @@ class US_EcoCollectableScriptSystem : UECSScriptSystem
         {
             int local_15;
             local_15 = 0;
-            while (local_15 < local_19)
+            for (; local_15 < EcoCollectableConfig.EnvDurationalFXs.Num(); )
             {
                 this.SetEntitySceneCompHidden(CollectableNonSyncedEntity, VisualComponentToggleConfig, EcoCollectableConfig.EnvDurationalFXs[local_15].FXLogicNames, true, true);
                 ++local_15;
-                local_19 = EcoCollectableConfig.EnvDurationalFXs.Num();
             }
         }
         VisualStatus.EnvDurationalFXActiveIndices.Reset(0);
@@ -594,7 +600,7 @@ class US_EcoCollectableScriptSystem : UECSScriptSystem
     {
         if (FFPTime(FixedTime.Time).opCmp(Timer.TurnOffDynamicMaskedMaterialTimer) >= 0)
         {
-            if (Timer.bTargetMeshHiddenState)
+            if Timer.bTargetMeshHiddenState
             {
                 this.SetEntitySceneCompHidden(Entity, VisualComponentToggleConfig, CollectableConfig.CollectedDitherLogicNames, true, true);
             }
@@ -609,7 +615,7 @@ class US_EcoCollectableScriptSystem : UECSScriptSystem
     {
         if (FFPTime(FixedTime.Time).opCmp(Timer.TurnOffDynamicMaskedMaterialTimer) >= 0)
         {
-            if (Timer.bTargetMeshHiddenState)
+            if Timer.bTargetMeshHiddenState
             {
                 this.SetEntitySceneCompHidden(Entity, VisualComponentToggleConfig, CollectableConfig.EnvDitherLogicNamesExcludeFruit, true, true);
             }
@@ -717,7 +723,6 @@ class US_EcoCollectableScriptSystem : UECSScriptSystem
         int local_56;
         int local_57;
         int local_64 = 0;
-        int local_78 = 0;
         int local_96 = 0;
         bool local_97;
         bool local_113;
@@ -760,8 +765,7 @@ class US_EcoCollectableScriptSystem : UECSScriptSystem
             for (auto& local_112 : CollectableConfig.EnvInstantFXs)
             {
                 local_113 = true;
-                local_78 = local_112.WeatherElementTag.Num();
-                if (local_78 != 0)
+                if (local_112.WeatherElementTag.Num() != 0)
                 {
                     if (!(local_30.IsSet()) || !(local_30.opArrow().WeatherElements.HasAll(local_112.WeatherElementTag)))
                     {
@@ -786,7 +790,7 @@ class US_EcoCollectableScriptSystem : UECSScriptSystem
                 }
             }
             int local_121 = 0;
-            while (local_121 < local_78)
+            for (; local_121 < CollectableConfig.EnvDurationalFXs.Num(); ++local_121)
             {
                 const FTimeAndSpaceRelatedDurationalFXConfig& local_124 = CollectableConfig.EnvDurationalFXs[local_121];
                 local_5 = true;
@@ -810,12 +814,9 @@ class US_EcoCollectableScriptSystem : UECSScriptSystem
                 if (local_97 && local_115)
                 {
                     this.PlayEnvDurationalFX(CollectableNonSyncedEntity, CollectableConfig, CollectableNonSyncedVisualStatus, VisualComponentToggleConfig, local_121);
+                    continue;
                 }
-                else
-                {
-                    this.StopEnvDurationalFX(CollectableNonSyncedEntity, CollectableConfig, CollectableNonSyncedVisualStatus, VisualComponentToggleConfig, true);
-                }
-                ++local_121;
+                this.StopEnvDurationalFX(CollectableNonSyncedEntity, CollectableConfig, CollectableNonSyncedVisualStatus, VisualComponentToggleConfig, true);
             }
         }
         local_114 = true;

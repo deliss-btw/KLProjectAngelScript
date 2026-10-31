@@ -1,4 +1,3 @@
-﻿
 enum ECombatArealEffectRange
 {
     Distance,
@@ -13,7 +12,6 @@ enum ECombatArealEffectType
     AbilityEffectTrigger,
 }
 
-
 struct FCombatArealEffectAddBuffData
 {
     UPROPERTY()
@@ -22,7 +20,6 @@ struct FCombatArealEffectAddBuffData
     int AddBuffStackNum = 1;
     UPROPERTY()
     float32 OverrideDuration = -1.0f;
-
 
 }
 
@@ -42,11 +39,28 @@ struct FCombatArealEffectData
 
     FCombatArealEffectData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Range = ECombatArealEffectRange(0);
+        this.m_Distance = 0.0f;
+        this.m_TargetRelation = (2 != 0);
+        this.m_RangeCheckInterval = 0.3f;
+        return;
     }
     FCombatArealEffectData(const FCombatArealEffectData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_4;
+        this.__DirtyFlags = local_4;
+        this.m_Range = ECombatArealEffectRange(0);
+        this.m_Distance = 0.0f;
+        this.m_TargetRelation = (2 != 0);
+        this.m_RangeCheckInterval = 0.3f;
+        this.m_Range = Other.m_Range;
+        this.m_Distance = Other.m_Distance;
+        this.m_BoxExtent = Other.m_BoxExtent;
+        this.m_TargetRelation = (int(Other.m_TargetRelation) != 0);
+        this.m_RangeCheckInterval = Other.m_RangeCheckInterval;
+        return;
     }
     FCombatArealEffectData opAssign(const FCombatArealEffectData &inout Other)
     {
@@ -155,7 +169,6 @@ struct FCombatArealEffectConfigData_AbilityEffectTrigger
     UPROPERTY()
     FFPTime TriggerAgainInnerRangeInterval = -1;
 
-
 }
 
 struct FCombatArealEffectConfigData_Buff
@@ -170,7 +183,6 @@ struct FCombatArealEffectConfigData_Buff
     bool bAddRepeatedlyEntityInnerRange = false;
     UPROPERTY()
     FFPTime AddAgainInnerRangeInterval = -1;
-
 
 }
 

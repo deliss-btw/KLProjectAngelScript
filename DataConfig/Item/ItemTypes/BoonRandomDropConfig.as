@@ -1,12 +1,9 @@
-﻿
-
 struct FBoonRandomSingleTrait
 {
     UPROPERTY()
     int Weight = 1;
     UPROPERTY()
     FTraitParam Param;
-
 
 }
 
@@ -28,7 +25,6 @@ struct FBoonRandomSingleSlotSinglePool
     int Weight = 1;
     UPROPERTY()
     TDataObjectPtr<FBoonRandomTraitPoolConfig> PoolConfig;
-
 
 }
 

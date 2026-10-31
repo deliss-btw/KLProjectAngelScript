@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_SideHintItem_Helpers
 {
 UFUNCTION()

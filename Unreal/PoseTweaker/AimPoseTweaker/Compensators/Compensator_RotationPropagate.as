@@ -1,12 +1,9 @@
-﻿
-
 struct FCompensatorParams_Propagate
 {
     UPROPERTY()
     float32 PropagationRatio = 0.2f;
     UPROPERTY()
     FRuntimeFloatCurve DecayCurve;
-
 
 }
 
@@ -36,8 +33,9 @@ class UCompensator_RotationPropagate : UAimPoseCompensator
     {
         if (!(Tweaker.InitializeBoneRef(this.SourceBone)))
         {
-            this.SourceBone.GetBoneName();
+            FName local_8 = this.SourceBone.GetBoneName();
             FString local_6 = FString();
+            Tweaker.AddOnScreenDebugMessage(local_6.Append("AimPose ERROR: [").Append(this.ProcessorName).Append("] SourceBone '").Append(local_8).Append("' not found"), -1, false, 2.0f);
         }
         TSet<FString> local_30;
         FString local_34 = "";

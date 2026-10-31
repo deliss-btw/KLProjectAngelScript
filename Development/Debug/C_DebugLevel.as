@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_DebugLoadDataLayerEvent_NS
 {
     const TECSEventDerivedPtr<FCE_DebugLoadDataLayerEvent> DerivedPtr = TECSEventDerivedPtr<FCE_DebugLoadDataLayerEvent>();

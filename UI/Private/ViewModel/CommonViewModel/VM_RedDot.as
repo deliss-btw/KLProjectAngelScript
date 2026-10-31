@@ -1,4 +1,3 @@
-﻿
 namespace FVM_RedDot
 {
     const int ModelId = 0;
@@ -246,7 +245,6 @@ struct __GeneratedProperties_FVM_RedDot
     int RedDotDisplayNum;
     UPROPERTY()
     TEUIModelRef<FVM_RedDot> Self;
-
 
 }
 

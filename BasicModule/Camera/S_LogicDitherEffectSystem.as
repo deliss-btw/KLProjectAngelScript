@@ -1,5 +1,3 @@
-﻿
-
 class US_LogicDitherEffectSystem : UECSScriptSystem
 {
     US_LogicDitherEffectSystem()

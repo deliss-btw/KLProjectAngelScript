@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_LinkSkill
 {
     const int ViewID = 0;
@@ -124,6 +123,7 @@ namespace UWidget_LinkSkill
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_LinkSkill;
     Result.ObservedModelChangesSubscriberNames.Add(FString("ShowUI"));
     return;
 }

@@ -1,4 +1,3 @@
-﻿
 const int AVATAR_WARDROBE_CLOTH_OVERVIEW_SHOWCASE_CONFIG_INDEX = 0;
 const int AVATAR_WARDROBE_PENDING_NAV_NONE = 0;
 const int AVATAR_WARDROBE_PENDING_NAV_MAIN_TAB = 1;
@@ -36,7 +35,6 @@ struct FMsg_AvatarWardrobeRedDotChanged : FEUIMessage
     UPROPERTY()
     uint FashionId = 0;
 
-
 }
 
 struct FVM_AvatarWardrobeSlotItem : FEUIViewModel
@@ -57,11 +55,27 @@ struct FVM_AvatarWardrobeSlotItem : FEUIViewModel
 
     FVM_AvatarWardrobeSlotItem()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_SlotType = EFashionSlotType(0);
+        this.m_SlotSubTab = EFashionSlotSubTab(0);
+        this.m_SlotIndex = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVM_AvatarWardrobeSlotItem(const FVM_AvatarWardrobeSlotItem &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_SlotType = EFashionSlotType(0);
+        this.m_SlotSubTab = EFashionSlotSubTab(0);
+        this.m_SlotIndex = INDEX_NONE;
+        this.m_SlotType = Other.m_SlotType;
+        this.m_SlotSubTab = Other.m_SlotSubTab;
+        this.m_SlotIndex = int(Other.m_SlotIndex);
+        this.m_SlotTitle = Other.m_SlotTitle;
+        this.m_SlotIcon = Other.m_SlotIcon;
+        this.m_OwnerWardrobe = Other.m_OwnerWardrobe;
+        return;
     }
     FVM_AvatarWardrobeSlotItem& opAssign(const FVM_AvatarWardrobeSlotItem &inout Other)
     {
@@ -74,8 +88,7 @@ struct FVM_AvatarWardrobeSlotItem : FEUIViewModel
     }
     void Setup(FVM_AvatarMainWardrobe &inout InOwner, const EFashionSlotType InSlotType, const EFashionSlotSubTab InSlotSubTab, const int InSlotIndex)
     {
-        FEUIModelRef local_4;
-        this.SetOwnerWardrobe(FEUIModelWeakRef(local_4));
+        this.SetOwnerWardrobe(FEUIModelWeakRef(FEUIModelRef(InOwner)));
         this.SetSlotType(EFashionSlotType(InSlotType));
         this.SetSlotSubTab(EFashionSlotSubTab(InSlotSubTab));
         this.SetSlotIndex(InSlotIndex);
@@ -97,10 +110,8 @@ struct FVM_AvatarWardrobeSlotItem : FEUIViewModel
         }
         if (local_5)
         {
-            int local_17 = int(this.GetSlotSubTab());
-            int local_18 = int(this.GetSlotType());
             Get local_16;
-            local_16.opCall().EnterSelectionMode();
+            local_16.opCall().EnterSelectionMode(this.GetSlotType(), this.GetSlotSubTab());
         }
         return;
     }
@@ -267,8 +278,7 @@ struct FVM_AvatarWardrobeFashionOption : FEUIViewModel
     }
     void Setup(FVM_AvatarMainWardrobe &inout InOwner, const EFashionSlotType InSlotType, const EFashionSlotSubTab InSlotSubTab, const TDataObjectPtr<FFashionConfig> &inout InFashionConfig, const bool bInUnequipOption)
     {
-        FEUIModelRef local_4;
-        this.SetOwnerWardrobe(FEUIModelWeakRef(local_4));
+        this.SetOwnerWardrobe(FEUIModelWeakRef(FEUIModelRef(InOwner)));
         this.SetSlotType(EFashionSlotType(InSlotType));
         this.SetSlotSubTab(EFashionSlotSubTab(InSlotSubTab));
         this.SetFashionConfig(InFashionConfig);
@@ -499,11 +509,126 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
 
     FVM_AvatarMainWardrobe()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_PreviewMountID = 0;
+        this.m_PreviewMountDecoID = 0;
+        this.m_ContentSwitcherIndex = 0;
+        this.m_ListSwitcherIndex = 0;
+        this.m_SelectedSlotIndex = INDEX_NONE;
+        this.m_SelectedSlotType = EFashionSlotType(0);
+        this.m_SelectedSlotSubTab = EFashionSlotSubTab(0);
+        this.m_CurrentMainTab = EFashionSlotMainTab(0);
+        this.m_bHasWardrobeGroupSlots = true;
+        this.m_bHasOrnamentGroupSlots = true;
+        this.m_ClothSavedSlotType = EFashionSlotType(0);
+        this.m_ClothSavedSlotSubTab = EFashionSlotSubTab(0);
+        this.m_bHasClothSavedSlot = false;
+        this.m_MountSavedSlotType = EFashionSlotType(0);
+        this.m_MountSavedSlotSubTab = EFashionSlotSubTab(0);
+        this.m_bHasMountSavedSlot = false;
+        this.m_bHasOriginalFashion = false;
+        this.m_bPreviewInitialized = false;
+        this.m_bPreviewAppliedToFashionModel = false;
+        this.m_bHasPreviewMountOverride = false;
+        this.m_bIsFashionMountUnlocked = false;
+        this.m_bHasSelectedFashionOptionInCurrentList = false;
+        this.m_bHasProcessedBoundFashionOptionSelection = false;
+        this.m_ProcessedBoundFashionSlotType = EFashionSlotType(0);
+        this.m_ProcessedBoundFashionSlotSubTab = EFashionSlotSubTab(0);
+        this.m_bProcessedBoundFashionIsUnequip = false;
+        this.m_ProcessedBoundFashionId = 0;
+        this.m_ActionStateRevision = 0;
+        this.m_PendingNavigationType = 0;
+        this.m_PendingMainTab = EFashionSlotMainTab(0);
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVM_AvatarMainWardrobe(const FVM_AvatarMainWardrobe &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_PreviewMountID = 0;
+        this.m_PreviewMountDecoID = 0;
+        this.m_ContentSwitcherIndex = 0;
+        this.m_ListSwitcherIndex = 0;
+        this.m_SelectedSlotIndex = INDEX_NONE;
+        this.m_SelectedSlotType = EFashionSlotType(0);
+        this.m_SelectedSlotSubTab = EFashionSlotSubTab(0);
+        this.m_CurrentMainTab = EFashionSlotMainTab(0);
+        this.m_bHasWardrobeGroupSlots = true;
+        this.m_bHasOrnamentGroupSlots = true;
+        this.m_ClothSavedSlotType = EFashionSlotType(0);
+        this.m_ClothSavedSlotSubTab = EFashionSlotSubTab(0);
+        this.m_bHasClothSavedSlot = false;
+        this.m_MountSavedSlotType = EFashionSlotType(0);
+        this.m_MountSavedSlotSubTab = EFashionSlotSubTab(0);
+        this.m_bHasMountSavedSlot = false;
+        this.m_bHasOriginalFashion = false;
+        this.m_bPreviewInitialized = false;
+        this.m_bPreviewAppliedToFashionModel = false;
+        this.m_bHasPreviewMountOverride = false;
+        this.m_bIsFashionMountUnlocked = false;
+        this.m_bHasSelectedFashionOptionInCurrentList = false;
+        this.m_bHasProcessedBoundFashionOptionSelection = false;
+        this.m_ProcessedBoundFashionSlotType = EFashionSlotType(0);
+        this.m_ProcessedBoundFashionSlotSubTab = EFashionSlotSubTab(0);
+        this.m_bProcessedBoundFashionIsUnequip = false;
+        this.m_ProcessedBoundFashionId = 0;
+        this.m_ActionStateRevision = 0;
+        this.m_PendingNavigationType = 0;
+        this.m_PendingMainTab = EFashionSlotMainTab(0);
+        this.m_EditingAvatar = Other.m_EditingAvatar;
+        this.m_Showcase = Other.m_Showcase;
+        this.m_ContentSwitcherIndex = int(Other.m_ContentSwitcherIndex);
+        this.m_ListSwitcherIndex = int(Other.m_ListSwitcherIndex);
+        this.m_SelectedSlotIndex = int(Other.m_SelectedSlotIndex);
+        this.m_SelectedSlotType = Other.m_SelectedSlotType;
+        this.m_SelectedSlotSubTab = Other.m_SelectedSlotSubTab;
+        this.m_CurrentMainTab = Other.m_CurrentMainTab;
+        this.m_MainTabItems = Other.m_MainTabItems;
+        this.m_SelectedMainTabItem = Other.m_SelectedMainTabItem;
+        this.m_PageTitleText = Other.m_PageTitleText;
+        this.m_WardrobeGroupTitleText = Other.m_WardrobeGroupTitleText;
+        this.m_OrnamentGroupTitleText = Other.m_OrnamentGroupTitleText;
+        this.m_bHasWardrobeGroupSlots = Other.m_bHasWardrobeGroupSlots;
+        this.m_bHasOrnamentGroupSlots = Other.m_bHasOrnamentGroupSlots;
+        this.m_ClothSlotEntryDataList = Other.m_ClothSlotEntryDataList;
+        this.m_OrnamentSlotItems = Other.m_OrnamentSlotItems;
+        this.m_HighFashionItems = Other.m_HighFashionItems;
+        this.m_SelectedHighFashionItem = Other.m_SelectedHighFashionItem;
+        this.m_TileFashionItems = Other.m_TileFashionItems;
+        this.m_SelectedTileFashionItem = Other.m_SelectedTileFashionItem;
+        this.m_SelectionTabItems = Other.m_SelectionTabItems;
+        this.m_SelectedSlotTabItem = Other.m_SelectedSlotTabItem;
+        this.m_SelectedDisplayDetail = Other.m_SelectedDisplayDetail;
+        this.m_ClothSlotModels = Other.m_ClothSlotModels;
+        this.m_OrnamentSlotModels = Other.m_OrnamentSlotModels;
+        this.m_CurrentFashionOptions = Other.m_CurrentFashionOptions;
+        this.m_SlotTabSelectableItems = Other.m_SlotTabSelectableItems;
+        this.m_MainTabSelectableItems = Other.m_MainTabSelectableItems;
+        this.m_ClothSavedSlotType = Other.m_ClothSavedSlotType;
+        this.m_ClothSavedSlotSubTab = Other.m_ClothSavedSlotSubTab;
+        this.m_bHasClothSavedSlot = Other.m_bHasClothSavedSlot;
+        this.m_MountSavedSlotType = Other.m_MountSavedSlotType;
+        this.m_MountSavedSlotSubTab = Other.m_MountSavedSlotSubTab;
+        this.m_bHasMountSavedSlot = Other.m_bHasMountSavedSlot;
+        this.m_bHasOriginalFashion = Other.m_bHasOriginalFashion;
+        this.m_bPreviewInitialized = Other.m_bPreviewInitialized;
+        this.m_bPreviewAppliedToFashionModel = Other.m_bPreviewAppliedToFashionModel;
+        this.m_PreviewMountID = int(Other.m_PreviewMountID);
+        this.m_PreviewMountDecoID = int(Other.m_PreviewMountDecoID);
+        this.m_bHasPreviewMountOverride = Other.m_bHasPreviewMountOverride;
+        this.m_bIsFashionMountUnlocked = Other.m_bIsFashionMountUnlocked;
+        this.m_bHasSelectedFashionOptionInCurrentList = Other.m_bHasSelectedFashionOptionInCurrentList;
+        this.m_bHasProcessedBoundFashionOptionSelection = Other.m_bHasProcessedBoundFashionOptionSelection;
+        this.m_ProcessedBoundFashionSlotType = Other.m_ProcessedBoundFashionSlotType;
+        this.m_ProcessedBoundFashionSlotSubTab = Other.m_ProcessedBoundFashionSlotSubTab;
+        this.m_bProcessedBoundFashionIsUnequip = Other.m_bProcessedBoundFashionIsUnequip;
+        this.m_ProcessedBoundFashionId = int(Other.m_ProcessedBoundFashionId);
+        this.m_ActionStateRevision = int(Other.m_ActionStateRevision);
+        this.m_PendingNavigationType = int(Other.m_PendingNavigationType);
+        this.m_PendingMainTab = Other.m_PendingMainTab;
+        return;
     }
     FVM_AvatarMainWardrobe opAssign(const FVM_AvatarMainWardrobe &inout Other)
     {
@@ -669,7 +794,17 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
     }
     void RequestMainTabByOffset(const int Offset)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (this.GetMainTabItems().Num() <= 1)
+        {
+            return;
+        }
+        int local_1 = this.GetCurrentMainTabListIndex();
+        if (local_1 == INDEX_NONE)
+        {
+            return;
+        }
+        this.HandleMainTabSelected(FMath::Clamp(local_1 + Offset, 0, (this.GetMainTabItems().Num() - 1)));
+        return;
     }
     void PreviewFashionOption(FVM_AvatarWardrobeFashionOption &inout Option)
     {
@@ -886,8 +1021,15 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
     }
     int GetCurrentMainTabListIndex() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        if (this.GetMainTabItems().Num() == 0)
+        {
+            return INDEX_NONE;
+        }
+        if (int(this.GetCurrentMainTab()) == 1)
+        {
+            return (this.GetMainTabItems().Num() - 1);
+        }
+        return 0;
     }
     int GetSelectedHighFashionItemIndex() const
     {
@@ -1006,7 +1148,7 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
     }
     bool HasSaveableUnsavedClothPreview() const
     {
-        EFashionSlotType local_9;
+        int local_9;
         TArray<EFashionSlotType> local_4;
         this.CollectConfiguredSlotsForCurrentMainTab(local_4);
         int local_5 = 0;
@@ -1017,11 +1159,11 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
             {
                 continue;
             }
-            if (this.GetEffectiveFashionIdFromSnapshot(this.GetPreviewFashion()) == this.GetEffectiveFashionIdFromSnapshot(this.GetOriginalFashion()))
+            if (this.GetEffectiveFashionIdFromSnapshot(this.GetPreviewFashion(), EFashionSlotType(local_9)) == this.GetEffectiveFashionIdFromSnapshot(this.GetOriginalFashion(), EFashionSlotType(local_9)))
             {
                 continue;
             }
-            if (this.CanSaveFashionIdForSlot(EFashionSlotType(local_9), this.GetFashionIdFromSnapshot(this.GetPreviewFashion())))
+            if (this.CanSaveFashionIdForSlot(EFashionSlotType(local_9), this.GetFashionIdFromSnapshot(this.GetPreviewFashion(), EFashionSlotType(local_9))))
             {
                 return true;
             }
@@ -1079,7 +1221,7 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
     }
     void SaveClothPreview()
     {
-        EFashionSlotType local_34;
+        int local_34;
         FAvatarFashion local_12;
         bool local_25 = false;
         TArray<EFashionSlotType> local_30 = TArray<EFashionSlotType>();
@@ -1092,11 +1234,11 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
             {
                 continue;
             }
-            if (this.CanSaveFashionIdForSlot(EFashionSlotType(local_34), this.GetFashionIdFromSnapshot(this.GetPreviewFashion())))
+            if (this.CanSaveFashionIdForSlot(EFashionSlotType(local_34), this.GetFashionIdFromSnapshot(this.GetPreviewFashion(), EFashionSlotType(local_34))))
             {
                 continue;
             }
-            this.SetFashionIdInSnapshotRaw(local_12, EFashionSlotType(local_34), this.GetFashionIdFromSnapshot(this.GetOriginalFashion()));
+            this.SetFashionIdInSnapshotRaw(local_12, EFashionSlotType(local_34), this.GetFashionIdFromSnapshot(this.GetOriginalFashion(), EFashionSlotType(local_34)));
             local_25 = true;
         }
         if (local_25)
@@ -1163,7 +1305,7 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
     void ShowPartialLockedOutfitNotSavedTips()
     {
         FCommonTipsParam local_8;
-        ::CommonPopup::Tips(NSLOCTEXT("AvatarWardrobe_PartialLockedOutfitNotSaved", "йѓЁе€†жњЄи§Јй”Ѓе¤–и§‚жњЄдїќе­гЂ‚"), local_8);
+        ::CommonPopup::Tips(NSLOCTEXT("AvatarWardrobe_PartialLockedOutfitNotSaved", "部分未解锁外观未保存。"), local_8);
         return;
     }
     void SwitchMainTabAfterPreviewHandled(const EFashionSlotMainTab NewMainTab)
@@ -1269,7 +1411,7 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
     }
     void SetFashionIdInSnapshotRaw(FAvatarFashion &inout InOutFashion, const EFashionSlotType SlotType, const uint FashionId)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     void ShowReturnConfirmDialog()
     {
@@ -1403,7 +1545,18 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
     }
     void RefreshAllWardrobeData()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.EnsureCurrentMainTabAllowed();
+        this.RefreshFashionAggregateRedDots();
+        this.RefreshMainTabItems();
+        this.RefreshOverviewSlots();
+        if (int(this.GetSelectedSlotType()) == 0 || (this.FindCombinedSlotIndex(EFashionSlotType(this.GetSelectedSlotType()), EFashionSlotSubTab(this.GetSelectedSlotSubTab())) == INDEX_NONE))
+        {
+            this.SelectDefaultSlotForCurrentMainTab();
+        }
+        this.RefreshSelectionTabs();
+        this.RefreshFashionOptionList();
+        this.RefreshWardrobeTextState();
+        return;
     }
     void RefreshWardrobeDataStateWithoutRebuild()
     {
@@ -1513,9 +1666,9 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
                     local_75 = true;
                 }
             }
-            if (local_75 && !(local_8.Contains(local_22)))
+            if (local_75 && !(local_8.Contains(EFashionSlotType(local_22))))
             {
-                local_8.Add(local_22);
+                local_8.Add(EFashionSlotType(local_22));
             }
         }
         for (auto local_22 : local_8)
@@ -1541,8 +1694,8 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
             return;
         }
         EFashionSlotType local_4 = Option.GetSlotType();
-        EFashionSlotType local_3 = local_4;
-        if ((int(local_3)) == 0)
+        int local_3 = local_4;
+        if ((local_3) == 0)
         {
             local_3 = local_4;
         }
@@ -2039,7 +2192,7 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
         {
             return false;
         }
-        return this.IsSlotInCurrentOperationArea(EFashionSlotType(Option.GetSlotType()));
+        return this.IsSlotInCurrentOperationArea(Option.GetSlotType());
     }
     bool IsFashionOptionSelectionNoOp(FVM_AvatarWardrobeFashionOption &inout Option) const
     {
@@ -2069,7 +2222,8 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
         }
         case 4:
         {
-            if ((this.GetPreviewFashion().TopID) != 0)
+            int local_12 = this.GetPreviewFashion().TopID;
+            if (local_12 != 0)
             {
                 local_6 = false;
             }
@@ -2167,12 +2321,14 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
         TEUIModelRef<FVM_RedDot> local_12 = this.CreateFashionMainTabRedDotVM(EFashionSlotMainTab(MainTab));
         local_38.InitializeCustomRedDotVM(local_12);
         FEUIModelContainer local_52;
-        local_52.AddModel(FEUIModelRef(local_2), false);
-        FEUIModelRef local_56 = FEUIModelRef(local_4);
+        FEUIModelRef local_56 = FEUIModelRef(local_2);
         local_52.AddModel(local_56, false);
-        ::FashionSettings::GetMainTabText(EFashionSlotMainTab(MainTab));
-        local_52.AddModel(local_56, false);
-        local_52.AddModel(FEUIModelRef(local_38), false);
+        FEUIModelRef local_56_2 = FEUIModelRef(local_4);
+        local_52.AddModel(local_56_2, false);
+        FEUIModelRef local_56_3 = FEUIModelRef(::FVM_Text::Create(this.GetContext().Manager, ::FashionSettings::GetMainTabText(EFashionSlotMainTab(MainTab))));
+        local_52.AddModel(local_56_3, false);
+        FEUIModelRef local_56_4 = FEUIModelRef(local_38);
+        local_52.AddModel(local_56_4, false);
         local_52.AddModel(local_12.opImplConv(), false);
         this.GetModify_MainTabSelectableItems().Add(TEUIModelRef<FVM_CommonTabItem>(local_4));
         this.GetModify_MainTabItems().Add(local_52);
@@ -2244,8 +2400,7 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
                 local_58.bUnlocked = true;
                 local_58.bEquippedOnCurrentTarget = true;
                 local_58.RedDotVM = this.CreateFashionSlotRedDotVM(EFashionSlotType(SlotType));
-                int local_63 = int(this.GetEditingAvatarBodyType());
-                TEUIModelRef<FVM_DisplayItem> local_66 = ::DisplayItemAdapter_Fashion::CreateDisplayItem(this.GetContext().Manager, local_52, local_58, EItemDisplayScenario(8));
+                TEUIModelRef<FVM_DisplayItem> local_66 = ::DisplayItemAdapter_Fashion::CreateDisplayItem(this.GetContext().Manager, local_52, local_58, EItemDisplayScenario(8), this.GetEditingAvatarBodyType());
                 this.DisableDisplayItemRedDotAutoConsume();
                 return local_66;
             }
@@ -2275,13 +2430,8 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
     }
     bool RefreshOverviewSlotRuntimeState(const FEUIModelContainer &inout SlotContainer)
     {
-        if (!(TEUIModelRef<FVM_AvatarWardrobeSlotItem>(FEUIModelContainer::GetModel(SlotContainer).opCall()).IsValid()) || !(TEUIModelRef<FVM_DisplayItem>(FEUIModelContainer::GetModel(SlotContainer).opCall()).IsValid()))
-        {
-            return false;
-        }
-        int local_19 = int(GetSlotType());
-        this.RefreshSlotDisplayItemRuntimeState();
-        return true;
+        // body not fully recovered — stub [argmismatch:argint]
+        bool __r; return __r;
     }
     void RefreshSlotDisplayItemRuntimeState(FVM_DisplayItem &inout DisplayItem, const EFashionSlotType SlotType)
     {
@@ -2291,8 +2441,7 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
             TDataObjectPtr<FFashionConfig> local_52 = ::FFashionConfig::GetByDataId(local_2);
             if (local_52)
             {
-                int local_53 = int(this.GetEditingAvatarBodyType());
-                DisplayItem.SetDisplayData(::DisplayItemAdapter_Fashion::MakeDisplayData(this.GetContext().Manager, local_52));
+                DisplayItem.SetDisplayData(::DisplayItemAdapter_Fashion::MakeDisplayData(this.GetContext().Manager, local_52, this.GetEditingAvatarBodyType()));
                 DisplayItem.RefreshDisplayData();
                 FDisplayItemFashionRuntimeState local_62;
                 local_62.bUnlocked = true;
@@ -2318,7 +2467,7 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
         FM_DisplayItemData& local_2 = ::FM_DisplayItemData::Create(this.GetContext().Manager);
         local_2.SetSourceType(EDisplayItemSourceType(4));
         local_2.SetSourceId(int(SlotType));
-        FText local_16 = bUnequipOption ? NSLOCTEXT("AvatarWardrobe_Unequip", "еЌёдё‹") : ::FashionSettings::GetFashionSlotName(EFashionSlotType(SlotType));
+        FText local_16 = bUnequipOption ? NSLOCTEXT("AvatarWardrobe_Unequip", "卸下") : ::FashionSettings::GetFashionSlotName(EFashionSlotType(SlotType));
         local_2.SetDisplayName(local_16);
         if (bUnequipOption)
         {
@@ -2367,11 +2516,12 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
         local_4.SetbWithEquipState(true);
         local_4.SetbIsEquip(this.IsSlotUsingNonDefaultFashion(EFashionSlotType(SlotType)));
         FEUIModelContainer local_24;
-        local_24.AddModel(FEUIModelRef(local_2), false);
-        FEUIModelRef local_26 = FEUIModelRef(local_4);
+        FEUIModelRef local_26 = FEUIModelRef(local_2);
         local_24.AddModel(local_26, false);
-        FSoftBrush local_72 = ::FashionSettings::GetSlotIcon(EFashionSlotType(SlotType));
-        local_24.AddModel(local_26, false);
+        FEUIModelRef local_26_2 = FEUIModelRef(local_4);
+        local_24.AddModel(local_26_2, false);
+        FEUIModelRef local_26_3 = FEUIModelRef(::FVM_Image::Create(this.GetContext().Manager, ::FashionSettings::GetSlotIcon(EFashionSlotType(SlotType))));
+        local_24.AddModel(local_26_3, false);
         local_24.AddModel(this.CreateFashionSlotRedDotVM(EFashionSlotType(SlotType)).opImplConv(), false);
         this.GetModify_SlotTabSelectableItems().Add(TEUIModelRef<FVM_CommonTabItem>(local_4));
         this.GetModify_SelectionTabItems().Add(local_24);
@@ -2409,6 +2559,7 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
     }
     void RefreshFashionOptionList()
     {
+        int local_71;
         this.GetModify_HighFashionItems().Empty(0);
         this.GetModify_TileFashionItems().Empty(0);
         this.GetModify_CurrentFashionOptions().Empty(0);
@@ -2419,17 +2570,24 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
         SetupEmpty();
         bool local_19 = false;
         this.SetbHasSelectedFashionOptionInCurrentList(local_19);
-        if ((int(this.GetSelectedSlotType())) == 0)
+        if (int(this.GetSelectedSlotType()) == 0)
         {
             return;
         }
-        if (::FashionSettings::GetSlotConfig(EFashionSlotType(this.GetSelectedSlotType())) && local_19)
+        if (!(::FashionSettings::GetSlotConfig(this.GetSelectedSlotType())))
+        {
+            local_71 = 0;
+        }
+        else
+        {
+            local_71 = local_19;
+        }
+        if (local_71 != 0)
         {
             this.AddFashionOption(TDataObjectPtr<FFashionConfig>(), true);
         }
         TArray<TDataObjectPtr<FFashionConfig>> local_100;
-        int local_101 = int(this.GetSelectedSlotSubTab());
-        EFashionSlotType local_20 = this.GetSelectedSlotType();
+        this.CollectFashionConfigsForSlot(this.GetSelectedSlotType(), this.GetSelectedSlotSubTab(), local_100);
         TArray<TDataObjectPtr<FFashionConfig>> local_106;
         TArray<TDataObjectPtr<FFashionConfig>> local_110;
         for (auto& local_124 : local_100)
@@ -2456,8 +2614,7 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
     {
         int local_12;
         FVM_AvatarWardrobeFashionOption& local_2 = ::FVM_AvatarWardrobeFashionOption::Create(this.GetContext().Manager);
-        EFashionSlotSubTab local_3 = this.GetSelectedSlotSubTab();
-        int local_4 = int(this.GetSelectedSlotType());
+        local_2.Setup(this, this.GetSelectedSlotType(), this.GetSelectedSlotSubTab(), FashionConfig, bUnequipOption);
         TEUIModelRef<FVM_DisplayItem> local_6;
         int local_8 = this.GetEffectiveFactFashionIdForSlot(this.GetSelectedSlotType());
         int local_7 = this.GetEffectivePreviewFashionIdForSlotIncludingMount(this.GetSelectedSlotType());
@@ -2491,8 +2648,7 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
             local_32.bEnableMask = !(local_32.bUnlocked);
             local_32.MaskType = local_32.bUnlocked ? 0 : 1;
             local_32.RedDotVM = this.CreateFashionNewRedDotVM(FashionConfig);
-            int local_37 = int(this.GetEditingAvatarBodyType());
-            local_6 = ::DisplayItemAdapter_Fashion::CreateDisplayItem(this.GetContext().Manager, FashionConfig, local_32, EItemDisplayScenario(7));
+            local_6 = ::DisplayItemAdapter_Fashion::CreateDisplayItem(this.GetContext().Manager, FashionConfig, local_32, EItemDisplayScenario(7), this.GetEditingAvatarBodyType());
             this.DisableDisplayItemRedDotAutoConsume();
         }
         FVM_SelectableItem& local_40 = ::FVM_SelectableItem::Create(this.GetContext().Manager);
@@ -2962,11 +3118,11 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
     }
     void ApplyFashionIdToPreview(const EFashionSlotType SlotType, const uint FashionId)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     void ApplyFashionIdToFashion(FAvatarFashion &inout InOutFashion, const EFashionSlotType SlotType, const uint FashionId)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     void ApplyDecoFashionIdToFashion(FAvatarFashion &inout InOutFashion, const EFashionSlotType SlotType, const uint FashionId)
     {
@@ -3042,8 +3198,21 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
     }
     int FindCombinedSlotIndex(const EFashionSlotType SlotType, const EFashionSlotSubTab SlotSubTab) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        TArray<EFashionSlotType> local_4;
+        this.CollectConfiguredSlotsForCurrentMainTab(local_4);
+        int local_5 = 0;
+        for (; local_5 < local_4.Num(); ++local_5)
+        {
+            if (int(local_4[local_5]) != int(SlotType))
+            {
+                continue;
+            }
+            if (::FashionSettings::GetSlotConfig(EFashionSlotType(SlotType)) && (0 == int(SlotSubTab)))
+            {
+                return local_5;
+            }
+        }
+        return INDEX_NONE;
     }
     bool ResolveCombinedSlot(const int CombinedIndex, EFashionSlotType &inout OutSlotType, EFashionSlotSubTab &inout OutSlotSubTab) const
     {
@@ -3069,19 +3238,56 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
         }
         if (int(this.GetCurrentMainTab()) == 1)
         {
-            this.SetMountSavedSlotType(EFashionSlotType(this.GetSelectedSlotType()));
+            this.SetMountSavedSlotType(this.GetSelectedSlotType());
             this.SetMountSavedSlotSubTab(this.GetSelectedSlotSubTab());
             this.SetbHasMountSavedSlot(true);
             return;
         }
-        this.SetClothSavedSlotType(EFashionSlotType(this.GetSelectedSlotType()));
+        this.SetClothSavedSlotType(this.GetSelectedSlotType());
         this.SetClothSavedSlotSubTab(this.GetSelectedSlotSubTab());
         this.SetbHasClothSavedSlot(true);
         return;
     }
     void RestoreSavedMainTabSelectionOrDefault()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        bool local_8;
+        int local_12;
+        int local_16;
+        if (int(this.GetCurrentMainTab()) == 1)
+        {
+            local_8 = this.GetbHasMountSavedSlot();
+        }
+        else
+        {
+            local_8 = this.GetbHasClothSavedSlot();
+        }
+        if (int(this.GetCurrentMainTab()) == 1)
+        {
+            local_12 = int(this.GetMountSavedSlotType());
+        }
+        else
+        {
+            local_12 = int(this.GetClothSavedSlotType());
+        }
+        if (int(this.GetCurrentMainTab()) == 1)
+        {
+            local_16 = int(this.GetMountSavedSlotSubTab());
+        }
+        else
+        {
+            local_16 = int(this.GetClothSavedSlotSubTab());
+        }
+        if (local_8 && (this.FindCombinedSlotIndex(EFashionSlotType(local_12), EFashionSlotSubTab(local_16)) != INDEX_NONE))
+        {
+            this.SetSelectedSlotType(EFashionSlotType(local_12));
+            this.SetSelectedSlotSubTab(EFashionSlotSubTab(local_16));
+            this.SetSelectedSlotIndex(this.FindCombinedSlotIndex(EFashionSlotType(local_12), EFashionSlotSubTab(local_16)));
+            int local_17 = int(this.GetSelectedSlotSubTab()) == 0 ? 0 : 1;
+            this.SetListSwitcherIndex(local_17);
+            return;
+        }
+        this.SelectDefaultSlotForCurrentMainTab();
+        return;
     }
     void RefreshWardrobeTextState()
     {
@@ -3092,26 +3298,24 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
             this.SetPageTitleText(::FashionSettings::GetSystemName());
             return;
         }
-        int local_1 = int(this.GetSelectedSlotSubTab());
-        this.SetPageTitleText(FText::Format(NSLOCTEXT("AvatarWardrobe_PageTitleFormat", "{0} <Beige24>/ {1}</>"), ::FashionSettings::GetSubTabText(this.GetCurrentMainTab()), ::FashionSettings::GetFashionSlotName(EFashionSlotType(this.GetSelectedSlotType()))));
+        this.SetPageTitleText(FText::Format(NSLOCTEXT("AvatarWardrobe_PageTitleFormat", "{0} <Beige24>/ {1}</>"), ::FashionSettings::GetSubTabText(this.GetCurrentMainTab(), this.GetSelectedSlotSubTab()), ::FashionSettings::GetFashionSlotName(this.GetSelectedSlotType())));
         return;
     }
     void SelectDefaultSlotForCurrentMainTab()
     {
-        EFashionSlotSubTab local_9;
+        int local_9;
         TArray<EFashionSlotType> local_4;
         this.CollectConfiguredSlotsForCurrentMainTab(local_4);
         if ((local_4.Num()) == 0)
         {
-            this.SetSelectedSlotType(EFashionSlotType(EFashionSlotType(0)));
-            local_9 = EFashionSlotSubTab(0);
-            this.SetSelectedSlotSubTab(EFashionSlotSubTab(local_9));
+            this.SetSelectedSlotType(EFashionSlotType(0));
+            this.SetSelectedSlotSubTab(EFashionSlotSubTab(0));
             this.SetSelectedSlotIndex(INDEX_NONE);
             this.SetListSwitcherIndex(0);
             return;
         }
-        this.SetSelectedSlotType(EFashionSlotType(local_4[0]));
-        if (::FashionSettings::GetSlotConfig(EFashionSlotType(this.GetSelectedSlotType())))
+        this.SetSelectedSlotType(local_4[0]);
+        if (::FashionSettings::GetSlotConfig(this.GetSelectedSlotType()))
         {
             EFashionSlotSubTab local_59;
             local_9 = local_59;
@@ -3146,7 +3350,7 @@ struct FVM_AvatarMainWardrobe : FEUIViewModel
     {
         int local_64 = 0;
         OutSlots.Empty(0);
-        if (!(this.CanShowMainTab(EFashionSlotMainTab(this.GetCurrentMainTab()))))
+        if (!(this.CanShowMainTab(this.GetCurrentMainTab())))
         {
             return;
         }
@@ -4603,7 +4807,6 @@ struct __GeneratedProperties_FVM_AvatarMainWardrobe
     UPROPERTY()
     TEUIModelRef<FVM_AvatarMainWardrobe> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_AvatarWardrobeEntrance
@@ -4616,7 +4819,6 @@ struct __GeneratedProperties_FVM_AvatarWardrobeEntrance
     bool IsSelectedAvatarLocked;
     UPROPERTY()
     TEUIModelRef<FVM_AvatarWardrobeEntrance> Self;
-
 
 }
 

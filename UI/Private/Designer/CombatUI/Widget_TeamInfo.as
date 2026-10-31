@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TeamInfo
 {
     const int ViewID = 0;
@@ -20,7 +19,6 @@ class UWidget_TeamInfo : UEUIUserListItemWidget
     FEUIModelWeakRef __TeamInfo;
     UPROPERTY()
     FGetEUIModelRef TeamInfoDelegate;
-
 
     UFUNCTION()
     void Construct_Implementation()
@@ -305,6 +303,7 @@ namespace UWidget_TeamInfo
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TeamInfo;
     Result.ObservedModelChangesSubscriberNames.Add(FString("ShowEmoji"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleDeathStateChanged"));
     return;

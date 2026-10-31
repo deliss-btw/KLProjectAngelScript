@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TaskEntryWrapper_Helpers
 {
 UFUNCTION()

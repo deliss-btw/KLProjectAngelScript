@@ -1,4 +1,3 @@
-﻿
 enum EChatSystemHyperlinkKind
 {
     None,
@@ -66,11 +65,50 @@ struct FPlayerBriefInfo
 
     FPlayerBriefInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_Uid = 0;
+        this.m_m_Level = 0;
+        this.m_m_CurAvatarId = 0;
+        this.m_m_DivineSkillId = 0;
+        this.m_m_bIsOnline = false;
+        this.m_bSetNickname = false;
+        this.m_bSetLevel = false;
+        this.m_bSetCurAvatarId = false;
+        this.m_bSetDivineSkillId = false;
+        this.m_bSetSignatureText = false;
+        this.m_bSetIsOnline = false;
+        return;
     }
     FPlayerBriefInfo(const FPlayerBriefInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags16 local_5;
+        this.__DirtyFlags = local_5;
+        this.m_Uid = 0;
+        this.m_m_Level = 0;
+        this.m_m_CurAvatarId = 0;
+        this.m_m_DivineSkillId = 0;
+        this.m_m_bIsOnline = false;
+        this.m_bSetNickname = false;
+        this.m_bSetLevel = false;
+        this.m_bSetCurAvatarId = false;
+        this.m_bSetDivineSkillId = false;
+        this.m_bSetSignatureText = false;
+        this.m_bSetIsOnline = false;
+        this.m_Uid = int(Other.m_Uid);
+        this.m_m_Nickname = Other.m_m_Nickname;
+        this.m_m_Level = int(Other.m_m_Level);
+        this.m_m_CurAvatarId = int(Other.m_m_CurAvatarId);
+        this.m_m_DivineSkillId = int(Other.m_m_DivineSkillId);
+        this.m_m_SignatureText = Other.m_m_SignatureText;
+        this.m_m_bIsOnline = Other.m_m_bIsOnline;
+        this.m_bSetNickname = Other.m_bSetNickname;
+        this.m_bSetLevel = Other.m_bSetLevel;
+        this.m_bSetCurAvatarId = Other.m_bSetCurAvatarId;
+        this.m_bSetDivineSkillId = Other.m_bSetDivineSkillId;
+        this.m_bSetSignatureText = Other.m_bSetSignatureText;
+        this.m_bSetIsOnline = Other.m_bSetIsOnline;
+        return;
     }
     FPlayerBriefInfo opAssign(const FPlayerBriefInfo &inout Other)
     {
@@ -388,11 +426,45 @@ struct FChatServerSendChatSnapshot
 
     FChatServerSendChatSnapshot()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_ChannelType = 0;
+        this.m_TargetUid = 0;
+        this.m_SendTimeMs = 0;
+        this.m_ContentType = 0;
+        this.m_SenderType = 0;
+        this.m_SystemContentDataId = 0;
+        this.m_bIsNpcDialogue = false;
+        this.m_bUseSpotName = false;
+        this.m_NpcEntityId = 0;
+        return;
     }
     FChatServerSendChatSnapshot(const FChatServerSendChatSnapshot &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags16 local_33;
+        this.__DirtyFlags = local_33;
+        this.m_ChannelType = 0;
+        this.m_TargetUid = 0;
+        this.m_SendTimeMs = 0;
+        this.m_ContentType = 0;
+        this.m_SenderType = 0;
+        this.m_SystemContentDataId = 0;
+        this.m_bIsNpcDialogue = false;
+        this.m_bUseSpotName = false;
+        this.m_NpcEntityId = 0;
+        this.m_ChannelType = int(Other.m_ChannelType);
+        this.m_TargetUid = int(Other.m_TargetUid);
+        this.m_SendTimeMs = Other.m_SendTimeMs;
+        this.m_ContentType = int(Other.m_ContentType);
+        this.m_SenderType = int(Other.m_SenderType);
+        this.m_TextContent = Other.m_TextContent;
+        this.m_SystemContentDataId = int(Other.m_SystemContentDataId);
+        this.m_SystemContentArgs = Other.m_SystemContentArgs;
+        this.m_bIsNpcDialogue = Other.m_bIsNpcDialogue;
+        this.m_DialogueLineConfig = Other.m_DialogueLineConfig;
+        this.m_bUseSpotName = Other.m_bUseSpotName;
+        this.m_NpcEntityId = int(Other.m_NpcEntityId);
+        return;
     }
     FChatServerSendChatSnapshot opAssign(const FChatServerSendChatSnapshot &inout Other)
     {
@@ -607,7 +679,6 @@ struct FCE_ChatSendToDS : FECSEvent
     UPROPERTY()
     FString TextContent;
 
-
     bool Validate() const
     {
         return true;
@@ -628,7 +699,6 @@ struct FCE_DSDispatchChat : FECSEvent
     UPROPERTY()
     bool bUseSpotName = false;
 
-
 }
 
 struct FCE_DSChatMsgCommission : FECSEvent
@@ -638,7 +708,6 @@ struct FCE_DSChatMsgCommission : FECSEvent
     uint BindPlayerUid = 0;
     UPROPERTY()
     uint Channel = 0;
-
 
 }
 
@@ -675,7 +744,6 @@ struct FMsg_ChatWithPlayer : FEUIMessage
     UPROPERTY()
     uint PlayerUid = 0;
 
-
 }
 
 struct FMsg_OpenPlayerBasicInfo : FEUIMessage
@@ -683,14 +751,12 @@ struct FMsg_OpenPlayerBasicInfo : FEUIMessage
     UPROPERTY()
     uint PlayerUid = 0;
 
-
 }
 
 struct FMsg_ChatSystemItemHyperlinkClicked : FEUIMessage
 {
     UPROPERTY()
     uint ItemDataId = 0;
-
 
 }
 

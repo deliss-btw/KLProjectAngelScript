@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_EcosimAIV2InitEcology_NS
 {
     const TECSEventDerivedPtr<FCE_EcosimAIV2InitEcology> DerivedPtr = TECSEventDerivedPtr<FCE_EcosimAIV2InitEcology>();
@@ -23,7 +22,6 @@ struct FCE_EcosimAIV2SwitchMetaRealState : FECSEvent
     FECSEvent _base_FECSEvent;
     UPROPERTY()
     bool bToMeta = false;
-
 
 }
 

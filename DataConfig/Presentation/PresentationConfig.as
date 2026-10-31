@@ -1,4 +1,3 @@
-﻿
 enum EPresentationIconType
 {
     NormalIcon,
@@ -33,7 +32,6 @@ struct FPresentationIcon
     EPresentationIconType IconType;
     UPROPERTY()
     FSoftBrush OverrideIcon;
-
 
     FSoftBrush GetIconBrush(const TDataObjectPtr<FPresentationConfig> &inout PresentationConfig) const
     {
@@ -164,7 +162,6 @@ struct FPresentationConfig : FDataObject
     FDataObjectPtr m_DropReward;
     UPROPERTY()
     FText TextReward;
-
 
     FSoftBrush GetDefaultIcon() const
     {

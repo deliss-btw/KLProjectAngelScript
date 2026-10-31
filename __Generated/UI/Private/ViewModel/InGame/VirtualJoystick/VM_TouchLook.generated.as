@@ -1,5 +1,3 @@
-﻿
-
 struct FConfigVM_TouchLook : FConfigEUIModelBase
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ struct FConfigVM_TouchLook : FConfigEUIModelBase
     float32 LookSensitivity = 1.5f;
     UPROPERTY()
     FKey XAxis;
-
 
 }
 

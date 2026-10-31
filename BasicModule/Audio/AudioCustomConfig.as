@@ -1,5 +1,3 @@
-﻿
-
 class UESMPreloadCustomData : UESMCustomConfig_BP
 {
     UPROPERTY()
@@ -30,10 +28,11 @@ class UESMPreloadCustomData : UESMCustomConfig_BP
     UFUNCTION()
     void GenerateCompositedConfig_Implementation(const UESMCustomConfig TargetConfig, const TArray<UESMCustomConfig> &inout CompositeElement) const
     {
+        UESMPreloadCustomData local_2;
         UESMPreloadCustomData local_4 = Cast<UESMPreloadCustomData>(TargetConfig);
         for (auto local_20 : CompositeElement)
         {
-            TArray<TSoftObjectPtr<UAkAudioEvent>> local_2 = Cast<UESMPreloadCustomData>(local_20);
+            local_2 = Cast<UESMPreloadCustomData>(local_20);
             local_4.PreloadEvents.Append(local_2.PreloadEvents);
             local_2 = Cast<UESMPreloadCustomData>(local_20);
             local_4.PreloadSwitches.Append(local_2.PreloadSwitches);

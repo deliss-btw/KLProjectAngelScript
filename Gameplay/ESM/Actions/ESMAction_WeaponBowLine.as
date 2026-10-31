@@ -1,10 +1,7 @@
-﻿
-
 class UESMAction_WeaponBowLine : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
     bool bSingleActor = false;
-
 
     UFUNCTION()
     void Tick_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const

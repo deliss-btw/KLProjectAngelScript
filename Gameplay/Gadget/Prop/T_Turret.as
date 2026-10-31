@@ -1,5 +1,3 @@
-﻿
-
 struct FT_Turret : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -28,7 +26,7 @@ struct FT_Turret : FECSTrait
     UPROPERTY()
     FC_InputTransferAcceptConfig Config_FC_InputTransferAcceptConfig;
 
-    default CustomName = FName("з‚®еЏ°й…ЌзЅ® (FT_Turret)");
+    default CustomName = FName("炮台配置 (FT_Turret)");
 
     FT_Turret()
     {

@@ -1,5 +1,3 @@
-﻿
-
 class US_AnimResolvedSystemAS : UECSScriptSystem
 {
     US_AnimResolvedSystemAS()
@@ -91,22 +89,12 @@ class US_AnimResolvedSystemAS : UECSScriptSystem
     UFUNCTION()
     void ClientJob_ResolvePerChannel(const FECSEntity &inout Entity, FC_LookRequestViewLocal &inout ViewLocal, const FC_AnimResolvedSynced &inout Synced, FC_AnimResolvedState &inout State, const FC_AnimAimPoseOutput &inout AimPoseOutput, const FC_AimPoseConfig &inout DefaultConfig) const
     {
-        int local_2 = 0;
+        bool local_1;
         float32 local_78;
         int local_84 = 0;
         FAnimSnapshot local_106;
         float32 local_154;
-        bool local_1 = !(State.bRegistered);
-        if (local_1)
-        {
-            local_1 = true;
-        }
-        else
-        {
-            local_2 = State.Channels.Num();
-            local_1 = (local_2 == 0);
-        }
-        if (local_1)
+        if (!(State.bRegistered) || (State.Channels.Num() == 0))
         {
             return;
         }
@@ -135,14 +123,14 @@ class US_AnimResolvedSystemAS : UECSScriptSystem
         local_78 = AimPoseOutput.GetTargetLerpSpeed();
         local_84.SnapshotMap.Empty(0);
         int local_85 = 0;
-        while (local_85 < local_2)
+        for (; local_85 < State.Channels.Num(); )
         {
             FAnimResolvedChannelState& local_88 = State.Channels[local_85];
             bool local_4 = Synced.GetSnapshotMap().Find(local_88.ChannelKey, local_106);
             TSet<EAnimLookSource> local_128;
-            bool local_1_2 = this.ResolveEffectiveAllowSources(local_88.AllowSources, AimPoseOutput, local_128);
+            local_1 = this.ResolveEffectiveAllowSources(local_88.AllowSources, AimPoseOutput, local_128);
             FAnimSnapshot local_148;
-            if (this.PickChannelWinner(ViewLocal, local_128, local_1_2, local_4, local_106, local_148))
+            if (this.PickChannelWinner(ViewLocal, local_128, local_1, local_4, local_106, local_148))
             {
                 this.TransformSnapshotToLocal(local_148, Entity, local_32);
             }
@@ -269,20 +257,17 @@ class US_AnimResolvedSystemAS : UECSScriptSystem
     {
         int local_1 = -1;
         int local_3 = 0;
-        while (local_3 < 0)
+        for (; local_3 < Local.RequestArray.Num(); ++local_3)
         {
             const FLookRequestEntry& local_8 = Local.RequestArray[local_3];
             if (bHasFilter && !(AllowSources.Contains(local_8.Source)))
             {
+                continue;
             }
-            else
+            if (local_1 < 0 || ::FC_LookRequest::IsBetterThan(local_8, Local.RequestArray[local_1]))
             {
-                if (local_1 < 0 || ::FC_LookRequest::IsBetterThan(local_8, Local.RequestArray[local_1]))
-                {
-                    local_1 = local_3;
-                }
+                local_1 = local_3;
             }
-            ++local_3;
         }
         if (local_1 < 0)
         {
@@ -296,20 +281,17 @@ class US_AnimResolvedSystemAS : UECSScriptSystem
         bool local_10;
         int local_1 = -1;
         int local_3 = 0;
-        while (local_3 < 0)
+        for (; local_3 < ViewLocal.RequestArray.Num(); ++local_3)
         {
             const FLookRequestEntry& local_8 = ViewLocal.RequestArray[local_3];
             if (bHasFilter && !(AllowSources.Contains(local_8.Source)))
             {
+                continue;
             }
-            else
+            if (local_1 < 0 || ::FC_LookRequest::IsBetterThan(local_8, ViewLocal.RequestArray[local_1]))
             {
-                if (local_1 < 0 || ::FC_LookRequest::IsBetterThan(local_8, ViewLocal.RequestArray[local_1]))
-                {
-                    local_1 = local_3;
-                }
+                local_1 = local_3;
             }
-            ++local_3;
         }
         bool local_5 = (local_1 >= 0);
         local_10 = bHasSyncedTop && (!(bHasFilter) || AllowSources.Contains(EAnimLookSource(SyncedTop.GetSource())));

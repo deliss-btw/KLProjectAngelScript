@@ -1,5 +1,3 @@
-﻿
-
 class UEQG_FindCurrentCombatAreaInsetPoint : UEnvQueryGenerator_ECS_BlueprintBase
 {
     UPROPERTY()
@@ -18,7 +16,6 @@ class UEQG_FindCurrentCombatAreaInsetPoint : UEnvQueryGenerator_ECS_BlueprintBas
     bool bDebugDrawInsetSampleSpheres = false;
 
     default GeneratedItemType = UEnvQueryItemType_Point;
-
 
     UFUNCTION()
     void DoItemGenerationFromEntities_Implementation(const TArray<FECSEntityId> &inout ContextEntities) const
@@ -144,7 +141,7 @@ class UEQG_FindCurrentCombatAreaInsetPoint : UEnvQueryGenerator_ECS_BlueprintBas
             }
             FVector local_226 = local_128.GetCenter();
             FVector local_30 = FVector(FVector::ZeroVector);
-            bool local_230 = this.TryFindPointByHexHalfFan(local_86, local_226, local_128, local_76, local_1, local_8, this.bDebugEmitAllCandidatePoints, local_30);
+            bool local_230 = this.TryFindPointByHexHalfFan(local_86, local_226, local_128, local_76, local_1, local_8, (this.bDebugEmitAllCandidatePoints), local_30);
             if (local_230)
             {
                 FVector local_192_2 = FVector(FVector::ZeroVector);
@@ -232,8 +229,28 @@ class UEQG_FindCurrentCombatAreaInsetPoint : UEnvQueryGenerator_ECS_BlueprintBas
     }
     bool TrySnapPointToGround(const FECSEntity &inout TraceEntity, const FVector &inout Point, FVector &out OutGroundPoint) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
-        bool __r; return __r;
+        FVector local_6;
+        OutGroundPoint = local_6;
+        FVector local_12 = Point;
+        FVector local_24 = FVector(100.0, 100.0, 2000.0);
+        if (FAIPathFollowUtils::IsPointOnNavigation(TraceEntity, Point, local_24))
+        {
+            local_12 = FAIPathFollowUtils::ProjectPointToNavigation(TraceEntity, Point, local_24);
+        }
+        FHitResult local_98;
+        FCollisionQueryParams local_136;
+        local_136.bTraceComplex = false;
+        local_136.AddIgnoredEntityId(TraceEntity.GetIdValue());
+        FVector local_150 = (local_12 + FVector(0.0, 0.0, 1000.0));
+        FVector local_144 = (local_12 - FVector(0.0, 0.0, 5000.0));
+        FCollisionResponseParams local_167;
+        bool local_169 = FPhysicsUtils::LineTraceSingle(TraceEntity, false, EPhysicsTraceTag(24), local_98, local_150, local_144, FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(5)), local_136, local_167);
+        if (!(local_169))
+        {
+            return false;
+        }
+        OutGroundPoint = local_98.ImpactPoint;
+        return true;
     }
     bool TryFindPointByHexHalfFan(const FVector &inout QuerierPos, const FVector &inout BoundsCenter, const FBox &inout CombatBounds, const AECSRegionVolume CombatVolume, const float32 SafeInset, const TArray<FVector> &inout InsetOffsets, const bool bEmitAllCandidates, FVector &out OutPoint) const
     {

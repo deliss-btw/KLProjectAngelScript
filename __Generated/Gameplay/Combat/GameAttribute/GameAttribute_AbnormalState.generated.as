@@ -1,4 +1,3 @@
-﻿
 namespace Attribute
 {
     const FGameAttributeRef Burning_AccumulationMax = FGameAttributeRef();

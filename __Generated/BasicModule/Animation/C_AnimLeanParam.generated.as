@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_AnimLeanParamsHistory_NS
 {
     const TECSComponentDerivedPtr<FC_AnimLeanParamsHistory> DerivedPtr = TECSComponentDerivedPtr<FC_AnimLeanParamsHistory>();
@@ -38,7 +37,7 @@ struct FC_AnimLeanParamsHistory : FECSComponent
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_AnimLeanParams &inout OutValue) const
     {
-        return this.GetInterpoValue(WorldTime, OutValue);
+        return this.History.GetInterpoValue(WorldTime, OutValue);
     }
 }
 
@@ -122,36 +121,36 @@ bool RemoveAnimLeanParamsHistory(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAnimLeanParamsHistoryOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimLeanParamsHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimLeanParamsHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimLeanParamsHistoryOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimLeanParamsHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimLeanParamsHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimLeanParamsHistoryOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimLeanParamsHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimLeanParamsHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimLeanParamsHistoryOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimLeanParamsHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimLeanParamsHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimLeanParamsHistoryOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimLeanParamsHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimLeanParamsHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAnimLeanParamsHistoryLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AnimLeanParamsHistory, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AnimLeanParamsHistory, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimLeanParamsHistoryActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AnimLeanParamsHistory, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AnimLeanParamsHistory, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimLeanParamsHistoryModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AnimLeanParamsHistory, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AnimLeanParamsHistory, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

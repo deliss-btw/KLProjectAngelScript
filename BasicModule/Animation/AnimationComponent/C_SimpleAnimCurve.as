@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_SimpleAnimCurve : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
@@ -70,7 +68,6 @@ class UESMAction_SimpleAnimCurve : UESMBPBaseSpanTickAction
     bool bUseScalePivot = false;
     UPROPERTY()
     FVector ScalePivotOffset = FVector::ZeroVector;
-
 
     UFUNCTION()
     EESMActionType GetActionType_Implementation() const

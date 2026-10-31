@@ -1,4 +1,3 @@
-﻿
 namespace FVM_WorldEventMinimapIcon
 {
     const int ModelId = 0;
@@ -113,7 +112,8 @@ struct FVM_WorldEventMinimapIcon : FEUIViewModel
             local_18 = local_16.GetStatus();
             FFPTime local_22 = FFPTime(local_16.GetChangeStatusTime());
             FFPTime local_24 = FFPTime(local_16.GetInStatusTime());
-            this.GetModify_StatusCountdown().SetRemainedTimeWithPrecision(FFPTime(FMath::Max((local_22 - this.GetContext().Time).ToSeconds(), 0.0)), EMWCounterDownPrecision(0));
+            float local_32 = FMath::Max((local_22 - this.GetContext().Time).ToSeconds(), 0.0);
+            this.GetModify_StatusCountdown().SetRemainedTimeWithPrecision(FFPTime(local_32), EMWCounterDownPrecision(0));
             FFPTime local_26_2 = (local_22 - local_24);
             if (local_26_2.ToSeconds() > 0.0)
             {
@@ -163,7 +163,7 @@ struct FVM_WorldEventMinimapIcon : FEUIViewModel
             FText local_14;
             FTimespan::FromSeconds(this.GetInProgressElapsed().GetAccumulatedTime().ToSeconds());
             FText::AsTimespan(local_14);
-            NSLOCTEXT("Minimap", "Icon_WorldEvent_InProgressElapsed", "дє‹д»¶е·Іиї›иЎЊ {0}");
+            NSLOCTEXT("Minimap", "Icon_WorldEvent_InProgressElapsed", "事件已进行 {0}");
             FText::Format(local_22);
             return local_22;
         }
@@ -173,7 +173,7 @@ struct FVM_WorldEventMinimapIcon : FEUIViewModel
             FText local_14;
             FTimespan::FromSeconds(this.GetStatusCountdown().GetRemainedTime().ToSeconds());
             FText::AsTimespan(local_22);
-            NSLOCTEXT("Minimap", "Icon_WorldEvent_PrepareCountdown", "<Gray16>и·ќй›†з»“д№‹еЌ°еЅўж€ђ {0}</>");
+            NSLOCTEXT("Minimap", "Icon_WorldEvent_PrepareCountdown", "<Gray16>距集结之印形成 {0}</>");
             FText::Format(local_14);
             return local_14;
         }
@@ -183,7 +183,7 @@ struct FVM_WorldEventMinimapIcon : FEUIViewModel
             NSLOCTEXT(local_14, "Minimap", "Icon_WorldEvent_Countdown_Interactable");
             return local_14;
         }
-        return NSLOCTEXT("Minimap", "Icon_WorldEvent_Countdown_Complete", "е·Іе®Њж€ђ");
+        return NSLOCTEXT("Minimap", "Icon_WorldEvent_Countdown_Complete", "已完成");
     }
     bool bMapIconShowCountdownText() const
     {
@@ -592,7 +592,6 @@ struct __GeneratedProperties_FVM_WorldEventMinimapIcon
     bool CanTeleport;
     UPROPERTY()
     TEUIModelRef<FVM_WorldEventMinimapIcon> Self;
-
 
 }
 

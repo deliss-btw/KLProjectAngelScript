@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TimeOfDayHoverDialog
 {
     const int ViewID = 0;
@@ -50,6 +49,7 @@ namespace UWidget_TimeOfDayHoverDialog
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TimeOfDayHoverDialog;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

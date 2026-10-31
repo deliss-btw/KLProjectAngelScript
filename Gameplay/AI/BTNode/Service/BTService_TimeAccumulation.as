@@ -1,5 +1,3 @@
-﻿
-
 class UBTService_TimeAccumulation : UBTService_ECSScriptBase
 {
     UPROPERTY()
@@ -9,8 +7,7 @@ class UBTService_TimeAccumulation : UBTService_ECSScriptBase
     UPROPERTY()
     bool bAccumulateOnlyWhenCombatWithPlayer = false;
 
-    default SetNodeName("зґЇз§Їж—¶й—ґ");
-
+    default SetNodeName("累积时间");
 
     UFUNCTION()
     void OnSearchStart_Implementation(const FAIBehaviorTreeSearchContext &inout SearchContext) const

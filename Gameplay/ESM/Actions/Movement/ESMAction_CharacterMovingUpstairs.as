@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CharacterMovingUpstairs : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ class UESMAction_CharacterMovingUpstairs : UESMBPBaseSpanAction
     bool bNeedEnsureVaultStartState = false;
     UPROPERTY()
     EVaultStartState EnsureVaultStartState = EVaultStartState(0);
-
 
     UFUNCTION()
     EESMActionExitPolicy GetExitPolicy_Implementation() const

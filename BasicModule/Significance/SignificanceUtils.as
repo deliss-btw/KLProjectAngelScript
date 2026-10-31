@@ -1,4 +1,3 @@
-﻿
 namespace Significance
 {
 enum ESignificancePlayerType
@@ -183,7 +182,7 @@ EECSSignificanceType GetSignificanceType(const FECSEntity &inout Entity)
 }
 EECSSignificanceValue GetSignificanceDefaultValue(const FSignificanceConfig &inout Config, const EECSSignificanceType Type)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     EECSSignificanceValue __r; return __r;
 }
 EECSSignificanceValue GetSignificanceValue(const FSignificanceConfig &inout Config, const EECSSignificanceType Type, const int Offset)

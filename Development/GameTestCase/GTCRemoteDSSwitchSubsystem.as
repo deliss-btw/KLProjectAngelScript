@@ -1,9 +1,6 @@
-﻿
-
 class UGTCRemoteDSSwitchSubsystem : UGameInstanceSubsystem
 {
     bool bSubscribed = false;
-
 
     void EnsureSubscribed()
     {

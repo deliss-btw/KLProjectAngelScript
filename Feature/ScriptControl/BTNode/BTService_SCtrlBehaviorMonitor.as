@@ -1,5 +1,3 @@
-﻿
-
 class UBTService_SCtrlBehaviorMonitor : UBTService_ECSScriptBase
 {
     UPROPERTY()
@@ -16,8 +14,8 @@ class UBTService_SCtrlBehaviorMonitor : UBTService_ECSScriptBase
     UFUNCTION()
     void TickNode_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory, const float32 DeltaSeconds) const
     {
-        EScriptControlPreferBehavior local_6;
-        EScriptControlCurrentBehavior local_7;
+        int local_6;
+        int local_7;
         int local_8;
         int local_9;
         if (!(FECSEntity(Context.PawnEntity).IsValid()))

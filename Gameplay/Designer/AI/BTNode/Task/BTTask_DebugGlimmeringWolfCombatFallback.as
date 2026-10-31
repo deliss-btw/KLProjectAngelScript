@@ -1,5 +1,3 @@
-﻿
-
 struct FBTTask_DebugGlimmeringWolfCombatFallbackMemory
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ struct FBTTask_DebugGlimmeringWolfCombatFallbackMemory
     FFPTime NoneStartTime;
     UPROPERTY()
     FFPTime LastNoneTime;
-
 
 }
 
@@ -19,8 +16,7 @@ class UBTTask_DebugGlimmeringWolfCombatFallback : UBTTask_ECSScriptBase
     UPROPERTY()
     float32 ContinuousNoneGapSeconds = 0.5f;
 
-    default SetNodeName("[Faker] з‹ј Combat None е›ћйЂЂ");
-
+    default SetNodeName("[Faker] 狼 Combat None 回退");
 
     UFUNCTION()
     UScriptStruct GetNodeMemoryType_Implementation() const
@@ -54,6 +50,7 @@ class UBTTask_DebugGlimmeringWolfCombatFallback : UBTTask_ECSScriptBase
     {
         FECSEntityId local_3;
         Blackboard.GetValueAsEntityId(local_3);
+        FECSEntityId local_1 = Blackboard.GetValueAsEntityId(n"tFlashedEntity");
         FECSEntityId local_5 = FECSEntityId(ENTITY_ID_NULL);
         int local_6 = 0;
         Get local_10;
@@ -89,7 +86,6 @@ class UBTTask_DebugGlimmeringWolfCombatFallback : UBTTask_ECSScriptBase
         float32 local_38 = Blackboard.GetValueAsFloat(n"TargetDistanceZ");
         float32 local_39 = Blackboard.GetValueAsFloat(n"TargetDirectionAngleXY");
         float32 local_40 = Blackboard.GetValueAsFloat(n"TargetDirectionAngleXYSigned");
-        FString local_1;
         XWarning(ELog(14), FString().Append("[GlimmeringWolfCombatNone] Elapsed=").Append(NoneElapsedSeconds).Append(" Entity=").Append(Entity.GetEntityName()).Append(" TargetEntityID=").Append(local_3).Append(" CurrentQueryOutputCount=").Append(local_6).Append(" CurrentQueryOutput0=").Append(local_5).Append(" tFlashedEntity=").Append(local_1));
         XWarning(ELog(14), FString().Append("[GlimmeringWolfCombatNone] EBB bIsInCombat=").Append(local_13).Append(" bHasFlashTarget=").Append(local_14).Append(" bNeedSummon=").Append(local_19).Append(" iPhase=").Append(local_2_2).Append(" bIsOnTree=").Append(local_20).Append(" iSkillIndex=").Append(local_21_2).Append(" SelfCombatWithPlayerTime=").Append(local_35).Append(" SelfMeleeCombatTime=").Append(local_29));
         XWarning(ELog(14), FString().Append("[GlimmeringWolfCombatNone] BB TargetDistanceXY=").Append(local_36).Append(" TargetDistanceXYIgnoreCollision=").Append(local_37).Append(" TargetDistanceZ=").Append(local_38).Append(" TargetDirectionAngleXY=").Append(local_39).Append(" TargetDirectionAngleXYSigned=").Append(local_40));

@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_ImpactFXEvent_NS
 {
     const TECSEventDerivedPtr<FCE_ImpactFXEvent> DerivedPtr = TECSEventDerivedPtr<FCE_ImpactFXEvent>();
@@ -63,7 +62,6 @@ struct FCE_SyncImpactFXEvent : FECSEvent
     FRotator3f ImpactRotation;
     UPROPERTY()
     EImpactType ImpactType = EImpactType(0);
-
 
 }
 

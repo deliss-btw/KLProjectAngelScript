@@ -1,4 +1,3 @@
-﻿
 enum ERootMotionWarpingMoveType
 {
     LockTarget,
@@ -24,7 +23,6 @@ enum EESMBBSourceType
     Self,
     Specific,
 }
-
 
 class UESMAction_RootMotionWarping : UESMBPBaseSpanTickAction
 {
@@ -123,7 +121,6 @@ class UESMAction_RootMotionWarping : UESMBPBaseSpanTickAction
     UPROPERTY()
     float32 TickTrackRate = 1.0f;
 
-
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const
     {
@@ -149,7 +146,19 @@ class UESMAction_RootMotionWarping : UESMBPBaseSpanTickAction
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        Modify local_6;
+        FC_RootMotionWarping& local_2 = local_6.opCall();
+        if (local_2)
+        {
+            int local_13 = local_2.FindParamsByActionKey(Context.GetNotifyDataPath());
+            if (local_13 != INDEX_NONE)
+            {
+                FRootMotionWarpingParams& local_16 = local_2.GetAt(local_13);
+                local_16.SetActionRemainTime(FFPTime(0.0));
+                local_16.SetActionPlaySpeed(Time.PlaySpeed);
+            }
+        }
+        return;
     }
     UFUNCTION()
     void Tick_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const

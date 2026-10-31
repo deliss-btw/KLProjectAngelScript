@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CharacterGroundMovementInfo : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -18,7 +16,6 @@ class UESMAction_CharacterGroundMovementInfo : UESMBPBaseSpanAction
     float32 OrientationWarpingIncreaseSpeed = 5.0f;
     UPROPERTY()
     float32 OrientationWarpingDecreaseSpeed = 8.0f;
-
 
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const

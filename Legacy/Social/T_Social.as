@@ -1,5 +1,3 @@
-﻿
-
 struct FT_PlayerSocialInteraction : FECSTrait
 {
     FECSTrait _base_FECSTrait;

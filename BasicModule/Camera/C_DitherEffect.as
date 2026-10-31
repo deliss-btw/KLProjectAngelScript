@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_SyncDitherRequests_NS
 {
     const TECSComponentDerivedPtr<FC_SyncDitherRequests> DerivedPtr = TECSComponentDerivedPtr<FC_SyncDitherRequests>();
@@ -23,11 +22,29 @@ struct FDitherRequest
 
     FDitherRequest()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_BlendDuration = 0.0f;
+        this.m_StartValue = 0.0f;
+        this.m_TargetValue = 0.0f;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bIncludeAttachEntity = false;
+        return;
     }
     FDitherRequest(const FDitherRequest &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_BlendDuration = 0.0f;
+        this.m_StartValue = 0.0f;
+        this.m_TargetValue = 0.0f;
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_bIncludeAttachEntity = false;
+        this.m_RequestName = Other.m_RequestName;
+        this.m_BlendDuration = Other.m_BlendDuration;
+        this.m_StartValue = Other.m_StartValue;
+        this.m_TargetValue = Other.m_TargetValue;
+        this.m_StartTime = Other.m_StartTime;
+        this.m_bIncludeAttachEntity = Other.m_bIncludeAttachEntity;
+        return;
     }
     FDitherRequest opAssign(const FDitherRequest &inout Other)
     {
@@ -156,11 +173,15 @@ struct FC_SyncDitherRequests : FECSComponent
 
     FC_SyncDitherRequests()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_SyncDitherRequests(const FC_SyncDitherRequests &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_Requests = Other.m_Requests;
         return;
@@ -209,8 +230,15 @@ struct FC_SyncDitherRequests : FECSComponent
     }
     int GetDitherRequestIndex(const FName &inout RequestName) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        int local_1 = 0;
+        for (; local_1 < this.GetRequests().Num(); ++local_1)
+        {
+            if ((this.GetRequests()[local_1].GetRequestName() == RequestName))
+            {
+                return local_1;
+            }
+        }
+        return INDEX_NONE;
     }
     const TArray<FDitherRequest> GetRequests() const property
     {
@@ -313,37 +341,37 @@ bool RemoveSyncDitherRequests(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorSyncDitherRequestsOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_SyncDitherRequests, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_SyncDitherRequests, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSyncDitherRequestsOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_SyncDitherRequests, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_SyncDitherRequests, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSyncDitherRequestsOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_SyncDitherRequests, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_SyncDitherRequests, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSyncDitherRequestsOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_SyncDitherRequests, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_SyncDitherRequests, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSyncDitherRequestsOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_SyncDitherRequests, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_SyncDitherRequests, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorSyncDitherRequestsLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_SyncDitherRequests, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_SyncDitherRequests, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSyncDitherRequestsActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_SyncDitherRequests, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_SyncDitherRequests, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSyncDitherRequestsModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_SyncDitherRequests, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_SyncDitherRequests, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

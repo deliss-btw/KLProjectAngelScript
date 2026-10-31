@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_AnimLeanConfig : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -14,7 +12,6 @@ class UESMAction_AnimLeanConfig : UESMBPBaseSpanAction
     float32 FadeOutTime = 0.2f;
     UPROPERTY()
     bool bEnableLeanBlend = true;
-
 
     UFUNCTION()
     bool IsNotifyTypeAllowed_Implementation(const EESMNotifyType InType) const
@@ -46,7 +43,7 @@ class UESMAction_AnimLeanConfig : UESMBPBaseSpanAction
             local_10 = 0.0f;
         }
         local_6.SetFadeToSpeed(local_10);
-        local_6.SetbEnableLeanBlend(this.bEnableLeanBlend);
+        local_6.SetbEnableLeanBlend((this.bEnableLeanBlend));
         return;
     }
     UFUNCTION()

@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CameraLookAtTweak : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -75,16 +73,16 @@ class UESMAction_CameraLookAtTweak : UESMBPBaseSpanAction
     void ViewEnter_Implementation(const FESMViewContext &inout Context, const FESMActionTime &inout Time) const
     {
         FC_TPCameraLookAtTweaks local_6;
-        local_6.SetbSnapToLookAtTarget(this.bSnapToLookAtTarget);
-        local_6.SetbOverrideLookAtYawSpeed(this.bOverrideLookAtYawSpeed);
+        local_6.SetbSnapToLookAtTarget((this.bSnapToLookAtTarget));
+        local_6.SetbOverrideLookAtYawSpeed((this.bOverrideLookAtYawSpeed));
         local_6.LookAtYawSpeed = this.LookAtYawSpeed;
-        local_6.SetbOverrideLookAtPitchSpeed(this.bOverrideLookAtPitchSpeed);
+        local_6.SetbOverrideLookAtPitchSpeed((this.bOverrideLookAtPitchSpeed));
         local_6.LookAtPitchSpeed = this.LookAtPitchSpeed;
-        local_6.SetbUseCustomLookAtYaw(this.bUseCustomLookAtYaw);
-        local_6.SetbCustomLookAtYawAdditive(this.bCustomLookAtYawAdditive);
-        local_6.SetbUseCustomLookAtPitch(this.bUseCustomLookAtPitch);
-        local_6.SetbCustomLookAtPitchAdditive(this.bCustomLookAtPitchAdditive);
-        local_6.SetbDisableLookAtOriginOffset(this.bDisableLookAtOriginOffset);
+        local_6.SetbUseCustomLookAtYaw((this.bUseCustomLookAtYaw));
+        local_6.SetbCustomLookAtYawAdditive((this.bCustomLookAtYawAdditive));
+        local_6.SetbUseCustomLookAtPitch((this.bUseCustomLookAtPitch));
+        local_6.SetbCustomLookAtPitchAdditive((this.bCustomLookAtPitchAdditive));
+        local_6.SetbDisableLookAtOriginOffset((this.bDisableLookAtOriginOffset));
         return;
     }
     UFUNCTION()

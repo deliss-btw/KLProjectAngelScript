@@ -1,5 +1,3 @@
-﻿
-
 struct FRiderSwayControlSetting
 {
     UPROPERTY()
@@ -65,7 +63,6 @@ struct FRiderSwayParams
     float32 DebugAccelSize = 0.0f;
     UPROPERTY()
     float32 DebugAngularSpeed = 0.0f;
-
 
 }
 

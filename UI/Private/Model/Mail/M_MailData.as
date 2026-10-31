@@ -1,4 +1,3 @@
-﻿
 namespace FM_MailData
 {
     const int ModelId = 0;
@@ -266,28 +265,28 @@ struct FM_MailData : FEUIModel
         }
         if (local_4 <= 0)
         {
-            this.SetCachedExpireText(NSLOCTEXT("Mail", "Expired", "е·Іиї‡жњџ"));
+            this.SetCachedExpireText(NSLOCTEXT("Mail", "Expired", "已过期"));
             return;
         }
         int local_14 = uint((local_4 / 86400.0f));
         if (local_14 > 0)
         {
-            this.SetCachedExpireText(FText::Format(NSLOCTEXT("Mail", "ExpireDays", "{0}е¤©еђЋиї‡жњџ"), local_14));
+            this.SetCachedExpireText(FText::Format(NSLOCTEXT("Mail", "ExpireDays", "{0}天后过期"), local_14));
             return;
         }
         int local_11 = uint((local_4 / 3600.0f));
         if (local_11 > 0)
         {
-            this.SetCachedExpireText(FText::Format(NSLOCTEXT("Mail", "ExpireHours", "{0}е°Џж—¶еђЋиї‡жњџ"), local_11));
+            this.SetCachedExpireText(FText::Format(NSLOCTEXT("Mail", "ExpireHours", "{0}小时后过期"), local_11));
             return;
         }
         int local_19 = uint((local_4 / 60.0f));
         if (local_19 > 0)
         {
-            this.SetCachedExpireText(FText::Format(NSLOCTEXT("Mail", "ExpireMinutes", "{0}е€†й’џеђЋиї‡жњџ"), local_19));
+            this.SetCachedExpireText(FText::Format(NSLOCTEXT("Mail", "ExpireMinutes", "{0}分钟后过期"), local_19));
             return;
         }
-        this.SetCachedExpireText(NSLOCTEXT("Mail", "ExpireSoon", "еЌіе°†иї‡жњџ"));
+        this.SetCachedExpireText(NSLOCTEXT("Mail", "ExpireSoon", "即将过期"));
         return;
     }
     uint GetMailId() const property

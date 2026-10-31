@@ -1,5 +1,3 @@
-﻿
-
 class UGOAPAction_EcosimAIV2_DoInteractToBelongingTarget : UGOAP_ActionScriptableBase
 {
     UPROPERTY()
@@ -13,7 +11,6 @@ class UGOAPAction_EcosimAIV2_DoInteractToBelongingTarget : UGOAP_ActionScriptabl
     int InteractPointIndex = -1;
     bool bExecutingInteract = false;
 
-
     UFUNCTION()
     void WhenActionActivated_Implementation()
     {
@@ -22,7 +19,59 @@ class UGOAPAction_EcosimAIV2_DoInteractToBelongingTarget : UGOAP_ActionScriptabl
     UFUNCTION()
     void WhenActionTick_Implementation(const float32 DeltaSeconds)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        UECSGOAPEcosimAIV2InstanceBase local_2 = (Cast<UECSGOAPEcosimAIV2InstanceBase>(this.GetOuter()));
+        FECSEntity local_10 = local_2.Entity;
+        if (this.InteractPointIndex < 0)
+        {
+            int local_21;
+            Get local_18;
+            const FC_InteractionTargetConfig& local_20 = local_18.opCall();
+            if (local_20)
+            {
+                local_21 = 0;
+                for (; local_21 < local_20.InteractionPoints.Num(); ++local_21)
+                {
+                    if ((local_20.InteractionPoints[local_21].PointType.GetDataName() == this.InteractConfig.GetDataName()))
+                    {
+                        this.InteractPointIndex = local_21;
+                        break;
+                    }
+                }
+            }
+        }
+        if (this.InteractPointIndex >= 0)
+        {
+            int local_21;
+            FVector local_32;
+            FQuat local_40;
+            local_21 = this.InteractPointIndex;
+            if (::FInteractUtils::GetInteractTargetLocationAndRotation(this.BelongingEntity, local_21, ECS::GetContextTime(), local_32, local_40, false))
+            {
+                if (::FEcosimAIV2Utils::IsEntityReachTargetLocation(local_10, local_32, 100.0f))
+                {
+                    if (!(this.bExecutingInteract))
+                    {
+                        ::FEcosimAIV2Utils::StopEntityMoveToTargetLocation(local_10);
+                        FInteractionPointAndBehaviorIndex local_46;
+                        local_46.SetPointIndex(local_21);
+                        local_46.SetBehaviorIndex(0);
+                        ::FInteractUtils::ExecuteInteractBeginAction(this.InteractSourceEntity, this.BelongingEntity, local_46);
+                        this.bExecutingInteract = true;
+                        return;
+                    }
+                    Has local_50;
+                    if (!(local_50.opCall()))
+                    {
+                        this.FinishAction(true);
+                    }
+                    return;
+                }
+                ::FEcosimAIV2Utils::SetEntityMoveToTargetLocation(local_10, local_32);
+                return;
+            }
+        }
+        this.FinishAction(false);
+        return;
     }
     UFUNCTION()
     void WhenActionAborted_Implementation()

@@ -1,4 +1,3 @@
-﻿
 namespace FEcologyUtils
 {
 void AssignScriptGlobalContext()
@@ -191,7 +190,7 @@ TArray<TDataObjectPtr<FEcologyActivityDefinitionRow>> FindAllActivityByResource(
                     }
                     else
                     {
-                        local_10.Add(TDataObjectPtr<FEcologyActivityDefinitionRow>());
+                        local_10.Add(TDataObjectPtr<FEcologyActivityDefinitionRow>(local_26.GetData()));
                     }
                 }
             }
@@ -223,7 +222,7 @@ TArray<TDataObjectPtr<FEcologyActivityDefinitionRow>> FindAllActivityCanOverReso
             }
             else
             {
-                local_10.Add(TDataObjectPtr<FEcologyActivityDefinitionRow>());
+                local_10.Add(TDataObjectPtr<FEcologyActivityDefinitionRow>(local_26.GetData()));
             }
         }
         local_26.Next();
@@ -256,7 +255,46 @@ void TryUpdateOverResourceActivityArray(const FECSEntity &inout Entity, const bo
 }
 void TeleportEcologyCreatureToTransform(const FECSEntity &inout Entity, const FVector &inout TargetLocation, const FRotator &inout TargetRotation, const bool KeepESM = false)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    int local_18 = 0;
+    bool local_158;
+    if (!(Entity.IsValid()))
+    {
+        XLog(ELog(30), FString().Append("[Ecology]: Teleport Ecology Creature To Transform, Entity Invalid"));
+        return;
+    }
+    FFPTime local_14 = FFPTime(-1);
+    local_18.Location = TargetLocation;
+    local_18.Rotation = TargetRotation;
+    if (!(KeepESM))
+    {
+        bool local_19;
+        local_19 = false;
+        float32 local_21 = Entity.GetCollisionHeight() * 0.5f;
+        if (local_21 > 0.0f)
+        {
+            FHitResult local_88;
+            FCollisionQueryParams local_126;
+            local_126.bTraceComplex = (false != 0);
+            local_126.AddIgnoredEntityId(Entity.GetIdValue());
+            FCollisionResponseParams local_156;
+            local_158 = FPhysicsUtils::LineTraceSingle(Entity, false, EPhysicsTraceTag(26), local_88, TargetLocation, (TargetLocation - FVector(0.0, 0.0, local_21)), FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(5)), local_126, local_156);
+            local_19 = !(local_158);
+        }
+        bool local_128 = false;
+        local_158 = local_128;
+        Get local_162;
+        if (local_162.opCall())
+        {
+            local_158 = local_128;
+        }
+        if (local_19 && local_158)
+        {
+            FESMExternalTransitHandle local_172 = Entity.ESMExternalTransitMainSM(n"Air_Idle", NAME_None);
+            return;
+        }
+        FESMExternalTransitHandle local_172_2 = Entity.ESMExternalTransitMainSM(n"Idle", NAME_None);
+    }
+    return;
 }
 TArray<FECSEntity> SearchPlayerByRadiusAndHalfHeight(const FECSEntity &inout CenterEntity, const float32 Radius, const float32 HalfHeight)
 {

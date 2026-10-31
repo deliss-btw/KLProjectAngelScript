@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_HeadsUpDisplayItem_Interaction_InternalCache_Helpers
 {
 UFUNCTION()

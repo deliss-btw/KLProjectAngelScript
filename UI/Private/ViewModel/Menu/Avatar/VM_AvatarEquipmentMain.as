@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AvatarEquipmentMain
 {
     const int ModelId = 0;
@@ -128,11 +127,60 @@ struct FVM_AvatarEquipmentMain : FEUIViewModel
 
     FVM_AvatarEquipmentMain()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_SelectedIllustrateFilterItemIndex = INDEX_NONE;
+        this.m_FilterByIllustrate = EEquipSlotType(0);
+        this.m_SelectedItemIndex = INDEX_NONE;
+        this.m_CurSlotEquipedItemUId = 0;
+        this.m_CurRarityFilterIndex = 0;
+        this.m_CurTraitFilterIndex = 0;
+        this.m_bItemCompared = false;
+        this.m_bBatchDecompose = false;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVM_AvatarEquipmentMain(const FVM_AvatarEquipmentMain &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_SelectedIllustrateFilterItemIndex = INDEX_NONE;
+        this.m_FilterByIllustrate = EEquipSlotType(0);
+        this.m_SelectedItemIndex = INDEX_NONE;
+        this.m_CurSlotEquipedItemUId = 0;
+        this.m_CurRarityFilterIndex = 0;
+        this.m_CurTraitFilterIndex = 0;
+        this.m_bItemCompared = false;
+        this.m_bBatchDecompose = false;
+        this.m_AvatarEquipmentTitleText = Other.m_AvatarEquipmentTitleText;
+        this.m_AvatarDecomposeTitleText = Other.m_AvatarDecomposeTitleText;
+        this.m_EquipmentDecomposePopupTitleText = Other.m_EquipmentDecomposePopupTitleText;
+        this.m_EquipmentDecomposePopupDescText = Other.m_EquipmentDecomposePopupDescText;
+        this.m_EquipmentDecomposePopupRewardHintText = Other.m_EquipmentDecomposePopupRewardHintText;
+        this.m_CurTitleText = Other.m_CurTitleText;
+        this.m_EditingAvatar = Other.m_EditingAvatar;
+        this.m_IllustrateListWidget = Other.m_IllustrateListWidget;
+        this.m_SelectedIllustrateFilterItemIndex = int(Other.m_SelectedIllustrateFilterItemIndex);
+        this.m_IllustrateTypes = Other.m_IllustrateTypes;
+        this.m_FilterByIllustrate = Other.m_FilterByIllustrate;
+        this.m_SelectedItemIndex = int(Other.m_SelectedItemIndex);
+        this.m_AllFilterItemsM = Other.m_AllFilterItemsM;
+        this.m_FilterItems = Other.m_FilterItems;
+        this.m_SelectedItems = Other.m_SelectedItems;
+        this.m_CurSlotEquipedItemUId = Other.m_CurSlotEquipedItemUId;
+        this.m_Showcase = Other.m_Showcase;
+        this.m_RarityFilterList = Other.m_RarityFilterList;
+        this.m_TraitFilterList = Other.m_TraitFilterList;
+        this.m_CurRarityFilterIndex = int(Other.m_CurRarityFilterIndex);
+        this.m_CurTraitFilterIndex = int(Other.m_CurTraitFilterIndex);
+        this.m_RarityFilter = Other.m_RarityFilter;
+        this.m_TraitFilter = Other.m_TraitFilter;
+        this.m_InfoCompare = Other.m_InfoCompare;
+        this.m_bItemCompared = Other.m_bItemCompared;
+        this.m_bBatchDecompose = Other.m_bBatchDecompose;
+        this.m_BatchDecomposeEquipmentSet = Other.m_BatchDecomposeEquipmentSet;
+        this.m_ItemTypeSeenRecordSet = Other.m_ItemTypeSeenRecordSet;
+        this.m_ShowCaseAvatarEntries = Other.m_ShowCaseAvatarEntries;
+        return;
     }
     FVM_AvatarEquipmentMain& opAssign(const FVM_AvatarEquipmentMain &inout Other)
     {
@@ -233,7 +281,86 @@ struct FVM_AvatarEquipmentMain : FEUIViewModel
     }
     void RefreshFilterInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_91;
+        FRarityDescConfig local_118;
+        UAvatarEquipmentSettings local_4 = ::AvatarEquipmentSettings::Get();
+        TArray<EItemRarity> local_8;
+        TArray<TDataObjectPtr<FTraitConfig>> local_12;
+        for (auto& local_28 : this.GetAllFilterItemsM())
+        {
+            if (local_28.IsValid())
+            {
+                if (GetEquipmentConfig().IsSet())
+                {
+                }
+                for (auto& local_90 : GetEquipmentTraits())
+                {
+                    if (local_90.IsValid())
+                    {
+                        local_12.AddUnique(GetTraitConfig());
+                    }
+                }
+            }
+        }
+        this.GetModify_RarityFilterList().Empty(0);
+        TArray<FEUIModelContainer> local_96;
+        local_96.Add(FEUIModelContainer(::FVM_Text::Create(this.GetContext().Manager, local_4.RarityFilterMaxCountText)));
+        this.GetModify_RarityFilterList().SetNumZeroed(1);
+        int local_113 = 0;
+        for (; local_113 < local_8.Num(); ++local_113)
+        {
+            if (local_4.RarityFilters.Find(local_8[local_113], local_118))
+            {
+                local_96.Add(FEUIModelContainer(::FVM_Text::Create(this.GetContext().Manager, local_118.DescText)));
+                this.GetModify_RarityFilterList().Add(local_8[local_113]);
+            }
+        }
+        int local_114 = this.GetCurRarityFilterIndex();
+        if (!(local_96.IsValidIndex(local_114)))
+        {
+            if (local_96.IsEmpty())
+            {
+                local_91 = INDEX_NONE;
+            }
+            else
+            {
+                local_91 = 0;
+            }
+            this.SetCurRarityFilterIndex(local_91);
+        }
+        FOnCommonDropdownSelected local_140;
+        local_140.Add(this, FVM_AvatarEquipmentMain::OnRarityFilterSelected);
+        this.SetRarityFilter(TEUIModelRef<FVM_CommonDropdown>(::FVM_CommonDropdown::Create(this.GetContext().Manager, local_96, FCommonDropdownDefaultOption(this.GetCurRarityFilterIndex()), local_140)));
+        this.GetModify_TraitFilterList().Empty(0);
+        TArray<FEUIModelContainer> local_150;
+        FEUIModelContainer local_110 = FEUIModelContainer(::FVM_Text::Create(this.GetContext().Manager, local_4.TraitFilterMaxCountText));
+        local_150.Add(local_110);
+        this.GetModify_TraitFilterList().SetNumZeroed(1);
+        int local_113_2 = 0;
+        for (; local_113_2 < local_12.Num(); ++local_113_2)
+        {
+            TDataObjectPtr<FTraitConfig> local_174 = local_12[local_113_2];
+            if (local_174.IsSet())
+            {
+                local_150.Add(local_110);
+            }
+        }
+        if (!(local_150.IsValidIndex(this.GetCurTraitFilterIndex())))
+        {
+            if (local_150.IsEmpty())
+            {
+                local_114 = INDEX_NONE;
+            }
+            else
+            {
+                local_114 = 0;
+            }
+            this.SetCurTraitFilterIndex(local_114);
+        }
+        FOnCommonDropdownSelected local_220;
+        local_220.Add(this, FVM_AvatarEquipmentMain::OnTraitFilterSelected);
+        this.SetTraitFilter(TEUIModelRef<FVM_CommonDropdown>(::FVM_CommonDropdown::Create(this.GetContext().Manager, local_150, FCommonDropdownDefaultOption(this.GetCurTraitFilterIndex()), local_220)));
+        return;
     }
     bool CheckItemRarityFilter(const TDataObjectPtr<FEquipmentConfig> &inout Cfg)
     {
@@ -275,9 +402,13 @@ struct FVM_AvatarEquipmentMain : FEUIViewModel
     {
         this.GetModify_AllFilterItemsM().Empty(0);
         this.GetModify_FilterItems().Empty(0);
+        int local_3 = 2;
+        int local_2 = local_3;
         if ((int(this.GetFilterByIllustrate())) >= 2 && (int(this.GetFilterByIllustrate()) <= 5))
         {
             int local_10;
+            int local_3_2 = 7;
+            local_2 = local_3_2;
             int local_5 = int(this.GetFilterByIllustrate());
             int local_9 = local_5 - 2;
             local_10 = ::FMS_Talisman::Get(this.GetContext().Manager).GetUnlockSlotCount();
@@ -288,7 +419,7 @@ struct FVM_AvatarEquipmentMain : FEUIViewModel
                 return;
             }
         }
-        TArray<TEUIModelRef<FM_ItemData>> local_20 = ::FMS_PlayerInventory::Get(this.GetContext().Manager).GetAllItemsByType();
+        TArray<TEUIModelRef<FM_ItemData>> local_20 = ::FMS_PlayerInventory::Get(this.GetContext().Manager).GetAllItemsByType(EItemType(local_2));
         TEUIModelRef<FMS_EditingAvatar> local_26 = this.GetEditingAvatar();
         TDataObjectPtr<FAvatarPrefabConfig> local_50 = GetAvatarConfig();
         FMS_EquipmentDataCache& local_76 = ::FMS_EquipmentDataCache::Get(this.GetContext().Manager);
@@ -391,16 +522,16 @@ struct FVM_AvatarEquipmentMain : FEUIViewModel
             else
             {
                 FEUIModelContainer local_224;
-                local_224.AddModel(FEUIModelRef(), false);
+                local_224.AddModel(FEUIModelRef(::FVM_Image::Create(this.GetContext().Manager, local_172)), false);
                 FVM_CommonTabItem& local_228 = ::FVM_CommonTabItem::Create(this.GetContext().Manager);
                 FText local_246;
                 if (local_101)
                 {
-                    local_246 = FText::Format(NSLOCTEXT("EquipSlotTalisman", "зЃµйҐ°{0}"), FText::AsNumber(((local_124 - 2) + 1), FNumberFormattingOptions::DefaultNoGrouping()));
+                    local_246 = FText::Format(NSLOCTEXT("EquipSlotTalisman", "灵饰{0}"), FText::AsNumber(((local_124 - 2) + 1), FNumberFormattingOptions::DefaultNoGrouping()));
                 }
                 else
                 {
-                    local_246 = NSLOCTEXT("EquipSlotWeapon", "ж­¦е™Ё");
+                    local_246 = NSLOCTEXT("EquipSlotWeapon", "武器");
                 }
                 local_228.SetTitleText(local_246);
                 local_224.AddModel(FEUIModelRef(local_228), false);
@@ -612,15 +743,66 @@ struct FVM_AvatarEquipmentMain : FEUIViewModel
     }
     void OnFilterItemsChanged()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_16 = 0;
+        XLog(ELog(60), FString().Append("[VM_AvatarEquipmentMain]OnFilterItemsChanged."));
+        FECSEntity local_10 = this.GetContext().GetLocalPlayer();
+        this.UpdateAllEquipmentItemState(local_16);
+        int local_18 = INDEX_NONE;
+        int local_17 = local_18;
+        int local_19 = 0;
+        for (; local_19 < this.GetFilterItems().Num(); ++local_19)
+        {
+            const TEUIModelRef<FVM_AvatarEquipmentItem>& local_24 = this.GetFilterItems()[local_19];
+            if (local_24.IsValid() && (GetEquipmentUid() == this.GetCurSlotEquipedItemUId()))
+            {
+                local_17 = local_19;
+                break;
+            }
+        }
+        if (local_17 == INDEX_NONE)
+        {
+            local_18 = 0;
+        }
+        else
+        {
+            local_18 = local_17;
+        }
+        this.SetSelectedItemIndex(local_18);
+        this.RefreshCurSelectedItems();
+        this.RefreshItemCompareInfo();
+        return;
     }
     void OnSelectIllustrateFilter(const int IllustrateFilterItemIndex)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_4 = (1 + IllustrateFilterItemIndex);
+        if ((local_4 >= 2 && (local_4 <= 5)))
+        {
+            if ((local_4 - 2) >= ::FMS_Talisman::Get(this.GetContext().Manager).GetUnlockSlotCount())
+            {
+                bool local_7 = this.GetIllustrateListWidget().IsValid();
+                if (local_7)
+                {
+                    int local_5 = this.GetSelectedIllustrateFilterItemIndex();
+                    TWeakObjectPtr<UEUICommonListViewBase> local_11 = this.GetIllustrateListWidget();
+                    UEUICommonListViewBase local_14;
+                    local_14.SetSelectedIndex(local_5);
+                }
+                FCommonTipsParam local_22;
+                ::CommonPopup::WeakTips(::AvatarEquipmentSettings::Get().SlotLockStateTips, local_22);
+                return;
+            }
+        }
+        this.SetSelectedIllustrateFilterItemIndex(IllustrateFilterItemIndex);
+        this.SetFilterByIllustrate(EEquipSlotType(local_4));
+        return;
     }
     void OnSelectItem(const int ItemIndex)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (ItemIndex != INDEX_NONE)
+        {
+            this.SetSelectedItemIndex(ItemIndex);
+        }
+        return;
     }
     void RefreshFilteredAvatarEquipmentList()
     {
@@ -1597,7 +1779,6 @@ struct FMsg_AvatarEquipBatchDecomposeStateChange : FEUIMessage
     UPROPERTY()
     bool bBatchDecompose = false;
 
-
 }
 
 struct __GeneratedProperties_FVM_AvatarEquipmentMain
@@ -1612,7 +1793,6 @@ struct __GeneratedProperties_FVM_AvatarEquipmentMain
     FSoftBrush ItemSpecialBgImage;
     UPROPERTY()
     TEUIModelRef<FVM_AvatarEquipmentMain> Self;
-
 
 }
 
@@ -1630,7 +1810,7 @@ void GotoPage(const ULocalPlayer InLocalPlayer, const EEquipSlotType InEditingEq
     if (!(!(local_6)))
     {
         FEUIWidgetRef::GetViewModel local_14;
-        local_14.opCall(NAME_None).Setup();
+        local_14.opCall(NAME_None).Setup(EEquipSlotType(InEditingEquipSlot));
     }
     return;
 }
@@ -1804,7 +1984,9 @@ void __OnInventoryChanged(FVM_AvatarEquipmentMain &inout Model, const FMsg_Playe
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorDSPlayerAvatarInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorDSPlayerAvatarInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 FText __UIGetter_CurTitleText(const FVM_AvatarEquipmentMain &inout Model)
 {

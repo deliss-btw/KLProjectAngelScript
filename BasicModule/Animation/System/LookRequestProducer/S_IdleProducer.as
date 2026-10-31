@@ -1,5 +1,3 @@
-﻿
-
 class US_LookRequestIdleProducerSystemAS : UECSScriptSystem
 {
     US_LookRequestIdleProducerSystemAS()

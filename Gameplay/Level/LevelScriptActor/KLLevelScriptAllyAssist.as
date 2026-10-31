@@ -1,5 +1,3 @@
-﻿
-
 class AKLLevelScriptAllyAssist : AKLLevelScriptBaseActor
 {
     UPROPERTY()
@@ -19,7 +17,6 @@ class AKLLevelScriptAllyAssist : AKLLevelScriptBaseActor
     TArray<FECSEntity> SpawnedAllies;
     FLevelTimerCallback WaitBossTimer;
     bool bAlliesActive = false;
-
 
     UFUNCTION()
     void ECSBeginPlayBP_Implementation()

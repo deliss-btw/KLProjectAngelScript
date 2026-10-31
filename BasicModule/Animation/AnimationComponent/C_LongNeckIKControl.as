@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_LongNeckIKControl_NS
 {
     const TECSComponentDerivedPtr<FC_LongNeckIKControl> DerivedPtr = TECSComponentDerivedPtr<FC_LongNeckIKControl>();
@@ -41,11 +40,56 @@ struct FC_LongNeckIKControl : FECSComponent
 
     FC_LongNeckIKControl()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Yaw = 0.0f;
+        this.m_Pitch = -25.0f;
+        this.m_Weight = 0.0f;
+        this.m_NeckRootTangentIntensity = 300.0f;
+        this.m_NeckTailTangentIntensity = 300.0f;
+        this.m_LookAtTarget = FVector(1000.0, 0.0, 50.0);
+        this.m_HeadTwistDecoWeight = 1.0f;
+        this.m_TargetWeight = 0.0f;
+        this.m_TargetHeadTwistDecoWeight = 0.0f;
+        this.m_TargetNeckRootTangentIntensity = 300.0f;
+        this.m_TargetNeckTailTangentIntensity = 300.0f;
+        this.m_TangentIntensityLerpSpeed = 0.5f;
+        this.m_LookAtTargetLerpSpeed = 0.2f;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_LongNeckIKControl(const FC_LongNeckIKControl &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_Yaw = 0.0f;
+        this.m_Pitch = -25.0f;
+        this.m_Weight = 0.0f;
+        this.m_NeckRootTangentIntensity = 300.0f;
+        this.m_NeckTailTangentIntensity = 300.0f;
+        this.m_LookAtTarget = FVector(1000.0, 0.0, 50.0);
+        this.m_HeadTwistDecoWeight = 1.0f;
+        this.m_TargetWeight = 0.0f;
+        this.m_TargetHeadTwistDecoWeight = 0.0f;
+        this.m_TargetNeckRootTangentIntensity = 300.0f;
+        this.m_TargetNeckTailTangentIntensity = 300.0f;
+        this.m_TangentIntensityLerpSpeed = 0.5f;
+        this.m_LookAtTargetLerpSpeed = 0.2f;
+        this.__InitDirtyFlags();
+        this.m_Yaw = Other.m_Yaw;
+        this.m_Pitch = Other.m_Pitch;
+        this.m_Weight = Other.m_Weight;
+        this.m_NeckRootTangentIntensity = Other.m_NeckRootTangentIntensity;
+        this.m_NeckTailTangentIntensity = Other.m_NeckTailTangentIntensity;
+        this.m_LookAtTarget = Other.m_LookAtTarget;
+        this.m_HeadTwistDecoWeight = Other.m_HeadTwistDecoWeight;
+        this.m_TargetWeight = Other.m_TargetWeight;
+        this.m_TargetHeadTwistDecoWeight = Other.m_TargetHeadTwistDecoWeight;
+        this.m_TargetNeckRootTangentIntensity = Other.m_TargetNeckRootTangentIntensity;
+        this.m_TargetNeckTailTangentIntensity = Other.m_TargetNeckTailTangentIntensity;
+        this.m_TangentIntensityLerpSpeed = Other.m_TangentIntensityLerpSpeed;
+        this.m_LookAtTargetLerpSpeed = Other.m_LookAtTargetLerpSpeed;
+        return;
     }
     FC_LongNeckIKControl opAssign(const FC_LongNeckIKControl &inout Other)
     {
@@ -352,37 +396,37 @@ bool RemoveLongNeckIKControl(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorLongNeckIKControlOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_LongNeckIKControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_LongNeckIKControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLongNeckIKControlOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_LongNeckIKControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_LongNeckIKControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLongNeckIKControlOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_LongNeckIKControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_LongNeckIKControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLongNeckIKControlOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_LongNeckIKControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_LongNeckIKControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLongNeckIKControlOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_LongNeckIKControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_LongNeckIKControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorLongNeckIKControlLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_LongNeckIKControl, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_LongNeckIKControl, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLongNeckIKControlActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_LongNeckIKControl, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_LongNeckIKControl, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLongNeckIKControlModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_LongNeckIKControl, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_LongNeckIKControl, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

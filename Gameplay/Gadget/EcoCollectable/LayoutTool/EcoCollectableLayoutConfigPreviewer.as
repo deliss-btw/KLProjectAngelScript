@@ -1,4 +1,3 @@
-﻿
 namespace EcoCollectableDebugDrawer
 {
     const TArray<FColor> ColorWindowBgList = TArray<FColor>();
@@ -78,7 +77,6 @@ class UEcoCollectablePrefabConfigDraw : UGameDebugImGuiActorDrawer
     default SetbOnlyOnSelectedRender(false);
     default DrawActor = AEcoCollectablePrefabBase;
 
-
     UFUNCTION()
     void WhenDraw_Implementation(const AActor Actor, const FGameDebugDrawHandle &inout Handle, const FGameDebugActorDrawerContext &inout Context)
     {
@@ -121,7 +119,7 @@ class UEcoCollectablePrefabConfigDraw : UGameDebugImGuiActorDrawer
                 bool local_47 = Handle.BeginPanelAt(local_38.GetFName(), local_38.GetActorLocation(), 10.0f, Handle.GetDefaultPanelFlags());
                 if (local_47)
                 {
-                    ImGui::Text(FString().Append("й‡‡й›†з‰©пјљ").Append(local_38.GetClass().GetName()));
+                    ImGui::Text(FString().Append("采集物：").Append(local_38.GetClass().GetName()));
                     FECSEntity local_56 = ECS::GetPrefabEntity(local_38);
                     if (local_56)
                     {
@@ -144,7 +142,7 @@ class UEcoCollectablePrefabConfigDraw : UGameDebugImGuiActorDrawer
                         {
                             if (!(local_108.bVisibilityStatusCacheValid))
                             {
-                                ImGui::Text(FString().Append("зј“е­жѕз¤єзЉ¶жЂЃ: "));
+                                ImGui::Text(FString().Append("缓存显示状态: "));
                                 ImGui::PushStyleColor(EImGuiCol(0), FColor::Yellow);
                                 ImGui::SameLine(0.0f, -1.0f);
                                 ImGui::Text(FString().Append("Invalid"));
@@ -154,7 +152,7 @@ class UEcoCollectablePrefabConfigDraw : UGameDebugImGuiActorDrawer
                             {
                                 if (int(local_108.VisibilityStatus) == 0)
                                 {
-                                    ImGui::Text(FString().Append("зј“е­жѕз¤єзЉ¶жЂЃ: "));
+                                    ImGui::Text(FString().Append("缓存显示状态: "));
                                     ImGui::PushStyleColor(EImGuiCol(0), FColor::Green);
                                     ImGui::SameLine(0.0f, -1.0f);
                                     ImGui::Text(FString().Append("Show"));
@@ -164,7 +162,7 @@ class UEcoCollectablePrefabConfigDraw : UGameDebugImGuiActorDrawer
                                 {
                                     if (int(local_108.VisibilityStatus) == 1)
                                     {
-                                        ImGui::Text(FString().Append("зј“е­жѕз¤єзЉ¶жЂЃ: "));
+                                        ImGui::Text(FString().Append("缓存显示状态: "));
                                         ImGui::PushStyleColor(EImGuiCol(0), FColor::Red);
                                         ImGui::SameLine(0.0f, -1.0f);
                                         ImGui::Text(FString().Append("Hidden"));
@@ -174,10 +172,10 @@ class UEcoCollectablePrefabConfigDraw : UGameDebugImGuiActorDrawer
                             }
                             if (int(local_108.CollectReadyStatus) == 1)
                             {
-                                ImGui::Text(FString().Append("зј“е­й‡‡й›†зЉ¶жЂЃ: "));
+                                ImGui::Text(FString().Append("缓存采集状态: "));
                                 ImGui::SameLine(0.0f, -1.0f);
                                 FVector2D local_116;
-                                local_47 = ImGui::Button(FName("жё…й›¶"), local_116);
+                                local_47 = ImGui::Button(FName("清零"), local_116);
                                 if (local_47)
                                 {
                                     if (local_94.IsValid())
@@ -195,17 +193,17 @@ class UEcoCollectablePrefabConfigDraw : UGameDebugImGuiActorDrawer
                                 {
                                     local_27 = 24322.0f;
                                 }
-                                ImGui::Text(FString().Append("е·Ій‡‡й›†е†·еЌґдё­(").Append(local_27).Append());
+                                ImGui::Text(FString().Append("已采集冷却中(").Append(local_27).Append());
                                 ImGui::PopStyleColor(1);
                             }
                             else
                             {
                                 if (int(local_108.CollectReadyStatus) == 0)
                                 {
-                                    ImGui::Text(FString().Append("зј“е­й‡‡й›†зЉ¶жЂЃ: "));
+                                    ImGui::Text(FString().Append("缓存采集状态: "));
                                     ImGui::PushStyleColor(EImGuiCol(0), FColor::Green);
                                     ImGui::SameLine(0.0f, -1.0f);
-                                    ImGui::Text(FString().Append("еЏЇй‡‡й›†"));
+                                    ImGui::Text(FString().Append("可采集"));
                                     ImGui::PopStyleColor(1);
                                 }
                             }
@@ -227,21 +225,21 @@ class UEcoCollectablePrefabConfigDraw : UGameDebugImGuiActorDrawer
                         const FC_EcoCollectableNonSyncedVisualStatus& local_108_2 = local_106.opCall();
                         if (local_108_2)
                         {
-                            ImGui::Text(FString().Append("--- SpawnRatio зј“е­ ---"));
+                            ImGui::Text(FString().Append("--- SpawnRatio 缓存 ---"));
                             if (local_108_2.bSpawnRatioCacheValid)
                             {
                                 ImGui::PushStyleColor(EImGuiCol(0), FColor::Green);
-                                ImGui::Text(FString().Append("зј“е­зЉ¶жЂЃ: Valid"));
+                                ImGui::Text(FString().Append("缓存状态: Valid"));
                                 ImGui::PopStyleColor(1);
-                                ImGui::Text(FString().Append("е¤©ж°”: ").Append(local_108_2.CachedWeatherName));
-                                ImGui::Text(FString().Append("ж—¶й—ґж®µ: ").Append(local_108_2.CachedTimeSegments));
+                                ImGui::Text(FString().Append("天气: ").Append(local_108_2.CachedWeatherName));
+                                ImGui::Text(FString().Append("时间段: ").Append(local_108_2.CachedTimeSegments));
                                 ImGui::Text(FString().Append("BundleSpawnRatio: ").Append(local_108_2.CachedBundleSpawnRatio));
                                 ImGui::Text(FString().Append("CreatureSpawnRatio: ").Append(local_108_2.CachedCreatureSpawnRatio));
                             }
                             else
                             {
                                 ImGui::PushStyleColor(EImGuiCol(0), FColor::Yellow);
-                                ImGui::Text(FString().Append("зј“е­зЉ¶жЂЃ: Invalid (жњЄе€ќе§‹еЊ–)"));
+                                ImGui::Text(FString().Append("缓存状态: Invalid (未初始化)"));
                                 ImGui::PopStyleColor(1);
                             }
                         }
@@ -263,14 +261,14 @@ class UEcoCollectablePrefabConfigDraw : UGameDebugImGuiActorDrawer
                                             local_137 = local_136.CreatureDefToCountMap[local_126_2.LayoutInfo.BundleDef];
                                             local_27 = local_137;
                                             local_27 = local_27 * local_108_3.CachedBundleSpawnRatio;
-                                            ImGui::Text(FString().Append("Spawner BundleCount: ").Append(local_137).Append(" (й€еЂј: ").Append(uint(local_27)).Append(")"));
+                                            ImGui::Text(FString().Append("Spawner BundleCount: ").Append(local_137).Append(" (阈值: ").Append(uint(local_27)).Append(")"));
                                         }
                                         if (local_126_2.LayoutInfo.CreatureDef.IsSet() && local_136.CreatureDefToCountMap.Contains(local_126_2.LayoutInfo.CreatureDef))
                                         {
                                             local_137 = local_136.CreatureDefToCountMap[local_126_2.LayoutInfo.CreatureDef];
                                             float local_28_2 = local_137;
                                             local_28_2 = local_28_2 * local_108_3.CachedCreatureSpawnRatio;
-                                            ImGui::Text(FString().Append("Spawner CreatureCount: ").Append(local_137).Append(" (й€еЂј: ").Append(uint(local_28_2)).Append(")"));
+                                            ImGui::Text(FString().Append("Spawner CreatureCount: ").Append(local_137).Append(" (阈值: ").Append(uint(local_28_2)).Append(")"));
                                         }
                                     }
                                 }
@@ -278,12 +276,12 @@ class UEcoCollectablePrefabConfigDraw : UGameDebugImGuiActorDrawer
                         }
                         ImGui::Separator();
                         local_137 = -1;
-                        ImGui::CheckBox(FName("и®Ўз®—еє•е±‚жѕз¤єзЉ¶жЂЃ"), this.bShowLowLevelVisualStatus);
+                        ImGui::CheckBox(FName("计算底层显示状态"), this.bShowLowLevelVisualStatus);
                         if (this.bShowLowLevelVisualStatus)
                         {
                             bool local_138;
                             local_138 = false;
-                            ImGui::Text(FString().Append("еє•е±‚жћње®ћжѕз¤єзЉ¶жЂЃ: "));
+                            ImGui::Text(FString().Append("底层果实显示状态: "));
                             ImGui::SameLine(0.0f, -1.0f);
                             if (::EcoCollectableUtils::LowLevelIsAllShowOrHidden(local_56, true, true, local_137))
                             {
@@ -315,11 +313,11 @@ class UEcoCollectablePrefabConfigDraw : UGameDebugImGuiActorDrawer
                             if (!(local_138))
                             {
                                 ImGui::PushStyleColor(EImGuiCol(0), FColor::Red);
-                                ImGui::Text(FString().Append("еј‚еёё"));
+                                ImGui::Text(FString().Append("异常"));
                                 ImGui::PopStyleColor(1);
                             }
                             local_138 = false;
-                            ImGui::Text(FString().Append("еє•е±‚йќћжћње®ћжѕз¤єзЉ¶жЂЃ: "));
+                            ImGui::Text(FString().Append("底层非果实显示状态: "));
                             ImGui::SameLine(0.0f, -1.0f);
                             if (::EcoCollectableUtils::LowLevelIsAllShowOrHidden(local_56, false, true, local_137))
                             {
@@ -351,7 +349,7 @@ class UEcoCollectablePrefabConfigDraw : UGameDebugImGuiActorDrawer
                             if (!(local_138))
                             {
                                 ImGui::PushStyleColor(EImGuiCol(0), FColor::Red);
-                                ImGui::Text(FString().Append("еј‚еёё"));
+                                ImGui::Text(FString().Append("异常"));
                                 ImGui::PopStyleColor(1);
                             }
                         }

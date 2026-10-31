@@ -1,5 +1,3 @@
-﻿
-
 class US_ConditionBodyPartDestroy : UECSScriptSystem
 {
     US_ConditionBodyPartDestroy()

@@ -1,5 +1,3 @@
-﻿
-
 namespace EcologyProp
 {
 struct FEcologyPropPointBakedDataItem
@@ -8,7 +6,6 @@ struct FEcologyPropPointBakedDataItem
     TDataObjectPtr<FEcologyPropLayoutDef> m_EcologyPropDef;
     UPROPERTY()
     int m_BakedOrderIndex;
-
 
     const TDataObjectPtr<FEcologyPropLayoutDef> GetEcologyPropDef() const property
     {
@@ -22,7 +19,8 @@ struct FEcologyPropPointBakedDataItem
     }
     void SetEcologyPropDef(const TDataObjectPtr<FEcologyPropLayoutDef> &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_EcologyPropDef = __Value;
+        return;
     }
     int GetBakedOrderIndex() const property
     {
@@ -41,7 +39,6 @@ struct FEcologyPropBakedData
     int m_BakeDataIndex;
     UPROPERTY()
     TArray<EcologyProp::FEcologyPropPointBakedDataItem> m_PointBakedData;
-
 
     int GetBakeDataIndex() const property
     {
@@ -77,7 +74,6 @@ struct FEcologyPropAndCountRangeDef
     int MinCount;
     UPROPERTY()
     int MaxCount;
-
 
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 struct FConfigVM_GammaSlider : FConfigEUIModelBase
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ struct FConfigVM_GammaSlider : FConfigEUIModelBase
     float32 DeadZone = 0.1f;
     UPROPERTY()
     float32 DefaultValue = 2.2f;
-
 
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 struct FMailConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -19,7 +17,6 @@ struct FMailConfig : FDataObject
     FDataObjectPtr m_Condition;
     UPROPERTY()
     bool IsRepeatable;
-
 
     const TDataObjectPtr<FRewardConfig> GetAttachmentRewardConfig() const property
     {

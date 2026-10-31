@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_ChangeName_Helpers
 {
 UFUNCTION()

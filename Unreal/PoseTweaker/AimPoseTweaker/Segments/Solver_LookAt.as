@@ -1,5 +1,3 @@
-﻿
-
 class USolver_LookAtWeightCurve : UAimPoseSegmentSolver
 {
     bool bAnimLocalTargetFollow = false;
@@ -19,7 +17,6 @@ class USolver_LookAtWeightCurve : UAimPoseSegmentSolver
     float32 CfgNeutralYaw = 0.0f;
     float32 CfgReturnThreshold = 30.0f;
     float32 CfgRecoverThreshold = 15.0f;
-
 
     void ResetToConfigDefaults()
     {

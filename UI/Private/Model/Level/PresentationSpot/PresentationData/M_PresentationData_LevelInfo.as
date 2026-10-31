@@ -1,4 +1,3 @@
-﻿
 TDataObjectPtr<FLevelInfoConfig> GetLevelInfo(const FM_Spot &inout Spot, const FSpotViewAdapter &inout View = FSpotViewAdapter())
 {
     if (!(Spot))

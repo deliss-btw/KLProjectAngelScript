@@ -1,9 +1,7 @@
-﻿
-
 struct FESMCharacterMoveToInstanceData
 {
     UPROPERTY()
-    FVector DeltaMovement;
+    FVector DeltaMovement = FVector::ZeroVector;
     UPROPERTY()
     FRotator DelayTurnRotation = FRotator::ZeroRotator;
     UPROPERTY()
@@ -54,7 +52,6 @@ class UESMAction_CharacterMoveTo : UESMBPBaseSpanTickAction
     UPROPERTY()
     FRuntimeFloatCurve DelayTurnWeight = FRuntimeCurveUtils::CreateLinear(0.0f, 1.0f, 1.0f, 1.0f);
 
-
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const
     {
@@ -68,7 +65,45 @@ class UESMAction_CharacterMoveTo : UESMBPBaseSpanTickAction
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_32 = 0;
+        if (int(this.DirectionType) == 4)
+        {
+            FNameHandle_EntityBBVarVector local_24;
+            const FECSEntity& local_6 = Context.GetEntity();
+            FESMCharacterMoveToInstanceData& local_8 = this.ModifyInstanceData(Context);
+            Has local_12;
+            if (!(local_12.opCall()) == !(false))
+            {
+                return;
+            }
+            local_24;
+            local_8.DeltaMovement = (Context.GetEntity().GetBB_Vector(local_24) - local_32.GetPosition());
+        }
+        else
+        {
+            if ((int(this.DirectionType) == 6 && this.bThroughLockTarget))
+            {
+                const FECSEntity& local_6_2 = Context.GetEntity();
+                FESMCharacterMoveToInstanceData& local_8_2 = this.ModifyInstanceData(Context);
+                Get local_40;
+                if (local_40.opCall())
+                {
+                    Get local_36;
+                    FVector local_48 = local_36.opCall().GetPosition();
+                    local_8_2.MoveDirection = (FVector(local_36.opCall().GetPosition()) - local_48).GetSafeNormal2D(9.99999993922529e-9, FVector::ZeroVector).Rotation();
+                }
+                else
+                {
+                    local_8_2.MoveDirection = ::FCharacterDirectionUtils::GetTargetRotation(Context.GetEntity(), this.DirectionType, false, FFPTime(-1)).GetForwardVector().Rotation();
+                }
+            }
+        }
+        if (this.bEnableDelayTurnSpeed)
+        {
+            const FECSEntity& local_6_3 = Context.GetEntity();
+            this.ModifyInstanceData(Context).DelayTurnRotation = local_32.GetRotation().Rotator();
+        }
+        return;
     }
     UFUNCTION()
     void Tick_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const

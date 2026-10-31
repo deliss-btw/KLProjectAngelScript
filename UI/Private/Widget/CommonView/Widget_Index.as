@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_Index
 {
     const int ViewID = 0;
@@ -138,6 +137,7 @@ namespace UWidget_Index
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_Index;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -153,6 +153,7 @@ namespace UWidget_TeammateIndex
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TeammateIndex;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnTeammateIndexChanged"));
     return;
 }

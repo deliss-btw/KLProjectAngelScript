@@ -1,5 +1,3 @@
-﻿
-
 class UItemActionTrigger_MotionUnlock : UItemActionTriggerBase
 {
     UPROPERTY()

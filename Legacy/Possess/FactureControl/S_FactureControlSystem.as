@@ -1,5 +1,3 @@
-﻿
-
 class US_FactureControlSyetem : UECSScriptSystem
 {
     US_FactureControlSyetem()

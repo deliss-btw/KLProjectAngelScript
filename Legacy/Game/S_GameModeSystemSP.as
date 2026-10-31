@@ -1,5 +1,3 @@
-﻿
-
 class US_ASGameModeSystemSP : US_ECSScriptGameModeSystemBase
 {
     US_ASGameModeSystemSP()

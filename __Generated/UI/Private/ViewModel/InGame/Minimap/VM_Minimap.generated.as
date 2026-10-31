@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_Minimap_Helpers
 {
 UFUNCTION()

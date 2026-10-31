@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ForgeMain
 {
     const int ViewID = 0;
@@ -45,7 +44,7 @@ class UWidget_ForgeMain : UEUIActivatableWidget
         {
             int local_4;
             local_4 = GetSelectedCategoryIndex();
-            if (GetMenuBarEntries().IsValidIndex())
+            if (GetMenuBarEntries().IsValidIndex(local_4))
             {
                 this.EUI_List.SetSelectedIndex(local_4);
             }
@@ -102,8 +101,7 @@ class UWidget_ForgeMain : UEUIActivatableWidget
     {
         if (this.EUI_List != nullptr)
         {
-            int local_5 = GetMenuBarEntries().Num() - 1;
-            this.EUI_List.SetSelectedIndex(FMath::Min((GetSelectedCategoryIndex() + 1)));
+            this.EUI_List.SetSelectedIndex(FMath::Min((GetSelectedCategoryIndex() + 1), (GetMenuBarEntries().Num() - 1)));
         }
         return;
     }
@@ -415,6 +413,7 @@ namespace UWidget_ForgeMain
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ForgeMain;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleForgeOrCraftChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleIsCurrentSelectItemLockChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleCostInsufficientChanged"));

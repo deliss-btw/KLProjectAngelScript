@@ -1,4 +1,3 @@
-﻿
 namespace MiniHpBarV2Style
 {
     const int EnemyIndex = 0;
@@ -394,6 +393,7 @@ struct FVM_MiniHPBarV2 : FEUIViewModel
         }
         if (FMath::Abs((this.GetDisplayHpBarRatio() - local_5)) > 0.001f)
         {
+            int local_7;
             if (this.GetDisplayHpBarRatio() > local_6)
             {
                 this.SetPreviewHpBarChaseSpeed(0.0f);
@@ -427,7 +427,16 @@ struct FVM_MiniHPBarV2 : FEUIViewModel
                 }
                 else
                 {
-                    if (this.GetPreviewHpBarChaseSpeed() > 0.0f && (local_6 > this.GetDisplayHpBarRatio()))
+                    if (this.GetPreviewHpBarChaseSpeed() <= 0.0f)
+                    {
+                        local_7 = 0;
+                    }
+                    else
+                    {
+                        bool local_9 = (local_6 > this.GetDisplayHpBarRatio());
+                        local_7 = local_9;
+                    }
+                    if (local_7 != 0)
                     {
                         this.GetModify_PreviewHpBarRatioSource().SetInterpConstantTo(this.GetDisplayHpBarRatio(), this.GetPreviewHpBarChaseSpeed(), 0.0001f);
                     }
@@ -436,7 +445,17 @@ struct FVM_MiniHPBarV2 : FEUIViewModel
         }
         else
         {
-            if (this.GetPreviewHpBarChaseSpeed() <= 0.0f || (local_6 < this.GetDisplayHpBarRatio()))
+            int local_7;
+            if (this.GetPreviewHpBarChaseSpeed() <= 0.0f)
+            {
+                local_7 = 1;
+            }
+            else
+            {
+                bool local_9_2 = (local_6 < this.GetDisplayHpBarRatio());
+                local_7 = local_9_2;
+            }
+            if (local_7 != 0)
             {
                 this.SetPreviewHpBarChaseSpeed(0.0f);
                 this.SetDisplayPreviewHpBarRatio(this.GetDisplayHpBarRatio());
@@ -745,7 +764,6 @@ struct __GeneratedProperties_FVM_MiniHPBarV2
     ESlateVisibility HpBarVisibility;
     UPROPERTY()
     TEUIModelRef<FVM_MiniHPBarV2> Self;
-
 
 }
 

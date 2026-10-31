@@ -1,5 +1,3 @@
-﻿
-
 class US_EntityLifecycleFlowBridge : UECSScriptSystem
 {
     US_EntityLifecycleFlowBridge()

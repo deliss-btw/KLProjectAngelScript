@@ -1,5 +1,3 @@
-﻿
-
 class UESMAnimInstance_Base : UKLAnimInstance
 {
     UPROPERTY()
@@ -168,8 +166,7 @@ class UESMAnimInstance_Base : UKLAnimInstance
                 {
                     EWeaponType local_103;
                     local_103 = this.CharacterWeaponType;
-                    EWeaponType local_104 = local_102.GetCurrentWeaponType();
-                    this.CharacterWeaponType = EWeaponType(local_104);
+                    this.CharacterWeaponType = local_102.GetCurrentWeaponType();
                     this.NeedTransitWeaponType = int(local_103) != int(local_102.GetCurrentWeaponType()) && (int(local_103) != 0);
                 }
                 Get local_110;
@@ -195,7 +192,7 @@ class UESMAnimInstance_Base : UKLAnimInstance
             {
                 this.UpdataCharacterEntityBBData(local_6);
             }
-            this.UpdateAnimationVariant(EWeaponType(this.CharacterWeaponType), this.NeedTransitWeaponType);
+            this.UpdateAnimationVariant(this.CharacterWeaponType, this.NeedTransitWeaponType);
         }
         if (this.GetWorld() == nullptr)
         {

@@ -1,4 +1,3 @@
-﻿
 namespace ChatRecentHistorySaveGame
 {
     const uint FileVersion = 0;
@@ -33,7 +32,6 @@ struct FChatMessagePersistRecord
     UPROPERTY()
     TArray<FChatSystemSerializedArg> SystemContentArgs;
 
-
 }
 
 struct FChatStrangerPeerBriefRecord
@@ -46,7 +44,6 @@ struct FChatStrangerPeerBriefRecord
     int Level = 0;
     UPROPERTY()
     uint CurAvatarId = 0;
-
 
 }
 
@@ -62,7 +59,6 @@ class UChatRecentHistorySaveGame : USaveGame
     TArray<uint> PrivatePeerOrderUids;
     UPROPERTY()
     TArray<FChatStrangerPeerBriefRecord> StrangerPeerBriefs;
-
 
 }
 

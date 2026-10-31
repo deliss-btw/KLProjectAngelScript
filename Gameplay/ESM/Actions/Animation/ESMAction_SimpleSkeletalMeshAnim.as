@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_SimpleSkeletalMeshAnim_DebugLog = FConsoleVariable();
 
 struct FESMSimpleSkeletalMeshAnimInstanceData
@@ -21,7 +20,6 @@ class UESMAction_SimpleSkeletalMeshAnim : UESMBPBaseSpanTickAction
     UPROPERTY()
     bool bLoop = true;
 
-
     UFUNCTION()
     FESMInstanceDataInfo GetViewInstanceDataInfo_Implementation() const
     {
@@ -42,7 +40,7 @@ class UESMAction_SimpleSkeletalMeshAnim : UESMBPBaseSpanTickAction
         }
         else
         {
-            local_16 = "(ж— еЉЁз”»)";
+            local_16 = "(无动画)";
         }
         FString local_4;
         if (this.bLoop)
@@ -56,13 +54,13 @@ class UESMAction_SimpleSkeletalMeshAnim : UESMBPBaseSpanTickAction
         FString local_20;
         if (this.MeshComponentName.IsNone())
         {
-            local_20 = "(ж— з»„д»¶еђЌ)";
+            local_20 = "(无组件名)";
         }
         else
         {
             local_20 = this.MeshComponentName.ToString();
         }
-        return FString().Append("еЉЁз”»: ").Append(local_16).Append(" [").Append(local_4).Append("] @").Append(local_20);
+        return FString().Append("动画: ").Append(local_16).Append(" [").Append(local_4).Append("] @").Append(local_20);
     }
     UFUNCTION()
     void ViewEnter_Implementation(const FESMViewContext &inout Context, const FESMActionTime &inout Time) const
@@ -126,7 +124,7 @@ class UESMAction_SimpleSkeletalMeshAnim : UESMBPBaseSpanTickAction
             local_12 = this.FindSkeletalMeshComponent(Context);
             if (local_12 == nullptr)
             {
-                XError(ELog(5), FString().Append("SimpleSkeletalMeshAnim: ").Append(this.DebugGetPath()).Append(" ж‰ѕдёЌе€°LogicNameдёє[").Append(this.MeshComponentName).Append("]зљ„з»„д»¶пјЊиЇ·жЈЂжџҐй…ЌзЅ®"));
+                XError(ELog(5), FString().Append("SimpleSkeletalMeshAnim: ").Append(this.DebugGetPath()).Append(" 找不到LogicName为[").Append(this.MeshComponentName).Append("]的组件，请检查配置"));
                 return;
             }
             local_6.CachedSkeletalMeshComponent = local_12;
@@ -164,8 +162,9 @@ class UESMAction_SimpleSkeletalMeshAnim : UESMBPBaseSpanTickAction
             TArray<USceneComponent> local_16 = local_6.GetCachedSceneComponentByLogicName(this.MeshComponentName);
             if (local_16.IsEmpty())
             {
-                XError(ELog(5), FString().Append("SimpleSkeletalMeshAnim: ").Append(this.DebugGetPath()).Append(" ж‰ѕдёЌе€°LogicNameдёє[").Append(this.MeshComponentName).Append("]зљ„з»„д»¶пјЊиЇ·жЈЂжџҐй…ЌзЅ®"));
-                return FString();
+                XError(ELog(5), FString().Append("SimpleSkeletalMeshAnim: ").Append(this.DebugGetPath()).Append(" 找不到LogicName为[").Append(this.MeshComponentName).Append("]的组件，请检查配置"));
+                USkeletalMeshComponent local_28;
+                return local_28;
             }
             for (auto local_42 : local_16)
             {
@@ -175,7 +174,7 @@ class UESMAction_SimpleSkeletalMeshAnim : UESMBPBaseSpanTickAction
                     return local_44;
                 }
             }
-            XError(ELog(5), local_28.Append("SimpleSkeletalMeshAnim: ").Append(this.DebugGetPath()).Append(" LogicName[").Append(this.MeshComponentName).Append("]дё‹ж‰ѕдёЌе€°SkeletalMeshComponentпјЊиЇ·жЈЂжџҐз»„д»¶з±»ећ‹"));
+            XError(ELog(5), FString().Append("SimpleSkeletalMeshAnim: ").Append(this.DebugGetPath()).Append(" LogicName[").Append(this.MeshComponentName).Append("]下找不到SkeletalMeshComponent，请检查组件类型"));
         }
         return nullptr;
     }

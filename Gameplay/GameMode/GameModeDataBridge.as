@@ -1,5 +1,3 @@
-﻿
-
 struct FPVPLobbyPlayerEntry
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ struct FPVPLobbyPlayerEntry
     bool bWantsBackToRoom = false;
     UPROPERTY()
     bool bIsBot = false;
-
 
 }
 

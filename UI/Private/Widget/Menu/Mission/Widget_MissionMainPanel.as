@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_MissionMainPanel
 {
     const int ViewID = 0;
@@ -69,7 +68,7 @@ class UWidget_MissionMainPanel : UEUIActivatableWidget
         bool local_3;
         if (this.MissionPanel)
         {
-            local_3 = IsTabTypeSelected();
+            local_3 = TabType.IsTabTypeSelected();
         }
         else
         {
@@ -105,7 +104,7 @@ class UWidget_MissionMainPanel : UEUIActivatableWidget
         {
             return;
         }
-        SetSelectedTabIndex();
+        Index.SetSelectedTabIndex();
         bool local_1 = IsCommissionTabSelected();
         if (this.UI_Mission_CommissionDetail != nullptr)
         {
@@ -270,6 +269,7 @@ namespace UWidget_MissionMainPanel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MissionMainPanel;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnChapterEntryHighlightedChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedMissionTrackedChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnShowTrackingButtonChanged"));

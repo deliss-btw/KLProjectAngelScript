@@ -1,5 +1,3 @@
-﻿
-
 class USPT_HeadControlTemplate : USkeletalPoseTweaker
 {
     UPROPERTY()

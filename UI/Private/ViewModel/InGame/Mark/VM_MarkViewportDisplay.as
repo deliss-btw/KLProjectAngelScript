@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MarkViewportDisplay
 {
     const int ModelId = 0;

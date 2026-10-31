@@ -1,5 +1,3 @@
-﻿
-
 class UEQC_SelfRotation : UEnvQueryContext_ECS_BlueprintBase
 {
     UEQC_SelfRotation()

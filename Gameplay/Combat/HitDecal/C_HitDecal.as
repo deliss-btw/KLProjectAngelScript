@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_MeleeHitDecalSpawner_NS
 {
     const TECSComponentDerivedPtr<FC_MeleeHitDecalSpawner> DerivedPtr = TECSComponentDerivedPtr<FC_MeleeHitDecalSpawner>();
@@ -28,7 +27,6 @@ struct FHitDecalFanCaster
     UPROPERTY()
     bool bIsCCW = true;
 
-
 }
 
 struct FMeleeHitDecalCasterConfig
@@ -50,7 +48,6 @@ struct FPendigMeleeHitDecal
     FMeleeHitDecalCasterConfig CasterConfig;
     UPROPERTY()
     float32 HitEventTimeout = 0.2f;
-
 
 }
 
@@ -159,36 +156,36 @@ bool RemoveMeleeHitDecalSpawner(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorMeleeHitDecalSpawnerOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_MeleeHitDecalSpawner, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_MeleeHitDecalSpawner, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMeleeHitDecalSpawnerOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_MeleeHitDecalSpawner, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_MeleeHitDecalSpawner, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMeleeHitDecalSpawnerOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_MeleeHitDecalSpawner, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_MeleeHitDecalSpawner, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMeleeHitDecalSpawnerOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_MeleeHitDecalSpawner, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_MeleeHitDecalSpawner, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMeleeHitDecalSpawnerOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_MeleeHitDecalSpawner, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_MeleeHitDecalSpawner, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorMeleeHitDecalSpawnerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_MeleeHitDecalSpawner, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_MeleeHitDecalSpawner, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorMeleeHitDecalSpawnerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_MeleeHitDecalSpawner, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_MeleeHitDecalSpawner, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorMeleeHitDecalSpawnerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_MeleeHitDecalSpawner, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_MeleeHitDecalSpawner, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CraftableItem
 {
     const int ModelId = 0;
@@ -556,8 +555,10 @@ struct FVM_ItemCraft : FEUIViewModel
         TDataObjectIterator<FCraftConfig> local_20;
         for (; local_20; )
         {
-            if (this.GetCraftTypes().Contains(local_20.GetData().CraftType))
+            const FCraftConfig& local_24 = local_20.GetData();
+            if (this.GetCraftTypes().Contains(local_24.CraftType))
             {
+                TDataObjectPtr<FCraftConfig> local_48 = TDataObjectPtr<FCraftConfig>(local_24);
                 local_50.GetCallbackOnItemSelected().Bind(this, FVM_ItemCraft::OnCraftableItemSelected);
                 this.GetModify_AllCraftableItems().Add(TEUIModelRef<FVM_CraftableItem>(local_50));
             }
@@ -586,13 +587,16 @@ struct FVM_ItemCraft : FEUIViewModel
     }
     void RefreshCraftableItemsEnableState()
     {
+        int local_17;
         int local_22 = 0;
         for (auto& local_16 : this.GetAllCraftableItems())
         {
             bool local_13 = false;
+            local_17 = local_13;
             if (local_16.opArrow().GetbLocked())
             {
                 local_13 = true;
+                local_17 = local_13;
             }
             else
             {
@@ -603,11 +607,12 @@ struct FVM_ItemCraft : FEUIViewModel
                     if (local_22.GetTotalItemNum(local_38.Item) < int(local_38.Count))
                     {
                         local_13 = true;
+                        local_17 = local_13;
                         break;
                     }
                 }
             }
-            local_16.opArrow().SetbDisableCraft();
+            local_16.opArrow().SetbDisableCraft((local_17 != 0));
         }
         return;
     }
@@ -703,8 +708,7 @@ struct FVM_ItemCraft : FEUIViewModel
                 if (local_1)
                 {
                     FEUIModelContainer local_128;
-                    int local_129 = int(local_36.Count);
-                    local_128.AddModel(FEUIModelRef(), false);
+                    local_128.AddModel(FEUIModelRef(::FVM_Item::CreateFromConfig(this.GetContext().Manager, local_36.Item, int(local_36.Count))), false);
                     this.GetModify_CraftConsumeRewards()[local_40] = TEUIModelRef<FVM_CommonRewardItem>(::FVM_CommonRewardItem::Create(this.GetContext().Manager, local_128, true));
                 }
                 local_22.Add(FRewardItemEntry(local_36.Item.opArrow().DataId, int(local_36.Count)));
@@ -1206,7 +1210,6 @@ struct __GeneratedProperties_FVM_ItemCraft
     UPROPERTY()
     TEUIModelRef<FVM_ItemCraft> Self;
 
-
 }
 
 namespace FVM_CraftableItem
@@ -1223,7 +1226,70 @@ FVM_CraftableItem CreateByManager(const UEUIManagerSubsystem Manager, const TDat
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "bLocked";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bIsSelected";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bDisableCraft";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Item";
+    local_14.TypeName = "TEUIModelRef<FVM_Item>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ComposableItem";
+    local_14.TypeName = "TEUIModelRef<FVM_ComposableItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectableItem";
+    local_14.TypeName = "TEUIModelRef<FVM_SelectableItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Equipment";
+    local_14.TypeName = "TEUIModelRef<FVM_EquipmentInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_CraftableItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_CraftableItem;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(9);
+    local_22.AddRefPropertyDirty(0, 2, FVM_SelectableItem::__IndexOf_bIsSelected());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("SelectableItem");
+    int local_2_2 = FVM_SelectableItem::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(2);
+    local_30.RelatedDirtyMask.SetBit(FVM_SelectableItem::__IndexOf_bIsSelected(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnSelectableItemSelectedChanged";
+    local_40.DirtyFlags.Set(FVM_CraftableItem::__IndexOf_SelectableItem());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    FEUIModelEffectDefine local_44;
+    local_44.FunctionName = "RefreshItemMask";
+    Result.EffectFunctions.Add(local_44);
+    return;
 }
 UScriptStruct GetModelStruct()
 {
@@ -1325,7 +1391,141 @@ FVM_ItemCraft CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostLoad(true);
+    Result.SetbHasBeginDestroy(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(true);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "CraftQuality";
+    local_14.TypeName = "TEUIModelRef<FVM_QualitySelector>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurrentCraft";
+    local_14.TypeName = "TEUIModelRef<FVM_CraftableItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurrentCraftItemConfig";
+    local_14.TypeName = "TDataObjectPtr<FItemConfig>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bCanDoCurrentCraft";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bCurrentCraftUnlocked";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurrentCraftableItemsComposable";
+    local_14.TypeName = "TArray<FEUIModelContainer>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AllCraftableItems";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_CraftableItem>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CraftConsumeRewards";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_CommonRewardItem>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurrentUnlockConditions";
+    local_14.TypeName = "TArray<FEUIModelContainer>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurrentCommonItem";
+    local_14.TypeName = "TEUIModelRef<FVM_CommonItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurrentCommonConsume";
+    local_14.TypeName = "TEUIModelRef<FVM_CommonConsume>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShowCraftItemIcon";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurrentCraftItemIcon";
+    local_14.TypeName = "FSlateBrush";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurrentCraftIsLocked";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurrentCraftSwitcherIndex";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_ItemCraft>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_ItemCraft;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(19);
+    local_22.AddRefPropertyDirty(0, 1, FVM_QualitySelector::__IndexOf_CurrentNum());
+    local_22.AddRefPropertyDirty(1, 0, FMS_Craft::__IndexOf_UnlockedCraftConfigs());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("CraftQuality");
+    int local_2_2 = FVM_QualitySelector::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(1);
+    local_30.RelatedDirtyMask.SetBit(FVM_QualitySelector::__IndexOf_CurrentNum(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    local_30.PropertyName = FName("CraftModel");
+    int local_23 = FMS_Craft::ModelId;
+    int local_23_2 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FMS_Craft::__IndexOf_UnlockedCraftConfigs(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__RefreshCraftableItemsUnlockState";
+    local_40.DirtyFlags.Set(FVM_ItemCraft::__IndexOf_CraftModel());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(1));
+    Result.DirtyFunctions.Add(local_40);
+    FEUIModelMsgHandleDefine local_50;
+    local_50.FunctionName = "__OnPlayerInventoryChanged";
+    local_50.MessageTypeName = "Msg_PlayerInventoryChanged";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    local_40.FunctionName = "__RefreshCraftableItemsEnableState";
+    local_40.DirtyFlags.Set(FVM_ItemCraft::__IndexOf_CraftModel());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(1));
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnSelectedCraftTypeChanged";
+    local_40.DirtyFlags.Set(FVM_ItemCraft::__IndexOf_SelectedCraftTypeIndex());
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__RefreshCurrentCraft";
+    local_40.DirtyFlags.Set(FVM_ItemCraft::__IndexOf_CurrentCraft());
+    Result.DirtyFunctions.Add(local_40);
+    FEUIModelMonitorDefine local_64;
+    local_64.FunctionName = "__MonitorGameplayItemBankChange";
+    local_64.ComponentType = FC_GameplayItemBank;
+    Result.MonitorFunctions.Add(local_64);
+    local_40.FunctionName = "__RefreshMaxCraftNum";
+    local_40.DirtyFlags.Set(FVM_ItemCraft::__IndexOf_CurrentCraft());
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__RefreshCraftConsumeNum";
+    local_40.DirtyFlags.Set(FVM_ItemCraft::__IndexOf_CurrentCraft());
+    local_40.DirtyFlags.Set(FVM_ItemCraft::__IndexOf_CraftQuality());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    return;
 }
 UScriptStruct GetModelStruct()
 {
@@ -1373,7 +1573,9 @@ void __RefreshCraftConsumeNum(FVM_ItemCraft &inout Model)
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorGameplayItemBankLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorGameplayItemBankModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TEUIModelRef<FVM_QualitySelector> __UIGetter_CraftQuality(const FVM_ItemCraft &inout Model)
 {

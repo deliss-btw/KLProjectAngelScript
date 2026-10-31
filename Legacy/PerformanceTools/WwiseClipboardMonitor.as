@@ -1,4 +1,3 @@
-﻿
 namespace WwiseClipboardTools
 {
 enum EClipboardContentType
@@ -16,7 +15,6 @@ enum EClipboardContentType
     MusicSegment,
     MusicTrack,
 }
-
 
 struct FWwiseAssetResult
 {
@@ -36,7 +34,6 @@ struct FWwiseAssetResult
     FString AssetName;
     UPROPERTY()
     bool bIsValid;
-
 
 }
 
@@ -250,27 +247,27 @@ FString GetContentTypeString(const WwiseClipboardTools::EClipboardContentType Co
     {
     case 1:
     {
-        return "йџійў‘ж–‡д»¶";
+        return "音频文件";
     }
     case 2:
     {
-        return "дє‹д»¶";
+        return "事件";
     }
     case 3:
     {
-        return "ејЂе…і";
+        return "开关";
     }
     case 4:
     {
-        return "зЉ¶жЂЃ";
+        return "状态";
     }
     case 5:
     {
-        return "е®ћж—¶еЏ‚ж•°жЋ§е€¶";
+        return "实时参数控制";
     }
     case 6:
     {
-        return "йџійў‘еє“";
+        return "音频库";
     }
     case 7:
     {
@@ -278,22 +275,22 @@ FString GetContentTypeString(const WwiseClipboardTools::EClipboardContentType Co
     }
     case 8:
     {
-        return "йљЏжњєе®№е™Ё";
+        return "随机容器";
     }
     case 9:
     {
-        return "ж··еђ€е®№е™Ё";
+        return "混合容器";
     }
     case 10:
     {
-        return "йџід№ђз‰‡ж®µ";
+        return "音乐片段";
     }
     case 11:
     {
-        return "йџід№ђиЅЁйЃ“";
+        return "音乐轨道";
     }
     }
-    return "жњЄзџҐз±»ећ‹";
+    return "未知类型";
 }
 bool IsClipboardContentSoundInfo(const FString &inout ClipboardText)
 {
@@ -328,8 +325,42 @@ bool IsClipboardContentSoundInfo(const FString &inout ClipboardText)
 }
 bool ParseSoundInfoFromClipboard(const FString &inout ClipboardText, TArray<FString> &inout OutSoundNames, TArray<FString> &inout OutSoundPaths)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    bool __r; return __r;
+    OutSoundNames.Empty(0);
+    OutSoundPaths.Empty(0);
+    if (ClipboardText.IsEmpty())
+    {
+        return false;
+    }
+    TArray<FString> local_6;
+    ClipboardText.ParseIntoArray(local_6, "\n", true);
+    bool local_7 = false;
+    int local_8 = 0;
+    for (; local_8 < local_6.Num(); ++local_8)
+    {
+        FString local_18 = local_6[local_8].TrimStartAndEnd();
+        if (WwiseClipboardTools::IsClipboardContentSoundInfo(local_18))
+        {
+            local_7 = true;
+            FString local_22;
+            FString local_26;
+            int local_30 = local_18.Find("\\", ESearchCase(1), ESearchDir(1), -1);
+            if (local_30 != INDEX_NONE)
+            {
+                local_26 = local_18.Left(local_30);
+                local_22 = local_18.RightChop(local_30 + 1);
+            }
+            else
+            {
+                local_22 = local_18;
+                local_26 = "";
+            }
+            local_22 = local_22.Replace("\"", "", ESearchCase(1));
+            local_26 = local_26.Replace("\"", "", ESearchCase(1));
+            OutSoundNames.Add(local_22);
+            OutSoundPaths.Add(local_26);
+        }
+    }
+    return local_7;
 }
 bool GetSoundInfoFromClipboard(TArray<FString> &inout OutSoundNames, TArray<FString> &inout OutSoundPaths)
 {
@@ -341,7 +372,91 @@ bool HasSoundInfoInClipboard()
 }
 TArray<WwiseClipboardTools::FWwiseAssetResult> GetAssetFromClipboard()
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TArray<WwiseClipboardTools::FWwiseAssetResult> __r; return __r;
+    TArray<WwiseClipboardTools::FWwiseAssetResult> local_4;
+    FString local_12 = WwiseClipboardTools::GetClipboardContent();
+    if (local_12.IsEmpty())
+    {
+        return local_4;
+    }
+    TArray<FString> local_18;
+    local_12.ParseIntoArray(local_18, "\n", true);
+    int local_20 = 0;
+    for (; local_20 < local_18.Num(); ++local_20)
+    {
+        FString local_8 = local_18[local_20].TrimStartAndEnd();
+        if (!(local_8.IsEmpty()))
+        {
+            FString local_30 = local_8;
+            int local_34 = local_30.Find("\\", ESearchCase(1), ESearchDir(1), -1);
+            if (local_34 != (INDEX_NONE))
+            {
+                local_30 = local_30.RightChop(local_34 + 1);
+            }
+            local_30 = local_30.Replace("\"", "", ESearchCase(1));
+            if (!(local_30.IsEmpty()))
+            {
+                WwiseClipboardTools::FWwiseAssetResult local_92;
+                local_92.bIsValid = false;
+                local_92.AssetName = local_30;
+                local_92.AssetType = WwiseClipboardTools::EClipboardContentType(WwiseClipboardTools::GetClipboardContentType(local_30));
+                switch (int(local_92.AssetType))
+                {
+                case 1:
+                {
+                    if (local_30.StartsWith("sfx_", ESearchCase(1)))
+                    {
+                        FString local_26 = WwiseClipboardTools::GenerateEventNameFromSoundSFX(local_30);
+                        local_92.EventAsset = WwiseClipboardTools::GetEventFromName(local_26);
+                        FString local_98 = local_92.EventAsset.GetAssetName();
+                        local_92.bIsValid = !(local_98.IsEmpty());
+                    }
+                    break;
+                }
+                case 2:
+                {
+                    FString local_98_2 = WwiseClipboardTools::GenerateEventNameFromSoundSFX(local_30);
+                    local_92.EventAsset = WwiseClipboardTools::GetEventFromName(local_98_2);
+                    FString local_26_2 = local_92.EventAsset.GetAssetName();
+                    local_92.bIsValid = !(local_26_2.IsEmpty());
+                    break;
+                }
+                case 3:
+                {
+                    local_92.SwitchAsset = WwiseClipboardTools::GetSwitchFromName(local_30);
+                    FString local_26_3 = local_92.SwitchAsset.GetAssetName();
+                    local_92.bIsValid = !(local_26_3.IsEmpty());
+                    break;
+                }
+                case 4:
+                {
+                    local_92.StateAsset = WwiseClipboardTools::GetStateFromName(local_30);
+                    FString local_26_4 = local_92.StateAsset.GetAssetName();
+                    local_92.bIsValid = !(local_26_4.IsEmpty());
+                    break;
+                }
+                case 5:
+                {
+                    local_92.RtpcAsset = WwiseClipboardTools::GetRtpcFromName(local_30);
+                    FString local_26_5 = local_92.RtpcAsset.GetAssetName();
+                    local_92.bIsValid = !(local_26_5.IsEmpty());
+                    break;
+                }
+                case 6:
+                {
+                    local_92.BusAsset = WwiseClipboardTools::GetBusFromName(local_30);
+                    FString local_26_6 = local_92.BusAsset.GetAssetName();
+                    local_92.bIsValid = !(local_26_6.IsEmpty());
+                    break;
+                }
+                default:
+                {
+                    local_92.bIsValid = false;
+                }
+                }
+                local_4.Add(local_92);
+            }
+        }
+    }
+    return local_4;
 }
 }

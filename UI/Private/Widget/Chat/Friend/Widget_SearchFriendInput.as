@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_SearchFriendInput
 {
     const int ViewID = 0;
@@ -188,6 +187,7 @@ namespace UWidget_SearchFriendInput
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SearchFriendInput;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnAlreadyInputTextChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnShowSearchResultChanged"));
     return;

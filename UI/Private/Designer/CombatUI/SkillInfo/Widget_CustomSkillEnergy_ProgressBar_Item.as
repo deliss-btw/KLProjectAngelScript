@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CustomSkillEnergy_ProgressBar_Item
 {
     const int ViewID = 0;
@@ -20,7 +19,6 @@ class UWidget_CustomSkillEnergy_ProgressBar_Item : UEUIUserWidget
     float32 ProgressRatio = 0.0f;
     UPROPERTY()
     bool bIsEnergyFull = false;
-
 
     UFUNCTION()
     void SetProgressRatio(const float32 NewProgressRatio)
@@ -50,6 +48,7 @@ namespace UWidget_CustomSkillEnergy_ProgressBar_Item
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CustomSkillEnergy_ProgressBar_Item;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

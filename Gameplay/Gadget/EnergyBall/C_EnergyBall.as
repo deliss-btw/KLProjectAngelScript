@@ -1,4 +1,3 @@
-﻿
 enum EEnergyBallAddType
 {
     None,
@@ -59,7 +58,7 @@ namespace __INTENRAL_FCE_StopEnergyBallMaterialAnim_NS
 struct FC_EnergyBall : FECSComponent
 {
     UPROPERTY()
-    EEnergyBallAddType EnergyBallAddType;
+    EEnergyBallAddType EnergyBallAddType = EEnergyBallAddType(1);
     UPROPERTY()
     FGameAttributeRef Attribute;
     UPROPERTY()
@@ -71,30 +70,26 @@ struct FC_EnergyBall : FECSComponent
     UPROPERTY()
     TArray<FSingleMaterialParamRequestData> ReceiverMaterialParamRequests;
     UPROPERTY()
-    float32 MaterialAnimDuration;
+    float32 MaterialAnimDuration = 0.4f;
     UPROPERTY()
-    float32 FXPlayMinInterval;
+    float32 FXPlayMinInterval = 0.4f;
     UPROPERTY()
-    float32 MoveTime;
+    float32 MoveTime = 1.0f;
     UPROPERTY()
-    float32 MoveTimeRandom;
+    float32 MoveTimeRandom = 0.2f;
     UPROPERTY()
-    float32 DelayFadeoutSeconds;
+    float32 DelayFadeoutSeconds = 0.2f;
     UPROPERTY()
-    float32 FadeoutSeconds;
+    float32 FadeoutSeconds = 0.2f;
     UPROPERTY()
-    float32 RandomVelocityConeDegree;
+    float32 RandomVelocityConeDegree = 60.0f;
     UPROPERTY()
-    TArray<float32> RandomVelocitySpeed;
+    TArray<float32> RandomVelocitySpeed = {1000.0f};
     UPROPERTY()
     TArray<FRotator> LeftRandomVelocityRotations;
     UPROPERTY()
     TArray<FRotator> RightRandomVelocityRotations;
 
-    FC_EnergyBall()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
 }
 
 struct FCE_SpawnEnergyBall : FECSEvent
@@ -108,7 +103,6 @@ struct FCE_SpawnEnergyBall : FECSEvent
     float32 MoveTime;
     UPROPERTY()
     bool bLeft = false;
-
 
 }
 
@@ -156,7 +150,6 @@ struct FCE_PlayEnergyBallMaterialAnim : FECSEvent
     UPROPERTY()
     float32 Duration;
 
-
 }
 
 struct FCE_StopEnergyBallMaterialAnim : FECSEvent
@@ -189,7 +182,6 @@ struct FDropEnergyBallData
     UPROPERTY()
     int Number = 1;
 
-
 }
 
 struct FC_DropEnergyBallSource : FECSComponent
@@ -202,7 +194,6 @@ struct FC_DropEnergyBallSource : FECSComponent
     TArray<FDropEnergyBallData> HitStaggerEnergyBallDrops;
     UPROPERTY()
     TArray<FDropEnergyBallData> HitBreakEnergyBallDrops;
-
 
 }
 
@@ -224,7 +215,6 @@ struct FC_DropEnergyBallSourceOverride : FECSComponent
     bool bOverrideHitBreakEnergyBallDrops = false;
     UPROPERTY()
     TArray<FDropEnergyBallData> HitBreakEnergyBallDrops;
-
 
 }
 
@@ -316,37 +306,37 @@ bool RemoveEnergyBall(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEnergyBallOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EnergyBall, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EnergyBall, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEnergyBallOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EnergyBall, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EnergyBall, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEnergyBallOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EnergyBall, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EnergyBall, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEnergyBallOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EnergyBall, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EnergyBall, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEnergyBallOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EnergyBall, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EnergyBall, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEnergyBallLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EnergyBall, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EnergyBall, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEnergyBallActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EnergyBall, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EnergyBall, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEnergyBallModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EnergyBall, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EnergyBall, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_PlayEnergyBallFXCooldown
@@ -429,37 +419,37 @@ bool RemovePlayEnergyBallFXCooldown(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPlayEnergyBallFXCooldownOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayEnergyBallFXCooldown, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayEnergyBallFXCooldown, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayEnergyBallFXCooldownOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayEnergyBallFXCooldown, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayEnergyBallFXCooldown, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayEnergyBallFXCooldownOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayEnergyBallFXCooldown, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayEnergyBallFXCooldown, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayEnergyBallFXCooldownOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayEnergyBallFXCooldown, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayEnergyBallFXCooldown, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayEnergyBallFXCooldownOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayEnergyBallFXCooldown, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayEnergyBallFXCooldown, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPlayEnergyBallFXCooldownLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PlayEnergyBallFXCooldown, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PlayEnergyBallFXCooldown, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayEnergyBallFXCooldownActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PlayEnergyBallFXCooldown, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PlayEnergyBallFXCooldown, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayEnergyBallFXCooldownModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PlayEnergyBallFXCooldown, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PlayEnergyBallFXCooldown, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_DropEnergyBallSource
@@ -542,37 +532,37 @@ bool RemoveDropEnergyBallSource(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorDropEnergyBallSourceOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_DropEnergyBallSource, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_DropEnergyBallSource, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDropEnergyBallSourceOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_DropEnergyBallSource, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_DropEnergyBallSource, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDropEnergyBallSourceOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_DropEnergyBallSource, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_DropEnergyBallSource, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDropEnergyBallSourceOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_DropEnergyBallSource, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_DropEnergyBallSource, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDropEnergyBallSourceOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_DropEnergyBallSource, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_DropEnergyBallSource, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorDropEnergyBallSourceLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_DropEnergyBallSource, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_DropEnergyBallSource, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDropEnergyBallSourceActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_DropEnergyBallSource, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_DropEnergyBallSource, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDropEnergyBallSourceModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_DropEnergyBallSource, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_DropEnergyBallSource, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_DropEnergyBallSourceOverride
@@ -655,37 +645,37 @@ bool RemoveDropEnergyBallSourceOverride(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorDropEnergyBallSourceOverrideOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_DropEnergyBallSourceOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_DropEnergyBallSourceOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDropEnergyBallSourceOverrideOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_DropEnergyBallSourceOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_DropEnergyBallSourceOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDropEnergyBallSourceOverrideOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_DropEnergyBallSourceOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_DropEnergyBallSourceOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDropEnergyBallSourceOverrideOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_DropEnergyBallSourceOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_DropEnergyBallSourceOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDropEnergyBallSourceOverrideOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_DropEnergyBallSourceOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_DropEnergyBallSourceOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorDropEnergyBallSourceOverrideLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_DropEnergyBallSourceOverride, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_DropEnergyBallSourceOverride, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDropEnergyBallSourceOverrideActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_DropEnergyBallSourceOverride, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_DropEnergyBallSourceOverride, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDropEnergyBallSourceOverrideModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_DropEnergyBallSourceOverride, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_DropEnergyBallSourceOverride, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_DeathEnergyBallDroppedTag
@@ -765,36 +755,36 @@ bool RemoveDeathEnergyBallDroppedTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorDeathEnergyBallDroppedTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_DeathEnergyBallDroppedTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_DeathEnergyBallDroppedTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDeathEnergyBallDroppedTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_DeathEnergyBallDroppedTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_DeathEnergyBallDroppedTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDeathEnergyBallDroppedTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_DeathEnergyBallDroppedTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_DeathEnergyBallDroppedTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDeathEnergyBallDroppedTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_DeathEnergyBallDroppedTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_DeathEnergyBallDroppedTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDeathEnergyBallDroppedTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_DeathEnergyBallDroppedTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_DeathEnergyBallDroppedTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorDeathEnergyBallDroppedTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_DeathEnergyBallDroppedTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_DeathEnergyBallDroppedTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDeathEnergyBallDroppedTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_DeathEnergyBallDroppedTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_DeathEnergyBallDroppedTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDeathEnergyBallDroppedTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_DeathEnergyBallDroppedTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_DeathEnergyBallDroppedTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

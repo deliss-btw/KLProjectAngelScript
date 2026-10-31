@@ -1,5 +1,3 @@
-﻿
-
 class US_ConditionCombatItemUseSystem : UECSScriptSystem
 {
     US_ConditionCombatItemUseSystem()

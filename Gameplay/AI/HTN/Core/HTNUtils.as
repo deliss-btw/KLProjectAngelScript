@@ -1,4 +1,3 @@
-﻿
 namespace FHTNUtils
 {
 void StopHTN(const FECSEntity &inout Entity)

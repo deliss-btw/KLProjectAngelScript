@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_RiderOffsetParamas_NS
 {
     const TECSComponentDerivedPtr<FC_RiderOffsetParamas> DerivedPtr = TECSComponentDerivedPtr<FC_RiderOffsetParamas>();
@@ -19,11 +18,23 @@ struct FC_RiderOffsetParamas : FECSComponent
 
     FC_RiderOffsetParamas()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Yaw = 0.0f;
+        this.m_Pitch = 0.0f;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_RiderOffsetParamas(const FC_RiderOffsetParamas &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_Yaw = 0.0f;
+        this.m_Pitch = 0.0f;
+        this.__InitDirtyFlags();
+        this.m_Yaw = Other.m_Yaw;
+        this.m_Pitch = Other.m_Pitch;
+        return;
     }
     FC_RiderOffsetParamas opAssign(const FC_RiderOffsetParamas &inout Other)
     {
@@ -76,7 +87,6 @@ class UESMAction_RiderOffsetParamas : UESMBPBaseSpanTickAction
     float32 MinPitch = -90.0f;
     UPROPERTY()
     float32 MaxPitch = 90.0f;
-
 
     UFUNCTION()
     void Tick_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
@@ -184,37 +194,37 @@ bool RemoveRiderOffsetParamas(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorRiderOffsetParamasOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_RiderOffsetParamas, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_RiderOffsetParamas, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRiderOffsetParamasOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_RiderOffsetParamas, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_RiderOffsetParamas, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRiderOffsetParamasOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_RiderOffsetParamas, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_RiderOffsetParamas, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRiderOffsetParamasOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_RiderOffsetParamas, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_RiderOffsetParamas, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRiderOffsetParamasOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_RiderOffsetParamas, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_RiderOffsetParamas, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorRiderOffsetParamasLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_RiderOffsetParamas, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_RiderOffsetParamas, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRiderOffsetParamasActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_RiderOffsetParamas, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_RiderOffsetParamas, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRiderOffsetParamasModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_RiderOffsetParamas, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_RiderOffsetParamas, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

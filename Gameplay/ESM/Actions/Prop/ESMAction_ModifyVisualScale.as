@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_ModifyVisualScale : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ class UESMAction_ModifyVisualScale : UESMBPBaseSpanTickAction
     float32 BlendInTime = 0.0f;
     UPROPERTY()
     float32 BlendOutTime = 0.0f;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const

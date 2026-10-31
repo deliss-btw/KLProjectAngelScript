@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_SingleSkillBtn_Helpers
 {
 UFUNCTION()

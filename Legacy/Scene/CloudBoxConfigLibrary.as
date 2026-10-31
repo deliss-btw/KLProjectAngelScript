@@ -1,4 +1,3 @@
-﻿
 namespace CloudBoxConfig
 {
     const FString LibraryAssetPath = FString();

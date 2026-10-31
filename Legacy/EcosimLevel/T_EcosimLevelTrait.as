@@ -1,5 +1,3 @@
-﻿
-
 struct FT_EcosimLevelSpawner : FECSTrait
 {
     FECSTrait _base_FECSTrait;

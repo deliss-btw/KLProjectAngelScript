@@ -1,4 +1,3 @@
-﻿
 enum ELevelUpDisplayAttributeType
 {
     HP,
@@ -139,7 +138,7 @@ struct FVM_LevelUp : FEUIViewModel
     }
     float32 GetTotalGrowFromTo(const int InFromLevel, const int InToLevel, const ELevelUpDisplayAttributeType InAttributeType) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         float32 __r; return __r;
     }
     FText GetNumberText(const float32 InNumber) const
@@ -213,7 +212,6 @@ struct __GeneratedProperties_FVM_LevelUp
     bool IsStaminaGrow;
     UPROPERTY()
     TEUIModelRef<FVM_LevelUp> Self;
-
 
 }
 

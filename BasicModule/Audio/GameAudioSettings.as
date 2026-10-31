@@ -1,5 +1,3 @@
-﻿
-
 class UGameAudioSettings : UDeveloperSettings
 {
     UPROPERTY()
@@ -28,7 +26,6 @@ class UGameAudioSettings : UDeveloperSettings
     float32 CustomVolumeAudioSearchRadius = 100000.0f;
     UPROPERTY()
     float32 DefaultCustomVolumeAudioAttenuationRadius = 1000.0f;
-
 
 }
 

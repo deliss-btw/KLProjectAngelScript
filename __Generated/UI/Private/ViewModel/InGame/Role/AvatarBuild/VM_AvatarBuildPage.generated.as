@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_AvatarBuildPage_Helpers
 {
 UFUNCTION()

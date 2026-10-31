@@ -1,4 +1,3 @@
-﻿
 enum ECommonDetailRightInfoMode
 {
     Count,
@@ -40,7 +39,7 @@ struct FVM_CommonDisplayDetail : FEUIViewModel
         this.m_ItemOwnNum = 0;
         this.m_HasBankLimit = false;
         this.m_ItemBankOwnNum = 0;
-        this.m_LockText = NSLOCTEXT("CommonDisplayDetail_Locked", "жњЄи§Јй”Ѓ");
+        this.m_LockText = NSLOCTEXT("CommonDisplayDetail_Locked", "未解锁");
         this.m_RightInfoMode = ECommonDetailRightInfoMode(0);
         this.m_bHasDisplayContent = false;
         if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
@@ -54,7 +53,7 @@ struct FVM_CommonDisplayDetail : FEUIViewModel
         this.m_ItemOwnNum = 0;
         this.m_HasBankLimit = false;
         this.m_ItemBankOwnNum = 0;
-        this.m_LockText = NSLOCTEXT("CommonDisplayDetail_Locked", "жњЄи§Јй”Ѓ");
+        this.m_LockText = NSLOCTEXT("CommonDisplayDetail_Locked", "未解锁");
         this.m_RightInfoMode = ECommonDetailRightInfoMode(0);
         this.m_bHasDisplayContent = false;
         this.m_ItemName = Other.m_ItemName;
@@ -93,7 +92,7 @@ struct FVM_CommonDisplayDetail : FEUIViewModel
         this.SetDetailIpText(FText());
         this.SetHasBankLimit(false);
         this.SetItemBankOwnNum(0);
-        this.SetLockText(NSLOCTEXT("CommonDisplayDetail_Locked", "жњЄи§Јй”Ѓ"));
+        this.SetLockText(NSLOCTEXT("CommonDisplayDetail_Locked", "未解锁"));
         this.SetRightInfoMode(ECommonDetailRightInfoMode(2));
         this.SetbHasDisplayContent(false);
         return;
@@ -137,7 +136,7 @@ struct FVM_CommonDisplayDetail : FEUIViewModel
             }
             if (local_1)
             {
-                NSLOCTEXT("CommonDisplayDetail_UnlockCondition", "и§Јй”ЃжќЎд»¶пјљ{0}");
+                NSLOCTEXT("CommonDisplayDetail_UnlockCondition", "解锁条件：{0}");
                 FText local_14;
                 this.SetDetailText(local_14);
                 return;
@@ -145,10 +144,10 @@ struct FVM_CommonDisplayDetail : FEUIViewModel
             if (GetUnlockCondition())
             {
                 FText local_18;
-                this.SetDetailText(FText::Format(NSLOCTEXT("CommonDisplayDetail_UnlockCondition", "и§Јй”ЃжќЎд»¶пјљ{0}"), local_18));
+                this.SetDetailText(FText::Format(NSLOCTEXT("CommonDisplayDetail_UnlockCondition", "解锁条件：{0}"), local_18));
                 return;
             }
-            this.SetDetailText(NSLOCTEXT("CommonDisplayDetail_LockedNoConditionFallback", "<й™ђе®љиЋ·еЏ–>"));
+            this.SetDetailText(NSLOCTEXT("CommonDisplayDetail_LockedNoConditionFallback", "<限定获取>"));
         }
         return;
     }
@@ -179,11 +178,11 @@ struct FVM_CommonDisplayDetail : FEUIViewModel
                 }
                 else
                 {
-                    __return = FText::Format(NSLOCTEXT("CommonDisplayDetail_DoubleMountCategory", "еЏЊдєє{0}"), local_10);
+                    __return = FText::Format(NSLOCTEXT("CommonDisplayDetail_DoubleMountCategory", "双人{0}"), local_10);
                 }
             }
         }
-        __return = FText::Format(NSLOCTEXT("CommonDisplayDetail_SingleMountCategory", "еЌ•дєє{0}"), local_10);
+        __return = FText::Format(NSLOCTEXT("CommonDisplayDetail_SingleMountCategory", "单人{0}"), local_10);
         return __return;
     }
     int GetRightInfoSwitcherIndex() const
@@ -418,7 +417,6 @@ struct __GeneratedProperties_FVM_CommonDisplayDetail
     ESlateVisibility DetailVisibility;
     UPROPERTY()
     TEUIModelRef<FVM_CommonDisplayDetail> Self;
-
 
 }
 

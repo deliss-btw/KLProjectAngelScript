@@ -1,4 +1,3 @@
-﻿
 namespace FaceCustomizeUtils
 {
 void ApplyFacePresetToActor(const AActor Actor, const uint AvatarId, const uint FacePresetId)
@@ -12,6 +11,8 @@ void ApplyFacePresetToActor(const AActor Actor, const uint AvatarId, const uint 
     {
         return;
     }
+    EGenderType local_100;
+    int local_99 = local_100;
     bool local_101 = false;
     USkeletalMeshComponent local_106 = AppearanceMeshUtils::ResolveViewMesh(Actor, local_101);
     if (local_106 == nullptr)
@@ -23,8 +24,7 @@ void ApplyFacePresetToActor(const AActor Actor, const uint AvatarId, const uint 
     {
         return;
     }
-    EGenderType local_100;
-    FaceCustomizeUtils::ApplyMeshToChild(local_108, local_74, EGenderType(local_100));
+    FaceCustomizeUtils::ApplyMeshToChild(local_108, local_74, EGenderType(local_99));
     return;
 }
 void ApplyMeshToChild(const USkeletalMeshComponent FaceMesh, const TDataObjectPtr<FFacePresetConfig> &inout PresetConfig, const EGenderType GenderType)

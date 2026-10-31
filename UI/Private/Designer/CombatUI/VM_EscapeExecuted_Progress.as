@@ -1,4 +1,3 @@
-﻿
 namespace FVM_EscapeExecuted_Progress
 {
     const int ModelId = 0;
@@ -29,7 +28,7 @@ struct FVM_EscapeExecuted_Progress : FEUIViewModel
     }
     void PostConstruct()
     {
-        this.SetHintText(NSLOCTEXT("EscapeExecutedHint", "иїћз‚№жЊЈи„±жЋ§е€¶пјЃ"));
+        this.SetHintText(NSLOCTEXT("EscapeExecutedHint", "连点挣脱控制！"));
         return;
     }
     const FText GetHintText() const property

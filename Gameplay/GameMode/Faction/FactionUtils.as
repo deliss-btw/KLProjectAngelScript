@@ -1,4 +1,3 @@
-﻿
 namespace FFactionUtils
 {
 UFUNCTION()

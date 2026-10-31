@@ -1,5 +1,3 @@
-﻿
-
 class UBTDecorator_CheckQuitCombatBackHomeWay : UBTDecorator_ECSScriptBase
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ class UBTDecorator_CheckQuitCombatBackHomeWay : UBTDecorator_ECSScriptBase
     EAIBackHomeWay ExpectedBackHomeWay = EAIBackHomeWay(1);
 
     default SetNodeName("Check QuitCombat BackHomeWay");
-
 
     UFUNCTION()
     FString GetStaticDescription_Implementation() const

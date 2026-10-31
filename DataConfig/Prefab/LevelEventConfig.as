@@ -1,4 +1,3 @@
-﻿
 enum ELevelEventType
 {
     RandomEvent,
@@ -31,7 +30,6 @@ struct FLevelEventInfoConfigBase : FBasePrefabConfig
     TArray<FDataObjectPtr> m_LevelObjectives;
     UPROPERTY()
     FDataObjectPtr m_DropRewardView;
-
 
     TDataObjectPtr<FPresentationConfig> GetPresentationConfig() const property
     {
@@ -77,7 +75,6 @@ struct FRandomEventTypeCountLimit
     UPROPERTY()
     int MaxCount = 99;
 
-
 }
 
 struct FRandomEventDistanceTier
@@ -86,7 +83,6 @@ struct FRandomEventDistanceTier
     float32 MaxDistance = 0.0f;
     UPROPERTY()
     float32 Weight = 1.0f;
-
 
 }
 
@@ -110,7 +106,6 @@ struct FLevelEventTypeAttribute
     TArray<TDataObjectPtr<FDropItemConfig>> RewardDropConfigs;
     UPROPERTY()
     TArray<FBuffConfigRef> MonsterDifficultyBuffs;
-
 
 }
 
@@ -223,7 +218,6 @@ struct FLevelRandomEventInfoConfig : FLevelEventInfoConfigBase
 
     FLevelRandomEventInfoConfig()
     {
-        super();
         this.LevelRandomEventType = ELevelRandomEventType(0);
         this.BaseScore = 100.0f;
         this.__InitDefaults();
@@ -268,7 +262,6 @@ struct FLevelPublicEventInfoConfig : FLevelEventInfoConfigBase
 
     FLevelPublicEventInfoConfig()
     {
-        super();
         this.PrepareToInteractDuration = 300.0f;
         this.InteractableKeepDuration = 120.0f;
         this.InProgressDuration = 300.0f;

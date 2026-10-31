@@ -1,5 +1,3 @@
-﻿
-
 class AKLLevelScriptBossTracking : AKLLevelScriptBaseActor
 {
     UPROPERTY()
@@ -14,7 +12,6 @@ class AKLLevelScriptBossTracking : AKLLevelScriptBaseActor
     FLevelTimerCallback DiscoverCheckTimer;
     bool bBossDiscovered = false;
     bool bTrackingActive = false;
-
 
     UFUNCTION()
     void ECSBeginPlayBP_Implementation()

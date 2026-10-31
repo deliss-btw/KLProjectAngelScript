@@ -1,12 +1,9 @@
-﻿
-
 class UBTDecorator_IsUnderScriptControl : UBTDecorator_ECSScriptBase
 {
     UPROPERTY()
     bool bCombat = false;
 
     default SetNodeName("Is Under ScriptControl");
-
 
     UFUNCTION()
     bool CalculateRawConditionValue_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const

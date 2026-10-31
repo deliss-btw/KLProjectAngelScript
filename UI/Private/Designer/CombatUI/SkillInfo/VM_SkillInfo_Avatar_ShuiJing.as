@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_SkillInfo_Avatar_ShuiJing
 {
     const int ModelId = 0;
@@ -76,15 +75,15 @@ struct FVMS_SkillInfo_Avatar_ShuiJing : FEUIViewModelSingleton
     void PostConstruct()
     {
         this.SetPlayerPawnEntity(this.GetContext().GetLocalPlayerPawn());
-        this.SetVM_SpecialAttackButton(FEUIModelRef());
+        this.SetVM_SpecialAttackButton(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
         Get local_10;
         local_10.opCall().SetSkillButtonType(ESkillButtonType(4));
         local_10.opCall().SetSkillProgressType(ESkillProgressType(4));
-        this.SetVM_SimpleSkillButton(FEUIModelRef());
+        this.SetVM_SimpleSkillButton(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
         local_10.opCall().SetSkillProgressType(ESkillProgressType(2));
-        this.SetVM_ExtraSkillButton(FEUIModelRef());
+        this.SetVM_ExtraSkillButton(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
         local_10.opCall().SetSkillProgressType(ESkillProgressType(2));
-        this.SetVM_UltraSkillButton(FEUIModelRef());
+        this.SetVM_UltraSkillButton(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
         local_10.opCall().SetSkillProgressType(ESkillProgressType(2));
         local_10.opCall().SetSkillButtonType(ESkillButtonType(2));
         UCombatGlobalSettings local_14 = ::UCombatGlobalSettings::Get();

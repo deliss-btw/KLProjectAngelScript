@@ -1,5 +1,3 @@
-﻿
-
 struct FT_PortalConfig : FECSTrait
 {
     FECSTrait _base_FECSTrait;

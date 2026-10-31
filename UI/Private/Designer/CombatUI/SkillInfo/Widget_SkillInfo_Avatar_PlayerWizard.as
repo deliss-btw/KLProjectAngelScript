@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_SkillInfo_Avatar_PlayerWizard
 {
     const int ViewID = 0;
@@ -351,6 +350,7 @@ namespace UWidget_SkillInfo_Avatar_PlayerWizard
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SkillInfo_Avatar_PlayerWizard;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCustomSkillEnergyChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnMagicUseCountChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCastProgressChanged"));

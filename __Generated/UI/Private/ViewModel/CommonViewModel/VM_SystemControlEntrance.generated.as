@@ -1,5 +1,3 @@
-﻿
-
 struct FConfigVM_SystemControlEntrance : FConfigEUIModelBase
 {
     UPROPERTY()

@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ForgeWeaponFormulaTree_Helpers
 {
 UFUNCTION()

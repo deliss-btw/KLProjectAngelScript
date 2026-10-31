@@ -1,5 +1,3 @@
-﻿
-
 struct FCustomVolumeAudioConfig : FDataObject
 {
     FDataObject _base_FDataObject;

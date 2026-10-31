@@ -1,4 +1,3 @@
-﻿
 enum ERefreshRuleType
 {
     None,
@@ -10,7 +9,6 @@ enum ERefreshRuleType
     Refresh_Forever,
     Refresh_Once,
 }
-
 
 struct FRefreshRuleConfig : FDataObject
 {
@@ -27,7 +25,6 @@ struct FRefreshRuleConfig : FDataObject
     FString Time;
     UPROPERTY()
     FString IntervalTime;
-
 
 }
 

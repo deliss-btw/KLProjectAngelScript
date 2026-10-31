@@ -1,5 +1,3 @@
-﻿
-
 struct FESMFXAnimCurveInterpoInstanceData
 {
     UPROPERTY()
@@ -21,7 +19,6 @@ class UESMAction_FXAnimCurve : UESMBPBaseSpanTickAction
     FFXAnimCurve FxAnimCurve;
     UPROPERTY()
     FName TagName;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetViewInstanceDataInfo_Implementation() const

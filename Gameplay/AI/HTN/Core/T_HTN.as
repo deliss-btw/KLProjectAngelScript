@@ -1,5 +1,3 @@
-﻿
-
 struct FT_HTN : FECSTrait
 {
     FECSTrait _base_FECSTrait;

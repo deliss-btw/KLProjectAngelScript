@@ -1,5 +1,3 @@
-﻿
-
 struct FAIPerceptionConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -23,7 +21,6 @@ struct FAIPerceptionConfig : FDataObject
     float32 HostilityAccumulationTime = 30.0f;
     UPROPERTY()
     float32 HostilityRemainTime = 1.0f;
-
 
 }
 

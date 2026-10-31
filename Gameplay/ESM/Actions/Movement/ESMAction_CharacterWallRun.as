@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CharacterWallRun : UESMBPBaseSpanAction
 {
     UESMAction_CharacterWallRun()

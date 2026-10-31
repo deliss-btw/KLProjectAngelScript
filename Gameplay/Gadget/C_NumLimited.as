@@ -1,4 +1,3 @@
-﻿
 enum ENumLimitManagerType
 {
     OwnerEntity,
@@ -32,7 +31,6 @@ struct FC_NumLimited : FECSComponent
     UPROPERTY()
     ENumLimitManagerType ManagerType;
 
-
 }
 
 struct FNumLimitedPairItem
@@ -42,14 +40,14 @@ struct FNumLimitedPairItem
     UPROPERTY()
     int m_LimitNum = 1;
 
-
     FName GetIdentifier() const property
     {
-        return this;
+        return this.m_Identifier;
     }
     void SetIdentifier(const FName &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Identifier = __Value;
+        return;
     }
     int GetLimitNum() const property
     {
@@ -72,11 +70,15 @@ struct FC_NumLimitedOverrides : FECSComponent
 
     FC_NumLimitedOverrides()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_NumLimitedOverrides(const FC_NumLimitedOverrides &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_ModifierItems = Other.m_ModifierItems;
         this.m_DefaultItems = Other.m_DefaultItems;
@@ -91,18 +93,49 @@ struct FC_NumLimitedOverrides : FECSComponent
     }
     int FindModifierItemIdx(const FName &inout Identifier) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        int local_1 = 0;
+        for (; local_1 < this.GetModifierItems().Num(); ++local_1)
+        {
+            if ((this.GetModifierItems()[local_1].GetIdentifier() == Identifier))
+            {
+                return local_1;
+            }
+        }
+        return INDEX_NONE;
     }
     int FindDefaultItemIdx(const FName &inout Identifier) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        int local_1 = 0;
+        for (; local_1 < this.GetDefaultItems().Num(); ++local_1)
+        {
+            if ((this.GetDefaultItems()[local_1].GetIdentifier() == Identifier))
+            {
+                return local_1;
+            }
+        }
+        return INDEX_NONE;
     }
     bool TryGetRealLimitedNum(const FName &inout Identifier, int &inout RealLimitedNum) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        bool __r; return __r;
+        int local_2 = this.FindDefaultItemIdx(Identifier);
+        if (local_2 == INDEX_NONE)
+        {
+            return false;
+        }
+        int local_1 = this.FindModifierItemIdx(Identifier);
+        if (local_1 == INDEX_NONE)
+        {
+            RealLimitedNum = this.GetDefaultItems()[local_2].GetLimitNum();
+        }
+        else
+        {
+            RealLimitedNum = (this.GetDefaultItems()[local_2].GetLimitNum() + this.GetModifierItems()[local_1].GetLimitNum());
+        }
+        if (RealLimitedNum <= 0)
+        {
+            RealLimitedNum = 1;
+        }
+        return true;
     }
     const TArray<FNumLimitedPairItem> GetModifierItems() const property
     {
@@ -163,11 +196,12 @@ struct FNumLimitedItem
     }
     FName GetIdentifier() const property
     {
-        return this;
+        return this.m_Identifier;
     }
     void SetIdentifier(const FName &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Identifier = __Value;
+        return;
     }
     FECSEntityId GetEntity() const property
     {
@@ -194,11 +228,15 @@ struct FC_NumLimitManager : FECSComponent
 
     FC_NumLimitManager()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_NumLimitManager(const FC_NumLimitManager &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_ManagerItems = Other.m_ManagerItems;
         return;
@@ -321,37 +359,37 @@ bool RemoveNumLimited(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorNumLimitedOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_NumLimited, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_NumLimited, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNumLimitedOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_NumLimited, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_NumLimited, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNumLimitedOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_NumLimited, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_NumLimited, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNumLimitedOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_NumLimited, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_NumLimited, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNumLimitedOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_NumLimited, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_NumLimited, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorNumLimitedLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_NumLimited, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_NumLimited, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorNumLimitedActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_NumLimited, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_NumLimited, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorNumLimitedModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_NumLimited, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_NumLimited, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_NumLimitedOverrides
@@ -431,37 +469,37 @@ bool RemoveNumLimitedOverrides(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorNumLimitedOverridesOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_NumLimitedOverrides, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_NumLimitedOverrides, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNumLimitedOverridesOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_NumLimitedOverrides, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_NumLimitedOverrides, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNumLimitedOverridesOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_NumLimitedOverrides, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_NumLimitedOverrides, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNumLimitedOverridesOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_NumLimitedOverrides, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_NumLimitedOverrides, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNumLimitedOverridesOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_NumLimitedOverrides, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_NumLimitedOverrides, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorNumLimitedOverridesLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_NumLimitedOverrides, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_NumLimitedOverrides, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorNumLimitedOverridesActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_NumLimitedOverrides, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_NumLimitedOverrides, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorNumLimitedOverridesModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_NumLimitedOverrides, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_NumLimitedOverrides, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_NumLimitManager
@@ -541,37 +579,37 @@ bool RemoveNumLimitManager(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorNumLimitManagerOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_NumLimitManager, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_NumLimitManager, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNumLimitManagerOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_NumLimitManager, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_NumLimitManager, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNumLimitManagerOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_NumLimitManager, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_NumLimitManager, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNumLimitManagerOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_NumLimitManager, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_NumLimitManager, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNumLimitManagerOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_NumLimitManager, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_NumLimitManager, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorNumLimitManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_NumLimitManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_NumLimitManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorNumLimitManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_NumLimitManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_NumLimitManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorNumLimitManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_NumLimitManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_NumLimitManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_NumLimitManagerChanged
@@ -654,37 +692,37 @@ bool RemoveNumLimitManagerChanged(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorNumLimitManagerChangedOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_NumLimitManagerChanged, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_NumLimitManagerChanged, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNumLimitManagerChangedOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_NumLimitManagerChanged, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_NumLimitManagerChanged, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNumLimitManagerChangedOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_NumLimitManagerChanged, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_NumLimitManagerChanged, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNumLimitManagerChangedOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_NumLimitManagerChanged, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_NumLimitManagerChanged, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorNumLimitManagerChangedOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_NumLimitManagerChanged, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_NumLimitManagerChanged, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorNumLimitManagerChangedLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_NumLimitManagerChanged, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_NumLimitManagerChanged, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorNumLimitManagerChangedActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_NumLimitManagerChanged, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_NumLimitManagerChanged, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorNumLimitManagerChangedModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_NumLimitManagerChanged, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_NumLimitManagerChanged, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

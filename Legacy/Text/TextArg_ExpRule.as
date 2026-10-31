@@ -1,5 +1,3 @@
-﻿
-
 struct FTextArgConfig_ExpRule : FTextArgConfig
 {
     FTextArgConfig _base_FTextArgConfig;

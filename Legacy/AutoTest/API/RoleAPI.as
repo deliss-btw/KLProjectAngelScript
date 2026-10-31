@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::API::RoleAPI
 {
 void ChangeRole(const int SlotIndex, const uint AvatarId)

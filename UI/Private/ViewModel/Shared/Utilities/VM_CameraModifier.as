@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CameraModifier
 {
     const int ModelId = 0;
@@ -40,10 +39,7 @@ struct FVM_CameraModifier : FEUIViewModel
     {
         if (this.GetCameraConfig().IsValid())
         {
-            this.GetContext().GetLocalPlayerPawn();
-            FECSEntity local_12 = this.GetContext().GetLocalPlayer();
-            FCameraHandle local_14;
-            this.SetCameraHandle(local_14);
+            this.SetCameraHandle(::PresentationCameraUtils::PushPresentationCameraByConfig(this.GetContext().GetLocalPlayer(), this.GetCameraConfig().CameraName, EPresentationCameraLayer(5), this.GetCameraConfig(), this.GetContext().GetLocalPlayerPawn()));
         }
         return;
     }

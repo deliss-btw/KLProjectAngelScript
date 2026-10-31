@@ -1,5 +1,3 @@
-﻿
-
 struct FTestASMultiThreadingStorage
 {
     UPROPERTY()
@@ -15,7 +13,6 @@ struct FTestASMultiThreadingStorage
     UPROPERTY()
     FString SchedulerThreadName = "None";
 
-
 }
 
 class US_TestASMultiThreadingSystem : UECSScriptSystem
@@ -25,7 +22,6 @@ class US_TestASMultiThreadingSystem : UECSScriptSystem
     bool bTestAsyncDispatchDependencySerial = false;
     bool bCheckMultiThreadingAccessErrorReport = false;
     FInstancedStruct TestLocalStorage;
-
 
     UFUNCTION()
     bool IsDisabled_Implementation() const
@@ -616,17 +612,13 @@ struct __ParallelBatchJob_S_TestASMultiThreadingSystem_68
     UPROPERTY()
     EECSRegType __JobRegType;
     UPROPERTY()
-    const US_TestASMultiThreadingSystem __JobSystem;
+    const US_TestASMultiThreadingSystem __JobSystem = nullptr;
 
-    __ParallelBatchJob_S_TestASMultiThreadingSystem_68()
-    {
-        this.__JobRegType = EECSRegType(0);
-        this.__JobSystem = nullptr;
-        return;
-    }
     __ParallelBatchJob_S_TestASMultiThreadingSystem_68(const FECSWorldPtr &inout InJobWorld, const EECSRegType InJobRegType, const US_TestASMultiThreadingSystem &in InJobSystem)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.__JobWorld = InJobWorld;
+        this.__JobRegType = InJobRegType;
+        return;
     }
     void opCall(const TArray<FECSEntityId> &in EntityIds, const int StartIndex, const int EndIndex)
     {
@@ -635,7 +627,7 @@ struct __ParallelBatchJob_S_TestASMultiThreadingSystem_68
         int local_1 = StartIndex;
         for (; local_1 < EndIndex; )
         {
-            FECSEntity local_6 = FECSEntity(this, EntityIds[local_1]);
+            FECSEntity local_6 = FECSEntity(this.__JobWorld, EntityIds[local_1]);
             FECSParallelModifyEntityScope local_7 = ECSInternal::FECSParallelModifyEntityScope(this.__JobRegType, local_6.GetId());
             FECSEntityScopeCycleCounter local_10 = FECSEntityScopeCycleCounter(local_6);
             this.__JobSystem.ClientJob_TestParallelSpecifierSample(local_12, local_14);
@@ -652,17 +644,13 @@ struct __ParallelBatchJob_S_TestASMultiThreadingSystem_205
     UPROPERTY()
     EECSRegType __JobRegType;
     UPROPERTY()
-    const US_TestASMultiThreadingSystem __JobSystem;
+    const US_TestASMultiThreadingSystem __JobSystem = nullptr;
 
-    __ParallelBatchJob_S_TestASMultiThreadingSystem_205()
-    {
-        this.__JobRegType = EECSRegType(0);
-        this.__JobSystem = nullptr;
-        return;
-    }
     __ParallelBatchJob_S_TestASMultiThreadingSystem_205(const FECSWorldPtr &inout InJobWorld, const EECSRegType InJobRegType, const US_TestASMultiThreadingSystem &in InJobSystem)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.__JobWorld = InJobWorld;
+        this.__JobRegType = InJobRegType;
+        return;
     }
     void opCall(const TArray<FECSEntityId> &in EntityIds, const int StartIndex, const int EndIndex)
     {
@@ -671,7 +659,7 @@ struct __ParallelBatchJob_S_TestASMultiThreadingSystem_205
         int local_1 = StartIndex;
         for (; local_1 < EndIndex; )
         {
-            FECSEntity local_6 = FECSEntity(this, EntityIds[local_1]);
+            FECSEntity local_6 = FECSEntity(this.__JobWorld, EntityIds[local_1]);
             FECSParallelModifyEntityScope local_7 = ECSInternal::FECSParallelModifyEntityScope(this.__JobRegType, local_6.GetId());
             FECSEntityScopeCycleCounter local_10 = FECSEntityScopeCycleCounter(local_6);
             this.__JobSystem.ClientJob_TestParallelSpecifierSample_AccessErrorPath(local_12, local_14);

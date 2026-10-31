@@ -1,5 +1,3 @@
-﻿
-
 delegate bool FSettingApplyIndexHandler(const int OptionIndex);
 
 delegate bool FSettingApplyValueHandler(const float32 Value);
@@ -21,8 +19,21 @@ bool QualitySetMatchesCurrent(const FQualitySet &inout Preset)
 }
 float32 GetCurrentQualityPresetIndex()
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    float32 __r; return __r;
+    UKLGameUserSettings local_2 = UKLGameUserSettings::Get();
+    if (SettingUtils::QualitySetMatchesCurrent(local_2.GetRecommendQuality()))
+    {
+        return 4.0f;
+    }
+    const TArray<FQualitySet>& local_8 = local_2.GetQualityPresets();
+    int local_9 = 0;
+    for (; local_9 < local_8.Num(); ++local_9)
+    {
+        if (SettingUtils::QualitySetMatchesCurrent(local_8[local_9]))
+        {
+            return local_9;
+        }
+    }
+    return 4.0f;
 }
 float32 GetPresetValue(const FInstancedStruct &inout ApplyEffect, const float32 Value)
 {

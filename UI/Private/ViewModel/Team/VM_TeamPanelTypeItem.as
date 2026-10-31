@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TeamPanelTypeItem
 {
     const int ModelId = 0;
@@ -56,8 +55,7 @@ struct FVM_TeamPanelTypeItem : FEUIViewModel
     }
     void ChangeToTeamType()
     {
-        int local_3 = int(this.GetTeamType());
-        this.GetTeamPanel().opArrow().SetTeamType();
+        this.GetTeamPanel().opArrow().SetTeamType(this.GetTeamType());
         return;
     }
     TEUIModelWeakRef<FVM_TeamPanel> GetTeamPanel() const property
@@ -101,14 +99,13 @@ struct __GeneratedProperties_FVM_TeamPanelTypeItem
     UPROPERTY()
     TEUIModelRef<FVM_TeamPanelTypeItem> Self;
 
-
 }
 
 namespace FVM_TeamPanelTypeItem
 {
 FVM_TeamPanelTypeItem& Create(const UObject ContextObject, const TEUIModelWeakRef<FVM_TeamPanel> &inout TeamPanel, const ETeamType TeamType)
 {
-    return FVM_TeamPanelTypeItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), TeamPanel);
+    return FVM_TeamPanelTypeItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), TeamPanel, ETeamType(TeamType));
 }
 FVM_TeamPanelTypeItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVM_TeamPanel> &inout TeamPanel, const ETeamType TeamType)
 {

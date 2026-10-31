@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_InventoryMain
 {
     const int ViewID = 0;
@@ -46,7 +45,6 @@ class UWidget_InventoryMain : UEUIActivatableWidget
     FGetEUIModelRef InventoryMainDelegate;
     UPROPERTY()
     FGetEUIModelRef VisibilityStateDelegate;
-
 
     UFUNCTION()
     void OnInitialized_Implementation()
@@ -135,7 +133,7 @@ class UWidget_InventoryMain : UEUIActivatableWidget
         {
             local_1 = true;
         }
-        FText local_22 = local_1 ? NSLOCTEXT("InventoryMain", "SwitchFocusToFilterSorter", "з­›йЂ‰жЋ’еєЏ") : NSLOCTEXT("InventoryMain", "SwitchFocusToItemList", "йЃ“е…·е€—иЎЁ");
+        FText local_22 = local_1 ? NSLOCTEXT("InventoryMain", "SwitchFocusToFilterSorter", "筛选排序") : NSLOCTEXT("InventoryMain", "SwitchFocusToItemList", "道具列表");
         this.SwitchFocusActionBinding.SetOverrideDisplayText(local_22);
         return;
     }
@@ -194,8 +192,7 @@ class UWidget_InventoryMain : UEUIActivatableWidget
             ClearSelection();
             return;
         }
-        int local_11 = GetCurrentDisplayItems().IndexOfByKey(local_4);
-        SelectItemIndex();
+        GetCurrentDisplayItems().IndexOfByKey(local_4).SelectItemIndex();
         return;
     }
     UFUNCTION()
@@ -218,7 +215,7 @@ class UWidget_InventoryMain : UEUIActivatableWidget
     }
     void ApplySharedHoverAnchorToItemModels()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argint]
+        // body not fully recovered — stub [argmismatch:argint]
     }
     void SyncItemTileSelectionAndFocus()
     {
@@ -228,7 +225,7 @@ class UWidget_InventoryMain : UEUIActivatableWidget
             return;
         }
         local_5 = GetSelectedItemIndex();
-        if (!(GetCurrentDisplayItems().IsValidIndex()))
+        if (!(GetCurrentDisplayItems().IsValidIndex(local_5)))
         {
             this.w_tile_Item.SetSelectedIndex(INDEX_NONE);
             return;
@@ -264,7 +261,7 @@ class UWidget_InventoryMain : UEUIActivatableWidget
     }
     void ApplySharedHoverAnchorToCurrencyModels()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argint]
+        // body not fully recovered — stub [argmismatch:argint]
     }
     void ApplySharedHoverAnchorToExistingItemWidgets()
     {
@@ -683,7 +680,6 @@ class UWidget_InventoryMainItem : UEUIUserListItemWidget
     UPROPERTY()
     FGetEUIModelRef SelectableItemDelegate;
 
-
     UFUNCTION()
     void OnViewBind_Implementation()
     {
@@ -764,20 +760,7 @@ class UWidget_InventoryMainItem : UEUIUserListItemWidget
     UFUNCTION()
     void ApplySharedHoverAnchor(const UWidget InHoverAnchor, const ECommonHoverLayout InHoverLayout)
     {
-        if (this.InventoryMainItem.IsValid())
-        {
-            InHoverAnchor.SetSharedHoverAnchor();
-        }
-        if (this.UI_Common_HoverProvider == nullptr)
-        {
-            return;
-        }
-        this.UI_Common_HoverProvider.SetHoverForWidgetOverride(InHoverAnchor);
-        if (this.UI_Common_HoverProvider.HoverProvider.IsValid())
-        {
-            SetHoverPosition();
-        }
-        return;
+        // body not fully recovered — stub [argmismatch:argint]
     }
     void ApplyConfiguredSharedHoverAnchor()
     {
@@ -959,6 +942,7 @@ namespace UWidget_InventoryMain
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_InventoryMain;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectListOpenChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCurrentDisplayItemsChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedItemIndexChanged"));
@@ -978,6 +962,7 @@ namespace UWidget_InventoryMainItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_InventoryMainItem;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnPinnedTipRequestChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectableItemSelectionChanged"));
     return;

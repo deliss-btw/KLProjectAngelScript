@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Debug_PresentationCameraSystem = FConsoleVariable();
 namespace FAsPresentationCameraSystemUtils
 {
@@ -100,8 +99,9 @@ class US_PresentationCameraSystem : UECSScriptSystem
     UFUNCTION()
     void ClientJob_InitLayerConduitCamera(const FECSEntity &inout ControllerEntity) const
     {
-        FName local_82 = FName("LayerConduitCamera");
         FC_PresentationCameraContext local_6;
+        FLayerConduitCamera local_80;
+        ::PresentationCameraContextUtils::PushLayerConduitCamera(local_6, EPresentationCameraLayer(0), FName("LayerConduitCamera"), local_80);
         FCameraEventData_PushLayerConduitCamera local_84;
         local_6.CameraParamsContext.GetPendingCameraEventDatas().Enqueue(FInstancedStruct::Make(local_84));
         local_6.bInit = true;
@@ -181,9 +181,9 @@ class US_PresentationCameraSystem : UECSScriptSystem
         }
         if (local_30.CurrentCameraInstanceData.CameraPairIndex.IsValid() && (int(local_30.CurrentCameraInstanceData.CameraPairIndex.GetCameraType()) != int(local_34.GetCameraType())))
         {
-            this.RemoveCameraTargetTag(local_18, ECameraType(local_30.CurrentCameraInstanceData.CameraPairIndex.GetCameraType()));
+            this.RemoveCameraTargetTag(local_18, local_30.CurrentCameraInstanceData.CameraPairIndex.GetCameraType());
         }
-        this.AssignCameraTargetTag(local_18, ECameraType(local_34.GetCameraType()));
+        this.AssignCameraTargetTag(local_18, local_34.GetCameraType());
         if (local_13)
         {
             local_30.SwitchToNewTopCamera(local_34, local_24.GetCameraParamsContext(), ECS::GetRuntimeInfo().Time, LocalPlayer);

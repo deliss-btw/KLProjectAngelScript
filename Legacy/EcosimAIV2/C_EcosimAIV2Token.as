@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_EcosimAIV2TokenByTarget_NS
 {
     const TECSComponentDerivedPtr<FCS_EcosimAIV2TokenByTarget> DerivedPtr = TECSComponentDerivedPtr<FCS_EcosimAIV2TokenByTarget>();
@@ -18,8 +17,7 @@ struct FEcosimAIV2TokenByTargetKey
     }
     uint Hash() const
     {
-        int local_1 = this.TargetEntity.GetIdValue();
-        return HashCombine(this.GetHash());
+        return (HashCombine(this.RowName.GetHash(), this.TargetEntity.GetIdValue()));
     }
 }
 
@@ -35,7 +33,6 @@ struct FAITokenByTarget
     FFPTime LastConsumedTime;
     UPROPERTY()
     TArray<float> ParallelRecoverTimers;
-
 
 }
 
@@ -138,16 +135,16 @@ bool RemoveEcosimAIV2TokenByTarget(const FECSWorldPtr &inout World)
 }
 void __MonitorEcosimAIV2TokenByTargetLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_EcosimAIV2TokenByTarget, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_EcosimAIV2TokenByTarget, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2TokenByTargetActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_EcosimAIV2TokenByTarget, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_EcosimAIV2TokenByTarget, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2TokenByTargetModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_EcosimAIV2TokenByTarget, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_EcosimAIV2TokenByTarget, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

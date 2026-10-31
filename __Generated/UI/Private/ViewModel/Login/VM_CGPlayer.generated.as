@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CGPlayer_Helpers
 {
 UFUNCTION()

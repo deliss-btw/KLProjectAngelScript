@@ -1,4 +1,3 @@
-﻿
 enum EInteractionBehaviorAction_SendMessageHintTarget
 {
     InteractSource,
@@ -14,13 +13,11 @@ enum EInteractionBehaviorAction_MessageHintParameterType
     DataObjectPtr,
 }
 
-
 UCLASS(Abstract)
 class UInteractionBehaviorActionBase : UObject
 {
     UPROPERTY()
     bool bPresentationOnly = false;
-
 
     void TriggerAction(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
@@ -44,8 +41,7 @@ class UInteractionBehaviorAction_ESMTriggerBase : UInteractionBehaviorActionBase
     {
         if ((FName(this.Trigger.ESMBBTrigger.Name) == NAME_None))
         {
-            FString local_12 = "ESMBBTrigger Name is None! ";
-            FString local_8 = this.GetPathName(nullptr);
+            XError(ELog(0), (FString("ESMBBTrigger Name is None! ") + this.GetPathName(nullptr)));
             return;
         }
         FECSEntity local_26 = this.GetTriggerEntity(InteractSource, InteractTarget, InteractTargetPointAndBehaviorIndex);
@@ -84,7 +80,6 @@ class UInteractionBehaviorAction_TargetESMTrigger : UInteractionBehaviorAction_E
     UPROPERTY()
     bool bSecondaryInteractSource = false;
 
-
     FECSEntity GetTriggerEntity(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
         if (this.bSecondaryInteractSource)
@@ -113,7 +108,6 @@ class UInteractionBehaviorAction_TriggerTargetAbility : UInteractionBehaviorActi
     bool bSecondaryInteractSource = false;
     UPROPERTY()
     FName CustomEventName;
-
 
     void TriggerAction(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
@@ -329,7 +323,7 @@ class UInteractionBehaviorAction_DestroyProp : UInteractionBehaviorActionBase
     }
     void TriggerAction(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
-        if (ECS::GetRuntimeInfo().IsServer)
+        if (int(ECS::GetRuntimeInfo().IsServer) != 0)
         {
             ::FLifeCycleUtils::EntityDeath(InteractTarget, InteractSource.GetId(), ECS::GetECSWorld().GetFixedTime().Time, true, true, false, true, EDeathReason(0));
         }
@@ -344,10 +338,9 @@ class UInteractionBehaviorAction_StartProgressOperation : UInteractionBehaviorAc
     UPROPERTY()
     bool bTryJoinWhenTargetInOperation = true;
 
-
     void TriggerAction(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
-        if (ECS::GetRuntimeInfo().IsServer)
+        if (int(ECS::GetRuntimeInfo().IsServer) != 0)
         {
             if (this.bTryJoinWhenTargetInOperation)
             {
@@ -359,7 +352,7 @@ class UInteractionBehaviorAction_StartProgressOperation : UInteractionBehaviorAc
                     return;
                 }
             }
-            ::FProgressOperationUtils::StartProgressOperation(InteractSource, InteractTarget, this.ProgressOperationConfig, false);
+            ::FProgressOperationUtils::StartProgressOperation(InteractSource, InteractTarget, this.ProgressOperationConfig, (0 != 0));
         }
         return;
     }
@@ -373,7 +366,6 @@ class UInteractionBehaviorAction_JoinProgressOperation : UInteractionBehaviorAct
     bool bCanJoinByOperationEntity = true;
     UPROPERTY()
     bool bCanJoinByTarget = true;
-
 
     void TriggerAction(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
@@ -455,7 +447,6 @@ class UInteractionBehaviorAction_ConsumeItem : UInteractionBehaviorActionBase
     TDataObjectPtr<FItemConfig> ItemConfig;
     UPROPERTY()
     int ItemNumber = 1;
-
 
     void TriggerAction(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
@@ -670,7 +661,6 @@ struct FAddBuffConfigItem
     UPROPERTY()
     int AddStackNum = 1;
 
-
 }
 
 class UInteractionBehaviorAction_SourceAddBuff : UInteractionBehaviorActionBase
@@ -710,7 +700,6 @@ class UInteractionBehaviorAction_PropAddBuffToPlayer : UInteractionBehaviorActio
     UPROPERTY()
     TArray<FName> BuffTagNames;
 
-
     void TriggerAction(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
         if (!(ECS::GetRuntimeInfo().IsServer))
@@ -740,7 +729,6 @@ struct FInteractionBehaviorAction_MessageHintParameter
     UPROPERTY()
     FDataObjectPtr DataObjectPtrValue;
 
-
 }
 
 class UInteractionBehaviorAction_MessageHint : UInteractionBehaviorActionBase
@@ -754,10 +742,9 @@ class UInteractionBehaviorAction_MessageHint : UInteractionBehaviorActionBase
     UPROPERTY()
     TArray<FInteractionBehaviorAction_MessageHintParameter> CustomParameters;
 
-
     void TriggerAction(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
 }
 

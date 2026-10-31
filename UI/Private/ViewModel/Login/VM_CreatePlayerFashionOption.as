@@ -1,4 +1,3 @@
-﻿
 enum ECreatePlayerFashionItemType
 {
     Face,
@@ -27,11 +26,28 @@ struct FVM_CreatePlayerFashionOption : FEUIViewModel
 
     FVM_CreatePlayerFashionOption()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_ItemType = ECreatePlayerFashionItemType(1);
+        this.m_SlotType = EFashionSlotType(0);
+        this.m_DataId = 0;
+        this.m_ItemIndex = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVM_CreatePlayerFashionOption(const FVM_CreatePlayerFashionOption &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_ItemType = ECreatePlayerFashionItemType(1);
+        this.m_SlotType = EFashionSlotType(0);
+        this.m_DataId = 0;
+        this.m_ItemIndex = INDEX_NONE;
+        this.m_ItemType = Other.m_ItemType;
+        this.m_SlotType = Other.m_SlotType;
+        this.m_DataId = int(Other.m_DataId);
+        this.m_ItemIndex = int(Other.m_ItemIndex);
+        this.m_OwnerCreatePlayer = Other.m_OwnerCreatePlayer;
+        return;
     }
     FVM_CreatePlayerFashionOption& opAssign(const FVM_CreatePlayerFashionOption &inout Other)
     {
@@ -43,8 +59,7 @@ struct FVM_CreatePlayerFashionOption : FEUIViewModel
     }
     void Setup(FVM_CreatePlayer &inout InOwner, const ECreatePlayerFashionItemType InItemType, const EFashionSlotType InSlotType, const uint InDataId, const int InItemIndex = INDEX_NONE)
     {
-        FEUIModelRef local_4;
-        this.SetOwnerCreatePlayer(FEUIModelWeakRef(local_4));
+        this.SetOwnerCreatePlayer(FEUIModelWeakRef(FEUIModelRef(InOwner)));
         this.SetItemType(ECreatePlayerFashionItemType(InItemType));
         this.SetSlotType(EFashionSlotType(InSlotType));
         this.SetDataId(InDataId);

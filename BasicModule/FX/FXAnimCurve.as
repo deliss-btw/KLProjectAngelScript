@@ -1,11 +1,9 @@
-﻿
 enum EFXAnimCurveSource
 {
     Time,
     EntityBB,
     Attribute,
 }
-
 
 struct FFXAnimCurveFloat
 {
@@ -19,7 +17,6 @@ struct FFXAnimCurveFloat
     FGameAttributeSelectorView Attribute;
     UPROPERTY()
     float32 InterpoSpeed = 0.0f;
-
 
 }
 
@@ -36,7 +33,6 @@ struct FFXAnimCurveVector
     UPROPERTY()
     float32 InterpoSpeed = 0.0f;
 
-
 }
 
 struct FFXAnimCurveColor
@@ -51,7 +47,6 @@ struct FFXAnimCurveColor
     FGameAttributeSelectorView Attribute;
     UPROPERTY()
     float32 InterpoSpeed = 0.0f;
-
 
 }
 
@@ -89,7 +84,7 @@ struct FFXAnimCurve
         float32 local_31 = 0.0f;
         const FFXAnimCurveVector& local_58;
         const FFXAnimCurveColor& local_98;
-        for (auto& local_20 : this)
+        for (auto& local_20 : this.FloatCurves)
         {
             const FName& local_22 = local_20.GetKey();
             float local_30 = this.GetSampleTime(local_24.Source, OwnerEntity, Time, local_24.BBVarName, local_24.Attribute.AttributeClass, WorldTime);

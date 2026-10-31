@@ -1,4 +1,3 @@
-﻿
 enum EEquipmentType
 {
     None,
@@ -26,7 +25,6 @@ enum EBoonTraitAdaptRule
     PVXBoss,
 }
 
-
 struct FTraitModifiers
 {
     UPROPERTY()
@@ -47,7 +45,6 @@ struct FCapabilityConfigWithLevel
     UPROPERTY()
     int m_Level = 1;
 
-
     const TDataObjectPtr<FCapabilityConfig> GetCapabilityConfig() const property
     {
         const TDataObjectPtr<FCapabilityConfig> __r;
@@ -60,7 +57,8 @@ struct FCapabilityConfigWithLevel
     }
     void SetCapabilityConfig(const TDataObjectPtr<FCapabilityConfig> &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_CapabilityConfig = __Value;
+        return;
     }
     int GetLevel() const property
     {
@@ -114,7 +112,6 @@ struct FTraitConfig : FDataObject
     UPROPERTY()
     int BoonDropNumLimit = 0;
 
-
     const TDataObjectPtr<FAvatarMappingConfig> GetAdaptAvatar() const property
     {
         const TDataObjectPtr<FAvatarMappingConfig> __r;
@@ -146,7 +143,6 @@ struct FTraitParam
     UPROPERTY()
     uint m_Level;
 
-
     TDataObjectPtr<FTraitConfig> GetTrait() const property
     {
         TDataObjectPtr<FTraitConfig> __r;
@@ -159,7 +155,8 @@ struct FTraitParam
     }
     void SetTrait(const TDataObjectPtr<FTraitConfig> &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Trait = __Value;
+        return;
     }
     uint GetLevel() const property
     {
@@ -183,7 +180,6 @@ struct FTraitDepotElemConfig : FDataObject
     FTraitParam Param;
     UPROPERTY()
     uint Weight;
-
 
 }
 
@@ -210,7 +206,6 @@ struct FEquipmentAttributeData
     UPROPERTY()
     float32 Value;
 
-
 }
 
 struct FEquipmentConfig : FInventoryItemConfig
@@ -228,7 +223,6 @@ struct FEquipmentConfig : FInventoryItemConfig
     TArray<uint> TrailDepot;
     UPROPERTY()
     FSoftBrush EquipmentDisplayImage;
-
 
     int GetMaxRandomTrait() const
     {
@@ -257,7 +251,6 @@ struct FWeaponConfig : FEquipmentConfig
 
     FWeaponConfig()
     {
-        super();
         this.WeaponType = EWeaponType(0);
         this.__InitDefaults();
         return;
@@ -276,7 +269,6 @@ struct FTalismanConfig : FEquipmentConfig
 
     FTalismanConfig()
     {
-        super();
         this.TalismanType = ETalismanType(0);
         this.__InitDefaults();
         return;
@@ -290,7 +282,6 @@ struct FEquipmentTraitData
     UPROPERTY()
     int m_TraitLevel;
 
-
     TDataObjectPtr<FTraitConfig> GetTraitConfig() const property
     {
         TDataObjectPtr<FTraitConfig> __r;
@@ -303,7 +294,8 @@ struct FEquipmentTraitData
     }
     void SetTraitConfig(const TDataObjectPtr<FTraitConfig> &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_TraitConfig = __Value;
+        return;
     }
     int GetTraitLevel() const property
     {
@@ -339,7 +331,8 @@ struct FEquipmentData
     }
     void SetEquipmentConfig(const TDataObjectPtr<FEquipmentConfig> &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_EquipmentConfig = __Value;
+        return;
     }
     const TArray<FTraitParam> GetTraits() const property
     {

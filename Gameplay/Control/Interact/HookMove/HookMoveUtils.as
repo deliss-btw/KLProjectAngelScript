@@ -1,4 +1,3 @@
-﻿
 namespace FHookMoveUtils
 {
 UFUNCTION()
@@ -95,6 +94,7 @@ int GetBestOffsetIndexFromSpline(const FECSEntity &inout HookMovePointEntity, co
     }
     if (local_5)
     {
+        FC_SplineMoveConfig local_30;
         USplineComponent local_22 = local_18.GetSpline();
         if (local_22 == nullptr)
         {
@@ -104,27 +104,21 @@ int GetBestOffsetIndexFromSpline(const FECSEntity &inout HookMovePointEntity, co
         float32 local_43 = 3.4028235e38f;
         int local_45 = -1;
         int local_46 = 0;
-        while (local_46 < 0)
+        for (; local_46 < local_30.SplineOffsets.Num(); ++local_46)
         {
             if (FHookMoveUtils::bIsSplinePointOffsetIndexInUse(HookMovePointEntity, local_46))
             {
+                continue;
             }
-            else
+            FVector local_62 = local_22.GetLocationAtDistanceAlongSpline(local_30.StartDistanceOnSpline, ESplineCoordinateSpace(1));
+            FVector local_68 = (local_62 + local_22.GetTangentAtDistanceAlongSpline(local_30.StartDistanceOnSpline, ESplineCoordinateSpace(1)).GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector).Rotation().RotateVector(FVector(local_30.SplineOffsets[local_46])));
+            float32 local_44 = float32(local_42.DistSquared(local_68));
+            if (local_44 < local_43)
             {
-                FC_SplineMoveConfig local_30;
-                FVector local_62 = local_22.GetLocationAtDistanceAlongSpline(local_30.StartDistanceOnSpline, ESplineCoordinateSpace(1));
-                FVector local_54 = local_22.GetTangentAtDistanceAlongSpline(local_30.StartDistanceOnSpline, ESplineCoordinateSpace(1));
-                ESplineCoordinateSpace local_76;
-                FVector local_68 = (local_62 + local_76.Rotation().RotateVector(FVector(local_30.SplineOffsets[local_46])));
-                float32 local_44 = float32(local_42.DistSquared(local_68));
-                if (local_44 < local_43)
-                {
-                    local_43 = local_44;
-                    local_45 = local_46;
-                    OutTargetPos = local_68;
-                }
+                local_43 = local_44;
+                local_45 = local_46;
+                OutTargetPos = local_68;
             }
-            ++local_46;
         }
         return local_45;
     }

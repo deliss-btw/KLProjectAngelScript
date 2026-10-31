@@ -1,5 +1,3 @@
-﻿
-
 class US_MovementAttributeSystem : UECSScriptSystem
 {
     US_MovementAttributeSystem()
@@ -17,7 +15,7 @@ class US_MovementAttributeSystem : UECSScriptSystem
             FDTCharacterMovementConfig local_4;
             TDataObjectPtr<FDTCharacterMovementConfig> local_28 = TDataObjectPtr<FDTCharacterMovementConfig>(CharacterMovementConfig.ConfigDataKey);
             local_29 = 1.0f;
-            if (DestMovementParam.bMoveSpeedScaledByEntityScale)
+            if (int(DestMovementParam.bMoveSpeedScaledByEntityScale) != 0)
             {
                 Get local_36;
                 const FC_Scale& local_32 = local_36.opCall();
@@ -147,8 +145,8 @@ class US_MovementAttributeSystem : UECSScriptSystem
             {
                 local_37 = DestMovementParam.StepHeight;
             }
-            DestMovementParam.bKeepStepHeightInAir = (local_4.bKeepStepHeightInAir != 0);
-            DestMovementParam.bImmovableByPlayer = (local_4.bImmovableByPlayer != 0);
+            DestMovementParam.bKeepStepHeightInAir = (int(local_4.bKeepStepHeightInAir) != 0);
+            DestMovementParam.bImmovableByPlayer = (int(local_4.bImmovableByPlayer) != 0);
             local_37 = local_4.WalkableSlopDegree;
             DestMovementParam.SlopeSpeedScale = local_4.SlopeSpeedScale;
             local_38 = local_4.DitchProtectRadius;

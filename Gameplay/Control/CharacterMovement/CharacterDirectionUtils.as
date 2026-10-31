@@ -1,4 +1,3 @@
-﻿
 enum ECharacterDirectionType
 {
     Default,
@@ -17,7 +16,7 @@ namespace FCharacterDirectionUtils
 {
 FRotator GetTargetRotation(const FECSEntity &inout Entity, const ECharacterDirectionType DirType, const bool bAllowPitch = false, const FFPTime &inout ExactTime = FFPTime(-1))
 {
-    int local_1;
+    bool local_1;
     return FCharacterDirectionUtils::GetTargetRotation(Entity, ECharacterDirectionType(DirType), bAllowPitch, ExactTime, local_1);
 }
 FRotator GetTargetRotation(const FECSEntity &inout Entity, const ECharacterDirectionType DirType, const bool bAllowPitch, const FFPTime &inout ExactTime, bool &out bHasFallback)
@@ -145,8 +144,7 @@ FRotator GetTargetRotation(const FECSEntity &inout Entity, const ECharacterDirec
                     bool local_22_4 = !(false);
                     if (!(local_25) == local_22_4)
                     {
-                        ELog local_132;
-                        (FString("Encounter undefined dir type ") + local_132);
+                        XError(ELog(11), (FString("Encounter undefined dir type ") + DirType));
                         return FRotator::ZeroRotator;
                     }
                 }

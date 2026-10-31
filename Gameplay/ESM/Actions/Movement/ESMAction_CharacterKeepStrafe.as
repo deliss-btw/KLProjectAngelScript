@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CharacterKeepStrafe : UESMCharacterKeepStrafeAction
 {
     UESMAction_CharacterKeepStrafe()

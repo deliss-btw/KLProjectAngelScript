@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::API::ESMAPI
 {
 FString GetCurrentStateName(const uint EntityId, const int SMRuntimeIndex)
@@ -12,10 +11,8 @@ FString GetCurrentStateName(const uint EntityId, const int SMRuntimeIndex)
     FString local_12 = FString();
     ThrowIf(local_24, !((local_24 != nullptr)));
     ThrowIf(!(local_30), FString().Append("EntityID: ").Append(EntityId).Append(" FC_ESMPlayer is null."));
-    FString local_12_2 = FString();
-    ThrowIf((SMRuntimeIndex >= local_30.Player.GetSMRuntime().Num()), local_12_2.Append("EntityID: ").Append(EntityId).Append(" SMRuntimeIndex: ").Append(SMRuntimeIndex).Append(" is out of range."));
-    local_24.GetBaseState(local_30.Player.GetSMRuntime()[local_12_2].GetStateIndex()).GetDisplayName();
-    return local_12_2;
+    ThrowIf((SMRuntimeIndex >= local_30.Player.GetSMRuntime().Num()), FString().Append("EntityID: ").Append(EntityId).Append(" SMRuntimeIndex: ").Append(SMRuntimeIndex).Append(" is out of range."));
+    return local_24.GetBaseState(local_30.Player.GetSMRuntime()[SMRuntimeIndex].GetStateIndex()).GetDisplayName();
 }
 FString GetAvatarCurrentStateName(const int SMRuntimeIndex)
 {

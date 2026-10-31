@@ -1,4 +1,3 @@
-﻿
 enum EEASAbilityEvent
 {
     OnAdd,
@@ -69,7 +68,6 @@ enum EEASAbilityEvent
     OnMountEndBeingDriven,
 }
 
-
 struct FAbilityHitEventContextData : FAbilityEventCustomDataBase
 {
     UPROPERTY()
@@ -77,14 +75,12 @@ struct FAbilityHitEventContextData : FAbilityEventCustomDataBase
     UPROPERTY()
     int DamageEventId;
 
-
 }
 
 struct FAbilityHitEventData : FAbilityEventCustomDataBase
 {
     UPROPERTY()
     int DamageIndex;
-
 
 }
 
@@ -94,7 +90,6 @@ struct FAbilityDamageCalculatedEventData : FAbilityEventCustomDataBase
     FECSEntity DamageTarget;
     UPROPERTY()
     int DamageIndex;
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 enum EFriendActionState
 {
     AddFriend,
@@ -124,7 +123,7 @@ struct FVM_FriendItem : FEUIViewModel
         {
             this.SetPlayerBasicItem(TEUIModelRef<FVM_PlayerBasicItem>(::FVM_PlayerBasicItem::Create(this.GetContext().Manager, this.GetFriendRow().opArrow().GetBrief())));
         }
-        this.SetIsFriendTipsText(NSLOCTEXT("Friend", "IsFriendTipsText", "е·ІжЇеҐЅеЏ‹"));
+        this.SetIsFriendTipsText(NSLOCTEXT("Friend", "IsFriendTipsText", "已是好友"));
         this.RefreshTipsContext();
         this.RefreshActionState();
         this.RefreshOnlineStatus();
@@ -153,8 +152,21 @@ struct FVM_FriendItem : FEUIViewModel
     }
     float32 GetPlayerItemAlpha() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        float32 __r; return __r;
+        float32 local_2 = 0.0f;
+        const UChatSettings local_6;
+        GetGameplaySettings<UChatSettings> local_8;
+        local_6 = local_8;
+        if (local_6 != nullptr)
+        {
+            local_2 = local_6.FriendItemOfflineAlpha;
+        }
+        if (this.GetOnlineStatusCache() == 1)
+        {
+        }
+        else
+        {
+        }
+        return local_2;
     }
     void OnFriendBriefChanged_RefreshOnline()
     {
@@ -368,7 +380,7 @@ struct FVM_FriendItem : FEUIViewModel
             {
                 local_17 = 59;
             }
-            return FText::Format(NSLOCTEXT("Friend", "FriendApplyTipsMinutes", "{0}е€†й’џе‰Ќз”іиЇ·"), local_17);
+            return FText::Format(NSLOCTEXT("Friend", "FriendApplyTipsMinutes", "{0}分钟前申请"), local_17);
         }
         if (local_7 < 86400)
         {
@@ -381,14 +393,14 @@ struct FVM_FriendItem : FEUIViewModel
             {
                 local_17 = 23;
             }
-            return FText::Format(NSLOCTEXT("Friend", "FriendApplyTipsHours", "{0}е°Џж—¶е‰Ќз”іиЇ·"), local_17);
+            return FText::Format(NSLOCTEXT("Friend", "FriendApplyTipsHours", "{0}小时前申请"), local_17);
         }
         local_17 = FMath::IntegerDivisionTrunc(local_7, 86400);
         if (local_17 < 1)
         {
             local_17 = 1;
         }
-        return FText::Format(NSLOCTEXT("Friend", "FriendApplyTipsDays", "{0}е¤©е‰Ќз”іиЇ·"), local_17);
+        return FText::Format(NSLOCTEXT("Friend", "FriendApplyTipsDays", "{0}天前申请"), local_17);
     }
     void RefreshTipsContext()
     {
@@ -437,11 +449,11 @@ struct FVM_FriendItem : FEUIViewModel
             bool local_8 = ::FriendUtil::IsFriend(this.GetPlayerUid());
             if (local_8)
             {
-                this.SetActionState(EFriendActionState(EFriendActionState(1)));
+                this.SetActionState(EFriendActionState(1));
             }
             else
             {
-                this.SetActionState(EFriendActionState(EFriendActionState(0)));
+                this.SetActionState(EFriendActionState(0));
             }
         }
         else
@@ -449,19 +461,19 @@ struct FVM_FriendItem : FEUIViewModel
             int local_6 = local_1;
             if (local_6 == 0)
             {
-                this.SetActionState(EFriendActionState(EFriendActionState(2)));
+                this.SetActionState(EFriendActionState(2));
             }
             else
             {
                 if (local_1 == 1)
                 {
-                    this.SetActionState(EFriendActionState(EFriendActionState(3)));
+                    this.SetActionState(EFriendActionState(3));
                 }
                 else
                 {
                     if (local_1 == 3)
                     {
-                        this.SetActionState(EFriendActionState(EFriendActionState(2)));
+                        this.SetActionState(EFriendActionState(2));
                     }
                 }
             }
@@ -698,7 +710,6 @@ struct __GeneratedProperties_FVM_FriendItem
     UPROPERTY()
     TEUIModelRef<FVM_FriendItem> Self;
 
-
 }
 
 namespace FVM_FriendItem
@@ -715,7 +726,123 @@ FVM_FriendItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIMod
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "PlayerBasicItem";
+    local_14.TypeName = "TEUIModelRef<FVM_PlayerBasicItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TipsContextText";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TipsContextIndex";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ActionStateIndex";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsFriendTipsText";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "RedDotVM";
+    local_14.TypeName = "TEUIModelRef<FVM_RedDot>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "RelationshipIndex";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsShowFriendTag";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "OnlineStatus";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PlayerItemAlpha";
+    local_14.TypeName = "float32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "FriendName";
+    local_14.TypeName = "FString";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsCurrentPeer";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PeerTitle";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PeerPreviewText";
+    local_14.TypeName = "FString";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_FriendItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_FriendItem;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(12);
+    local_22.AddRefPropertyDirty(0, 0, FM_FriendRow::__IndexOf_Brief());
+    local_22.AddRefPropertyDirty(1, 3, FMS_ChatRuntimeData::__IndexOf_SelectFriendTab());
+    local_22.AddRefPropertyDirty(2, 3, FMS_ChatRuntimeData::__IndexOf_SelectMainTab());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("FriendRow");
+    int local_2_2 = FM_FriendRow::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FM_FriendRow::__IndexOf_Brief(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    local_30.PropertyName = FName("ChatRuntimeData");
+    int local_24 = FMS_ChatRuntimeData::ModelId;
+    int local_24_2 = local_22.GetMappingDirtyOffset(3);
+    local_30.RelatedDirtyMask.SetBit(FMS_ChatRuntimeData::__IndexOf_SelectFriendTab(), true);
+    local_30.RelatedDirtyMask.SetBit(FMS_ChatRuntimeData::__IndexOf_SelectMainTab(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnFriendBriefChanged_RefreshOnline";
+    local_40.DirtyFlags.Set(FVM_FriendItem::__IndexOf_FriendRow());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnChatMainTabChanged_RefreshTips";
+    local_40.DirtyFlags.Set(FVM_FriendItem::__IndexOf_ChatRuntimeData());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(2));
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnSelectFriendTabChanged_RefreshFriendApplyTips";
+    local_40.DirtyFlags.Set(FVM_FriendItem::__IndexOf_ChatRuntimeData());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(1));
+    Result.DirtyFunctions.Add(local_40);
+    FEUIModelMsgHandleDefine local_50;
+    local_50.FunctionName = "__OnPrivateChatUpdatedForTips";
+    local_50.MessageTypeName = "Msg_PrivateChatUpdated";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

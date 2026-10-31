@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_ProgressOperation
 {
     const int ModelId = 0;
@@ -50,7 +49,7 @@ struct FVMS_ProgressOperation : FEUIViewModelSingleton
         this.m_bIsInitiator = false;
         this.m_bIsLeave = false;
         this.m_CanvasVisibility = ESlateVisibility(0);
-        this.m_ExecuteWolfHint = NSLOCTEXT("QTE", "GlimmeringWolf_Hint", "ењЁйЂ‚еЅ“ж—¶жњєжЋ§е€¶з›®ж ‡пјЊйЃїе…Ќе…¶йЂѓи„±пјЃ");
+        this.m_ExecuteWolfHint = NSLOCTEXT("QTE", "GlimmeringWolf_Hint", "在适当时机控制目标，避免其逃脱！");
         if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
         {
             return;
@@ -69,7 +68,7 @@ struct FVMS_ProgressOperation : FEUIViewModelSingleton
         this.m_bIsInitiator = false;
         this.m_bIsLeave = false;
         this.m_CanvasVisibility = ESlateVisibility(0);
-        this.m_ExecuteWolfHint = NSLOCTEXT("QTE", "GlimmeringWolf_Hint", "ењЁйЂ‚еЅ“ж—¶жњєжЋ§е€¶з›®ж ‡пјЊйЃїе…Ќе…¶йЂѓи„±пјЃ");
+        this.m_ExecuteWolfHint = NSLOCTEXT("QTE", "GlimmeringWolf_Hint", "在适当时机控制目标，避免其逃脱！");
         this.m_PlayerPawnEntity = Other.m_PlayerPawnEntity;
         this.m_TargetEntity = Other.m_TargetEntity;
         this.m_State = Other.m_State;
@@ -587,7 +586,9 @@ void __Tick(FVMS_ProgressOperation &inout Model)
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorProgressLocalPredicationHideLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorProgressLocalPredicationHideModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 float32 __UIGetter_ValueProgress(const FVMS_ProgressOperation &inout Model)
 {

@@ -1,4 +1,3 @@
-﻿
 enum EInvincibleCounterType
 {
     Default,
@@ -105,7 +104,6 @@ struct FCE_HitEvent : FECSEvent
     UPROPERTY()
     TDataObjectPtr<FAttackData> AttackData;
 
-
 }
 
 struct FCE_DamageEvent : FECSEvent
@@ -150,7 +148,6 @@ struct FCE_DamageEvent : FECSEvent
     UPROPERTY()
     TDataObjectPtr<FAttackData> AttackData;
 
-
 }
 
 struct FCE_DeathResistanceHPChangeEvent : FECSEvent
@@ -162,7 +159,6 @@ struct FCE_DeathResistanceHPChangeEvent : FECSEvent
     float32 Delta = 0.0f;
     UPROPERTY()
     FECSEntity DamageCauser;
-
 
 }
 
@@ -183,7 +179,6 @@ struct FCE_BeHitFreezeFrame : FECSEvent
     FECSEvent _base_FECSEvent;
     UPROPERTY()
     int DeferredEventID;
-
 
 }
 
@@ -219,7 +214,6 @@ struct FCE_ShowDamageNumber : FECSEvent
     UPROPERTY()
     FFPTime HitTime;
 
-
 }
 
 struct FCE_HitAIHostility : FECSEvent
@@ -232,7 +226,6 @@ struct FCE_HitAIHostility : FECSEvent
     UPROPERTY()
     TDataObjectPtr<FAttackData> AttackData;
 
-
 }
 
 struct FCE_EntityDestroyRequest : FECSEvent
@@ -240,7 +233,6 @@ struct FCE_EntityDestroyRequest : FECSEvent
     FECSEvent _base_FECSEvent;
     UPROPERTY()
     bool bSkipPlayerControlled = false;
-
 
 }
 
@@ -252,11 +244,15 @@ struct FC_WaitHitBreakRecover : FECSComponent
 
     FC_WaitHitBreakRecover()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_WaitHitBreakRecover(const FC_WaitHitBreakRecover &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_RecoverTime = Other.m_RecoverTime;
         return;
@@ -313,7 +309,6 @@ struct FCE_InvincibleCounterEvent : FECSEvent
     UPROPERTY()
     EInvincibleCounterType Type = EInvincibleCounterType(0);
 
-
 }
 
 struct FCE_PerfectDodgeEvent : FECSEvent
@@ -354,7 +349,6 @@ struct FCE_HitShakeEvent : FECSEvent
     UPROPERTY()
     EHitShakeBodyType HitShakeBodyType;
 
-
 }
 
 struct FCE_Reborn : FECSEvent
@@ -370,7 +364,6 @@ struct FCE_Reborn : FECSEvent
     bool bFromPlayerRebornEvent = false;
     UPROPERTY()
     EReviveType ReviveType;
-
 
 }
 
@@ -451,37 +444,37 @@ bool RemoveWaitHitBreakRecover(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorWaitHitBreakRecoverOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_WaitHitBreakRecover, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_WaitHitBreakRecover, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorWaitHitBreakRecoverOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_WaitHitBreakRecover, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_WaitHitBreakRecover, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorWaitHitBreakRecoverOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_WaitHitBreakRecover, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_WaitHitBreakRecover, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorWaitHitBreakRecoverOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_WaitHitBreakRecover, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_WaitHitBreakRecover, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorWaitHitBreakRecoverOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_WaitHitBreakRecover, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_WaitHitBreakRecover, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorWaitHitBreakRecoverLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_WaitHitBreakRecover, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_WaitHitBreakRecover, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorWaitHitBreakRecoverActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_WaitHitBreakRecover, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_WaitHitBreakRecover, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorWaitHitBreakRecoverModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_WaitHitBreakRecover, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_WaitHitBreakRecover, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

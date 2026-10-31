@@ -1,4 +1,3 @@
-﻿
 namespace FSocialTeamUtils
 {
 int GetMaxSocialMember()

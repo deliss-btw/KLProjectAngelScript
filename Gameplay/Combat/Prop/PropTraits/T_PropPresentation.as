@@ -1,5 +1,3 @@
-﻿
-
 struct FT_Prop_Presentation : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -8,7 +6,7 @@ struct FT_Prop_Presentation : FECSTrait
     UPROPERTY()
     FC_LevelSpotConfig Config_FC_LevelSpotConfig;
 
-    default CustomName = FName("UIиЎЁзЋ° (FT_Prop_Presentation)");
+    default CustomName = FName("UI表现 (FT_Prop_Presentation)");
 
     FT_Prop_Presentation()
     {

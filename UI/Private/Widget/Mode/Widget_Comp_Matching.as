@@ -1,10 +1,6 @@
-﻿
 namespace UWidget_Comp_Matching
 {
     const int ViewID = 0;
-
-// NOTE: class defaults are not authored in this module: UWidget_Comp_Matching (default scalar field UEUIActivatableWidget.bAutoActivate has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
 
 }
 class UWidget_Comp_Matching : UEUIActivatableWidget
@@ -33,6 +29,7 @@ namespace UWidget_Comp_Matching
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_Comp_Matching;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

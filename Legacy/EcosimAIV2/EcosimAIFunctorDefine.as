@@ -1,4 +1,3 @@
-﻿
 namespace FEcosimAIV2PrologDeclare
 {
     const FEcoFunctorDeclare ecosimaiv2_point_usage_type = FEcoFunctorDeclare();

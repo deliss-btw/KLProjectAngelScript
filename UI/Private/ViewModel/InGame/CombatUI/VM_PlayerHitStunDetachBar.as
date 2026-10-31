@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PlayerHitStunDetachBar
 {
     const int ModelId = 0;
@@ -143,13 +142,13 @@ struct FVM_PlayerHitStunDetachBar : FEUIViewModel
         {
             if (int(this.GetDetachBarVisibility()) != 1)
             {
-                this.SetDetachBarVisibility(ESlateVisibility(ESlateVisibility(1)));
+                this.SetDetachBarVisibility(ESlateVisibility(1));
                 this.SetDisplayDetachBarRatio(0.0f);
                 this.SetDisplayPreviewDetachBarRatio(0.0f);
             }
             return;
         }
-        this.SetDetachBarVisibility(ESlateVisibility(ESlateVisibility(4)));
+        this.SetDetachBarVisibility(ESlateVisibility(4));
         float32 local_6 = 0.0f;
         bool local_7 = false;
         if (local_14)

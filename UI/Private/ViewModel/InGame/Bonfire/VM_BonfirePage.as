@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_BonfirePage
 {
     const int ModelId = 0;

@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_EcologySyncCreatureActivityData : UBTTask_ECSScriptBase
 {
     UPROPERTY()
@@ -196,7 +194,7 @@ class UBTTask_ModifyNeedReAllocateMark : UBTTask_ECSScriptBase
     EBTNodeResult ExecuteTask_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const
     {
         FECSEntity local_4 = FECSEntity(Context.PawnEntity);
-        ::FEcologyBehaviorUtils::ModifyCreatureNeedReAllocateState(local_4, this.NeedReAllocate);
+        ::FEcologyBehaviorUtils::ModifyCreatureNeedReAllocateState(local_4, (this.NeedReAllocate));
         return EBTNodeResult(0);
     }
 }
@@ -216,7 +214,7 @@ class UBTTask_ModifyNeedDoDefaultBehaviorMark : UBTTask_ECSScriptBase
     EBTNodeResult ExecuteTask_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const
     {
         FECSEntity local_4 = FECSEntity(Context.PawnEntity);
-        ::FEcologyBehaviorUtils::ModifyCreatureNeedDoDefaultBehavior(local_4, this.NeedDoDefaultBehavior);
+        ::FEcologyBehaviorUtils::ModifyCreatureNeedDoDefaultBehavior(local_4, (this.NeedDoDefaultBehavior));
         return EBTNodeResult(0);
     }
 }

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TalentUpgradeConfirm
 {
     const int ModelId = 0;
@@ -204,8 +203,8 @@ struct FVM_TalentUpgradeConfirm : FEUIViewModel
             local_338.SetConfig(local_132.Item);
             local_338.SetNum(int(local_132.Count));
             FEUIModelContainer local_352;
-            TEUIModelRef<FM_ItemData> local_354 = TEUIModelRef<FM_ItemData>(local_338);
-            local_352.AddModel(FEUIModelRef(), false);
+            FEUIModelRef local_356 = FEUIModelRef(::FVM_Item::Create(this.GetContext().Manager, TEUIModelRef<FM_ItemData>(local_338)));
+            local_352.AddModel(local_356, false);
             TEUIModelRef<FVM_CommonRewardItem> local_358 = TEUIModelRef<FVM_CommonRewardItem>(::FVM_CommonRewardItem::Create(this.GetContext().Manager, local_352, true));
             local_118.Add(local_358);
         }
@@ -312,7 +311,7 @@ struct FVM_TalentUpgradeConfirm : FEUIViewModel
         if (!(this.GetTalentNode().IsValid()))
         {
             FCommonTipsParam local_12;
-            ::CommonPopup::WeakTips(NSLOCTEXT("Talent", "TalentNotUnlocked", "иЇ·е…€и§Јй”ЃеЅ“е‰Ќе¤©иµ‹"), local_12);
+            ::CommonPopup::WeakTips(NSLOCTEXT("Talent", "TalentNotUnlocked", "请先解锁当前天赋"), local_12);
             return;
         }
         bool local_3 = true;
@@ -320,13 +319,13 @@ struct FVM_TalentUpgradeConfirm : FEUIViewModel
         if (!(local_3.CanUpgrade()))
         {
             FCommonTipsParam local_12;
-            ::CommonPopup::WeakTips(NSLOCTEXT("Talent", "TalentCostNotEnough", "е¤©иµ‹еЌ‡зє§ж‰ЂйњЂиµ„жєђдёЌи¶і"), local_12);
+            ::CommonPopup::WeakTips(NSLOCTEXT("Talent", "TalentCostNotEnough", "天赋升级所需资源不足"), local_12);
             return;
         }
         if (::FASCommonUtils::IsInCombat(this.GetContext().GetLocalPlayerPawn()))
         {
             FCommonTipsParam local_12;
-            ::CommonPopup::WeakTips(NSLOCTEXT("Talent", "TalentCannotUpgradeInCombat", "ж€ж–—дё­ж— жі•еЌ‡зє§е¤©иµ‹"), local_12);
+            ::CommonPopup::WeakTips(NSLOCTEXT("Talent", "TalentCannotUpgradeInCombat", "战斗中无法升级天赋"), local_12);
             return;
         }
         FEUIModelRef local_26 = FEUIModelRef(this);
@@ -347,7 +346,7 @@ struct FVM_TalentUpgradeConfirm : FEUIViewModel
     {
         FCommonTipsParam local_8;
         int local_14 = 0;
-        ::CommonPopup::Tips(NSLOCTEXT("Talent", "TalentCannotUpgradeSuccess", "еЌ‡зє§ж€ђеЉџпјЃ"), local_8);
+        ::CommonPopup::Tips(NSLOCTEXT("Talent", "TalentCannotUpgradeSuccess", "升级成功！"), local_8);
         this.CreateUpgradeDesc();
         this.CreateUpgradeCostVM();
         TEUIModelRef<FM_TalentNode> local_10 = this.GetTalentNode();
@@ -545,7 +544,6 @@ struct __GeneratedProperties_FVM_TalentUpgradeConfirm
     bool CanUpgrade;
     UPROPERTY()
     TEUIModelRef<FVM_TalentUpgradeConfirm> Self;
-
 
 }
 

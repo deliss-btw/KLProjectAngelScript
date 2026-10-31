@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MissionSpotInfo
 {
     const int ModelId = 0;

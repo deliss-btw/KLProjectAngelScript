@@ -1,10 +1,7 @@
-﻿
-
 struct FVM_NavigationBarConfigDefault : FConfigEUIModelDefaultBase
 {
     UPROPERTY()
     float32 DelayShowSeconds = 1.5f;
-
 
 }
 

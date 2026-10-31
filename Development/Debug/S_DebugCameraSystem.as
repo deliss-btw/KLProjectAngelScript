@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Camera_DebugDraw = FConsoleVariable();
 const FConsoleVariable CVar_Camera_DebugTraceTime = FConsoleVariable();
 const FConsoleVariable CVar_Camera_DebugTraceDirArrow = FConsoleVariable();
@@ -23,7 +22,6 @@ struct FDebugCameraInfo
     FVector LastFollowPosWithOffset;
     UPROPERTY()
     float32 LastTime;
-
 
 }
 
@@ -360,7 +358,62 @@ namespace CameraDebugUtils
 {
 bool SweepCameraCollisionObject(const FVector &inout FollowTarget, const FRotator &inout CamRotation, const FVector &inout TargetOffset, const FVector &inout SocketOffset, const float32 HorizontalFlip, const float32 MuteCollisionDistance, FHitResult &inout OutHit)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    bool __r; return __r;
+    FQuat local_16 = FQuat(CamRotation);
+    FVector local_28 = (local_16 * FVector::ForwardVector);
+    FVector local_22 = (local_16 * FVector::RightVector);
+    FVector local_40(FVector::UpVector);
+    FVector local_34 = (local_28 * TargetOffset.X);
+    FVector local_54_2 = (local_34 + ((local_22 * TargetOffset.Y) * HorizontalFlip));
+    FVector local_60_2 = (local_40 * TargetOffset.Z);
+    FVector local_34_2 = (local_54_2 + local_60_2);
+    FVector local_46 = (local_28 * SocketOffset.X);
+    FVector local_60_3 = (local_22 * SocketOffset.Y);
+    FVector local_54_3 = (local_60_3 * HorizontalFlip);
+    FVector local_60_4 = (local_46 + local_54_3);
+    FVector local_54_4 = (local_40 * SocketOffset.Z);
+    FVector local_46_2 = (local_60_4 + local_54_4);
+    FVector local_60_5 = (FollowTarget + local_34_2);
+    FVector local_66 = (local_60_5 + local_46_2);
+    int local_79 = 1123024896;
+    float32 local_83 = FCameraUtils::GetNearClipPlane() * FMath::Tan(FMath::DegreesToRadians(60.0f));
+    float32 local_81 = local_83 + 8.0f;
+    float32 local_84 = local_83 + 1.0f;
+    FCollisionQueryParams local_124;
+    TArray<FHitResult> local_128;
+    FPhysicsUtils::SweepMulti(ECS::GetUEWorld(), EPhysicsTraceTag(1), local_128, FollowTarget, local_60_5, FQuat::Identity, ECollisionChannel(4), FCollisionShape::MakeSphere(local_81 + 1.0f), local_124, FCollisionResponseParams());
+    FVector local_152 = local_60_5;
+    int local_153 = 0;
+    for (; local_153 < local_128.Num(); ++local_153)
+    {
+        if (MuteCollisionDistance > 0.0f && (float32(((FVector(local_128[local_153].Location) - FollowTarget).SizeSquared())) < (MuteCollisionDistance * MuteCollisionDistance)))
+        {
+            continue;
+        }
+        if (!(local_128[local_153].GetbBlockingHit()))
+        {
+            continue;
+        }
+        local_152 = local_128[local_153].Location;
+        OutHit = local_128[local_153];
+        break;
+    }
+    FVector local_72 = (local_152 + local_46_2);
+    TArray<FHitResult> local_166;
+    FPhysicsUtils::SweepMulti(ECS::GetUEWorld(), EPhysicsTraceTag(1), local_166, local_152, local_72, FQuat::Identity, ECollisionChannel(4), FCollisionShape::MakeSphere(local_84 + 1.0f), local_124, FCollisionResponseParams());
+    int local_153_2 = 0;
+    for (; local_153_2 < local_166.Num(); ++local_153_2)
+    {
+        if (MuteCollisionDistance > 0.0f && (float32(((FVector(local_166[local_153_2].Location) - FollowTarget).SizeSquared())) < (MuteCollisionDistance * MuteCollisionDistance)))
+        {
+            continue;
+        }
+        if (!(local_166[local_153_2].GetbBlockingHit()))
+        {
+            continue;
+        }
+        OutHit = local_166[local_153_2];
+        return true;
+    }
+    return OutHit.GetbBlockingHit();
 }
 }

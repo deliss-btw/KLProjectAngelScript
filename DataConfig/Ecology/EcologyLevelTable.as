@@ -1,5 +1,3 @@
-﻿
-
 struct FEcologyLevelDataObject : FDataObject
 {
     FDataObject _base_FDataObject;

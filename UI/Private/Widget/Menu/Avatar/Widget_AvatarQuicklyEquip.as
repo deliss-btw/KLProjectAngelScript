@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_AvatarQuicklyEquip
 {
     const int ViewID = 0;
@@ -200,6 +199,7 @@ namespace UWidget_AvatarQuicklyEquip
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_AvatarQuicklyEquip;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleCurEquipmentEquipedUpdate"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleItemTraitComparedChanged"));
     return;

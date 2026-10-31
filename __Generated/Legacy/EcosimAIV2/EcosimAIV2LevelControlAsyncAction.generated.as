@@ -1,5 +1,3 @@
-﻿
-
 class UASECSDelayActionTestWrapper : UECSAsyncActionBase
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ class UASECSDelayActionTestWrapper : UECSAsyncActionBase
     FECSAsyncActionDelegate OnDelayFinished;
     UPROPERTY()
     FECSAsyncActionDelegate OnDelayFinished1;
-
 
     UFUNCTION()
     UScriptStruct GetAsyncActionClass_Implementation() const

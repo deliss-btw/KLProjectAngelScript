@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::API::AnimAPI
 {
 float32 GetAnimStateNormalizedTime(const uint EntityId, const int StateIndex)

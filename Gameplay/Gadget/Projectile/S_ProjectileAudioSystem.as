@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Projectile_DebugAudio = FConsoleVariable();
 
 class US_ProjectileAudioSystem : UECSScriptSystem
@@ -20,7 +19,7 @@ class US_ProjectileAudioSystem : UECSScriptSystem
         {
             return;
         }
-        if (!(SFXEvent.bSelfOnly))
+        if (int(SFXEvent.bSelfOnly) == 0)
         {
             local_11 = false;
         }
@@ -164,7 +163,7 @@ class US_ProjectileAudioSystem : UECSScriptSystem
                 }
                 if (local_17)
                 {
-                    FGameAudioUtils::PlayEventOnEmitter(local_16.ExitEvent, Entity, FLoadEventCallback(), EGameAudioEmitterPartType(0), local_16.bFollow, true, true, FGameAudioUtils::GetCachedAudioWorld(), true);
+                    FGameAudioUtils::PlayEventOnEmitter(local_16.ExitEvent, Entity, FLoadEventCallback(), EGameAudioEmitterPartType(0), (int(local_16.bFollow) != 0), true, true, FGameAudioUtils::GetCachedAudioWorld(), true);
                     if (CVar_Projectile_DebugAudio.GetBool())
                     {
                         Print(FString().Append("ProjectileDurationalSFXViewRemove Exit ").Append(local_16.ExitEvent.GetAssetName()), 5.0f, FLinearColor::LucBlue);
@@ -277,7 +276,7 @@ class US_ProjectileAudioSystem : UECSScriptSystem
             local_15 = false;
             for (auto& local_30 : RtpcList.GetActiveEntries())
             {
-                if (local_30.GetTimelineIndex() == local_14.TimelineIndex && (local_30.GetActionIndex() == int(local_14.ActionIndex)))
+                if (local_30.GetTimelineIndex() == int(local_14.TimelineIndex) && (local_30.GetActionIndex() == int(local_14.ActionIndex)))
                 {
                     local_15 = true;
                     break;

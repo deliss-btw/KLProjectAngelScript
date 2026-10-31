@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_MissionInfoTitle
 {
     const int ViewID = 0;
@@ -16,7 +15,6 @@ class UWidget_MissionInfoTitle : UEUIUserWidget
     FEUIModelWeakRef __TitleInfo;
     UPROPERTY()
     FGetEUIModelRef TitleInfoDelegate;
-
 
     UFUNCTION()
     void Construct_Implementation()
@@ -144,6 +142,7 @@ namespace UWidget_MissionInfoTitle
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MissionInfoTitle;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnContentChange"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("CloseInfoTitle"));
     return;

@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_PlayerMinimapIcon_Helpers
 {
 UFUNCTION()

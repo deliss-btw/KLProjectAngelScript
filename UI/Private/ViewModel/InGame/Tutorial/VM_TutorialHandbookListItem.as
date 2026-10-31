@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TutorialHandbookListItem
 {
     const int ModelId = 0;

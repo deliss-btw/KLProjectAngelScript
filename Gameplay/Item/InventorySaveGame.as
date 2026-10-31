@@ -1,12 +1,9 @@
-﻿
-
 struct FInventoryCategorySortData
 {
     UPROPERTY()
     int64 LastSortTimestamp;
     UPROPERTY()
     UItemSorterBase LastUsedSorter = nullptr;
-
 
 }
 

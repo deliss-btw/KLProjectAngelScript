@@ -1,4 +1,3 @@
-﻿
 enum EPostProcessAnimCurveSource
 {
     Time,
@@ -28,7 +27,6 @@ struct FPostProcessAnimFloatCurve
     UPROPERTY()
     FGameAttributeSelectorView Attribute;
 
-
 }
 
 struct FPostProcessAnimVectorCurve
@@ -42,13 +40,12 @@ struct FPostProcessAnimVectorCurve
     UPROPERTY()
     FGameAttributeSelectorView Attribute;
 
-
 }
 
 struct FPostProcessAnim
 {
     UPROPERTY()
-    UMaterialInterface BlendMaterial;
+    UMaterialInterface BlendMaterial = nullptr;
     UPROPERTY()
     FName AttachLocationSlotName;
     UPROPERTY()
@@ -71,7 +68,6 @@ struct FPostProcessAnim
     bool bUseFadeOutCurve = false;
     UPROPERTY()
     FRuntimeFloatCurve BlendOutCurve;
-
 
     void UpdateAnim(const UMaterialInstanceDynamic Material, const FVector &inout AttachLocation, const FECSEntity &inout Entity, const float Time, const float Duration, const FFPTime &inout WorldTime) const
     {
@@ -185,11 +181,16 @@ struct FCameraPostProcessAnimRange
 
     FCameraPostProcessAnimRange()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_bUpdateAttach = false;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        return;
     }
     FCameraPostProcessAnimRange(const FCameraPostProcessAnimRange &inout Other)
     {
         this.m_bUpdateAttach = false;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.m_AttachEntity = Other.m_AttachEntity;
         this.m_bUpdateAttach = Other.m_bUpdateAttach;
         this.m_AttachSocketName = Other.m_AttachSocketName;
@@ -362,7 +363,6 @@ struct FCameraPostProcessAnimResourceData
     UPROPERTY()
     bool bAttachLocationIsSet = false;
 
-
 }
 
 struct FC_CameraPostProcessAnimResource : FECSComponent
@@ -386,11 +386,15 @@ struct FC_CameraPostProcessAnim : FECSComponent
 
     FC_CameraPostProcessAnim()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_CameraPostProcessAnim(const FC_CameraPostProcessAnim &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_Anims = Other.m_Anims;
         return;
@@ -505,37 +509,37 @@ bool RemoveCameraPostProcessAnimResource(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCameraPostProcessAnimResourceOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CameraPostProcessAnimResource, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CameraPostProcessAnimResource, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraPostProcessAnimResourceOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CameraPostProcessAnimResource, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CameraPostProcessAnimResource, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraPostProcessAnimResourceOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CameraPostProcessAnimResource, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CameraPostProcessAnimResource, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraPostProcessAnimResourceOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CameraPostProcessAnimResource, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CameraPostProcessAnimResource, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraPostProcessAnimResourceOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CameraPostProcessAnimResource, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CameraPostProcessAnimResource, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCameraPostProcessAnimResourceLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CameraPostProcessAnimResource, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CameraPostProcessAnimResource, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraPostProcessAnimResourceActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CameraPostProcessAnimResource, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CameraPostProcessAnimResource, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraPostProcessAnimResourceModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CameraPostProcessAnimResource, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CameraPostProcessAnimResource, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_CameraPostProcessAnim
@@ -615,37 +619,37 @@ bool RemoveCameraPostProcessAnim(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCameraPostProcessAnimOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CameraPostProcessAnim, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CameraPostProcessAnim, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraPostProcessAnimOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CameraPostProcessAnim, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CameraPostProcessAnim, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraPostProcessAnimOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CameraPostProcessAnim, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CameraPostProcessAnim, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraPostProcessAnimOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CameraPostProcessAnim, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CameraPostProcessAnim, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraPostProcessAnimOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CameraPostProcessAnim, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CameraPostProcessAnim, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCameraPostProcessAnimLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CameraPostProcessAnim, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CameraPostProcessAnim, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraPostProcessAnimActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CameraPostProcessAnim, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CameraPostProcessAnim, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraPostProcessAnimModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CameraPostProcessAnim, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CameraPostProcessAnim, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

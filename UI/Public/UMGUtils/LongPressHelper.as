@@ -1,5 +1,3 @@
-﻿
-
 struct FLongPressHelper
 {
     UPROPERTY()
@@ -21,11 +19,17 @@ struct FLongPressHelper
     }
     void BeginPress(const FFPTime &inout InCurrentTime)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.bIsPressed = true;
+        this.LastTriggerTime = 0;
+        this.StartPressTime = InCurrentTime;
+        return;
     }
     void Reset()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.bIsPressed = false;
+        this.LastTriggerTime = 0;
+        this.StartPressTime = 0;
+        return;
     }
     void SkipElapsedTo(const FFPTime &inout InCurrentTime)
     {
@@ -33,7 +37,7 @@ struct FLongPressHelper
         {
             return;
         }
-        if ((InCurrentTime - this).opCmp(this.TriggerStartTime) >= 0)
+        if ((InCurrentTime - this.StartPressTime).opCmp(this.TriggerStartTime) >= 0)
         {
             this.LastTriggerTime = InCurrentTime;
         }
@@ -45,7 +49,7 @@ struct FLongPressHelper
         {
             return false;
         }
-        FFPTime local_4 = (InCurrentTime - this);
+        FFPTime local_4 = (InCurrentTime - this.StartPressTime);
         if (local_4.opCmp(this.TriggerStartTime) < 0)
         {
             return false;
@@ -55,7 +59,7 @@ struct FLongPressHelper
         {
             if ((this.LastTriggerTime == 0.0))
             {
-                this.LastTriggerTime = (FFPTime(this) + this.TriggerStartTime);
+                this.LastTriggerTime = (this.StartPressTime + this.TriggerStartTime);
             }
             else
             {

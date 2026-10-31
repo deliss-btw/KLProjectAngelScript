@@ -1,4 +1,3 @@
-﻿
 namespace FAIVisibilityUtils
 {
     const FName VISUALLOG_VISIBILITY = n"AIVisibility";
@@ -99,7 +98,7 @@ EVisibilityTier GetVisibilityTier(const FECSEntity &inout Target, const EVisibil
 }
 float32 GetCacheValidDuration(const FECSEntity &inout Target, const FAIVisibilityCacheConfig &inout Config)
 {
-    EMonsterRank local_3;
+    float32 local_3;
     if (Config.CacheDurations.Find(FASCommonUtils::GetMonsterRank(Target), local_3))
     {
         return local_3;
@@ -108,7 +107,7 @@ float32 GetCacheValidDuration(const FECSEntity &inout Target, const FAIVisibilit
 }
 float32 GetCachePositionThreshold(const FECSEntity &inout Target, const FAIVisibilityCacheConfig &inout Config)
 {
-    EMonsterRank local_3;
+    float32 local_3;
     if (Config.CachePositionThresholds.Find(FASCommonUtils::GetMonsterRank(Target), local_3))
     {
         return local_3;
@@ -117,11 +116,11 @@ float32 GetCachePositionThreshold(const FECSEntity &inout Target, const FAIVisib
 }
 bool TryGetCachedVisibility(FC_AIVisibilityCache &inout VisCache, const FTargetEntity &inout TargetKey, const FVector &inout SourcePos, const FVector &inout TargetPos, const FFPTime &inout Now, const FECSEntity &inout Target, bool &inout OutVisible, const FAIVisibilityCacheConfig &inout CacheConfig, const EVisibilityTier CurrentTier)
 {
-    if (!(VisCache.Contains(TargetKey)))
+    if (!(VisCache.Cache.Contains(TargetKey)))
     {
         return false;
     }
-    FCachedVisibility& local_4 = VisCache[TargetKey];
+    FCachedVisibility& local_4 = VisCache.Cache[TargetKey];
     if (int(local_4.CachedAtTier) != int(CurrentTier))
     {
         return false;
@@ -140,7 +139,7 @@ bool TryGetCachedVisibility(FC_AIVisibilityCache &inout VisCache, const FTargetE
 }
 void UpdateVisibilityCache(FC_AIVisibilityCache &inout VisCache, const FTargetEntity &inout TargetKey, const bool bVisible, const FVector &inout SourcePos, const FVector &inout TargetPos, const FFPTime &inout Now, const EVisibilityTier Tier)
 {
-    FCachedVisibility& local_2 = VisCache.FindOrAdd(TargetKey);
+    FCachedVisibility& local_2 = VisCache.Cache.FindOrAdd(TargetKey);
     local_2.bVisible = bVisible;
     local_2.LastCheckTime = Now;
     local_2.LastSourcePos = SourcePos;
@@ -155,7 +154,7 @@ void InvalidateVisibilityCache(FC_AIVisibilityCache &inout VisCache, const FTarg
 }
 bool DoVisibilityLineTrace(const FECSEntity &inout Source, const FVector &inout SourcePos, const FVector &inout TargetPos, const uint TargetEntityId)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    // body not fully recovered — stub [opcode-uncovered]
     bool __r; return __r;
 }
 bool ResolveVisibility(const FECSEntity &inout Source, const FECSEntity &inout Target, const FVector &inout SourcePos, const FVector &inout TargetPos, const EVisibilityTier SourceLODTier, const FFPTime &inout Now, FC_AIVisibilityCache &inout VisCache, FCS_AIVisibilityBudget &inout Budget, const FAIVisibilityCacheConfig &inout CacheConfig)
@@ -167,13 +166,13 @@ bool ResolveVisibility(const FECSEntity &inout Source, const FECSEntity &inout T
         Budget.LastResetTime = Now;
     }
     ++Budget.TotalTraceRequests;
-    EVisibilityTier local_6 = FAIVisibilityUtils::GetVisibilityTier(Target, EVisibilityTier(SourceLODTier));
+    int local_6 = int(FAIVisibilityUtils::GetVisibilityTier(Target, EVisibilityTier(SourceLODTier)));
     FTargetEntity local_8 = FTargetEntity(Target);
-    if (int(local_6) == 3)
+    if (local_6 == 3)
     {
         return true;
     }
-    if ((int(local_6)) == 0)
+    if (local_6 == 0)
     {
         local_3 = FAIVisibilityUtils::DoVisibilityLineTrace(Source, SourcePos, TargetPos, Target.GetIdValue());
         ++Budget.FullTraceCount;

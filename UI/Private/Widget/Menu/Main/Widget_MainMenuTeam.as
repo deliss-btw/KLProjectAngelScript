@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_MainMenuTeam
 {
     const int ViewID = 0;
@@ -157,6 +156,7 @@ namespace UWidget_MainMenuTeam
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MainMenuTeam;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

@@ -1,5 +1,3 @@
-﻿
-
 struct FCreatureActivityDefintion
 {
     UPROPERTY()

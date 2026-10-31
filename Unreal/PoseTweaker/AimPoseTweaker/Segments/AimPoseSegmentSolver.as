@@ -1,14 +1,11 @@
-﻿
-
 struct FAimPoseSegmentContext
 {
     UPROPERTY()
-    FQuat AccumulatedDeltaQ;
+    FQuat AccumulatedDeltaQ = FQuat::Identity;
     UPROPERTY()
     FVector PivotLocation = FVector::ZeroVector;
     UPROPERTY()
     bool bValid = false;
-
 
 }
 
@@ -44,7 +41,6 @@ class UAimPoseSegmentSolver : UAimPoseBoneProcessor
     float32 CfgSpringStrength = 200.0f;
     float32 CfgSpringDamping = 0.2f;
     uint8 PrevSnapshotTypeMask = false;
-
 
     void ResetToConfigDefaults()
     {
@@ -249,8 +245,9 @@ class UAimPoseSegmentSolver : UAimPoseBoneProcessor
         {
             if (!(Tweaker.InitializeBoneRef(this.SingleBone)))
             {
-                this.SingleBone.GetBoneName();
+                FName local_8 = this.SingleBone.GetBoneName();
                 FString local_6 = FString();
+                Tweaker.AddOnScreenDebugMessage(local_6.Append("AimPose ERROR: [").Append(this.ProcessorName).Append("] SingleBone '").Append(local_8).Append("' not found"), -1, false, 2.0f);
             }
         }
         if (!(this.HasRootBoneConfig()))
@@ -261,8 +258,9 @@ class UAimPoseSegmentSolver : UAimPoseBoneProcessor
         {
             if (!(Tweaker.InitializeBoneRef(this.RootBoneRef)))
             {
-                this.RootBoneRef.GetBoneName();
+                FName local_8_2 = this.RootBoneRef.GetBoneName();
                 FString local_6_2 = FString();
+                Tweaker.AddOnScreenDebugMessage(local_6_2.Append("AimPose ERROR: [").Append(this.ProcessorName).Append("] RootBone '").Append(local_8_2).Append("' not found"), -1, false, 2.0f);
             }
         }
         if (this.HasBoneChainConfig())

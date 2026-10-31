@@ -1,4 +1,3 @@
-﻿
 enum EDamageTextPhysicalType
 {
     Normal,
@@ -91,7 +90,6 @@ class UWidget_DamageText : UEUIUserWidget
     FEUIModelWeakRef __DamageTextVM;
     UPROPERTY()
     FGetEUIModelRef DamageTextVMDelegate;
-
 
     UFUNCTION()
     void Construct_Implementation()
@@ -311,6 +309,7 @@ namespace UWidget_DamageTextPanel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_DamageTextPanel;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -326,6 +325,7 @@ namespace UWidget_DamageText
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_DamageText;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnDamageTextChange"));
     return;
 }

@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_SyncDynamicBehaviorFromActivityDefine : UBTTask_ECSScriptBase
 {
     UPROPERTY()

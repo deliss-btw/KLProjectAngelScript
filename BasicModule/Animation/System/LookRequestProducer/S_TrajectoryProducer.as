@@ -1,5 +1,3 @@
-﻿
-
 class US_LookRequestTrajectorySystemAS : UECSScriptSystem
 {
     US_LookRequestTrajectorySystemAS()

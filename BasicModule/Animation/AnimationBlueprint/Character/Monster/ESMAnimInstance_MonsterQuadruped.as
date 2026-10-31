@@ -1,10 +1,7 @@
-﻿
-
 class UESMAnimInstance_MonsterQuadruped : UESMAnimInstance_MonsterBase
 {
     UPROPERTY()
     bool Phase3WingStill = false;
-
 
     void UpdataCharacterEntityBBData(const FFPTime &inout LocalTime)
     {

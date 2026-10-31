@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_LinkSkill_Helpers
 {
 UFUNCTION()

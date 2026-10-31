@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_BuffHintStackCountList_Helpers
 {
 UFUNCTION()

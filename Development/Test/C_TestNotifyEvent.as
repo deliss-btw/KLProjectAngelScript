@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_TestNotifyUploadEvent_NS
 {
     const TECSEventDerivedPtr<FCE_TestNotifyUploadEvent> DerivedPtr = TECSEventDerivedPtr<FCE_TestNotifyUploadEvent>();
@@ -14,7 +13,6 @@ struct FCE_TestNotifyUploadEvent : FECSEvent
     UPROPERTY()
     int TestEventPayload = 0;
 
-
     bool Validate() const
     {
         return true;
@@ -26,7 +24,6 @@ struct FCE_TestNotifySyncEvent : FECSEvent
     FECSEvent _base_FECSEvent;
     UPROPERTY()
     int TestEventPayload = 0;
-
 
 }
 

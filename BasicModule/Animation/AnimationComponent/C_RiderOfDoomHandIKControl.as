@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_AnimRiderHandIK_NS
 {
     const TECSComponentDerivedPtr<FC_AnimRiderHandIK> DerivedPtr = TECSComponentDerivedPtr<FC_AnimRiderHandIK>();
@@ -21,11 +20,26 @@ struct FC_AnimRiderHandIK : FECSComponent
 
     FC_AnimRiderHandIK()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Weight = 0.0f;
+        this.m_LeftHandWeight = 1.0f;
+        this.m_RightHandWeight = 1.0f;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_AnimRiderHandIK(const FC_AnimRiderHandIK &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_Weight = 0.0f;
+        this.m_LeftHandWeight = 1.0f;
+        this.m_RightHandWeight = 1.0f;
+        this.__InitDirtyFlags();
+        this.m_Weight = Other.m_Weight;
+        this.m_LeftHandWeight = Other.m_LeftHandWeight;
+        this.m_RightHandWeight = Other.m_RightHandWeight;
+        return;
     }
     FC_AnimRiderHandIK opAssign(const FC_AnimRiderHandIK &inout Other)
     {
@@ -87,7 +101,6 @@ class UESMAction_AnimRiderHandIK : UESMBPBaseSpanTickAction
     float32 LeftHandWeight = 1.0f;
     UPROPERTY()
     float32 RightHandWeight = 1.0f;
-
 
     UFUNCTION()
     EESMActionType GetActionType_Implementation() const
@@ -240,37 +253,37 @@ bool RemoveAnimRiderHandIK(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAnimRiderHandIKOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimRiderHandIK, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimRiderHandIK, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimRiderHandIKOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimRiderHandIK, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimRiderHandIK, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimRiderHandIKOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimRiderHandIK, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimRiderHandIK, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimRiderHandIKOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimRiderHandIK, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimRiderHandIK, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimRiderHandIKOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimRiderHandIK, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimRiderHandIK, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAnimRiderHandIKLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AnimRiderHandIK, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AnimRiderHandIK, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimRiderHandIKActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AnimRiderHandIK, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AnimRiderHandIK, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimRiderHandIKModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AnimRiderHandIK, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AnimRiderHandIK, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

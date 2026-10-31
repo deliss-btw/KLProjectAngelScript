@@ -1,4 +1,3 @@
-﻿
 namespace FMS_NearDeathModel
 {
     const int ModelId = 0;
@@ -42,8 +41,7 @@ struct FMS_NearDeathModel : FEUIModelSingleton
             if (!(this.GetNearDeathPageHandle()))
             {
                 FEUIWidget::RemoveLayoutWidgets(this.GetContext().UELocalPlayer, EEUILayoutLayer(4));
-                FEUIModelRef local_4;
-                this.SetNearDeathPageHandle(FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_HUD_NearDeath, local_4));
+                this.SetNearDeathPageHandle(FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_HUD_NearDeath, FEUIModelRef(::FVM_NearDeath::Create(this.GetContext().Manager))));
             }
             return;
         }
@@ -60,9 +58,7 @@ struct FMS_NearDeathModel : FEUIModelSingleton
             if (!(this.GetWaitRebornPageHandle()))
             {
                 FEUIWidget::RemoveLayoutWidgets(this.GetContext().UELocalPlayer, EEUILayoutLayer(4));
-                int local_3 = int(PlayerNearWaitReborn.GetDeathReason());
-                FEUIModelRef local_6;
-                this.SetWaitRebornPageHandle(FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_Reborn, local_6));
+                this.SetWaitRebornPageHandle(FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_Reborn, FEUIModelRef(::FVM_PlayerReborn::Create(this.GetContext().Manager, PlayerNearWaitReborn.GetWaitEndTime(), PlayerNearWaitReborn.GetAvailableReviveTypes(), PlayerNearWaitReborn.GetKilledByEntity(), PlayerNearWaitReborn.GetDeathReason()))));
             }
             return;
         }
@@ -78,8 +74,7 @@ struct FMS_NearDeathModel : FEUIModelSingleton
         {
             if (!(this.GetRescueOtherPageHandle()))
             {
-                FEUIModelRef local_4;
-                this.SetRescueOtherPageHandle(FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_HUD_RescuedOther, local_4));
+                this.SetRescueOtherPageHandle(FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_HUD_RescuedOther, FEUIModelRef(::FVM_RescueOther::Create(this.GetContext().Manager))));
             }
             return;
         }
@@ -209,7 +204,13 @@ void __OnPlayerRescueOther(FMS_NearDeathModel &inout Model, const FECSEntity &in
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorNearDeathInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorNearDeathInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerWaitForRebornLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerWaitForRebornModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorInRescuedOtherInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorInRescuedOtherInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_NearDeathPageHandle()
 {

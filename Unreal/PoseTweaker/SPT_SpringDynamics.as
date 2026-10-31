@@ -1,5 +1,3 @@
-﻿
-
 class USPT_SpringDynamics : USkeletalPoseTweaker
 {
     UPROPERTY()

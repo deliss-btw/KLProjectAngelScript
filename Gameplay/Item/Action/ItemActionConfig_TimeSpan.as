@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class UItemActionConfig_TimeSpan : UItemActionConfigBase
 {

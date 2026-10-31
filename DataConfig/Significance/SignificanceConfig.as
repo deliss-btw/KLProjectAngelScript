@@ -1,4 +1,3 @@
-﻿
 enum EECSSignificanceType
 {
     Default,
@@ -18,7 +17,6 @@ enum EECSSignificanceType
     Pickup,
 }
 
-
 struct FSignificanceControlledOffset
 {
     UPROPERTY()
@@ -37,7 +35,6 @@ struct FSignificanceControlledOffset
     int Mount = 0;
     UPROPERTY()
     int Projectile = 0;
-
 
 }
 
@@ -91,7 +88,6 @@ struct FSignificanceConfig : FDataObject
     EECSSignificanceValue SpecialInteractive = EECSSignificanceValue(3);
     UPROPERTY()
     EECSSignificanceValue Pickup = EECSSignificanceValue(3);
-
 
 }
 

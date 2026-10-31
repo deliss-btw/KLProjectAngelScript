@@ -1,4 +1,3 @@
-﻿
 namespace FVM_StaminaBar
 {
     const int ModelId = 0;

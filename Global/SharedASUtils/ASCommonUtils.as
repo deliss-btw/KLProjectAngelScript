@@ -1,4 +1,3 @@
-﻿
 namespace FASCommonUtils
 {
 UFUNCTION()
@@ -688,8 +687,8 @@ EFactionRelation GetDefaultFactionRelation(const EFaction FactionA, const EFacti
     if (local_2 != nullptr)
     {
         FDamageFactionRelationConfig local_30;
-        EFactionRelation local_8;
-        EFactionRelation local_6;
+        int local_8;
+        int local_6;
         local_6 = EFactionRelation(1);
         local_8 = EFactionRelation(1);
         if (local_2.FindRow(FName(UEnum::GetEnumType(n"EFaction").GetNameStringByValue(int(FactionA))), local_30))
@@ -783,8 +782,16 @@ EFactionRelationSplitSelf GetEntityFactionRelationSplitSelf(const FECSEntity &in
 }
 FFactionBitMask GetFactionBitMaskByRelation(const EFaction SourceFaction, const EFactionRelation Relation)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FFactionBitMask __r; return __r;
+    FFactionBitMask local_8;
+    int local_9 = 1;
+    for (; local_9 < 33; ++local_9)
+    {
+        if (int(FASCommonUtils::GetDefaultFactionRelation(EFaction(SourceFaction), EFaction(local_9))) == (int(Relation)))
+        {
+            local_8.SetFactionBitMask(uint8(local_9), true);
+        }
+    }
+    return local_8;
 }
 bool IsTargetEntityEnemy(const FECSEntity &inout SelfEntity, const FECSEntity &inout TargetEntity)
 {
@@ -1068,13 +1075,27 @@ FRandomGenerator CreateRandomGenerator(const FECSEntity &inout Entity, const FFP
 }
 FText GetWeaponTypeDisplayName(const EWeaponType WeaponType)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    FText __r; return __r;
+    const UAvatarBuildSettings local_2;
+    GetGameplaySettings<UAvatarBuildSettings> local_4;
+    local_2 = local_4;
+    FWeaponTypeDisplayInfo local_56;
+    if (local_2.WeaponTypeDisplayInfo.Find(WeaponType, local_56))
+    {
+        return local_56.DisplayName;
+    }
+    return FText::FromString(FString().Append(WeaponType));
 }
 FSoftBrush GetWeaponTypeDisplayBrush(const EWeaponType WeaponType)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    FSoftBrush __r; return __r;
+    const UAvatarBuildSettings local_2;
+    GetGameplaySettings<UAvatarBuildSettings> local_4;
+    local_2 = local_4;
+    FWeaponTypeDisplayInfo local_56;
+    if (local_2.WeaponTypeDisplayInfo.Find(WeaponType, local_56))
+    {
+        return local_56.Icon;
+    }
+    return FSoftBrush();
 }
 int64 GetTimestamp()
 {
@@ -1114,18 +1135,76 @@ void SetEntityBehaviorTreeRunState(const FECSEntity &inout Entity, const bool bS
 }
 bool IsEntityOnGround(const FECSEntity &inout Entity)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    bool __r; return __r;
+    FHitResult local_66;
+    FCollisionQueryParams local_104;
+    local_104.bTraceComplex = false;
+    local_104.AddIgnoredEntityId(Entity.GetIdValue());
+    GetDefaulted local_116;
+    FVector local_112 = local_116.opCall().GetPosition();
+    FCollisionResponseParams local_152;
+    FVector local_138 = (local_112 - FVector(0.0, 0.0, 100.0));
+    bool local_154 = FPhysicsUtils::LineTraceSingle(Entity, false, EPhysicsTraceTag(26), local_66, (local_112 + FVector(0.0, 0.0, 100.0)), local_138, FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(5)), local_104, local_152);
+    if (local_154)
+    {
+        if (FMath::Abs(((FVector(local_66.ImpactPoint) - local_112).Z)) <= 5.0)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 bool IsLocationUnderSky(const FVector &inout Location, const FECSEntity &inout CheckByEntity)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    bool __r; return __r;
+    FHitResult local_66;
+    FCollisionQueryParams local_104;
+    local_104.bTraceComplex = false;
+    float32 local_106 = 0.0f;
+    Get local_112;
+    const FC_Collision& local_114 = local_112.opCall();
+    if (local_114)
+    {
+        local_106 = local_114.GetScaledHalfHeight();
+    }
+    FCollisionResponseParams local_150;
+    float32 local_107 = local_106 + 50.0f;
+    FVector local_136 = (Location + FVector(0.0, 0.0, local_107));
+    bool local_152 = FPhysicsUtils::LineTraceSingle(CheckByEntity, false, EPhysicsTraceTag(26), local_66, (Location + FVector(0.0, 0.0, 99999.0)), local_136, FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(5)), local_104, local_150);
+    return !(local_152);
 }
 bool IsEntityUnderSky(const FECSEntity &inout Entity, const bool bIncludeCollisionRadius = false, const float32 SpecifiedCollisionRadius = -1)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    bool __r; return __r;
+    float32 local_120;
+    FHitResult local_66;
+    GetDefaulted local_76;
+    FVector local_72 = local_76.opCall().GetPosition();
+    bool local_77 = false;
+    FCollisionQueryParams local_116;
+    local_116.bTraceComplex = false;
+    local_116.AddIgnoredEntityId(Entity.GetIdValue());
+    if (bIncludeCollisionRadius)
+    {
+        if (SpecifiedCollisionRadius > 0.0f)
+        {
+            local_120 = SpecifiedCollisionRadius;
+        }
+        else
+        {
+            local_120 = Entity.GetCollisionRadius();
+        }
+        FCollisionResponseParams local_158;
+        FCollisionShape local_124 = FCollisionShape::MakeSphere(local_120);
+        FVector local_144 = (local_72 + FVector(0.0, 0.0, (local_120 + 10.0f)));
+        FVector local_150 = (local_72 + FVector(0.0, 0.0, 99999.0));
+        local_77 = FPhysicsUtils::SweepSingle(Entity, false, EPhysicsTraceTag(26), local_66, local_150, local_144, FQuat::Identity, FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(5)), local_124, local_116, local_158);
+    }
+    else
+    {
+        FCollisionResponseParams local_158;
+        FVector local_150_2 = (local_72 + FVector(0.0, 0.0, 10.0));
+        FVector local_132 = (local_72 + FVector(0.0, 0.0, 99999.0));
+        local_77 = FPhysicsUtils::LineTraceSingle(Entity, false, EPhysicsTraceTag(26), local_66, local_132, local_150_2, FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(5)), local_116, local_158);
+    }
+    return !(local_77);
 }
 FString GetEntityShowName(const FECSEntity &inout Entity)
 {
@@ -1133,7 +1212,23 @@ FString GetEntityShowName(const FECSEntity &inout Entity)
 }
 void TeleportEntityToTransform(const FECSEntity &inout Entity, const FVector &inout TargetLocation, const FRotator &inout TargetRotation)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    int local_10 = 0;
+    FFPTime local_6 = FFPTime(-1);
+    local_10.Location = TargetLocation;
+    local_10.Rotation = TargetRotation;
+    bool local_11 = false;
+    float32 local_14 = Entity.GetCollisionHeight() * 0.5f;
+    if (local_14 > 0.0f)
+    {
+        FHitResult local_82;
+        FCollisionQueryParams local_120;
+        local_120.bTraceComplex = (false != 0);
+        local_120.AddIgnoredEntityId(Entity.GetIdValue());
+        FCollisionResponseParams local_150;
+        bool local_152 = FPhysicsUtils::LineTraceSingle(Entity, false, EPhysicsTraceTag(26), local_82, TargetLocation, (TargetLocation - FVector(0.0, 0.0, local_14)), FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(5)), local_120, local_150);
+        bool local_11_2 = !(local_152);
+    }
+    return;
 }
 uint GetPlayerUidFromPlayerEntity(const FECSEntity &inout PlayerEntity)
 {

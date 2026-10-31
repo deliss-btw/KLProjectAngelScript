@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_SettingsPage
 {
     const int ViewID = 0;
@@ -38,7 +37,10 @@ class UWidget_SettingsPage : UEUIActivatableWidget
         {
             FDialogDynamicCallback local_6;
             local_6.BindUFunction(this, n"HandleRequireCloseAnswer");
-            NSLOCTEXT("PlayerSettings", "RequireCloseTitle", "зЎ®и®¤йЂЂе‡є");
+            FDialogCallback local_40 = FDialogCallback(local_6);
+            FText local_44 = NSLOCTEXT("PlayerSettings", "RequireCloseTitle", "确认退出");
+            FCommonDialogParam local_46;
+            ::CommonPopup::Dialog(local_44, this.RequireCloseTitle, this.RequireCloseOptions, local_40, local_46);
             return;
         }
         this.ClosePage(false);
@@ -202,7 +204,10 @@ class UWidget_SettingsPage_JustForHint : UEUIActivatableWidget
         {
             FDialogDynamicCallback local_6;
             local_6.BindUFunction(this, n"HandleRequireCloseAnswer");
-            NSLOCTEXT("PlayerSettings", "RequireCloseTitle", "зЎ®и®¤йЂЂе‡є");
+            FDialogCallback local_40 = FDialogCallback(local_6);
+            FText local_44 = NSLOCTEXT("PlayerSettings", "RequireCloseTitle", "确认退出");
+            FCommonDialogParam local_46;
+            ::CommonPopup::Dialog(local_44, this.RequireCloseTitle, this.RequireCloseOptions, local_40, local_46);
             return;
         }
         this.ClosePage(false);
@@ -340,6 +345,7 @@ namespace UWidget_SettingsPage
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SettingsPage;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -355,6 +361,7 @@ namespace UWidget_SettingsPage_JustForHint
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SettingsPage_JustForHint;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

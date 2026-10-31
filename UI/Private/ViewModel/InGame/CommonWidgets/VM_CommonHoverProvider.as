@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonHoverProvider
 {
     const int ModelId = 0;
@@ -302,7 +301,7 @@ struct FVM_CommonHoverProvider : FEUIViewModel
         FMS_CommonHoverManager& local_6 = ::FMS_CommonHoverManager::Get(this.GetManager());
         if (local_6)
         {
-            if (local_6.ShouldKeepHoverForCloseReason(this.GetHoverHandle()))
+            if (local_6.ShouldKeepHoverForCloseReason(this.GetHoverHandle(), ECommonHoverCloseReason(Reason)))
             {
                 return false;
             }
@@ -334,7 +333,7 @@ struct FVM_CommonHoverProvider : FEUIViewModel
         else
         {
             int local_117 = int(FEUIWidget::GetWidgetLayoutLayer(TargetHoverForWidget));
-            this.GetOwnerWidget();
+            FEUIWidgetRef local_122 = this.GetOwnerWidget();
             int local_119 = int(this.GetHoverLayout());
             local_62.SetFocusHover(bAllowFocusHover && this.GetbFocusHover()).SetHoverLayout().SetTargetLayer().SetParentHoverHandle().SetCloseScopeInsideWidget();
             if (bPinnedPassThrough)

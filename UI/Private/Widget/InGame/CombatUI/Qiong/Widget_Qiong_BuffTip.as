@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_Qiong_BuffTip
 {
     const int ViewID = 0;
@@ -60,6 +59,7 @@ namespace UWidget_Qiong_BuffTip
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_Qiong_BuffTip;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_MissionListEntry_Helpers
 {
 UFUNCTION()

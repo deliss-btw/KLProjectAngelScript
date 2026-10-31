@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TeamPanel
 {
     const int ViewID = 0;
@@ -69,7 +68,7 @@ class UWidget_TeamPanel : UEUIUserWidget
         this.HasBuff = bHasExecuteBuff;
         if (bHasExecuteBuff)
         {
-            this.LinkEnergyText.SetText(NSLOCTEXT("TeamPanel", "TeamPanel_DivineBurst", "зҐћж јз€†еЏ‘пјЃ"));
+            this.LinkEnergyText.SetText(NSLOCTEXT("TeamPanel", "TeamPanel_DivineBurst", "神格爆发！"));
             this.ProgressBar_DivineBurst.SetVisibility(ESlateVisibility(0));
             this.ProgressBar_LinkEnergy.SetFillColorAndOpacity(FLinearColor(1.0f, 0.4f, 0.7f, 1.0f));
             this.DivineBurstEffectPanel.SetVisibility(ESlateVisibility(0));
@@ -210,8 +209,7 @@ class UWidget_TeamPanel : UEUIUserWidget
                     }
                     if (local_6)
                     {
-                        int local_58 = local_6.GetStack();
-                        this.OnExecuteBuffStateChanged(local_6.GetbHasExecuteBuff(), int(local_6.GetBuffDuration()), int(local_6.GetTeamLinkEnergy()));
+                        this.OnExecuteBuffStateChanged(local_6.GetbHasExecuteBuff(), local_6.GetBuffDuration(), local_6.GetStack(), local_6.GetTeamLinkEnergy());
                     }
                     this.TeamPanel.TrackRead();
                     if (local_6)
@@ -220,7 +218,7 @@ class UWidget_TeamPanel : UEUIUserWidget
                     }
                     if (local_6)
                     {
-                        this.UpdateLinkEnergy(int(local_6.GetTeamLinkEnergy()));
+                        this.UpdateLinkEnergy(local_6.GetTeamLinkEnergy());
                     }
                 }
             }
@@ -261,6 +259,7 @@ namespace UWidget_TeamPanel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TeamPanel;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnExecuteBuffStateChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("UpdateLinkEnergy"));
     return;

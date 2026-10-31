@@ -1,4 +1,3 @@
-﻿
 enum EProgressOperationActionTarget
 {
     Initiator,
@@ -8,10 +7,6 @@ enum EProgressOperationActionTarget
     OperationEntity,
     TargetEntity,
 }
-
-
-// NOTE: class defaults are not authored in this module: FProgressOperationActionData_BreakOperation (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
 
 UCLASS(Abstract)
 class UProgressOperationActionBase : UObject
@@ -47,7 +42,6 @@ struct FProgressOperationActionDataWithTarget : FProgressOperationActionData
     FProgressOperationActionData _base_FProgressOperationActionData;
     UPROPERTY()
     EProgressOperationActionTarget ActionTarget = EProgressOperationActionTarget(2);
-
 
 }
 
@@ -117,9 +111,10 @@ struct FProgressOperationActionData_BreakOperation : FProgressOperationActionDat
 {
     FProgressOperationActionData _base_FProgressOperationActionData;
 
+    default _base_FProgressOperationActionData = UProgressOperationAction_BreakOperation;
+
     FProgressOperationActionData_BreakOperation()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -143,9 +138,10 @@ struct FProgressOperationActionData_LeaveOperation : FProgressOperationActionDat
 {
     FProgressOperationActionData _base_FProgressOperationActionData;
 
+    default _base_FProgressOperationActionData = UProgressOperationAction_LeaveOperation;
+
     FProgressOperationActionData_LeaveOperation()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -169,9 +165,10 @@ struct FProgressOperationActionData_OperationSucceed : FProgressOperationActionD
 {
     FProgressOperationActionData _base_FProgressOperationActionData;
 
+    default _base_FProgressOperationActionData = UProgressOperationAction_OperationSucceed;
+
     FProgressOperationActionData_OperationSucceed()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -197,9 +194,10 @@ struct FProgressOperationActionData_ModifyProgressValue : FProgressOperationActi
     UPROPERTY()
     float32 ModifyValue;
 
+    default _base_FProgressOperationActionData = UProgressOperationAction_ModifyProgressValue;
+
     FProgressOperationActionData_ModifyProgressValue()
     {
-        super();
         this.ModifyValue = 0.0f;
         this.__InitDefaults();
         return;
@@ -232,9 +230,10 @@ struct FProgressOperationActionData_ModifyProgressMaxValue : FProgressOperationA
     UPROPERTY()
     float32 ModifyValue;
 
+    default _base_FProgressOperationActionData = UProgressOperationAction_ModifyProgressMaxValue;
+
     FProgressOperationActionData_ModifyProgressMaxValue()
     {
-        super();
         this.ModifyValue = 0.0f;
         this.__InitDefaults();
         return;
@@ -267,9 +266,10 @@ struct FProgressOperationActionData_ModifyProgressIncreaseSpeed : FProgressOpera
     UPROPERTY()
     float32 ModifyValue;
 
+    default _base_FProgressOperationActionData = UProgressOperationAction_ModifyProgressIncreaseSpeed;
+
     FProgressOperationActionData_ModifyProgressIncreaseSpeed()
     {
-        super();
         this.ModifyValue = 0.0f;
         this.__InitDefaults();
         return;
@@ -299,9 +299,10 @@ struct FProgressOperationActionData_ModifyProgressTotalTime : FProgressOperation
     UPROPERTY()
     float32 ModifyValue;
 
+    default _base_FProgressOperationActionData = UProgressOperationAction_ModifyProgressTotalTime;
+
     FProgressOperationActionData_ModifyProgressTotalTime()
     {
-        super();
         this.ModifyValue = 0.0f;
         this.__InitDefaults();
         return;
@@ -331,9 +332,10 @@ struct FProgressOperationActionData_ESMBBTrigger : FProgressOperationActionDataW
     UPROPERTY()
     FFPTime TriggerValidateTime;
 
+    default _base_FProgressOperationActionDataWithTarget = UProgressOperationAction_ESMBBTrigger;
+
     FProgressOperationActionData_ESMBBTrigger()
     {
-        super();
         this.TriggerValidateTime = FFPTime(0.1);
         this.__InitDefaults();
         return;
@@ -370,9 +372,10 @@ struct FProgressOperationActionData_AbilitySignal : FProgressOperationActionData
     UPROPERTY()
     FName AbilitySignal;
 
+    default _base_FProgressOperationActionDataWithTarget = UProgressOperationAction_AbilitySignal;
+
     FProgressOperationActionData_AbilitySignal()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -387,7 +390,20 @@ class UProgressOperationAction_AbilitySignal : UProgressOperationActionWithTarge
     }
     void OnActivate(FC_ProgressOperationRuntime &inout Runtime, const FECSEntity &inout Entity, const FInstancedStruct &inout InstanceData) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_14 = 0;
+        Modify local_4;
+        FC_EASAbility& local_6 = local_4.opCall();
+        if (local_6)
+        {
+            int local_16 = local_6.IndexOfAbilityByClass(local_14.AbilityClass);
+            if (local_16 != INDEX_NONE)
+            {
+                FECSWorldPtr local_18 = Entity.GetWorld();
+                Get local_22;
+                FAbilityUtils::InvokeSignal(local_6.ModifyAbilityInstance(local_16), Entity, local_14.AbilitySignal, local_22.opCall().Time, true);
+            }
+        }
+        return;
     }
 }
 
@@ -401,9 +417,10 @@ struct FProgressOperationActionData_AddBuff : FProgressOperationActionDataWithTa
     UPROPERTY()
     int StackNum;
 
+    default _base_FProgressOperationActionDataWithTarget = UProgressOperationAction_AddBuff;
+
     FProgressOperationActionData_AddBuff()
     {
-        super();
         this.OverrideDuration = -1.0f;
         this.StackNum = 1;
         this.__InitDefaults();
@@ -435,9 +452,10 @@ struct FProgressOperationActionData_Removeuff : FProgressOperationActionDataWith
     UPROPERTY()
     FBuffConfigRef BuffConfig;
 
+    default _base_FProgressOperationActionDataWithTarget = UProgressOperationAction_Removeuff;
+
     FProgressOperationActionData_Removeuff()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -464,9 +482,10 @@ struct FProgressOperationActionData_ExecueQTESucess : FProgressOperationActionDa
 {
     FProgressOperationActionDataWithTarget _base_FProgressOperationActionDataWithTarget;
 
+    default _base_FProgressOperationActionDataWithTarget = UProgressOperationAction_ExecueQTESucess;
+
     FProgressOperationActionData_ExecueQTESucess()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -497,9 +516,10 @@ struct FProgressOperationActionData_CameraShake : FProgressOperationActionDataWi
     UPROPERTY()
     FDataObjectPtr ConfigRef;
 
+    default _base_FProgressOperationActionDataWithTarget = UProgressOperationAction_CameraShake;
+
     FProgressOperationActionData_CameraShake()
     {
-        super();
         this.__InitDefaults();
         return;
     }

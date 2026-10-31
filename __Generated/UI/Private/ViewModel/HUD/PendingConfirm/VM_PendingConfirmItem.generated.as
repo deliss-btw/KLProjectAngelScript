@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_PendingConfirmItem_Helpers
 {
 UFUNCTION()

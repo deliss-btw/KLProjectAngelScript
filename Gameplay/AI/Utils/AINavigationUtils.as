@@ -1,4 +1,3 @@
-﻿
 namespace FAINavigationUtils
 {
 bool IsInAirNavigationVolume(const FECSEntity &inout Entity)

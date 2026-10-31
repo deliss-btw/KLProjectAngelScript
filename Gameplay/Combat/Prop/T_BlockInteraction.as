@@ -1,5 +1,3 @@
-﻿
-
 struct FT_BlockInteractionConfig : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -9,7 +7,6 @@ struct FT_BlockInteractionConfig : FECSTrait
     bool bHas_FC_BlockInteractionConfig = true;
     UPROPERTY()
     FC_BlockInteractionConfig Config_FC_BlockInteractionConfig;
-
 
 }
 

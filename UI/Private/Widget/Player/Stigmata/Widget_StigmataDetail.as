@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_StigmataDetail
 {
     const int ViewID = 0;
@@ -30,7 +29,6 @@ class UWidget_StigmataDetail : UEUIActivatableWidget
     FEUIModelWeakRef __StigmataDetail;
     UPROPERTY()
     FGetEUIModelRef StigmataDetailDelegate;
-
 
     UFUNCTION()
     void Construct_Implementation()
@@ -266,6 +264,7 @@ namespace UWidget_StigmataDetail
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_StigmataDetail;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnReadyBreakthroughChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnTreeRowsChanged"));
     return;

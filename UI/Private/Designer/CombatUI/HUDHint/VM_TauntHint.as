@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TauntHint
 {
     const int ModelId = 0;

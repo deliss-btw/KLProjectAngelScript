@@ -1,5 +1,3 @@
-﻿
-
 struct FT_Capability : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -15,7 +13,6 @@ struct FT_Capability : FECSTrait
     bool bHas_FC_CapabilityInitConfig = false;
     UPROPERTY()
     FC_CapabilityInitConfig Config_FC_CapabilityInitConfig;
-
 
 }
 

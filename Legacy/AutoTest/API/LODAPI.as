@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::API::LODAPI
 {
 void SetSkeletalMeshLODByEntityId(const uint EntityId, const int LODLevel)

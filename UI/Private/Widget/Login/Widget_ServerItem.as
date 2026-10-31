@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ServerItem
 {
     const int ViewID = 0;
@@ -18,7 +17,6 @@ class UWidget_ServerItem : UEUIUserWidget
     UWidget_SelectServer SelectServerPage;
     UPROPERTY()
     FGetEUIModelRef RegionVMDelegate;
-
 
     UFUNCTION()
     void OnViewBind_Implementation()
@@ -81,6 +79,7 @@ namespace UWidget_ServerItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ServerItem;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

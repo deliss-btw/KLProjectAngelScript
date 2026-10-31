@@ -1,11 +1,9 @@
-﻿
 enum ETestEnumType
 {
     None,
     TEST,
     MaxCount,
 }
-
 
 struct FTestStruct
 {
@@ -18,7 +16,6 @@ struct FTestStruct
     UPROPERTY()
     TArray<TDataObjectPtr<FItemConfig>> ItemList;
 
-
 }
 
 struct FTestMemberStruct
@@ -30,7 +27,6 @@ struct FTestMemberStruct
     UPROPERTY()
     int Third;
 
-
 }
 
 struct FTestItemParam
@@ -41,7 +37,6 @@ struct FTestItemParam
     uint Cnt;
     UPROPERTY()
     TArray<TDataObjectPtr<FItemConfig>> ItemList;
-
 
 }
 
@@ -63,7 +58,6 @@ struct FTestConfig : FDataObject
     UPROPERTY()
     TArray<FTestItemParam> ItemParamList;
 
-
 }
 
 struct FTestFatherConfig : FDataObject
@@ -75,7 +69,6 @@ struct FTestFatherConfig : FDataObject
     FText ServerText;
     UPROPERTY()
     FDataObjectPtr m_TestConfigItem;
-
 
     const TDataObjectPtr<FTestConfig> GetTestConfigItem() const property
     {

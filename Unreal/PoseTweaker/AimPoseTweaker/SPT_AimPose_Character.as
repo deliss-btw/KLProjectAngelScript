@@ -1,5 +1,3 @@
-﻿
-
 class USPT_AimPose_Character_StdF : USPT_AimPose_Base
 {
     USPT_AimPose_Character_StdF()

@@ -1,4 +1,3 @@
-﻿
 namespace FEcologyReactioConst
 {
     const FName ReactionRuningContextKnowledgeKey = n"ReactionRuningContextBaseKey";

@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FSingleResourceConfig (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FEcologyResourceSlotData
 {
     UPROPERTY()
@@ -27,7 +22,6 @@ struct FEcologyUserCondition
     UPROPERTY()
     FKLGameplayTagQuery UserEcologyGameplayTagQuery;
 
-
     bool Enable() const
     {
         return this.bEnable && (!(this.UserGameplayTagCondition.IsEmpty()) || !(this.UserEcologyGameplayTagQuery.IsEmpty()));
@@ -40,7 +34,6 @@ struct FEcologyDOTCondition
     bool bEnable = false;
     UPROPERTY()
     FKLGameplayTagQuery DOTConditionQuery;
-
 
     bool Enable() const
     {
@@ -55,7 +48,6 @@ struct FEcologyResourceConfig : FEcologyConfig
     bool bHighPriorityForSpawn = false;
     UPROPERTY()
     FEcologyDOTCondition DOTCondition;
-
 
 }
 
@@ -73,7 +65,6 @@ struct FSingleResourceConfig : FEcologyResourceConfig
 
     FSingleResourceConfig()
     {
-        super();
         this.MaxTeamCount = 1;
         this.__InitDefaults();
         return;
@@ -124,7 +115,6 @@ struct FResourceAreaConfig : FEcologyResourceConfig
 
     FResourceAreaConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -175,7 +165,6 @@ struct FResourceRequestFilterConfig
     UPROPERTY()
     int TimeSegments = 0;
 
-
     void MakeRequest(const FECSEntity &inout Entity, FResourceSearchRequest &inout NewRequest) const
     {
         int local_50 = 0;
@@ -201,7 +190,7 @@ struct FResourceRequestFilterConfig
         }
         else
         {
-            NewRequest.Center = this;
+            NewRequest.Center = this.Center;
         }
         if (this.bUseRequesterEcologyInfo)
         {

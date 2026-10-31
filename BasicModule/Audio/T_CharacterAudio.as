@@ -1,5 +1,3 @@
-﻿
-
 struct FT_CharacterAudio : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -13,7 +11,6 @@ struct FT_CharacterAudio : FECSTrait
     bool bHas_FC_BreathAudioConfig = false;
     UPROPERTY()
     FC_BreathAudioConfig Config_FC_BreathAudioConfig;
-
 
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 class ULevelGlobalSettings : ULevelGlobalSettingsBase
 {
     UPROPERTY()
@@ -34,7 +32,6 @@ class ULevelGlobalSettings : ULevelGlobalSettingsBase
     UDataTable LevelGroupLoadingPassConfigTable;
 
     default TeleportKeepStateExitMap.Add(n"Social_Sit_HotSpring", n"Social_Sit_HotSpring_End");
-
 
 }
 

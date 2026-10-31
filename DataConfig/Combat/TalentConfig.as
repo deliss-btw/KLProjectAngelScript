@@ -1,4 +1,3 @@
-﻿
 enum ETalentType
 {
     None,
@@ -29,7 +28,6 @@ enum EUnlockType
     Choose,
     MaxCount,
 }
-
 
 struct FTalentConfig : FDataObject
 {

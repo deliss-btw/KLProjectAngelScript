@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_EquipmentSelectDetail_Helpers
 {
 UFUNCTION()

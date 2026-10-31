@@ -1,4 +1,3 @@
-﻿
 namespace FVM_SettingItem
 {
     const int ModelId = 0;
@@ -563,11 +562,12 @@ struct FVM_SettingItem : FEUIViewModel
             {
                 local_28;
                 local_30.GetToggleVM();
-                if (local_30.IsValid() && (GetChangedValue() != Value))
+                if (local_30.IsValid() && ((GetChangedValue() != Value)))
                 {
                     bool local_31 = false;
                     local_31.SetbNeedCheckGraphicsQualityPreset();
-                    (::SettingUtils::GetPresetValue(GetApplyEffect(), Value)).InitializeApplyValue(true);
+                    float32 local_5 = ::SettingUtils::GetPresetValue(GetApplyEffect(), Value);
+                    local_5.InitializeApplyValue(true);
                 }
             }
         }
@@ -734,6 +734,7 @@ struct FVM_SettingItem : FEUIViewModel
                     local_68.Add(local_82.Name);
                 }
                 FOnCommonComponentDropDownSelected local_106;
+                local_106.Add(::FVMS_SettingPage::Get(this.GetContext().UELocalPlayer), FVMS_SettingPage::BroadcastSettingsChanged);
                 local_106.Add(this, FVM_SettingItem::OnItemSelectedOrValueChanged);
                 this.SetDropdownVM(TEUIModelWeakRef<FVM_CommonComponentDropDown>(::FVM_CommonComponentDropDown::Create(this.GetContext().Manager, local_68, uint(this.GetCurrentValue()), local_106)));
                 TArray<int> local_114;
@@ -766,6 +767,7 @@ struct FVM_SettingItem : FEUIViewModel
                     local_130.MidValue = local_118.MidValue;
                     local_130.Precision = this.GetDecimalPlaces(local_118.Step);
                     FOnCommonComponentSliderSelected local_152;
+                    local_152.Add(::FVMS_SettingPage::Get(this.GetContext().UELocalPlayer), FVMS_SettingPage::BroadcastSettingsChanged);
                     local_152.Add(this, FVM_SettingItem::OnItemSelectedOrValueChanged);
                     this.SetSliderVM(TEUIModelWeakRef<FVM_CommonComponentSlider>(::FVM_CommonComponentSlider::Create(this.GetContext().Manager, local_130, local_152)));
                     TEUIModelWeakRef<FVM_CommonComponentSlider> local_154 = this.GetSliderVM();
@@ -780,6 +782,7 @@ struct FVM_SettingItem : FEUIViewModel
                         FGameplayTag local_168;
                         local_168;
                         FOnCommonComponentFilterSelected local_190;
+                        local_190.Add(::FVMS_SettingPage::Get(this.GetContext().UELocalPlayer), FVMS_SettingPage::BroadcastSettingsChanged);
                         FVM_CommonComponentFilterConfig local_166;
                         this.SetLinkVM(TEUIModelWeakRef<FVM_CommonComponentFilter>(::FVM_CommonComponentFilter::Create(this.GetContext().Manager, local_166, local_190)));
                         TEUIModelWeakRef<FVM_CommonComponentFilter> local_192 = this.GetLinkVM();
@@ -799,6 +802,7 @@ struct FVM_SettingItem : FEUIViewModel
                                 local_68.Add(local_82.Name);
                             }
                             FOnCommonComponentToggleSelected local_220;
+                            local_220.Add(::FVMS_SettingPage::Get(this.GetContext().UELocalPlayer), FVMS_SettingPage::BroadcastSettingsChanged);
                             local_220.Add(this, FVM_SettingItem::OnItemSelectedOrValueChanged);
                             this.SetToggleVM(TEUIModelWeakRef<FVM_CommonComponentToggle>(::FVM_CommonComponentToggle::Create(this.GetContext().Manager, local_68, uint(this.GetCurrentValue()), local_220)));
                             TEUIModelWeakRef<FVMS_SettingPage> local_224 = this.GetOwnerPage();
@@ -1452,7 +1456,86 @@ FVM_SettingItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIMo
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "ItemName";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ItemDesc";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ItemTag";
+    local_14.TypeName = "FGameplayTag";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ComponentWidgetData";
+    local_14.TypeName = "FEUIDynamicWidgetData";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (1 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurrentValue";
+    local_14.TypeName = "float32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bIsEnabled";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bNeedApply";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bIsDisplayOrGraphics";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SwitchIndex";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ComponentWidgetOpacity";
+    local_14.TypeName = "float32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_SettingItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_SettingItem;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(31);
+    local_22.AddRefPropertyDirty(0, 2, FVM_PlayerKeyMappingPair::__IndexOf_bNeedRefreshHover());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("KeyMappingVM");
+    int local_2_2 = FVM_PlayerKeyMappingPair::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(2);
+    local_30.RelatedDirtyMask.SetBit(FVM_PlayerKeyMappingPair::__IndexOf_bNeedRefreshHover(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__UpdateSwitchIndex";
+    local_40.DirtyFlags.Set(FVM_SettingItem::__IndexOf_KeyMappingVM());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    local_40.DirtyFlags.Set(FVM_SettingItem::__IndexOf_bIsHovered());
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnShowWarningMessageChanged";
+    local_40.DirtyFlags.Set(FVM_SettingItem::__IndexOf_bShowWarningMessage());
+    Result.DirtyFunctions.Add(local_40);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

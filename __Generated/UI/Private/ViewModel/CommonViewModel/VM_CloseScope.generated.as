@@ -1,5 +1,3 @@
-﻿
-
 struct FConfigVM_CloseScope : FConfigEUIModelBase
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ struct FConfigVM_CloseScope : FConfigEUIModelBase
     bool bCloseOnlyOnPureBlank = false;
     UPROPERTY()
     bool bEnabled = true;
-
 
 }
 

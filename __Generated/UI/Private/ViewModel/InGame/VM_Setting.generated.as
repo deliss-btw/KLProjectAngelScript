@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_Setting_Helpers
 {
 UFUNCTION()

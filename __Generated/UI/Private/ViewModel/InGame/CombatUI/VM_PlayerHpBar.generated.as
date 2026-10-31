@@ -1,10 +1,7 @@
-﻿
-
 struct FVM_PlayerHpBarConfigDefault : FConfigEUIModelDefaultBase
 {
     UPROPERTY()
     float32 PreviewHpBarChaseSeconds = 0.7f;
-
 
 }
 

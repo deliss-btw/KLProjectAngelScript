@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CookCostItem
 {
     const int ViewID = 0;
@@ -504,6 +503,7 @@ namespace UWidget_CookCostItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CookCostItem;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCookCostItemModulesChanged"));
     return;
 }
@@ -520,6 +520,7 @@ namespace UWidget_WaitCookItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_WaitCookItem;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

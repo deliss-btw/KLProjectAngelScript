@@ -1,9 +1,8 @@
-﻿
 namespace AutoTest::API::CookAPI
 {
 TEUIModelRef<FVM_Cook> GetCookViewModel()
 {
-    // body not fully recovered вЂ” stub [unresolved-operand]
+    // body not fully recovered — stub [unresolved-operand]
     TEUIModelRef<FVM_Cook> __r; return __r;
 }
 TArray<FString> GetAllDisplayedIngredientNames()

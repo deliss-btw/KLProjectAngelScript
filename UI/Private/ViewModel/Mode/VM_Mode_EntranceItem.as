@@ -1,4 +1,3 @@
-﻿
 namespace FVM_Mode_EntranceItem
 {
     const int ModelId = 0;

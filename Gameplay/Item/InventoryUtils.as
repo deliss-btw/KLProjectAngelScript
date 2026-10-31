@@ -1,5 +1,3 @@
-﻿
-
 struct FInventoryAddItemCollectScope
 {
     UPROPERTY()
@@ -384,32 +382,31 @@ bool HasItemInInventoryByName(const FECSEntity &inout PlayerOrEntity, const FNam
 }
 int LowLevelAddInventoryItem(const FECSEntity &inout OwnerEntity, const FItemConfig &inout Item, const int Number, const bool bShowMessage, const bool bAddToGSImmidiate)
 {
-    TDataObjectPtr<FItemConfig> local_24;
-    bool local_25 = GameplayInventoryUtils::ShouldAddToGameplayInventory(local_24);
+    bool local_25 = GameplayInventoryUtils::ShouldAddToGameplayInventory(TDataObjectPtr<FItemConfig>(Item));
     if (local_25)
     {
-        int local_26 = GameplayInventoryUtils::GetItemNumToReachInventoryAndBankLimit(OwnerEntity, local_24);
+        int local_26 = GameplayInventoryUtils::GetItemNumToReachInventoryAndBankLimit(OwnerEntity, TDataObjectPtr<FItemConfig>(Item));
         int local_29 = FMath::Max(Number - local_26, 0);
         int local_28 = FMath::Min(Number, local_26);
         if (local_28 > 0)
         {
-            int local_30 = GameplayInventoryUtils::GetItemNumToReachInventoryOrTrunkLimit(OwnerEntity, local_24);
+            int local_30 = GameplayInventoryUtils::GetItemNumToReachInventoryOrTrunkLimit(OwnerEntity, TDataObjectPtr<FItemConfig>(Item));
             int local_27 = FMath::Min(local_30, local_28);
             int local_32 = local_28 - local_27;
             if (local_27 > 0)
             {
                 if ((bShowMessage && (local_32 <= 0)))
                 {
-                    GameplayInventoryUtils::AddItemWithNotify(OwnerEntity, local_24, local_27);
+                    GameplayInventoryUtils::AddItemWithNotify(OwnerEntity, TDataObjectPtr<FItemConfig>(Item), local_27);
                 }
                 else
                 {
-                    GameplayInventoryUtils::AddItem(OwnerEntity, local_24, local_27);
+                    GameplayInventoryUtils::AddItem(OwnerEntity, TDataObjectPtr<FItemConfig>(Item), local_27);
                 }
             }
             if (local_32 > 0)
             {
-                GameplayItemBankUtils::AddItem(OwnerEntity, local_24, local_32);
+                GameplayItemBankUtils::AddItem(OwnerEntity, TDataObjectPtr<FItemConfig>(Item), local_32);
                 if (bShowMessage)
                 {
                     FFPTime local_42 = FFPTime(-1);
@@ -417,18 +414,18 @@ int LowLevelAddInventoryItem(const FECSEntity &inout OwnerEntity, const FItemCon
                     FCE_GameplayInventoryItemAddedNotify& local_44 = local_40.opCall(local_42);
                     if (local_44)
                     {
-                        local_44.Items.Add(FGameplayInventoryBatchAddItemData(local_24, local_28));
+                        local_44.Items.Add(FGameplayInventoryBatchAddItemData(TDataObjectPtr<FItemConfig>(Item), local_28));
                     }
                 }
-                InventoryUtils::ShowItemInventoryReachLimitAddToBankMessage(OwnerEntity, local_24);
+                InventoryUtils::ShowItemInventoryReachLimitAddToBankMessage(OwnerEntity, TDataObjectPtr<FItemConfig>(Item));
             }
-            InventoryUtils::LogDataTrackCombatItemChange(OwnerEntity, local_24, true, local_28, InventoryUtils::GetInventoryItemNumber(OwnerEntity, local_24), 2);
+            InventoryUtils::LogDataTrackCombatItemChange(OwnerEntity, TDataObjectPtr<FItemConfig>(Item), true, local_28, InventoryUtils::GetInventoryItemNumber(OwnerEntity, TDataObjectPtr<FItemConfig>(Item)), 2);
         }
         return local_29;
     }
     else
     {
-        InventoryUtils_GSInventoryInternal::AddItemToGSInventory(OwnerEntity, local_24, Number);
+        InventoryUtils_GSInventoryInternal::AddItemToGSInventory(OwnerEntity, TDataObjectPtr<FItemConfig>(Item), Number);
         if (bAddToGSImmidiate)
         {
             FC_PlayerAddItemRequestPendingFlushTag local_78;
@@ -467,13 +464,11 @@ void LoadItemInventory(const FECSEntity &inout PlayerEntity)
     {
         local_10 = local_9;
     }
-    UNearDeathSettings local_14 = NearDeathSettings::Get();
-    int local_11 = InventoryUtils::GetInventoryItemNumber(PlayerEntity, TDataObjectPtr<FItemConfig>());
+    int local_11 = InventoryUtils::GetInventoryItemNumber(PlayerEntity, TDataObjectPtr<FItemConfig>(NearDeathSettings::Get().PotionItemConfig));
     if (local_11 < local_10)
     {
         int local_12 = local_10 - local_11;
-        UNearDeathSettings local_14_2 = NearDeathSettings::Get();
-        InventoryUtils::AddInventoryItem(PlayerEntity, TDataObjectPtr<FItemConfig>());
+        InventoryUtils::AddInventoryItem(PlayerEntity, TDataObjectPtr<FItemConfig>(NearDeathSettings::Get().PotionItemConfig), local_12);
         XLog(ELog(0), FString().Append("[LoadItemInventory] Topped up potions: cur=").Append(local_11).Append(", max=").Append(local_10).Append(", added=").Append(local_12));
     }
     return;
@@ -750,7 +745,7 @@ bool CheckAndNotifyItemCustomSetToQuickSlotCondition(const FECSEntity &inout Ent
         }
         if (local_5)
         {
-            CommonPopup::Tips(NSLOCTEXT("Inventory", "Inventory_ChangeRemnantItem_FailHint", "еЅ“е‰Ќж— жі•дёўејѓе’’з‰©"), local_28);
+            CommonPopup::Tips(NSLOCTEXT("Inventory", "Inventory_ChangeRemnantItem_FailHint", "当前无法丢弃咒物"), local_28);
         }
         return local_4;
     }
@@ -770,7 +765,7 @@ bool CheckAndNotifyItemCustomSetToQuickSlotCondition(const FECSEntity &inout Ent
             local_5 = ECS::GetRuntimeInfo().IsClient;
             if (local_5)
             {
-                CommonPopup::Tips(NSLOCTEXT("Inventory", "Inventory_ChangeCombatItemInCombat_FailHint", "ж€ж–—дё­ж— жі•ж›ґжЌўж€ж–—йЃ“е…·"), local_28);
+                CommonPopup::Tips(NSLOCTEXT("Inventory", "Inventory_ChangeCombatItemInCombat_FailHint", "战斗中无法更换战斗道具"), local_28);
             }
             return false;
         }
@@ -794,7 +789,7 @@ bool CheckAndNotifyItemCustomSetToQuickSlotCondition(const FECSEntity &inout Ent
             {
                 if (ECS::GetRuntimeInfo().IsClient)
                 {
-                    CommonPopup::Tips(NSLOCTEXT("Inventory", "Inventory_ChangeMountWhileRiding_FailHint", "йЄ‘д№дё­ж— жі•ж›ґжЌўеќђйЄ‘"), local_28);
+                    CommonPopup::Tips(NSLOCTEXT("Inventory", "Inventory_ChangeMountWhileRiding_FailHint", "骑乘中无法更换坐骑"), local_28);
                 }
                 return false;
             }
@@ -872,18 +867,21 @@ void InitQuickSlotConsumableItemsForPawn(const FECSEntity &inout PawnEntity)
 }
 void EquipQuickSlotSkill(const FECSEntity &inout Entity, const USkillConfig ItemSkillConfig, const EESMTriggerInputSlot Slot)
 {
-    int local_6 = 0;
+    int local_5;
+    int local_6;
     if (int(Slot) != 11)
     {
         if (int(Slot) == 33)
         {
             local_6 = 9;
+            local_5 = local_6;
         }
         else
         {
             local_6 = 0;
+            local_5 = local_6;
         }
-        FSkillUtils::CreateSkillEntityAndAddSkill(Entity.GetWorld(), Entity, ItemSkillConfig, ESkillSlot(0), false, true);
+        FSkillUtils::CreateSkillEntityAndAddSkill(Entity.GetWorld(), Entity, ItemSkillConfig, ESkillSlot(local_5), false, false, 1);
         FSkillUtils::BindSkillInputSlot(Entity, ItemSkillConfig, EESMTriggerInputSlot(Slot));
         return;
     }

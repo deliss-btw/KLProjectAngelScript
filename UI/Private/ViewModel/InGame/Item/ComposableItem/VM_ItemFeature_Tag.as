@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ItemFeature_Tag
 {
     const int ModelId = 0;

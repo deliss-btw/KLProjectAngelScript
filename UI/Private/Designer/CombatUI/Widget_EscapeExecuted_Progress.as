@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_EscapeExecuted_Progress
 {
     const int ViewID = 0;
@@ -131,6 +130,7 @@ namespace UWidget_EscapeExecuted_Progress
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_EscapeExecuted_Progress;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnStateChanged"));
     return;
 }

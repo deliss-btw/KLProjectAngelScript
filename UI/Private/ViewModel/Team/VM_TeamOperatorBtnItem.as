@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TeamOperatorBtnItem
 {
     const int ModelId = 0;
@@ -403,14 +402,13 @@ struct __GeneratedProperties_FVM_TeamOperatorBtnItem
     UPROPERTY()
     TEUIModelRef<FVM_TeamOperatorBtnItem> Self;
 
-
 }
 
 namespace FVM_TeamOperatorBtnItem
 {
 FVM_TeamOperatorBtnItem& Create(const UObject ContextObject, const TEUIModelWeakRef<FVM_TeamPanel> &inout TeamPanel, const ETeamOperatorBtnType ButtonType)
 {
-    return FVM_TeamOperatorBtnItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), TeamPanel);
+    return FVM_TeamOperatorBtnItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), TeamPanel, ETeamOperatorBtnType(ButtonType));
 }
 FVM_TeamOperatorBtnItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVM_TeamPanel> &inout TeamPanel, const ETeamOperatorBtnType ButtonType)
 {

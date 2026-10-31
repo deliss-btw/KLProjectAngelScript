@@ -1,4 +1,3 @@
-﻿
 namespace FEcosimAIV2Utils
 {
 void UpdateEntityToTargetDamageRelation(const FECSEntity &inout Entity, const FECSEntity &inout TargetEntity)
@@ -105,28 +104,28 @@ void AddEntityRelation(const FECSEntity &inout Source, const FECSEntity &inout T
 {
     FECSWorldPtr local_2 = ECS::GetECSWorld();
     ModifyOrAdd local_6;
-    local_6.opCall().AddRelation(Source, Target, bIsPlan);
+    local_6.opCall().AddRelation(Source, Target, EEcosimAIV2EntityRelation(Relation), bIsPlan);
     return;
 }
 void RemoveEntityRelation(const FECSEntity &inout Source, const FECSEntity &inout Target, const EEcosimAIV2EntityRelation Relation, const bool bIsPlan)
 {
     FECSWorldPtr local_2 = ECS::GetECSWorld();
     ModifyOrAdd local_6;
-    local_6.opCall().RemoveRelation(Source, Target, bIsPlan);
+    local_6.opCall().RemoveRelation(Source, Target, EEcosimAIV2EntityRelation(Relation), bIsPlan);
     return;
 }
 void RemoveEntityRelationsBySource(const FECSEntity &inout Source, const EEcosimAIV2EntityRelation Relation, const bool bIsPlan)
 {
     FECSWorldPtr local_2 = ECS::GetECSWorld();
     ModifyOrAdd local_6;
-    local_6.opCall().RemoveRelationsBySource(Source, bIsPlan);
+    local_6.opCall().RemoveRelationsBySource(Source, EEcosimAIV2EntityRelation(Relation), bIsPlan);
     return;
 }
 void RemoveEntityRelationsByTarget(const FECSEntity &inout Target, const EEcosimAIV2EntityRelation Relation, const bool bIsPlan)
 {
     FECSWorldPtr local_2 = ECS::GetECSWorld();
     ModifyOrAdd local_6;
-    local_6.opCall().RemoveRelationsByTarget(Target, bIsPlan);
+    local_6.opCall().RemoveRelationsByTarget(Target, EEcosimAIV2EntityRelation(Relation), bIsPlan);
     return;
 }
 void RemoveAllEntityRelationsInvolvingEntity(const FECSEntity &inout Entity)

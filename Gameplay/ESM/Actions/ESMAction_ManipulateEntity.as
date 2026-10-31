@@ -1,4 +1,3 @@
-﻿
 enum EManipulateSlaveESMSyncType
 {
     NoSync,
@@ -6,14 +5,12 @@ enum EManipulateSlaveESMSyncType
     SyncWithStateNormalizedTime,
 }
 
-
 struct FESMManipulateEntityInstanceData
 {
     UPROPERTY()
     FECSEntity TargetEntity;
     UPROPERTY()
     int ManipulateUpdateCount;
-
 
 }
 
@@ -104,7 +101,7 @@ class UESMAction_ManipulateEntity : UESMBPBaseSpanTickAction
         }
         if ((this.bUseCurveOffset && this.bOnlyStateTransition))
         {
-            Info.AddDataInvalidComment(EESMDataValidType(2), "bUseCurveOffset дёЋ bOnlyStateTransition дёЌиѓЅеђЊж—¶ејЂеђЇгЂ‚");
+            Info.AddDataInvalidComment(EESMDataValidType(2), "bUseCurveOffset 与 bOnlyStateTransition 不能同时开启。");
         }
         if (this.bUseCurveOffset)
         {
@@ -276,7 +273,7 @@ class UESMAction_ManipulateEntity : UESMBPBaseSpanTickAction
                     local_92.SetRelativeRotationCurveBBVar(this.RelativeRotationCurveBBVar.Name);
                     if (!(local_5))
                     {
-                        local_92.SetPhase(EManipulateCurvePhase(EManipulateCurvePhase(0)));
+                        local_92.SetPhase(EManipulateCurvePhase(0));
                         local_92.SetStartTime(Time.WorldTime);
                     }
                     XLog(ELog(42), local_34.Append("[ManipulateByCurve][Begin] Master=").Append(Context.GetEntity().GetIdValue()).Append(" Target=").Append(local_4.GetIdValue()).Append(" UpdateCounter=").Append(local_60.GetUpdateCounter()).Append(" BeginState=").Append(this.SlaveTransitStateNameAtBegin).Append(" EndState=").Append(this.SlaveTransitStateNameAtEnd).Append(" SmoothSpeed=").Append(this.CurveSmoothSpeed).Append(" WorldTime=").Append(Time.WorldTime));
@@ -372,7 +369,7 @@ class UESMAction_ManipulateEntity : UESMBPBaseSpanTickAction
                     FVector local_138 = Context.GetEntity().GetBB_Vector(local_142);
                     if (int(local_92_2.GetPhase()) == 0 && (!(local_148.IsNearlyZero(9.999999747378752e-5)) || !(local_138.IsNearlyZero(9.999999747378752e-5))))
                     {
-                        local_92_2.SetPhase(EManipulateCurvePhase(EManipulateCurvePhase(1)));
+                        local_92_2.SetPhase(EManipulateCurvePhase(1));
                     }
                     if (int(local_92_2.GetPhase()) == 1)
                     {
@@ -432,18 +429,18 @@ class UESMAction_ManipulateEntity : UESMBPBaseSpanTickAction
             }
             if (this.bAttachMasterToSlave)
             {
-                local_4 += "(еЏЌеђ‘ Attach)";
+                local_4 += "(反向 Attach)";
             }
             local_4 += ">";
         }
-        local_4 += "ж“Ќзєµз›®ж ‡";
+        local_4 += "操纵目标";
         if (this.bOnlyStateTransition)
         {
-            local_4 += "(д»…и·іиЅ¬)";
+            local_4 += "(仅跳转)";
         }
         if (this.bUseCurveOffset)
         {
-            local_4 += "(ж›ІзєїеЃЏз§»)";
+            local_4 += "(曲线偏移)";
         }
         if (!((FName(this.TargetEntityBBVar.Name) == NAME_None)))
         {
@@ -482,19 +479,19 @@ class UESMAction_ManipulateEntity : UESMBPBaseSpanTickAction
         {
             if (int(this.SlaveStateSyncType) == 1)
             {
-                local_4 += " (ж—¶й•їеђЊж­Ґ Action)";
+                local_4 += " (时长同步 Action)";
             }
             else
             {
                 if (int(this.SlaveStateSyncType) == 2)
                 {
-                    local_4 += " (ж—¶й•їеђЊж­Ґ State)";
+                    local_4 += " (时长同步 State)";
                 }
             }
         }
         if (local_4.IsEmpty())
         {
-            local_12 = "ж“Ќзєµз›®ж ‡(жњЄй…ЌзЅ®)";
+            local_12 = "操纵目标(未配置)";
         }
         else
         {

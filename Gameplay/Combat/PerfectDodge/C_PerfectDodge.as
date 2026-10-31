@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_PerfectDodge_NS
 {
     const TECSComponentDerivedPtr<FC_PerfectDodge> DerivedPtr = TECSComponentDerivedPtr<FC_PerfectDodge>();
@@ -24,11 +23,25 @@ struct FC_PerfectDodge : FECSComponent
 
     FC_PerfectDodge()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_HitCount = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bIsDummy = true;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_PerfectDodge(const FC_PerfectDodge &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_HitCount = 0;
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_bIsDummy = true;
+        this.__InitDirtyFlags();
+        this.m_bIsDummy = Other.m_bIsDummy;
+        this.m_DummyEntity = Other.m_DummyEntity;
+        this.m_OwnerEntity = Other.m_OwnerEntity;
+        this.m_HitCount = int(Other.m_HitCount);
+        return;
     }
     FC_PerfectDodge opAssign(const FC_PerfectDodge &inout Other)
     {
@@ -134,11 +147,15 @@ struct FC_PerfectDodgeDummyShapeRequest : FECSComponent
 
     FC_PerfectDodgeDummyShapeRequest()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_PerfectDodgeDummyShapeRequest(const FC_PerfectDodgeDummyShapeRequest &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_Shape = Other.m_Shape;
         return;
@@ -243,37 +260,37 @@ bool RemovePerfectDodge(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPerfectDodgeOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PerfectDodge, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PerfectDodge, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPerfectDodgeOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PerfectDodge, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PerfectDodge, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPerfectDodgeOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PerfectDodge, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PerfectDodge, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPerfectDodgeOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PerfectDodge, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PerfectDodge, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPerfectDodgeOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PerfectDodge, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PerfectDodge, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPerfectDodgeLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PerfectDodge, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PerfectDodge, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPerfectDodgeActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PerfectDodge, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PerfectDodge, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPerfectDodgeModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PerfectDodge, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PerfectDodge, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_PerfectDodgeDummyShapeRequest
@@ -353,37 +370,37 @@ bool RemovePerfectDodgeDummyShapeRequest(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPerfectDodgeDummyShapeRequestOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PerfectDodgeDummyShapeRequest, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PerfectDodgeDummyShapeRequest, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPerfectDodgeDummyShapeRequestOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PerfectDodgeDummyShapeRequest, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PerfectDodgeDummyShapeRequest, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPerfectDodgeDummyShapeRequestOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PerfectDodgeDummyShapeRequest, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PerfectDodgeDummyShapeRequest, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPerfectDodgeDummyShapeRequestOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PerfectDodgeDummyShapeRequest, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PerfectDodgeDummyShapeRequest, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPerfectDodgeDummyShapeRequestOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PerfectDodgeDummyShapeRequest, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PerfectDodgeDummyShapeRequest, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPerfectDodgeDummyShapeRequestLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PerfectDodgeDummyShapeRequest, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PerfectDodgeDummyShapeRequest, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPerfectDodgeDummyShapeRequestActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PerfectDodgeDummyShapeRequest, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PerfectDodgeDummyShapeRequest, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPerfectDodgeDummyShapeRequestModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PerfectDodgeDummyShapeRequest, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PerfectDodgeDummyShapeRequest, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

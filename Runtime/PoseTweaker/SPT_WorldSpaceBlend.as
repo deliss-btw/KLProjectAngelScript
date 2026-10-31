@@ -1,5 +1,3 @@
-﻿
-
 class USPT_WorldSpaceBlend : USkeletalPoseTweaker
 {
     TArray<int> BonesInWS;

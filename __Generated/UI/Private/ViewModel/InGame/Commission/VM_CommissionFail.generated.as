@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommissionFail_Helpers
 {
 UFUNCTION()

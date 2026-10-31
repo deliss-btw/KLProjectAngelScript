@@ -1,11 +1,9 @@
-﻿
 enum EActionImpactType
 {
     Default,
     Jump,
     Land,
 }
-
 
 struct FActionSFXData
 {
@@ -33,7 +31,7 @@ struct FAICharacterSizeSFXData
     }
     void Preload()
     {
-        ::FPreloadAssetUtils::LoadAkEvent(this.Event);
+        ::FPreloadAssetUtils::LoadAkEvent(this.Default.Event);
         ::FPreloadAssetUtils::LoadAkEvent(this.Jump.Event);
         ::FPreloadAssetUtils::LoadAkEvent(this.Land.Event);
         return;
@@ -57,10 +55,9 @@ struct FActionImpactSFXData
     UPROPERTY()
     ELandedMaterialType FallBack = ELandedMaterialType(0);
 
-
     void Preload()
     {
-        this.Preload();
+        this.Default.Preload();
         this.Small.Preload();
         this.Medium.Preload();
         this.Large.Preload();
@@ -101,7 +98,7 @@ struct FAICharacterSizeVFXData
     }
     void Preload()
     {
-        ::FPreloadAssetUtils::LoadFXActor(this.FXActor);
+        ::FPreloadAssetUtils::LoadFXActor(this.Default.FXActor);
         ::FPreloadAssetUtils::LoadFXActor(this.Jump.FXActor);
         ::FPreloadAssetUtils::LoadFXActor(this.Land.FXActor);
         return;
@@ -125,10 +122,9 @@ struct FActionImpactVFXData
     UPROPERTY()
     ELandedMaterialType FallBack = ELandedMaterialType(0);
 
-
     void Preload()
     {
-        this.Preload();
+        this.Default.Preload();
         this.Small.Preload();
         this.Medium.Preload();
         this.Large.Preload();

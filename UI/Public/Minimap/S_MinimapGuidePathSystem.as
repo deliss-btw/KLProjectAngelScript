@@ -1,5 +1,3 @@
-﻿
-
 class US_MinimapGuidingPathSystem : UECSScriptSystem
 {
     US_MinimapGuidingPathSystem()

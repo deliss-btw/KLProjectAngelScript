@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CharacterAnimFakeAirFloating : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ class UESMAction_CharacterAnimFakeAirFloating : UESMBPBaseSpanAction
     float32 RootMotionFallDist = 0.0f;
     UPROPERTY()
     float32 MaxUpwardWarpScale = 1.0f;
-
 
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const

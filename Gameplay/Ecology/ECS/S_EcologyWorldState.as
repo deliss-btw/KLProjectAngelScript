@@ -1,5 +1,3 @@
-﻿
-
 class US_EcologyWorldState : UECSScriptSystem
 {
     UPROPERTY()
@@ -21,7 +19,7 @@ class US_EcologyWorldState : UECSScriptSystem
         local_84.EditorLoadPolicy = UEcologyLoadPolicySettings::GetActivePolicy();
         if (local_84.EditorLoadPolicy.bEnabled)
         {
-            Print(FString().Append("е·ІејЂеђЇз‰№ж®Ље…іеЌЎеЉ иЅЅз­–з•Ґ"), 999999.0f, FLinearColor(1.0f, 0.84f, 0.0f, 1.0f));
+            Print(FString().Append("已开启特殊关卡加载策略"), 999999.0f, FLinearColor(1.0f, 0.84f, 0.0f, 1.0f));
         }
         local_84.LoadRegions = ULevelConfigManager::GetLoadedRegions();
         return;
@@ -116,8 +114,7 @@ class US_EcologyWorldState : UECSScriptSystem
             local_12 = (Cast<AECSRegionVolume>(local_14));
             if (local_12 != nullptr)
             {
-                AECSVolumeBase local_30;
-                local_12.GetBounds();
+                FBoxSphereBounds local_30 = local_12.GetBounds();
                 FVoxelRegionScope local_52 = FVoxelRegionScope(local_30.GetBox());
                 FECSEntityId local_67 = FECSEntityId(Entity.GetId());
                 FVoxelRegionIterator local_78 = local_52.Iterator();

@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_InventoryMainItem_Helpers
 {
 UFUNCTION()

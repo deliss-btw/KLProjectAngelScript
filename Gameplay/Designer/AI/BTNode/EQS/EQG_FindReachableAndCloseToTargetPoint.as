@@ -1,5 +1,3 @@
-﻿
-
 class UEQG_FindReachableAndCloseToTargetPoint : UEnvQueryGenerator_ECS_BlueprintBase
 {
     UPROPERTY()
@@ -17,7 +15,6 @@ class UEQG_FindReachableAndCloseToTargetPoint : UEnvQueryGenerator_ECS_Blueprint
 
     default GeneratedItemType = UEnvQueryItemType_Point;
     default Context = UEQC_Self;
-
 
     UFUNCTION()
     void DoItemGenerationFromEntities_Implementation(const TArray<FECSEntityId> &inout ContextEntities) const

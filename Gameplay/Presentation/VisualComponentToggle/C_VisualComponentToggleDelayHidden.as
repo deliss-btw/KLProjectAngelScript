@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_LogicVisualComponentToggleDelayHidden_NS
 {
     const TECSComponentDerivedPtr<FC_LogicVisualComponentToggleDelayHidden> DerivedPtr = TECSComponentDerivedPtr<FC_LogicVisualComponentToggleDelayHidden>();
@@ -37,11 +36,12 @@ struct FDelayHiddenTaskItem
     }
     FName GetLogicName() const property
     {
-        return this;
+        return this.m_LogicName;
     }
     void SetLogicName(const FName &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_LogicName = __Value;
+        return;
     }
     const FFPTime GetTargetTime() const property
     {
@@ -70,12 +70,16 @@ struct FC_LogicVisualComponentToggleDelayHidden : FECSComponent
 
     FC_LogicVisualComponentToggleDelayHidden()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_NextTargetTime = -1;
         this.__InitDirtyFlags();
         return;
     }
     FC_LogicVisualComponentToggleDelayHidden(const FC_LogicVisualComponentToggleDelayHidden &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_NextTargetTime = -1;
         this.__InitDirtyFlags();
         this.m_NextTargetTime = Other.m_NextTargetTime;
@@ -228,27 +232,103 @@ struct FC_LogicVisualComponentToggleDelayHidden : FECSComponent
 struct FC_PresentationVisualComponentToggleDelayHidden : FECSComponent
 {
     UPROPERTY()
-    FFPTime NextTargetTime;
+    FFPTime NextTargetTime = -1;
     UPROPERTY()
     TArray<FDelayHiddenTaskItem> DelayTaskItems;
 
     FC_PresentationVisualComponentToggleDelayHidden()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        return;
     }
     void AddDelayTaskItem(const FName &inout LogicName, const FFPTime &inout TargetTime)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        int local_1 = -1;
+        int local_3 = 0;
+        for (; local_3 < this.DelayTaskItems.Num(); ++local_3)
+        {
+            if ((this.DelayTaskItems[local_3].GetLogicName() == LogicName))
+            {
+                local_1 = local_3;
+                break;
+            }
+        }
+        if (local_1 == -1)
+        {
+            FDelayHiddenTaskItem local_12;
+            local_12.SetLogicName(LogicName);
+            local_12.SetTargetTime(TargetTime);
+            local_1 = this.DelayTaskItems.Add(local_12);
+        }
+        else
+        {
+            this.DelayTaskItems[local_1].SetTargetTime(TargetTime);
+        }
+        if ((this.NextTargetTime == -1.0) || (TargetTime.opCmp(this.NextTargetTime) < 0))
+        {
+            this.NextTargetTime = TargetTime;
+        }
+        return;
     }
     bool ExecuteTaskAndUpdateNextTargetTime(const FFPTime &inout CurrentTime, const FECSEntity &inout Entity, const FName &inout InstigatorName)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
-        bool __r; return __r;
+        int local_1 = 0;
+        while (local_1 >= 0 && (local_1 < this.DelayTaskItems.Num()))
+        {
+            while (local_1 >= 0 && (local_1 < this.DelayTaskItems.Num()) && ((FFPTime(this.DelayTaskItems[local_1].GetTargetTime()).opCmp(CurrentTime) <= 0)))
+            {
+                FVisualComponentToggleUtils::SetVisualComponentHidden(Entity, this.DelayTaskItems[local_1].GetLogicName(), true, InstigatorName);
+                this.DelayTaskItems.RemoveAtSwap(local_1);
+            }
+            ++local_1;
+        }
+        if (!(this.DelayTaskItems.IsEmpty()))
+        {
+            FFPTime local_10 = FFPTime();
+            FFPTime local_10_2 = -1;
+            for (auto& local_24 : this.DelayTaskItems)
+            {
+                if ((local_10_2 == -1.0) || ((FFPTime(local_24.GetTargetTime()).opCmp(local_10_2) < 0)))
+                {
+                    local_10_2 = local_24.GetTargetTime();
+                }
+            }
+            this.NextTargetTime = local_10_2;
+            return false;
+        }
+        return true;
     }
     bool TryCancelDelayHiddenTaskByLogicNameAndUpdateNextTargetTime(const FName &inout LogicName)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
-        bool __r; return __r;
+        int local_1 = -1;
+        FFPTime local_4 = FFPTime();
+        FFPTime local_4_2 = -1;
+        int local_5 = 0;
+        for (; local_5 < this.DelayTaskItems.Num(); ++local_5)
+        {
+            FDelayHiddenTaskItem& local_10 = this.DelayTaskItems[local_5];
+            if ((local_10.GetLogicName() == LogicName) && (local_1 == -1))
+            {
+                local_1 = local_5;
+                continue;
+            }
+            if ((local_4_2 == -1.0) || (FFPTime(local_10.GetTargetTime()).opCmp(local_4_2) < 0))
+            {
+                local_4_2 = local_10.GetTargetTime();
+            }
+        }
+        if (local_1 != -1)
+        {
+            this.DelayTaskItems.RemoveAtSwap(local_1);
+        }
+        if ((local_4_2 == -1.0))
+        {
+            return true;
+        }
+        else
+        {
+            this.NextTargetTime = local_4_2;
+            return false;
+        }
     }
 }
 
@@ -365,37 +445,37 @@ bool RemoveLogicVisualComponentToggleDelayHidden(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorLogicVisualComponentToggleDelayHiddenOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_LogicVisualComponentToggleDelayHidden, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_LogicVisualComponentToggleDelayHidden, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLogicVisualComponentToggleDelayHiddenOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_LogicVisualComponentToggleDelayHidden, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_LogicVisualComponentToggleDelayHidden, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLogicVisualComponentToggleDelayHiddenOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_LogicVisualComponentToggleDelayHidden, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_LogicVisualComponentToggleDelayHidden, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLogicVisualComponentToggleDelayHiddenOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_LogicVisualComponentToggleDelayHidden, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_LogicVisualComponentToggleDelayHidden, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLogicVisualComponentToggleDelayHiddenOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_LogicVisualComponentToggleDelayHidden, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_LogicVisualComponentToggleDelayHidden, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorLogicVisualComponentToggleDelayHiddenLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_LogicVisualComponentToggleDelayHidden, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_LogicVisualComponentToggleDelayHidden, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLogicVisualComponentToggleDelayHiddenActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_LogicVisualComponentToggleDelayHidden, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_LogicVisualComponentToggleDelayHidden, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLogicVisualComponentToggleDelayHiddenModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_LogicVisualComponentToggleDelayHidden, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_LogicVisualComponentToggleDelayHidden, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_PresentationVisualComponentToggleDelayHidden
@@ -478,37 +558,37 @@ bool RemovePresentationVisualComponentToggleDelayHidden(const FECSEntity &inout 
 }
 FECSMonitorRuntimeView __GetMonitorPresentationVisualComponentToggleDelayHiddenOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PresentationVisualComponentToggleDelayHidden, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PresentationVisualComponentToggleDelayHidden, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPresentationVisualComponentToggleDelayHiddenOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PresentationVisualComponentToggleDelayHidden, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PresentationVisualComponentToggleDelayHidden, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPresentationVisualComponentToggleDelayHiddenOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PresentationVisualComponentToggleDelayHidden, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PresentationVisualComponentToggleDelayHidden, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPresentationVisualComponentToggleDelayHiddenOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PresentationVisualComponentToggleDelayHidden, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PresentationVisualComponentToggleDelayHidden, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPresentationVisualComponentToggleDelayHiddenOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PresentationVisualComponentToggleDelayHidden, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PresentationVisualComponentToggleDelayHidden, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPresentationVisualComponentToggleDelayHiddenLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PresentationVisualComponentToggleDelayHidden, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PresentationVisualComponentToggleDelayHidden, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPresentationVisualComponentToggleDelayHiddenActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PresentationVisualComponentToggleDelayHidden, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PresentationVisualComponentToggleDelayHidden, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPresentationVisualComponentToggleDelayHiddenModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PresentationVisualComponentToggleDelayHidden, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PresentationVisualComponentToggleDelayHidden, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_LogicVisualComponentToggleDitherStarted
@@ -591,37 +671,37 @@ bool RemoveLogicVisualComponentToggleDitherStarted(const FECSEntity &inout Entit
 }
 FECSMonitorRuntimeView __GetMonitorLogicVisualComponentToggleDitherStartedOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_LogicVisualComponentToggleDitherStarted, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_LogicVisualComponentToggleDitherStarted, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLogicVisualComponentToggleDitherStartedOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_LogicVisualComponentToggleDitherStarted, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_LogicVisualComponentToggleDitherStarted, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLogicVisualComponentToggleDitherStartedOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_LogicVisualComponentToggleDitherStarted, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_LogicVisualComponentToggleDitherStarted, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLogicVisualComponentToggleDitherStartedOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_LogicVisualComponentToggleDitherStarted, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_LogicVisualComponentToggleDitherStarted, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLogicVisualComponentToggleDitherStartedOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_LogicVisualComponentToggleDitherStarted, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_LogicVisualComponentToggleDitherStarted, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorLogicVisualComponentToggleDitherStartedLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_LogicVisualComponentToggleDitherStarted, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_LogicVisualComponentToggleDitherStarted, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLogicVisualComponentToggleDitherStartedActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_LogicVisualComponentToggleDitherStarted, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_LogicVisualComponentToggleDitherStarted, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLogicVisualComponentToggleDitherStartedModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_LogicVisualComponentToggleDitherStarted, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_LogicVisualComponentToggleDitherStarted, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_PresentationVisualComponentToggleDitherStarted
@@ -704,37 +784,37 @@ bool RemovePresentationVisualComponentToggleDitherStarted(const FECSEntity &inou
 }
 FECSMonitorRuntimeView __GetMonitorPresentationVisualComponentToggleDitherStartedOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PresentationVisualComponentToggleDitherStarted, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PresentationVisualComponentToggleDitherStarted, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPresentationVisualComponentToggleDitherStartedOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PresentationVisualComponentToggleDitherStarted, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PresentationVisualComponentToggleDitherStarted, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPresentationVisualComponentToggleDitherStartedOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PresentationVisualComponentToggleDitherStarted, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PresentationVisualComponentToggleDitherStarted, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPresentationVisualComponentToggleDitherStartedOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PresentationVisualComponentToggleDitherStarted, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PresentationVisualComponentToggleDitherStarted, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPresentationVisualComponentToggleDitherStartedOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PresentationVisualComponentToggleDitherStarted, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PresentationVisualComponentToggleDitherStarted, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPresentationVisualComponentToggleDitherStartedLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PresentationVisualComponentToggleDitherStarted, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PresentationVisualComponentToggleDitherStarted, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPresentationVisualComponentToggleDitherStartedActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PresentationVisualComponentToggleDitherStarted, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PresentationVisualComponentToggleDitherStarted, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPresentationVisualComponentToggleDitherStartedModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PresentationVisualComponentToggleDitherStarted, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PresentationVisualComponentToggleDitherStarted, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

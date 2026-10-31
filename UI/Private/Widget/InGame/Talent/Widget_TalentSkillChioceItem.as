@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TalentSkillChioceItem
 {
     const int ViewID = 0;
@@ -19,7 +18,6 @@ class UWidget_TalentSkillChioceItem : UEUIUserWidget
     FGetEUIModelRef SelectableItemDelegate;
     UPROPERTY()
     FGetEUIModelRef SkillIconDelegate;
-
 
     UFUNCTION()
     void PreConstruct_Implementation(const bool IsDesignTime)
@@ -84,6 +82,7 @@ namespace UWidget_TalentSkillChioceItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TalentSkillChioceItem;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

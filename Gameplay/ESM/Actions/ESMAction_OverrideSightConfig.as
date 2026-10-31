@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_OverrideSightConfig : UESMBPBaseSpanAction
 {
     UPROPERTY()

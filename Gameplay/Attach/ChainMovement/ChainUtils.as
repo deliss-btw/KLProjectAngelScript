@@ -1,4 +1,3 @@
-﻿
 namespace FChainUtils
 {
 void ChainToEntity(const FECSEntity &inout ChildEntity, const FECSEntity &inout ParentEntity, const FChainParam &inout ChainParam)

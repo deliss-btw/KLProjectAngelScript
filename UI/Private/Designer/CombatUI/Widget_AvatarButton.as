@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_AvatarButton
 {
     const int ViewID = 0;
@@ -52,7 +51,7 @@ class UWidget_AvatarButton : UEUIUserWidget
     UFUNCTION()
     void HandleAvatarDamageTypeChanged(const EDamageType AvatarDamageType)
     {
-        EDamageType local_2;
+        UMaterialInstance local_2;
         if (this.SwitchAvatarEnoughImageMap.Find(AvatarDamageType, local_2))
         {
             this.Image_SwitchEnergyEnough.SetBrushFromMaterial(local_2);
@@ -223,6 +222,7 @@ namespace UWidget_AvatarButton
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_AvatarButton;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleSwitchAvatarInCDChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleEnergyRatioChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleAvatarDamageTypeChanged"));

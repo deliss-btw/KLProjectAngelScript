@@ -1,4 +1,3 @@
-﻿
 enum EMatchSwitchAction
 {
     None,
@@ -361,7 +360,7 @@ struct FMS_Mode : FEUIModelSingleton
                 XWarning(ELog(70), "[M_Mode] Switch cancel timed out waiting for CANCELLED notify, drop pending switch.");
                 this.ClearPendingSwitch();
                 FCommonTipsParam local_16;
-                ::CommonPopup::Tips(NSLOCTEXT("Mode", "SwitchTimeout", "еЅ“е‰Ќж— жі•е€‡жЌўеЊ№й…ЌпјЊиЇ·зЁЌеђЋе†ЌиЇ•"), local_16);
+                ::CommonPopup::Tips(NSLOCTEXT("Mode", "SwitchTimeout", "当前无法切换匹配，请稍后再试"), local_16);
             }
         }
         return;
@@ -416,7 +415,7 @@ struct FMS_Mode : FEUIModelSingleton
             this.ClearPendingSwitch();
             this.CloseSwitchConfirmDialogIfOpen();
             FCommonTipsParam local_18;
-            ::CommonPopup::Tips(NSLOCTEXT("Mode", "SwitchCancelRejected", "еЅ“е‰Ќж— жі•е€‡жЌўеЊ№й…Ќ"), local_18);
+            ::CommonPopup::Tips(NSLOCTEXT("Mode", "SwitchCancelRejected", "当前无法切换匹配"), local_18);
         }
         return;
     }
@@ -515,8 +514,7 @@ struct FMS_Mode : FEUIModelSingleton
                     if (!(this.GetMatchConfirmWidget().IsValid()))
                     {
                         XLog(ELog(70), FString().Append("[M_Mode]GS_OnMatchInfoNotify. Show MatchConfirm."));
-                        FEUIModelRef local_100 = this.GetMatchConfirmData().opImplConv();
-                        FEUIModelRef local_102;
+                        FEUIModelRef local_102 = FEUIModelRef(::FVM_TeamMemberConfirm::Create(this.GetContext().Manager, this.GetMatchConfirmData().opImplConv(), UModeMatchConfirmSource));
                         this.SetMatchConfirmWidget(FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_TeamMemberConfirm, local_102));
                     }
                 }
@@ -574,7 +572,7 @@ struct FMS_Mode : FEUIModelSingleton
                                     if (local_35 == 2)
                                     {
                                         FCommonTipsParam local_112;
-                                        ::CommonPopup::Tips(NSLOCTEXT("Mode", "MatchCancelledByTeamChange", "йџдјЌдєєж•°еЏ‘з”џеЏеЊ–пјЊе·ІеЏ–ж¶€еЊ№й…Ќ"), local_112);
+                                        ::CommonPopup::Tips(NSLOCTEXT("Mode", "MatchCancelledByTeamChange", "队伍人数发生变化，已取消匹配"), local_112);
                                     }
                                 }
                             }
@@ -623,7 +621,7 @@ struct FMS_Mode : FEUIModelSingleton
             }
             this.SetMatchConfirmData(TEUIModelRef<FM_ModeMatchConfirm>());
         }
-        FEUIModelRef local_100_2 = FEUIModelRef(this);
+        FEUIModelRef local_100 = FEUIModelRef(this);
         FEUIMessageBus::Publish(EUIMessageBus);
         FMsg_ModeMatchStatusUpdate local_114;
         local_114.bMatching = this.GetbMatching();
@@ -832,7 +830,7 @@ struct FMS_Mode : FEUIModelSingleton
         FDialogModelCallback local_72;
         local_72.Bind(local_46, FVM_MatchSwitchConfirm::OnAnswer);
         FDialogCallback local_104 = FDialogCallback(local_72);
-        local_42 = NSLOCTEXT("Mode", "SwitchMatchTitle", "жЏђз¤є");
+        local_42 = NSLOCTEXT("Mode", "SwitchMatchTitle", "提示");
         FEUIWidget::AddWidgetByClass(this.GetContext().UELocalPlayer, local_8.CommonDialogWidget, FEUIModelRef(local_106));
         this.SetSwitchConfirmDialog(TEUIModelRef<FVM_CommonDialog>(local_106));
         this.SetSwitchConfirmProxy(TEUIModelRef<FVM_MatchSwitchConfirm>(local_46));
@@ -846,9 +844,9 @@ struct FMS_Mode : FEUIModelSingleton
         FText local_4 = this.ResolveCommissionName(NewCommissionId);
         if (bDirectEnter)
         {
-            return FText::Format(NSLOCTEXT("Mode", "SwitchToDirectEnter", "е°†з»€ж­ўеЊ№й…ЌгЂЊ{0}гЂЌе№¶<Yellow20>з›ґжЋҐиї›е…ҐгЂЊ{1}гЂЌ</>пјЊжЇеђ¦з»§з»­пјџ"), local_12, local_4);
+            return FText::Format(NSLOCTEXT("Mode", "SwitchToDirectEnter", "将终止匹配「{0}」并<Yellow20>直接进入「{1}」</>，是否继续？"), local_12, local_4);
         }
-        return FText::Format(NSLOCTEXT("Mode", "SwitchToMatch", "е°†з»€ж­ўеЊ№й…ЌгЂЊ{0}гЂЌе№¶<Yellow20>ејЂе§‹еЊ№й…ЌгЂЊ{1}гЂЌ</>пјЊжЇеђ¦з»§з»­пјџ"), local_12, local_4);
+        return FText::Format(NSLOCTEXT("Mode", "SwitchToMatch", "将终止匹配「{0}」并<Yellow20>开始匹配「{1}」</>，是否继续？"), local_12, local_4);
     }
     void GS_OnMatchRecruitNotify(const FPbMatchRecruitNotify &inout Notify)
     {
@@ -921,9 +919,9 @@ struct FMS_Mode : FEUIModelSingleton
         FVM_MatchRecruitConfirm& local_46 = ::FVM_MatchRecruitConfirm::Create(this.GetContext().Manager);
         FDialogModelCallback local_72;
         local_72.Bind(local_46, FVM_MatchRecruitConfirm::OnAnswer);
-        local_42 = NSLOCTEXT("Mode", "MatchRecruitConfirm", "еЅ“е‰ЌеЊ№й…Ќдєєж•°иѕѓе°‘пјЊйў„жњџз­‰еѕ…ж—¶й—ґиѕѓй•їпјЊжЇеђ¦е°†з»„йџй“ѕжЋҐеЏ‘йЂЃи‡іж‹›е‹џйў‘йЃ“?");
+        local_42 = NSLOCTEXT("Mode", "MatchRecruitConfirm", "当前匹配人数较少，预期等待时间较长，是否将组队链接发送至招募频道?");
         FDialogCallback local_108 = FDialogCallback(local_72);
-        NSLOCTEXT("Mode", "MatchRecruitTitle", "жЏђз¤є");
+        NSLOCTEXT("Mode", "MatchRecruitTitle", "提示");
         FEUIWidget::AddWidgetByClass(this.GetContext().UELocalPlayer, local_8.CommonDialogWidget, FEUIModelRef(local_110));
         this.SetRecruitConfirmDialog(TEUIModelRef<FVM_CommonDialog>(local_110));
         this.SetRecruitConfirmProxy(TEUIModelRef<FVM_MatchRecruitConfirm>(local_46));
@@ -934,7 +932,7 @@ struct FMS_Mode : FEUIModelSingleton
         FText local_8;
         this.ResolveMatchName(local_8, MatchMode, MatchId);
         FCommonTipsParam local_16;
-        ::CommonPopup::Tips(FText::Format(NSLOCTEXT("Mode", "MatchTimeout", "гЂЊ{0}гЂЌжњЄж‰ѕе€°еЊ№й…ЌпјЊиЇ·зЁЌеђЋе†ЌиЇ•"), local_8), local_16);
+        ::CommonPopup::Tips(FText::Format(NSLOCTEXT("Mode", "MatchTimeout", "「{0}」未找到匹配，请稍后再试"), local_8), local_16);
         return;
     }
     void ShowMatchCancelledByPlayerHint(const uint CancelUid, const uint MatchMode, const uint MatchId, const uint CommissionId)
@@ -948,7 +946,7 @@ struct FMS_Mode : FEUIModelSingleton
         FCommonTipsParam local_8;
         this.ResolveMatchName(local_8, MatchMode, MatchId);
         FCommonTipsParam local_24;
-        ::CommonPopup::Tips(FText::Format(NSLOCTEXT("Mode", "MatchCancelledByPlayer", "{0} з»€ж­ўдє†гЂЊ{1}гЂЌзљ„еЊ№й…Ќ"), local_12, local_8), local_24);
+        ::CommonPopup::Tips(FText::Format(NSLOCTEXT("Mode", "MatchCancelledByPlayer", "{0} 终止了「{1}」的匹配"), local_12, local_8), local_24);
         return;
     }
     void ShowMatchStartedHint(const uint StartUid, const uint MatchMode, const uint MatchId, const uint CommissionId)
@@ -962,7 +960,7 @@ struct FMS_Mode : FEUIModelSingleton
         FCommonTipsParam local_8;
         this.ResolveMatchName(local_8, MatchMode, MatchId);
         FCommonTipsParam local_24;
-        ::CommonPopup::Tips(FText::Format(NSLOCTEXT("Mode", "MatchStartedByPlayer", "{0} ејЂеђЇдє†гЂЊ{1}гЂЌзљ„еЊ№й…Ќ"), local_12, local_8), local_24);
+        ::CommonPopup::Tips(FText::Format(NSLOCTEXT("Mode", "MatchStartedByPlayer", "{0} 开启了「{1}」的匹配"), local_12, local_8), local_24);
         return;
     }
     uint GetLocalPlayerUid() const
@@ -1448,7 +1446,6 @@ struct FMsg_ModeMatchStatusUpdate : FEUIMessage
     uint MatchMode;
     UPROPERTY()
     uint CommissionId;
-
 
 }
 

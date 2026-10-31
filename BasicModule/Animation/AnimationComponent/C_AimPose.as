@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_AimPoseConfig_NS
 {
     const TECSComponentDerivedPtr<FC_AimPoseConfig> DerivedPtr = TECSComponentDerivedPtr<FC_AimPoseConfig>();
@@ -26,7 +25,6 @@ struct FAimPoseLandingDipConfig
     UPROPERTY()
     float32 RecoveryTime = 0.3f;
 
-
 }
 
 struct FC_AimPoseConfig : FECSComponent
@@ -37,11 +35,15 @@ struct FC_AimPoseConfig : FECSComponent
 
     FC_AimPoseConfig()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_AimPoseConfig(const FC_AimPoseConfig &inout Other)
     {
+        FRootDirtyFlags8 local_25;
+        this.__DirtyFlags = local_25;
         this.__InitDirtyFlags();
         this.m_ConfigPtr = Other.m_ConfigPtr;
         return;
@@ -124,11 +126,32 @@ struct FC_AnimAimPoseOutput : FECSComponent
 
     FC_AnimAimPoseOutput()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Weight = 0.0f;
+        this.m_TargetWeight = 0.0f;
+        this.m_WeightLerpSpeed = 5.0f;
+        this.m_TargetLerpSpeed = 5.0f;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_AnimAimPoseOutput(const FC_AnimAimPoseOutput &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_Weight = 0.0f;
+        this.m_TargetWeight = 0.0f;
+        this.m_WeightLerpSpeed = 5.0f;
+        this.m_TargetLerpSpeed = 5.0f;
+        this.__InitDirtyFlags();
+        this.m_Weight = Other.m_Weight;
+        this.m_TargetWeight = Other.m_TargetWeight;
+        this.m_WeightLerpSpeed = Other.m_WeightLerpSpeed;
+        this.m_TargetLerpSpeed = Other.m_TargetLerpSpeed;
+        this.m_AllowSourceOverride = Other.m_AllowSourceOverride;
+        this.m_SegmentOverrides = Other.m_SegmentOverrides;
+        this.m_CompensatorOverrides = Other.m_CompensatorOverrides;
+        return;
     }
     FC_AnimAimPoseOutput opAssign(const FC_AnimAimPoseOutput &inout Other)
     {
@@ -326,7 +349,6 @@ class UESMAction_AimPose : UESMBPBaseSpanTickAction
     TArray<FAimPoseSegmentOverride> SegmentOverrides;
     UPROPERTY()
     TArray<FAimPoseCompensatorOverride> CompensatorOverrides;
-
 
     UFUNCTION()
     EESMAssetWorkflow GetWorkflow_Implementation() const
@@ -605,37 +627,37 @@ bool RemoveAimPoseConfig(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAimPoseConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AimPoseConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AimPoseConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAimPoseConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AimPoseConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AimPoseConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAimPoseConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AimPoseConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AimPoseConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAimPoseConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AimPoseConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AimPoseConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAimPoseConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AimPoseConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AimPoseConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAimPoseConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AimPoseConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AimPoseConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAimPoseConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AimPoseConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AimPoseConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAimPoseConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AimPoseConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AimPoseConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AnimAimPoseOutput
@@ -715,37 +737,37 @@ bool RemoveAnimAimPoseOutput(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAnimAimPoseOutputOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimAimPoseOutput, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimAimPoseOutput, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimAimPoseOutputOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimAimPoseOutput, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimAimPoseOutput, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimAimPoseOutputOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimAimPoseOutput, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimAimPoseOutput, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimAimPoseOutputOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimAimPoseOutput, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimAimPoseOutput, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimAimPoseOutputOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimAimPoseOutput, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimAimPoseOutput, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAnimAimPoseOutputLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AnimAimPoseOutput, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AnimAimPoseOutput, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimAimPoseOutputActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AnimAimPoseOutput, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AnimAimPoseOutput, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimAimPoseOutputModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AnimAimPoseOutput, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AnimAimPoseOutput, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

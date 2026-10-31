@@ -1,10 +1,7 @@
-﻿
-
 class AKLLevelScriptMissionBase : AKLLevelScriptBaseActor
 {
     UPROPERTY()
     int CommissionProgress = 0;
-
 
     UFUNCTION()
     int GetCommissionMissionProgress() const property

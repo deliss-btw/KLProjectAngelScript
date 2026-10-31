@@ -1,4 +1,3 @@
-﻿
 enum ESimpleDestructibleApplyResult
 {
     Applied,
@@ -64,11 +63,24 @@ struct FSimpleDestructibleCacheStateValue
 
     FSimpleDestructibleCacheStateValue()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_ImpactType = EImpactType(0);
+        this.m_ImpactStrength = EImpactStrength(0);
+        this.m_ForceDirection = FVector::ZeroVector;
+        return;
     }
     FSimpleDestructibleCacheStateValue(const FSimpleDestructibleCacheStateValue &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_ImpactType = EImpactType(0);
+        this.m_ImpactStrength = EImpactStrength(0);
+        this.m_ForceDirection = FVector::ZeroVector;
+        this.m_ImpactType = Other.m_ImpactType;
+        this.m_ImpactStrength = Other.m_ImpactStrength;
+        this.m_ForceDirection = Other.m_ForceDirection;
+        return;
     }
     FSimpleDestructibleCacheStateValue opAssign(const FSimpleDestructibleCacheStateValue &inout Other)
     {
@@ -142,11 +154,15 @@ struct FCS_SimpleDestructibleManager : FECSSingleton
 
     FCS_SimpleDestructibleManager()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FCS_SimpleDestructibleManager(const FCS_SimpleDestructibleManager &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_StateMap_FoliageISM = Other.m_StateMap_FoliageISM;
         this.m_StateMap_FoliageISkM = Other.m_StateMap_FoliageISkM;
@@ -263,7 +279,6 @@ struct FSimpleDestructibleAppliedState
     UPROPERTY()
     ECollisionEnabled OriginalCollisionEnabled = ECollisionEnabled(0);
 
-
 }
 
 struct FCS_SimpleDestructibleClientCache : FECSSingleton
@@ -285,10 +300,9 @@ struct FCS_SimpleDestructibleClientCache : FECSSingleton
     UPROPERTY()
     bool ActiveUseManagerOnModify = false;
 
-
     void Reset()
     {
-        this.Reset();
+        this.ObservedAuthorityKeys_FoliageISM.Reset();
         this.ObservedAuthorityKeys_FoliageISkM.Reset();
         this.ObservedAuthorityKeys_StaticMesh.Reset();
         this.AppliedStateMap_FoliageISM.Reset();
@@ -303,7 +317,6 @@ struct FCS_SimpleDestructibleStreamingSignal : FECSSingleton
 {
     UPROPERTY()
     int Version = 0;
-
 
     void Reset()
     {
@@ -328,7 +341,6 @@ struct FCE_SimpleDestructibleHitEvent_FoliageISM : FECSEvent
     UPROPERTY()
     EDestructibleClassLevel DestructibleDamageLevel = EDestructibleClassLevel(0);
 
-
 }
 
 struct FCE_SimpleDestructibleHitEvent_FoliageISkM : FECSEvent
@@ -347,7 +359,6 @@ struct FCE_SimpleDestructibleHitEvent_FoliageISkM : FECSEvent
     UPROPERTY()
     EDestructibleClassLevel DestructibleDamageLevel = EDestructibleClassLevel(0);
 
-
 }
 
 struct FCE_SimpleDestructibleHitEvent_StaticMesh : FECSEvent
@@ -364,7 +375,6 @@ struct FCE_SimpleDestructibleHitEvent_StaticMesh : FECSEvent
     UPROPERTY()
     EDestructibleClassLevel DestructibleDamageLevel = EDestructibleClassLevel(0);
 
-
 }
 
 struct FCE_SimpleDestructibleProcessView_FoliageISM : FECSEvent
@@ -378,7 +388,6 @@ struct FCE_SimpleDestructibleProcessView_FoliageISM : FECSEvent
     FTransform Transform;
     UPROPERTY()
     int QueuedSourceUniqueId = 0;
-
 
 }
 
@@ -394,7 +403,6 @@ struct FCE_SimpleDestructibleProcessView_FoliageISkM : FECSEvent
     UPROPERTY()
     int QueuedSourceUniqueId = 0;
 
-
 }
 
 struct FCE_SimpleDestructibleProcessView_StaticMesh : FECSEvent
@@ -406,7 +414,6 @@ struct FCE_SimpleDestructibleProcessView_StaticMesh : FECSEvent
     FTransform Transform;
     UPROPERTY()
     int QueuedSourceUniqueId = 0;
-
 
 }
 
@@ -495,17 +502,17 @@ bool RemoveSimpleDestructibleManager(const FECSWorldPtr &inout World)
 }
 void __MonitorSimpleDestructibleManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_SimpleDestructibleManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_SimpleDestructibleManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSimpleDestructibleManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_SimpleDestructibleManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_SimpleDestructibleManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSimpleDestructibleManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_SimpleDestructibleManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_SimpleDestructibleManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_SimpleDestructibleServerCache
@@ -596,17 +603,17 @@ bool RemoveSimpleDestructibleServerCache(const FECSWorldPtr &inout World)
 }
 void __MonitorSimpleDestructibleServerCacheLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_SimpleDestructibleServerCache, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_SimpleDestructibleServerCache, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSimpleDestructibleServerCacheActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_SimpleDestructibleServerCache, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_SimpleDestructibleServerCache, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSimpleDestructibleServerCacheModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_SimpleDestructibleServerCache, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_SimpleDestructibleServerCache, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_SimpleDestructibleClientCache
@@ -697,17 +704,17 @@ bool RemoveSimpleDestructibleClientCache(const FECSWorldPtr &inout World)
 }
 void __MonitorSimpleDestructibleClientCacheLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_SimpleDestructibleClientCache, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_SimpleDestructibleClientCache, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSimpleDestructibleClientCacheActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_SimpleDestructibleClientCache, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_SimpleDestructibleClientCache, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSimpleDestructibleClientCacheModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_SimpleDestructibleClientCache, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_SimpleDestructibleClientCache, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_SimpleDestructibleStreamingSignal
@@ -795,17 +802,17 @@ bool RemoveSimpleDestructibleStreamingSignal(const FECSWorldPtr &inout World)
 }
 void __MonitorSimpleDestructibleStreamingSignalLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_SimpleDestructibleStreamingSignal, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_SimpleDestructibleStreamingSignal, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSimpleDestructibleStreamingSignalActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_SimpleDestructibleStreamingSignal, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_SimpleDestructibleStreamingSignal, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSimpleDestructibleStreamingSignalModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_SimpleDestructibleStreamingSignal, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_SimpleDestructibleStreamingSignal, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

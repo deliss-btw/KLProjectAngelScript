@@ -1,5 +1,3 @@
-﻿
-
 struct FVMS_MiniHpBarV2PanelConfigDefault : FConfigEUIModelDefaultBase
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ struct FVMS_MiniHpBarV2PanelConfigDefault : FConfigEUIModelDefaultBase
     float32 EnemyAvatarAlwaysShowHpBarDistance = 700.0f;
     UPROPERTY()
     float32 HitShowMiniHpBarDistance = 5000.0f;
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace EntityBB
 {
     const FEntityNativeBBName _TeamInfo_fGetTeamLinkEnergy = FEntityNativeBBName();
@@ -88,11 +87,21 @@ struct FTeamMemberInfo
 
     FTeamMemberInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_HealthRation = 1.0f;
+        return;
     }
     FTeamMemberInfo(const FTeamMemberInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_27;
+        this.__DirtyFlags = local_27;
+        this.m_HealthRation = 1.0f;
+        this.m_Entity = Other.m_Entity;
+        this.m_Position = Other.m_Position;
+        this.m_HealthRation = Other.m_HealthRation;
+        this.m_AvatarConfig = Other.m_AvatarConfig;
+        return;
     }
     FTeamMemberInfo opAssign(const FTeamMemberInfo &inout Other)
     {
@@ -199,11 +208,27 @@ struct FC_TeamInfo : FECSComponent
 
     FC_TeamInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_SocialTeamId = 0;
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_TeamID = 0;
+        this.m_TeamLinkEnergy = 0.0f;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_TeamInfo(const FC_TeamInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_SocialTeamId = 0;
+        FRootDirtyFlags8 local_5;
+        this.__DirtyFlags = local_5;
+        this.m_TeamID = 0;
+        this.m_TeamLinkEnergy = 0.0f;
+        this.__InitDirtyFlags();
+        this.m_SocialTeamId = Other.m_SocialTeamId;
+        this.m_TeamID = int(Other.m_TeamID);
+        this.m_Members = Other.m_Members;
+        this.m_TeamLinkEnergy = Other.m_TeamLinkEnergy;
+        return;
     }
     FC_TeamInfo opAssign(const FC_TeamInfo &inout Other)
     {
@@ -319,11 +344,15 @@ struct FC_PlayerInTeam : FECSComponent
 
     FC_PlayerInTeam()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_PlayerInTeam(const FC_PlayerInTeam &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_TeamEntity = Other.m_TeamEntity;
         return;
@@ -376,7 +405,6 @@ struct FCE_TeamJoin : FECSEvent
     UPROPERTY()
     bool bAccept;
 
-
 }
 
 struct FCE_ServerToClientTeamJoin : FECSEvent
@@ -423,7 +451,6 @@ struct FCE_ClientToServerTeamUp : FECSEvent
     UPROPERTY()
     uint TargetUid;
 
-
 }
 
 struct FCE_ClientToServerLeaveTeam : FECSEvent
@@ -431,7 +458,6 @@ struct FCE_ClientToServerLeaveTeam : FECSEvent
     FECSEvent _base_FECSEvent;
     UPROPERTY()
     uint64 TeamId;
-
 
     bool Validate() const
     {
@@ -447,7 +473,6 @@ struct FCE_ClientToServerKickTeammate : FECSEvent
     UPROPERTY()
     uint KickUid;
 
-
     bool Validate() const
     {
         return true;
@@ -461,7 +486,6 @@ struct FCE_ClientToServerTransferCaptain : FECSEvent
     uint64 TeamId;
     UPROPERTY()
     uint NewCaptainUid;
-
 
     bool Validate() const
     {
@@ -479,7 +503,6 @@ struct FCE_ClientToServerTeamInviteReply : FECSEvent
     UPROPERTY()
     bool bAccept;
 
-
     bool Validate() const
     {
         return true;
@@ -495,7 +518,6 @@ struct FCE_ClientToServerTeamApplyReply : FECSEvent
     uint SourceUid;
     UPROPERTY()
     bool bAccept;
-
 
     bool Validate() const
     {
@@ -611,17 +633,17 @@ bool RemoveTeamManager(const FECSWorldPtr &inout World)
 }
 void __MonitorTeamManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_TeamManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_TeamManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeamManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_TeamManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_TeamManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeamManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_TeamManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_TeamManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TeamInfo
@@ -701,37 +723,37 @@ bool RemoveTeamInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTeamInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TeamInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TeamInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeamInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TeamInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TeamInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeamInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TeamInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TeamInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeamInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TeamInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TeamInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeamInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TeamInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TeamInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTeamInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TeamInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TeamInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeamInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TeamInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TeamInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeamInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TeamInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TeamInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_PlayerInTeam
@@ -811,37 +833,37 @@ bool RemovePlayerInTeam(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPlayerInTeamOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerInTeam, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerInTeam, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerInTeamOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerInTeam, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerInTeam, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerInTeamOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerInTeam, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerInTeam, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerInTeamOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerInTeam, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerInTeam, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerInTeamOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerInTeam, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerInTeam, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPlayerInTeamLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PlayerInTeam, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PlayerInTeam, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerInTeamActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PlayerInTeam, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PlayerInTeam, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerInTeamModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PlayerInTeam, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PlayerInTeam, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace EntityBB

@@ -1,5 +1,3 @@
-﻿
-
 struct FStringArray
 {
     UPROPERTY()
@@ -11,7 +9,8 @@ struct FStringArray
     }
     FStringArray(const TArray<FString> &inout Arg)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.Value = Arg;
+        return;
     }
 }
 
@@ -26,6 +25,7 @@ struct FSimpleDictTreeNode
 
     FSimpleDictTreeNode()
     {
+        this.NodeName = FString();
         TMap<FString, FSimpleDictTreeNode> local_20;
         this.SubNode = local_20;
         this.Keys = TArray<FString>();
@@ -40,8 +40,8 @@ struct FSimpleDictTree
 
     FSimpleDictTree()
     {
-        this.NodeName = FString();
-        this.SubNode.Reset();
+        this.RootNode.NodeName = FString();
+        this.RootNode.SubNode.Reset();
         return;
     }
     void AddElement(const TArray<FString> &inout ElementList)
@@ -50,7 +50,7 @@ struct FSimpleDictTree
         {
             return;
         }
-        this.InternalAdd(this, ElementList, 0);
+        this.InternalAdd(this.RootNode, ElementList, 0);
         return;
     }
     void InternalAdd(FSimpleDictTreeNode &inout CurNode, const TArray<FString> &inout ElementList, const int i)
@@ -65,18 +65,18 @@ struct FSimpleDictTree
             CurNode.Keys.Add(local_4);
             FSimpleDictTreeNode local_62;
             local_62.NodeName = local_4;
+            CurNode.SubNode.Add(local_4, local_62);
         }
         if ((i + 1) < ElementList.Num())
         {
-            int local_6 = i + 1;
-            this.InternalAdd(CurNode.SubNode[local_4], ElementList);
+            this.InternalAdd(CurNode.SubNode[local_4], ElementList, i + 1);
         }
         return;
     }
     TArray<FString> RandomValue(FRandomGenerator &inout Random) const
     {
         TArray<FString> local_4;
-        this.InternalRandomValue(Random, this, local_4);
+        this.InternalRandomValue(Random, this.RootNode, local_4);
         return local_4;
     }
     void InternalRandomValue(FRandomGenerator &inout Random, const FSimpleDictTreeNode &inout CurNode, TArray<FString> &inout Ret) const

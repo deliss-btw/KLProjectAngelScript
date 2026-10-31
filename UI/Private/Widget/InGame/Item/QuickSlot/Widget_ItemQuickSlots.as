@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ItemQuickSlots
 {
     const int ViewID = 0;
@@ -37,8 +36,7 @@ class UWidget_ItemQuickSlots : UEUIActivatableWidget
     {
         if (!(this.InventoryQuickSlots))
         {
-            FEUIModelRef local_4;
-            this.InventoryQuickSlots = local_4;
+            this.InventoryQuickSlots = FEUIModelRef(::FVM_InventoryQuickSlots::Create(this, this.HoverArea));
         }
         return;
     }
@@ -102,6 +100,7 @@ namespace UWidget_ItemQuickSlots
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ItemQuickSlots;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

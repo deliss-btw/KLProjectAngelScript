@@ -1,16 +1,13 @@
-﻿
 enum EWeatherGameplayType
 {
     Normal,
     Bad,
 }
 
-
 struct FGlobalEnvEffectWeatherConfig
 {
     UPROPERTY()
     float32 MaxWeight = 1.0f;
-
 
 }
 
@@ -36,7 +33,6 @@ struct FArtWeatherSingleParam
     FName ArtWeatherName;
     UPROPERTY()
     float32 BlendInTime;
-
 
 }
 
@@ -98,7 +94,6 @@ struct FBadWeatherDropItemRateUpRule : FDataObject
     UPROPERTY()
     TArray<FDataObjectPtr> m_BaseDropItems;
 
-
     const TArray<TDataObjectPtr<FItemConfig>> GetBaseDropItems() const property
     {
         const TArray<TDataObjectPtr<FItemConfig>> __r;
@@ -152,7 +147,6 @@ struct FWeatherConfig : FDataObject
     UPROPERTY()
     FDataObjectPtr m_ArtWeatherConfig;
 
-
     const TDataObjectPtr<FMessageHintConfig> GetBuffMessageHintConfig() const property
     {
         const TDataObjectPtr<FMessageHintConfig> __r;
@@ -199,7 +193,6 @@ struct FWeatherChanceConfig
     UPROPERTY()
     float32 MaxDuration;
 
-
 }
 
 struct FWeatherGenerateTemplate : FDataObject
@@ -209,7 +202,6 @@ struct FWeatherGenerateTemplate : FDataObject
     uint DataId;
     UPROPERTY()
     TArray<FWeatherChanceConfig> WeatherChances;
-
 
     int GetWeatherChanceConfigIndex(const TDataObjectPtr<FWeatherConfig> &inout WeatherConfig) const
     {
@@ -232,7 +224,6 @@ struct FRuntimeWeatherInfo
     UPROPERTY()
     int m_StartAtTimeInSeconds;
 
-
     TDataObjectPtr<FWeatherConfig> GetWeatherConfig() const property
     {
         TDataObjectPtr<FWeatherConfig> __r;
@@ -245,7 +236,8 @@ struct FRuntimeWeatherInfo
     }
     void SetWeatherConfig(const TDataObjectPtr<FWeatherConfig> &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_WeatherConfig = __Value;
+        return;
     }
     int GetStartAtTimeInSeconds() const property
     {

@@ -1,4 +1,3 @@
-﻿
 namespace FEcologyBattleForAreaUtils
 {
 void ModifyBattleForAreaState(const FECSEntity &inout FlockEntity, const EBossBattleForAreaState NewState)
@@ -9,8 +8,8 @@ void ModifyBattleForAreaState(const FECSEntity &inout FlockEntity, const EBossBa
         XLog(ELog(0), FString().Append("[BattleForArea]: ModifyStateFailed - BattleForAreaComp Invalid"));
         return;
     }
-    EBossBattleForAreaState local_14 = local_6.BattleForAreaState;
-    if ((int(local_14)) == (int(NewState)))
+    int local_14 = local_6.BattleForAreaState;
+    if ((local_14) == (int(NewState)))
     {
         XLog(ELog(0), FString().Append("[BattleForArea]: ModifyStateFailed - Flock: ").Append(FlockEntity).Append(", From: ").Append(local_14).Append(", To: ").Append(NewState));
         return;
@@ -280,6 +279,7 @@ void BossBattleForAreaWinnerCheck(const FECSEntity &inout AttackerFlock, const F
     }
     FGameplayTag local_116 = FGameplayTag(FEcologyGameplayTagDefine::Ecology_ChangeAreaReasonBattleForAreaReasonTag);
     FGameplayTag local_118 = FGameplayTag(FEcologyGameplayTagDefine::Ecology_ChangeAreaReasonBattleForAreaSourceTag);
+    int local_119 = int(local_32.BattleChangeAreaPriority);
     FECSEntity local_128;
     if ((local_22 == AttackerFlock))
     {
@@ -290,7 +290,7 @@ void BossBattleForAreaWinnerCheck(const FECSEntity &inout AttackerFlock, const F
         local_128 = Context.DefenderBoss;
     }
     FChangeAreaMessageInfo local_114;
-    FEcologyBehaviorUtils::AddFlockChangeAreaRequest(local_22, local_108, local_116, local_118, true, local_114, 25000.0f, 50000.0f, local_32.BattleChangeAreaPriority, !(local_128.IsValid() && local_128.MatchGameplayTag(FEcologyGameplayTagDefine::Ecology_ForbidBattleforAreaHint)), false);
+    FEcologyBehaviorUtils::AddFlockChangeAreaRequest(local_22, local_108, local_116, local_118, true, local_114, 25000.0f, 50000.0f, local_119, !(local_128.IsValid() && local_128.MatchGameplayTag(FEcologyGameplayTagDefine::Ecology_ForbidBattleforAreaHint)), false);
     TArray<FECSEntityId> local_136;
     if (local_142)
     {
@@ -335,7 +335,6 @@ void ModifyBattleForAreaStateByFinish(const FECSEntity &inout ChangeAreaFlock, c
 }
 int BossBattleForAreaCheckWinnerCondition(const FEcologyBossBattleInstanceContext &inout Context)
 {
-    FFPTime local_40;
     FECSWorldPtr local_2 = ECS::GetECSWorld();
     FFPTime local_6 = FFPTime(local_2.GetFixedTime().Time);
     float32 local_7 = 0.0f;
@@ -374,7 +373,7 @@ int BossBattleForAreaCheckWinnerCondition(const FEcologyBossBattleInstanceContex
         XLog(ELog(0), FString().Append("[BattleForArea]: DefenderLimit - ").Append(local_22_2));
         return 1;
     }
-    if (local_40.ToSeconds() > Context.EndTimeLimit)
+    if (((local_6 - Context.InBattleStartTime).ToSeconds()) > Context.EndTimeLimit)
     {
         if (local_26 >= local_22_2)
         {

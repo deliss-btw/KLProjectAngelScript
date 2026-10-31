@@ -1,5 +1,3 @@
-﻿
-
 class UGOAPAction_EcosimAIV2_AttachCoach : UGOAP_ActionScriptableBase
 {
     UPROPERTY()

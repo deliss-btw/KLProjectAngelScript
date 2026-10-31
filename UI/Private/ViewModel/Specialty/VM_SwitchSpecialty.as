@@ -1,4 +1,3 @@
-﻿
 namespace FVM_SwitchSpecialty
 {
     const int ModelId = 0;
@@ -85,7 +84,7 @@ struct FVM_SwitchSpecialty : FEUIViewModel
         {
             this.SetCurrentSpecialtyId(local_3);
             FCommonTipsParam local_12;
-            ::CommonPopup::Tips(NSLOCTEXT("Specialty", "ChangeSpecialtySucc", "дё“й•їе€‡жЌўж€ђеЉџ"), local_12);
+            ::CommonPopup::Tips(NSLOCTEXT("Specialty", "ChangeSpecialtySucc", "专长切换成功"), local_12);
         }
         return;
     }
@@ -152,7 +151,7 @@ struct FVM_SwitchSpecialty : FEUIViewModel
         if (local_3)
         {
             FCommonTipsParam local_16;
-            ::CommonPopup::Tips(NSLOCTEXT("Specialty", "AlreadyCurrentSpecialty", "еЅ“е‰Ќе·ІжЇиЇҐдё“й•ї"), local_16);
+            ::CommonPopup::Tips(NSLOCTEXT("Specialty", "AlreadyCurrentSpecialty", "当前已是该专长"), local_16);
             return;
         }
         for (auto& local_30 : this.GetSpecialtyAvatarList())

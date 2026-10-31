@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommissionFinish_Helpers
 {
 UFUNCTION()

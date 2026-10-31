@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_MonsterCommonThrow : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ class UESMAction_MonsterCommonThrow : UESMBPBaseSpanTickAction
     bool bCanCatchMonsterPrefab = true;
     UPROPERTY()
     bool bCanCatchAvatarPrefab = true;
-
 
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const

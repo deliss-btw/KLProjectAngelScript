@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommonItemDetail
 {
     const int ViewID = 0;
@@ -259,6 +258,7 @@ namespace UWidget_CommonItemDetail
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonItemDetail;
     Result.ObservedModelChangesSubscriberNames.Add(FString("SyncItemVM"));
     return;
 }

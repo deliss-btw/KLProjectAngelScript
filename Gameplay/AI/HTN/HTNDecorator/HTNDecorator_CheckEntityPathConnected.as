@@ -1,5 +1,3 @@
-﻿
-
 class UHTNDecorator_CheckEntityPathConnected : UHTNDecorator_ECSScriptBase
 {
     UPROPERTY()
@@ -14,7 +12,6 @@ class UHTNDecorator_CheckEntityPathConnected : UHTNDecorator_ECSScriptBase
     float32 QuantizeCellSize = 100.0f;
 
     default SetNodeName("Check Entity Path Connected");
-
 
     UFUNCTION()
     bool PerformConditionCheck_Implementation(const FHTNContext &inout Context, const EHTNDecoratorConditionCheckType CheckType) const

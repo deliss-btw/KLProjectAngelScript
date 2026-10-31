@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_ListenTargetGameplayTag : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ class UESMAction_ListenTargetGameplayTag : UESMBPBaseSpanTickAction
     FGameplayTagContainer TagsToCheck;
     UPROPERTY()
     FNameHandle_ESMBBTrigger TriggerToActivate;
-
 
     UFUNCTION()
     void Tick_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const

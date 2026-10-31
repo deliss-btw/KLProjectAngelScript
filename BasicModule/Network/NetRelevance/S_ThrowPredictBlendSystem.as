@@ -1,5 +1,3 @@
-﻿
-
 class US_ThrowPredictBlendSystem : UECSScriptSystem
 {
     US_ThrowPredictBlendSystem()

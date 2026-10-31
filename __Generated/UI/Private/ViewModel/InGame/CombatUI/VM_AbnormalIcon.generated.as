@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_AbnormalIcon_Helpers
 {
 UFUNCTION()

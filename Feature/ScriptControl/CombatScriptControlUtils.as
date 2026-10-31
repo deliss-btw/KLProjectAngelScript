@@ -1,4 +1,3 @@
-﻿
 namespace CombatScriptControlUtils
 {
 int PushCombatScriptControlAction(const FECSEntityId &inout EntityId, const EScriptControlSourceType SourceType, const EScriptControlBehaviorName BehaviorName, const FScriptControlBehaviorParams &inout Params, const bool bInsertFront = false, const bool bAutoAddHostility = true)
@@ -50,7 +49,7 @@ void FinishCurrentCombatBehavior(const FECSEntity &inout Entity, const EScriptCo
         return;
     }
     int local_9 = int(local_6.ActiveSlotIndex);
-    EScriptControlSourceType local_67 = local_6.ActiveSourceType;
+    int local_67 = local_6.ActiveSourceType;
     ScriptControlSharedUtils::SendBehaviorFinishedEvent(Entity, local_66, EScriptControlBehaviorType(1), EScriptControlResult(Result), EScriptControlSourceType(local_67));
     if (!(local_76.HasActiveSlot()))
     {
@@ -73,7 +72,7 @@ void FinishCurrentCombatBehavior(const FECSEntity &inout Entity, const EScriptCo
 }
 void RefreshCombatPreferBehavior(FC_CombatScriptControl &inout LC)
 {
-    if (!(LC.bEnabled) || (LC.Num() == 0))
+    if (!(LC.bEnabled) || (LC.Slots.Num() == 0))
     {
         LC.PreferBehavior = EScriptControlPreferBehavior(0);
         LC.PreferEntryId = 0;
@@ -82,9 +81,9 @@ void RefreshCombatPreferBehavior(FC_CombatScriptControl &inout LC)
     }
     int local_6 = -1;
     int local_7 = 0;
-    for (; local_7 < LC.Num(); ++local_7)
+    for (; local_7 < LC.Slots.Num(); ++local_7)
     {
-        FScriptControlQueueSlot& local_10 = LC[local_7];
+        FScriptControlQueueSlot& local_10 = LC.Slots[local_7];
         if (!(local_10.bHasCurrentAction) && (local_10.ActionQueue.Num() > 0))
         {
             local_10.DequeueAction();
@@ -104,8 +103,8 @@ void RefreshCombatPreferBehavior(FC_CombatScriptControl &inout LC)
         return;
     }
     LC.ActiveSlotIndex = local_6;
-    LC.ActiveSourceType = LC[local_6].SourceType;
-    FScriptControlQueueSlot& local_10_2 = LC[local_6];
+    LC.ActiveSourceType = LC.Slots[local_6].SourceType;
+    FScriptControlQueueSlot& local_10_2 = LC.Slots[local_6];
     LC.PreferBehavior = EScriptControlPreferBehavior(2);
     LC.PreferEntryId = local_10_2.CurrentAction.EntryId;
     LC.RefreshBBBehaviorNames();
@@ -156,9 +155,9 @@ void StopAndClearCombatActionQueue(const FECSEntityId &inout EntityId, const ESc
 bool HasAnyPendingAction(const FC_CombatScriptControl &inout LC)
 {
     int local_1 = 0;
-    for (; local_1 < LC.Num(); ++local_1)
+    for (; local_1 < LC.Slots.Num(); ++local_1)
     {
-        if (LC[local_1].HasPendingAction())
+        if (LC.Slots[local_1].HasPendingAction())
         {
             return true;
         }

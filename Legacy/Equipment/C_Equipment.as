@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_EquipmentHolder_NS
 {
     const TECSComponentDerivedPtr<FC_EquipmentHolder> DerivedPtr = TECSComponentDerivedPtr<FC_EquipmentHolder>();
@@ -36,11 +35,27 @@ struct FEquipmentRuntimeInfo
 
     FEquipmentRuntimeInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_Id = 0;
+        this.m_EquipSlot = EEquipSlotType(0);
+        return;
     }
     FEquipmentRuntimeInfo(const FEquipmentRuntimeInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags16 local_28;
+        this.__DirtyFlags = local_28;
+        this.m_Id = 0;
+        this.m_EquipSlot = EEquipSlotType(0);
+        this.m_Id = int(Other.m_Id);
+        this.m_EquipSlot = Other.m_EquipSlot;
+        this.m_Config = Other.m_Config;
+        this.m_ModifierConfigs = Other.m_ModifierConfigs;
+        this.m_ModifierInstanceIds = Other.m_ModifierInstanceIds;
+        this.m_Capabilities = Other.m_Capabilities;
+        this.m_CapabilityInstanceIds = Other.m_CapabilityInstanceIds;
+        this.m_Entity = Other.m_Entity;
+        return;
     }
     FEquipmentRuntimeInfo opAssign(const FEquipmentRuntimeInfo &inout Other)
     {
@@ -229,11 +244,22 @@ struct FC_EquipmentHolder : FECSComponent
 
     FC_EquipmentHolder()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_EquipmentIdCounter = 0;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_EquipmentHolder(const FC_EquipmentHolder &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_EquipmentIdCounter = 0;
+        this.__InitDirtyFlags();
+        this.m_EquipmentInfos = Other.m_EquipmentInfos;
+        this.m_UsedSlot = Other.m_UsedSlot;
+        this.m_EquipmentIdCounter = int(Other.m_EquipmentIdCounter);
+        return;
     }
     FC_EquipmentHolder opAssign(const FC_EquipmentHolder &inout Other)
     {
@@ -319,11 +345,24 @@ struct FEquipmentAddInfo
 
     FEquipmentAddInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Id = 0;
+        this.m_EquipSlot = EEquipSlotType(0);
+        return;
     }
     FEquipmentAddInfo(const FEquipmentAddInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_27;
+        this.__DirtyFlags = local_27;
+        this.m_Id = 0;
+        this.m_EquipSlot = EEquipSlotType(0);
+        this.m_Id = int(Other.m_Id);
+        this.m_EquipSlot = Other.m_EquipSlot;
+        this.m_Config = Other.m_Config;
+        this.m_ModifierConfigs = Other.m_ModifierConfigs;
+        this.m_Capabilities = Other.m_Capabilities;
+        return;
     }
     FEquipmentAddInfo opAssign(const FEquipmentAddInfo &inout Other)
     {
@@ -464,7 +503,6 @@ struct FCE_OnWearEquipReq : FECSEvent
     UPROPERTY()
     FEquipmentData SwitchEquipmentData;
 
-
 }
 
 namespace ECSFunc_FC_EquipmentHolder
@@ -544,37 +582,37 @@ bool RemoveEquipmentHolder(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEquipmentHolderOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EquipmentHolder, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EquipmentHolder, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEquipmentHolderOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EquipmentHolder, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EquipmentHolder, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEquipmentHolderOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EquipmentHolder, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EquipmentHolder, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEquipmentHolderOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EquipmentHolder, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EquipmentHolder, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEquipmentHolderOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EquipmentHolder, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EquipmentHolder, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEquipmentHolderLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EquipmentHolder, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EquipmentHolder, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEquipmentHolderActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EquipmentHolder, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EquipmentHolder, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEquipmentHolderModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EquipmentHolder, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EquipmentHolder, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EquipmentUpdateRequest
@@ -657,37 +695,37 @@ bool RemoveEquipmentUpdateRequest(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEquipmentUpdateRequestOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EquipmentUpdateRequest, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EquipmentUpdateRequest, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEquipmentUpdateRequestOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EquipmentUpdateRequest, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EquipmentUpdateRequest, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEquipmentUpdateRequestOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EquipmentUpdateRequest, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EquipmentUpdateRequest, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEquipmentUpdateRequestOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EquipmentUpdateRequest, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EquipmentUpdateRequest, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEquipmentUpdateRequestOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EquipmentUpdateRequest, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EquipmentUpdateRequest, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEquipmentUpdateRequestLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EquipmentUpdateRequest, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EquipmentUpdateRequest, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEquipmentUpdateRequestActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EquipmentUpdateRequest, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EquipmentUpdateRequest, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEquipmentUpdateRequestModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EquipmentUpdateRequest, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EquipmentUpdateRequest, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

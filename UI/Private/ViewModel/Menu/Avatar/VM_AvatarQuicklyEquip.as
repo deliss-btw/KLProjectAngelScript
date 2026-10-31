@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AvatarQuicklyEquip
 {
     const int ModelId = 0;
@@ -33,15 +32,44 @@ struct FVM_AvatarQuicklyEquip : FEUIViewModel
 
     FVM_AvatarQuicklyEquip()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_SelectedAvatarIndex = INDEX_NONE;
+        this.m_bCurEquipmentEquiped = false;
+        this.m_bItemTraitCompared = true;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        XError(ELog(17), "Should not construct model'FVM_AvatarQuicklyEquip' by default constructor.");
+        return;
     }
     FVM_AvatarQuicklyEquip(const FVM_AvatarQuicklyEquip &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_SelectedAvatarIndex = INDEX_NONE;
+        this.m_bCurEquipmentEquiped = false;
+        this.m_bItemTraitCompared = true;
+        this.m_CurEquipmentModel = Other.m_CurEquipmentModel;
+        this.m_SelectedAvatarIndex = int(Other.m_SelectedAvatarIndex);
+        this.m_FilteredAvatars = Other.m_FilteredAvatars;
+        this.m_SelectedAvatar = Other.m_SelectedAvatar;
+        this.m_PlayerOwnedAvatarInfo = Other.m_PlayerOwnedAvatarInfo;
+        this.m_InfoCompare = Other.m_InfoCompare;
+        this.m_bCurEquipmentEquiped = Other.m_bCurEquipmentEquiped;
+        this.m_bItemTraitCompared = Other.m_bItemTraitCompared;
+        this.m_Showcase = Other.m_Showcase;
+        this.m_ShowCaseAvatarEntries = Other.m_ShowCaseAvatarEntries;
+        return;
     }
     FVM_AvatarQuicklyEquip(const TEUIModelRef<FM_Equipment> &inout InCurEquipmentModel)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_SelectedAvatarIndex = INDEX_NONE;
+        this.m_bCurEquipmentEquiped = false;
+        this.m_bItemTraitCompared = true;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        this.SetCurEquipmentModel(InCurEquipmentModel);
+        return;
     }
     FVM_AvatarQuicklyEquip& opAssign(const FVM_AvatarQuicklyEquip &inout Other)
     {
@@ -143,6 +171,7 @@ struct FVM_AvatarQuicklyEquip : FEUIViewModel
     {
         int local_2 = 0;
         int local_12 = 0;
+        int local_13;
         FDSAvatarEquipmentInfo local_60;
         int local_1 = 0;
         FECSEntity local_6 = this.GetContext().GetLocalPlayer();
@@ -172,7 +201,16 @@ struct FVM_AvatarQuicklyEquip : FEUIViewModel
                 FVM_AvatarInfoExtend& local_138 = FEUIModelContainer::GetModel(local_82).opCall();
                 if (local_138)
                 {
-                    if (local_112.IsSet() && (local_1 == local_2))
+                    if (!(local_112.IsSet()))
+                    {
+                        local_13 = 0;
+                    }
+                    else
+                    {
+                        bool local_143 = (local_1 == local_2);
+                        local_13 = local_143;
+                    }
+                    if (local_13 != 0)
                     {
                         local_138.SetAvatarInfoDisplayState(1);
                         continue;
@@ -216,7 +254,11 @@ struct FVM_AvatarQuicklyEquip : FEUIViewModel
     }
     void OnSelectAvatar(const int AvatarIndex)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (AvatarIndex != INDEX_NONE)
+        {
+            this.SetSelectedAvatarIndex(AvatarIndex);
+        }
+        return;
     }
     void RefreshFilteredAvatarList()
     {
@@ -245,7 +287,8 @@ struct FVM_AvatarQuicklyEquip : FEUIViewModel
                     {
                         FEUIModelContainer local_48;
                         local_48.AddModel(local_30.opImplConv(), false);
-                        local_48.AddModel(FEUIModelRef(::FVM_AvatarInfoExtend::Create(this.GetContext().Manager)), false);
+                        FVM_AvatarInfoExtend& local_52 = ::FVM_AvatarInfoExtend::Create(this.GetContext().Manager);
+                        local_48.AddModel(FEUIModelRef(local_52), false);
                         local_8.Add(local_48);
                     }
                 }
@@ -516,7 +559,58 @@ FVM_AvatarQuicklyEquip CreateByManager(const UEUIManagerSubsystem Manager, const
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "FilteredAvatars";
+    local_14.TypeName = "TArray<FEUIModelContainer>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectedAvatar";
+    local_14.TypeName = "FEUIModelContainer";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "InfoCompare";
+    local_14.TypeName = "TEUIModelRef<FVM_AvatarEquipmentItemInfoCompare>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_AvatarQuicklyEquip>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_AvatarQuicklyEquip;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(10);
+    local_22.AddRefPropertyDirty(0, 1, FVMS_PlayerOwnedAvatarInfo::__IndexOf_UnLockAvatarList());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("PlayerOwnedAvatarInfo");
+    int local_2_2 = FVMS_PlayerOwnedAvatarInfo::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(1);
+    local_30.RelatedDirtyMask.SetBit(FVMS_PlayerOwnedAvatarInfo::__IndexOf_UnLockAvatarList(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelMonitorDefine local_42;
+    local_42.FunctionName = "__OnAvatarEquipmentChanged";
+    local_42.ComponentType = FC_DSPlayerAvatarInfo;
+    Result.MonitorFunctions.Add(local_42);
+    FEUIModelDirtyDefine local_52;
+    local_52.FunctionName = "__OnFilteredAvatarsChanged";
+    local_52.DirtyFlags.Set(FVM_AvatarQuicklyEquip::__IndexOf_FilteredAvatars());
+    Result.DirtyFunctions.Add(local_52);
+    local_52.FunctionName = "__OnSelectedAvatarIndexChanged";
+    local_52.DirtyFlags.Set(FVM_AvatarQuicklyEquip::__IndexOf_SelectedAvatarIndex());
+    local_52.DirtyFlags.Set(FVM_AvatarQuicklyEquip::__IndexOf_FilteredAvatars());
+    Result.DirtyFunctions.Add(local_52);
+    local_52.FunctionName = "__RefreshFilteredAvatarList";
+    local_52.DirtyFlags.Set(FVM_AvatarQuicklyEquip::__IndexOf_PlayerOwnedAvatarInfo());
+    local_52.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_52);
+    return;
 }
 UScriptStruct GetModelStruct()
 {
@@ -544,7 +638,9 @@ void __RefreshFilteredAvatarList(FVM_AvatarQuicklyEquip &inout Model)
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorDSPlayerAvatarInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorDSPlayerAvatarInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TArray<FEUIModelContainer> __UIGetter_FilteredAvatars(const FVM_AvatarQuicklyEquip &inout Model)
 {

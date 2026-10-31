@@ -1,5 +1,3 @@
-﻿
-
 struct FMinimapDisplayConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -29,7 +27,6 @@ struct FMinimapDisplayConfig : FDataObject
     TSoftObjectPtr<UTexture2D> DSBoundaryMaskTexture;
     UPROPERTY()
     FBox2D DSBoundaryMaskWorldPosition;
-
 
 }
 

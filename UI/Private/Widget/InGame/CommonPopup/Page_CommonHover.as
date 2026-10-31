@@ -1,4 +1,3 @@
-﻿
 namespace UPage_CommonHover
 {
     const int ViewID = 0;
@@ -20,7 +19,6 @@ class UPage_CommonHover : UEUIActivatableWidget
     FEUIModelWeakRef __CommonHover;
     UPROPERTY()
     FGetEUIModelRef CommonHoverDelegate;
-
 
     UFUNCTION()
     void OnViewBind_Implementation()
@@ -300,7 +298,7 @@ class UPage_CommonHover : UEUIActivatableWidget
         UCanvasPanelSlot local_22 = (Cast<UCanvasPanelSlot>(local_18));
         if (local_22 != nullptr)
         {
-            ECommonHoverLayout local_33;
+            int local_33;
             bool local_23;
             this.HoverWidget.ForceLayoutPrepass();
             FVector2D local_16 = this.HoverWidget.GetDesiredSize();
@@ -309,14 +307,15 @@ class UPage_CommonHover : UEUIActivatableWidget
                 return false;
             }
             FVector2D local_28 = BoundaryGeometry.GetLocalSize();
-            local_33 = GetHoverLayout();
-            local_23 = (int(local_33) == 0) || (int(local_33) == 1);
+            local_33 = int(GetHoverLayout());
+            int local_36 = local_33;
+            local_23 = (local_36 == 0) || (local_33 == 1);
             FVector2D local_42;
             FVector2D local_46;
             if (local_23)
             {
                 local_49 = false;
-                int local_37 = int(local_33);
+                int local_37 = local_33;
                 if (local_37 <= 1)
                 {
                     if (local_37 != 0)
@@ -363,19 +362,19 @@ class UPage_CommonHover : UEUIActivatableWidget
                 local_60_3 = local_16.Y;
                 local_58 = FMath::Min(local_60_3, local_28.Y);
                 local_48 = float32(local_58);
-                int local_36 = local_49 ? 1 : 0;
+                local_36 = local_49 ? 1 : 0;
                 local_12.Min.Y = local_36;
                 local_46 = FVector2D();
             }
             else
             {
                 local_49 = false;
-                int local_36_2 = int(local_33);
-                if (local_36_2 <= 3)
+                local_36 = local_33;
+                if (local_36 <= 3)
                 {
-                    if (local_36_2 != 2)
+                    if (local_36 != 2)
                     {
-                        if (local_36_2 != 3)
+                        if (local_36 != 3)
                         {
                         }
                         else
@@ -419,8 +418,8 @@ class UPage_CommonHover : UEUIActivatableWidget
                     local_58 = local_28.Y - local_42.Y;
                 }
                 local_48 = float32((FMath::Min(local_16.Y, local_58)));
-                local_36_2 = local_49 ? 1 : 0;
-                local_46 = FVector2D(0.5, local_36_2);
+                local_36 = local_49 ? 1 : 0;
+                local_46 = FVector2D(0.5, local_36);
             }
             this.LogHoverOutOfBoundsIfNeeded(local_28, local_12, local_42, local_46, local_47, local_48, local_16, ECommonHoverLayout(local_33));
             FVector2D local_68 = SlotGeometry.AbsoluteToLocal(BoundaryGeometry.LocalToAbsolute(local_42));
@@ -587,6 +586,7 @@ namespace UPage_CommonHover
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UPage_CommonHover;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnHoverChainNavigationStateChanged"));
     return;
 }

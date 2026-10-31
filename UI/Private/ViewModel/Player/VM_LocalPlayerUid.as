@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_LocalPlayerUid
 {
     const int ModelId = 0;
@@ -64,7 +63,6 @@ struct __GeneratedProperties_FVMS_LocalPlayerUid
     bool HasUid;
     UPROPERTY()
     TEUIModelRef<FVMS_LocalPlayerUid> Self;
-
 
 }
 

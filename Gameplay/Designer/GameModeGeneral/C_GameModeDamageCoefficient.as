@@ -1,4 +1,3 @@
-﻿
 const FString PlayerControlledPrefix = FString();
 namespace __INTENRAL_FC_GameModeDamageCoefficient_NS
 {
@@ -20,12 +19,16 @@ struct FC_GameModeDamageCoefficient : FECSComponent
     FC_GameModeDamageCoefficient()
     {
         this.m_EnumType = EGameModeDamageCoefficientEntity(0);
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FC_GameModeDamageCoefficient(const FC_GameModeDamageCoefficient &inout Other)
     {
         this.m_EnumType = EGameModeDamageCoefficientEntity(0);
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_EnumType = Other.m_EnumType;
         return;
@@ -62,11 +65,21 @@ struct FCS_GameModeDamageCoefficientCache : FECSSingleton
 
     FCS_GameModeDamageCoefficientCache()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bInitialized = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FCS_GameModeDamageCoefficientCache(const FCS_GameModeDamageCoefficientCache &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bInitialized = false;
+        this.__InitDirtyFlags();
+        this.m_CacheMap = Other.m_CacheMap;
+        this.m_bInitialized = Other.m_bInitialized;
+        return;
     }
     FCS_GameModeDamageCoefficientCache opAssign(const FCS_GameModeDamageCoefficientCache &inout Other)
     {
@@ -171,7 +184,7 @@ EGameModeDamageCoefficientEntity GetCoefficientType(const FECSEntity &inout Enti
         {
             FAvatarPrefabConfig local_64;
             local_66 = local_64.GetDataName();
-            local_14.SetEnumType(EGameModeDamageCoefficientEntity(GameModeDamageCoefficient::GetCoefficientTypeByName(local_66)));
+            local_14.SetEnumType(GameModeDamageCoefficient::GetCoefficientTypeByName(local_66));
         }
         else
         {
@@ -198,7 +211,7 @@ EGameModeDamageCoefficientEntity GetCoefficientType(const FECSEntity &inout Enti
                         {
                             local_149 = FName((FString(PlayerControlledPrefix) + local_149.ToString()));
                         }
-                        local_14.SetEnumType(EGameModeDamageCoefficientEntity(GameModeDamageCoefficient::GetCoefficientTypeByName(local_149)));
+                        local_14.SetEnumType(GameModeDamageCoefficient::GetCoefficientTypeByName(local_149));
                     }
                     else
                     {
@@ -210,12 +223,12 @@ EGameModeDamageCoefficientEntity GetCoefficientType(const FECSEntity &inout Enti
                             {
                                 local_149_2 = FName((FString(PlayerControlledPrefix) + local_149_2.ToString()));
                             }
-                            local_14.SetEnumType(EGameModeDamageCoefficientEntity(GameModeDamageCoefficient::GetCoefficientTypeByName(local_149_2)));
+                            local_14.SetEnumType(GameModeDamageCoefficient::GetCoefficientTypeByName(local_149_2));
                         }
                     }
                     if ((int(local_14.GetEnumType())) == 0)
                     {
-                        local_14.SetEnumType(EGameModeDamageCoefficientEntity(EGameModeDamageCoefficientEntity(10)));
+                        local_14.SetEnumType(EGameModeDamageCoefficientEntity(10));
                     }
                 }
             }
@@ -226,8 +239,17 @@ EGameModeDamageCoefficientEntity GetCoefficientType(const FECSEntity &inout Enti
 }
 EGameModeDamageCoefficientEntity GetCoefficientTypeByName(const FName &inout InName)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    EGameModeDamageCoefficientEntity __r; return __r;
+    int local_12;
+    int local_2_2 = UEnum::GetEnumType(n"EGameModeDamageCoefficientEntity").GetIndexByNameString(InName.ToString(), EGetByNameFlags(0));
+    if (local_2_2 == INDEX_NONE)
+    {
+        local_12 = 0;
+    }
+    else
+    {
+        local_12 = local_2_2;
+    }
+    return EGameModeDamageCoefficientEntity(local_12);
 }
 FDataTablePtr GetDamageCoefficientTable()
 {
@@ -276,9 +298,9 @@ float32 GetCoefficient(const FECSEntity &inout Attacker, const FECSEntity &inout
         return 1.0f;
     }
     FECSWorldPtr local_26 = Attacker.GetWorld();
-    EGameModeDamageCoefficientEntity local_34 = GameModeDamageCoefficient::GetCoefficientType(Attacker, local_32);
-    EGameModeDamageCoefficientEntity local_33 = GameModeDamageCoefficient::GetCoefficientType(Taker, local_32);
-    if (((int(local_34)) == 0 || (int(local_33) == 0)))
+    int local_34 = int(GameModeDamageCoefficient::GetCoefficientType(Attacker, local_32));
+    int local_33 = int(GameModeDamageCoefficient::GetCoefficientType(Taker, local_32));
+    if (local_34 == 0 || (local_33 == 0))
     {
         return 1.0f;
     }
@@ -376,37 +398,37 @@ bool RemoveGameModeDamageCoefficient(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorGameModeDamageCoefficientOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_GameModeDamageCoefficient, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_GameModeDamageCoefficient, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorGameModeDamageCoefficientOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_GameModeDamageCoefficient, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_GameModeDamageCoefficient, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorGameModeDamageCoefficientOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_GameModeDamageCoefficient, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_GameModeDamageCoefficient, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorGameModeDamageCoefficientOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_GameModeDamageCoefficient, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_GameModeDamageCoefficient, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorGameModeDamageCoefficientOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_GameModeDamageCoefficient, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_GameModeDamageCoefficient, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorGameModeDamageCoefficientLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_GameModeDamageCoefficient, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_GameModeDamageCoefficient, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameModeDamageCoefficientActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_GameModeDamageCoefficient, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_GameModeDamageCoefficient, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameModeDamageCoefficientModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_GameModeDamageCoefficient, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_GameModeDamageCoefficient, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_GameModeDamageCoefficientCache
@@ -494,17 +516,17 @@ bool RemoveGameModeDamageCoefficientCache(const FECSWorldPtr &inout World)
 }
 void __MonitorGameModeDamageCoefficientCacheLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_GameModeDamageCoefficientCache, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_GameModeDamageCoefficientCache, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameModeDamageCoefficientCacheActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_GameModeDamageCoefficientCache, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_GameModeDamageCoefficientCache, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameModeDamageCoefficientCacheModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_GameModeDamageCoefficientCache, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_GameModeDamageCoefficientCache, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

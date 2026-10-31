@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_DetailsFromRootMotion : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ class UESMAction_DetailsFromRootMotion : UESMBPBaseSpanAction
     float32 MaxExceedYawSpeed = 45.0f;
     UPROPERTY()
     float32 MaxExceedYawSpeedRatio = 1.55f;
-
 
     UFUNCTION()
     int GetActionPriority_Implementation() const
@@ -82,7 +79,6 @@ class UESMAction_DetailsFromRootMotionParam : UESMBPBaseSpanTickAction
     float32 ApplyYawWeightStart = 1.0f;
     UPROPERTY()
     float32 ApplyYawWeightEnd = 0.0f;
-
 
     UFUNCTION()
     bool NeedTick_Implementation() const

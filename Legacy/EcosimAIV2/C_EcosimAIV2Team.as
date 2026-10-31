@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_EcosimAIV2Team_NS
 {
     const TECSComponentDerivedPtr<FC_EcosimAIV2Team> DerivedPtr = TECSComponentDerivedPtr<FC_EcosimAIV2Team>();
@@ -51,7 +50,6 @@ struct FEcosimAIV2CenterlineNode
     UPROPERTY()
     FECSEntity Entity;
 
-
 }
 
 struct FEcosimAIV2Centerline
@@ -70,7 +68,7 @@ struct FEcosimAIV2Centerline
         float local_26;
         float local_28;
         float local_30;
-        if (this.Num() == 0)
+        if (this.Nodes.Num() == 0)
         {
             return 0.0;
         }
@@ -79,9 +77,9 @@ struct FEcosimAIV2Centerline
         local_12 = 0.5;
         local_6 = local_6 * local_12;
         int local_13 = 0;
-        for (; local_13 < this.Num(); ++local_13)
+        for (; local_13 < this.Nodes.Num(); ++local_13)
         {
-            const FEcosimAIV2CenterlineNode& local_16 = this[local_13];
+            const FEcosimAIV2CenterlineNode& local_16 = this.Nodes[local_13];
             local_10 = local_16.XMin;
             if (local_10 <= MemberXMax && ((local_16.XMax >= MemberXMin)))
             {
@@ -102,28 +100,28 @@ struct FEcosimAIV2Centerline
         if (local_8 == 0.0)
         {
             float local_20;
-            local_20 = this[0].XMin;
+            local_20 = this.Nodes[0].XMin;
             if (local_6 < local_20)
             {
                 if (bLeft)
                 {
-                    local_20 = this[0].YMin;
+                    local_20 = this.Nodes[0].YMin;
                     local_20 = -local_20;
                     local_12 = local_20;
                 }
                 else
                 {
-                    local_20 = this[0].YMax;
+                    local_20 = this.Nodes[0].YMax;
                     local_12 = local_20;
                 }
                 local_8 = local_12;
             }
             else
             {
-                local_12 = this[(this.Num() - 1)].XMax;
+                local_12 = this.Nodes[(this.Nodes.Num() - 1)].XMax;
                 if (local_6 > local_12)
                 {
-                    const FEcosimAIV2CenterlineNode& local_16_2 = this[(this.Num() - 1)];
+                    const FEcosimAIV2CenterlineNode& local_16_2 = this.Nodes[(this.Nodes.Num() - 1)];
                     if (bLeft)
                     {
                         local_12 = local_16_2.YMin;
@@ -139,10 +137,10 @@ struct FEcosimAIV2Centerline
                 else
                 {
                     int local_13_2 = 0;
-                    for (; local_13_2 < (this.Num() - 1); ++local_13_2)
+                    for (; local_13_2 < (this.Nodes.Num() - 1); ++local_13_2)
                     {
-                        const FEcosimAIV2CenterlineNode& local_16_3 = this[local_13_2];
-                        const FEcosimAIV2CenterlineNode& local_24 = this[local_13_2 + 1];
+                        const FEcosimAIV2CenterlineNode& local_16_3 = this.Nodes[local_13_2];
+                        const FEcosimAIV2CenterlineNode& local_24 = this.Nodes[local_13_2 + 1];
                         local_20 = local_16_3.XMax;
                         if (local_6 >= local_20 && ((local_6 <= local_24.XMin)))
                         {
@@ -206,9 +204,9 @@ struct FEcosimAIV2Centerline
         local_14.Entity = Entity;
         int local_17 = 0;
         int local_19 = 0;
-        for (; local_19 < this.Num(); )
+        for (; local_19 < this.Nodes.Num(); )
         {
-            if (this[local_19].XOffset > XOffset)
+            if (this.Nodes[local_19].XOffset > XOffset)
             {
                 local_17 = local_19;
                 break;
@@ -216,12 +214,12 @@ struct FEcosimAIV2Centerline
             local_17 = local_19 + 1;
             ++local_19;
         }
-        this.Insert(local_14, local_17);
+        this.Nodes.Insert(local_14, local_17);
         return;
     }
     void Clear()
     {
-        this.Empty(0);
+        this.Nodes.Empty(0);
         return;
     }
 }
@@ -241,7 +239,6 @@ struct FEcosimAIV2TeamSlot
     UPROPERTY()
     FECSEntity Entity = ENTITY_NULL;
 
-
 }
 
 struct FEcosimAIV2LayoutDesc
@@ -252,7 +249,6 @@ struct FEcosimAIV2LayoutDesc
     FVector2D BoundsMin = FVector2D(-25.0, -25.0);
     UPROPERTY()
     FVector2D BoundsMax = FVector2D(25.0, 25.0);
-
 
 }
 
@@ -281,10 +277,9 @@ struct FC_EcosimAIV2Team : FECSComponent
     UPROPERTY()
     TArray<FEcosimAIV2TeamSlot> PrecreatedSlots;
 
-
     void AddMember(const FECSEntity &inout EntityMember)
     {
-        this.AddUnique(FTargetEntity(EntityMember));
+        this.EntityMemberList.AddUnique(FTargetEntity(EntityMember));
         return;
     }
     bool IsHostileToTeam(const FECSEntity &inout Candidate) const
@@ -318,7 +313,7 @@ struct FC_EcosimAIV2Team : FECSComponent
                 }
             }
         }
-        for (auto& local_40 : this)
+        for (auto& local_40 : this.EntityMemberList)
         {
             if (!(FECSEntity(local_40.GetEntity()).IsValid()))
             {
@@ -350,7 +345,7 @@ struct FC_EcosimAIV2Team : FECSComponent
         {
             return false;
         }
-        if (!(this.Contains(FTargetEntity(Candidate))))
+        if (!(this.EntityMemberList.Contains(FTargetEntity(Candidate))))
         {
             return false;
         }
@@ -371,7 +366,7 @@ struct FC_EcosimAIV2Team : FECSComponent
             return;
         }
         FECSEntity local_8 = FECSEntity(ENTITY_NULL);
-        for (auto& local_22 : this)
+        for (auto& local_22 : this.EntityMemberList)
         {
             FECSEntity local_26 = FECSEntity(local_22.GetEntity());
             if (!(this.IsValidLeaderCandidate(local_26)))
@@ -388,7 +383,7 @@ struct FC_EcosimAIV2Team : FECSComponent
         {
             FECSEntity local_26_2 = FECSEntity(ENTITY_NULL);
             FECSEntity local_34 = FECSEntity(ENTITY_NULL);
-            for (auto& local_22 : this)
+            for (auto& local_22 : this.EntityMemberList)
             {
                 FECSEntity local_38 = FECSEntity(local_22.GetEntity());
                 if (!(local_38.IsValid()))
@@ -484,7 +479,7 @@ struct FC_EcosimAIV2Team : FECSComponent
         }
         if (!(local_8.IsValid()))
         {
-            for (auto& local_22 : this)
+            for (auto& local_22 : this.EntityMemberList)
             {
                 FECSEntity local_30_3 = FECSEntity(local_22.GetEntity());
                 if (this.IsValidLeaderCandidate(local_30_3))
@@ -506,7 +501,7 @@ struct FC_EcosimAIV2Team : FECSComponent
     {
         int local_26 = 0;
         FECSEntity local_4 = EntityMember;
-        if (!(this.Contains(FTargetEntity(local_4))))
+        if (!(this.EntityMemberList.Contains(FTargetEntity(local_4))))
         {
             return ENTITY_NULL;
         }
@@ -516,6 +511,7 @@ struct FC_EcosimAIV2Team : FECSComponent
             local_20.TargetLocation = local_26.GetPosition();
             local_20.TargetRotation = FRotator(local_26.GetRotation());
         }
+        this.EntityMemberMoveContextMap.Add(local_4, local_20);
         this.UpdateTeamMoveContext();
         return local_4;
     }
@@ -534,8 +530,41 @@ struct FC_EcosimAIV2Team : FECSComponent
     }
     bool GetMoveContext(const FECSEntity &inout EntityMember, FEcosimaiV2TeamMoveContext &out TeamMoveContext) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
-        bool __r; return __r;
+        FEcosimaiV2TeamMoveContext local_12;
+        int local_62 = 0;
+        TeamMoveContext = local_12;
+        FECSEntity local_16 = EntityMember;
+        FEcosimAIV2TeamMemberInfo local_26;
+        if (!(!(this.EntityMemberMoveContextMap.Contains(local_16))) && this.EntityTeamMemberInfoMap.Find(local_16, local_26))
+        {
+            if ((this.LeaderEntity == local_16))
+            {
+                TeamMoveContext.TargetLocation = this.TargetTransform.GetLocation();
+                TeamMoveContext.TargetRotation = FRotator(this.TargetTransform.GetRotation());
+            }
+            else
+            {
+                ::FEcosimAIV2Utils::GetMountOrSelf(this.LeaderEntity);
+                FVector local_68 = local_62.GetPosition();
+                FVector local_74(local_62.GetRotation().GetForwardVector());
+                local_74.Z = 0.0;
+                FRotator local_44 = FRotator::MakeFromX(local_74);
+                FVector local_88 = (local_68 + local_44.RotateVector(local_26.OffsetFromLeader));
+                FVector local_94 = FVector(1000.0, 1000.0, 200.0);
+                if (FAIPathFollowUtils::IsPointOnNavigation(local_16, local_88, local_94))
+                {
+                    local_88 = FAIPathFollowUtils::ProjectPointToNavigation(local_16, local_88, local_94);
+                }
+                else
+                {
+                    local_88 = local_68;
+                }
+                TeamMoveContext.TargetLocation = local_88;
+                TeamMoveContext.TargetRotation = local_44;
+            }
+            return true;
+        }
+        return false;
     }
     bool IsEntityHighPriority(const FECSEntity &inout Entity) const
     {
@@ -1025,7 +1054,258 @@ struct FC_EcosimAIV2Team : FECSComponent
     }
     void UpdateTeamMoveContext()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_142 = 0;
+        float local_182;
+        if (!(this.TeamEntity.IsValid()))
+        {
+            return;
+        }
+        this.EntityTeamMemberInfoMap.Empty(0);
+        TArray<FECSEntity> local_6;
+        for (auto& local_20 : this.EntityMemberList)
+        {
+            FECSEntity local_24 = FECSEntity(local_20.GetEntity());
+            if (local_24.IsValid() && this.EntityMemberMoveContextMap.Contains(local_24))
+            {
+                local_6.Add(local_24);
+            }
+        }
+        if (local_6.Num() == 0)
+        {
+            return;
+        }
+        TSet<FECSEntity> local_50;
+        int local_51 = 0;
+        for (; local_51 < local_6.Num(); ++local_51)
+        {
+            FECSEntity local_24_2 = local_6[local_51];
+            TArray<FECSEntity> local_56;
+            ::FEcosimAIV2Utils::GetControlledTargets(local_24_2, true, local_56);
+            int local_57 = 0;
+            for (; local_57 < local_56.Num(); ++local_57)
+            {
+                if (local_56[local_57].IsValid() && local_56[local_57].MatchGameplayTag(GameplayTags::EntityMark_Type_Mount))
+                {
+                    local_50.Add(local_56[local_57]);
+                }
+            }
+        }
+        TArray<FECSEntity> local_56;
+        int local_57_2 = 0;
+        for (; local_57_2 < local_6.Num(); ++local_57_2)
+        {
+            if (!(local_50.Contains(local_6[local_57_2])))
+            {
+                local_56.Add(local_6[local_57_2]);
+            }
+        }
+        int local_51_2 = 0;
+        for (; local_51_2 < local_56.Num(); ++local_51_2)
+        {
+            TArray<FECSEntity> local_62;
+            ::FEcosimAIV2Utils::GetControlledTargets(local_56[local_51_2], true, local_62);
+            local_57_2 = 0;
+            for (; local_57_2 < local_62.Num(); ++local_57_2)
+            {
+                if (local_62[local_57_2].IsValid() && local_62[local_57_2].MatchGameplayTag(GameplayTags::EntityMark_Type_Coach))
+                {
+                    local_56.AddUnique(local_62[local_57_2]);
+                }
+            }
+        }
+        if (local_56.Num() == 0)
+        {
+            return;
+        }
+        FECSEntity local_24_3 = this.LeaderEntity;
+        if (!(local_24_3.IsValid()))
+        {
+            return;
+        }
+        TArray<FECSEntity> local_62;
+        TArray<FECSEntity> local_66;
+        int local_51_3 = 0;
+        for (; local_51_3 < local_56.Num(); ++local_51_3)
+        {
+            FECSEntity local_70 = local_56[local_51_3];
+            if (this.IsEntityHighPriority(local_70))
+            {
+                local_62.Add(local_70);
+                continue;
+            }
+            local_66.Add(local_70);
+        }
+        FEcosimAIV2TeamMemberInfo local_80;
+        local_80.Entity = local_24_3;
+        local_80.OffsetFromLeader = FVector::ZeroVector;
+        this.EntityTeamMemberInfoMap.Add(local_24_3, local_80);
+        int64 local_82 = 0;
+        if (local_62.Num() > 0)
+        {
+            float local_104;
+            float local_102;
+            FBox3f local_98;
+            FBox3f local_91;
+            local_98 = ::FEcosimAIV2Utils::GetTeamMemberBounds(local_24_3);
+            local_102 = local_98.Min.Y;
+            local_104 = local_98.Max.X;
+            float local_106;
+            this.Centerline.AddNode(0.0, local_98.Min.X, local_104, local_102, local_98.Max.Y, local_24_3);
+            float local_108 = local_98.Min.X;
+            local_57_2 = 0;
+            for (; local_57_2 < local_62.Num(); )
+            {
+                FECSEntity local_70_2 = local_62[local_57_2];
+                local_91 = ::FEcosimAIV2Utils::GetTeamMemberBounds(local_70_2);
+                local_106 = local_108 - this.LengthOffset;
+                float local_110 = local_106 - local_91.Max.X;
+                local_108 = local_110 + local_91.Min.X;
+                FEcosimAIV2TeamMemberInfo local_130;
+                local_130.Entity = local_70_2;
+                local_130.OffsetFromLeader = FVector(local_110, 0.0, 0.0);
+                this.EntityTeamMemberInfoMap.Add(local_70_2, local_130);
+                local_102 = local_91.Min.X;
+                this.Centerline.AddNode(local_110, local_102, local_91.Max.X, local_91.Min.Y, local_91.Max.Y, local_70_2);
+                ++local_57_2;
+            }
+        }
+        if (local_66.Num() > 0)
+        {
+            float local_104;
+            float local_102;
+            FBox3f local_98;
+            FBox3f local_91;
+            FBox3f local_117 = ::FEcosimAIV2Utils::GetTeamMemberBounds(local_24_3);
+            if (local_62.Num() == 0)
+            {
+                local_104 = local_117.Max.Y;
+                this.Centerline.AddNode(0.0, local_117.Min.X, local_117.Max.X, local_117.Min.Y, local_104, local_24_3);
+            }
+            FVector local_148 = local_142.GetPosition();
+            FVector local_154(local_142.GetRotation().GetForwardVector());
+            local_104 = 0.0;
+            local_154.Z = 0.0;
+            if (local_154.IsNearlyZero(9.999999747378752e-5))
+            {
+                local_154 = FVector(1.0, 0.0, 0.0);
+            }
+            FVector local_160(local_142.GetRotation().GetRightVector());
+            float local_84_3 = 0.0;
+            local_160.Z = 0.0;
+            if (local_160.IsNearlyZero(9.999999747378752e-5))
+            {
+                local_160 = FVector(0.0, 1.0, 0.0);
+            }
+            TArray<FECSEntity> local_164;
+            TArray<FECSEntity> local_168;
+            int local_51_4 = 0;
+            for (; local_51_4 < local_66.Num(); ++local_51_4)
+            {
+                FECSEntity local_70_3 = local_66[local_51_4];
+                ::FEcosimAIV2Utils::GetMemberMainEntityWithPlan(local_70_3);
+                GetDefaulted local_140;
+                if (((FVector(local_140.opCall().GetPosition()) - local_148).DotProduct(local_160) < 0.0))
+                {
+                    local_164.Add(local_70_3);
+                    continue;
+                }
+                local_168.Add(local_70_3);
+            }
+            this.RebalanceNormalSideMembers(local_164, local_168, local_148, local_160, local_154);
+            float local_108_2 = 0.0;
+            float local_110_2 = 0.0;
+            int local_51_5 = 0;
+            for (; local_51_5 < local_164.Num(); )
+            {
+                FECSEntity local_70_4 = local_164[local_51_5];
+                local_98 = ::FEcosimAIV2Utils::GetTeamMemberBounds(local_70_4);
+                if (local_51_5 == 0)
+                {
+                    if (local_62.Num() == 0)
+                    {
+                        local_84_3 = 0.0;
+                    }
+                    else
+                    {
+                        local_104 = local_117.Min.X;
+                        local_84_3 = local_104 - local_98.Max.X;
+                    }
+                    local_182 = local_84_3;
+                    local_110_2 = local_182 + local_98.Max.X;
+                    local_104 = local_98.Min.X;
+                    local_108_2 = local_182 + local_104;
+                }
+                else
+                {
+                    local_104 = local_108_2 - this.LengthOffset;
+                    local_102 = local_98.Max.X;
+                    local_182 = local_104 - local_102;
+                    local_108_2 = local_182 + local_98.Min.X;
+                }
+                if (local_62.Num() == 0)
+                {
+                    local_102 = -local_117.Min.Y;
+                    local_104 = local_102;
+                }
+                else
+                {
+                    local_84_3 = local_182 + local_98.Max.X;
+                    local_104 = this.Centerline.GetLeftExtentAtX((local_182 + local_98.Min.X), local_84_3);
+                }
+                float local_120_4 = local_104 + this.WidthOffset;
+                float local_106_2 = -local_98.Min.Y;
+                float local_184 = -(local_120_4 + local_106_2);
+                FEcosimAIV2TeamMemberInfo local_130;
+                local_130.Entity = local_70_4;
+                local_130.OffsetFromLeader = FVector(local_182, local_184, 0.0);
+                this.EntityTeamMemberInfoMap.Add(local_70_4, local_130);
+                ++local_51_5;
+            }
+            float local_184_2 = 0.0;
+            int local_51_6 = 0;
+            for (; local_51_6 < local_168.Num(); )
+            {
+                FECSEntity local_70_5 = local_168[local_51_6];
+                local_91 = ::FEcosimAIV2Utils::GetTeamMemberBounds(local_70_5);
+                if (local_51_6 == 0)
+                {
+                    if (local_62.Num() == 0)
+                    {
+                        local_84_3 = 0.0;
+                    }
+                    else
+                    {
+                        local_102 = local_117.Min.X;
+                        local_84_3 = local_102 - local_91.Max.X;
+                    }
+                    local_104 = local_84_3;
+                    local_184_2 = local_104 + local_91.Min.X;
+                }
+                else
+                {
+                    local_84_3 = local_184_2 - this.LengthOffset;
+                    local_104 = local_84_3 - local_91.Max.X;
+                    local_102 = local_91.Min.X;
+                    local_184_2 = local_104 + local_102;
+                }
+                if (local_62.Num() == 0)
+                {
+                    local_102 = local_117.Max.Y;
+                }
+                else
+                {
+                    local_102 = this.Centerline.GetRightExtentAtX((local_104 + local_91.Min.X), (local_104 + local_91.Max.X));
+                }
+                local_182 = this.WidthOffset;
+                local_182 = (local_102 + local_182) + local_91.Max.Y;
+                FEcosimAIV2TeamMemberInfo local_130;
+                local_130.Entity = local_70_5;
+                local_130.OffsetFromLeader = FVector(local_104, local_182, 0.0);
+                this.EntityTeamMemberInfoMap.Add(local_70_5, local_130);
+                ++local_51_6;
+            }
+        }
+        return;
     }
 }
 
@@ -1120,37 +1400,37 @@ bool RemoveEcosimAIV2Team(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2TeamOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcosimAIV2Team, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcosimAIV2Team, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2TeamOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcosimAIV2Team, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcosimAIV2Team, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2TeamOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcosimAIV2Team, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcosimAIV2Team, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2TeamOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcosimAIV2Team, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcosimAIV2Team, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2TeamOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcosimAIV2Team, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcosimAIV2Team, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcosimAIV2TeamLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcosimAIV2Team, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcosimAIV2Team, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2TeamActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcosimAIV2Team, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcosimAIV2Team, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2TeamModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcosimAIV2Team, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcosimAIV2Team, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcosimAIV2TeamMember
@@ -1233,37 +1513,37 @@ bool RemoveEcosimAIV2TeamMember(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2TeamMemberOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcosimAIV2TeamMember, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcosimAIV2TeamMember, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2TeamMemberOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcosimAIV2TeamMember, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcosimAIV2TeamMember, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2TeamMemberOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcosimAIV2TeamMember, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcosimAIV2TeamMember, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2TeamMemberOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcosimAIV2TeamMember, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcosimAIV2TeamMember, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcosimAIV2TeamMemberOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcosimAIV2TeamMember, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcosimAIV2TeamMember, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcosimAIV2TeamMemberLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcosimAIV2TeamMember, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcosimAIV2TeamMember, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2TeamMemberActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcosimAIV2TeamMember, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcosimAIV2TeamMember, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2TeamMemberModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcosimAIV2TeamMember, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcosimAIV2TeamMember, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace EntityBB

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ChatChannelPanel
 {
     const int ModelId = 0;
@@ -102,9 +101,10 @@ struct FVM_ChatChannelPanel : FEUIViewModel
         {
             return;
         }
-        bool local_9 = local_4.InnerLevelTypes.Contains(::FLevelUtils::GetCurrentLevelType());
+        int local_11 = int(::FLevelUtils::GetCurrentLevelType());
+        bool local_9 = local_4.InnerLevelTypes.Contains(ELevelType(local_11));
         TEUIModelRef<FMS_ChatRuntimeData> local_16 = this.GetChatRuntimeData();
-        int local_13 = GetSelectChannelTab();
+        int local_13 = int(GetSelectChannelTab());
         bool local_18 = false;
         int local_19 = 0;
         for (; local_19 < local_4.ChatChannelTabInfoConfigs.Num(); ++local_19)
@@ -132,22 +132,21 @@ struct FVM_ChatChannelPanel : FEUIViewModel
         }
         if (!(local_18) && (this.GetChannelTabs().Num() > 0))
         {
-            EChatChannelTab local_17_2 = GetTabInfo().ChannelID;
+            int local_17 = GetTabInfo().ChannelID;
             TEUIModelRef<FMS_ChatRuntimeData> local_16_2 = this.GetChatRuntimeData();
-            SetSelectChannelTab();
+            local_17.SetSelectChannelTab();
         }
         TEUIModelRef<FMS_ChatRuntimeData> local_16_3 = this.GetChatRuntimeData();
-        SetLastChannelTabsLevelType();
+        local_11.SetLastChannelTabsLevelType();
         return;
     }
     void SyncChannelTabVisualFromRuntime()
     {
-        this.SetSelectedChannelTab(EChatChannelTab(this.GetChatRuntimeData().opArrow().GetSelectChannelTab()));
+        this.SetSelectedChannelTab(this.GetChatRuntimeData().opArrow().GetSelectChannelTab());
         int local_4 = 0;
         for (; local_4 < this.GetChannelTabs().Num(); )
         {
-            EChatChannelTab local_3_2 = this.GetChannelTabs()[local_4].opArrow().GetTabChannelID();
-            this.GetChannelTabs()[local_4].opArrow().SetSelectedVisualState((int(local_3_2) == int(this.GetSelectedChannelTab())));
+            this.GetChannelTabs()[local_4].opArrow().SetSelectedVisualState((this.GetChannelTabs()[local_4].opArrow().GetTabChannelID() == int(this.GetSelectedChannelTab())));
             ++local_4;
         }
         return;
@@ -336,7 +335,47 @@ FVM_ChatChannelPanel CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "ChannelTabs";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_ChatChannelTab>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PanelMessages";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_ChatMessage>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_ChatChannelPanel>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_ChatChannelPanel;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(6);
+    local_22.AddRefPropertyDirty(0, 1, FMS_ChatRuntimeData::__IndexOf_SelectChannelTab());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("ChatRuntimeData");
+    int local_2_2 = FMS_ChatRuntimeData::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(1);
+    local_30.RelatedDirtyMask.SetBit(FMS_ChatRuntimeData::__IndexOf_SelectChannelTab(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__RefreshChannelTab";
+    local_40.DirtyFlags.Set(FVM_ChatChannelPanel::__IndexOf_ChatRuntimeData());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    FEUIModelMsgHandleDefine local_50;
+    local_50.FunctionName = "__OnRecentMessagesUpdated";
+    local_50.MessageTypeName = "Msg_OnReceiveChatMessage";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

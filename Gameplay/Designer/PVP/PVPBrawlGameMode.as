@@ -1,15 +1,11 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FPVPBrawlGameModeFlowSettings (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FPVPBrawlGameModeFlowSettings : FGameModeFlowSettings
 {
     FGameModeFlowSettings _base_FGameModeFlowSettings;
 
+    default _base_FGameModeFlowSettings = UPVPBrawlGameModeFlow;
+
     FPVPBrawlGameModeFlowSettings()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -29,7 +25,52 @@ class UPVPBrawlGameModeFlow : UPVPGameModeFlowBase
     }
     void OnTickStarting(const FCS_GameModeProfile &inout Profile) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_10 = 0;
+        int local_16 = 0;
+        int local_60 = 0;
+        int local_358 = 0;
+        int local_364 = 0;
+        Super::CleanupDisconnectedPlayers();
+        int local_2 = Super::SpawnAllPlayerAvatars();
+        Super::SetupCombatTeams();
+        FECSWorldPtr local_4 = ECS::GetECSWorld();
+        FECSWorldPtr local_4_2 = ECS::GetECSWorld();
+        Super::SpawnBotPlayers(local_10, local_16);
+        FECSWorldPtr local_4_3 = ECS::GetECSWorld();
+        FCS_PVP_TDM_ScoreData local_54;
+        Assign local_20;
+        local_20.opCall(local_54);
+        FECSWorldPtr local_4_4 = ECS::GetECSWorld();
+        local_60.SetTeam1Kills(0);
+        local_60.SetTeam2Kills(0);
+        local_60.SetWinnerTeamId(0);
+        FPVPGameModeFlowSettings local_202 = Super::GetPVPFlowSettings();
+        local_60.SetKillScoreLimit(Super::ResolveBrawlLimit(local_202, local_2));
+        int local_345 = local_202.BrawlPrepDurationSeconds;
+        if (local_345 < 0)
+        {
+            local_345 = 0;
+        }
+        local_60.SetbInPrepStage((local_345 > 0));
+        if (local_60.GetbInPrepStage())
+        {
+            local_60.SetPrepEndTime((ECS::GetContextTime() + FFPTime(local_345)));
+            FFPTime local_352 = FFPTime(-1);
+            FECSWorldPtr local_4_5 = ECS::GetECSWorld();
+            local_358.CustomName = this.BrawlPrepStartLevelEventName;
+        }
+        FECSWorldPtr local_4_6 = ECS::GetECSWorld();
+        local_364.SetMatchStartTime(ECS::GetContextTime());
+        int local_365 = local_202.TDMMaxMatchDurationSeconds;
+        if (local_365 > 0)
+        {
+            local_364.SetMatchEndTime((ECS::GetContextTime() + FFPTime(local_365)));
+        }
+        this.InitScoreData();
+        Super::ClampPotionsForAllPlayers();
+        Super::ApplyCombatRestrictions();
+        Super::ChangeGameState(EFCS_GameStageType(3));
+        return;
     }
     void OnTickPlaying(const FCS_GameModeProfile &inout Profile) const
     {
@@ -180,11 +221,13 @@ class UPVPBrawlGameModeFlow : UPVPGameModeFlowBase
     }
     void TickPrepStage(FCS_PVP_TDM_ScoreData &inout Brawl) const
     {
+        int local_12 = 0;
         if (ECS::GetContextTime().opCmp(Brawl.GetPrepEndTime()) >= 0)
         {
             Brawl.SetbInPrepStage(false);
             FFPTime local_2 = FFPTime(-1);
             FECSWorldPtr local_6 = ECS::GetECSWorld();
+            local_12.CustomName = this.BrawlPrepEndLevelEventName;
             FFPTime local_2_2 = FFPTime(-1);
             FECSWorldPtr local_6_2 = ECS::GetECSWorld();
             SendEvent local_16;

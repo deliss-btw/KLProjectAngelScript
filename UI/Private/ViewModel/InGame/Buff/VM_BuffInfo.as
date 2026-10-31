@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Buff_DebugBuffDataList = FConsoleVariable();
 namespace FVM_BuffInfo
 {
@@ -375,7 +374,9 @@ void __OnBuffChanged(FVM_BuffInfo &inout Model, const FECSEntity &inout Entity, 
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    ECSWorld.__MonitorBuffLifetime(EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    ECSWorld.__MonitorBuffModification(EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TArray<FEUIDynamicWidgetData> __UIGetter_BuffModels(const FVM_BuffInfo &inout Model)
 {

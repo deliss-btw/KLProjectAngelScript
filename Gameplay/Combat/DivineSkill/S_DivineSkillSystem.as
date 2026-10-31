@@ -1,5 +1,3 @@
-﻿
-
 class US_DivineSkillSystem : UECSScriptSystem
 {
     UPROPERTY()
@@ -70,7 +68,88 @@ class US_DivineSkillSystem : UECSScriptSystem
     }
     void OnUpdatePlayerEntityDivineSkillSuitable(const FECSEntity &inout Entity, const FC_ControlledByPlayer &inout ControlledByPlayer) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_10 = 0;
+        int local_16 = 0;
+        bool local_17;
+        USkillConfig local_30;
+        FFPTime local_4 = FFPTime(Entity.GetWorld().GetFixedTime().Time);
+        FECSEntity::Get<FC_PlayerController> local_8 = FECSEntity::Get<FC_PlayerController>(ControlledByPlayer.GetPlayerEntity());
+        if (!(local_16))
+        {
+            local_17 = false;
+        }
+        else
+        {
+            local_17 = local_10;
+        }
+        if (local_17)
+        {
+            if (local_16.GetDivineSkillData().GetSkillConfig())
+            {
+                const FDivineSkillConfig& local_28;
+                local_17 = ::DivineSkillUtils::SuitForPlayerCurrentAvatars(local_16.GetDivineSkillData().GetSkillConfig(), ControlledByPlayer.GetPlayerEntity());
+                if (!(local_17) != !(local_16.GetbHasSuitableCharacter()))
+                {
+                    FC_DivineSkillSuitableUpdateTag local_26;
+                    Assign local_24;
+                    local_24.opCall(local_26);
+                    local_16.SetbHasSuitableCharacter(local_17);
+                }
+                local_30 = local_28.SkillConfig;
+                if (local_30 != nullptr)
+                {
+                    bool local_19;
+                    ::InventoryUtils::EquipQuickSlotSkill(Entity, local_28.SkillConfig, EESMTriggerInputSlot(11));
+                    Has local_36;
+                    local_19 = local_36.opCall();
+                    if (local_19)
+                    {
+                        ::DivineSkillCDUtils::SetPawnDivineSkillFullCD(Entity, local_4);
+                    }
+                    else
+                    {
+                        int local_39 = FFPTime(local_16.GetCDSnapshot().GetSnapshotTime()).opCmp(local_4);
+                        if (local_39 >= 0)
+                        {
+                            int local_39_2 = FSkillUtils::GetSkillIndex(Entity, local_28.SkillConfig);
+                            float32 local_51 = FMath::Clamp((float32(((FFPTime(local_16.GetCDSnapshot().GetCDEndTime()) - local_4).ToSeconds())) / local_16.GetCDSnapshot().GetCDDuration()), 0.0f, 1.0f);
+                            if (local_51 > 0.0f)
+                            {
+                                FSkillUtils::SetSkillCD(Entity, local_39_2, local_4, 1.0f - local_51);
+                            }
+                        }
+                        else
+                        {
+                            for (auto& local_66 : local_10.GetAllPlayerPawnEntities())
+                            {
+                                if ((!((local_66 == Entity))))
+                                {
+                                    int local_40 = FSkillUtils::GetSkillIndex(local_66, local_28.SkillConfig);
+                                    int local_39_3 = INDEX_NONE;
+                                    if (local_40 != local_39_3)
+                                    {
+                                        float32 local_51_2 = 0.0f;
+                                        float32 local_48 = float32((FSkillUtils::GetSkillCDRemainTime(local_66, local_40).ToSeconds()));
+                                        float32 local_47 = FSkillUtils::GetSkillCDDuration(local_66, local_40);
+                                        if (local_47 > 0.0f)
+                                        {
+                                            local_51_2 = local_48 / local_47;
+                                        }
+                                        if ((local_51_2 > 0.0f && (local_51_2 <= 1.0f)))
+                                        {
+                                            local_39_3 = FSkillUtils::GetSkillIndex(Entity, local_28.SkillConfig);
+                                            FSkillUtils::SetSkillCD(Entity, local_39_3, local_4, 1.0f - local_51_2);
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return;
     }
     UFUNCTION()
     void Monitor_ServerOnCharacterTalentChanged(const FECSEntity &inout Entity, const FC_CharacterTalent &inout CharacterTalent) const
@@ -116,7 +195,46 @@ class US_DivineSkillSystem : UECSScriptSystem
     UFUNCTION()
     void Job_ClearCommissionEnterDivineSkillResetMark(const FECSEntity &inout PlayerEntity, const FC_PlayerController &inout PlayerController, const FC_DivineSkillCommissionEnterResetPending &inout Pending, const FCS_FixedTime &inout FixedTime) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_12 = 0;
+        USkillConfig local_22;
+        int local_1 = 1092616192;
+        FFPTime local_4 = FFPTime(FixedTime.Time);
+        bool local_6 = false;
+        bool local_5 = local_6;
+        if (!(local_12))
+        {
+            local_6 = false;
+        }
+        else
+        {
+            local_6 = local_12.GetDivineSkillData().GetSkillConfig();
+        }
+        USkillConfig local_16;
+        if ((local_6 && (local_16 != nullptr)) && (PlayerController.GetAllPlayerPawnEntities().Num() > 0))
+        {
+            bool local_23;
+            local_23 = true;
+            for (auto& local_38 : PlayerController.GetAllPlayerPawnEntities())
+            {
+                if (!(local_38.IsValid()) || (FSkillUtils::GetSkillIndex(local_38, local_22) == INDEX_NONE))
+                {
+                    local_23 = false;
+                    break;
+                }
+            }
+            local_5 = local_23;
+        }
+        bool local_17 = !(local_5);
+        if (local_17 && (float32(((local_4 - Pending.StartTime).ToSeconds())) >= 10.0f))
+        {
+            local_5 = true;
+        }
+        if (local_5)
+        {
+            Remove local_48;
+            local_48.opCall();
+        }
+        return;
     }
     UFUNCTION()
     void Job_ResetDivineSkillCDOnRaceStart(const FCS_FixedTime &inout FixedTime) const

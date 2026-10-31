@@ -1,4 +1,3 @@
-﻿
 namespace FMS_HeadsUpDisplay3DManager
 {
     const int ModelId = 0;

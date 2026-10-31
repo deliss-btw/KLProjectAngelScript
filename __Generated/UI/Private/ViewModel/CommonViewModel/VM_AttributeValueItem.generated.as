@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_AttributeValueItem_Helpers
 {
 UFUNCTION()

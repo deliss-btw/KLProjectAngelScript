@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TeamMemberConfirm
 {
     const int ModelId = 0;
@@ -517,7 +516,6 @@ struct __GeneratedProperties_FVM_TeamMemberConfirm
     FEUIModelContainer ContentModel;
     UPROPERTY()
     TEUIModelRef<FVM_TeamMemberConfirm> Self;
-
 
 }
 

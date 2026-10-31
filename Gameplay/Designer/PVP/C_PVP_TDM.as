@@ -1,4 +1,3 @@
-﻿
 enum EPVPGameRuleType
 {
     None,
@@ -47,11 +46,33 @@ struct FPVP_TDM_PlayerStat
 
     FPVP_TDM_PlayerStat()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Kills = 0;
+        this.m_Deaths = 0;
+        this.m_Assists = 0;
+        this.m_TeamId = 0;
+        this.m_DamageDealt = 0.0f;
+        this.m_DamageTaken = 0.0f;
+        return;
     }
     FPVP_TDM_PlayerStat(const FPVP_TDM_PlayerStat &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_Kills = 0;
+        this.m_Deaths = 0;
+        this.m_Assists = 0;
+        this.m_TeamId = 0;
+        this.m_DamageDealt = 0.0f;
+        this.m_DamageTaken = 0.0f;
+        this.m_Kills = int(Other.m_Kills);
+        this.m_Deaths = int(Other.m_Deaths);
+        this.m_Assists = int(Other.m_Assists);
+        this.m_TeamId = int(Other.m_TeamId);
+        this.m_DamageDealt = Other.m_DamageDealt;
+        this.m_DamageTaken = Other.m_DamageTaken;
+        return;
     }
     FPVP_TDM_PlayerStat opAssign(const FPVP_TDM_PlayerStat &inout Other)
     {
@@ -176,11 +197,37 @@ struct FCS_PVP_TDM_ScoreData : FECSSingleton
 
     FCS_PVP_TDM_ScoreData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Team1Kills = 0;
+        this.m_Team2Kills = 0;
+        this.m_WinnerTeamId = 0;
+        this.m_KillScoreLimit = 30;
+        this.m_bInPrepStage = true;
+        this.__InitDirtyFlags();
+        return;
     }
     FCS_PVP_TDM_ScoreData(const FCS_PVP_TDM_ScoreData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_Team1Kills = 0;
+        this.m_Team2Kills = 0;
+        this.m_WinnerTeamId = 0;
+        this.m_KillScoreLimit = 30;
+        this.m_bInPrepStage = true;
+        this.__InitDirtyFlags();
+        this.m_Team1Kills = int(Other.m_Team1Kills);
+        this.m_Team2Kills = int(Other.m_Team2Kills);
+        this.m_WinnerTeamId = int(Other.m_WinnerTeamId);
+        this.m_KillScoreLimit = int(Other.m_KillScoreLimit);
+        this.m_bInPrepStage = Other.m_bInPrepStage;
+        this.m_PrepEndTime = Other.m_PrepEndTime;
+        this.m_MatchStartTime = Other.m_MatchStartTime;
+        this.m_MatchEndTime = Other.m_MatchEndTime;
+        this.m_FinishStartTime = Other.m_FinishStartTime;
+        this.m_PlayerStatMap = Other.m_PlayerStatMap;
+        return;
     }
     FCS_PVP_TDM_ScoreData opAssign(const FCS_PVP_TDM_ScoreData &inout Other)
     {
@@ -409,11 +456,43 @@ struct FCS_PVP_TDM_RoundData : FECSSingleton
 
     FCS_PVP_TDM_RoundData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_CurrentRound = 0;
+        this.m_Team1RoundWins = 0;
+        this.m_Team2RoundWins = 0;
+        this.m_RoundsToWin = 3;
+        this.m_RoundStage = EPVPTDMRoundStage(0);
+        this.m_RoundWinnerTeamId = 0;
+        this.m_MatchWinnerTeamId = 0;
+        this.__InitDirtyFlags();
+        return;
     }
     FCS_PVP_TDM_RoundData(const FCS_PVP_TDM_RoundData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_CurrentRound = 0;
+        this.m_Team1RoundWins = 0;
+        this.m_Team2RoundWins = 0;
+        this.m_RoundsToWin = 3;
+        this.m_RoundStage = EPVPTDMRoundStage(0);
+        this.m_RoundWinnerTeamId = 0;
+        this.m_MatchWinnerTeamId = 0;
+        this.__InitDirtyFlags();
+        this.m_CurrentRound = int(Other.m_CurrentRound);
+        this.m_Team1RoundWins = int(Other.m_Team1RoundWins);
+        this.m_Team2RoundWins = int(Other.m_Team2RoundWins);
+        this.m_RoundsToWin = int(Other.m_RoundsToWin);
+        this.m_RoundStage = Other.m_RoundStage;
+        this.m_RoundPrepEndTime = Other.m_RoundPrepEndTime;
+        this.m_RoundCombatEndTime = Other.m_RoundCombatEndTime;
+        this.m_RoundIntermissionEndTime = Other.m_RoundIntermissionEndTime;
+        this.m_RoundWinnerTeamId = int(Other.m_RoundWinnerTeamId);
+        this.m_MatchWinnerTeamId = int(Other.m_MatchWinnerTeamId);
+        this.m_FinishStartTime = Other.m_FinishStartTime;
+        this.m_PlayerStatMap = Other.m_PlayerStatMap;
+        return;
     }
     FCS_PVP_TDM_RoundData opAssign(const FCS_PVP_TDM_RoundData &inout Other)
     {
@@ -738,17 +817,17 @@ bool RemovePVP_TDM_ScoreData(const FECSWorldPtr &inout World)
 }
 void __MonitorPVP_TDM_ScoreDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_PVP_TDM_ScoreData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_PVP_TDM_ScoreData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVP_TDM_ScoreDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_PVP_TDM_ScoreData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_PVP_TDM_ScoreData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVP_TDM_ScoreDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_PVP_TDM_ScoreData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_PVP_TDM_ScoreData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_PVP_TDM_RoundData
@@ -836,17 +915,17 @@ bool RemovePVP_TDM_RoundData(const FECSWorldPtr &inout World)
 }
 void __MonitorPVP_TDM_RoundDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_PVP_TDM_RoundData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_PVP_TDM_RoundData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVP_TDM_RoundDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_PVP_TDM_RoundData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_PVP_TDM_RoundData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVP_TDM_RoundDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_PVP_TDM_RoundData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_PVP_TDM_RoundData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_PVPPendingRespawn
@@ -929,37 +1008,37 @@ bool RemovePVPPendingRespawn(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPVPPendingRespawnOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PVPPendingRespawn, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PVPPendingRespawn, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPVPPendingRespawnOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PVPPendingRespawn, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PVPPendingRespawn, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPVPPendingRespawnOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PVPPendingRespawn, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PVPPendingRespawn, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPVPPendingRespawnOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PVPPendingRespawn, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PVPPendingRespawn, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPVPPendingRespawnOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PVPPendingRespawn, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PVPPendingRespawn, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPVPPendingRespawnLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PVPPendingRespawn, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PVPPendingRespawn, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVPPendingRespawnActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PVPPendingRespawn, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PVPPendingRespawn, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVPPendingRespawnModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PVPPendingRespawn, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PVPPendingRespawn, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

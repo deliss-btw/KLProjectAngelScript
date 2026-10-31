@@ -1,5 +1,3 @@
-﻿
-
 class URichTextSettings : UGameplaySettingsBase
 {
     UPROPERTY()
@@ -18,7 +16,6 @@ class URichTextSettings : UGameplaySettingsBase
     FLinearColor ActionLinkColor = FLinearColor(0.2f, 0.8f, 0.3f, 1.0f);
     UPROPERTY()
     bool bActionShowUnderline = true;
-
 
 }
 

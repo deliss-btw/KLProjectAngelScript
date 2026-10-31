@@ -1,5 +1,3 @@
-﻿
-
 class UESMAnimInstance_MountBase : UESMAnimInstance_Base
 {
     UPROPERTY()

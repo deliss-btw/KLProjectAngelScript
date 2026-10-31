@@ -1,12 +1,9 @@
-﻿
-
 struct FHTNDecorator_ExecutionTimeLimitInstanceData
 {
     UPROPERTY()
     float32 ExecutionTimeCount = 0.0f;
     UPROPERTY()
     float32 TimeLimitValue = -1.0f;
-
 
 }
 
@@ -17,7 +14,7 @@ class UHTNDecorator_ExecutionTimeLimit : UHTNDecorator_ECSScriptBase
     UPROPERTY()
     FAISmart_Float TimeLimiteRandomDeviation = 0.0f;
 
-    default SetNodeName("й™ђж—¶з»“жќџ");
+    default SetNodeName("限时结束");
 
     UHTNDecorator_ExecutionTimeLimit()
     {

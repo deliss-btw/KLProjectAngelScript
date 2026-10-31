@@ -1,5 +1,3 @@
-﻿
-
 struct FAttackIgnoreTargetCondition : FDataObject
 {
     FDataObject _base_FDataObject;

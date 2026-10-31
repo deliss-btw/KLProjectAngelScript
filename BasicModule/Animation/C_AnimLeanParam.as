@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_AnimLeanParams_NS
 {
     const TECSComponentDerivedPtr<FC_AnimLeanParams> DerivedPtr = TECSComponentDerivedPtr<FC_AnimLeanParams>();
@@ -26,11 +25,26 @@ struct FC_AnimLeanParams : FECSComponent
 
     FC_AnimLeanParams()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_LeanAngle = 0.0f;
+        this.m_LeanPitch = 0.0f;
+        this.m_SmoothedTurningSpeed = 0.0f;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_AnimLeanParams(const FC_AnimLeanParams &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_LeanAngle = 0.0f;
+        this.m_LeanPitch = 0.0f;
+        this.m_SmoothedTurningSpeed = 0.0f;
+        this.__InitDirtyFlags();
+        this.m_LeanAngle = Other.m_LeanAngle;
+        this.m_LeanPitch = Other.m_LeanPitch;
+        this.m_SmoothedTurningSpeed = Other.m_SmoothedTurningSpeed;
+        return;
     }
     FC_AnimLeanParams opAssign(const FC_AnimLeanParams &inout Other)
     {
@@ -99,11 +113,36 @@ struct FC_AnimLeanRelatedParamSmoothConfig : FECSComponent
 
     FC_AnimLeanRelatedParamSmoothConfig()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_bEnableLeanBlend = false;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_SmoothTime = 0.1f;
+        this.m_MaxDegree = 90.0f;
+        this.m_TargetAlpha = 1.0f;
+        this.m_FadeToTarget = 0.0f;
+        this.m_FadeToSpeed = 0.0f;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_AnimLeanRelatedParamSmoothConfig(const FC_AnimLeanRelatedParamSmoothConfig &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_bEnableLeanBlend = false;
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_SmoothTime = 0.1f;
+        this.m_MaxDegree = 90.0f;
+        this.m_TargetAlpha = 1.0f;
+        this.m_FadeToTarget = 0.0f;
+        this.m_FadeToSpeed = 0.0f;
+        this.__InitDirtyFlags();
+        this.m_SmoothTime = Other.m_SmoothTime;
+        this.m_MaxDegree = Other.m_MaxDegree;
+        this.m_TargetAlpha = Other.m_TargetAlpha;
+        this.m_FadeToTargetTime = Other.m_FadeToTargetTime;
+        this.m_FadeToTarget = Other.m_FadeToTarget;
+        this.m_FadeToSpeed = Other.m_FadeToSpeed;
+        this.m_bEnableLeanBlend = Other.m_bEnableLeanBlend;
+        return;
     }
     FC_AnimLeanRelatedParamSmoothConfig opAssign(const FC_AnimLeanRelatedParamSmoothConfig &inout Other)
     {
@@ -313,37 +352,37 @@ bool RemoveAnimLeanParams(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAnimLeanParamsOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimLeanParams, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimLeanParams, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimLeanParamsOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimLeanParams, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimLeanParams, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimLeanParamsOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimLeanParams, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimLeanParams, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimLeanParamsOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimLeanParams, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimLeanParams, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimLeanParamsOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimLeanParams, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimLeanParams, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAnimLeanParamsLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AnimLeanParams, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AnimLeanParams, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimLeanParamsActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AnimLeanParams, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AnimLeanParams, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimLeanParamsModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AnimLeanParams, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AnimLeanParams, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AnimLeanRelatedParamSmoothConfig
@@ -423,37 +462,37 @@ bool RemoveAnimLeanRelatedParamSmoothConfig(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAnimLeanRelatedParamSmoothConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimLeanRelatedParamSmoothConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimLeanRelatedParamSmoothConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimLeanRelatedParamSmoothConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimLeanRelatedParamSmoothConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimLeanRelatedParamSmoothConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimLeanRelatedParamSmoothConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimLeanRelatedParamSmoothConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimLeanRelatedParamSmoothConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimLeanRelatedParamSmoothConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimLeanRelatedParamSmoothConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimLeanRelatedParamSmoothConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimLeanRelatedParamSmoothConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimLeanRelatedParamSmoothConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimLeanRelatedParamSmoothConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAnimLeanRelatedParamSmoothConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AnimLeanRelatedParamSmoothConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AnimLeanRelatedParamSmoothConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimLeanRelatedParamSmoothConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AnimLeanRelatedParamSmoothConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AnimLeanRelatedParamSmoothConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimLeanRelatedParamSmoothConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AnimLeanRelatedParamSmoothConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AnimLeanRelatedParamSmoothConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

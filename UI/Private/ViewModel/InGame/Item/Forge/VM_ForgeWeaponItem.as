@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ForgeWeaponItem
 {
     const int ModelId = 0;
@@ -317,7 +316,38 @@ FVM_ForgeWeaponItem CreateByManager(const UEUIManagerSubsystem Manager, const TE
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasBeginDestroy(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "ComposableItemVM";
+    local_14.TypeName = "TEUIModelRef<FVM_ComposableItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_ForgeWeaponItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_ForgeWeaponItem;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(7);
+    local_22.AddRefPropertyDirty(0, 0, FM_ForgeNode::__IndexOf_StateType());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("Node");
+    int local_2_2 = FM_ForgeNode::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FM_ForgeNode::__IndexOf_StateType(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnNodeStateTypeChanged";
+    local_40.DirtyFlags.Set(FVM_ForgeWeaponItem::__IndexOf_Node());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

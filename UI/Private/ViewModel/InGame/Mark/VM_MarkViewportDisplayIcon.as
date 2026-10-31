@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MarkViewportDisplayIcon
 {
     const int ModelId = 0;
@@ -66,10 +65,9 @@ struct FVM_MarkViewportDisplayIcon : FEUIViewModel
     }
     void PostConstruct()
     {
-        bool local_49 = false;
         if (::MarkUtil::GetMarkConfig(this.GetMarkEntity()))
         {
-            this.SetbShowDistance(local_49);
+            this.SetbShowDistance((0 != 0));
         }
         return;
     }
@@ -80,10 +78,8 @@ struct FVM_MarkViewportDisplayIcon : FEUIViewModel
             this.SetSpot(::PresentationSpotUtils::GetEntitySpot(this.GetContext().Manager, ::MarkUtil::GetMarkedEntity(this.GetMarkEntity()).GetId()));
             if (this.GetSpot())
             {
-                bool local_3 = ::MarkUtil::IsSelfCreateMark(this.GetContext().GetLocalPlayer(), this.GetMarkEntity().GetId());
                 FSpotViewAdapter local_22;
-                TDataObjectPtr<FPresentationConfig> local_46 = ::GetPresentationConfig(this.GetSpot().opArrow(), local_22);
-                this.SetMarkIcon(FEUIModelRef());
+                this.SetMarkIcon(FEUIModelRef(::FVM_MarkIcon::Create(this.GetContext().Manager, ::GetPresentationConfig(this.GetSpot().opArrow(), local_22), ::MarkUtil::IsSelfCreateMark(this.GetContext().GetLocalPlayer(), this.GetMarkEntity().GetId()))));
                 this.SetMarkIconWidget(::UICommonUtil::EUIWidgetPathFromString("/Game/MoleRes/Dev/UI/UMG/System/Mark/MarkIcons/UI_SimpleMarkIcon.UI_SimpleMarkIcon"));
                 Get local_62;
                 this.SetBackgroundColor(local_62.opCall().GetIconBackgroundColor());
@@ -279,7 +275,6 @@ struct __GeneratedProperties_FVM_MarkViewportDisplayIcon
     bool IsVisible;
     UPROPERTY()
     TEUIModelRef<FVM_MarkViewportDisplayIcon> Self;
-
 
 }
 

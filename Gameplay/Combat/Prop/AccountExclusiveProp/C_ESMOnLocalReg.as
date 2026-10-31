@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_ActivateESMTriggerOnLocalReg_NS
 {
     const TECSComponentDerivedPtr<FC_ActivateESMTriggerOnLocalReg> DerivedPtr = TECSComponentDerivedPtr<FC_ActivateESMTriggerOnLocalReg>();
@@ -16,7 +15,6 @@ struct FActivateESMTriggerOnLocalRegData
     FNameHandle_ESMBBTrigger TriggerName;
     UPROPERTY()
     float32 ValidTime;
-
 
 }
 
@@ -124,37 +122,37 @@ bool RemoveActivateESMTriggerOnLocalReg(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorActivateESMTriggerOnLocalRegOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ActivateESMTriggerOnLocalReg, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ActivateESMTriggerOnLocalReg, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorActivateESMTriggerOnLocalRegOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ActivateESMTriggerOnLocalReg, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ActivateESMTriggerOnLocalReg, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorActivateESMTriggerOnLocalRegOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ActivateESMTriggerOnLocalReg, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ActivateESMTriggerOnLocalReg, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorActivateESMTriggerOnLocalRegOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ActivateESMTriggerOnLocalReg, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ActivateESMTriggerOnLocalReg, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorActivateESMTriggerOnLocalRegOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ActivateESMTriggerOnLocalReg, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ActivateESMTriggerOnLocalReg, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorActivateESMTriggerOnLocalRegLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ActivateESMTriggerOnLocalReg, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ActivateESMTriggerOnLocalReg, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorActivateESMTriggerOnLocalRegActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ActivateESMTriggerOnLocalReg, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ActivateESMTriggerOnLocalReg, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorActivateESMTriggerOnLocalRegModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ActivateESMTriggerOnLocalReg, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ActivateESMTriggerOnLocalReg, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ESMExternalTransitOnLocalReg
@@ -234,36 +232,36 @@ bool RemoveESMExternalTransitOnLocalReg(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorESMExternalTransitOnLocalRegOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ESMExternalTransitOnLocalReg, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ESMExternalTransitOnLocalReg, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorESMExternalTransitOnLocalRegOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ESMExternalTransitOnLocalReg, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ESMExternalTransitOnLocalReg, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorESMExternalTransitOnLocalRegOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ESMExternalTransitOnLocalReg, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ESMExternalTransitOnLocalReg, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorESMExternalTransitOnLocalRegOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ESMExternalTransitOnLocalReg, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ESMExternalTransitOnLocalReg, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorESMExternalTransitOnLocalRegOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ESMExternalTransitOnLocalReg, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ESMExternalTransitOnLocalReg, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorESMExternalTransitOnLocalRegLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ESMExternalTransitOnLocalReg, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ESMExternalTransitOnLocalReg, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorESMExternalTransitOnLocalRegActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ESMExternalTransitOnLocalReg, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ESMExternalTransitOnLocalReg, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorESMExternalTransitOnLocalRegModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ESMExternalTransitOnLocalReg, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ESMExternalTransitOnLocalReg, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

@@ -1,14 +1,13 @@
-﻿
 namespace AutoTest::API::CraftAPI
 {
 TEUIModelRef<FVM_ItemCraft> GetCraftViewModel()
 {
-    // body not fully recovered вЂ” stub [unresolved-operand]
+    // body not fully recovered — stub [unresolved-operand]
     TEUIModelRef<FVM_ItemCraft> __r; return __r;
 }
 TEUIModelRef<FVM_WeaponForge> GetWeaponForgeViewModel()
 {
-    // body not fully recovered вЂ” stub [unresolved-operand]
+    // body not fully recovered — stub [unresolved-operand]
     TEUIModelRef<FVM_WeaponForge> __r; return __r;
 }
 void SelectItemInCraftPanel(const FName &inout ItemName)
@@ -77,8 +76,7 @@ TArray<uint> GetCurrentUnlockedForgeTrees()
     ThrowIf(!(local_12), "ForgeModel is invalid, check if the Forge Widget is fully initialized.");
     for (auto local_31 : ForgeCommonUtil::GetWeaponTypeForgePriorityList())
     {
-        local_31;
-        local_36.GetForgeTreeListByWeaponType();
+        local_36.GetForgeTreeListByWeaponType(EWeaponType(local_31));
         for (auto& local_54 : local_36)
         {
             if (local_54.IsValid() && CheckValid())
@@ -91,8 +89,11 @@ TArray<uint> GetCurrentUnlockedForgeTrees()
 }
 TArray<uint> GetCurrentStateForgeNodes(const FString &inout NodeStateType)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TArray<uint> __r; return __r;
+    ThrowIf(NodeStateType.IsEmpty(), "NodeStateType is empty.");
+    UEnum local_4 = UEnum::GetEnumType(n"EForgeNodeStateType");
+    int local_5 = local_4.GetIndexByName(FName(NodeStateType), EGetByNameFlags(0));
+    ThrowIf((local_5 == INDEX_NONE), FString().Append("NodeStateType: ").Append(NodeStateType).Append(" is not a valid EForgeNodeStateType enum value."));
+    return AutoTest::API::CraftAPI::GetCurrentForgeNodesWithStateType(EForgeNodeStateType(local_5));
 }
 TArray<uint> GetCurrentForgeNodesWithStateType(const EForgeNodeStateType NodeStateType)
 {
@@ -108,8 +109,7 @@ TArray<uint> GetCurrentForgeNodesWithStateType(const EForgeNodeStateType NodeSta
     ThrowIf(local_9, "ForgeModel is invalid, check if the Forge Widget is fully initialized.");
     for (auto local_31 : ForgeCommonUtil::GetWeaponTypeForgePriorityList())
     {
-        local_31;
-        local_36.GetForgeTreeListByWeaponType();
+        local_36.GetForgeTreeListByWeaponType(EWeaponType(local_31));
         for (auto& local_54 : local_36)
         {
             if (!(local_54.IsValid()) || !(CheckValid()))
@@ -134,7 +134,41 @@ TArray<uint> GetCurrentForgeNodesWithStateType(const EForgeNodeStateType NodeSta
 }
 void SelectForgeNodeByWeaponTypeAndDataId(const FString &inout WeaponType, const int NodeDataId)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    ThrowIf(WeaponType.IsEmpty(), "WeaponType is empty.");
+    ThrowIf((NodeDataId <= 0), FString().Append("NodeDataId is invalid: ").Append(NodeDataId));
+    TEUIModelRef<FVM_WeaponForge> local_10 = AutoTest::API::CraftAPI::GetWeaponForgeViewModel();
+    ThrowIf(!(local_10), "Can't get ForgeViewModel, check if the Forge Widget is open.");
+    UEnum local_14 = UEnum::GetEnumType(n"EWeaponType");
+    int local_7 = local_14.GetIndexByName(FName(WeaponType), EGetByNameFlags(0));
+    int local_17 = INDEX_NONE;
+    ThrowIf((local_7 == local_17), FString().Append("WeaponType: ").Append(WeaponType).Append(" is not a valid EWeaponType enum value."));
+    int local_22 = local_7;
+    int local_17_2 = INDEX_NONE;
+    int local_23 = local_17_2;
+    int local_24 = 0;
+    for (; local_24 < local_10.opArrow().GetWeaponTypes().Num(); ++local_24)
+    {
+        if (int(local_10.opArrow().GetWeaponTypes()[local_24]) == local_22)
+        {
+            local_23 = local_24;
+            break;
+        }
+    }
+    ThrowIf((local_23 == INDEX_NONE), FString().Append("WeaponType: ").Append(WeaponType).Append(" not found in current forge categories."));
+    local_23.OnWeaponCategorySelected();
+    TEUIModelRef<FMS_Forge> local_30 = local_10.opArrow().GetForgeModel();
+    TEUIModelRef<FMS_Forge> local_28;
+    ThrowIf(!(local_28), "ForgeModel is invalid, check if the Forge Widget is fully initialized.");
+    TEUIModelWeakRef<FM_ForgeNode> local_32;
+    local_32.GetNode(NodeDataId);
+    ThrowIf(!(local_32.IsValid()), FString().Append("ForgeNode not found by DataId: ").Append(NodeDataId));
+    TEUIModelWeakRef<FM_ForgeTree> local_38;
+    local_38.GetTree(GetTreeId());
+    ThrowIf(!(local_38.IsValid()), FString().Append("ForgeTree not found by TreeId: ").Append(GetTreeId()));
+    ThrowIf((int(GetConfig().WeaponType) != local_22), FString().Append("ForgeNode ").Append(NodeDataId).Append(" does not belong to WeaponType ").Append(WeaponType));
+    TEUIModelWeakRef<FM_ForgeNode> local_34;
+    local_34.SetCurrentSelectNode();
+    return;
 }
 void ClickForgeDoForgeButton()
 {

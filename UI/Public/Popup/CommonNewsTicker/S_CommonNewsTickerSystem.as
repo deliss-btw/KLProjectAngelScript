@@ -1,5 +1,3 @@
-﻿
-
 class US_CommonNewsTickerSystem : UECSScriptSystem
 {
     US_CommonNewsTickerSystem()
@@ -9,7 +7,38 @@ class US_CommonNewsTickerSystem : UECSScriptSystem
     UFUNCTION()
     void ClientJob_OnCommonPopupManagerChanged(const FCE_NotifyCommonPopupManagerChanged &inout Event, FCS_CommonNewsTickerManager &inout Manager, const FCS_LocalPlayer &inout C_LocalPlayer) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        if (!(::CommonPopupUtils::HasMatchingPopupType(Event.AffectedPopupTypes, FGameplayTag::RequestGameplayTag(n"UI.Type.Commonpupop.NewsTicker", true))))
+        {
+            return;
+        }
+        FEUIWidgetRef local_22;
+        for (auto local_18 : Event.RemovedPopupIds)
+        {
+            if (int(Manager.DisplayingTickerPopupId) == int(local_18))
+            {
+                FEUIWidget::RemoveWidget(Manager.DisplayingTicker);
+                Manager.DisplayingTicker = local_22;
+                continue;
+            }
+        }
+        for (auto local_23 : Event.NewDisplayingPopupIds)
+        {
+            FCommonNewsTickerInfo local_30;
+            if (Manager.PendingTickers.RemoveAndCopyValue(local_23, local_30))
+            {
+                FVM_CommonNewsTicker& local_34 = ::FVM_CommonNewsTicker::Create(this.GetOwner(), local_30.Content, int(local_30.RepeatCount));
+                TSoftClassPtr<UEUIUserWidget> local_44 = ::CommonPopupSettings::Get().CommonNewsTickerWidget;
+                local_22 = FEUIWidget::AddWidgetByClass(C_LocalPlayer.UEPlayerController.GetLocalPlayer(), local_44, FEUIModelRef(local_34));
+                if (local_22)
+                {
+                    Manager.DisplayingTicker = local_22;
+                    Manager.DisplayingTickerRepeatCount = int(local_30.RepeatCount);
+                    Manager.DisplayingTickerPopupId = local_23;
+                }
+                break;
+            }
+        }
+        return;
     }
     UFUNCTION()
     void ClientJob_TickDisplayingNewsTicker(FCS_CommonNewsTickerManager &inout Manager, const FCS_LocalTime &inout C_LocalTime) const

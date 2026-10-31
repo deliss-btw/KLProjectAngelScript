@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_Page_Helpers
 {
 UFUNCTION()

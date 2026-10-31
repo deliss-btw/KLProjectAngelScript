@@ -1,4 +1,3 @@
-﻿
 namespace FMS_PlayerCombatTeamData
 {
     const int ModelId = 0;
@@ -145,7 +144,9 @@ void __DS_OnLocalPlayerCombatTeamChanged(FMS_PlayerCombatTeamData &inout Model, 
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorPlayerInTeamLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerInTeamModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_LocalPlayerCombatTeamPrivate()
 {

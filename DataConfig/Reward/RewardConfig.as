@@ -1,4 +1,3 @@
-﻿
 enum ERewardSource
 {
     Commission,
@@ -17,7 +16,6 @@ enum ERewardClaimType
     Popup,
 }
 
-
 struct FRewardEntry
 {
     UPROPERTY()
@@ -26,7 +24,6 @@ struct FRewardEntry
     int Count = 1;
     UPROPERTY()
     bool bAutoUse;
-
 
 }
 
@@ -43,7 +40,6 @@ struct FRewardConfig : FDataObject
     bool bIsPreviewable;
     UPROPERTY()
     ERewardClaimType ClaimType;
-
 
 }
 

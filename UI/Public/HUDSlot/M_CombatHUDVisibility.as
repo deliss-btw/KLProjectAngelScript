@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_DebugWidgetHide = FConsoleVariable();
 const FConsoleCommand CCmd_DebugHUDHide = FConsoleCommand();
 const FConsoleVariable CVar_DebugHUDHideVar = FConsoleVariable();
@@ -15,7 +14,6 @@ struct FCombatHUDGroupRuntimeState
     float32 DelayTimer = 0.0f;
     UPROPERTY()
     ECombatHUDReason LastInstantReason = ECombatHUDReason(0);
-
 
 }
 
@@ -228,7 +226,46 @@ struct FMS_CombatHUDVisibility : FEUIModelSingleton
     }
     void SetReason(const ECombatHUDReason Reason, const bool bEnabled)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_2 = INDEX_NONE;
+        int local_1 = local_2;
+        if (!(this.GetReasonToGroupIndex().Find(Reason, local_1)))
+        {
+            return;
+        }
+        if (!(this.GetGroupStates().IsValidIndex(local_1)) || !(this.GetCachedGroups().IsValidIndex(local_1)))
+        {
+            return;
+        }
+        FCombatHUDGroupRuntimeState local_10;
+        float32 local_17 = this.GetCachedGroups()[local_1].DelaySec;
+        if (bEnabled && this.IsInstantReason(ECombatHUDReason(Reason)))
+        {
+            local_10.DelayTimer = local_17;
+            local_10.LastInstantReason = Reason;
+        }
+        else
+        {
+            if (bEnabled)
+            {
+                if (!(local_10.ActiveReasons.Contains(Reason)))
+                {
+                    local_10.ActiveReasons.Add(Reason);
+                }
+                local_10.DelayTimer = 0.0f;
+                local_10.LastInstantReason = ECombatHUDReason(0);
+            }
+            else
+            {
+                local_10.ActiveReasons.RemoveSingle(Reason);
+                if (local_10.ActiveReasons.Num() == 0 && (local_17 > 0.0f))
+                {
+                    local_10.DelayTimer = local_17;
+                }
+                local_10.LastInstantReason = ECombatHUDReason(0);
+            }
+        }
+        this.EvaluateAndApply();
+        return;
     }
     void EvaluateAndApply()
     {
@@ -636,7 +673,9 @@ void __Tick(FMS_CombatHUDVisibility &inout Model)
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorChangeSkillPanelLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorChangeSkillPanelModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_CachedGroups()
 {

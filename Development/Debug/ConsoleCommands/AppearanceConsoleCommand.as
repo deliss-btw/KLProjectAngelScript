@@ -1,5 +1,3 @@
-﻿
-
 namespace __ConsoleCommond
 {
 class UAppearanceConsoleCommand : UKLConsoleCommandLibrary

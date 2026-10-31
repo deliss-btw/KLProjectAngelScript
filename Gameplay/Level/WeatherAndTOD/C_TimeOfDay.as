@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_TimeOfDay_NS
 {
     const TECSComponentDerivedPtr<FCS_TimeOfDay> DerivedPtr = TECSComponentDerivedPtr<FCS_TimeOfDay>();
@@ -39,11 +38,30 @@ struct FCS_TimeOfDay : FECSSingleton
 
     FCS_TimeOfDay()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_TimeOfDaySeconds = 0;
+        this.m_LastIntegerTime = -1.0f;
+        this.m_TimeSpeed = 24.0f;
+        this.m_bPaused = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FCS_TimeOfDay(const FCS_TimeOfDay &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_4;
+        this.__DirtyFlags = local_4;
+        this.m_TimeOfDaySeconds = 0;
+        this.m_LastIntegerTime = -1.0f;
+        this.m_TimeSpeed = 24.0f;
+        this.m_bPaused = false;
+        this.__InitDirtyFlags();
+        this.m_TimeOfDaySeconds = int(Other.m_TimeOfDaySeconds);
+        this.m_LastIntegerTime = Other.m_LastIntegerTime;
+        this.m_TimeSpeed = Other.m_TimeSpeed;
+        this.m_bPaused = Other.m_bPaused;
+        this.m_TODStageName = Other.m_TODStageName;
+        return;
     }
     FCS_TimeOfDay opAssign(const FCS_TimeOfDay &inout Other)
     {
@@ -157,7 +175,6 @@ struct FCS_TODAccumulatedDeltaTime : FECSSingleton
     UPROPERTY()
     float32 AccumulatedDeltaTime = 0.0f;
 
-
 }
 
 struct FCS_FastForwardTODInfo : FECSSingleton
@@ -172,7 +189,6 @@ struct FCS_FastForwardTODInfo : FECSSingleton
     float32 RemainBlendTime = 0.0f;
     UPROPERTY()
     float32 TimeSpeed = 0.0f;
-
 
 }
 
@@ -195,7 +211,6 @@ struct FCE_SetCurrentTimeOfDay : FECSEvent
     FECSEvent _base_FECSEvent;
     UPROPERTY()
     float32 TimeOfDayInHours;
-
 
 }
 
@@ -284,17 +299,17 @@ bool RemoveTimeOfDay(const FECSWorldPtr &inout World)
 }
 void __MonitorTimeOfDayLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_TimeOfDay, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_TimeOfDay, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTimeOfDayActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_TimeOfDay, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_TimeOfDay, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTimeOfDayModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_TimeOfDay, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_TimeOfDay, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_TODAccumulatedDeltaTime
@@ -382,17 +397,17 @@ bool RemoveTODAccumulatedDeltaTime(const FECSWorldPtr &inout World)
 }
 void __MonitorTODAccumulatedDeltaTimeLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_TODAccumulatedDeltaTime, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_TODAccumulatedDeltaTime, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTODAccumulatedDeltaTimeActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_TODAccumulatedDeltaTime, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_TODAccumulatedDeltaTime, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTODAccumulatedDeltaTimeModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_TODAccumulatedDeltaTime, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_TODAccumulatedDeltaTime, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_FastForwardTODInfo
@@ -480,17 +495,17 @@ bool RemoveFastForwardTODInfo(const FECSWorldPtr &inout World)
 }
 void __MonitorFastForwardTODInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_FastForwardTODInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_FastForwardTODInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFastForwardTODInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_FastForwardTODInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_FastForwardTODInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFastForwardTODInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_FastForwardTODInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_FastForwardTODInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

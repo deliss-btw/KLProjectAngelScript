@@ -1,4 +1,3 @@
-﻿
 namespace FScalerResourceUtils
 {
 UFUNCTION()
@@ -133,17 +132,14 @@ UFUNCTION()
 bool DealConsumeScalerResource(const FECSEntity &inout Entity, const FC_ScalerResourceConfig &inout ScalerResourceConfig, FC_ScalerResourceRuntime &inout ScalerResourceRuntime, const FScalerResourceConsumeConfig &inout ScalerResourceConsumeConfig)
 {
     float32 local_33;
-    int local_35 = 0;
     bool local_38;
     bool local_39;
-    int local_2 = ScalerResourceRuntime.GetValues().Num();
-    if (!((ScalerResourceConfig.ScalerResourceConfigData.Num() == local_2)))
+    if (!((ScalerResourceConfig.ScalerResourceConfigData.Num() == ScalerResourceRuntime.GetValues().Num())))
     {
         return false;
     }
     bool local_4 = true;
-    int local_1 = int(ScalerResourceConsumeConfig.ChangeOrder);
-    if (local_1 == 0)
+    if (int(ScalerResourceConsumeConfig.ChangeOrder) == 0)
     {
         float32 local_37;
         float32 local_31;
@@ -154,7 +150,7 @@ bool DealConsumeScalerResource(const FECSEntity &inout Entity, const FC_ScalerRe
             for (auto& local_20 : ScalerResourceConsumeConfig.SpecificScalerResourceConsumeConfigs)
             {
                 int local_21 = 0;
-                while (local_21 < local_1)
+                for (; local_21 < ScalerResourceConfig.ScalerResourceConfigData.Num(); ++local_21)
                 {
                     const FScalerResourceConfigData& local_24 = ScalerResourceConfig.ScalerResourceConfigData[local_21];
                     if ((local_24.Name == local_20.Name))
@@ -171,8 +167,7 @@ bool DealConsumeScalerResource(const FECSEntity &inout Entity, const FC_ScalerRe
                         local_30 = ScalerResourceConfig.ScalerResourceConfigData[local_21].ValueMin;
                         local_31 = ScalerResourceConfig.ScalerResourceConfigData[local_21].ValueMax;
                         local_32 = ScalerResourceRuntime.GetValues()[local_21];
-                        local_1 = int(local_24.ChangeType);
-                        if (local_1 == 0 || (int(local_24.ChangeType) == 1))
+                        if (int(local_24.ChangeType) == 0 || (int(local_24.ChangeType) == 1))
                         {
                             local_37 = local_32 - local_30;
                         }
@@ -180,14 +175,12 @@ bool DealConsumeScalerResource(const FECSEntity &inout Entity, const FC_ScalerRe
                         {
                             local_37 = local_31 - local_32;
                         }
-                        local_35 = int(local_24.ChangeType);
-                        if ((local_35 == 1 && (local_37 < local_28)) || (int(local_24.ChangeType) == 0 && FScalerResourceUtils::IsReachConsumeExtreme(ScalerResourceConfig, ScalerResourceRuntime, local_21)))
+                        if ((int(local_24.ChangeType) == 1 && (local_37 < local_28)) || (int(local_24.ChangeType) == 0 && FScalerResourceUtils::IsReachConsumeExtreme(ScalerResourceConfig, ScalerResourceRuntime, local_21)))
                         {
                             local_4 = false;
                             break;
                         }
                     }
-                    ++local_21;
                 }
                 if (!(local_4))
                 {
@@ -200,7 +193,7 @@ bool DealConsumeScalerResource(const FECSEntity &inout Entity, const FC_ScalerRe
             for (auto& local_20 : ScalerResourceConsumeConfig.SpecificScalerResourceConsumeConfigs)
             {
                 int local_21_2 = 0;
-                while (local_21_2 < local_1)
+                for (; local_21_2 < ScalerResourceConfig.ScalerResourceConfigData.Num(); ++local_21_2)
                 {
                     const FScalerResourceConfigData& local_24_2 = ScalerResourceConfig.ScalerResourceConfigData[local_21_2];
                     if ((local_24_2.Name == local_20.Name))
@@ -215,7 +208,6 @@ bool DealConsumeScalerResource(const FECSEntity &inout Entity, const FC_ScalerRe
                         }
                         FScalerResourceUtils::ProcessConsumeScalerResource(local_21_2, Entity, ScalerResourceConfig, ScalerResourceRuntime, local_33);
                     }
-                    ++local_21_2;
                 }
             }
         }
@@ -234,7 +226,7 @@ bool DealConsumeScalerResource(const FECSEntity &inout Entity, const FC_ScalerRe
                 {
                     local_39 = false;
                     int local_21_3 = 0;
-                    while (local_21_3 < local_2)
+                    for (; local_21_3 < ScalerResourceConfig.ScalerResourceConfigData.Num(); ++local_21_3)
                     {
                         const FScalerResourceConfigData& local_24_3 = ScalerResourceConfig.ScalerResourceConfigData[local_21_3];
                         if (local_20.bOverrideDeltaValueAbs)
@@ -258,7 +250,6 @@ bool DealConsumeScalerResource(const FECSEntity &inout Entity, const FC_ScalerRe
                                 break;
                             }
                         }
-                        ++local_21_3;
                     }
                     if (local_39 || !(local_4))
                     {
@@ -271,7 +262,7 @@ bool DealConsumeScalerResource(const FECSEntity &inout Entity, const FC_ScalerRe
                 for (auto& local_20 : ScalerResourceConsumeConfig.SpecificScalerResourceConsumeConfigs)
                 {
                     int local_21_4 = 0;
-                    while (local_21_4 < local_35)
+                    for (; local_21_4 < ScalerResourceConfig.ScalerResourceConfigData.Num(); ++local_21_4)
                     {
                         const FScalerResourceConfigData& local_24_4 = ScalerResourceConfig.ScalerResourceConfigData[local_21_4];
                         if (local_20.bOverrideDeltaValueAbs)
@@ -297,13 +288,10 @@ bool DealConsumeScalerResource(const FECSEntity &inout Entity, const FC_ScalerRe
                         local_38 = int(ScalerResourceConfig.ScalerResourceConfigData[local_21_4].ChangeType) == 1 && (local_27 < local_31);
                         if (local_38 || FScalerResourceUtils::IsReachConsumeExtreme(ScalerResourceConfig, ScalerResourceRuntime, local_21_4))
                         {
+                            continue;
                         }
-                        else
-                        {
-                            FScalerResourceUtils::ProcessConsumeScalerResource(local_21_4, Entity, ScalerResourceConfig, ScalerResourceRuntime, local_31);
-                            break;
-                        }
-                        ++local_21_4;
+                        FScalerResourceUtils::ProcessConsumeScalerResource(local_21_4, Entity, ScalerResourceConfig, ScalerResourceRuntime, local_31);
+                        break;
                     }
                 }
             }

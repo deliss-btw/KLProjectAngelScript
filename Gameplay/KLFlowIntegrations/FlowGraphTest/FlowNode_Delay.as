@@ -1,11 +1,8 @@
-﻿
-
 class UFlowNode_Delay : UFlowNode
 {
     UPROPERTY()
     float32 TimeSeconds = 10.0f;
     FTimerHandle TimerHandle;
-
 
     UFUNCTION()
     void ExecuteInput_Implementation(const FName &inout PinName)

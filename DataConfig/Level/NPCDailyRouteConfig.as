@@ -1,13 +1,8 @@
-﻿
 enum ENPCDailyRouteStayTimeMode
 {
     Fixed,
     RandomRange,
 }
-
-
-// NOTE: class defaults are not authored in this module: FNPCDailyRouteConfig (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
 
 struct FNPCDailyRouteStayTimeConfig
 {
@@ -19,7 +14,6 @@ struct FNPCDailyRouteStayTimeConfig
     float32 MinTime = 0.0f;
     UPROPERTY()
     float32 MaxTime = 0.0f;
-
 
     bool IsValid() const
     {
@@ -72,7 +66,7 @@ struct FNPCDailyRouteStayTimeConfig
 struct FNPCDailyRouteNodeConfig
 {
     UPROPERTY()
-    FName PointId;
+    FName PointId = NAME_None;
     UPROPERTY()
     FNPCDailyRouteStayTimeConfig StayTime;
 
@@ -159,17 +153,17 @@ struct FNPCDailyRouteConfig : FDataObject
         FDataObjectValidationResult local_16;
         if (this.RouteSourceId.IsNone())
         {
-            local_16.Error = FString("и·ЇзЅ‘жєђIDдёЌиѓЅдёєз©є");
+            local_16.Error = FString("路网源ID不能为空");
             return local_16;
         }
         if (this.PlanName.IsNone())
         {
-            local_16.Error = FString("и·Їзєїж–№жЎ€еђЌдёЌиѓЅдёєз©є");
+            local_16.Error = FString("路线方案名不能为空");
             return local_16;
         }
         if (this.Nodes.Num() < 2)
         {
-            local_16.Error = FString("NPCж—Ґеёёи·Їзєїи‡іе°‘йњЂи¦Ѓдё¤дёЄиЉ‚з‚№");
+            local_16.Error = FString("NPC日常路线至少需要两个节点");
             return local_16;
         }
         int local_25 = 0;
@@ -181,28 +175,28 @@ struct FNPCDailyRouteConfig : FDataObject
             local_32 = local_38;
             if (local_32.PointId.IsNone())
             {
-                local_16.Error = FString().Append("и·ЇзєїиЉ‚з‚№[").Append(local_25).Append("]еЊєеџџз‚№IDдёЌиѓЅдёєз©є");
+                local_16.Error = FString().Append("路线节点[").Append(local_25).Append("]区域点ID不能为空");
                 return local_16;
             }
             if (!(local_32.StayTime.IsValid()))
             {
-                local_16.Error = FString().Append("и·ЇзєїиЉ‚з‚№[").Append(local_25).Append("]еЃњз•™ж—¶й—ґй…ЌзЅ®йќћжі•");
+                local_16.Error = FString().Append("路线节点[").Append(local_25).Append("]停留时间配置非法");
                 return local_16;
             }
             if ((local_25 > 0 && (FName(this.Nodes[(local_25 - 1)].PointId) == local_32.PointId)))
             {
-                local_16.Error = FString().Append("и·ЇзєїиЉ‚з‚№[").Append((local_25 - 1)).Append("]е’Њ[").Append(local_25).Append("]дёЌиѓЅеј•з”ЁеђЊдёЂдёЄеЊєеџџз‚№[").Append(local_32.PointId).Append("]");
+                local_16.Error = FString().Append("路线节点[").Append((local_25 - 1)).Append("]和[").Append(local_25).Append("]不能引用同一个区域点[").Append(local_32.PointId).Append("]");
                 return local_16;
             }
         }
         if (!(this.IsLoopStartIndexValid()))
         {
-            local_16.Error = FString().Append("еѕЄзЋЇиµ·з‚№зґўеј•[").Append(this.LoopStartIndex).Append("]еї…йЎ»жЊ‡еђ‘жњЂеђЋдёЂдёЄиЉ‚з‚№д№‹е‰Ќзљ„и·ЇзєїиЉ‚з‚№");
+            local_16.Error = FString().Append("循环起点索引[").Append(this.LoopStartIndex).Append("]必须指向最后一个节点之前的路线节点");
             return local_16;
         }
         if ((FName(this.Nodes.Last(0).PointId) == this.Nodes[this.LoopStartIndex].PointId))
         {
-            local_16.Error = FString().Append("и·Їзєїжњ«е°ѕиЉ‚з‚№е’ЊеѕЄзЋЇиµ·з‚№дёЌиѓЅеј•з”ЁеђЊдёЂдёЄеЊєеџџз‚№[").Append(this.Nodes.Last(0).PointId).Append("]");
+            local_16.Error = FString().Append("路线末尾节点和循环起点不能引用同一个区域点[").Append(this.Nodes.Last(0).PointId).Append("]");
         }
         return local_16;
     }

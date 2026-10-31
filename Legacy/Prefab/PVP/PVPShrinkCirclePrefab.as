@@ -1,5 +1,3 @@
-﻿
-
 class APVPShrinkCirclePrefab : APropPrefabDeprecated
 {
     APVPShrinkCirclePrefab()

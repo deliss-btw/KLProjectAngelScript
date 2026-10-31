@@ -1,4 +1,3 @@
-﻿
 namespace FC_AnimSampleTrajectoryDeltaMoveRecorder
 {
     const int InterpoHistoryLength = 30;
@@ -61,11 +60,44 @@ struct FSampleTrajectoryData
 
     FSampleTrajectoryData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_RearCurvature = 0.0f;
+        this.m_FrontCurvature = 0.0f;
+        this.m_MinRearTrajectoryRadius = 0.0f;
+        this.m_MinFrontTrajectoryRadius = 0.0f;
+        this.m_MoveDesiredYawWeight = 0.0f;
+        this.m_NormalizedRearCurvature = 0.0f;
+        this.m_NormalizedFrontCurvature = 0.0f;
+        FSubDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_MoveSpeed = 0.0f;
+        this.m_HistoryCursor = FVector2f::ZeroVector;
+        return;
     }
     FSampleTrajectoryData(const FSampleTrajectoryData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_RearCurvature = 0.0f;
+        this.m_FrontCurvature = 0.0f;
+        this.m_MinRearTrajectoryRadius = 0.0f;
+        this.m_MinFrontTrajectoryRadius = 0.0f;
+        this.m_MoveDesiredYawWeight = 0.0f;
+        this.m_NormalizedRearCurvature = 0.0f;
+        this.m_NormalizedFrontCurvature = 0.0f;
+        FSubDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_MoveSpeed = 0.0f;
+        this.m_HistoryCursor = FVector2f::ZeroVector;
+        this.m_AnimRootMotionDelta = Other.m_AnimRootMotionDelta;
+        this.m_RearCurvature = Other.m_RearCurvature;
+        this.m_FrontCurvature = Other.m_FrontCurvature;
+        this.m_MinRearTrajectoryRadius = Other.m_MinRearTrajectoryRadius;
+        this.m_MinFrontTrajectoryRadius = Other.m_MinFrontTrajectoryRadius;
+        this.m_MoveDesiredYawWeight = Other.m_MoveDesiredYawWeight;
+        this.m_LookAtPoint = Other.m_LookAtPoint;
+        this.m_MoveSpeed = Other.m_MoveSpeed;
+        this.m_NormalizedRearCurvature = Other.m_NormalizedRearCurvature;
+        this.m_NormalizedFrontCurvature = Other.m_NormalizedFrontCurvature;
+        this.m_HistoryCursor = Other.m_HistoryCursor;
+        return;
     }
     FSampleTrajectoryData opAssign(const FSampleTrajectoryData &inout Other)
     {
@@ -546,11 +578,25 @@ struct FC_AnimSampleTrajectoryFromCurve : FECSComponent
 
     FC_AnimSampleTrajectoryFromCurve()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bDoSample = false;
+        this.m_bExpired = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_AnimSampleTrajectoryFromCurve(const FC_AnimSampleTrajectoryFromCurve &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bDoSample = false;
+        this.m_bExpired = false;
+        this.__InitDirtyFlags();
+        this.m_bDoSample = Other.m_bDoSample;
+        this.m_bExpired = Other.m_bExpired;
+        this.m_RearCurvatureCurve = Other.m_RearCurvatureCurve;
+        this.m_FrontCurvatureCurve = Other.m_FrontCurvatureCurve;
+        return;
     }
     FC_AnimSampleTrajectoryFromCurve opAssign(const FC_AnimSampleTrajectoryFromCurve &inout Other)
     {
@@ -633,11 +679,24 @@ struct FC_AniParamSampleTrajectory : FECSComponent
 
     FC_AniParamSampleTrajectory()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Weight = 0.0f;
+        this.m_TimeOffset = -1.0f;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_AniParamSampleTrajectory(const FC_AniParamSampleTrajectory &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_Weight = 0.0f;
+        this.m_TimeOffset = -1.0f;
+        this.__InitDirtyFlags();
+        this.m_Weight = Other.m_Weight;
+        this.m_Data = Other.m_Data;
+        this.m_TimeOffset = Other.m_TimeOffset;
+        return;
     }
     FC_AniParamSampleTrajectory opAssign(const FC_AniParamSampleTrajectory &inout Other)
     {
@@ -719,11 +778,24 @@ struct FC_AnimSampleTrajectoryDeltaMoveRecorder : FECSComponent
 
     FC_AnimSampleTrajectoryDeltaMoveRecorder()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_FrontIndex = 0;
+        this.m_BackIndex = 0;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_AnimSampleTrajectoryDeltaMoveRecorder(const FC_AnimSampleTrajectoryDeltaMoveRecorder &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_FrontIndex = 0;
+        this.m_BackIndex = 0;
+        this.__InitDirtyFlags();
+        this.m_FrontIndex = int(Other.m_FrontIndex);
+        this.m_BackIndex = int(Other.m_BackIndex);
+        this.m_HistoryMoveBuffer = Other.m_HistoryMoveBuffer;
+        return;
     }
     FC_AnimSampleTrajectoryDeltaMoveRecorder opAssign(const FC_AnimSampleTrajectoryDeltaMoveRecorder &inout Other)
     {
@@ -897,11 +969,20 @@ struct FC_AnimSampleTrajectoryWeightBlending : FECSComponent
 
     FC_AnimSampleTrajectoryWeightBlending()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_WeightBlendRate = 0.0f;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_AnimSampleTrajectoryWeightBlending(const FC_AnimSampleTrajectoryWeightBlending &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_WeightBlendRate = 0.0f;
+        this.__InitDirtyFlags();
+        this.m_WeightBlendRate = Other.m_WeightBlendRate;
+        return;
     }
     FC_AnimSampleTrajectoryWeightBlending opAssign(const FC_AnimSampleTrajectoryWeightBlending &inout Other)
     {
@@ -939,7 +1020,6 @@ class UESMAction_GetSampleTrajectory : UESMBPBaseSpanTickAction
     float32 WeightBlendInDuration = 0.2f;
     UPROPERTY()
     float32 WeightBlendOutDuration = 0.2f;
-
 
     UFUNCTION()
     int GetActionPriority_Implementation() const
@@ -1039,7 +1119,6 @@ class UESMAction_SampleTrajectoryFromCurve : UESMBPBaseSpanAction
     UPROPERTY()
     bool bSampleOnExit = true;
 
-
     UFUNCTION()
     int GetActionPriority_Implementation() const
     {
@@ -1057,7 +1136,7 @@ class UESMAction_SampleTrajectoryFromCurve : UESMBPBaseSpanAction
         FC_AnimSampleTrajectoryFromCurve& local_6 = local_4.opCall();
         if (local_6)
         {
-            local_6.SetbDoSample(this.bSampleOnEnter);
+            local_6.SetbDoSample((this.bSampleOnEnter));
             local_6.SetFrontCurvatureCurve(this.FrontCurvatureCurve);
             local_6.SetRearCurvatureCurve(this.RearCurvatureCurve);
             local_6.SetbExpired(false);
@@ -1071,7 +1150,7 @@ class UESMAction_SampleTrajectoryFromCurve : UESMBPBaseSpanAction
         FC_AnimSampleTrajectoryFromCurve& local_6 = local_4.opCall();
         if (local_6)
         {
-            local_6.SetbDoSample(this.bSampleOnExit);
+            local_6.SetbDoSample((this.bSampleOnExit));
             local_6.SetRearCurvatureCurve(this.RearCurvatureCurve);
             local_6.SetFrontCurvatureCurve(this.FrontCurvatureCurve);
             local_6.SetbExpired(true);
@@ -1248,37 +1327,37 @@ bool RemoveAnimSampleTrajectoryFromCurve(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAnimSampleTrajectoryFromCurveOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimSampleTrajectoryFromCurve, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimSampleTrajectoryFromCurve, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimSampleTrajectoryFromCurveOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimSampleTrajectoryFromCurve, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimSampleTrajectoryFromCurve, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimSampleTrajectoryFromCurveOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimSampleTrajectoryFromCurve, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimSampleTrajectoryFromCurve, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimSampleTrajectoryFromCurveOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimSampleTrajectoryFromCurve, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimSampleTrajectoryFromCurve, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimSampleTrajectoryFromCurveOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimSampleTrajectoryFromCurve, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimSampleTrajectoryFromCurve, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAnimSampleTrajectoryFromCurveLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AnimSampleTrajectoryFromCurve, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AnimSampleTrajectoryFromCurve, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimSampleTrajectoryFromCurveActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AnimSampleTrajectoryFromCurve, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AnimSampleTrajectoryFromCurve, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimSampleTrajectoryFromCurveModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AnimSampleTrajectoryFromCurve, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AnimSampleTrajectoryFromCurve, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AniParamSampleTrajectory
@@ -1358,37 +1437,37 @@ bool RemoveAniParamSampleTrajectory(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAniParamSampleTrajectoryOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AniParamSampleTrajectory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AniParamSampleTrajectory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAniParamSampleTrajectoryOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AniParamSampleTrajectory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AniParamSampleTrajectory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAniParamSampleTrajectoryOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AniParamSampleTrajectory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AniParamSampleTrajectory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAniParamSampleTrajectoryOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AniParamSampleTrajectory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AniParamSampleTrajectory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAniParamSampleTrajectoryOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AniParamSampleTrajectory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AniParamSampleTrajectory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAniParamSampleTrajectoryLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AniParamSampleTrajectory, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AniParamSampleTrajectory, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAniParamSampleTrajectoryActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AniParamSampleTrajectory, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AniParamSampleTrajectory, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAniParamSampleTrajectoryModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AniParamSampleTrajectory, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AniParamSampleTrajectory, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AnimSampleTrajectoryDeltaMoveRecorder
@@ -1468,37 +1547,37 @@ bool RemoveAnimSampleTrajectoryDeltaMoveRecorder(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAnimSampleTrajectoryDeltaMoveRecorderOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimSampleTrajectoryDeltaMoveRecorder, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimSampleTrajectoryDeltaMoveRecorder, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimSampleTrajectoryDeltaMoveRecorderOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimSampleTrajectoryDeltaMoveRecorder, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimSampleTrajectoryDeltaMoveRecorder, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimSampleTrajectoryDeltaMoveRecorderOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimSampleTrajectoryDeltaMoveRecorder, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimSampleTrajectoryDeltaMoveRecorder, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimSampleTrajectoryDeltaMoveRecorderOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimSampleTrajectoryDeltaMoveRecorder, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimSampleTrajectoryDeltaMoveRecorder, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimSampleTrajectoryDeltaMoveRecorderOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimSampleTrajectoryDeltaMoveRecorder, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimSampleTrajectoryDeltaMoveRecorder, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAnimSampleTrajectoryDeltaMoveRecorderLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AnimSampleTrajectoryDeltaMoveRecorder, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AnimSampleTrajectoryDeltaMoveRecorder, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimSampleTrajectoryDeltaMoveRecorderActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AnimSampleTrajectoryDeltaMoveRecorder, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AnimSampleTrajectoryDeltaMoveRecorder, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimSampleTrajectoryDeltaMoveRecorderModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AnimSampleTrajectoryDeltaMoveRecorder, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AnimSampleTrajectoryDeltaMoveRecorder, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AnimSampleTrajectoryBlendingOutTag
@@ -1578,37 +1657,37 @@ bool RemoveAnimSampleTrajectoryBlendingOutTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAnimSampleTrajectoryBlendingOutTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimSampleTrajectoryBlendingOutTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimSampleTrajectoryBlendingOutTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimSampleTrajectoryBlendingOutTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimSampleTrajectoryBlendingOutTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimSampleTrajectoryBlendingOutTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimSampleTrajectoryBlendingOutTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimSampleTrajectoryBlendingOutTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimSampleTrajectoryBlendingOutTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimSampleTrajectoryBlendingOutTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimSampleTrajectoryBlendingOutTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimSampleTrajectoryBlendingOutTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimSampleTrajectoryBlendingOutTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimSampleTrajectoryBlendingOutTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimSampleTrajectoryBlendingOutTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAnimSampleTrajectoryBlendingOutTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AnimSampleTrajectoryBlendingOutTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AnimSampleTrajectoryBlendingOutTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimSampleTrajectoryBlendingOutTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AnimSampleTrajectoryBlendingOutTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AnimSampleTrajectoryBlendingOutTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimSampleTrajectoryBlendingOutTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AnimSampleTrajectoryBlendingOutTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AnimSampleTrajectoryBlendingOutTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AnimSampleTrajectoryWeightBlending
@@ -1688,37 +1767,37 @@ bool RemoveAnimSampleTrajectoryWeightBlending(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAnimSampleTrajectoryWeightBlendingOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimSampleTrajectoryWeightBlending, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimSampleTrajectoryWeightBlending, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimSampleTrajectoryWeightBlendingOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimSampleTrajectoryWeightBlending, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimSampleTrajectoryWeightBlending, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimSampleTrajectoryWeightBlendingOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimSampleTrajectoryWeightBlending, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimSampleTrajectoryWeightBlending, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimSampleTrajectoryWeightBlendingOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimSampleTrajectoryWeightBlending, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimSampleTrajectoryWeightBlending, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimSampleTrajectoryWeightBlendingOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimSampleTrajectoryWeightBlending, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimSampleTrajectoryWeightBlending, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAnimSampleTrajectoryWeightBlendingLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AnimSampleTrajectoryWeightBlending, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AnimSampleTrajectoryWeightBlending, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimSampleTrajectoryWeightBlendingActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AnimSampleTrajectoryWeightBlending, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AnimSampleTrajectoryWeightBlending, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimSampleTrajectoryWeightBlendingModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AnimSampleTrajectoryWeightBlending, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AnimSampleTrajectoryWeightBlending, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

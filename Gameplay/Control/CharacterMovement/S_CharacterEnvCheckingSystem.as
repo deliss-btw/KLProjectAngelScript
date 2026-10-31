@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_DebugCharacterEnvChecking = FConsoleVariable();
 const FConsoleVariable CVar_DisableCharacterEnvChecking = FConsoleVariable();
 
@@ -50,11 +49,170 @@ class US_CharacterEnvCheckingSystem : UECSScriptSystem
     }
     void CheckMoveUpstarisAndWallRun(const FECSEntity &inout Entity, FC_CharacterMovementEnvInfo &inout CharacterMovementEnvInfo, const FC_Collision &inout Collision, const FC_CharacterEnvCheckingConfig &inout CharacterEnvCheckingConfig, const FC_CharacterMovementParam &inout CharacterMovementParam, const FC_Transform &inout Transform) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        bool local_241;
+        FVector local_6 = Transform.GetPosition();
+        FQuat local_16 = Transform.GetRotation();
+        FVector local_28 = local_16.Vector();
+        FVector local_34(::FCharacterDirectionUtils::GetTargetRotation(Entity, ECharacterDirectionType(1), false, FFPTime(-1)).GetForwardVector());
+        FVector local_22 = (local_34 * CharacterEnvCheckingConfig.ForwardCheckDistance);
+        float32 local_57 = CharacterEnvCheckingConfig.MinUpstairsHeight;
+        float32 local_58 = CharacterEnvCheckingConfig.MinWallRunHeight;
+        FHitResult local_124;
+        int local_126 = 18;
+        int local_125 = local_126;
+        FCollisionShape local_134 = Collision.GetScaledShape();
+        float32 local_53_2 = Collision.GetScaledRadius();
+        float32 local_135 = Collision.GetScaledHalfHeight();
+        FCollisionQueryParams local_174;
+        local_174.AddIgnoredEntityId(Entity.GetIdValue());
+        local_174.bReturnPhysicalMaterial = true;
+        FVector local_192 = (local_6 + FVector(0.0, 0.0, local_57));
+        FVector local_204 = ((local_6 + local_22) + FVector(0.0, 0.0, local_57));
+        FVector local_210(FVector::ZeroVector);
+        FVector local_216(FVector::ZeroVector);
+        FVector local_222(FVector::ZeroVector);
+        FVector local_228(FVector::ZeroVector);
+        FVector local_234(FVector::ZeroVector);
+        Has local_240;
+        bool local_38 = local_240.opCall();
+        local_241 = false;
+        FCollisionResponseParams local_250;
+        bool local_252 = FPhysicsUtils::SweepSingle(Entity, false, EPhysicsTraceTag(20), local_124, local_192, local_204, local_16, ECollisionChannel(local_125), local_134, local_174, local_250);
+        if (local_252 && !(this.CheckHitResultIsWalkable(local_124, CharacterMovementParam.WalkableSlopDegree)) && (local_34.DotProduct(local_124.ImpactNormal) < 0.0) && (local_28.DotProduct(local_124.ImpactNormal) < 0.0))
+        {
+            bool local_253;
+            bool local_254;
+            local_210 = local_124.Location;
+            local_216 = local_124.ImpactNormal;
+            FVector local_192_2 = (local_6 + FVector(0.0, 0.0, local_58));
+            bool local_242 = FPhysicsUtils::SweepSingle(Entity, false, EPhysicsTraceTag(20), local_124, local_192_2, ((local_6 + local_22) + FVector(0.0, 0.0, local_58)), local_16, ECollisionChannel(local_125), local_134, local_174, local_250);
+            local_254 = local_124.GetbStartPenetrating();
+            bool local_235 = local_242 && !(local_254) && this.CheckHitResultIsWalkable(local_124, CharacterMovementParam.WalkableSlopDegree);
+            FVector local_262(local_124.Location);
+            local_253 = !(local_242);
+            if ((local_253 || local_235))
+            {
+                FVector local_182_2 = (local_34 * local_53_2);
+                FVector local_52_2 = (local_210 + local_182_2);
+                bool local_255 = FPhysicsUtils::SweepSingle(Entity, false, EPhysicsTraceTag(20), local_124, (local_52_2 + FVector(0.0, 0.0, local_58)), local_52_2, local_16, ECollisionChannel(local_125), local_134, local_174, local_250);
+                local_253 = local_255 && (this.CheckHitResultIsWalkable(local_124, CharacterMovementParam.WalkableSlopDegree) || (local_124.ImpactNormal.DotProduct(local_34) > 0.0));
+                if (local_253)
+                {
+                    local_234 = FVector(local_124.Location.X, local_124.Location.Y, local_124.Location.Z);
+                    if (CVar_DebugCharacterEnvChecking.GetBool())
+                    {
+                        DebugDraw::DrawDebugCapsule(ECS::GetUEWorld(), local_234, local_135, local_53_2, Transform.GetRotation(), FColor::Green, false, 0.1f, uint8(0), 0.0f);
+                    }
+                }
+                else
+                {
+                    if (local_235)
+                    {
+                        local_234 = FVector(local_210.X, local_210.Y, local_262.Z);
+                        if (CVar_DebugCharacterEnvChecking.GetBool())
+                        {
+                            DebugDraw::DrawDebugCapsule(ECS::GetUEWorld(), local_234, local_135, local_53_2, Transform.GetRotation(), FColor::Blue, false, 0.1f, uint8(0), 0.0f);
+                        }
+                    }
+                    else
+                    {
+                        if (local_255)
+                        {
+                            local_241 = this.CheckShouldWallRun(local_34, local_28, CharacterEnvCheckingConfig, CharacterMovementParam, local_124, local_38);
+                            local_222 = local_124.Location;
+                            local_228 = local_124.ImpactNormal;
+                        }
+                        else
+                        {
+                            XWarning(ELog(0), "Can't find upstairs location? we should not go here");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (!(local_254))
+                {
+                    local_241 = this.CheckShouldWallRun(local_34, local_28, CharacterEnvCheckingConfig, CharacterMovementParam, local_124, local_38);
+                    local_222 = local_124.Location;
+                    local_228 = local_124.ImpactNormal;
+                }
+            }
+        }
+        CharacterMovementEnvInfo.SetUpstairsTargetLocation(local_234);
+        CharacterMovementEnvInfo.SetbEnvCanMoveUpstairs(!(local_234.IsNearlyZero(9.999999747378752e-5)));
+        if (!(CharacterMovementEnvInfo.GetbEnvCanMoveUpstairs()) && local_241)
+        {
+            bool local_253;
+            FVector local_192_3 = (local_6 + FVector(0.0, 0.0, (CharacterEnvCheckingConfig.MinWallRunHeight - local_135)));
+            FVector local_204_2 = (local_192_3 + ((local_34 * CharacterEnvCheckingConfig.ForwardCheckDistance) * 3.0));
+            FCollisionQueryParams local_314;
+            local_314.bTraceComplex = false;
+            local_314.AddIgnoredEntityId(Entity.GetIdValue());
+            local_253 = FPhysicsUtils::LineTraceSingle(Entity, false, EPhysicsTraceTag(20), local_124, local_192_3, local_204_2, FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(5)), local_314, local_250);
+            if (local_253)
+            {
+                CharacterMovementEnvInfo.SetbEnvCanWallRun(true);
+                CharacterMovementEnvInfo.SetWallRunTargetLocation(local_222);
+                CharacterMovementEnvInfo.SetWallNormal(local_228);
+                if (CVar_DebugCharacterEnvChecking.GetBool())
+                {
+                    DebugDraw::DrawDebugCapsule(ECS::GetUEWorld(), CharacterMovementEnvInfo.GetWallRunTargetLocation(), local_135, local_53_2, Transform.GetRotation(), FColor::Blue, false, 0.1f, uint8(0), 0.0f);
+                }
+            }
+        }
+        return;
     }
     void CheckWallRunOnly(const FECSEntity &inout Entity, FC_CharacterMovementEnvInfo &inout CharacterMovementEnvInfo, const FC_Collision &inout Collision, const FC_CharacterEnvCheckingConfig &inout CharacterEnvCheckingConfig, const FC_CharacterMovementParam &inout CharacterMovementParam, const FC_Transform &inout Transform) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        bool local_207;
+        FVector local_6 = Transform.GetPosition();
+        FQuat local_16 = Transform.GetRotation();
+        FVector local_28 = local_16.Vector();
+        FVector local_34(::FCharacterDirectionUtils::GetTargetRotation(Entity, ECharacterDirectionType(1), false, FFPTime(-1)).GetForwardVector());
+        FVector local_22 = (local_34 * CharacterEnvCheckingConfig.ForwardCheckDistance);
+        float32 local_57 = CharacterEnvCheckingConfig.MinWallRunHeight;
+        FHitResult local_124;
+        FCollisionQueryParams local_162;
+        local_162.AddIgnoredEntityId(Entity.GetIdValue());
+        local_162.bReturnPhysicalMaterial = true;
+        int local_165 = 18;
+        int local_164 = local_165;
+        FCollisionShape local_173 = Collision.GetScaledShape();
+        int local_175 = 5;
+        int local_174 = local_175;
+        FVector local_192 = (local_6 + FVector(0.0, 0.0, local_57));
+        FVector local_204 = ((local_6 + local_22) + FVector(0.0, 0.0, local_57));
+        float32 local_53_2 = Collision.GetScaledRadius();
+        float32 local_205 = Collision.GetScaledHalfHeight();
+        Has local_212;
+        bool local_38 = local_212.opCall();
+        bool local_213 = false;
+        FCollisionResponseParams local_222;
+        bool local_224 = FPhysicsUtils::SweepSingle(Entity, false, EPhysicsTraceTag(20), local_124, local_192, local_204, local_16, ECollisionChannel(local_164), local_173, local_162, local_222);
+        if (local_224 && !(this.CheckHitResultIsWalkable(local_124, CharacterMovementParam.WalkableSlopDegree)) && this.CheckIsFacingToWall(local_34, local_124.ImpactNormal, CharacterEnvCheckingConfig.MaxAngleToWallNormal) && this.CheckIsFacingToWall(local_28, local_124.ImpactNormal, CharacterEnvCheckingConfig.MaxAngleToWallNormal))
+        {
+            local_213 = this.CheckShouldWallRun(local_34, local_28, CharacterEnvCheckingConfig, CharacterMovementParam, local_124, local_38);
+        }
+        CharacterMovementEnvInfo.SetbEnvCanWallRun(false);
+        CharacterMovementEnvInfo.SetWallNormal(FVector::ZeroVector);
+        if (local_213)
+        {
+            local_192 = (local_6 + FVector(0.0, 0.0, (CharacterEnvCheckingConfig.MinWallRunHeight - local_205)));
+            FVector local_52_2 = (local_34 * CharacterEnvCheckingConfig.ForwardCheckDistance);
+            local_204 = (local_192 + (local_52_2 * 3.0));
+            FCollisionQueryParams local_262;
+            local_262.bTraceComplex = false;
+            local_262.AddIgnoredEntityId(Entity.GetIdValue());
+            local_207 = FPhysicsUtils::LineTraceSingle(Entity, false, EPhysicsTraceTag(20), local_124, local_192, local_204, FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(local_174)), local_262, local_222);
+            if (local_207)
+            {
+                CharacterMovementEnvInfo.SetbEnvCanWallRun(true);
+                CharacterMovementEnvInfo.SetWallRunTargetLocation(local_124.Location);
+                CharacterMovementEnvInfo.SetWallNormal(local_124.ImpactNormal);
+            }
+        }
+        return;
     }
     bool CheckShouldWallRun(const FVector &inout MoveDir, const FVector &inout FacingDir, const FC_CharacterEnvCheckingConfig &inout CharacterEnvCheckingConfig, const FC_CharacterMovementParam &inout MovementParam, const FHitResult &inout HitResult, const bool bIsMount) const
     {

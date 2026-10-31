@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_MissionDecoractor_Helpers
 {
 UFUNCTION()

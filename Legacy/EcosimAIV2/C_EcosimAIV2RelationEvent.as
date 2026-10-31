@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_EcosimAIV2ActionExpression_NS
 {
     const TECSEventDerivedPtr<FCE_EcosimAIV2ActionExpression> DerivedPtr = TECSEventDerivedPtr<FCE_EcosimAIV2ActionExpression>();
@@ -14,7 +13,6 @@ struct FCE_EcosimAIV2ActionExpression : FECSEvent
     UPROPERTY()
     EEcosimAIV2ActionExpressionMeaning ActionExpressionMeaning;
 
-
 }
 
 struct FCE_EcosimAIV2RelationFactChange : FECSEvent
@@ -28,7 +26,6 @@ struct FCE_EcosimAIV2RelationFactChange : FECSEvent
     EEcosimAIV2EntityRelation Relation;
     UPROPERTY()
     bool bIsAdd;
-
 
 }
 

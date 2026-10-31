@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PlayerLevelInfo
 {
     const int ViewID = 0;
@@ -58,6 +57,7 @@ namespace UWidget_PlayerLevelInfo
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PlayerLevelInfo;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

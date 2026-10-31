@@ -1,4 +1,3 @@
-﻿
 enum ELevelType
 {
     Default,
@@ -25,7 +24,6 @@ enum EInitWeatherPolicy
     Commission,
     Override,
 }
-
 
 struct FLevelInfoConfig : FDataObject
 {
@@ -68,7 +66,6 @@ struct FLevelInfoConfig : FDataObject
     EInitWeatherPolicy InitWeatherPolicy;
     UPROPERTY()
     FDataObjectPtr m_WeatherAreaTemplateOverride;
-
 
     const TDataObjectPtr<FMapConfig> GetMapConfig() const property
     {
@@ -134,7 +131,6 @@ struct FLevelTypeConfig : FDataObject
     uint DataId;
     UPROPERTY()
     FDataObjectPtr m_LevelInfoConfig;
-
 
     const TDataObjectPtr<FLevelInfoConfig> GetLevelInfoConfig() const property
     {

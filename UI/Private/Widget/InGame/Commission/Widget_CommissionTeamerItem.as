@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommissionTeamerItem
 {
     const int ViewID = 0;
@@ -130,6 +129,7 @@ namespace UWidget_CommissionTeamerItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionTeamerItem;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -145,6 +145,7 @@ namespace UWidget_CommissionTeamerItemLikeButton
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionTeamerItemLikeButton;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -160,6 +161,7 @@ namespace UWidget_CommissionTeamerItemTag
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionTeamerItemTag;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

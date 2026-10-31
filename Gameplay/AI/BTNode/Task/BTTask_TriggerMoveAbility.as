@@ -1,10 +1,8 @@
-﻿
 enum EAITurnDirectionSpace
 {
     World,
     Local,
 }
-
 
 struct FTriggerMoveAbilityTaskInstanceData
 {
@@ -18,7 +16,6 @@ struct FTriggerMoveAbilityTaskInstanceData
     bool bHasTrigger = false;
     UPROPERTY()
     bool bHasTriggerFinish = false;
-
 
 }
 
@@ -36,7 +33,6 @@ class UBTTask_TriggerMoveAbility : UBTTask_ECSScriptBase
     float32 FailureTime = 10.0f;
 
     default SetNodeName("Trigger Move Ability");
-
 
     UFUNCTION()
     UScriptStruct GetNodeMemoryType_Implementation() const
@@ -64,6 +60,7 @@ class UBTTask_TriggerMoveAbility : UBTTask_ECSScriptBase
         bool local_50 = false;
         FNameHandle_EntityBBVar local_114;
         FNameHandle_EntityBBVarFloat local_118;
+        int local_124 = 0;
         FNameHandle_EntityBBVarEnum local_136;
         FTriggerMoveAbilityTaskInstanceData local_2;
         local_2.TimeCount += DeltaSeconds;
@@ -126,9 +123,7 @@ class UBTTask_TriggerMoveAbility : UBTTask_ECSScriptBase
                             }
                         }
                     }
-                    ECS::GetContextDeltaTime();
-                    ECS::GetContextTime();
-                    ::FAINavigationUtils::GetAIMoveAbilityTrigger();
+                    FESMTriggerUtils::ActivateTrigger(local_14, local_124.Storage, ::FAINavigationUtils::GetAIMoveAbilityTrigger(), ECS::GetContextTime(), ECS::GetContextDeltaTime(), 0);
                     local_114;
                     if (local_14.HasEntityBB(local_114))
                     {
@@ -160,9 +155,7 @@ class UBTTask_TriggerMoveAbility : UBTTask_ECSScriptBase
                         {
                             GetDefaulted local_154;
                             FAIInputUtils::SimulateViewInput(local_14, (FVector(local_154.opCall().GetPosition()) - local_24).GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector).Rotation());
-                            ECS::GetContextDeltaTime();
-                            ECS::GetContextTime();
-                            ::FAINavigationUtils::GetAIMoveAbilityTrigger();
+                            FESMTriggerUtils::ActivateTrigger(local_14, local_124.Storage, ::FAINavigationUtils::GetAIMoveAbilityTrigger(), ECS::GetContextTime(), ECS::GetContextDeltaTime(), 0);
                             local_114;
                             if (local_14.HasEntityBB(local_114))
                             {

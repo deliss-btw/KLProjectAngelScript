@@ -1,5 +1,3 @@
-﻿
-
 struct FT_EntityMemory : FECSTrait
 {
     FECSTrait _base_FECSTrait;

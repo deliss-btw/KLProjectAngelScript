@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_SkillInfo_Avatar_Common
 {
     const int ModelId = 0;
@@ -56,13 +55,13 @@ struct FVMS_SkillInfo_Avatar_Common : FEUIViewModelSingleton
     void PostConstruct()
     {
         this.SetPlayerPawnEntity(::FASCommonUtils::GetUniqueAvatarPawnEntity(this.GetContext().GetLocalPlayerPawn()));
-        this.SetVM_SpecialAttackButton(FEUIModelRef());
+        this.SetVM_SpecialAttackButton(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
         Get local_14;
         local_14.opCall().SetSkillButtonType(ESkillButtonType(4));
         local_14.opCall().SetSkillProgressType(ESkillProgressType(4));
-        this.SetVM_SimpleSkillButton(FEUIModelRef());
+        this.SetVM_SimpleSkillButton(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
         local_14.opCall().SetSkillProgressType(ESkillProgressType(2));
-        this.SetVM_UltraSkillButton(FEUIModelRef());
+        this.SetVM_UltraSkillButton(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
         local_14.opCall().SetSkillProgressType(ESkillProgressType(2));
         local_14.opCall().SetSkillButtonType(ESkillButtonType(2));
         return;

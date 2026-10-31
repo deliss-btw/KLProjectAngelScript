@@ -1,4 +1,3 @@
-﻿
 enum EHour
 {
     Hour_00,
@@ -91,10 +90,6 @@ enum EMinute
     M_59,
 }
 
-
-// NOTE: class defaults are not authored in this module: FSpawnerCountRatioDefinitionRow (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FTODTagDefinitionRow : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -108,7 +103,6 @@ struct FTODTagDefinitionRow : FDataObject
     EMinute EndMinute;
     UPROPERTY()
     FGameplayTagContainer Tags;
-
 
 }
 
@@ -143,12 +137,12 @@ struct FSpawnerCountRatioDefinitionRow : FDataObject
         FDataObjectValidationResult local_16;
         if (!(this.GetCreature().IsSet()))
         {
-            local_16.Error = FString("CreatureдёЌиѓЅдёєз©єпјЃ");
+            local_16.Error = FString("Creature不能为空！");
             return local_16;
         }
         if (!(this.GetDataName().ToString().StartsWith(this.GetCreature().GetDataName().ToString(), ESearchCase(1))))
         {
-            local_16.Warning = FString().Append("иЎЊ[").Append(this.GetDataName().ToString()).Append("]еє”иЇҐд»ҐеЇ№еє”зљ„Creature[").Append(this.GetCreature().GetDataName().ToString()).Append("]дёєе‰ЌзјЂпјЃ");
+            local_16.Warning = FString().Append("行[").Append(this.GetDataName().ToString()).Append("]应该以对应的Creature[").Append(this.GetCreature().GetDataName().ToString()).Append("]为前缀！");
             return local_16;
         }
         return local_16;

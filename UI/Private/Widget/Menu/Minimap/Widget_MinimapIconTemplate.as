@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_MinimapIconTemplate
 {
     const int ViewID = 0;
@@ -41,14 +40,12 @@ class UWidget_MinimapIconTemplate : UEUIUserWidget
     UPROPERTY()
     FGetEUIModelRef HoverProviderDelegate;
 
-
     UFUNCTION()
     void OnViewBind_Implementation()
     {
         TEUIModelRef<FVM_MinimapIcon> local_2;
         local_2;
-        FEUIModelRef local_4;
-        this.MinimapIconHelper = local_4;
+        this.MinimapIconHelper = FEUIModelRef(::FVM_MinimapIconHelper::Create(this, local_2));
         if (this.bShowTooltip)
         {
             this.CreateHoverProvider();
@@ -143,7 +140,7 @@ class UWidget_MinimapIconTemplate : UEUIUserWidget
                 }
                 if (!(local_68))
                 {
-                    ::CommonPopup::WeakTips(NSLOCTEXT("MinimapIconDecorator", "FastMarkEntity_Failed", "иЇҐењ°з‚№дёЌеЏЇиў«ж ‡и®°"), local_86);
+                    ::CommonPopup::WeakTips(NSLOCTEXT("MinimapIconDecorator", "FastMarkEntity_Failed", "该地点不可被标记"), local_86);
                 }
             }
             return FEventReply::Handled();
@@ -163,7 +160,7 @@ class UWidget_MinimapIconTemplate : UEUIUserWidget
             }
             else
             {
-                ::CommonPopup::WeakTips(NSLOCTEXT("MinimapIconDecorator", "GuideToEntity_Failed", "иЇҐењ°з‚№дёЌеЏЇиў«еЇји€Є"), local_86);
+                ::CommonPopup::WeakTips(NSLOCTEXT("MinimapIconDecorator", "GuideToEntity_Failed", "该地点不可被导航"), local_86);
             }
             return FEventReply::Handled();
         }
@@ -564,6 +561,7 @@ namespace UWidget_MinimapIconTemplate
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MinimapIconTemplate;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleMinimapSelectionChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleMinimapIconConfigChanged"));
     return;

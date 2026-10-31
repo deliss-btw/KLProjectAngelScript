@@ -1,4 +1,3 @@
-﻿
 enum EJointTransformParamType
 {
     None,
@@ -52,26 +51,52 @@ struct FChainJointInfo
 {
     FSubDirtyFlags16 __DirtyFlags;
     UPROPERTY()
-    FName m_SocketName = NAME_None;
+    FName m_SocketName;
     UPROPERTY()
-    int m_BoneIndex = -1;
+    int m_BoneIndex;
     UPROPERTY()
-    FVector3f m_LocationOffset = FVector3f::ZeroVector;
+    FVector3f m_LocationOffset;
     UPROPERTY()
-    FQuat m_RotationOffset = FQuat::Identity;
+    FQuat m_RotationOffset;
     UPROPERTY()
-    EJointTransformParamType m_TransformType = EJointTransformParamType(0);
+    EJointTransformParamType m_TransformType;
     UPROPERTY()
-    EJointParamSpace m_LocationSpace = EJointParamSpace(0);
+    EJointParamSpace m_LocationSpace;
     UPROPERTY()
-    EJointParamSpace m_RotationSpace = EJointParamSpace(0);
+    EJointParamSpace m_RotationSpace;
     UPROPERTY()
-    EJointRotationFreedom m_RotationFreedom = EJointRotationFreedom(0);
+    EJointRotationFreedom m_RotationFreedom;
     UPROPERTY()
-    float32 m_DeflectionAngleLimit = -1.0f;
+    float32 m_DeflectionAngleLimit;
 
+    FChainJointInfo()
+    {
+        FSubDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_SocketName = NAME_None;
+        this.m_BoneIndex = -1;
+        this.m_LocationOffset = FVector3f::ZeroVector;
+        this.m_RotationOffset = FQuat::Identity;
+        this.m_TransformType = EJointTransformParamType(0);
+        this.m_LocationSpace = EJointParamSpace(0);
+        this.m_RotationSpace = EJointParamSpace(0);
+        this.m_RotationFreedom = EJointRotationFreedom(0);
+        this.m_DeflectionAngleLimit = -1.0f;
+        return;
+    }
     FChainJointInfo(const FChainJointInfo &inout Other)
     {
+        FSubDirtyFlags16 local_7;
+        this.__DirtyFlags = local_7;
+        this.m_SocketName = NAME_None;
+        this.m_BoneIndex = -1;
+        this.m_LocationOffset = FVector3f::ZeroVector;
+        this.m_RotationOffset = FQuat::Identity;
+        this.m_TransformType = EJointTransformParamType(0);
+        this.m_LocationSpace = EJointParamSpace(0);
+        this.m_RotationSpace = EJointParamSpace(0);
+        this.m_RotationFreedom = EJointRotationFreedom(0);
+        this.m_DeflectionAngleLimit = -1.0f;
         this.m_SocketName = Other.m_SocketName;
         this.m_BoneIndex = int(Other.m_BoneIndex);
         this.m_LocationOffset = Other.m_LocationOffset;
@@ -244,7 +269,7 @@ struct FChainJointInfo
 struct FChainChildCenterInfo
 {
     UPROPERTY()
-    FVector3f m_LocationOffset;
+    FVector3f m_LocationOffset = FVector3f::ZeroVector;
 
     FChainChildCenterInfo()
     {
@@ -262,7 +287,8 @@ struct FChainChildCenterInfo
     }
     void SetLocationOffset(const FVector3f &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_LocationOffset = __Value;
+        return;
     }
 }
 
@@ -278,11 +304,24 @@ struct FChainLinkInfo
 
     FChainLinkInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Length = 0.0f;
+        this.m_bRigid = false;
+        this.m_bEnableSmoothing = false;
+        return;
     }
     FChainLinkInfo(const FChainLinkInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_Length = 0.0f;
+        this.m_bRigid = false;
+        this.m_bEnableSmoothing = false;
+        this.m_Length = Other.m_Length;
+        this.m_bRigid = Other.m_bRigid;
+        this.m_bEnableSmoothing = Other.m_bEnableSmoothing;
+        return;
     }
     FChainLinkInfo opAssign(const FChainLinkInfo &inout Other)
     {
@@ -350,10 +389,14 @@ struct FChainParam
 
     FChainParam()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags32 local_2;
+        this.__DirtyFlags = local_2;
+        return;
     }
     FChainParam(const FChainParam &inout Other)
     {
+        FSubDirtyFlags32 local_2;
+        this.__DirtyFlags = local_2;
         this.m_ParentJointInfo = Other.m_ParentJointInfo;
         this.m_ChildJointInfo = Other.m_ChildJointInfo;
         this.m_ChildCenterInfo = Other.m_ChildCenterInfo;
@@ -452,11 +495,29 @@ struct FC_ChainSmoothInfo : FECSComponent
 
     FC_ChainSmoothInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bParentJointLocationInited = false;
+        this.m_SmoothedParentJointLocation = FVector3f::ZeroVector;
+        this.m_PrevVelocity = FVector3f::ZeroVector;
+        this.m_PrevDiff = FVector3f::ZeroVector;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_ChainSmoothInfo(const FC_ChainSmoothInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bParentJointLocationInited = false;
+        this.m_SmoothedParentJointLocation = FVector3f::ZeroVector;
+        this.m_PrevVelocity = FVector3f::ZeroVector;
+        this.m_PrevDiff = FVector3f::ZeroVector;
+        this.__InitDirtyFlags();
+        this.m_bParentJointLocationInited = Other.m_bParentJointLocationInited;
+        this.m_SmoothedParentJointLocation = Other.m_SmoothedParentJointLocation;
+        this.m_PrevVelocity = Other.m_PrevVelocity;
+        this.m_PrevDiff = Other.m_PrevDiff;
+        return;
     }
     FC_ChainSmoothInfo opAssign(const FC_ChainSmoothInfo &inout Other)
     {
@@ -559,12 +620,16 @@ struct FC_ChainParentInfo : FECSComponent
 
     FC_ChainParentInfo()
     {
+        FRootDirtyFlags32 local_1;
+        this.__DirtyFlags = local_1;
         this.m_Parent = ENTITY_NULL;
         this.__InitDirtyFlags();
         return;
     }
     FC_ChainParentInfo(const FC_ChainParentInfo &inout Other)
     {
+        FRootDirtyFlags32 local_1;
+        this.__DirtyFlags = local_1;
         this.m_Parent = ENTITY_NULL;
         this.__InitDirtyFlags();
         this.m_Parent = Other.m_Parent;
@@ -625,11 +690,15 @@ struct FC_ChainChildrenInfo : FECSComponent
 
     FC_ChainChildrenInfo()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_ChainChildrenInfo(const FC_ChainChildrenInfo &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_Children = Other.m_Children;
         return;
@@ -779,37 +848,37 @@ bool RemoveChainSmoothInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorChainSmoothInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ChainSmoothInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ChainSmoothInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorChainSmoothInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ChainSmoothInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ChainSmoothInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorChainSmoothInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ChainSmoothInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ChainSmoothInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorChainSmoothInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ChainSmoothInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ChainSmoothInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorChainSmoothInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ChainSmoothInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ChainSmoothInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorChainSmoothInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ChainSmoothInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ChainSmoothInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorChainSmoothInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ChainSmoothInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ChainSmoothInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorChainSmoothInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ChainSmoothInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ChainSmoothInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ChainParentInfo
@@ -889,37 +958,37 @@ bool RemoveChainParentInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorChainParentInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ChainParentInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ChainParentInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorChainParentInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ChainParentInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ChainParentInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorChainParentInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ChainParentInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ChainParentInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorChainParentInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ChainParentInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ChainParentInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorChainParentInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ChainParentInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ChainParentInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorChainParentInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ChainParentInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ChainParentInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorChainParentInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ChainParentInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ChainParentInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorChainParentInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ChainParentInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ChainParentInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ChainChildrenInfo
@@ -999,37 +1068,37 @@ bool RemoveChainChildrenInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorChainChildrenInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ChainChildrenInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ChainChildrenInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorChainChildrenInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ChainChildrenInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ChainChildrenInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorChainChildrenInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ChainChildrenInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ChainChildrenInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorChainChildrenInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ChainChildrenInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ChainChildrenInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorChainChildrenInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ChainChildrenInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ChainChildrenInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorChainChildrenInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ChainChildrenInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ChainChildrenInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorChainChildrenInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ChainChildrenInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ChainChildrenInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorChainChildrenInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ChainChildrenInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ChainChildrenInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace EntityBB

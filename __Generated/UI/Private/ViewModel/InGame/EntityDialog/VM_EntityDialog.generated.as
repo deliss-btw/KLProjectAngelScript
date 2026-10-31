@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_EntityDialog_Helpers
 {
 UFUNCTION()

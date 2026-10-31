@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_HitStunDetach_NS
 {
     const TECSComponentDerivedPtr<FC_HitStunDetach> DerivedPtr = TECSComponentDerivedPtr<FC_HitStunDetach>();
@@ -15,11 +14,23 @@ struct FC_HitStunDetach : FECSComponent
 
     FC_HitStunDetach()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_AccumulatedDetachValue = 0.0f;
+        this.m_bInMaxMaintainState = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_HitStunDetach(const FC_HitStunDetach &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_AccumulatedDetachValue = 0.0f;
+        this.m_bInMaxMaintainState = false;
+        this.__InitDirtyFlags();
+        this.m_AccumulatedDetachValue = Other.m_AccumulatedDetachValue;
+        this.m_bInMaxMaintainState = Other.m_bInMaxMaintainState;
+        return;
     }
     FC_HitStunDetach opAssign(const FC_HitStunDetach &inout Other)
     {
@@ -135,37 +146,37 @@ bool RemoveHitStunDetach(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorHitStunDetachOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_HitStunDetach, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_HitStunDetach, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorHitStunDetachOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_HitStunDetach, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_HitStunDetach, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorHitStunDetachOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_HitStunDetach, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_HitStunDetach, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorHitStunDetachOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_HitStunDetach, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_HitStunDetach, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorHitStunDetachOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_HitStunDetach, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_HitStunDetach, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorHitStunDetachLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_HitStunDetach, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_HitStunDetach, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorHitStunDetachActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_HitStunDetach, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_HitStunDetach, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorHitStunDetachModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_HitStunDetach, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_HitStunDetach, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace EntityBB

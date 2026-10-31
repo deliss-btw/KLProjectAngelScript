@@ -1,12 +1,9 @@
-﻿
-
 struct FKLDataLayerAction
 {
     UPROPERTY()
-    UDataLayerAsset DataLayer;
+    UDataLayerAsset DataLayer = nullptr;
     UPROPERTY()
     EDataLayerRuntimeState State;
-
 
 }
 
@@ -18,7 +15,6 @@ struct FKLLoadingRangeOverride
     float32 MinLoadingRange = 1600.0f;
     UPROPERTY()
     float32 TransitionAreaRange = 50.0f;
-
 
 }
 

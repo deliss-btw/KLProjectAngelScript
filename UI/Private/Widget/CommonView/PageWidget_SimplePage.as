@@ -1,4 +1,3 @@
-﻿
 namespace UPageWidget_SimplePage
 {
     const int ViewID = 0;
@@ -54,6 +53,7 @@ namespace UPageWidget_SimplePage
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UPageWidget_SimplePage;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

@@ -1,5 +1,3 @@
-﻿
-
 struct FESMControlTurretInstanceData
 {
     UPROPERTY()
@@ -15,7 +13,6 @@ class UESMAction_ControlTurretTransform : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
     bool bResetAimRotatorWhenExit = false;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const
@@ -40,8 +37,8 @@ class UESMAction_ControlTurretTransform : UESMBPBaseSpanTickAction
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        bool local_1;
         int local_28 = 0;
+        int local_80 = 0;
         Has local_6;
         if (!(ECS::GetRuntimeInfo().IsServer) || !(local_6.opCall()))
         {
@@ -75,8 +72,7 @@ class UESMAction_ControlTurretTransform : UESMBPBaseSpanTickAction
                     FECSNetUtils::SetNetPredict(local_14, FNetPlayerMask::MakeForPlayerIndex(local_68.opCall().GetPlayerIndex()));
                 }
                 FECSWorldPtr local_74 = ECS::GetECSWorld();
-                local_1 = false;
-                local_52.AttachConfig.GetSocketName();
+                ::FAttachmentUtils::EntityAttachToParent(local_10, local_14, local_80.Time, local_52.AttachConfig.GetSocketName(), false, local_52.AttachConfig.GetLocationOffset(), local_52.AttachConfig.GetRotationOffset(), 0.0f, 0.0f, 0, FVector::ZeroVector, 0.0f, false);
                 ModifyOrAdd local_88;
                 FC_Owner& local_90 = local_88.opCall();
                 if (local_90)

@@ -1,5 +1,3 @@
-﻿
-
 struct FT_Teleporter : FECSTrait
 {
     FECSTrait _base_FECSTrait;

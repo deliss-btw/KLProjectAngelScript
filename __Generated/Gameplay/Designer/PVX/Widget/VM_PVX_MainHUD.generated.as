@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_PVX_MainHUD_Helpers
 {
 UFUNCTION()

@@ -1,4 +1,3 @@
-﻿
 namespace ExternalForce
 {
     const FGameplayTag IgnoreExternalForceTag = FGameplayTag();
@@ -34,11 +33,36 @@ struct FC_MovementRadialForce : FECSComponent
 
     FC_MovementRadialForce()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Radius = 1000.0f;
+        this.m_InnerRadius = 20.0f;
+        this.m_Force = 4000.0f;
+        this.m_MaxSpeed = 1000.0f;
+        this.m_Duration = 4.0f;
+        this.m_EnableFactionRelation = 3;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_MovementRadialForce(const FC_MovementRadialForce &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_Radius = 1000.0f;
+        this.m_InnerRadius = 20.0f;
+        this.m_Force = 4000.0f;
+        this.m_MaxSpeed = 1000.0f;
+        this.m_Duration = 4.0f;
+        this.m_EnableFactionRelation = 3;
+        this.__InitDirtyFlags();
+        this.m_Radius = Other.m_Radius;
+        this.m_InnerRadius = Other.m_InnerRadius;
+        this.m_Force = Other.m_Force;
+        this.m_MaxSpeed = Other.m_MaxSpeed;
+        this.m_Duration = Other.m_Duration;
+        this.m_EnableFactionRelation = int(Other.m_EnableFactionRelation);
+        this.m_StartSeconds = Other.m_StartSeconds;
+        return;
     }
     FC_MovementRadialForce opAssign(const FC_MovementRadialForce &inout Other)
     {
@@ -178,11 +202,31 @@ struct FC_MovementBoxForce : FECSComponent
 
     FC_MovementBoxForce()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Force = 0.0f;
+        this.m_MaxSpeed = 0.0f;
+        this.m_Duration = 0.0f;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_EnableFactionRelation = 3;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_MovementBoxForce(const FC_MovementBoxForce &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Force = 0.0f;
+        this.m_MaxSpeed = 0.0f;
+        this.m_Duration = 0.0f;
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_EnableFactionRelation = 3;
+        this.__InitDirtyFlags();
+        this.m_HalfExtend = Other.m_HalfExtend;
+        this.m_Force = Other.m_Force;
+        this.m_MaxSpeed = Other.m_MaxSpeed;
+        this.m_Duration = Other.m_Duration;
+        this.m_EnableFactionRelation = int(Other.m_EnableFactionRelation);
+        this.m_StartSeconds = Other.m_StartSeconds;
+        return;
     }
     FC_MovementBoxForce opAssign(const FC_MovementBoxForce &inout Other)
     {
@@ -374,37 +418,37 @@ bool RemoveMovementRadialForce(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorMovementRadialForceOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_MovementRadialForce, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_MovementRadialForce, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMovementRadialForceOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_MovementRadialForce, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_MovementRadialForce, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMovementRadialForceOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_MovementRadialForce, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_MovementRadialForce, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMovementRadialForceOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_MovementRadialForce, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_MovementRadialForce, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMovementRadialForceOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_MovementRadialForce, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_MovementRadialForce, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorMovementRadialForceLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_MovementRadialForce, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_MovementRadialForce, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorMovementRadialForceActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_MovementRadialForce, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_MovementRadialForce, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorMovementRadialForceModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_MovementRadialForce, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_MovementRadialForce, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_MovementBoxForce
@@ -484,37 +528,37 @@ bool RemoveMovementBoxForce(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorMovementBoxForceOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_MovementBoxForce, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_MovementBoxForce, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMovementBoxForceOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_MovementBoxForce, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_MovementBoxForce, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMovementBoxForceOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_MovementBoxForce, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_MovementBoxForce, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMovementBoxForceOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_MovementBoxForce, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_MovementBoxForce, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMovementBoxForceOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_MovementBoxForce, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_MovementBoxForce, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorMovementBoxForceLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_MovementBoxForce, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_MovementBoxForce, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorMovementBoxForceActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_MovementBoxForce, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_MovementBoxForce, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorMovementBoxForceModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_MovementBoxForce, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_MovementBoxForce, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

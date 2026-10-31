@@ -1,10 +1,7 @@
-﻿
-
 class UESMAction_MeleeStrike : UESMMeleeStrikeAction
 {
     UPROPERTY()
     bool bPlayEnvSurfaceFX = true;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const
@@ -116,7 +113,7 @@ class UESMAction_LaserStrike : UESMLaserStrikeAction
         {
             local_16 = "";
         }
-        return FString().Append("<").Append(this.CollisionAttachToSocket.Name).Append("> жїЂе…‰").Append(local_16).Append(": ").Append(this.AttackData.GetDataName());
+        return FString().Append("<").Append(this.CollisionAttachToSocket.Name).Append("> 激光").Append(local_16).Append(": ").Append(this.AttackData.GetDataName());
     }
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const
@@ -155,7 +152,7 @@ class UESMAction_SignalLaserStrike : UESMBPBaseInstantAction
         {
             local_16 = "";
         }
-        return FString().Append("жїЂе…‰ Signal").Append(local_16).Append(": ").Append(this.SignalName);
+        return FString().Append("激光 Signal").Append(local_16).Append(": ").Append(this.SignalName);
     }
 }
 

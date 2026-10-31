@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_DebugIntoStaticPenetration = FConsoleVariable();
 const FConsoleVariable CVar_DebugOverrideSlideNerf = FConsoleVariable();
 const FConsoleVariable CVar_DebugOverrideSlideRatio = FConsoleVariable();
@@ -51,20 +50,18 @@ struct FHandlePenetrateResult
     UPROPERTY()
     FVector3f SmoothDepenetrateMovement;
 
-
 }
 
 struct FAvgVector3f
 {
     UPROPERTY()
-    FVector3f TotalValue;
+    FVector3f TotalValue = FVector3f::ZeroVector;
     UPROPERTY()
     int Count = 0;
 
-
     void Add(const FVector3f &inout Value)
     {
-        this += Value;
+        this.TotalValue += Value;
         ++this.Count;
         return;
     }
@@ -74,7 +71,7 @@ struct FAvgVector3f
         {
             return FVector3f::ZeroVector;
         }
-        return (FVector3f(this) / this.Count);
+        return (this.TotalValue / this.Count);
     }
 }
 
@@ -88,7 +85,6 @@ struct FDitchProtectResult
     float FloorZ = 0.0;
     UPROPERTY()
     FVector3f CorrectedNormal = FVector3f::ZeroVector;
-
 
 }
 
@@ -104,7 +100,6 @@ struct FDetectEdgeResult
     FVector3f EdgeNormal;
     UPROPERTY()
     FHitResult RefHit;
-
 
     bool IsCloserThan(const FDetectEdgeResult &inout Other)
     {
@@ -131,7 +126,6 @@ struct FHandleSlideInfo
     UPROPERTY()
     FKMCFloorInfo NonBlockingNextPosFloorInfo;
 
-
 }
 
 struct FSnapToFloorInfo
@@ -142,7 +136,6 @@ struct FSnapToFloorInfo
     float32 SmoothVelocity;
     UPROPERTY()
     FVector3f SlideMove;
-
 
 }
 
@@ -541,8 +534,63 @@ bool AddVirtualNavHitIfNeeded(const FKMCContext &inout Context, const FVector &i
 }
 bool MoveSweepTest(TArray<FHitResult> &inout OutResults, const FKMCContext &inout Context, const FVector &inout Start, const FVector &inout End, const FQuat &inout Rot, const bool bAllowUpdateCache = false, const FKMCSweepTestSpecificParams &inout SpecificParams = FKMCSweepTestSpecificParams())
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    bool __r; return __r;
+    bool local_77;
+    FCollisionQueryParams local_38;
+    int local_84 = 0;
+    local_38.bTraceComplex = false;
+    local_38.bReturnFaceIndex = true;
+    local_38.AddIgnoredEntityId(Context.Entity.GetId());
+    local_38.AddIgnoredEntityIds(Context.Env.CollisionToIgnore);
+    FSceneQueryCacheParam local_50;
+    local_50.CustomExpandingExtent = FVector3f(100.0f, 100.0f, (Context.State.GetStepUpHeight() + 30.0f));
+    local_50.bSkipUpdateDynamicCache = true;
+    local_50.bPassthroughBlockingHit = true;
+    FVector local_62 = End;
+    if ((Start == End))
+    {
+        FVector local_76 = (FVector(FVector::UpVector) * 0.01);
+        local_62 += local_76;
+    }
+    if (SpecificParams.HasSpecificChannel())
+    {
+        int local_81;
+        local_81 = int(SpecificParams.GetChannel());
+    }
+    else
+    {
+        int local_81;
+        local_81 = int(Context.GetCollisionChannel());
+    }
+    if (SpecificParams.HasSpecificShape())
+    {
+    }
+    else
+    {
+    }
+    if (Context.Env.MoveSweepCachePtr)
+    {
+        int local_81;
+        local_77 = Context.Env.MoveSweepCachePtr.opArrow().MoveSweep(Context.Entity, false, EPhysicsTraceTag(3), OutResults, Start, local_62, Rot, local_84, ECollisionChannel(local_81), local_38, bAllowUpdateCache, local_50);
+    }
+    else
+    {
+        int local_81;
+        FCollisionResponseParams local_94;
+        local_77 = FPhysicsUtils::SweepMulti(Context.Entity, false, EPhysicsTraceTag(3), OutResults, Start, local_62, Rot, ECollisionChannel(local_81), local_84, local_38, local_94);
+    }
+    if (AddVirtualNavHitIfNeeded(Context, Start, End, OutResults))
+    {
+        local_77 = true;
+    }
+    if (!(local_77))
+    {
+        return false;
+    }
+    if (!(PreFilterHits(Context, OutResults, SpecificParams)))
+    {
+        return false;
+    }
+    return true;
 }
 void FilterEnablePenetrateHits(const FKMCContext &inout Context, TArray<FHitResult> &inout OutResults, const bool bAirborne)
 {
@@ -1411,8 +1459,7 @@ FDetectEdgeResult GroundMove_DetectEdge(const FKMCContext &inout Context, const 
     {
         local_290 = local_362;
     }
-    FVector3f local_434;
-    EdgeTest(local_114, local_212, local_124, Context, local_434);
+    FDetectEdgeResult local_434 = EdgeTest(Context, local_124, local_212, local_114, local_83);
     if (local_434.IsCloserThan(local_290))
     {
         local_290 = local_434;
@@ -1452,10 +1499,10 @@ FDetectEdgeResult GroundMove_DetectEdge(const FKMCContext &inout Context, const 
         }
         if (!(local_290.bEdgeDetected) || ((local_290.SafeMoveDist > 0.0f)))
         {
-            local_434 = EdgeTest(Context, local_212, (local_212 + local_92_4), local_114, local_83);
-            if (local_434.IsCloserThan(local_290))
+            FDetectEdgeResult local_434_2 = EdgeTest(Context, local_212, (local_212 + local_92_4), local_114, local_83);
+            if (local_434_2.IsCloserThan(local_290))
             {
-                local_290 = local_434;
+                local_290 = local_434_2;
             }
         }
         if (local_290.bEdgeDetected)
@@ -2119,19 +2166,19 @@ FKMCResult ConstrainCharacterGroundMove(const FKMCContext &inout Context, const 
     FVector local_218 = local_136;
     if (local_211)
     {
-        bool local_229;
+        int local_229;
         if (ECS::GetRuntimeInfo().IsServer)
         {
             Print(FString().Append("Ground bHasPenetration ").Append(local_136), 5.0f, FLinearColor(FColor::Red));
         }
         local_229 = Context.Param.bEnableOnGroundPenetratingSlide;
-        FHandlePenetrateResult local_260 = GroundMove_HandlePenetrate(Context, local_198, local_143, local_155, local_136, local_100, local_229, FVector3f(Velocity), DeltaTime);
+        FHandlePenetrateResult local_260 = GroundMove_HandlePenetrate(Context, local_198, local_143, local_155, local_136, local_100, (local_229 != 0), FVector3f(Velocity), DeltaTime);
         local_212 = local_260.bHandleSlide;
         local_168 = local_260.OutTargetPos;
         local_184 = local_260.OutTargetRot;
         local_161 = local_260.OutTargetVelocity;
         local_76.SetOutSmoothDepenetrateDeltaMove((FVector3f(local_76.GetOutSmoothDepenetrateDeltaMove()) + local_260.SmoothDepenetrateMovement));
-        if (local_229)
+        if (local_229 != 0)
         {
             for (auto& local_302 : local_260.StillPenetrate)
             {
@@ -2874,7 +2921,7 @@ FVector3f GetSmoothedGroundNormal(FKMCResult &inout Result, const FKMCContext &i
                 local_6 = Context.Param.FloorNormalSmoothTimeSoft;
             }
         }
-        Result.SetOutFloorNormalSmoothed(FKinematicMoveCollisionUtils::ClampFloorNormalBySlope(FMathUtils::SmoothDamp(Context.State.GetFloorNormalSmoothed(), NewFloorInfo.GetFloorImpactNormal(), local_5, local_6, DeltaTime, 1e20f).GetSafeNormal(1e-8f, FVector3f::ZeroVector), int(Context.Param.SlopDegreeMax)));
+        Result.SetOutFloorNormalSmoothed(FKinematicMoveCollisionUtils::ClampFloorNormalBySlope(FMathUtils::SmoothDamp(Context.State.GetFloorNormalSmoothed(), NewFloorInfo.GetFloorImpactNormal(), local_5, local_6, DeltaTime, 1e20f).GetSafeNormal(1e-8f, FVector3f::ZeroVector), Context.Param.SlopDegreeMax));
         Result.SetOutFloorNormalSmoothVelocity(local_5);
     }
     else

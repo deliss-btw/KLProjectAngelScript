@@ -1,10 +1,8 @@
-﻿
 enum EAITokenRecoverMode
 {
     Sequential,
     Parallel,
 }
-
 
 struct FEcosimAIV2UnitData : FDataObject
 {
@@ -75,7 +73,6 @@ struct FEcosimAIV2LLMPublicSpeakData : FDataObject
     UPROPERTY()
     float32 MinSpeakInterval = -1.0f;
 
-
 }
 
 struct FAITokenByTargetConfig : FDataObject
@@ -89,7 +86,6 @@ struct FAITokenByTargetConfig : FDataObject
     float32 TokenRecoverTime = 30.0f;
     UPROPERTY()
     EAITokenRecoverMode RecoverMode = EAITokenRecoverMode(0);
-
 
 }
 

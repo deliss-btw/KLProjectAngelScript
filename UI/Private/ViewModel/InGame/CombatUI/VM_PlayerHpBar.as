@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PlayerHpBar
 {
     const int ModelId = 0;
@@ -277,6 +276,7 @@ struct FVM_PlayerHpBar : FEUIViewModel
     {
         int local_3;
         int local_5;
+        int local_17;
         float32 local_21;
         float32 local_1 = this.GetDisplayHpBarRatio();
         local_3 = this.GetMaxHpNumber();
@@ -294,7 +294,16 @@ struct FVM_PlayerHpBar : FEUIViewModel
             this.SetbHasHpRatioInitialized(true);
             return;
         }
-        if (local_3 != this.GetMaxHpNumber() || (local_5 != this.GetCurrentHpNumber()))
+        if (local_3 != this.GetMaxHpNumber())
+        {
+            local_17 = 1;
+        }
+        else
+        {
+            bool local_18 = (local_5 != this.GetCurrentHpNumber());
+            local_17 = local_18;
+        }
+        if (local_17 != 0)
         {
             this.SetHpNumberText(FText::FromString(FString().Append(this.GetCurrentHpNumber()).Append("/").Append(this.GetMaxHpNumber())));
         }
@@ -334,7 +343,16 @@ struct FVM_PlayerHpBar : FEUIViewModel
                 }
                 else
                 {
-                    if (this.GetPreviewHpBarChaseSpeed() > 0.0f && (local_6 > this.GetDisplayHpBarRatio()))
+                    if (this.GetPreviewHpBarChaseSpeed() <= 0.0f)
+                    {
+                        local_17 = 0;
+                    }
+                    else
+                    {
+                        bool local_18_2 = (local_6 > this.GetDisplayHpBarRatio());
+                        local_17 = local_18_2;
+                    }
+                    if (local_17 != 0)
                     {
                         this.GetModify_PreviewHpBarRatioSource().SetInterpConstantTo(this.GetDisplayHpBarRatio(), this.GetPreviewHpBarChaseSpeed(), 0.0001f);
                     }
@@ -343,7 +361,16 @@ struct FVM_PlayerHpBar : FEUIViewModel
         }
         else
         {
-            if (this.GetPreviewHpBarChaseSpeed() <= 0.0f || (local_6 < this.GetDisplayHpBarRatio()))
+            if (this.GetPreviewHpBarChaseSpeed() <= 0.0f)
+            {
+                local_17 = 1;
+            }
+            else
+            {
+                bool local_18_3 = (local_6 < this.GetDisplayHpBarRatio());
+                local_17 = local_18_3;
+            }
+            if (local_17 != 0)
             {
                 this.SetPreviewHpBarChaseSpeed(0.0f);
                 this.SetDisplayPreviewHpBarRatio(this.GetDisplayHpBarRatio());

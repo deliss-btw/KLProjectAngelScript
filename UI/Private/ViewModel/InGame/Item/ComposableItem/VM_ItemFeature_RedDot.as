@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ItemFeature_RedDot
 {
     const int ModelId = 0;
@@ -176,7 +175,6 @@ struct __GeneratedProperties_FVM_ItemFeature_RedDot
     bool HasRedDot;
     UPROPERTY()
     TEUIModelRef<FVM_ItemFeature_RedDot> Self;
-
 
 }
 

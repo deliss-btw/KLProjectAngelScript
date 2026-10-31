@@ -1,5 +1,3 @@
-﻿
-
 class US_UIAsyncSystem : UECSScriptSystem
 {
     US_UIAsyncSystem()

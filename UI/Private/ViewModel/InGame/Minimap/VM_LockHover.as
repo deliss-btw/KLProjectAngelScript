@@ -1,4 +1,3 @@
-﻿
 namespace FVM_LockHover
 {
     const int ModelId = 0;

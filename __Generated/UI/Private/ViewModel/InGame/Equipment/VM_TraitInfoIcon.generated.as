@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TraitInfoIcon_Helpers
 {
 UFUNCTION()

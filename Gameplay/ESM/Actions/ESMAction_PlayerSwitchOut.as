@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_PlayerSwtichOut : UESMBPBaseInstantAction
 {
     UESMAction_PlayerSwtichOut()

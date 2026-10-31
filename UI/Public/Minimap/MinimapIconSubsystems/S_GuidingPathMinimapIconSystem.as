@@ -1,5 +1,3 @@
-﻿
-
 class US_GuidingPathMinimapIconSystem : UECSScriptSystem
 {
     UPROPERTY()
@@ -197,7 +195,7 @@ class US_GuidingPathMinimapIconSystem : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_OnGuidingPathUpdateInfoChanged(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = ::__GetMonitorGuidingPathPointsOnRemoveView(this.GetECSWorld(), EECSRegType(0), false, true);
+        FECSMonitorRuntimeView local_56 = ::__GetMonitorGuidingPathPointsOnRemoveView(this.GetECSWorld(), EECSRegType(0), (0 != 0), true);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {
@@ -231,7 +229,7 @@ class US_GuidingPathMinimapIconSystem : UECSScriptSystem
             GetComponent local_48_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_UpdateTeamMemberGuidingPathTarget(local_50);
         }
-        FECSMonitorRuntimeView local_54 = ::__GetMonitorTeamInfoOnRemoveView(this.GetECSWorld(), EECSRegType(0), false, true);
+        FECSMonitorRuntimeView local_54 = ::__GetMonitorTeamInfoOnRemoveView(this.GetECSWorld(), EECSRegType(0), (0 != 0), true);
         FECSMonitorRuntimeViewIterator local_28_2 = local_54.Iterator();
         for (; local_28_2.CanProceed;)
         {

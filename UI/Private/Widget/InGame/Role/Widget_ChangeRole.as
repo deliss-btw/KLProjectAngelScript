@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ChangeRole
 {
     const int ViewID = 0;
@@ -236,6 +235,7 @@ namespace UWidget_ChangeRole
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ChangeRole;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCloseByVM"));
     return;
 }

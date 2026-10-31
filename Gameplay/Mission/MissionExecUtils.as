@@ -1,4 +1,3 @@
-﻿
 namespace MissionExecUtils
 {
 EMissionActionType GetActionType(const FInstancedStruct &inout ActionData)

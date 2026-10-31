@@ -1,4 +1,3 @@
-﻿
 namespace FVM_RaceCommissionTimer
 {
     const int ModelId = 0;
@@ -204,7 +203,6 @@ struct __GeneratedProperties_FVM_RaceCommissionTimer
     bool ShouldShow;
     UPROPERTY()
     TEUIModelRef<FVM_RaceCommissionTimer> Self;
-
 
 }
 

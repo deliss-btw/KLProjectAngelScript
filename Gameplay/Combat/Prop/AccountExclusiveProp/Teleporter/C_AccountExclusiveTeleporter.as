@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_AccountExclusiveTeleporterConfig_NS
 {
     const TECSComponentDerivedPtr<FC_AccountExclusiveTeleporterConfig> DerivedPtr = TECSComponentDerivedPtr<FC_AccountExclusiveTeleporterConfig>();
@@ -26,7 +25,6 @@ struct FCE_TeleporterStateChanged : FECSEvent
     ETeleporterState OldState;
     UPROPERTY()
     ETeleporterState NewState;
-
 
 }
 
@@ -56,14 +54,14 @@ struct FC_AccountExclusiveTeleporterConfig : FECSComponent
     void PostPrefabLoad(const FECSEntity &inout Entity)
     {
         int local_10 = 0;
-        if (!(this))
+        if (!(this.TeleporterConfig))
         {
             return;
         }
         if (ECS::GetRuntimeInfo().IsServer)
         {
             FECSWorldPtr local_4 = ECS::GetECSWorld();
-            local_10.GetModify_Teleporters().Add(Entity, this);
+            local_10.GetModify_Teleporters().Add(Entity, this.TeleporterConfig);
         }
         return;
     }
@@ -78,7 +76,6 @@ struct FCE_AccountExclusiveTeleporterActivated_DataTracker : FECSEvent
     FECSEntity InteractSourceEntity;
     UPROPERTY()
     uint DataId;
-
 
 }
 
@@ -162,36 +159,36 @@ bool RemoveAccountExclusiveTeleporterConfig(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAccountExclusiveTeleporterConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AccountExclusiveTeleporterConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AccountExclusiveTeleporterConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAccountExclusiveTeleporterConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AccountExclusiveTeleporterConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AccountExclusiveTeleporterConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAccountExclusiveTeleporterConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AccountExclusiveTeleporterConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AccountExclusiveTeleporterConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAccountExclusiveTeleporterConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AccountExclusiveTeleporterConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AccountExclusiveTeleporterConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAccountExclusiveTeleporterConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AccountExclusiveTeleporterConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AccountExclusiveTeleporterConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAccountExclusiveTeleporterConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AccountExclusiveTeleporterConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AccountExclusiveTeleporterConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAccountExclusiveTeleporterConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AccountExclusiveTeleporterConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AccountExclusiveTeleporterConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAccountExclusiveTeleporterConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AccountExclusiveTeleporterConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AccountExclusiveTeleporterConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

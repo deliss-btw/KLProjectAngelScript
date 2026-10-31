@@ -1,5 +1,3 @@
-﻿
-
 class US_ExecuteSystem : UECSScriptSystem
 {
     UPROPERTY()
@@ -9,7 +7,6 @@ class US_ExecuteSystem : UECSScriptSystem
     UPROPERTY()
     float32 DelayRecoverExecuteStateFromExecutedTime = 0.1f;
     FName InterruptExecutePrepareTriggerName = n"InterruptExecuteTrigger";
-
 
     UFUNCTION()
     void Monitor_OnExecutedConfigAssigned(const FECSEntity &inout Entity, const FC_ExecutedConfig &inout ExecutedConfig) const
@@ -124,7 +121,7 @@ class US_ExecuteSystem : UECSScriptSystem
         }
         if (local_23)
         {
-            local_18.SetExecutionState(EExecutionState(EExecutionState(2)));
+            local_18.SetExecutionState(EExecutionState(2));
             SendEvent local_52;
             local_52.opCall(this.GetECSWorld().GetFixedTime().Time);
             local_18.SetExecuteTeamEntity(local_40);
@@ -249,7 +246,7 @@ class US_ExecuteSystem : UECSScriptSystem
         }
         if (ExecutedInfo.GetExecuteEntityArray().IsEmpty())
         {
-            ExecutedInfo.SetExecutionState(EExecutionState(EExecutionState(1)));
+            ExecutedInfo.SetExecutionState(EExecutionState(1));
             ExecutedInfo.SetExecuteTeamEntity(ENTITY_NULL);
             local_56.opCall();
             local_60.opCall(FixedTime.Time);
@@ -284,7 +281,7 @@ class US_ExecuteSystem : UECSScriptSystem
             return;
         }
         FECSEntity local_72 = FECSEntity(ExecutedInfo.GetExecuteEntityArray()[0]);
-        ExecutedInfo.SetExecutionState(EExecutionState(EExecutionState(3)));
+        ExecutedInfo.SetExecutionState(EExecutionState(3));
         ExecutedInfo.SetCanRecoverFromExecutedTime((FFPTime(FixedTime.Time) + FFPTime(this.DelayRecoverExecuteStateFromExecutedTime)));
         local_60.opCall(FixedTime.Time);
         local_56.opCall();

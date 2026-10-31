@@ -1,4 +1,3 @@
-﻿
 namespace FESMUtils
 {
 UFUNCTION()
@@ -110,7 +109,7 @@ FName GetCurrentMainSMStateName(const FECSEntity &inout Entity)
     {
         return NAME_None;
     }
-    UESMBaseState local_24 = local_20.GetBaseState(local_6.Player.GetSMRuntime()[].GetStateIndex());
+    UESMBaseState local_24 = local_20.GetBaseState(local_6.Player.GetSMRuntime()[local_2].GetStateIndex());
     if (local_24 == nullptr)
     {
         return NAME_None;

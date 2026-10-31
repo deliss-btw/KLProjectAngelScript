@@ -1,10 +1,7 @@
-﻿
-
 struct FESMCharacterBeHitGroundBehaviourInstanceData
 {
     UPROPERTY()
     bool bInProcess;
-
 
 }
 
@@ -14,7 +11,6 @@ class UESMAction_CharacterBeHitGroundBehaviour : UESMAction_CharacterBeHitBehavi
     bool bAllowRootRotation = false;
     UPROPERTY()
     bool bUseYDirRootAsset = false;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const
@@ -190,7 +186,6 @@ struct FESMCharacterBeHitAirBehaviourInstanceData
     UPROPERTY()
     float32 MaxCurveHeight = -1.0f;
 
-
 }
 
 class UESMAction_CharacterBeHitAirBehaviour : UESMAction_CharacterBeHitBehaviourBase
@@ -203,7 +198,6 @@ class UESMAction_CharacterBeHitAirBehaviour : UESMAction_CharacterBeHitBehaviour
     bool bCalculateSpeedByBlowHeight = false;
     UPROPERTY()
     bool bUseRootMotionZ = false;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const

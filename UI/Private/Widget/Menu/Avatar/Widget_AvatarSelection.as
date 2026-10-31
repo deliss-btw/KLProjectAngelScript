@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_AvatarSelection
 {
     const int ViewID = 0;
@@ -204,6 +203,7 @@ namespace UWidget_AvatarSelection
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_AvatarSelection;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedAvatarChangedForShowcase"));
     return;
 }

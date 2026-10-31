@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_EcologyDelayTaskLayer_NS
 {
     const TECSComponentDerivedPtr<FCS_EcologyDelayTaskLayer> DerivedPtr = TECSComponentDerivedPtr<FCS_EcologyDelayTaskLayer>();
@@ -20,7 +19,7 @@ struct FCS_EcologyDelayTaskLayer : FECSSingleton
     }
     bool IsEmpty()
     {
-        return this.IsEmpty() && this.TargetUpdateLayer.IsEmpty() && this.ActivityUpdateLayer.IsEmpty();
+        return this.SpawnTaskLayer.IsEmpty() && this.TargetUpdateLayer.IsEmpty() && this.ActivityUpdateLayer.IsEmpty();
     }
 }
 
@@ -112,16 +111,16 @@ bool RemoveEcologyDelayTaskLayer(const FECSWorldPtr &inout World)
 }
 void __MonitorEcologyDelayTaskLayerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_EcologyDelayTaskLayer, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_EcologyDelayTaskLayer, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyDelayTaskLayerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_EcologyDelayTaskLayer, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_EcologyDelayTaskLayer, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyDelayTaskLayerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_EcologyDelayTaskLayer, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_EcologyDelayTaskLayer, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

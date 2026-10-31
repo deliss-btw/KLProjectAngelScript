@@ -1,4 +1,3 @@
-﻿
 namespace FFakeCharacterUtils
 {
 void SpawnFakeCharacterAndControl(const FECSEntity &inout SwitchOutAvatar, const FDefaultAvatarData &inout SwitchInData, const FSpawnFakeCharacterExtractData &inout ExtraData)

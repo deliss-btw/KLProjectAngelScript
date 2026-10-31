@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_DirectDamage : UESMBPBaseInstantAction
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ class UESMAction_DirectDamage : UESMBPBaseInstantAction
     EESMActionTargetType TargetType = EESMActionTargetType(2);
     UPROPERTY()
     FNameHandle_EntityBBVarEntity TargetEntityBBVar;
-
 
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const

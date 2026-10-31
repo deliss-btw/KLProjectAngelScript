@@ -1,5 +1,3 @@
-﻿
-
 struct FConfigVM_AvatarEquipmentMain : FConfigEUIModelBase
 {
     UPROPERTY()

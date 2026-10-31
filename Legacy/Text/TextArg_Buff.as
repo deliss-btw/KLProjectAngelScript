@@ -1,4 +1,3 @@
-﻿
 enum ETextArgBuffEffectProperty
 {
     BuffName,
@@ -7,13 +6,11 @@ enum ETextArgBuffEffectProperty
     BuffAttrValue,
 }
 
-
 struct FTextArgConfig_Buff : FTextArgConfig
 {
     FTextArgConfig _base_FTextArgConfig;
     UPROPERTY()
     ETextArgBuffEffectProperty Property;
-
 
 }
 

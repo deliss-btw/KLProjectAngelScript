@@ -1,4 +1,3 @@
-﻿
 enum ESettingApplyType
 {
     Inmediate,
@@ -95,19 +94,12 @@ struct FSettingItemBase
 struct FSettingOption
 {
     UPROPERTY()
-    FText Name;
+    FText Name = FText::FromString("");
     UPROPERTY()
-    float32 Value;
+    float32 Value = 0.0f;
     UPROPERTY()
-    bool IsDisabled;
+    bool IsDisabled = false;
 
-    FSettingOption()
-    {
-        FText::FromString("");
-        this.Value = 0.0f;
-        this.IsDisabled = false;
-        return;
-    }
 }
 
 struct FSettingDropDown : FSettingItemBase
@@ -118,7 +110,6 @@ struct FSettingDropDown : FSettingItemBase
 
     FSettingDropDown()
     {
-        super();
         return;
     }
 }
@@ -135,7 +126,6 @@ struct FSettingSlider : FSettingItemBase
     UPROPERTY()
     float32 Step;
 
-
 }
 
 struct FSettingToggle : FSettingItemBase
@@ -146,7 +136,6 @@ struct FSettingToggle : FSettingItemBase
 
     FSettingToggle()
     {
-        super();
         return;
     }
 }
@@ -161,7 +150,6 @@ struct FSettingLink : FSettingItemBase
 
     FSettingLink()
     {
-        super();
         return;
     }
 }
@@ -174,7 +162,6 @@ struct FSettingApplyBase
     FGameplayTag ItemTag;
     UPROPERTY()
     UKLGameUserSettings Settings = UKLGameUserSettings::Get();
-
 
     void SetSavedValue(const FGameplayTag &inout InItemTag, const float32 InValue)
     {
@@ -206,7 +193,6 @@ struct FSettingApply_ScreenMode : FSettingApplyBase
 
     FSettingApply_ScreenMode()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -230,7 +216,6 @@ struct FSettingApply_Resolution : FSettingApplyBase
 
     FSettingApply_Resolution()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -249,7 +234,7 @@ struct FSettingApply_Resolution : FSettingApplyBase
         int local_5 = 0;
         for (; local_5 < this.Settings.GetSupportedResolutions().Num(); ++local_5)
         {
-            if ((FIntPoint(this.Settings.GetSupportedResolutions()[]) == local_2))
+            if ((FIntPoint(this.Settings.GetSupportedResolutions()[local_5]) == local_2))
             {
                 return local_5;
             }
@@ -262,7 +247,7 @@ struct FSettingApply_Resolution : FSettingApplyBase
         int local_2 = 0;
         for (; local_2 < this.Settings.GetSupportedResolutions().Num(); )
         {
-            FIntPoint local_6 = FIntPoint(this.Settings.GetSupportedResolutions()[]);
+            FIntPoint local_6 = FIntPoint(this.Settings.GetSupportedResolutions()[local_2]);
             FSettingOption local_12;
             local_12.Name = FText::FromString(FString().Append(local_6.X).Append("x").Append(local_6.Y));
             local_12.Value = local_2;
@@ -279,7 +264,6 @@ struct FSettingApply_DisplayDevice : FSettingApplyBase
 
     FSettingApply_DisplayDevice()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -302,12 +286,8 @@ struct FSettingApply_DisplayDevice : FSettingApplyBase
         for (auto& local_22 : this.Settings.GetMonitorInfos())
         {
             FSettingOption local_28;
-            int local_30 = FMath::Min(int(local_22.MaxResolution.X), int(local_22.MaxResolution.Y));
-            FString local_34;
-            ::FSettingApply_Resolution::GetResolutionIndex(local_34);
-            FString local_42 = FString();
-            FText local_38;
-            local_28.Name = local_38;
+            FText local_34 = ::FSettingApply_Resolution::GetResolutionIndex(FMath::Min(int(local_22.MaxResolution.X), int(local_22.MaxResolution.Y)));
+            local_28.Name = FText::FromString(FString().Append(local_2).Append(": ").Append(local_22.Name).Append("-").Append(local_34));
             local_28.Value = local_2;
             OutOptions.Add(local_28);
             ++local_2;
@@ -329,7 +309,6 @@ struct FSettingApply_FrameRateLimit : FSettingApplyBase
 
     FSettingApply_FrameRateLimit()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -371,7 +350,6 @@ struct FSettingApply_VSync : FSettingApplyBase
 
     FSettingApply_VSync()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -396,7 +374,6 @@ struct FSettingApply_UpscalingMethod : FSettingApplyBase
 
     FSettingApply_UpscalingMethod()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -405,7 +382,7 @@ struct FSettingApply_UpscalingMethod : FSettingApplyBase
         {
             return false;
         }
-        this.Settings.SetAAMethod(EKLAntiAliasingMethod(FSettingApply_UpscalingMethod::IndexMethodMap[uint(value)]), true);
+        this.Settings.SetAAMethod(FSettingApply_UpscalingMethod::IndexMethodMap[uint(value)], true);
         return true;
     }
     float32 GetDefaultValue() const
@@ -441,7 +418,6 @@ struct FSettingApply_FrameGeneration : FSettingApplyBase
 
     FSettingApply_FrameGeneration()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -450,7 +426,7 @@ struct FSettingApply_FrameGeneration : FSettingApplyBase
         {
             return false;
         }
-        EKLFrameGenerationMode local_3 = FSettingApply_FrameGeneration::IndexFrameGenerationMap[uint(value)];
+        int local_3 = FSettingApply_FrameGeneration::IndexFrameGenerationMap[uint(value)];
         this.Settings.SetFrameGenerationMode(EKLFrameGenerationMode(local_3));
         return true;
     }
@@ -502,7 +478,6 @@ struct FSettingApply_UpscaleQuality : FSettingApplyBase
 
     FSettingApply_UpscaleQuality()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -530,7 +505,6 @@ struct FSettingApply_Gamma : FSettingApplyBase
 
     FSettingApply_Gamma()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -553,7 +527,6 @@ struct FSettingApply_QualityPreset : FSettingApplyBase
     FSettingApplyBase _base_FSettingApplyBase;
     UPROPERTY()
     bool bIsRecommended = false;
-
 
     bool Apply(const float32 value) const
     {
@@ -579,7 +552,6 @@ struct FSettingApply_FoliageQuality : FSettingApplyBase
 
     FSettingApply_FoliageQuality()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -601,12 +573,12 @@ struct FSettingApply_FoliageQuality : FSettingApplyBase
         {
             return this.GetRecommendedValue();
         }
-        int local_3 = uint(value);
-        return int(FQualitySet(this.Settings.GetQualityPresets()[]).FoliageQuality);
+        int local_3 = int(FQualitySet(this.Settings.GetQualityPresets()[uint(value)]).FoliageQuality);
+        return local_3;
     }
     float32 GetRecommendedValue() const
     {
-        return int(FQualitySet(this.Settings.GetRecommendQuality()).FoliageQuality);
+        return int(FRecommendQuality(this.Settings.GetRecommendQuality()).FoliageQuality);
     }
 }
 
@@ -616,7 +588,6 @@ struct FSettingApply_ViewDistanceQuality : FSettingApplyBase
 
     FSettingApply_ViewDistanceQuality()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -638,12 +609,12 @@ struct FSettingApply_ViewDistanceQuality : FSettingApplyBase
         {
             return this.GetRecommendedValue();
         }
-        int local_3 = uint(value);
-        return int(FQualitySet(this.Settings.GetQualityPresets()[]).ViewDistanceQuality);
+        int local_3 = int(FQualitySet(this.Settings.GetQualityPresets()[uint(value)]).ViewDistanceQuality);
+        return local_3;
     }
     float32 GetRecommendedValue() const
     {
-        return int(FQualitySet(this.Settings.GetRecommendQuality()).ViewDistanceQuality);
+        return int(FRecommendQuality(this.Settings.GetRecommendQuality()).ViewDistanceQuality);
     }
 }
 
@@ -653,7 +624,6 @@ struct FSettingApply_TextureQuality : FSettingApplyBase
 
     FSettingApply_TextureQuality()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -675,12 +645,12 @@ struct FSettingApply_TextureQuality : FSettingApplyBase
         {
             return this.GetRecommendedValue();
         }
-        int local_3 = uint(value);
-        return int(FQualitySet(this.Settings.GetQualityPresets()[]).TextureQuality);
+        int local_3 = int(FQualitySet(this.Settings.GetQualityPresets()[uint(value)]).TextureQuality);
+        return local_3;
     }
     float32 GetRecommendedValue() const
     {
-        return int(FQualitySet(this.Settings.GetRecommendQuality()).TextureQuality);
+        return int(FRecommendQuality(this.Settings.GetRecommendQuality()).TextureQuality);
     }
 }
 
@@ -690,7 +660,6 @@ struct FSettingApply_EffectsQuality : FSettingApplyBase
 
     FSettingApply_EffectsQuality()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -712,12 +681,12 @@ struct FSettingApply_EffectsQuality : FSettingApplyBase
         {
             return this.GetRecommendedValue();
         }
-        int local_3 = uint(value);
-        return int(FQualitySet(this.Settings.GetQualityPresets()[]).EffectsQuality);
+        int local_3 = int(FQualitySet(this.Settings.GetQualityPresets()[uint(value)]).EffectsQuality);
+        return local_3;
     }
     float32 GetRecommendedValue() const
     {
-        return int(FQualitySet(this.Settings.GetRecommendQuality()).EffectsQuality);
+        return int(FRecommendQuality(this.Settings.GetRecommendQuality()).EffectsQuality);
     }
 }
 
@@ -727,7 +696,6 @@ struct FSettingApply_ShadowQuality : FSettingApplyBase
 
     FSettingApply_ShadowQuality()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -749,12 +717,12 @@ struct FSettingApply_ShadowQuality : FSettingApplyBase
         {
             return this.GetRecommendedValue();
         }
-        int local_3 = uint(value);
-        return int(FQualitySet(this.Settings.GetQualityPresets()[]).ShadowQuality);
+        int local_3 = int(FQualitySet(this.Settings.GetQualityPresets()[uint(value)]).ShadowQuality);
+        return local_3;
     }
     float32 GetRecommendedValue() const
     {
-        return int(FQualitySet(this.Settings.GetRecommendQuality()).ShadowQuality);
+        return int(FRecommendQuality(this.Settings.GetRecommendQuality()).ShadowQuality);
     }
 }
 
@@ -764,7 +732,6 @@ struct FSettingApply_ShadingQuality : FSettingApplyBase
 
     FSettingApply_ShadingQuality()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -786,12 +753,12 @@ struct FSettingApply_ShadingQuality : FSettingApplyBase
         {
             return this.GetRecommendedValue();
         }
-        int local_3 = uint(value);
-        return int(FQualitySet(this.Settings.GetQualityPresets()[]).ShadingQuality);
+        int local_3 = int(FQualitySet(this.Settings.GetQualityPresets()[uint(value)]).ShadingQuality);
+        return local_3;
     }
     float32 GetRecommendedValue() const
     {
-        return int(FQualitySet(this.Settings.GetRecommendQuality()).ShadingQuality);
+        return int(FRecommendQuality(this.Settings.GetRecommendQuality()).ShadingQuality);
     }
 }
 
@@ -801,7 +768,6 @@ struct FSettingApply_GlobalIlluminationQuality : FSettingApplyBase
 
     FSettingApply_GlobalIlluminationQuality()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -823,12 +789,12 @@ struct FSettingApply_GlobalIlluminationQuality : FSettingApplyBase
         {
             return this.GetRecommendedValue();
         }
-        int local_3 = uint(value);
-        return int(FQualitySet(this.Settings.GetQualityPresets()[]).GlobalIlluminationQuality);
+        int local_3 = int(FQualitySet(this.Settings.GetQualityPresets()[uint(value)]).GlobalIlluminationQuality);
+        return local_3;
     }
     float32 GetRecommendedValue() const
     {
-        return int(FQualitySet(this.Settings.GetRecommendQuality()).GlobalIlluminationQuality);
+        return int(FRecommendQuality(this.Settings.GetRecommendQuality()).GlobalIlluminationQuality);
     }
 }
 
@@ -838,7 +804,6 @@ struct FSettingApply_ReflectionQuality : FSettingApplyBase
 
     FSettingApply_ReflectionQuality()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -860,12 +825,12 @@ struct FSettingApply_ReflectionQuality : FSettingApplyBase
         {
             return this.GetRecommendedValue();
         }
-        int local_3 = uint(value);
-        return int(FQualitySet(this.Settings.GetQualityPresets()[]).ReflectionQuality);
+        int local_3 = int(FQualitySet(this.Settings.GetQualityPresets()[uint(value)]).ReflectionQuality);
+        return local_3;
     }
     float32 GetRecommendedValue() const
     {
-        return int(FQualitySet(this.Settings.GetRecommendQuality()).ReflectionQuality);
+        return int(FRecommendQuality(this.Settings.GetRecommendQuality()).ReflectionQuality);
     }
 }
 
@@ -875,7 +840,6 @@ struct FSettingApply_LandscapeQuality : FSettingApplyBase
 
     FSettingApply_LandscapeQuality()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -897,12 +861,12 @@ struct FSettingApply_LandscapeQuality : FSettingApplyBase
         {
             return this.GetRecommendedValue();
         }
-        int local_3 = uint(value);
-        return int(FQualitySet(this.Settings.GetQualityPresets()[]).LandscapeQuality);
+        int local_3 = int(FQualitySet(this.Settings.GetQualityPresets()[uint(value)]).LandscapeQuality);
+        return local_3;
     }
     float32 GetRecommendedValue() const
     {
-        return int(FQualitySet(this.Settings.GetRecommendQuality()).LandscapeQuality);
+        return int(FRecommendQuality(this.Settings.GetRecommendQuality()).LandscapeQuality);
     }
 }
 
@@ -912,7 +876,6 @@ struct FSettingApply_AntialiasingQuality : FSettingApplyBase
 
     FSettingApply_AntialiasingQuality()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -934,12 +897,12 @@ struct FSettingApply_AntialiasingQuality : FSettingApplyBase
         {
             return this.GetRecommendedValue();
         }
-        int local_3 = uint(value);
-        return int(FQualitySet(this.Settings.GetQualityPresets()[]).AntiAliasingQuality);
+        int local_3 = int(FQualitySet(this.Settings.GetQualityPresets()[uint(value)]).AntiAliasingQuality);
+        return local_3;
     }
     float32 GetRecommendedValue() const
     {
-        return int(FQualitySet(this.Settings.GetRecommendQuality()).AntiAliasingQuality);
+        return int(FRecommendQuality(this.Settings.GetRecommendQuality()).AntiAliasingQuality);
     }
 }
 
@@ -949,7 +912,6 @@ struct FSettingApply_PostProcessQuality : FSettingApplyBase
 
     FSettingApply_PostProcessQuality()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -971,12 +933,12 @@ struct FSettingApply_PostProcessQuality : FSettingApplyBase
         {
             return this.GetRecommendedValue();
         }
-        int local_3 = uint(value);
-        return int(FQualitySet(this.Settings.GetQualityPresets()[]).PostProcessQuality);
+        int local_3 = int(FQualitySet(this.Settings.GetQualityPresets()[uint(value)]).PostProcessQuality);
+        return local_3;
     }
     float32 GetRecommendedValue() const
     {
-        return int(FQualitySet(this.Settings.GetRecommendQuality()).PostProcessQuality);
+        return int(FRecommendQuality(this.Settings.GetRecommendQuality()).PostProcessQuality);
     }
 }
 
@@ -986,7 +948,6 @@ struct FSettingApply_SSAO : FSettingApplyBase
 
     FSettingApply_SSAO()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -1011,7 +972,6 @@ struct FSettingApply_Bloom : FSettingApplyBase
 
     FSettingApply_Bloom()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -1036,7 +996,6 @@ struct FSettingApply_MotionBlur : FSettingApplyBase
 
     FSettingApply_MotionBlur()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -1061,7 +1020,6 @@ struct FSettingApply_Volume : FSettingApplyBase
 
     FSettingApply_Volume()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -1089,7 +1047,6 @@ struct FSettingApply_MusicVolume : FSettingApplyBase
 
     FSettingApply_MusicVolume()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -1117,7 +1074,6 @@ struct FSettingApply_SFXVolume : FSettingApplyBase
 
     FSettingApply_SFXVolume()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -1145,7 +1101,6 @@ struct FSettingApply_VoiceVolume : FSettingApplyBase
 
     FSettingApply_VoiceVolume()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -1173,7 +1128,6 @@ struct FSettingApply_VoiceReceiveVolume : FSettingApplyBase
 
     FSettingApply_VoiceReceiveVolume()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -1201,7 +1155,6 @@ struct FSettingApply_AttackLockOnMode : FSettingApplyBase
 
     FSettingApply_AttackLockOnMode()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -1240,7 +1193,6 @@ struct FSettingApply_CameraYawDirection : FSettingApplyBase
 
     FSettingApply_CameraYawDirection()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -1278,7 +1230,6 @@ struct FSettingApply_InvertCameraX_Axis : FSettingApplyBase
 
     FSettingApply_InvertCameraX_Axis()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -1306,7 +1257,6 @@ struct FSettingApply_InvertCameraY_Axis : FSettingApplyBase
 
     FSettingApply_InvertCameraY_Axis()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -1334,7 +1284,6 @@ struct FSettingApply_CameraSensitivity : FSettingApplyBase
 
     FSettingApply_CameraSensitivity()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -1362,7 +1311,6 @@ struct FSettingApply_CameraMode : FSettingApplyBase
 
     FSettingApply_CameraMode()
     {
-        super();
         return;
     }
     bool Apply(const float32 value) const
@@ -1417,7 +1365,6 @@ struct FSettingItemConfig : FDataObject
     bool bIsResolutionOption;
     UPROPERTY()
     bool bToHide;
-
 
 }
 

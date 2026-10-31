@@ -1,4 +1,3 @@
-﻿
 namespace FWaterAudioUtils
 {
     const FConsoleVariable CVar_WaterAudio_Log = FConsoleVariable();
@@ -612,7 +611,37 @@ void InitializeWaterBodies(const UWorld WorldContext, TArray<TWeakObjectPtr<AWat
 UFUNCTION()
 bool IsInWaterByRaycast(const FVector &inout Position, const float32 TraceDistance, FVector &inout OutWaterIntersectionPoint)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    bool __r; return __r;
+    UGamePhysicalMaterial local_176;
+    FCollisionQueryParams local_38;
+    local_38.bReturnPhysicalMaterial = true;
+    FHitResult local_106;
+    FVector local_130 = (Position + FVector(0.0, 0.0, 50.0));
+    FVector local_112 = (Position - FVector(0.0, 0.0, TraceDistance));
+    bool local_39 = FPhysicsUtils::LineTraceSingle(ECS::GetUEWorld(), EPhysicsTraceTag(22), local_106, local_130, local_112, FCollisionObjectQueryParams(ECollisionChannel(0)), local_38);
+    if (local_39)
+    {
+        AActor local_146 = local_106.HitObjectHandle.GetCachedActor();
+        if (local_146 != nullptr)
+        {
+            if (Cast<UWaterBodyComponent>(local_146.GetComponentByClass(UWaterBodyComponent)) != nullptr)
+            {
+                OutWaterIntersectionPoint = local_106.ImpactPoint;
+                XLogIf(FWaterAudioUtils::EnableVerboseLog(), ELog(1), FString().Append("IsInWaterByRaycast: Found water body, intersection point = (").Append(FString::ApplyFormat(OutWaterIntersectionPoint.X, ".2f")).Append(", ").Append(FString::ApplyFormat(OutWaterIntersectionPoint.Y, ".2f")).Append(", ").Append(FString::ApplyFormat(OutWaterIntersectionPoint.Z, ".2f")).Append(")"));
+                return true;
+            }
+        }
+        local_176 = (Cast<UGamePhysicalMaterial>(local_106.GetPhysMaterial()));
+        if (local_176 != nullptr)
+        {
+            if (local_176.GetbIsWater())
+            {
+                OutWaterIntersectionPoint = local_106.ImpactPoint;
+                XLogIf(FWaterAudioUtils::EnableVerboseLog(), ELog(1), FString().Append("IsInWaterByRaycast: Found water material, intersection point = (").Append(FString::ApplyFormat(OutWaterIntersectionPoint.Y, ".2f")).Append(", ").Append(FString::ApplyFormat(OutWaterIntersectionPoint.Y, ".2f")).Append(", ").Append(FString::ApplyFormat(OutWaterIntersectionPoint.Z, ".2f")).Append(")"));
+                return true;
+            }
+        }
+    }
+    XLogIf(FWaterAudioUtils::EnableVerboseLog(), ELog(1), FString().Append("IsInWaterByRaycast: No water found at position (").Append(FString::ApplyFormat(Position.X, ".2f")).Append(", ").Append(FString::ApplyFormat(Position.Y, ".2f")).Append(", ").Append(FString::ApplyFormat(Position.Z, ".2f")).Append(")"));
+    return false;
 }
 }

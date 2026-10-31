@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_LocalPlayerForceFeedbackEffect_NS
 {
     const TECSEventDerivedPtr<FCE_LocalPlayerForceFeedbackEffect> DerivedPtr = TECSEventDerivedPtr<FCE_LocalPlayerForceFeedbackEffect>();
@@ -17,7 +16,6 @@ struct FCE_LocalPlayerForceFeedbackEffect : FECSEvent
     bool bIgnoreTimeDilation;
     UPROPERTY()
     bool bPlayWhilePaused;
-
 
 }
 

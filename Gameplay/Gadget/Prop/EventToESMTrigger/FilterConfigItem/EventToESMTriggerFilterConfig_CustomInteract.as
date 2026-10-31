@@ -1,11 +1,9 @@
-﻿
 enum ECustomInteractFilterType
 {
     Source,
     Target,
     SourceAndTarget,
 }
-
 
 struct FEventToESMTriggerFilterConfigItem_CustomInteract : FEventToESMTriggerFilterConfigItemBase
 {
@@ -20,7 +18,6 @@ struct FEventToESMTriggerFilterConfigItem_CustomInteract : FEventToESMTriggerFil
     bool bCheckCustomEventName = false;
     UPROPERTY()
     FName CustomEventName = NAME_None;
-
 
     bool ShouldEvaluateSource() const
     {

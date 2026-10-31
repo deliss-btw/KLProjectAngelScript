@@ -1,5 +1,3 @@
-﻿
-
 class UHTNTask_Dialogue_InteractSpeak : UHTNTask_ECSScriptBase
 {
     UPROPERTY()
@@ -75,13 +73,14 @@ class UHTNTask_Dialogue_InteractSimpleSpeakToAndOption : UHTNTask_ECSScriptBase
     {
         int local_10 = 0;
         FECSEntity local_4 = FECSEntity(Context.PawnEntity);
-        local_10.SpeakToAndOptionList.Add(TDataObjectPtr<FInteractSimpleSpeakToAndOption>());
+        local_10.SpeakToAndOptionList.Add(TDataObjectPtr<FInteractSimpleSpeakToAndOption>(this.SpeakToAndOption));
         return;
     }
     UFUNCTION()
     void OnFinished_Implementation(const FHTNContext &inout Context, const EHTNNodeResult Result)
     {
         FECSEntity local_4 = FECSEntity(Context.PawnEntity);
+        TDataObjectPtr<FInteractSimpleSpeakToAndOption> local_34 = TDataObjectPtr<FInteractSimpleSpeakToAndOption>(this.SpeakToAndOption);
         return;
     }
 }

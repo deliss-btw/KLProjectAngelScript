@@ -1,5 +1,3 @@
-﻿
-
 struct FT_CombatArealEffect : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -28,7 +26,6 @@ struct FT_CombatArealEffect : FECSTrait
     UPROPERTY()
     FC_CombatArealEffectFXConfig Config_FC_CombatArealEffectFXConfig;
 
-
 }
 
 struct FT_CombatArealEffectSpawner : FECSTrait
@@ -44,7 +41,6 @@ struct FT_CombatArealEffectSpawner : FECSTrait
     bool bHas_FC_CombatArealEffectFXConfig = false;
     UPROPERTY()
     FC_CombatArealEffectFXConfig Config_FC_CombatArealEffectFXConfig;
-
 
 }
 

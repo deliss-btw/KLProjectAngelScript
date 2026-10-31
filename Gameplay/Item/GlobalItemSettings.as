@@ -1,4 +1,3 @@
-﻿
 enum EItemTipActionId
 {
     AutoItemMain = 1,
@@ -7,7 +6,6 @@ enum EItemTipActionId
     QuickSlotReplace,
     Recharge,
 }
-
 
 struct FDefaultItemActionConfig
 {
@@ -86,12 +84,26 @@ class UGlobalItemSettings : UGameplaySettingsBase
     UPROPERTY()
     TArray<FEUIInputAction> ItemOperationSequencedInputActions;
 
-
     UFUNCTION()
     FInstancedStruct ComputeCacheData_Implementation() const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
-        FInstancedStruct __r; return __r;
+        FGlobalItemSettingsCache local_20;
+        UDataTable local_34 = Cast<UDataTable>(System::LoadAsset_Blocking((TSoftObjectPtr<UObject>(this.ItemTrunkTable))));
+        if (local_34 != nullptr)
+        {
+            TArray<FName> local_40;
+            local_34.GetRowNames(local_40);
+            for (auto& local_54 : local_40)
+            {
+                UDataTable::FindDataObject local_58;
+                TDataObjectPtr<FItemTrunkConfig> local_82 = local_58.opCall(local_54);
+                if (local_82)
+                {
+                    local_20.ItemTrunkConfigs.Add(local_82.opArrow().Trunk, local_82);
+                }
+            }
+        }
+        return FInstancedStruct::Make(local_20);
     }
     UClass GetItemDropPrefab(const FItemConfig &inout ItemConfig)
     {

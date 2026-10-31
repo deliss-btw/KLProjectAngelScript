@@ -1,5 +1,3 @@
-﻿
-
 class UMessageHintHandler_SimpleTips : UMessageHintHandler
 {
     UMessageHintHandler_SimpleTips()
@@ -36,7 +34,7 @@ void ShowTips(const FShowMessageHintParams &inout Params, const ECommonTipsType 
     TDataObjectPtr<FMessageHintConfig_SimpleTips> local_52 = local_28.opCall();
     if (!(!(local_52)))
     {
-        MessageHintUtils::ParseText(local_52.opArrow().Content, Params.GetArguments());
+        CommonPopup_Internal::OpenTips(MessageHintUtils::ParseText(local_52.opArrow().Content, Params.GetArguments()), local_52.opArrow().ExtraParam, ECommonTipsType(Type), TypeSpecificModels, nullptr);
     }
     return;
 }

@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_SyncDebugInfo_NS
 {
     const TECSComponentDerivedPtr<FC_SyncDebugInfo> DerivedPtr = TECSComponentDerivedPtr<FC_SyncDebugInfo>();
@@ -21,7 +20,13 @@ struct FBodyPartDebugEntry
 
     FBodyPartDebugEntry()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_RemainingHP = 0.0f;
+        this.m_MaxHP = 0.0f;
+        this.m_bDestroyed = false;
+        this.m_bHitBoxDisabled = false;
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        return;
     }
     FBodyPartDebugEntry(const FBodyPartDebugEntry &inout Other)
     {
@@ -29,6 +34,8 @@ struct FBodyPartDebugEntry
         this.m_MaxHP = 0.0f;
         this.m_bDestroyed = false;
         this.m_bHitBoxDisabled = false;
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
         this.m_PartName = Other.m_PartName;
         this.m_RemainingHP = Other.m_RemainingHP;
         this.m_MaxHP = Other.m_MaxHP;
@@ -128,11 +135,15 @@ struct FC_SyncDebugInfo : FECSComponent
 
     FC_SyncDebugInfo()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_SyncDebugInfo(const FC_SyncDebugInfo &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_Velocity = Other.m_Velocity;
         this.m_BodyPartEntries = Other.m_BodyPartEntries;
@@ -268,37 +279,37 @@ bool RemoveSyncDebugInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorSyncDebugInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_SyncDebugInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_SyncDebugInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSyncDebugInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_SyncDebugInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_SyncDebugInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSyncDebugInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_SyncDebugInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_SyncDebugInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSyncDebugInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_SyncDebugInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_SyncDebugInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSyncDebugInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_SyncDebugInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_SyncDebugInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorSyncDebugInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_SyncDebugInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_SyncDebugInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSyncDebugInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_SyncDebugInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_SyncDebugInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSyncDebugInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_SyncDebugInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_SyncDebugInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

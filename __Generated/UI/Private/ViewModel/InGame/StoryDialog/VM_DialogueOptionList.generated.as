@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_DialogueOptionList_Helpers
 {
 UFUNCTION()

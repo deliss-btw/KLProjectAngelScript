@@ -1,5 +1,3 @@
-﻿
-
 class US_FixedCameraSystem : UECSScriptSystem
 {
     US_FixedCameraSystem()
@@ -26,11 +24,11 @@ class US_FixedCameraSystem : UECSScriptSystem
     }
     void BlendToFixedCamera(const FFixedCameraData &inout FixedCamera, FCameraInstancedData &inout LastCameraData, FCameraInstancedData &inout CurrentCameraData, const float32 CameraWeight) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     void BlendToFixedCamera(const FFixedCameraPresentationData &inout FixedCamera, FCameraInstancedData &inout LastCameraData, FCameraInstancedData &inout CurrentCameraData, const float32 CameraWeight) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     UFUNCTION()
     void ClientJob_UpdateFixedCamera(const FECSEntity &inout Entity, const FCS_LocalPlayer &inout LocalPlayer) const

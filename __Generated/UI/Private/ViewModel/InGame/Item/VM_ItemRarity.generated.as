@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ItemRarity_Helpers
 {
 UFUNCTION()

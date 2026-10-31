@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_LockTarget_Helpers
 {
 UFUNCTION()

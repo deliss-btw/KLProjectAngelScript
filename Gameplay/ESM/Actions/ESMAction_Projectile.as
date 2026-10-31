@@ -1,5 +1,3 @@
-﻿
-
 struct FFireProjectileActionInstanceData
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ struct FFireProjectileActionInstanceData
     float FireModeTickCurrentTime;
     UPROPERTY()
     FRotator3f LastFireRotation;
-
 
 }
 
@@ -137,7 +134,6 @@ class UESMAction_FireProjectile : UESMBPBaseSpanTickAction
     UPROPERTY()
     FName TimelineInitState;
 
-
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const
     {
@@ -171,7 +167,7 @@ class UESMAction_FireProjectile : UESMBPBaseSpanTickAction
         {
             local_4 = FString().Append("<").Append(this.FireConfig.PositionAttachRefName.Name).Append("> ");
         }
-        return FString().Append(local_4).Append("е­ђеј№: ").Append(this.FireConfig.ProjectilePrefab.GetAssetName());
+        return FString().Append(local_4).Append("子弹: ").Append(this.FireConfig.ProjectilePrefab.GetAssetName());
     }
     UFUNCTION()
     EESMActionPredictPolicy GetPredictPolicy_Implementation() const
@@ -677,13 +673,10 @@ class UESMAction_FireProjectile : UESMBPBaseSpanTickAction
                 local_236.SetbUseCustomSampleTime(true);
                 float local_42_3 = Time.StateLastTime.ToSeconds();
                 local_236.SetSampleLastTime(float32(local_42_3));
-                float local_72_2 = Time.StateLastTime.ToSeconds();
-                local_236.SetSampleTime(float32(local_72_2));
+                local_236.SetSampleTime(float32(Time.StateLastTime.ToSeconds()));
                 local_236.SetDelaySampleTime(this.DelaySampleTime);
-                local_72_2 = Time.StateLastTime.ToSeconds();
-                local_236.SetFirstSampleTime(float32(local_72_2));
-                local_72_2 = Time.StateLastTime.ToSeconds();
-                local_268 = this.MoveWithCurve.GetVectorValue(float32(local_72_2));
+                local_236.SetFirstSampleTime(float32(Time.StateLastTime.ToSeconds()));
+                local_268 = this.MoveWithCurve.GetVectorValue(float32(Time.StateLastTime.ToSeconds()));
             }
             else
             {

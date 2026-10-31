@@ -1,4 +1,3 @@
-﻿
 const float32 THROW_PREDICT_DETACH_VISUAL_BLEND_TIME = 0.2f;
 const FConsoleVariable CVar_ThrowPredictMaxPathStartOffset = FConsoleVariable();
 
@@ -326,7 +325,6 @@ class US_ThrowSystem : UECSScriptSystem
         FECSWorldPtr local_4 = ECS::GetECSWorld();
         Get local_8;
         const FCS_ThrowPredictPathTrace& local_10 = local_8.opCall();
-        Get local_24;
         if (local_10)
         {
             bool local_113;
@@ -335,6 +333,7 @@ class US_ThrowSystem : UECSScriptSystem
                 return;
             }
             ECSFX::GetFXViewEntity(PredictPathFX.FXEntity);
+            Get local_24;
             if (local_24.opCall())
             {
                 AFXActor local_28;
@@ -536,7 +535,7 @@ class US_ThrowSystem : UECSScriptSystem
     UFUNCTION()
     void Job_ClearThrowPredictStateOnStableAttach(const FCE_EntityAttachmentOperation &inout Event) const
     {
-        int local_16;
+        int local_16 = 0;
         if (!(Event.bIsAttach))
         {
             return;
@@ -635,7 +634,155 @@ class US_ThrowSystem : UECSScriptSystem
     UFUNCTION()
     void Job_HandlePropDetachFromEntity(const FCE_EntityAttachmentOperation &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        bool local_1;
+        if (Event.bIsAttach)
+        {
+            return;
+        }
+        FECSEntity local_6 = FECSEntity(Event.Sender);
+        if (!(local_6.IsValid()))
+        {
+            return;
+        }
+        bool local_11 = ECS::GetRuntimeInfo().IsServer;
+        if (!(local_11))
+        {
+            local_11 = false;
+        }
+        else
+        {
+            Has local_10;
+            local_11 = local_10.opCall();
+        }
+        if (local_11)
+        {
+            return;
+        }
+        FThrowTargetInfo local_18;
+        bool local_19 = false;
+        Get local_24;
+        const FC_ThrowPredictPathKey& local_26 = local_24.opCall();
+        if (local_26)
+        {
+            if (int(local_26.GetKeyInfo().GetTargetType()) == 1 && (FECSEntityId(local_26.GetKeyInfo().GetPropEntityId()) == local_6.GetId()))
+            {
+                local_18 = local_26.GetKeyInfo();
+                local_19 = true;
+            }
+        }
+        bool local_32 = false;
+        if (local_19)
+        {
+            Get local_38;
+            FECSWorldPtr local_34 = ECS::GetECSWorld();
+            const FCS_ThrowPredictPathTrace& local_40 = local_38.opCall();
+            if (local_40)
+            {
+                FKLPredictProjectilePathResult local_70;
+                local_32 = local_40.PathTraceResults.Find(local_18, local_70);
+            }
+        }
+        else
+        {
+            Get local_38;
+            bool local_11_2 = ECS::GetRuntimeInfo().IsClient;
+            if (local_11_2)
+            {
+                local_32 = ::FThrowUtils::GetMatchedThrowTargetInfo(local_6, local_18, false);
+                local_19 = local_32;
+            }
+            else
+            {
+                local_1 = ECS::GetRuntimeInfo().IsServer;
+                if (local_1)
+                {
+                    FThrowTargetInfo local_76;
+                    if (::FThrowUtils::GetMatchedThrowTargetInfo(local_6, local_76, false))
+                    {
+                        FECSEntity local_80 = FECSEntity(local_76.GetOwnerId());
+                        FThrowPredictPathData local_156;
+                        if (local_80.IsValid())
+                        {
+                            Get local_160;
+                            const FC_ThrowPredictPathData& local_162 = local_160.opCall();
+                            if (local_162)
+                            {
+                                if (local_162.ThrowPathDataMap.Find(local_76, local_156))
+                                {
+                                    FECSWorldPtr local_34_2 = ECS::GetECSWorld();
+                                    const FCS_ThrowPredictPathTrace& local_40_2 = local_38.opCall();
+                                    if (local_40_2)
+                                    {
+                                        FKLPredictProjectilePathResult local_70;
+                                        if (local_40_2.PathTraceResults.Find(local_76, local_70) && (local_70.PathData.Num() > 0))
+                                        {
+                                            local_18 = local_76;
+                                            local_19 = true;
+                                            local_32 = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        local_1 = false;
+        bool local_164 = local_1;
+        if (!(local_19))
+        {
+            local_1 = false;
+        }
+        else
+        {
+            Has local_168;
+            local_1 = local_168.opCall();
+        }
+        if (local_1)
+        {
+            const FC_ThrowPredictPathKey& local_26_2 = local_24.opCall();
+            if (local_26_2)
+            {
+                local_164 = int(local_26_2.GetKeyInfo().GetTargetType()) == int(local_18.GetTargetType()) && (FECSEntityId(local_26_2.GetKeyInfo().GetOwnerId()) == local_18.GetOwnerId()) && (FECSEntityId(local_26_2.GetKeyInfo().GetPropEntityId()) == local_18.GetPropEntityId()) && (local_26_2.GetKeyInfo().GetProjectileKey() == local_18.GetProjectileKey());
+            }
+        }
+        bool local_174 = true;
+        Get local_178;
+        const FC_MovementInfo& local_180 = local_178.opCall();
+        if (local_180)
+        {
+            local_174 = (FFPTime(local_180.GetMoveTime()).opCmp(0.0) <= 0);
+        }
+        local_1 = ECS::GetRuntimeInfo().IsServer;
+        if (local_1)
+        {
+            local_1 = true;
+        }
+        else
+        {
+            Has local_188;
+            local_1 = local_188.opCall();
+        }
+        if (local_1)
+        {
+            if (!(local_164))
+            {
+                Remove local_192;
+                local_192.opCall();
+                Remove local_196;
+                if (local_196.opCall())
+                {
+                    ModifyOrAdd local_200;
+                    local_200.opCall().SetKeyInfo(local_18);
+                }
+            }
+        }
+        if ((local_32 && !(local_164)) && local_174)
+        {
+            ::FThrowUtils::MatchPredictPath(local_6);
+        }
+        return;
     }
     UFUNCTION()
     void Job_TryMatchPendingPropPredictPath(const FECSEntity &inout Entity, const FC_MovementInfo &inout MovementInfo, const FC_ThrowPredictPathKey &inout ThrowPathKey) const

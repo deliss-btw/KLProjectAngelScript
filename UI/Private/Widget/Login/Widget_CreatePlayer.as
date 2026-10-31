@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CreatePlayer
 {
     const int ViewID = 0;
@@ -128,7 +127,6 @@ class UWidget_CreatePlayer : UEUIActivatableWidget
         {
             return;
         }
-        InText.OnNicknameTextCommitted();
         this.RefreshBtnState();
         return;
     }
@@ -376,6 +374,7 @@ namespace UWidget_CreatePlayer
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CreatePlayer;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedFashionSlotTypeIndexChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCreatePlayerPhaseChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCreatePlayerPhaseChanged_ResetFocus"));

@@ -1,5 +1,3 @@
-﻿
-
 class AKLLevelScriptTutorialCombatDouble : AKLLevelScriptTutorialActor
 {
     UPROPERTY()
@@ -53,7 +51,6 @@ class AKLLevelScriptTutorialCombatDouble : AKLLevelScriptTutorialActor
     TArray<FName> StepConfigKeys;
     bool bPendingMobMoveOnly = false;
     bool bPendingMobInvincible = false;
-
 
     UFUNCTION()
     void OnTutorialStep_Implementation(const int InStepIndex)
@@ -154,7 +151,7 @@ class AKLLevelScriptTutorialCombatDouble : AKLLevelScriptTutorialActor
     }
     FTutorialInfo GetStepInfo(const int Step)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         FTutorialInfo __r; return __r;
     }
     void InitAllStepInfos()
@@ -242,7 +239,7 @@ class AKLLevelScriptTutorialCombatDouble : AKLLevelScriptTutorialActor
         local_38.BindUFunction(this, n"OnSkillTriggerResponded");
         if (this.DivineSkillTriggerNames.Num() == 0)
         {
-            XWarning(ELog(22), "[TutorialDouble] DivineSkillTriggerNames жњЄй…ЌзЅ®пјЊstep3 зҐћж јжЉЂе€¤е®ље°†ж— жі•е®Њж€ђ");
+            XWarning(ELog(22), "[TutorialDouble] DivineSkillTriggerNames 未配置，step3 神格技判定将无法完成");
         }
         for (auto& local_34 : local_8)
         {
@@ -264,17 +261,29 @@ class AKLLevelScriptTutorialCombatDouble : AKLLevelScriptTutorialActor
         int local_5 = 0;
         for (; local_5 < local_2; )
         {
-            this.Step1Info.GetModify_StepProgress()[0].SetMaxProgress();
+            this.Step1Info.GetModify_StepProgress()[local_5].SetMaxProgress(0);
             ++local_5;
         }
-        this.Step1Info.GetModify_StepProgress()[2].SetMaxProgress();
+        this.Step1Info.GetModify_StepProgress()[local_2].SetMaxProgress(2);
         Super::BeginStepTutorial(this.Step1Info);
         this.DestroyAllMonsters();
         return;
     }
     void SetupStep_UsePotion()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        CastTo local_4;
+        TDataObjectPtr<FItemConfig> local_28 = local_4.opCall();
+        if (local_28.IsSet() && (::InventoryUtils::GetInventoryItemNumber(this.PlayerPawnEntity, local_28) <= 0))
+        {
+            ::InventoryUtils::AddInventoryItem(this.PlayerPawnEntity, local_28, 1);
+        }
+        ::BlueprintFunctions_Level::Level_SetHPToRatio(FECSEntityAdapter(this.PlayerPawnEntity), 0.5f);
+        if (this.Step2Info.GetStepProgress().Num() > 1)
+        {
+            this.Step2Info.GetModify_StepProgress()[0].SetMaxProgress(0);
+        }
+        Super::BeginStepTutorial(this.Step2Info);
+        return;
     }
     void SetupStep_UseDivineSkill()
     {
@@ -288,7 +297,21 @@ class AKLLevelScriptTutorialCombatDouble : AKLLevelScriptTutorialActor
     }
     void ResetDivineSkillCD()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (!(this.PlayerPawnEntity.IsValid()))
+        {
+            return;
+        }
+        FECSWorldPtr local_6 = ECS::GetECSWorld();
+        if (!(local_6.IsValid()))
+        {
+            return;
+        }
+        int local_9 = FSkillUtils::GetSkillIndex(this.PlayerPawnEntity, ESkillSlot(7));
+        if (local_9 != INDEX_NONE)
+        {
+            FSkillUtils::RecoverSkillCD(this.PlayerPawnEntity, local_9, local_6.GetFixedTime().Time, 1.0f);
+        }
+        return;
     }
     void SetupStep_SwitchAttack()
     {
@@ -301,10 +324,10 @@ class AKLLevelScriptTutorialCombatDouble : AKLLevelScriptTutorialActor
         int local_5 = 0;
         for (; local_5 < local_2; )
         {
-            this.Step4Info.GetModify_StepProgress()[0].SetMaxProgress();
+            this.Step4Info.GetModify_StepProgress()[local_5].SetMaxProgress(0);
             ++local_5;
         }
-        this.Step4Info.GetModify_StepProgress()[2].SetMaxProgress();
+        this.Step4Info.GetModify_StepProgress()[local_2].SetMaxProgress(2);
         Super::BeginStepTutorial(this.Step4Info);
         this.SpawnMobHammer(true, true);
         return;
@@ -314,7 +337,7 @@ class AKLLevelScriptTutorialCombatDouble : AKLLevelScriptTutorialActor
         int local_1 = 0;
         for (; local_1 < (this.Step5Info.GetModify_StepProgress().Num() - 1); )
         {
-            this.Step5Info.GetModify_StepProgress()[0].SetMaxProgress();
+            this.Step5Info.GetModify_StepProgress()[local_1].SetMaxProgress(0);
             ++local_1;
         }
         Super::BeginStepTutorial(this.Step5Info);
@@ -333,10 +356,10 @@ class AKLLevelScriptTutorialCombatDouble : AKLLevelScriptTutorialActor
         int local_5 = 0;
         for (; local_5 < local_2; )
         {
-            this.Step6Info.GetModify_StepProgress()[0].SetMaxProgress();
+            this.Step6Info.GetModify_StepProgress()[local_5].SetMaxProgress(0);
             ++local_5;
         }
-        this.Step6Info.GetModify_StepProgress()[2].SetMaxProgress();
+        this.Step6Info.GetModify_StepProgress()[local_2].SetMaxProgress(2);
         Super::BeginStepTutorial(this.Step6Info);
         this.DestroyMobHammer();
         this.SpawnStep6Monsters();
@@ -347,7 +370,7 @@ class AKLLevelScriptTutorialCombatDouble : AKLLevelScriptTutorialActor
         int local_1 = 0;
         for (; local_1 < this.Step7Info.GetModify_StepProgress().Num(); )
         {
-            this.Step7Info.GetModify_StepProgress()[0].SetMaxProgress();
+            this.Step7Info.GetModify_StepProgress()[local_1].SetMaxProgress(0);
             ++local_1;
         }
         Super::BeginStepTutorial(this.Step7Info);
@@ -361,7 +384,7 @@ class AKLLevelScriptTutorialCombatDouble : AKLLevelScriptTutorialActor
         int local_1 = 0;
         for (; local_1 < this.Step8Info.GetModify_StepProgress().Num(); )
         {
-            this.Step8Info.GetModify_StepProgress()[0].SetMaxProgress();
+            this.Step8Info.GetModify_StepProgress()[local_1].SetMaxProgress(0);
             ++local_1;
         }
         Super::BeginStepTutorial(this.Step8Info);
@@ -547,7 +570,7 @@ class AKLLevelScriptTutorialCombatDouble : AKLLevelScriptTutorialActor
     void OnMobHammerCreateFinish(const FECSEntity &inout Entity)
     {
         this.SpawnedMobHammer = Entity;
-        Super::SetupMonster(Entity, this.bPendingMobMoveOnly, this.bPendingMobInvincible, -1);
+        Super::SetupMonster(Entity, (this.bPendingMobMoveOnly), (this.bPendingMobInvincible), -1);
         return;
     }
     void DestroyMobHammer()

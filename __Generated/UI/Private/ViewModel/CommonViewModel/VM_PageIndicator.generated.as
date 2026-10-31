@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_PageIndicator_Helpers
 {
 UFUNCTION()

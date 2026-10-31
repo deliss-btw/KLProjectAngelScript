@@ -1,5 +1,3 @@
-﻿
-
 class UItemActionTrigger_DropOnGround : UItemActionTriggerBase
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ class UItemActionTrigger_DropOnGround : UItemActionTriggerBase
     int Num = 1;
     UPROPERTY()
     float32 RatePercentage = 100.0f;
-
 
     void Execute(const FItemActionSource &inout ActionSource) const
     {

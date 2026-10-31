@@ -1,5 +1,3 @@
-﻿
-
 class US_GTCRemoteRecord : UECSScriptSystem
 {
     US_GTCRemoteRecord()

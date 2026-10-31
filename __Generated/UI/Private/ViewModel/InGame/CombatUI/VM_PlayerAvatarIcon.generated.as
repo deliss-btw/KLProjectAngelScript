@@ -1,5 +1,3 @@
-﻿
-
 struct FVM_PlayerAvatarIconConfigDefault : FConfigEUIModelDefaultBase
 {
     UPROPERTY()

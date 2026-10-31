@@ -1,9 +1,7 @@
-﻿
-
 struct FVMS_MotionPageConfigDefault : FConfigEUIModelDefaultBase
 {
     UPROPERTY()
-    UDataTable MotionDataTable;
+    UDataTable MotionDataTable = nullptr;
 
     FVMS_MotionPageConfigDefault()
     {

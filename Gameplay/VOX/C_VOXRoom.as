@@ -1,4 +1,3 @@
-﻿
 enum EVOXChannelType
 {
     Social,
@@ -50,11 +49,28 @@ struct FC_PlayerVOXState : FECSComponent
 
     FC_PlayerVOXState()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bInSocialRoom = false;
+        this.m_bInBattleRoom = false;
+        this.m_LastSocialTeamId = 0;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_PlayerVOXState(const FC_PlayerVOXState &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_5;
+        this.__DirtyFlags = local_5;
+        this.m_bInSocialRoom = false;
+        this.m_bInBattleRoom = false;
+        this.m_LastSocialTeamId = 0;
+        this.__InitDirtyFlags();
+        this.m_SocialRoomId = Other.m_SocialRoomId;
+        this.m_bInSocialRoom = Other.m_bInSocialRoom;
+        this.m_BattleRoomId = Other.m_BattleRoomId;
+        this.m_bInBattleRoom = Other.m_bInBattleRoom;
+        this.m_LastSocialTeamId = Other.m_LastSocialTeamId;
+        return;
     }
     FC_PlayerVOXState opAssign(const FC_PlayerVOXState &inout Other)
     {
@@ -148,7 +164,6 @@ struct FCS_ClientVOXState : FECSSingleton
     UPROPERTY()
     TArray<uint> MutedPlayerUids;
 
-
 }
 
 struct FCE_VOXModeRestored : FECSEvent
@@ -238,37 +253,37 @@ bool RemovePlayerVOXState(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPlayerVOXStateOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerVOXState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerVOXState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerVOXStateOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerVOXState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerVOXState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerVOXStateOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerVOXState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerVOXState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerVOXStateOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerVOXState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerVOXState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerVOXStateOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerVOXState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerVOXState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPlayerVOXStateLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PlayerVOXState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PlayerVOXState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerVOXStateActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PlayerVOXState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PlayerVOXState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerVOXStateModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PlayerVOXState, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PlayerVOXState, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_ClientVOXState
@@ -359,17 +374,17 @@ bool RemoveClientVOXState(const FECSWorldPtr &inout World)
 }
 void __MonitorClientVOXStateLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_ClientVOXState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_ClientVOXState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorClientVOXStateActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_ClientVOXState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_ClientVOXState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorClientVOXStateModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_ClientVOXState, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_ClientVOXState, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

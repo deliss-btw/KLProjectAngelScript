@@ -1,5 +1,3 @@
-﻿
-
 struct FLineInteractFxInstanceData
 {
     UPROPERTY()
@@ -29,7 +27,6 @@ class UESMAction_LineInteractFx : UESMBPBaseSpanAction
     FVector RelativeOffset = FVector(500.0, 0.0, 100.0);
     UPROPERTY()
     EFXActionExitMode FXActionExitMode = EFXActionExitMode(2);
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetViewInstanceDataInfo_Implementation() const
@@ -164,7 +161,6 @@ UFUNCTION()
 FVector GetLineInteractTargetLocation(const FECSEntity &inout Entity, const FECSEntity &inout OwnerEntity, bool &out bHasValidTarget)
 {
     FC_LineInteractTargetData local_8;
-    FName local_22;
     const AActor local_26;
     USkeletalMeshComponent local_28;
     int local_68 = 0;
@@ -180,9 +176,9 @@ FVector GetLineInteractTargetLocation(const FECSEntity &inout Entity, const FECS
     {
     case 0:
     {
-        FNameHandle_EntityBBVarVector local_16;
+            FNameHandle_EntityBBVarVector local_16;
         local_16;
-        return local_22;
+        return OwnerEntity.GetBB_Vector(local_16);
     }
     case 1:
     {
@@ -194,16 +190,14 @@ FVector GetLineInteractTargetLocation(const FECSEntity &inout Entity, const FECS
                 local_28 = (Cast<USkeletalMeshComponent>(local_26.GetDefaultAttachComponent()));
                 if (local_28 != nullptr)
                 {
-                    FTransform local_60 = local_28.GetSocketTransform(local_8.BoneName, ERelativeTransformSpace(0));
-                    return local_22;
+                    return local_28.GetSocketTransform(local_8.BoneName, ERelativeTransformSpace(0)).TransformPosition(local_8.Offset);
                 }
                 USceneComponent local_62 = local_26.GetDefaultAttachComponent();
                 if (local_62 != nullptr)
                 {
-                    FTransform local_60_2 = local_62.GetWorldTransform();
-                    return local_22;
+                    return local_62.GetWorldTransform().TransformPosition(local_8.Offset);
                 }
-                return local_22;
+                return local_26.GetActorTransform().TransformPosition(local_8.Offset);
             }
         }
         else
@@ -222,15 +216,14 @@ FVector GetLineInteractTargetLocation(const FECSEntity &inout Entity, const FECS
     }
     case 2:
     {
-        return local_22;
+        return OwnerEntity.GetBB_Vector(local_8.TargetBBName);
     }
     case 3:
     {
         local_26 = OwnerEntity.GetBB_Entity(local_8.TargetEntity).GetActor();
         if (local_26 != nullptr)
         {
-            local_26.GetActorLocation();
-            return local_22;
+            return local_26.GetActorLocation();
         }
         bHasValidTarget = false;
         return FVector::ZeroVector;

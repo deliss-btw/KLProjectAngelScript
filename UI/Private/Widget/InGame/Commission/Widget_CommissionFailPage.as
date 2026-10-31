@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommissionFailPage
 {
     const int ViewID = 0;
@@ -30,7 +29,8 @@ class UWidget_CommissionFailPage : UEUIUserWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        this.TextBlock_LeaveTips.SetText(FText::FromString(this.LeaveTipsTemplate.Replace("{Time}", String::Conv_IntToString(FMath::CeilToInt(FMath::Max(0.0, GetLeaveTime() - (this.GetWorld().GetTimeSeconds() - this.ShowStartTime)))), ESearchCase(1))));
+        int local_13 = FMath::CeilToInt(FMath::Max(0.0, GetLeaveTime() - (this.GetWorld().GetTimeSeconds() - this.ShowStartTime)));
+        this.TextBlock_LeaveTips.SetText(FText::FromString(this.LeaveTipsTemplate.Replace("{Time}", String::Conv_IntToString(local_13), ESearchCase(1))));
         return;
     }
     UFUNCTION()
@@ -54,6 +54,7 @@ namespace UWidget_CommissionFailPage
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionFailPage;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

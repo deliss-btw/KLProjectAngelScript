@@ -1,5 +1,3 @@
-﻿
-
 class US_StoryDialogSystem : US_EUIGroupScriptSystemBase
 {
     UPROPERTY()

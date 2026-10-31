@@ -1,4 +1,3 @@
-﻿
 namespace FrontendSystemUtil
 {
 bool IsSystemOpen(const FECSEntity &inout PlayerEntity, const UFrontendSystemConfig FrontendSystem)

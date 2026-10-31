@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_MobilePageEntrance
 {
     const int ViewID = 0;
@@ -48,6 +47,7 @@ namespace UWidget_MobilePageEntrance
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MobilePageEntrance;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

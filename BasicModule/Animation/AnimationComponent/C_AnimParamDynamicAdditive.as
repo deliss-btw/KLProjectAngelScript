@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_AnimParamDynamicAdditiveConfig_NS
 {
     const TECSComponentDerivedPtr<FC_AnimParamDynamicAdditiveConfig> DerivedPtr = TECSComponentDerivedPtr<FC_AnimParamDynamicAdditiveConfig>();
@@ -23,11 +22,15 @@ struct FC_AnimParamDynamicAdditiveConfig : FECSComponent
 
     FC_AnimParamDynamicAdditiveConfig()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_AnimParamDynamicAdditiveConfig(const FC_AnimParamDynamicAdditiveConfig &inout Other)
     {
+        FRootDirtyFlags8 local_25;
+        this.__DirtyFlags = local_25;
         this.__InitDirtyFlags();
         this.m_ConfigPtr = Other.m_ConfigPtr;
         return;
@@ -76,6 +79,8 @@ struct FC_AnimParamDynamicAdditive : FECSComponent
     {
         this.m_TargetSequenceAsset = nullptr;
         this.m_SourceSequenceAsset = nullptr;
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
@@ -83,6 +88,8 @@ struct FC_AnimParamDynamicAdditive : FECSComponent
     {
         this.m_TargetSequenceAsset = nullptr;
         this.m_SourceSequenceAsset = nullptr;
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_TargetSequenceAsset = Other.m_TargetSequenceAsset;
         this.m_SourceSequenceAsset = Other.m_SourceSequenceAsset;
@@ -178,7 +185,6 @@ class UESMAction_AnimDynamicAdditive : UESMBPBaseSpanTickAction
     FName AnimLayer = n"MainLayer";
     UPROPERTY()
     float32 CleanupAfterStateTime = 0.2f;
-
 
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
@@ -347,37 +353,37 @@ bool RemoveAnimParamDynamicAdditiveConfig(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAnimParamDynamicAdditiveConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimParamDynamicAdditiveConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimParamDynamicAdditiveConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimParamDynamicAdditiveConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimParamDynamicAdditiveConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimParamDynamicAdditiveConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimParamDynamicAdditiveConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimParamDynamicAdditiveConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimParamDynamicAdditiveConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimParamDynamicAdditiveConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimParamDynamicAdditiveConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimParamDynamicAdditiveConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimParamDynamicAdditiveConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimParamDynamicAdditiveConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimParamDynamicAdditiveConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAnimParamDynamicAdditiveConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AnimParamDynamicAdditiveConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AnimParamDynamicAdditiveConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimParamDynamicAdditiveConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AnimParamDynamicAdditiveConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AnimParamDynamicAdditiveConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimParamDynamicAdditiveConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AnimParamDynamicAdditiveConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AnimParamDynamicAdditiveConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AnimParamDynamicAdditive
@@ -457,37 +463,37 @@ bool RemoveAnimParamDynamicAdditive(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAnimParamDynamicAdditiveOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimParamDynamicAdditive, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimParamDynamicAdditive, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimParamDynamicAdditiveOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimParamDynamicAdditive, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimParamDynamicAdditive, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimParamDynamicAdditiveOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimParamDynamicAdditive, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimParamDynamicAdditive, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimParamDynamicAdditiveOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimParamDynamicAdditive, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimParamDynamicAdditive, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimParamDynamicAdditiveOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimParamDynamicAdditive, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimParamDynamicAdditive, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAnimParamDynamicAdditiveLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AnimParamDynamicAdditive, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AnimParamDynamicAdditive, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimParamDynamicAdditiveActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AnimParamDynamicAdditive, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AnimParamDynamicAdditive, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimParamDynamicAdditiveModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AnimParamDynamicAdditive, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AnimParamDynamicAdditive, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

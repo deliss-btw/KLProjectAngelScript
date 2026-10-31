@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_LevelInfo_Helpers
 {
 UFUNCTION()

@@ -1,4 +1,3 @@
-﻿
 enum EProgressOperationActionTime
 {
     Invalid,
@@ -37,7 +36,6 @@ enum EProgressOperationBaseType
     InputPushProgress,
 }
 
-
 struct FProgressOperationAction
 {
     UPROPERTY()
@@ -49,7 +47,7 @@ struct FProgressOperationAction
     }
     void ActivateAction(FC_ProgressOperationRuntime &inout Runtime, const FECSEntity &inout TriggerEntity) const
     {
-        0.ActionClass.GetDefaultObject().Activate(Runtime, TriggerEntity, this);
+        0.ActionClass.GetDefaultObject().Activate(Runtime, TriggerEntity, this.InstanceData);
         return;
     }
 }
@@ -64,7 +62,6 @@ struct FProgressOperationInputAction
     UESMInputTriggerAsset InputTrigger = nullptr;
     UPROPERTY()
     TArray<FProgressOperationAction> Actions;
-
 
 }
 
@@ -99,7 +96,6 @@ struct FProgressOperationViewData
     bool bIsInitiator = false;
     UPROPERTY()
     bool bIsLeave = false;
-
 
 }
 
@@ -145,8 +141,7 @@ class UProgressOperation_SimpleProgress : UProgressOperationBase
         if (int(Runtime.GetState()) == 0)
         {
             FProgressOperationActionArray local_10;
-            int local_11 = 1;
-            if (local_2.Actions.Find(local_10, local_11))
+            if (local_2.Actions.Find(EProgressOperationActionTime(1), local_10))
             {
                 for (auto& local_26 : local_10.Actions)
                 {
@@ -156,7 +151,7 @@ class UProgressOperation_SimpleProgress : UProgressOperationBase
         }
         EProgressOperationState local_27;
         local_27 = Runtime.GetState();
-        Runtime.SetState(EProgressOperationState(Runtime.GetNextState()));
+        Runtime.SetState(Runtime.GetNextState());
         if (int(Runtime.GetState()) == 1)
         {
             FFPTime local_30 = (Runtime.GetCurTime() + DeltaTime);
@@ -165,14 +160,13 @@ class UProgressOperation_SimpleProgress : UProgressOperationBase
             Runtime.SetProgressValue(FMath::Clamp(Runtime.GetProgressValue(), 0.0f, Runtime.GetProgressMaxValue()));
             if (Runtime.GetProgressValue() >= Runtime.GetProgressMaxValue())
             {
-                EProgressOperationState local_3_2 = EProgressOperationState(2);
-                Runtime.SetState(EProgressOperationState(local_3_2));
+                Runtime.SetState(EProgressOperationState(2));
             }
             else
             {
                 if (FFPTime(Runtime.GetCurTime()).opCmp(Runtime.GetTotalTime()) >= 0)
                 {
-                    Runtime.SetState(EProgressOperationState(EProgressOperationState(4)));
+                    Runtime.SetState(EProgressOperationState(4));
                 }
             }
         }
@@ -182,11 +176,10 @@ class UProgressOperation_SimpleProgress : UProgressOperationBase
             local_37 = local_2.bAutoSuccessOnProgressDone;
             if (local_37)
             {
-                Runtime.SetState(EProgressOperationState(EProgressOperationState(3)));
+                Runtime.SetState(EProgressOperationState(3));
             }
             FProgressOperationActionArray local_10;
-            int local_11_2 = 2;
-            if (local_2.Actions.Find(local_10, local_11_2))
+            if (local_2.Actions.Find(EProgressOperationActionTime(2), local_10))
             {
                 for (auto& local_26 : local_10.Actions)
                 {
@@ -199,26 +192,26 @@ class UProgressOperation_SimpleProgress : UProgressOperationBase
             bool local_37;
             int local_38;
             FProgressOperationActionArray local_10;
-            int local_11_3 = 0;
-            local_38 = local_11_3;
+            int local_11 = 0;
+            local_38 = local_11;
             switch (int(Runtime.GetState()))
             {
             case 3:
             {
-                local_11_3 = 3;
-                local_38 = local_11_3;
+                local_11 = 3;
+                local_38 = local_11;
                 break;
             }
             case 4:
             {
-                local_11_3 = 4;
-                local_38 = local_11_3;
+                local_11 = 4;
+                local_38 = local_11;
                 break;
             }
             case 5:
             {
-                local_11_3 = 5;
-                local_38 = local_11_3;
+                local_11 = 5;
+                local_38 = local_11;
                 break;
             }
             }
@@ -229,7 +222,7 @@ class UProgressOperation_SimpleProgress : UProgressOperationBase
             }
             else
             {
-                local_37 = local_2.Actions.Find(local_10, local_38);
+                local_37 = local_2.Actions.Find(EProgressOperationActionTime(local_38), local_10);
             }
             if (local_37)
             {
@@ -268,8 +261,7 @@ class UProgressOperation_SingleRangeProgress : UProgressOperationBase
         if (int(Runtime.GetState()) == 0)
         {
             FProgressOperationActionArray local_10;
-            int local_11 = 1;
-            if (local_2.Actions.Find(local_10, local_11))
+            if (local_2.Actions.Find(EProgressOperationActionTime(1), local_10))
             {
                 for (auto& local_26 : local_10.Actions)
                 {
@@ -279,7 +271,7 @@ class UProgressOperation_SingleRangeProgress : UProgressOperationBase
         }
         EProgressOperationState local_27;
         local_27 = Runtime.GetState();
-        Runtime.SetState(EProgressOperationState(Runtime.GetNextState()));
+        Runtime.SetState(Runtime.GetNextState());
         if (int(Runtime.GetState()) == 1)
         {
             FFPTime local_30 = (Runtime.GetCurTime() + DeltaTime);
@@ -295,12 +287,11 @@ class UProgressOperation_SingleRangeProgress : UProgressOperationBase
                 local_35 = Runtime.GetProgressValueWhenAccurateInput() / Runtime.GetProgressMaxValue();
                 if (local_35 >= local_2.RangeStartRatio && (local_35 <= local_2.RangeEndRatio))
                 {
-                    EProgressOperationState local_3_2 = EProgressOperationState(2);
-                    Runtime.SetState(EProgressOperationState(local_3_2));
+                    Runtime.SetState(EProgressOperationState(2));
                 }
                 else
                 {
-                    Runtime.SetState(EProgressOperationState(EProgressOperationState(5)));
+                    Runtime.SetState(EProgressOperationState(5));
                 }
             }
             else
@@ -310,13 +301,13 @@ class UProgressOperation_SingleRangeProgress : UProgressOperationBase
                     float32 local_38 = Runtime.GetProgressValue() / Runtime.GetProgressMaxValue();
                     if (local_38 >= local_2.RangeStartRatio && (local_38 <= local_2.RangeEndRatio))
                     {
-                        Runtime.SetState(EProgressOperationState(EProgressOperationState(2)));
+                        Runtime.SetState(EProgressOperationState(2));
                     }
                     else
                     {
                         if (FFPTime(Runtime.GetCurTime()).opCmp(Runtime.GetTotalTime()) >= 0)
                         {
-                            Runtime.SetState(EProgressOperationState(EProgressOperationState(4)));
+                            Runtime.SetState(EProgressOperationState(4));
                         }
                     }
                 }
@@ -324,7 +315,7 @@ class UProgressOperation_SingleRangeProgress : UProgressOperationBase
                 {
                     if (FFPTime(Runtime.GetCurTime()).opCmp(Runtime.GetTotalTime()) >= 0)
                     {
-                        Runtime.SetState(EProgressOperationState(EProgressOperationState(4)));
+                        Runtime.SetState(EProgressOperationState(4));
                     }
                 }
             }
@@ -335,11 +326,10 @@ class UProgressOperation_SingleRangeProgress : UProgressOperationBase
             local_6 = local_2.bAutoSuccessOnProgressDone;
             if (local_6)
             {
-                Runtime.SetState(EProgressOperationState(EProgressOperationState(3)));
+                Runtime.SetState(EProgressOperationState(3));
             }
             FProgressOperationActionArray local_10;
-            int local_11_2 = 2;
-            if (local_2.Actions.Find(local_10, local_11_2))
+            if (local_2.Actions.Find(EProgressOperationActionTime(2), local_10))
             {
                 for (auto& local_26 : local_10.Actions)
                 {
@@ -352,26 +342,26 @@ class UProgressOperation_SingleRangeProgress : UProgressOperationBase
             bool local_6;
             int local_39;
             FProgressOperationActionArray local_10;
-            int local_11_3 = 0;
-            local_39 = local_11_3;
+            int local_11 = 0;
+            local_39 = local_11;
             switch (int(Runtime.GetState()))
             {
             case 3:
             {
-                local_11_3 = 3;
-                local_39 = local_11_3;
+                local_11 = 3;
+                local_39 = local_11;
                 break;
             }
             case 4:
             {
-                local_11_3 = 4;
-                local_39 = local_11_3;
+                local_11 = 4;
+                local_39 = local_11;
                 break;
             }
             case 5:
             {
-                local_11_3 = 5;
-                local_39 = local_11_3;
+                local_11 = 5;
+                local_39 = local_11;
                 break;
             }
             }
@@ -381,7 +371,7 @@ class UProgressOperation_SingleRangeProgress : UProgressOperationBase
             }
             else
             {
-                local_6 = local_2.Actions.Find(local_10, local_39);
+                local_6 = local_2.Actions.Find(EProgressOperationActionTime(local_39), local_10);
             }
             if (local_6)
             {
@@ -420,8 +410,7 @@ class UProgressOperation_InputPushProgress : UProgressOperationBase
         if (int(Runtime.GetState()) == 0)
         {
             FProgressOperationActionArray local_10;
-            int local_11 = 1;
-            if (local_2.Actions.Find(local_10, local_11))
+            if (local_2.Actions.Find(EProgressOperationActionTime(1), local_10))
             {
                 for (auto& local_26 : local_10.Actions)
                 {
@@ -431,7 +420,7 @@ class UProgressOperation_InputPushProgress : UProgressOperationBase
         }
         EProgressOperationState local_27;
         local_27 = Runtime.GetState();
-        Runtime.SetState(EProgressOperationState(Runtime.GetNextState()));
+        Runtime.SetState(Runtime.GetNextState());
         if (int(Runtime.GetState()) == 1)
         {
             FFPTime local_30 = (Runtime.GetCurTime() + DeltaTime);
@@ -441,20 +430,19 @@ class UProgressOperation_InputPushProgress : UProgressOperationBase
             Runtime.SetProgressValue(Runtime.GetProgressValue() + ((local_2.ReversePushProgressForceByPos.GetFloatValue(Runtime.GetProgressValue(), 0.0f) * local_2.ReversePushProgressForceByTime.GetFloatValue(float32(Runtime.GetCurTime().ToSeconds()), 0.0f)) * float32(DeltaTime.ToSeconds())));
             if (Runtime.GetProgressValue() >= Runtime.GetProgressMaxValue())
             {
-                EProgressOperationState local_3_2 = EProgressOperationState(2);
-                Runtime.SetState(EProgressOperationState(local_3_2));
+                Runtime.SetState(EProgressOperationState(2));
             }
             else
             {
                 if (Runtime.GetProgressValue() < 0.0f)
                 {
-                    Runtime.SetState(EProgressOperationState(EProgressOperationState(5)));
+                    Runtime.SetState(EProgressOperationState(5));
                 }
                 else
                 {
                     if (FFPTime(Runtime.GetCurTime()).opCmp(Runtime.GetTotalTime()) >= 0)
                     {
-                        Runtime.SetState(EProgressOperationState(EProgressOperationState(4)));
+                        Runtime.SetState(EProgressOperationState(4));
                     }
                 }
             }
@@ -463,11 +451,10 @@ class UProgressOperation_InputPushProgress : UProgressOperationBase
         {
             if (local_2.bAutoSuccessOnProgressDone)
             {
-                Runtime.SetState(EProgressOperationState(EProgressOperationState(3)));
+                Runtime.SetState(EProgressOperationState(3));
             }
             FProgressOperationActionArray local_10;
-            int local_11_2 = 2;
-            if (local_2.Actions.Find(local_10, local_11_2))
+            if (local_2.Actions.Find(EProgressOperationActionTime(2), local_10))
             {
                 for (auto& local_26 : local_10.Actions)
                 {
@@ -479,30 +466,30 @@ class UProgressOperation_InputPushProgress : UProgressOperationBase
         {
             int local_39;
             FProgressOperationActionArray local_10;
-            int local_11_3 = 0;
-            local_39 = local_11_3;
+            int local_11 = 0;
+            local_39 = local_11;
             switch (int(Runtime.GetState()))
             {
             case 3:
             {
-                local_11_3 = 3;
-                local_39 = local_11_3;
+                local_11 = 3;
+                local_39 = local_11;
                 break;
             }
             case 4:
             {
-                local_11_3 = 4;
-                local_39 = local_11_3;
+                local_11 = 4;
+                local_39 = local_11;
                 break;
             }
             case 5:
             {
-                local_11_3 = 5;
-                local_39 = local_11_3;
+                local_11 = 5;
+                local_39 = local_11;
                 break;
             }
             }
-            if (!(local_39 == 0) && local_2.Actions.Find(local_10, local_39))
+            if (!(local_39 == 0) && local_2.Actions.Find(EProgressOperationActionTime(local_39), local_10))
             {
                 for (auto& local_26 : local_10.Actions)
                 {

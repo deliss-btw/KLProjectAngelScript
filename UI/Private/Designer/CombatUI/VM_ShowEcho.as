@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ShowEcho
 {
     const int ModelId = 0;
@@ -37,7 +36,7 @@ struct FVM_ShowEcho : FEUIViewModel
     }
     void RefreshTextContent()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     void PostConstruct()
     {

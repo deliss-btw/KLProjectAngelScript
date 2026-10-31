@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_AnimUseFloorInfo : UESMBPBaseSpanAction
 {
     UESMAction_AnimUseFloorInfo()

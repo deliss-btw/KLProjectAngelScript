@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_DefenseZone : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -49,7 +47,6 @@ class UESMAction_HitBoxPriorityHit : UESMBPBaseSpanAction
     float32 ZAngleMax = 360.0f;
     UPROPERTY()
     FVector HitBoxCenterOffset = FVector::ZeroVector;
-
 
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const

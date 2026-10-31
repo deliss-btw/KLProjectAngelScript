@@ -1,5 +1,3 @@
-﻿
-
 class UModelDefaultsInGameCommon : UEUIModelConfigDefaults
 {
     UPROPERTY()

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_StigmataItem
 {
     const int ModelId = 0;
@@ -117,7 +116,7 @@ struct FVM_StigmataItem : FEUIViewModel
         }
         else
         {
-            this.SetHoverTips(TEUIModelRef<FVM_TitleAndDescAndStatus>(::FVM_TitleAndDescAndStatus::Create(this.GetContext().Manager, NSLOCTEXT("FakeHoverTitle", "зїјз—•иѓЅеЉ›з‚№"), NSLOCTEXT("FakeHoverDesc", "еЉџиѓЅе°љжњЄејЂж”ѕж•¬иЇ·жњџеѕ…"))));
+            this.SetHoverTips(TEUIModelRef<FVM_TitleAndDescAndStatus>(::FVM_TitleAndDescAndStatus::Create(this.GetContext().Manager, NSLOCTEXT("FakeHoverTitle", "翼痕能力点"), NSLOCTEXT("FakeHoverDesc", "功能尚未开放敬请期待"))));
         }
         this.BuildUnmetConditions();
         this.RefreshHoverTips();
@@ -186,8 +185,14 @@ struct FVM_StigmataItem : FEUIViewModel
     }
     bool GetIsWithinCurrentBreakthroughRange() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        bool __r; return __r;
+        if (this.GetbIsFake())
+        {
+            return false;
+        }
+        int local_3 = this.GetConfig().opArrow().RoleLevel;
+        int local_2 = local_3;
+        int local_7 = this.GetPlayerLevel().opArrow().GetCurrentBreakthroughLevel();
+        return (local_7 == INDEX_NONE || (local_2 <= local_7));
     }
     bool GetHasCost() const
     {
@@ -222,7 +227,7 @@ struct FVM_StigmataItem : FEUIViewModel
         if (!((this.GetPlayerLevel().opArrow().GetLevel() >= local_3)))
         {
             FText::Format(NSLOCTEXT("StigmataLevelCondDesc", "{0}/{1}"), this.GetPlayerLevel().opArrow().GetLevel(), local_3);
-            FText::Format(NSLOCTEXT("StigmataLevelCondTitle", "и§’и‰Із­‰зє§иѕѕе€°{0}зє§"), local_3);
+            FText::Format(NSLOCTEXT("StigmataLevelCondTitle", "角色等级达到{0}级"), local_3);
             local_22.SetbDone(false);
             this.GetModify_UnmetConditionList().Add(TEUIModelRef<FVM_TitleAndDescAndStatus>(local_22));
         }
@@ -451,7 +456,6 @@ struct __GeneratedProperties_FVM_StigmataItem
     bool HasCost;
     UPROPERTY()
     TEUIModelRef<FVM_StigmataItem> Self;
-
 
 }
 

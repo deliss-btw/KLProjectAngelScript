@@ -1,4 +1,3 @@
-﻿
 enum EGuidePageAssetType
 {
     Picture = 1,
@@ -25,7 +24,6 @@ enum EGuideManualTab
     Other,
 }
 
-
 struct FGuidePageConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -39,7 +37,6 @@ struct FGuidePageConfig : FDataObject
     UMediaSource AssetVideo = nullptr;
     UPROPERTY()
     FText Desc;
-
 
 }
 
@@ -64,7 +61,6 @@ struct FGuideGroupConfig : FDataObject
     int SortOrder;
     UPROPERTY()
     TArray<FDataObjectPtr> m_GuidePageList;
-
 
     const TArray<TDataObjectPtr<FServerConditionConfigBase>> GetActiveConds() const property
     {
@@ -99,7 +95,6 @@ struct FGuideManualTabSetting
     UPROPERTY()
     FSoftBrush Icon;
 
-
 }
 
 class UGuideManualSettings : UGameplaySettingsBase
@@ -112,7 +107,6 @@ class UGuideManualSettings : UGameplaySettingsBase
     float32 HintCountdownSeconds = 3.0f;
     UPROPERTY()
     float32 TutorialCompletionLingerSeconds = 1.9f;
-
 
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 class US_DebugMovementToolkitSystem : UECSScriptSystem
 {
     float32 ScanGridSize = 3000.0f;
@@ -7,7 +5,6 @@ class US_DebugMovementToolkitSystem : UECSScriptSystem
     int ScanCountPerTick = 2000;
     float32 DebugMoveToWaitTime = 3.0f;
     float32 MergeStuckPointDist = 50.0f;
-
 
     UFUNCTION()
     bool IsDisabled_Implementation() const
@@ -75,12 +72,8 @@ class US_DebugMovementToolkitSystem : UECSScriptSystem
         {
             return;
         }
-        int local_45 = FMath::CeilToInt((Progress.Box.GetExtent().X * 2.0) / this.ScanStep);
-        float local_44 = Progress.Box.GetExtent().Y;
-        float local_42 = local_44 * 2.0;
-        float local_48 = this.ScanStep;
-        local_45 = local_45 * FMath::CeilToInt(local_42 / local_48);
-        float32 local_55 = (Progress.ScanCount * 100.0f) / local_45;
+        float32 local_56 = ((FMath::CeilToInt((Progress.Box.GetExtent().X * 2.0) / this.ScanStep)) * FMath::CeilToInt((Progress.Box.GetExtent().Y * 2.0) / this.ScanStep));
+        float32 local_55 = (Progress.ScanCount * 100.0f) / local_56;
         PrintToScreen(FString().Append("Scanning ").Append(FString::ApplyFormat(local_55, " .3")).Append("%"), 0.0f, FLinearColor::LucBlue);
         TArray<FCheckStuckResult> local_66;
         int local_67 = this.ScanCountPerTick;
@@ -91,18 +84,16 @@ class US_DebugMovementToolkitSystem : UECSScriptSystem
         float32 local_56_3 = local_55_2 - local_61;
         bool local_1 = true;
         FString local_60 = Gameplay::GetCurrentLevelName(__GetWorldContext(), local_1);
-        while (local_48 < local_44)
+        for (; Progress.Base.X < Progress.Box.Max.X; )
         {
-            while (local_42 < local_48)
+            for (; Progress.Base.Y < Progress.Box.Max.Y; )
             {
                 local_2 = Progress.bNeedTeleport;
                 if (local_2)
                 {
                     float32 local_61_2 = this.ScanGridSize * 0.5f;
-                    local_48 = local_61_2;
                     float32 local_55_3 = this.ScanGridSize;
-                    local_44 = (local_55_3 * 0.5f);
-                    FVector local_96 = (Progress.Base + FVector(local_44, local_48, 0.0));
+                    FVector local_96 = (Progress.Base + FVector((local_55_3 * 0.5f), local_61_2, 0.0));
                     System::ExecuteConsoleCommand(__GetWorldContext(), FString().Append("DebugMoveTo ").Append(local_96.X).Append(" ").Append(local_96.Y).Append(" ").Append(local_96), nullptr);
                     local_2 = false;
                     Progress.bNeedTeleport = local_2;
@@ -116,7 +107,8 @@ class US_DebugMovementToolkitSystem : UECSScriptSystem
                 }
                 while (local_1)
                 {
-                    FKinematicMoveCollisionUtils::CheckAirborneStuckAtPosition2D(local_66, local_14, FVector(Progress.Base.X + Progress.Local.X, (Progress.Base.Y + Progress.Local.Y), 0.0), local_30.GetScaledShape(), local_24.WalkableSlopDegree, local_24.MaxHoverHeight, 1000000.0, -1000000.0, false);
+                    float local_40_3 = Progress.Base.Y + Progress.Local.Y;
+                    FKinematicMoveCollisionUtils::CheckAirborneStuckAtPosition2D(local_66, local_14, FVector(Progress.Base.X + Progress.Local.X, local_40_3, 0.0), local_30.GetScaledShape(), local_24.WalkableSlopDegree, local_24.MaxHoverHeight, 1000000.0, -1000000.0, false);
                     for (auto& local_124 : local_66)
                     {
                         local_2 = local_124.bMayStuck;
@@ -151,7 +143,8 @@ class US_DebugMovementToolkitSystem : UECSScriptSystem
                         {
                             return;
                         }
-                        Progress.Local.Y = (Progress.Local.Y + this.ScanStep);
+                        local_40_3 = Progress.Local.Y;
+                        Progress.Local.Y = (local_40_3 + this.ScanStep);
                         float32 local_61_3 = this.ScanGridSize;
                         if (Progress.Local.Y >= local_61_3)
                         {
@@ -160,9 +153,10 @@ class US_DebugMovementToolkitSystem : UECSScriptSystem
                         }
                         local_2 = ((Progress.Base.Y + Progress.Local.Y) < Progress.Box.Max.Y);
                     }
-                    local_48 = 0.0;
                     Progress.Local.Y = 0.0;
-                    Progress.Local.X = (Progress.Local.X + this.ScanStep);
+                    local_40_3 = this.ScanStep;
+                    float local_42_2 = Progress.Local.X;
+                    Progress.Local.X = (local_42_2 + local_40_3);
                     float32 local_55_5 = this.ScanGridSize;
                     if (Progress.Local.X >= local_55_5)
                     {
@@ -173,7 +167,8 @@ class US_DebugMovementToolkitSystem : UECSScriptSystem
                 }
                 Progress.Local.X = 0.0;
                 Progress.bNeedTeleport = true;
-                Progress.Base.Y = (Progress.Base.Y + local_56_3);
+                float local_48_3 = Progress.Base.Y;
+                Progress.Base.Y = (local_48_3 + local_56_3);
             }
             Progress.Base.Y = Progress.Box.Min.Y;
             Progress.Base.X = (Progress.Base.X + local_56_3);
@@ -254,7 +249,7 @@ class US_DebugMovementToolkitSystem : UECSScriptSystem
         }
         if (local_62.Num() == 0)
         {
-            XLog(ELog(11), "[StuckDiag]   No stuck detected вЂ” floor found or capsule falls clear");
+            XLog(ELog(11), "[StuckDiag]   No stuck detected — floor found or capsule falls clear");
         }
         XLog(ELog(11), "[StuckDiag] ========== End Runtime DiagnoseStuckAt ==========");
         FECSWorldPtr local_4_2 = ECS::GetECSWorld();
@@ -483,9 +478,9 @@ ECharacterMoveStanceLayer FindActiveMoveStanceLayer(const FC_CharacterMovementCo
 bool DumpMoveStanceByLayer(const FECSEntity &inout Entity, const FC_CharacterMovementControl &inout Ctrl, const bool bIncludeRawArray)
 {
     ECharacterMoveStance local_2 = FAIInputUtils::GetMoveStance(Entity);
-    ECharacterMoveStanceLayer local_4 = MovementStopDiagnosis::FindActiveMoveStanceLayer(Ctrl);
+    int local_4 = int(MovementStopDiagnosis::FindActiveMoveStanceLayer(Ctrl));
     MovementStopDiagnosis::Log(FString().Append("[DumpMove]   MoveStance effective = ").Append(local_2));
-    if (int(local_4) != 0)
+    if (local_4 != 0)
     {
         FString local_8_2 = FString();
         MovementStopDiagnosis::Log(local_8_2.Append("[DumpMove]   MoveStance winning layer = ").Append(local_4));
@@ -1162,7 +1157,7 @@ void DumpPostCollision(const FECSEntity &inout Entity)
             MovementStopDiagnosis::Log(local_298_5.Append("[DumpMove]   >> EffectiveWalkableSlopDegree = ").Append(FString::ApplyFormat(local_107_2, ".2f")).Append(" (base=").Append(FString::ApplyFormat(local_105_2, ".2f")).Append(" * scale=").Append(FString::ApplyFormat(local_145, ".4f")).Append(")"));
             if (local_78.GetWalkableSlopDegreeScale() < 1.0f)
             {
-                MovementStopDiagnosis::Warn(FString().Append("[DumpMove]   >>> NOTE: WalkableSlopDegreeScale=").Append(FString::ApplyFormat(local_78.GetWalkableSlopDegreeScale(), ".4f")).Append(" < 1 - slope limit tightened to ").Append(FString::ApplyFormat(local_107_2, ".1f")).Append("В°, may be blocked by mild slopes!"));
+                MovementStopDiagnosis::Warn(FString().Append("[DumpMove]   >>> NOTE: WalkableSlopDegreeScale=").Append(FString::ApplyFormat(local_78.GetWalkableSlopDegreeScale(), ".4f")).Append(" < 1 - slope limit tightened to ").Append(FString::ApplyFormat(local_107_2, ".1f")).Append("°, may be blocked by mild slopes!"));
             }
         }
     }

@@ -1,4 +1,3 @@
-﻿
 enum ETeamInvitationType
 {
     InvitationFriend,
@@ -29,11 +28,21 @@ struct FVM_TeamInvitationPage : FEUIViewModel
 
     FVM_TeamInvitationPage()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_CurrentMenuIndex = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVM_TeamInvitationPage(const FVM_TeamInvitationPage &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_CurrentMenuIndex = INDEX_NONE;
+        this.m_CurrentMenuIndex = int(Other.m_CurrentMenuIndex);
+        this.m_BarTextImageEntries = Other.m_BarTextImageEntries;
+        this.m_FriendPlayerInfoList = Other.m_FriendPlayerInfoList;
+        this.m_NearbyPlayerInfoList = Other.m_NearbyPlayerInfoList;
+        return;
     }
     FVM_TeamInvitationPage& opAssign(const FVM_TeamInvitationPage &inout Other)
     {
@@ -49,22 +58,19 @@ struct FVM_TeamInvitationPage : FEUIViewModel
         local_2 = local_4;
         if (local_2.InvitationIconConfigs.Contains(ETeamInvitationType(0)))
         {
-            FEUIModelRef local_24;
             FEUIModelContainer local_22;
-            local_22.AddModel(local_24, false);
+            local_22.AddModel(FEUIModelRef(::FVM_Image::Create(this.GetContext().Manager, local_2.InvitationIconConfigs[ETeamInvitationType(0)])), false);
             FVM_CommonTabItem& local_26 = ::FVM_CommonTabItem::Create(this.GetContext().Manager);
-            local_26.SetTitleText(NSLOCTEXT("TeamInvitationPage", "InvitationFriend", "еҐЅеЏ‹"));
-            local_24 = FEUIModelRef(local_26);
-            local_22.AddModel(local_24, false);
+            local_26.SetTitleText(NSLOCTEXT("TeamInvitationPage", "InvitationFriend", "好友"));
+            local_22.AddModel(FEUIModelRef(local_26), false);
             this.GetModify_BarTextImageEntries().Add(FEUIModelContainer());
         }
         if (local_2.InvitationIconConfigs.Contains(ETeamInvitationType(1)))
         {
-            FEUIModelRef local_24;
             FEUIModelContainer local_22;
-            local_22.AddModel(local_24, false);
+            local_22.AddModel(FEUIModelRef(::FVM_Image::Create(this.GetContext().Manager, local_2.InvitationIconConfigs[ETeamInvitationType(1)])), false);
             FVM_CommonTabItem& local_26_2 = ::FVM_CommonTabItem::Create(this.GetContext().Manager);
-            local_26_2.SetTitleText(NSLOCTEXT("TeamInvitationPage", "InvitationNearbyPlayer", "й™„иї‘зЋ©е®¶"));
+            local_26_2.SetTitleText(NSLOCTEXT("TeamInvitationPage", "InvitationNearbyPlayer", "附近玩家"));
             local_22.AddModel(FEUIModelRef(local_26_2), false);
             this.GetModify_BarTextImageEntries().Add(local_22);
         }
@@ -114,7 +120,7 @@ struct FVM_TeamInvitationPage : FEUIViewModel
     }
     void OnSelectChange()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     void UpdateFriendPlayer()
     {

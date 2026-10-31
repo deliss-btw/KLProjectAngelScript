@@ -1,5 +1,3 @@
-﻿
-
 struct FT_SimpleMovement : FECSTrait
 {
     FECSTrait _base_FECSTrait;

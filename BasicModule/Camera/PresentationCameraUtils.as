@@ -1,4 +1,3 @@
-﻿
 enum EPresentationCameraType
 {
     Fixed,
@@ -23,10 +22,9 @@ struct FPresentationCameraConfig
     UPROPERTY()
     FAnimatedCameraParamsInput AnimatedCameraParamsInput;
 
-
     bool IsValid() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         bool __r; return __r;
     }
 }
@@ -280,12 +278,12 @@ FCameraHandle PushPresentationAnimatedCamera(const FECSEntity &inout PlayerEntit
 }
 FCameraHandle PushPresentationCameraByConfig(const FECSEntity &inout PlayerEntity, const FName &inout CameraName, const EPresentationCameraLayer Layer, const FPresentationCameraConfig &inout CameraConfig, const FECSEntity &inout FixedCameraFollowTarget)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     FCameraHandle __r; return __r;
 }
 void GenericLerp(const FCameraResult &inout A, const FCameraResult &inout B, FCameraResult &inout Out, const float32 WeightToB)
 {
-    Out.Position = FMath::Lerp(WeightToB, B.Position, A);
+    Out.Position = FMath::Lerp(A.Position, B.Position, WeightToB);
     FQuat4f local_20 = FQuat4f::Slerp(A.Rotation.Quaternion(), B.Rotation.Quaternion(), WeightToB);
     Out.Rotation = local_20.Rotator();
     float32 local_24 = FMath::Lerp(A.FOV, Out.Rotation, WeightToB);
@@ -293,7 +291,7 @@ void GenericLerp(const FCameraResult &inout A, const FCameraResult &inout B, FCa
 }
 void WriteToCameraResult(FCameraResult &inout CameraResult, const FC_Camera &inout Camera)
 {
-    CameraResult = FVector3f(Camera.GetPosition());
+    CameraResult.Position = FVector3f(Camera.GetPosition());
     CameraResult.Rotation = FRotator3f(Camera.GetRotation());
     float32 local_7 = Camera.GetFOV();
     return;

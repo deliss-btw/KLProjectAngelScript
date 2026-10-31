@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FConditionDialogueFinishConfig (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
-
 class UConditionDialogueFinish : ULocalConditionTypeDefineBase
 {
     UConditionDialogueFinish()
@@ -47,9 +42,10 @@ struct FConditionDialogueFinishConfig : FLocalConditionTypeDefineConfigBase
     UPROPERTY()
     TDataObjectPtr<FDialogueLineConfig> CheckOption;
 
+    default _base_FLocalConditionTypeDefineConfigBase = UConditionDialogueFinish;
+
     FConditionDialogueFinishConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }

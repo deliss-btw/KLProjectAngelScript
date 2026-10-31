@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_AvatarSelectBarItem_Helpers
 {
 UFUNCTION()

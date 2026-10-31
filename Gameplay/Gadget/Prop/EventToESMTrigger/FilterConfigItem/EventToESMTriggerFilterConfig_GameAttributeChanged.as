@@ -1,10 +1,8 @@
-﻿
 enum EESMTriggerAttributeThresholdMode
 {
     Absolute,
     PercentOfAttribute,
 }
-
 
 struct FEventToESMTriggerFilterConfigItem_GameAttributeChanged : FEventToESMTriggerFilterConfigItemBase
 {
@@ -22,10 +20,9 @@ struct FEventToESMTriggerFilterConfigItem_GameAttributeChanged : FEventToESMTrig
     UPROPERTY()
     TArray<FESMBlackboardCondition> ConditionsForSelf;
 
-
     bool CompareValues(const float32 Left, const float32 Right) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         bool __r; return __r;
     }
     bool EvaluateAndTrigger(const FECSEntity &inout Entity, const FC_GameAttribute &inout GameAttribute, const FC_GameAttributeChanged &inout GameAttributeChanged) const

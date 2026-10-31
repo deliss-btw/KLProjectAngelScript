@@ -1,5 +1,3 @@
-﻿
-
 class US_EnhancedInputContextHelperSystem : UECSScriptSystem
 {
     US_EnhancedInputContextHelperSystem()
@@ -32,7 +30,7 @@ class US_EnhancedInputContextHelperSystem : UECSScriptSystem
     void ClientJob_HandleSetGameplayInputEnabledNotify(const FCE_SetGameplayInputEnabled &inout Event) const
     {
         FGameplayTag local_4 = FGameplayTag::RequestGameplayTag(n"InputContext.InGame", true);
-        if (Event.bEnabled)
+        if Event.bEnabled
         {
             ::EnhancedInputUtils::EnableTag(Event.Sender, local_4);
         }

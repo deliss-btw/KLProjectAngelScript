@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_TransformSkillSelection
 {
     const int ModelId = 0;

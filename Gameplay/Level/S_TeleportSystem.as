@@ -1,5 +1,3 @@
-﻿
-
 class US_TeleportSystemAS : UECSScriptSystem
 {
     bool bLoadingScreenVisible = false;
@@ -7,7 +5,6 @@ class US_TeleportSystemAS : UECSScriptSystem
     bool bLastCloseUIVisible = false;
     uint64 CloseUIVisibilityRevision = 0;
     uint64 LastCloseUIVisibleRevision = 0;
-
 
     UFUNCTION()
     void Init_Implementation()
@@ -693,7 +690,7 @@ class US_TeleportSystemAS : UECSScriptSystem
     void ServerJob_HandleTeleportViewHideReady(const FCE_TeleportViewHideReady &inout Event) const
     {
         FC_TeleportLoadingTransaction local_10;
-        int local_16;
+        int local_16 = 0;
         FC_TeleportLoadingTransaction local_34;
         FECSEntity local_4 = Event.TargetEntity;
         if ((!(local_10) || !(local_16) || !(local_10.bActive) || (local_10.Serial != Event.Serial)))
@@ -1095,7 +1092,7 @@ class US_TeleportSystemAS : UECSScriptSystem
         {
             return false;
         }
-        UESMBaseState local_28 = local_16.GetBaseState(local_20.Player.GetSMRuntime()[].GetStateIndex());
+        UESMBaseState local_28 = local_16.GetBaseState(local_20.Player.GetSMRuntime()[local_10].GetStateIndex());
         return local_28 != nullptr && (local_28.GetDataName() == StateName);
     }
     bool TryRequestTeleportLand(const FECSEntity &inout Entity, const bool bAllowReplaceQueuedLoop = false) const
@@ -1483,8 +1480,10 @@ class US_TeleportSystemAS : UECSScriptSystem
             else
             {
                 int local_44;
+                int local_42;
+                local_42 = local_43;
                 local_44 = local_43;
-                ::UGameDSConnectionSubsystem::Get().PlayerRequestEnterDS(Event.Sender, false, (local_44 != 0));
+                ::UGameDSConnectionSubsystem::Get().PlayerRequestEnterDS(Event.Sender, local_42, false, local_44);
             }
         }
         return;
@@ -1588,7 +1587,173 @@ class US_TeleportSystemAS : UECSScriptSystem
     }
     void ApplyTeleportSideEffects(const FECSEntity &inout Entity, const bool bShowBlackScreen, const ELoadingScreenAction LoadingScreenAction, const bool bBlockInput, const bool bTeleportCamera, const bool bSetCameraRotation, const FQuat &inout CameraRotation) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_48 = 0;
+        int local_54 = 0;
+        int local_98 = 0;
+        int local_116 = 0;
+        if (!(::BlueprintFunctions_Common::IsEntityControlledByPlayer(FECSEntityAdapter(Entity))))
+        {
+            return;
+        }
+        int64 local_10 = 0;
+        if (bShowBlackScreen && (int(LoadingScreenAction) == 1))
+        {
+            Get local_84;
+            bool local_19;
+            bool local_15;
+            bool local_22;
+            bool local_21;
+            bool local_20;
+            int64 local_18;
+            local_18 = 0;
+            local_19 = false;
+            local_20 = false;
+            local_21 = false;
+            local_22 = false;
+            FName local_26 = ::ULevelGlobalSettings::GetTeleportLoopStateName();
+            Get local_30;
+            const FC_TeleportLoadingTransaction& local_32 = local_30.opCall();
+            if (local_32)
+            {
+                local_19 = local_32.bActive;
+                if (local_19)
+                {
+                    local_18 = local_32.Serial;
+                    local_20 = local_32.bLoopTransitPending;
+                    local_22 = this.IsCurrentMainSMState(Entity, local_26);
+                    local_21 = local_20 && Entity.ESMHasPendingExternalTransit(NAME_None, local_26);
+                }
+            }
+            if (local_19)
+            {
+                if (local_22 || local_21)
+                {
+                    this.TryRequestTeleportLand(Entity, local_21);
+                }
+                this.RequestSameDSTeleportViewHideRelease(Entity, local_18, local_22 || local_21);
+                ::TeleporterUtils::RestoreSameDSTeleportVisualHide(Entity, local_18);
+                XWarning(ELog(22), FString().Append("[TeleportLoadingTx][ServerBarrierSuperseded] Sender=").Append(Entity).Append(" Serial=").Append(local_18).Append(" WasInLoop=").Append(local_22).Append(" LoopTransitPending=").Append(local_20).Append(" LoopTransitQueued=").Append(local_21));
+            }
+            int64 local_12 = local_32.Serial + 1;
+            local_32.Serial = local_12;
+            if (local_32.Serial == 0)
+            {
+                local_12 = 1;
+                local_32.Serial = local_12;
+            }
+            local_32.bActive = true;
+            local_32.bLoadingVisible = false;
+            local_32.bBarrierOpened = false;
+            local_12 = 0;
+            local_32.GuardReadyMask = local_12;
+            local_32.bLoopTransitPending = false;
+            local_32.bTeleportApplied = false;
+            local_15 = false;
+            local_32.bCloseRequested = local_15;
+            int64 local_46 = 0;
+            FECSWorldPtr local_56 = ECS::GetECSWorld();
+            int local_61 = 0;
+            for (; local_61 < 64; ++local_61)
+            {
+                if (local_48.GetBit(local_61) && local_54.GetBit(local_61))
+                {
+                    local_12 = 1 << local_61;
+                    local_46 = local_46 | local_12;
+                }
+            }
+            ::FASCommonUtils::GetUniquePlayerEntity(Entity);
+            Get local_74;
+            const FC_PlayerController& local_76 = local_74.opCall();
+            if (local_76)
+            {
+                local_12 = 1;
+                local_46 = local_46 | (local_12 << local_76.GetPlayerIndex());
+            }
+            local_32.ExpectedGuardReadyMask = local_46;
+            FECSWorldPtr local_56_2 = ECS::GetECSWorld();
+            FFPTime local_80 = FFPTime(local_84.opCall().Time);
+            local_32.GuardReadyDeadline = (local_80 + FFPTime(::ULevelGlobalSettings::GetTeleportSettleMaxWaitTime()));
+            FFPTime local_92 = (local_80 + FFPTime(120.0));
+            local_32.ForceCloseTime = local_92;
+            local_10 = local_32.Serial;
+            local_12 = local_32.Serial;
+            ::TeleporterUtils::ApplySameDSTeleportVisualHide(Entity, local_12);
+            local_98.SetTransactionSerial(local_32.Serial);
+            local_98.SetbReleaseRequested(false);
+            local_98.SetReleaseRequestTime(local_92);
+            local_98.SetForceReleaseTime(local_32.ForceCloseTime);
+            XLog(ELog(22), FString().Append("[TeleportLoadingTx][ServerBegin] Sender=").Append(Entity).Append(" Serial=").Append(local_32.Serial).Append(" Action=").Append(LoadingScreenAction).Append(" ExpectedMask=").Append(local_32.ExpectedGuardReadyMask).Append(" GuardDeadline=").Append(local_32.GuardReadyDeadline).Append(" ForceCloseTime=").Append(local_32.ForceCloseTime).Append(" AuthorityHidden=true"));
+        }
+        if (bShowBlackScreen)
+        {
+            FCE_ShowTeleportLoadingScreen local_104;
+            FFPTime local_92_2 = FFPTime(-1);
+            local_104.Action = LoadingScreenAction;
+            local_104.Serial = local_10;
+        }
+        if (bBlockInput)
+        {
+            Get local_84;
+            bool local_19;
+            bool local_15;
+            FC_TeleportBlockInput local_124;
+            float32 local_105;
+            local_105 = 1.5f;
+            ULevelGlobalSettings local_110 = ::ULevelGlobalSettings::Get();
+            if (local_110 != nullptr)
+            {
+                local_105 = local_110.TeleportBlockInputTime;
+            }
+            FFPTime local_88 = FFPTime(-1);
+            local_116.ForceClearEndTime = (ECS::GetContextTime() + FFPTime(local_105));
+            FECSEntity local_66 = ::FASCommonUtils::GetUniquePlayerEntity(Entity);
+            if (!(local_66.IsValid()))
+            {
+                local_66 = Entity;
+            }
+            local_19 = false;
+            if (!(local_124.bInputDisabled))
+            {
+                FCE_SetTeleportInputBlocked local_130;
+                FFPTime local_88_2 = FFPTime(-1);
+                local_130.SourceDsId = ::UGameDSConnectionSubsystem::Get().GetDsID();
+                local_15 = true;
+                local_130.bBlocked = local_15;
+                local_124.bInputDisabled = true;
+                local_124.PlayerEntity = local_66;
+                local_19 = true;
+            }
+            FECSWorldPtr local_56_3 = ECS::GetECSWorld();
+            local_124.EndTime = (FFPTime(local_84.opCall().Time) + FFPTime(local_105));
+            if (local_19)
+            {
+                XLog(ELog(22), FString().Append("[TeleportInputGate][ServerDisable] Sender=").Append(Entity).Append(" BlockInputHost=").Append(local_66).Append(" EndTime=").Append(local_124.EndTime).Append(" Duration=").Append(local_105));
+            }
+        }
+        if (bTeleportCamera || bSetCameraRotation)
+        {
+            if (::FASCommonUtils::GetUniquePlayerEntity(Entity).IsValid())
+            {
+                FCE_ServerToClientSetCameraPose local_138;
+                FFPTime local_92_3 = FFPTime(-1);
+                local_138.bTeleportToTarget = bTeleportCamera;
+                local_138.bSetRotation = bSetCameraRotation;
+                if (bSetCameraRotation)
+                {
+                    local_138.Rotation = CameraRotation.Rotator();
+                }
+            }
+        }
+        FECSEntity local_66_2 = ::FASCommonUtils::GetRiderEntity(Entity);
+        if (local_66_2.IsValid())
+        {
+            TArray<FBuffConfigRef> local_152 = ::ULevelGlobalSettings::GetTeleportCleanupBuffs();
+            for (auto& local_166 : local_152)
+            {
+                ::BlueprintFunctions_Common::RemoveBuffByConfig(FECSEntityAdapter(local_66_2), local_166);
+            }
+        }
+        return;
     }
     void TeleportEntityToPosition(const FECSEntity &inout Entity, const FVector &inout Location, const FQuat &inout Rotation, const bool bSetCameraRotation = false, const FQuat &inout CameraRotation = FQuat::Identity, const bool bTeleportCamera = false, const bool bShowBlackScreen = true, const ELoadingScreenAction LoadingScreenAction = ELoadingScreenAction::None, const bool bBlockInput = true) const
     {
@@ -1943,8 +2108,7 @@ class US_TeleportSystemAS : UECSScriptSystem
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_TeleportViewHideReady, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_TeleportViewHideReady, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());
@@ -1964,8 +2128,7 @@ class US_TeleportSystemAS : UECSScriptSystem
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_TeleportLoadingScreenStateChanged, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_TeleportLoadingScreenStateChanged, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());
@@ -2456,8 +2619,7 @@ class US_TeleportSystemAS : UECSScriptSystem
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_TeleportToPublicEventRequest, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_TeleportToPublicEventRequest, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());

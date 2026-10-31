@@ -1,5 +1,3 @@
-﻿
-
 class APVP_LevelScriptActor : AKLLevelScriptActor
 {
     FName BrawlPrepStartLevelEventName = n"PVP_BRAWL_PREP_START";
@@ -8,7 +6,6 @@ class APVP_LevelScriptActor : AKLLevelScriptActor
     TArray<AActor> PrepBlockingActors;
     UPROPERTY()
     bool bBlockingActorsEnabled = true;
-
 
     UFUNCTION()
     void PreLevelBeginPlay_Implementation()

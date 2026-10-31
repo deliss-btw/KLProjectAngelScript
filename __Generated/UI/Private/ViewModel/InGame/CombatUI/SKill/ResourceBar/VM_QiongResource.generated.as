@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_QiongSkillResourceItem_Helpers
 {
 UFUNCTION()

@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_FlowerWhipToxicLook_NS
 {
     const TECSComponentDerivedPtr<FC_FlowerWhipToxicLook> DerivedPtr = TECSComponentDerivedPtr<FC_FlowerWhipToxicLook>();
@@ -19,11 +18,23 @@ struct FC_FlowerWhipToxicLook : FECSComponent
 
     FC_FlowerWhipToxicLook()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bRecorded = false;
+        this.m_RecordedForward = FVector::ZeroVector;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_FlowerWhipToxicLook(const FC_FlowerWhipToxicLook &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bRecorded = false;
+        this.m_RecordedForward = FVector::ZeroVector;
+        this.__InitDirtyFlags();
+        this.m_bRecorded = Other.m_bRecorded;
+        this.m_RecordedForward = Other.m_RecordedForward;
+        return;
     }
     FC_FlowerWhipToxicLook opAssign(const FC_FlowerWhipToxicLook &inout Other)
     {
@@ -179,37 +190,37 @@ bool RemoveFlowerWhipToxicLook(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorFlowerWhipToxicLookOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_FlowerWhipToxicLook, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_FlowerWhipToxicLook, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFlowerWhipToxicLookOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_FlowerWhipToxicLook, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_FlowerWhipToxicLook, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFlowerWhipToxicLookOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_FlowerWhipToxicLook, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_FlowerWhipToxicLook, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFlowerWhipToxicLookOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_FlowerWhipToxicLook, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_FlowerWhipToxicLook, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFlowerWhipToxicLookOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_FlowerWhipToxicLook, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_FlowerWhipToxicLook, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorFlowerWhipToxicLookLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_FlowerWhipToxicLook, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_FlowerWhipToxicLook, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFlowerWhipToxicLookActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_FlowerWhipToxicLook, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_FlowerWhipToxicLook, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFlowerWhipToxicLookModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_FlowerWhipToxicLook, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_FlowerWhipToxicLook, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

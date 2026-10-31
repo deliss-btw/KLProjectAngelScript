@@ -1,5 +1,3 @@
-﻿
-
 class US_EcologySensor : UECSScriptSystem
 {
     US_EcologySensor()
@@ -47,7 +45,7 @@ class US_EcologySensor : UECSScriptSystem
     UFUNCTION()
     void ServerJob_HandleWeatherChanged(const FCE_RegionWeatherChanged &inout Event) const
     {
-        int local_16;
+        int local_16 = 0;
         int local_26 = 0;
         int local_30 = 0;
         int local_212 = 0;
@@ -141,7 +139,8 @@ class US_EcologySensor : UECSScriptSystem
     UFUNCTION()
     void Job_DispatchEcosimAIStateChange(const FCE_DOTSensorStateChange &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FAbilityUtils::InvokeAbilityEvent(Event.Sender, this.GetECSRuntime(), EEASAbilityEvent(49), Event, true);
+        return;
     }
     UFUNCTION()
     void Run_ServerJob_HandleTimeSegmentChanged() const

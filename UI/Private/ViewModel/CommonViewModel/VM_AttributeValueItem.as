@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AttributeValueItem
 {
     const int ModelId = 0;
@@ -51,9 +50,7 @@ struct FVM_AttributeValueItem : FEUIViewModel
     }
     void UpdateHoverTips()
     {
-        FText local_4 = this.GetDescription();
-        FText local_8 = this.GetName();
-        this.SetHoverTips(FEUIModelRef());
+        this.SetHoverTips(FEUIModelRef(::FVM_TitleAndDesc::Create(this.GetContext().Manager, this.GetName(), this.GetDescription())));
         return;
     }
     FSoftBrush GetIcon() const
@@ -203,7 +200,6 @@ struct __GeneratedProperties_FVM_AttributeValueItem
     bool IsGreaterOrEqualZero;
     UPROPERTY()
     TEUIModelRef<FVM_AttributeValueItem> Self;
-
 
 }
 

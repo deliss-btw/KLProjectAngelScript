@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_WeaponAttach : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -14,7 +12,6 @@ class UESMAction_WeaponAttach : UESMBPBaseSpanAction
     bool bAttachToProjectilePosition = false;
     UPROPERTY()
     bool bAttachToProjectileRotation = false;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const

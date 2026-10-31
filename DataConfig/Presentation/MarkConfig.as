@@ -1,5 +1,3 @@
-﻿
-
 struct FMarkIconConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -26,7 +24,6 @@ struct FMarkPoolConfig : FDataObject
     UPROPERTY()
     int MaxNum = 1;
 
-
 }
 
 struct FMarkConfig : FDataObject
@@ -46,7 +43,6 @@ struct FMarkConfig : FDataObject
     bool bRemoveWhenNoLongerGuidingTarget;
     UPROPERTY()
     float32 RemoveWhenCreaterApproachDistance = -1.0f;
-
 
     const TDataObjectPtr<FMarkPoolConfig> GetMarkPool() const property
     {
@@ -77,7 +73,7 @@ class UMarkSettings : UGameplaySettingsBase
     UPROPERTY()
     FEUIInputAction ViewportFastMarkAction;
     UPROPERTY()
-    float32 PositionMark2DIconZOffset;
+    float32 PositionMark2DIconZOffset = 200.0f;
     UPROPERTY()
     TDataObjectPtr<FPresentationRuleConfig> PositionMarkPresentationRule;
     UPROPERTY()
@@ -105,13 +101,13 @@ class UMarkSettings : UGameplaySettingsBase
     UPROPERTY()
     TArray<TDataObjectPtr<FMarkConfig>> MinimapMarkIcons;
     UPROPERTY()
-    int DefaultMinimapMarkIconIndex;
+    int DefaultMinimapMarkIconIndex = INDEX_NONE;
     UPROPERTY()
     TSoftClassPtr<UEUIUserWidget> MinimapMarkDialog;
     UPROPERTY()
     TSoftClassPtr<UEUIUserWidget> MinimapConstantMarkTips;
     UPROPERTY()
-    bool bShowTeammateMarkInNavigationBar;
+    bool bShowTeammateMarkInNavigationBar = true;
     UPROPERTY()
     TSoftClassPtr<UEUIUserWidget> MinimapMarkTips;
     UPROPERTY()
@@ -121,9 +117,5 @@ class UMarkSettings : UGameplaySettingsBase
     UPROPERTY()
     TSoftClassPtr<UEUIUserWidget> RegionEventMinimapMarkTips;
 
-    UMarkSettings()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_QualitySelector
 {
     const int ModelId = 0;
@@ -384,7 +383,6 @@ struct __GeneratedProperties_FVM_QualitySelector
     bool CanDecreaseNum;
     UPROPERTY()
     TEUIModelRef<FVM_QualitySelector> Self;
-
 
 }
 

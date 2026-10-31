@@ -1,5 +1,3 @@
-﻿
-
 class US_WeaponBowLineSystemAS : UECSScriptSystem
 {
     US_WeaponBowLineSystemAS()

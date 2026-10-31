@@ -1,5 +1,3 @@
-﻿
-
 class UEQT_IsUnderSky : UEnvQueryTest_ECS_BlueprintBase
 {
     default SetWorkOnBool(true);

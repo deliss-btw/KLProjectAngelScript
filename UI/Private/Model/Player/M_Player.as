@@ -1,4 +1,3 @@
-﻿
 namespace FM_Player
 {
     const int ModelId = 0;
@@ -85,7 +84,75 @@ struct FM_Player : FEUIModel
     }
     void InvalidateRealtimePlayerInfo(const FPlayerFullInfo &inout Fallback)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_2 = 3;
+        int local_1 = local_2;
+        int local_2_2 = 2;
+        int local_3 = local_2_2;
+        if (Fallback.GetbHasNickName())
+        {
+            this.GetModify_NickNameAttr().Invalidate(EPlayerInfoTrust(3), EPlayerInfoTrust(2), Fallback.GetNickName());
+        }
+        else
+        {
+            this.GetModify_NickNameAttr().Invalidate(EPlayerInfoTrust(3));
+        }
+        if (Fallback.GetbHasGender())
+        {
+            this.GetModify_GenderAttr().Invalidate(EPlayerInfoTrust(3), EPlayerInfoTrust(2), Fallback.GetGender());
+        }
+        else
+        {
+            this.GetModify_GenderAttr().Invalidate(EPlayerInfoTrust(3));
+        }
+        if (Fallback.GetbHasAvatar())
+        {
+            int local_35 = Fallback.GetAvatarConfigId();
+            GetDataObjectByGSDataId<FAvatarPrefabConfig> local_34;
+            this.GetModify_CurrentAvatarAttr().Invalidate(EPlayerInfoTrust(3), EPlayerInfoTrust(2), local_34.opImplConv());
+        }
+        else
+        {
+            this.GetModify_CurrentAvatarAttr().Invalidate(EPlayerInfoTrust(3));
+        }
+        if (Fallback.GetbHasCurrentWorld())
+        {
+            int local_35_2 = Fallback.GetCurrentWorldId();
+            GetDataObjectByGSDataId<FMapConfig> local_84;
+            this.GetModify_CurrentWorldAttr().Invalidate(EPlayerInfoTrust(3), EPlayerInfoTrust(2), local_84.opImplConv());
+        }
+        else
+        {
+            this.GetModify_CurrentWorldAttr().Invalidate(EPlayerInfoTrust(3));
+        }
+        if (Fallback.GetbHasDivineSkill())
+        {
+            int local_35_3 = Fallback.GetDivineSkillId();
+            GetDataObjectByGSDataId<FDivineSkillConfig> local_132;
+            this.GetModify_DivineSkillAttr().Invalidate(EPlayerInfoTrust(3), EPlayerInfoTrust(2), local_132.opImplConv());
+        }
+        else
+        {
+            this.GetModify_DivineSkillAttr().Invalidate(EPlayerInfoTrust(3));
+        }
+        if (Fallback.GetbHasLevel())
+        {
+            this.GetModify_LevelAttr().Invalidate(EPlayerInfoTrust(3), EPlayerInfoTrust(2), Fallback.GetLevel());
+        }
+        else
+        {
+            this.GetModify_LevelAttr().Invalidate(EPlayerInfoTrust(3));
+        }
+        if (::PlayerDataIsOnlineDbg::Enabled())
+        {
+            ::PlayerDataIsOnlineDbg::Emit(FString().Append("Source=InvalidateRealtime Uid=").Append(this.GetPlayerUid()).Append(" InTrust=").Append(3).Append(" HasFallback=").Append(Fallback.GetbHasIsOnline()).Append(" FallbackIsOnline=").Append(Fallback.GetbIsOnline()));
+        }
+        if (Fallback.GetbHasIsOnline())
+        {
+            this.GetModify_IsOnlineAttr().Invalidate(EPlayerInfoTrust(3), EPlayerInfoTrust(2), Fallback.GetbIsOnline());
+            return;
+        }
+        this.GetModify_IsOnlineAttr().Invalidate(EPlayerInfoTrust(3));
+        return;
     }
     void InvalidateRealtimePlayerInfo()
     {

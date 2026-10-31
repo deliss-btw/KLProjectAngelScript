@@ -1,4 +1,3 @@
-﻿
 namespace FVM_EquipmentInfo
 {
     const int ModelId = 0;
@@ -225,7 +224,7 @@ struct FVM_EquipmentInfo : FEUIViewModel
     }
     FText TraitPreviewText() const
     {
-        return FText::Format(NSLOCTEXT("Equipment", "Equipment_RandomTraitDesc", "йљЏжњє{0}дёЄиў«еЉЁжЉЂиѓЅ"), this.GetPreviewMaxRandomTraitNum());
+        return FText::Format(NSLOCTEXT("Equipment", "Equipment_RandomTraitDesc", "随机{0}个被动技能"), this.GetPreviewMaxRandomTraitNum());
     }
     FText GetWeaponCategoryFullName() const
     {
@@ -242,7 +241,7 @@ struct FVM_EquipmentInfo : FEUIViewModel
                 FGameplayTag local_64;
                 local_64;
                 local_54.GetCategoryDisplayName(local_68);
-                local_62 = NSLOCTEXT("Equipment", "Equipment_WeaponCategoryFullName", "ж­¦е™Ёз±»ећ‹:{0}");
+                local_62 = NSLOCTEXT("Equipment", "Equipment_WeaponCategoryFullName", "武器类型:{0}");
                 return FText::Format(local_62, local_68);
             }
         }
@@ -284,8 +283,7 @@ struct FVM_EquipmentInfo : FEUIViewModel
             {
                 FM_Attribute& local_146 = ::FM_Attribute::Create(this.GetContext().Manager, local_70.AttributeClass, EAttributeDisplayType(local_144), local_70.Value);
                 local_146.SetAttributeConfig(local_94);
-                TEUIModelRef<FM_Attribute> local_148 = TEUIModelRef<FM_Attribute>(local_146);
-                local_4.Add(FEUIModelRef());
+                local_4.Add(FEUIModelRef(::FVM_AttributeDisplay::Create(this.GetContext().Manager, TEUIModelRef<FM_Attribute>(local_146))));
             }
         }
         return local_4;
@@ -446,7 +444,6 @@ struct __GeneratedProperties_FVM_EquipmentInfo
     FSoftBrush ItemSpecialBgImage;
     UPROPERTY()
     TEUIModelRef<FVM_EquipmentInfo> Self;
-
 
 }
 

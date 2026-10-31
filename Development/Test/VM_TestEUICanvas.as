@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TestEUICanvas
 {
     const int ModelId = 0;
@@ -77,17 +76,14 @@ struct FVM_TestEUICanvas : FEUIViewModel
         int local_3_2 = 0;
         for (; local_3_2 < 5; )
         {
-            FEUIModelContainer local_32;
-            this.GetModify_ModelContainersA().Add(local_32);
+            this.GetModify_ModelContainersA().Add(FEUIModelContainer(::FVM_TestEUICanvasSlot::Create(this.GetContext().Manager, local_3_2)));
             ++local_3_2;
         }
         return;
     }
     void Add()
     {
-        int local_1 = this.GetModelRefsA().Num();
-        FEUIModelRef local_4;
-        this.GetModify_ModelRefsA().Add(local_4);
+        this.GetModify_ModelRefsA().Add(FEUIModelRef(::FVM_TestEUICanvasSlot::Create(this.GetContext().Manager, this.GetModelRefsA().Num())));
         return;
     }
     void Remove()
@@ -130,7 +126,7 @@ struct FVM_TestEUICanvas : FEUIViewModel
         GetGameplaySettings<UUtilitySettings> local_4;
         local_2 = local_4;
         Make local_20;
-        local_20;
+        ::CommonPopup::LargeHintCustom(local_2.BuffLargeSideHint, local_20.opImplConv(), 0);
         return;
     }
     void TestSmallBuffSideHint()
@@ -139,7 +135,7 @@ struct FVM_TestEUICanvas : FEUIViewModel
         GetGameplaySettings<UUtilitySettings> local_4;
         local_2 = local_4;
         Make local_20;
-        local_20;
+        ::CommonPopup::SmallHintCustom(local_2.BuffSmallSideHintTitle, local_20.opImplConv(), 0);
         return;
     }
     void OnAction()
@@ -262,7 +258,6 @@ struct __GeneratedProperties_FVM_TestEUICanvas
     int UISetSomeProperty;
     UPROPERTY()
     TEUIModelRef<FVM_TestEUICanvas> Self;
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace FItemQuickSlotModel
 {
     const int ModelId = 0;

@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_SkillInfo
 {
     const int ModelId = 0;

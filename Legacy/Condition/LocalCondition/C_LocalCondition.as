@@ -1,4 +1,3 @@
-﻿
 namespace FLocalConditionInstanceData
 {
     const FLocalConditionInstanceData Invalid = FLocalConditionInstanceData();
@@ -55,11 +54,16 @@ struct FLocalConditionInstanceData
 
     FLocalConditionInstanceData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_CurrentValue = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        return;
     }
     FLocalConditionInstanceData(const FLocalConditionInstanceData &inout Other)
     {
         this.m_CurrentValue = 0;
+        FSubDirtyFlags8 local_26;
+        this.__DirtyFlags = local_26;
         this.m_ConditionConfig = Other.m_ConditionConfig;
         this.m_ContextEntity = Other.m_ContextEntity;
         this.m_CurrentValue = int(Other.m_CurrentValue);
@@ -160,7 +164,8 @@ struct FLocalConditionInstanceContainer
     }
     void SetInstances(const TArray<int> &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Instances = __Value;
+        return;
     }
 }
 
@@ -174,15 +179,25 @@ struct FLocalConditionInstance
 
     FLocalConditionInstance()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_InstanceId = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        return;
     }
     FLocalConditionInstance(const FLocalConditionInstance &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_InstanceId = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_InstanceId = int(Other.m_InstanceId);
+        this.m_InstanceData = Other.m_InstanceData;
+        return;
     }
     FLocalConditionInstance(const int InInstanceId, const FLocalConditionInstanceData &inout InInstanceData)
     {
         this.m_InstanceId = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.SetInstanceId(InInstanceId);
         this.SetInstanceData(InInstanceData);
         return;
@@ -248,7 +263,6 @@ struct FCS_LocalConditionManager : FECSSingleton
     UPROPERTY()
     int NextInstanceId;
 
-
     int CreateInstance(const FECSEntity &inout ContextEntity, const TDataObjectPtr<FLocalConditionConfig> &inout ConditionConfig)
     {
         FLocalConditionInstanceData local_32;
@@ -256,7 +270,7 @@ struct FCS_LocalConditionManager : FECSSingleton
         local_32.SetContextEntity(ContextEntity);
         local_32.SetCurrentValue(0);
         int local_34 = this.NextInstanceId;
-        this.Add(this.NextInstanceId, local_32);
+        this.ConditionInstanceData.Add(this.NextInstanceId, local_32);
         this.InstanceIdToEntity.Add(this.EntityToInstances.FindOrAdd(ContextEntity).GetInstances().Add(this.NextInstanceId), ContextEntity);
         this.TypeToInstances.FindOrAdd(::ConditionUtils::GetConditionTypeDefine(ConditionConfig)).GetInstances().Add(this.NextInstanceId);
         ++this.NextInstanceId;
@@ -269,7 +283,7 @@ struct FCS_LocalConditionManager : FECSSingleton
     void RemoveInstance(const int InstanceId)
     {
         FLocalConditionInstanceData local_32;
-        if (this.RemoveAndCopyValue(InstanceId, local_32))
+        if (this.ConditionInstanceData.RemoveAndCopyValue(InstanceId, local_32))
         {
             TArray<int>& local_40;
             if (local_32.GetConditionConfig())
@@ -300,20 +314,20 @@ struct FCS_LocalConditionManager : FECSSingleton
     }
     bool HasInstance(const int InstanceId) const
     {
-        return this.Contains(InstanceId);
+        return this.ConditionInstanceData.Contains(InstanceId);
     }
     FLocalConditionInstanceData GetInstanceData(const int InstanceId) const
     {
         FLocalConditionInstanceData __r;
-        if (this.Contains(InstanceId))
+        if (this.ConditionInstanceData.Contains(InstanceId))
         {
-            return this[InstanceId];
+            return this.ConditionInstanceData[InstanceId];
         }
         return __r;
     }
     FLocalConditionInstanceData& ModifyInstanceData(const int InstanceId)
     {
-        return this[InstanceId];
+        return this.ConditionInstanceData[InstanceId];
     }
     const FLocalConditionInstanceContainer FindInstancesByType(const TSubclassOf<ULocalConditionTypeDefineBase> &inout ConditionType) const
     {
@@ -349,7 +363,7 @@ struct FCS_LocalConditionManager : FECSSingleton
     TArray<int> GetAllInstanceIds() const
     {
         TArray<int> local_4;
-        this.GetKeys(local_4);
+        this.ConditionInstanceData.GetKeys(local_4);
         return local_4;
     }
 }
@@ -384,11 +398,15 @@ struct FCS_ServerLocalConditionView : FECSSingleton
 
     FCS_ServerLocalConditionView()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FCS_ServerLocalConditionView(const FCS_ServerLocalConditionView &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_InstanceDatas = Other.m_InstanceDatas;
         return;
@@ -431,11 +449,15 @@ struct FC_EntityLocalConditionView : FECSComponent
 
     FC_EntityLocalConditionView()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_EntityLocalConditionView(const FC_EntityLocalConditionView &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_InstanceDatas = Other.m_InstanceDatas;
         return;
@@ -574,17 +596,17 @@ bool RemoveLocalConditionManager(const FECSWorldPtr &inout World)
 }
 void __MonitorLocalConditionManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_LocalConditionManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_LocalConditionManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLocalConditionManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_LocalConditionManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_LocalConditionManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLocalConditionManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_LocalConditionManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_LocalConditionManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_LocalConditionNewlyCreatedInstances
@@ -675,17 +697,17 @@ bool RemoveLocalConditionNewlyCreatedInstances(const FECSWorldPtr &inout World)
 }
 void __MonitorLocalConditionNewlyCreatedInstancesLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_LocalConditionNewlyCreatedInstances, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_LocalConditionNewlyCreatedInstances, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLocalConditionNewlyCreatedInstancesActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_LocalConditionNewlyCreatedInstances, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_LocalConditionNewlyCreatedInstances, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLocalConditionNewlyCreatedInstancesModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_LocalConditionNewlyCreatedInstances, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_LocalConditionNewlyCreatedInstances, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_LocalConditionRemovedInstances
@@ -776,17 +798,17 @@ bool RemoveLocalConditionRemovedInstances(const FECSWorldPtr &inout World)
 }
 void __MonitorLocalConditionRemovedInstancesLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_LocalConditionRemovedInstances, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_LocalConditionRemovedInstances, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLocalConditionRemovedInstancesActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_LocalConditionRemovedInstances, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_LocalConditionRemovedInstances, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLocalConditionRemovedInstancesModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_LocalConditionRemovedInstances, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_LocalConditionRemovedInstances, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_ServerLocalConditionView
@@ -874,17 +896,17 @@ bool RemoveServerLocalConditionView(const FECSWorldPtr &inout World)
 }
 void __MonitorServerLocalConditionViewLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_ServerLocalConditionView, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_ServerLocalConditionView, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorServerLocalConditionViewActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_ServerLocalConditionView, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_ServerLocalConditionView, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorServerLocalConditionViewModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_ServerLocalConditionView, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_ServerLocalConditionView, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EntityLocalConditionView
@@ -964,37 +986,37 @@ bool RemoveEntityLocalConditionView(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEntityLocalConditionViewOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EntityLocalConditionView, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EntityLocalConditionView, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityLocalConditionViewOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EntityLocalConditionView, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EntityLocalConditionView, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityLocalConditionViewOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EntityLocalConditionView, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EntityLocalConditionView, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityLocalConditionViewOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EntityLocalConditionView, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EntityLocalConditionView, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityLocalConditionViewOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EntityLocalConditionView, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EntityLocalConditionView, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEntityLocalConditionViewLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EntityLocalConditionView, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EntityLocalConditionView, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEntityLocalConditionViewActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EntityLocalConditionView, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EntityLocalConditionView, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEntityLocalConditionViewModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EntityLocalConditionView, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EntityLocalConditionView, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_ServerLocalConditionUpdateTag
@@ -1082,17 +1104,17 @@ bool RemoveServerLocalConditionUpdateTag(const FECSWorldPtr &inout World)
 }
 void __MonitorServerLocalConditionUpdateTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_ServerLocalConditionUpdateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_ServerLocalConditionUpdateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorServerLocalConditionUpdateTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_ServerLocalConditionUpdateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_ServerLocalConditionUpdateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorServerLocalConditionUpdateTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_ServerLocalConditionUpdateTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_ServerLocalConditionUpdateTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EntityLocalConditionUpdateTag
@@ -1172,37 +1194,37 @@ bool RemoveEntityLocalConditionUpdateTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEntityLocalConditionUpdateTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EntityLocalConditionUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EntityLocalConditionUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityLocalConditionUpdateTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EntityLocalConditionUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EntityLocalConditionUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityLocalConditionUpdateTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EntityLocalConditionUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EntityLocalConditionUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityLocalConditionUpdateTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EntityLocalConditionUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EntityLocalConditionUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityLocalConditionUpdateTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EntityLocalConditionUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EntityLocalConditionUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEntityLocalConditionUpdateTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EntityLocalConditionUpdateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EntityLocalConditionUpdateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEntityLocalConditionUpdateTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EntityLocalConditionUpdateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EntityLocalConditionUpdateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEntityLocalConditionUpdateTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EntityLocalConditionUpdateTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EntityLocalConditionUpdateTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

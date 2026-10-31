@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_SubmitRechargeTier
 {
     const int ViewID = 0;
@@ -25,8 +24,7 @@ class UWidget_SubmitRechargeTier : UEUIUserWidget
         }
         FKLPayResultDelegate local_5;
         local_5.BindUFunction(this, n"OnKLPayResult");
-        int local_6 = GetPriceAmount();
-        UMiHoYoSDKHelper::KLPay(FString().Append(GetTierId()), local_5);
+        UMiHoYoSDKHelper::KLPay(FString().Append(GetTierId()), GetPriceAmount(), local_5);
         return;
     }
     UFUNCTION()
@@ -66,6 +64,7 @@ namespace UWidget_SubmitRechargeTier
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SubmitRechargeTier;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

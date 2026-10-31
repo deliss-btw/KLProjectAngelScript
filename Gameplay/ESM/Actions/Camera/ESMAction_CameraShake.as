@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: UESMAction_CameraShake (default scalar field UESMAction.NetSimulateMode has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
-
 class UESMAction_CameraShake : UESMBPBaseInstantAction
 {
     UPROPERTY()
@@ -12,11 +7,10 @@ class UESMAction_CameraShake : UESMBPBaseInstantAction
     UPROPERTY()
     FVector3f SourcePositionOffset;
 
-
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const
     {
-        return FString().Append("з›ёжњєйњ‡еЉЁ: ").Append(this.ConfigRef.GetDataName());
+        return FString().Append("相机震动: ").Append(this.ConfigRef.GetDataName());
     }
     UFUNCTION()
     EESMActionType GetActionType_Implementation() const
@@ -41,7 +35,14 @@ class UESMAction_CameraShake : UESMBPBaseInstantAction
     UFUNCTION()
     void ViewDo_Implementation(const FESMViewContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_10 = 0;
+        if (this.bForSelfOnly)
+        {
+            FCameraUtils::StartCameraShakeForEntity(Context.GetEntity(), Time.WorldTime, this.GetDataPathName(), this.ConfigRef, 1.0f, false);
+            return;
+        }
+        FCameraUtils::StartCameraShake(Context.GetEntity(), Time.WorldTime, local_10.ToFTransform().TransformPosition(FVector(this.SourcePositionOffset)), this.GetDataPathName(), this.ConfigRef, 1.0f, false);
+        return;
     }
     UFUNCTION()
     void Gizmos_Implementation(const FESMPreviewContext &inout Context, const FESMActionTime &inout Time)
@@ -80,7 +81,6 @@ class UESMAction_SpanCameraShake : UESMBPBaseSpanTickAction
     UPROPERTY()
     bool bAlignShakeTimeNormalized = false;
 
-
     UFUNCTION()
     FESMInstanceDataInfo GetViewInstanceDataInfo_Implementation() const
     {
@@ -113,7 +113,14 @@ class UESMAction_SpanCameraShake : UESMBPBaseSpanTickAction
     UFUNCTION()
     void ViewEnter_Implementation(const FESMViewContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_10 = 0;
+        if (this.bForSelfOnly)
+        {
+            FCameraUtils::StartCameraShakeForEntity(Context.GetEntity(), Time.WorldTime, this.GetDataPathName(), this.ConfigRef, 1.0f, true);
+            return;
+        }
+        FCameraUtils::StartCameraShake(Context.GetEntity(), Time.WorldTime, local_10.ToFTransform().TransformPosition(FVector(this.SourcePositionOffset)), this.GetDataPathName(), this.ConfigRef, 1.0f, true);
+        return;
     }
     UFUNCTION()
     void ViewTick_Implementation(const FESMViewContext &inout Context, const FESMActionTime &inout Time) const
@@ -137,7 +144,8 @@ class UESMAction_SpanCameraShake : UESMBPBaseSpanTickAction
     UFUNCTION()
     void ViewExit_Implementation(const FESMViewContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FCameraUtils::StopCameraShake(Context.GetEntity(), Time.WorldTime, this.GetDataPathName());
+        return;
     }
     const FESSpanCameraShakeMrInstanceData GetViewInstanceData(const FESMViewContext &inout Context) const
     {

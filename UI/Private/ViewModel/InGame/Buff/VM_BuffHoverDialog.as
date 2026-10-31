@@ -1,4 +1,3 @@
-﻿
 namespace FVM_BuffHoverDialog
 {
     const int ModelId = 0;

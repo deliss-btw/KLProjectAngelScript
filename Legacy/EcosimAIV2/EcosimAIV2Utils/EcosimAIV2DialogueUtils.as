@@ -1,4 +1,3 @@
-﻿
 namespace FEcosimAIV2Utils
 {
 void UpdateSyncSpeakToAndOptionInfoByPlayerEntity(const FECSEntity &inout Entity, const TArray<FECSEntity> &inout PlayerEntityList)
@@ -169,7 +168,7 @@ bool UpdateInteractDialogue(const FECSEntity &inout InteractSource, const FECSEn
         TArray<FString> local_100;
         if (FEcosimAIV2Utils::GetInteractOption(local_36_2, local_100))
         {
-            local_100.Add("з¦»ејЂ");
+            local_100.Add("离开");
         }
         FStoryDialogInfoBuilder local_110;
         local_25 = !local_25;
@@ -187,6 +186,7 @@ bool UpdateInteractDialogue(const FECSEntity &inout InteractSource, const FECSEn
         if (!(local_110.IsEmpty()))
         {
             FFPTime local_130 = FFPTime(-1);
+            FStoryDialogInfo local_140 = local_110.Get();
             local_132.TargetEntity = InteractTarget;
             local_146.OptionList = local_100;
             return true;
@@ -222,7 +222,140 @@ void ClearEntityDialogueSpeakToContent(const FECSEntity &inout Entity)
 }
 bool GetValidInteractSimpleSpeakToAndOptionByTargetPlayerEntity(const FECSEntity &inout Entity, const FECSEntity &inout PlayerEntity, const TArray<TDataObjectPtr<FInteractSimpleSpeakToAndOption>> &inout CandidateDataList, TArray<TDataObjectPtr<FInteractSimpleSpeakToAndOption>> &inout ValidDataList)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    bool __r; return __r;
+    int local_10 = 0;
+    int local_16 = 0;
+    bool local_33;
+    TArrayConstIterator<FInstancedStruct> local_40;
+    TArrayConstIterator<FName> local_74;
+    bool local_95 = false;
+    int local_96 = 0;
+    int local_97 = 0;
+    FECSEntity local_4 = PlayerEntity;
+    bool local_17 = !(local_10) || !(local_16);
+    if (local_17)
+    {
+        return false;
+    }
+    for (auto& local_32 : CandidateDataList)
+    {
+        local_33 = true;
+        for (; local_40.CanProceed;)
+        {
+            const FInstancedStruct& local_48 = local_40.Proceed();
+            if (FInstancedStruct::GetPtr(local_48).opCall())
+            {
+                int local_57 = 0;
+                if (local_17)
+                {
+                    FEcosimAIV2SpeakToMemory local_62;
+                    if (local_16.SpeakToMemoryMap.Find(local_4, local_62))
+                    {
+                        TArrayConstIterator<FName> local_68;
+                        for (; local_68.CanProceed;)
+                        {
+                            if (local_62.SpokenToNameKeyList.Contains(local_68.Proceed()))
+                            {
+                                local_57 = local_57 + 1;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    for (auto& local_94 : local_16.SpeakToMemoryMap)
+                    {
+                        local_94;
+                        for (; local_74.CanProceed;)
+                        {
+                            if (unresolved.SpokenToNameKeyList.Contains(local_74.Proceed()))
+                            {
+                                local_57 = local_57 + 1;
+                            }
+                        }
+                    }
+                }
+                switch (local_96)
+                {
+                case 0:
+                {
+                    local_17 = (local_57 > local_97);
+                    local_95 = local_17;
+                    break;
+                }
+                case 1:
+                {
+                    local_17 = (local_57 >= local_97);
+                    local_95 = local_17;
+                    break;
+                }
+                case 2:
+                {
+                    local_17 = (local_57 < local_97);
+                    local_95 = local_17;
+                    break;
+                }
+                case 3:
+                {
+                    local_17 = (local_57 <= local_97);
+                    local_95 = local_17;
+                    break;
+                }
+                case 4:
+                {
+                    local_17 = (local_57 == local_97);
+                    local_95 = local_17;
+                    break;
+                }
+                case 5:
+                {
+                    local_17 = (local_57 != local_97);
+                    local_95 = local_17;
+                    break;
+                }
+                default:
+                {
+                    local_95 = false;
+                    break;
+                }
+                }
+                local_17 = !(local_95);
+                if (local_17)
+                {
+                    local_33 = false;
+                    break;
+                }
+                continue;
+            }
+            if (FInstancedStruct::GetPtr(local_48).opCall())
+            {
+                FEcosimAIV2SpeakToMemory local_62;
+                if (local_16.SpeakToMemoryMap.Find(local_4, local_62))
+                {
+                    FName local_108;
+                    local_108.GetDataName();
+                    bool local_18 = local_62.SpokenToNameKeyList.Contains(local_108);
+                    if (local_18)
+                    {
+                        local_33 = false;
+                        break;
+                    }
+                }
+                continue;
+            }
+            if (FInstancedStruct::GetPtr(local_48).opCall())
+            {
+                if (local_16.SpeakToMemoryMap.Contains(local_4))
+                {
+                    local_33 = false;
+                    break;
+                }
+            }
+        }
+        if (local_33)
+        {
+            ValidDataList.Add(local_32);
+        }
+    }
+    return !(ValidDataList.IsEmpty());
 }
 }

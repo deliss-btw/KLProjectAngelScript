@@ -1,17 +1,33 @@
-﻿
 namespace __FForgeTreeLevelConfigFunctions
 {
 UFUNCTION()
 int __FForgeTreeLevelConfig_GetForgeLv(const TDataObjectPtr<FForgeTreeLevelConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    int __r; return __r;
+
+    if (DataObject == nullptr)
+    {
+        if (!EUIGlobals::GIsDuringPropertyConversion)
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'ForgeLv' from a null 'FForgeTreeLevelConfig' DataObject!");
+        }
+        FForgeTreeLevelConfig defaultValue;
+        return defaultValue.ForgeLv;
+    }
+    return DataObject.Get().ForgeLv;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FConditionConfig>> __FForgeTreeLevelConfig_GetShowCondition(const TDataObjectPtr<FForgeTreeLevelConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TArray<TDataObjectPtr<FConditionConfig>> __r; return __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'ShowCondition' from a null 'FForgeTreeLevelConfig' DataObject!");
+        }
+        FForgeTreeLevelConfig local_20;
+        return local_20.GetShowCondition();
+    }
+    return GetShowCondition();
 }
 UFUNCTION()
 FForgeTreeLevelConfig CastToFForgeTreeLevelConfig(const TDataObjectPtr<FForgeTreeLevelConfig> &inout DataObject)

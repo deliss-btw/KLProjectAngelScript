@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ForgeWeaponItemPassiveSkill
 {
     const int ModelId = 0;
@@ -53,8 +52,7 @@ struct FVM_ForgeWeaponItemPassiveSkill : FEUIViewModel
     }
     void PostConstruct()
     {
-        TEUIModelRef<FM_Trait> local_2 = this.GetTrait();
-        this.SetTraitDetailListVM(FEUIModelContainer());
+        this.SetTraitDetailListVM(FEUIModelContainer(::FVM_TraitDetailList::Create(this.GetContext().Manager, this.GetTrait())));
         return;
     }
     FEUIModelContainer GetTraitDetailListModel() const

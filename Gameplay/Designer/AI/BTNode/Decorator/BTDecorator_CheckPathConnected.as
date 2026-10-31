@@ -1,5 +1,3 @@
-﻿
-
 struct FBTDecorator_CheckPathConnectedMemory
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ struct FBTDecorator_CheckPathConnectedMemory
     bool bLastResult;
     UPROPERTY()
     bool bHasLastResult;
-
 
 }
 
@@ -37,8 +34,7 @@ class UBTDecorator_CheckPathConnected : UBTDecorator_ECSScriptBase
 
     default SetbAllowAbortLowerPri(true);
     default SetbAllowAbortChildNodes(true);
-    default SetNodeName("жЈЂжџҐдё¤з‚№иїћйЂљжЂ§");
-
+    default SetNodeName("检查两点连通性");
 
     UFUNCTION()
     UScriptStruct GetNodeMemoryType_Implementation() const

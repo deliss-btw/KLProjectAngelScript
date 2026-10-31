@@ -1,4 +1,3 @@
-﻿
 namespace FM_PresentationData_Teleporter
 {
     const int ModelId = 0;
@@ -74,9 +73,7 @@ TEUIModelRef<FM_PresentationData_Teleporter> GetTeleporterData(const FM_Spot &in
 TEUIModelRef<FM_PresentationData_Teleporter> AddTeleporterData(FM_Spot &inout Spot, const TDataObjectPtr<FTeleporterConfig> &inout TeleporterConfig, const TEUIModelRef<FM_SpotRegistry> &inout Registry = FEUIModelRef())
 {
     FM_PresentationData_Teleporter& local_4 = FM_PresentationData_Teleporter::Create(Spot.GetManager(), TeleporterConfig);
-    FEUIModelRef local_6 = FEUIModelRef(local_4);
-    EPresentationDataType local_10;
-    FInstancedStruct::Make(local_10);
+    PresentationDataUtils::AddPresentationData(Spot, EPresentationDataType(10), FInstancedStruct::Make(FEUIModelRef(local_4)), Registry);
     return TEUIModelRef<FM_PresentationData_Teleporter>(local_4);
 }
 void RemoveTeleporterData(FM_Spot &inout Spot, const TEUIModelRef<FM_SpotRegistry> &inout Registry = FEUIModelRef())

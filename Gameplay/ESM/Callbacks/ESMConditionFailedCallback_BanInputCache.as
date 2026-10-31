@@ -1,5 +1,3 @@
-﻿
-
 class UESMConditionFailedCallback_BanInputCache : UESMConditionFailedCallback
 {
     UPROPERTY()

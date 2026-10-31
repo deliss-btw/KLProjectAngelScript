@@ -1,9 +1,7 @@
-﻿
-
 struct FFootIKInfo
 {
     UPROPERTY()
-    USkeletalPoseTweaker Owner;
+    USkeletalPoseTweaker Owner = nullptr;
     UPROPERTY()
     FTransform TargetOffset;
     UPROPERTY()
@@ -14,7 +12,6 @@ struct FFootIKInfo
     FTransform IKFootBoneCS;
     UPROPERTY()
     float StrideAlpha = 0.0;
-
 
     void UpdateFootIKGoal(const int PinBoneIndex, const int FootBoneIndex, const FTransform &inout RootTM, const FTransform &inout RootAttrTM, const FVector &inout LastPin, const FVector &inout NextPin, const bool DrawDebug = false)
     {
@@ -66,7 +63,7 @@ struct FFootIKInfo
         this.IKFootBoneCS = (this.FKFootBoneCS.GetRelativeTransform(local_48) * local_204);
         this.TargetOffset.SetLocation((this.IKFootBoneCS.GetLocation() - this.FKFootBoneCS.GetLocation()));
         this.TargetOffset.SetRotation(FQuat::Identity);
-        ::InterpTo(this.InterpOffsetForThisFrame, this.TargetOffset, int(this.Owner.CurrentDeltaSeconds), 1);
+        ::InterpTo(this.InterpOffsetForThisFrame, this.TargetOffset, this.Owner.CurrentDeltaSeconds, 1);
         return;
     }
 }
@@ -74,7 +71,7 @@ struct FFootIKInfo
 struct FLegPairIKInfo
 {
     UPROPERTY()
-    USkeletalPoseTweaker Owner;
+    USkeletalPoseTweaker Owner = nullptr;
     UPROPERTY()
     FTransform BodyOffset;
     UPROPERTY()
@@ -88,7 +85,7 @@ struct FLegPairIKInfo
     {
         this.BodyOffset.SetLocation(((FVector(Left.TargetOffset.GetLocation()) + FVector(Right.TargetOffset.GetLocation())) * 0.5));
         this.BodyOffset.SetRotation(FQuat::Identity);
-        ::InterpTo(this.InterpOffsetForThisFrame, this.BodyOffset, int(this.Owner.CurrentDeltaSeconds), 1);
+        ::InterpTo(this.InterpOffsetForThisFrame, this.BodyOffset, this.Owner.CurrentDeltaSeconds, 1);
         return;
     }
 }

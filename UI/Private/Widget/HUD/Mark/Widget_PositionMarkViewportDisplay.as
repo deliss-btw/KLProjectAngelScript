@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PositionMarkViewportDisplay
 {
     const int ViewID = 0;
@@ -109,6 +108,7 @@ namespace UWidget_PositionMarkViewportDisplay
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PositionMarkViewportDisplay;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnMarkInfoChanged"));
     return;
 }

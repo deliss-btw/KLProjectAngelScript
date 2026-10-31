@@ -1,4 +1,3 @@
-﻿
 enum EGTCRangeValidType
 {
     Inside,
@@ -7,7 +6,6 @@ enum EGTCRangeValidType
     OutsideOrOn,
     JustOn,
 }
-
 
 struct FGTCBoxValidator
 {
@@ -21,7 +19,6 @@ struct FGTCBoxValidator
     FVector Max;
     UPROPERTY()
     FBox Box;
-
 
     bool Validate(const FVector &inout Vector)
     {

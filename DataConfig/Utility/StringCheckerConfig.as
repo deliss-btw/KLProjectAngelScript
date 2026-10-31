@@ -1,5 +1,3 @@
-﻿
-
 struct FStringCheckerCharNumConfig
 {
     UPROPERTY()
@@ -15,7 +13,6 @@ struct FStringCheckerCharNumConfig
     UPROPERTY()
     FText LessThanMinNumErrorMessage;
 
-
 }
 
 struct FStringCheckerCharRange
@@ -24,7 +21,6 @@ struct FStringCheckerCharRange
     int StartChar = 0;
     UPROPERTY()
     int EndChar = 0;
-
 
 }
 
@@ -41,7 +37,6 @@ struct FStringCheckerCharRangeConfig
     UPROPERTY()
     FText InvalidCharListDelimiter = INVTEXT(", ");
 
-
 }
 
 struct FStringCheckerEmojiConfig
@@ -50,7 +45,6 @@ struct FStringCheckerEmojiConfig
     bool bEnable = false;
     UPROPERTY()
     FText ErrorMessage;
-
 
 }
 
@@ -66,7 +60,6 @@ struct FStringCheckerRegexConfig
     bool bCaseSensitive;
     UPROPERTY()
     FText ErrorMessage;
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 enum ECreatureActivityTargetScopeType
 {
     SimpleRange,
@@ -6,12 +5,10 @@ enum ECreatureActivityTargetScopeType
     Voxel,
 }
 
-
 struct FCreatureActivityTargetScopeConfig
 {
     UPROPERTY()
     ECreatureActivityTargetScopeType ScopeType;
-
 
 }
 
@@ -47,15 +44,17 @@ struct FConfigReference
 
     FConfigReference()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.ConfigRef = ENTITY_ID_NULL;
+        return;
     }
     FConfigReference(const FECSEntityId &inout InConfigRef)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.ConfigRef = InConfigRef;
+        return;
     }
     bool IsValid() const
     {
-        return (!((FECSEntityId(this) == ENTITY_ID_NULL)));
+        return (!((this.ConfigRef == ENTITY_ID_NULL)));
     }
 }
 

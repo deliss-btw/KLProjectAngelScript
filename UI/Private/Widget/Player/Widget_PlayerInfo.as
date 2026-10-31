@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PlayerInfo
 {
     const int ViewID = 0;
@@ -54,6 +53,7 @@ namespace UWidget_PlayerInfo
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PlayerInfo;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

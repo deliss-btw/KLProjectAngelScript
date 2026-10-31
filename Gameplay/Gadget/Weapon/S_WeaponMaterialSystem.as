@@ -1,5 +1,3 @@
-﻿
-
 class US_WeaponMaterialSystem : UECSScriptSystem
 {
     US_WeaponMaterialSystem()

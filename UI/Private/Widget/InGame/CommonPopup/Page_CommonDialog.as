@@ -1,4 +1,3 @@
-﻿
 namespace UPage_CommonDialog
 {
     const int ViewID = 0;
@@ -123,6 +122,7 @@ namespace UPage_CommonDialog
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UPage_CommonDialog;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnDialogShouldCloseChanged"));
     return;
 }

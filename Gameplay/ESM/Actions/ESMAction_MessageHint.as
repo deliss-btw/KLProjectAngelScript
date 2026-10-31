@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_MessageHint : UESMBPBaseInstantAction
 {
     UPROPERTY()
@@ -21,7 +19,6 @@ struct FESMActionSkillCastHintInstanceData
 {
     UPROPERTY()
     bool m_bEffect = false;
-
 
     bool GetbEffect() const property
     {

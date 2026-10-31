@@ -1,5 +1,3 @@
-﻿
-
 class UPresentationSpotDisplaySettings : UGameplaySettingsBase
 {
     UPROPERTY()

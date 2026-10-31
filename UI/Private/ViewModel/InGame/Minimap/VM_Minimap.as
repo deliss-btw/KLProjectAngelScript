@@ -1,4 +1,3 @@
-﻿
 namespace FVM_Minimap
 {
     const int ModelId = 0;
@@ -137,7 +136,8 @@ struct FVM_Minimap : FEUIViewModel
     }
     void MarkPosition(const FVector2D &inout HoverPosition, const FVector2D &inout WorldPosition)
     {
-        ::CommonPopup::HoverCustom(HoverPosition, ::MarkUtil_Internal::GetMinimapMarkIconsSetting().MinimapTempMarkDialog, EEUILayoutLayer(4), FEUIModelContainer(::FVM_MinimapTempMarkDialog::Create(this.GetContext().Manager, WorldPosition, HoverPosition)), ECommonHoverLayout(0));
+        FVM_MinimapTempMarkDialog& local_2 = ::FVM_MinimapTempMarkDialog::Create(this.GetContext().Manager, WorldPosition, HoverPosition);
+        ::CommonPopup::HoverCustom(HoverPosition, ::MarkUtil_Internal::GetMinimapMarkIconsSetting().MinimapTempMarkDialog, EEUILayoutLayer(4), FEUIModelContainer(local_2), ECommonHoverLayout(0));
         return;
     }
     void FastMarkPosition(const FVector2D &inout WorldPosition)
@@ -355,7 +355,7 @@ struct FVM_Minimap : FEUIViewModel
 struct __GeneratedProperties_FVM_Minimap
 {
     UPROPERTY()
-    UMinimapConfig MinimapConfig;
+    UMinimapConfig MinimapConfig = nullptr;
     UPROPERTY()
     TEUIModelRef<FVM_Minimap> Self;
 
@@ -462,7 +462,11 @@ void __OnGuidingPathChange(FVM_Minimap &inout Model, const FECSEntity &inout Ent
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    ECSWorld.__MonitorActiveBordersLifetime(EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    ECSWorld.__MonitorActiveBordersModification(EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorGuidingMinimapPathLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorGuidingMinimapPathModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 bool __UIGetter_bLocalPlayerPositionSet(const FVM_Minimap &inout Model)
 {

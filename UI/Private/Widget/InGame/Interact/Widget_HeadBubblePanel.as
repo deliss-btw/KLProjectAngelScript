@@ -1,10 +1,6 @@
-﻿
 namespace UWidget_HeadBubblePanel
 {
     const int ViewID = 0;
-
-// NOTE: class defaults are not authored in this module: UWidget_HeadBubblePanel (default scalar field UEUIActivatableWidget.bAutoActivate has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
 
 }
 class UWidget_HeadBubblePanel : UEUIActivatableWidget
@@ -55,7 +51,21 @@ class UWidget_HeadBubblePanel : UEUIActivatableWidget
     UFUNCTION()
     void ShowCustomWheelOption(const FCE_ShowCustomWheelOption &inout Event)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FCustomWheelOptionConfig local_88;
+        if (int(local_88.OptionType) == 0)
+        {
+            FName local_182;
+            local_182.GetDataName();
+            this.ShowHeadBubbleInternal(Event.Sender, local_182, "", false);
+        }
+        else
+        {
+            if (int(local_88.OptionType) == 1)
+            {
+                this.ShowSignalInternal(Event.Sender);
+            }
+        }
+        return;
     }
 }
 
@@ -63,6 +73,7 @@ namespace UWidget_HeadBubblePanel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_HeadBubblePanel;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

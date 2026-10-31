@@ -1,5 +1,3 @@
-﻿
-
 class USPT_TrajectoryBlend_Mount_Quad001 : USPT_TrajectoryBlend_Template
 {
     USPT_TrajectoryBlend_Mount_Quad001()

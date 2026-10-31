@@ -1,4 +1,3 @@
-﻿
 namespace FM_CommissionPopup
 {
     const int ModelId = 0;
@@ -48,11 +47,56 @@ struct FM_CommissionPopup : FEUIModel
 
     FM_CommissionPopup()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_Nop = 0;
+        this.m_bCommissionFinishShowSettlement = false;
+        this.m_bCommissionFinishMedalCalShowTimeEnd = false;
+        this.m_bCommissionFinishWaitTeamPageShow = false;
+        this.m_bCommissionFinishWaitTeamPageShowEnd = false;
+        this.m_bSkipRewardPopups = false;
+        this.m_bCachedRaceCommission = false;
+        this.m_CommissionFullScreenRewardPopupId = INDEX_NONE;
+        this.m_bWaitingForFullScreenRelease = false;
+        this.m_bFullScreenFlowStarted = false;
+        this.m_bFullScreenRewardPopOpened = false;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FM_CommissionPopup(const FM_CommissionPopup &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_Nop = 0;
+        this.m_bCommissionFinishShowSettlement = false;
+        this.m_bCommissionFinishMedalCalShowTimeEnd = false;
+        this.m_bCommissionFinishWaitTeamPageShow = false;
+        this.m_bCommissionFinishWaitTeamPageShowEnd = false;
+        this.m_bSkipRewardPopups = false;
+        this.m_bCachedRaceCommission = false;
+        this.m_CommissionFullScreenRewardPopupId = INDEX_NONE;
+        this.m_bWaitingForFullScreenRelease = false;
+        this.m_bFullScreenFlowStarted = false;
+        this.m_bFullScreenRewardPopOpened = false;
+        this.m_Nop = int(Other.m_Nop);
+        this.m_bCommissionFinishShowSettlement = Other.m_bCommissionFinishShowSettlement;
+        this.m_bCommissionFinishMedalCalShowTimeEnd = Other.m_bCommissionFinishMedalCalShowTimeEnd;
+        this.m_bCommissionFinishWaitTeamPageShow = Other.m_bCommissionFinishWaitTeamPageShow;
+        this.m_bCommissionFinishWaitTeamPageShowEnd = Other.m_bCommissionFinishWaitTeamPageShowEnd;
+        this.m_bSkipRewardPopups = Other.m_bSkipRewardPopups;
+        this.m_bCachedRaceCommission = Other.m_bCachedRaceCommission;
+        this.m_CommissionFullScreenRewardPopupId = int(Other.m_CommissionFullScreenRewardPopupId);
+        this.m_bWaitingForFullScreenRelease = Other.m_bWaitingForFullScreenRelease;
+        this.m_bFullScreenFlowStarted = Other.m_bFullScreenFlowStarted;
+        this.m_bFullScreenRewardPopOpened = Other.m_bFullScreenRewardPopOpened;
+        this.m_CommissionFinishShowSettlementTime = Other.m_CommissionFinishShowSettlementTime;
+        this.m_CommissionFinishMedalCalShowTime = Other.m_CommissionFinishMedalCalShowTime;
+        this.m_CommissionFinishTeamPageShowTime = Other.m_CommissionFinishTeamPageShowTime;
+        this.m_CommissionFinishTeamPageShowEndTime = Other.m_CommissionFinishTeamPageShowEndTime;
+        this.m_CommissionFinishReward = Other.m_CommissionFinishReward;
+        this.m_CommissionFinishTeam = Other.m_CommissionFinishTeam;
+        this.m_CommissionFinishRewardWidget = Other.m_CommissionFinishRewardWidget;
+        this.m_CommissionFinishTeamWidget = Other.m_CommissionFinishTeamWidget;
+        return;
     }
     FM_CommissionPopup& opAssign(const FM_CommissionPopup &inout Other)
     {
@@ -197,7 +241,20 @@ struct FM_CommissionPopup : FEUIModel
     }
     void EnqueueFullScreenReward()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (this.GetCommissionFullScreenRewardPopupId() != INDEX_NONE)
+        {
+            ::CommonPopupUtils::DequeuePopupInternal(this.GetCommissionFullScreenRewardPopupId());
+        }
+        this.SetCommissionFullScreenRewardPopupId(::CommonPopupUtils::TryEnqueuePopup(this.GetFullScreenRewardPopupType(), -2000000000));
+        if (this.GetCommissionFullScreenRewardPopupId() != INDEX_NONE)
+        {
+            this.SetbWaitingForFullScreenRelease(true);
+            this.SetbFullScreenFlowStarted(false);
+            XLog(ELog(22), FString().Append("[CommonPopup] Commission full-screen reward enqueued, PopupId=").Append(this.GetCommissionFullScreenRewardPopupId()));
+            return;
+        }
+        this.StartFullScreenRewardFlow();
+        return;
     }
     void StartFullScreenRewardFlow()
     {
@@ -209,7 +266,20 @@ struct FM_CommissionPopup : FEUIModel
     }
     void OnCommonPopupManagerChanged(const FCE_NotifyCommonPopupManagerChanged &inout Event)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (this.GetCommissionFullScreenRewardPopupId() == INDEX_NONE)
+        {
+            return;
+        }
+        if (Event.RemovedPopupIds.Contains(this.GetCommissionFullScreenRewardPopupId()))
+        {
+            this.AbortFullScreenRewardFlow();
+            return;
+        }
+        if (this.GetbWaitingForFullScreenRelease() && Event.NewDisplayingPopupIds.Contains(this.GetCommissionFullScreenRewardPopupId()))
+        {
+            this.StartFullScreenRewardFlow();
+        }
+        return;
     }
     void AbortFullScreenRewardFlow()
     {
@@ -236,7 +306,30 @@ struct FM_CommissionPopup : FEUIModel
     }
     void EndFullScreenRewardFlow(const FString &inout Reason)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.SetbWaitingForFullScreenRelease(false);
+        this.SetbFullScreenFlowStarted(false);
+        this.SetbCommissionFinishShowSettlement(false);
+        this.SetbCommissionFinishMedalCalShowTimeEnd(false);
+        this.SetbCommissionFinishWaitTeamPageShow(false);
+        this.SetbCommissionFinishWaitTeamPageShowEnd(false);
+        if (this.GetCommissionFinishReward())
+        {
+            TEUIModelRef<FVM_CommissionFinish> local_4 = this.GetCommissionFinishReward();
+            true.SetbPendingClose();
+        }
+        if (this.GetCommissionFinishTeam())
+        {
+            bool local_1_2 = true;
+            TEUIModelRef<FVM_CommissionFinish> local_4_2 = this.GetCommissionFinishTeam();
+            local_1_2.SetbPendingClose();
+        }
+        if (this.GetCommissionFullScreenRewardPopupId() != INDEX_NONE)
+        {
+            ::CommonPopupUtils::DequeuePopupInternal(this.GetCommissionFullScreenRewardPopupId());
+            XLog(ELog(22), FString().Append("[CommonPopup] Commission full-screen reward ended, Reason=").Append(Reason).Append(", PopupId=").Append(this.GetCommissionFullScreenRewardPopupId()));
+            this.SetCommissionFullScreenRewardPopupId(INDEX_NONE);
+        }
+        return;
     }
     void OnStartCommissionSettlement()
     {
@@ -301,11 +394,9 @@ struct FM_CommissionPopup : FEUIModel
         {
             return;
         }
-        ::CommissionUtils::GetCommissionSettings();
+        UCommissionSettings local_12 = ::CommissionUtils::GetCommissionSettings();
         this.SetCommissionFinishTeam(TEUIModelRef<FVM_CommissionFinish>(::FVM_CommissionFinish::Create(this.GetContext().Manager)));
-        this.GetCommissionFinishTeam();
-        FEUIWidgetRef local_20;
-        this.SetCommissionFinishTeamWidget(local_20);
+        this.SetCommissionFinishTeamWidget(FEUIWidget::AddWidgetByClass(this.GetContext().UELocalPlayer, local_12.CommissionFinishSettlementPerformance, this.GetCommissionFinishTeam().opImplConv()));
         return;
     }
     void OnCommissionEndTeamPageShowCloseButton()
@@ -323,7 +414,58 @@ struct FM_CommissionPopup : FEUIModel
     }
     void Tick()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (this.GetbSkipRewardPopups())
+        {
+            return;
+        }
+        if (this.GetbCommissionFinishShowSettlement())
+        {
+            this.SetCommissionFinishShowSettlementTime((this.GetCommissionFinishShowSettlementTime() - this.GetContext().DeltaTime));
+            if (this.GetCommissionFinishShowSettlementTime().ToSeconds() < 0.0)
+            {
+                this.SetbCommissionFinishShowSettlement(false);
+                this.EnqueueFullScreenReward();
+            }
+        }
+        if (this.GetbCommissionFinishMedalCalShowTimeEnd())
+        {
+            this.SetCommissionFinishMedalCalShowTime((this.GetCommissionFinishMedalCalShowTime() - this.GetContext().DeltaTime));
+            if (this.GetCommissionFinishMedalCalShowTime().ToSeconds() < 0.0)
+            {
+                this.OnCommissionRewardPageCalHide();
+            }
+        }
+        if (this.GetbCommissionFinishWaitTeamPageShow())
+        {
+            this.SetCommissionFinishTeamPageShowTime((this.GetCommissionFinishTeamPageShowTime() - this.GetContext().DeltaTime));
+            if (this.GetCommissionFinishTeamPageShowTime().ToSeconds() < 0.0)
+            {
+                this.OnCommissionEndRewardPageHide();
+                this.OnCommissionEndTeamPageShow();
+            }
+        }
+        if (this.GetbCommissionFinishWaitTeamPageShowEnd())
+        {
+            this.SetCommissionFinishTeamPageShowEndTime((this.GetCommissionFinishTeamPageShowEndTime() - this.GetContext().DeltaTime));
+            if (this.GetCommissionFinishTeamPageShowEndTime().ToSeconds() < 0.0)
+            {
+                this.OnCommissionEndTeamPageShowCloseButton();
+            }
+        }
+        this.UpdateSkipButtonState();
+        if ((this.GetCommissionFullScreenRewardPopupId() != INDEX_NONE && this.GetbFullScreenFlowStarted()))
+        {
+            bool local_11 = this.GetbCommissionFinishShowSettlement() || this.GetbCommissionFinishMedalCalShowTimeEnd() || this.GetbCommissionFinishWaitTeamPageShow() || this.GetbCommissionFinishWaitTeamPageShowEnd();
+            bool local_1_2 = this.GetCommissionFinishRewardWidget().IsValid() || this.GetCommissionFinishTeamWidget().IsValid();
+            if (!(local_11) && !(local_1_2))
+            {
+                ::CommonPopupUtils::DequeuePopupInternal(this.GetCommissionFullScreenRewardPopupId());
+                XLog(ELog(22), FString().Append("[CommonPopup] Commission full-screen reward completed, dequeued PopupId=").Append(this.GetCommissionFullScreenRewardPopupId()));
+                this.SetCommissionFullScreenRewardPopupId(INDEX_NONE);
+                this.SetbFullScreenFlowStarted(false);
+            }
+        }
+        return;
     }
     void SkipCurrentWaitPhase()
     {

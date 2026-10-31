@@ -1,5 +1,3 @@
-﻿
-
 struct FDialogueArgTextConfig
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ struct FDialogueArgTextConfig
     bool bEnableArgText;
     UPROPERTY()
     FArgText ArgText;
-
 
 }
 
@@ -34,7 +31,6 @@ class UDialogueSettings : UGameplaySettingsBase
     TSoftClassPtr<UEUIUserWidget> AmbientDialogueWidget;
     UPROPERTY()
     TMap<FString, FDialogueArgTextConfig> DialogueArgTextMap;
-
 
 }
 

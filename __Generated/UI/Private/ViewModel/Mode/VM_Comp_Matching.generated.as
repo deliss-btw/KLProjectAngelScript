@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_Comp_Matching_Helpers
 {
 UFUNCTION()

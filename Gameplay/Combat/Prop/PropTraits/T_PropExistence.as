@@ -1,5 +1,3 @@
-﻿
-
 struct FT_Prop_Existence : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -16,7 +14,7 @@ struct FT_Prop_Existence : FECSTrait
     UPROPERTY()
     FC_NumLimited Config_FC_NumLimited;
 
-    default CustomName = FName("з”џе‘Ѕе‘Ёжњџ (FT_Prop_Existence)");
+    default CustomName = FName("生命周期 (FT_Prop_Existence)");
 
     FT_Prop_Existence()
     {

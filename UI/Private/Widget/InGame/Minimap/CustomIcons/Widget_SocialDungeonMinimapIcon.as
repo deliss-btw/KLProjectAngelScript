@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_SocialDungeonMinimapIcon
 {
     const int ViewID = 0;
@@ -122,6 +121,7 @@ namespace UWidget_SocialDungeonMinimapIcon
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SocialDungeonMinimapIcon;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -137,6 +137,7 @@ namespace UWidget_SocialDungeonMinimapIconTooltip
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SocialDungeonMinimapIconTooltip;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MinimapTempMarkDialog
 {
     const int ModelId = 0;
@@ -54,7 +53,7 @@ struct FVM_MinimapTempMarkDialog : FEUIViewModel
     void SwitchToConstantMark()
     {
         ::CommonPopup::CloseAllHover();
-        ::CommonPopup::HoverCustom(this.GetHoverPosition(), ::MarkUtil::GetMarkConfigSetting().MinimapMarkDialog, EEUILayoutLayer(4), FEUIModelContainer(), ECommonHoverLayout(0));
+        ::CommonPopup::HoverCustom(this.GetHoverPosition(), ::MarkUtil::GetMarkConfigSetting().MinimapMarkDialog, EEUILayoutLayer(4), FEUIModelContainer(::FVM_MinimapMarkDialog::Create(this.GetContext().Manager, ENTITY_ID_NULL, this.GetMarkWorldPosition())), ECommonHoverLayout(0));
         return;
     }
     const FVector2D GetMarkWorldPosition() const property

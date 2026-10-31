@@ -1,5 +1,3 @@
-﻿
-
 class US_EnergyBallSystem : UECSScriptSystem
 {
     US_EnergyBallSystem()
@@ -126,9 +124,10 @@ class US_EnergyBallSystem : UECSScriptSystem
         const FC_PlayerController& local_6 = local_4.opCall();
         if (local_6)
         {
-            if (FECSEntity(local_6.GetPlayerPawnEntity()))
+            FECSEntity local_12 = local_6.GetPlayerPawnEntity();
+            if (local_12)
             {
-                ECS::GetContextTime();
+                ECSFX::PlayFXInstant(local_12, PlayEnergyBallFX.FXConfig, ECS::GetContextTime(), 1.0f, false, true);
             }
         }
         return;

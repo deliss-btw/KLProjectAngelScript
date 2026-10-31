@@ -1,11 +1,9 @@
-﻿
 const FConsoleVariable CVar_Debug_EnableFxTrail = FConsoleVariable();
 
 struct FFXTrailCheckInstanceData
 {
     UPROPERTY()
     float LastCheckTime = 0.0;
-
 
 }
 
@@ -15,7 +13,6 @@ class UESMAction_FXTrail : UESMBPBaseSpanTickAction
     float32 DetectionInterval = 0.06f;
     UPROPERTY()
     FSurfaceLineTraceConfig TraceConfig;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetViewInstanceDataInfo_Implementation() const

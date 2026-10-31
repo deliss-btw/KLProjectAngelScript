@@ -1,12 +1,9 @@
-﻿
-
 struct FConfigVM_NavSampleList : FConfigEUIModelBase
 {
     UPROPERTY()
     int InitialSelectedIndex;
     UPROPERTY()
     int ItemCount;
-
 
 }
 

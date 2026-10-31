@@ -1,4 +1,3 @@
-﻿
 enum ECommissionType
 {
     None,
@@ -46,7 +45,6 @@ enum ECommissionLoadingDisplayMode
     Hidden,
 }
 
-
 struct FCommissionRegionWeatherTemplate
 {
     UPROPERTY()
@@ -84,7 +82,6 @@ struct FCommissionGroupConfig : FDataObject
     uint Count;
     UPROPERTY()
     bool CanRepeat = false;
-
 
 }
 
@@ -175,7 +172,6 @@ struct FCommissionConfig : FDataObject
     bool bOverrideSetGuidingPathToTarget = false;
     UPROPERTY()
     bool bSetGuidingPathToTarget = false;
-
 
     const TDataObjectPtr<FPveCommissionMatchConfig> GetOverrideMatchConfig() const property
     {
@@ -341,7 +337,6 @@ struct FNormalCommissionConfig : FCommissionConfig
 
     FNormalCommissionConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -353,7 +348,6 @@ struct FCommissionRefreshConfig
     ECommissionRefreshType CommissionRefreshType = ECommissionRefreshType(1);
     UPROPERTY()
     TDataObjectPtr<FCommissionGroupConfig> CommissionGroupConfig;
-
 
 }
 
@@ -371,7 +365,6 @@ struct FHardCommissionConfig : FCommissionConfig
 
     FHardCommissionConfig()
     {
-        super();
         this.CommissionRefreshType = ECommissionRefreshType(1);
         this.__InitDefaults();
         return;
@@ -399,7 +392,6 @@ struct FExtremeCommissionConfig : FCommissionConfig
 
     FExtremeCommissionConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -413,7 +405,6 @@ struct FMissionCommissionConfig : FCommissionConfig
 
     FMissionCommissionConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -430,7 +421,6 @@ struct FRaceTierReward
     UPROPERTY()
     TDataObjectPtr<FRewardConfig> Reward;
 
-
 }
 
 struct FRaceCommissionConfig : FCommissionConfig
@@ -445,7 +435,6 @@ struct FRaceCommissionConfig : FCommissionConfig
 
     FRaceCommissionConfig()
     {
-        super();
         this.RaceMode = ERaceMode(0);
         this.__InitDefaults();
         return;
@@ -468,7 +457,6 @@ struct FCommissionTypeConfig : FDataObject
     UPROPERTY()
     ESystemModule SystemModule;
 
-
     TDataObjectPtr<FRefreshRuleConfig> GetRefreshRuleConfig() const property
     {
         TDataObjectPtr<FRefreshRuleConfig> __r;
@@ -488,7 +476,6 @@ struct FTempCommissionConfig : FCommissionConfig
 
     FTempCommissionConfig()
     {
-        super();
         return;
     }
 }

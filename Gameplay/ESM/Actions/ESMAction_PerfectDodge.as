@@ -1,11 +1,9 @@
-﻿
 enum EPerfectDodgePhantomShape
 {
     Box,
     Sphere,
     Capsule,
 }
-
 
 struct FESMPerfectDodgeDummyHitBoxInstanceData
 {
@@ -37,7 +35,6 @@ class UESMAction_PerfectDodgeDummyHitBox : UESMBPBaseSpanAction
     UPROPERTY()
     float32 HalfHeight = 90.0f;
 
-
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const
     {
@@ -60,8 +57,7 @@ class UESMAction_PerfectDodgeDummyHitBox : UESMBPBaseSpanAction
         {
             return;
         }
-        FVector local_32 = local_10.GetPosition();
-        FVector local_26 = local_10.GetRotation().RotateVector(this.LocationOffset);
+        FVector local_38 = (FVector(local_10.GetPosition()) + local_10.GetRotation().RotateVector(this.LocationOffset));
         FRotator local_74 = (FQuat(local_10.GetRotation()) * this.RotationOffset.Quaternion()).Rotator();
         bool local_1 = false;
         FECSEntity local_88 = ::FEntityPoolUtils::PopFromPoolOrSpawnEntity(local_1, EEntityPoolType(5), Context.GetEntity(), this.PerfectDodgePrefabClass.GetDefaultObject());
@@ -71,7 +67,7 @@ class UESMAction_PerfectDodgeDummyHitBox : UESMBPBaseSpanAction
         }
         int local_89 = local_88.GetIdValue();
         local_88.SetEntityName(FName((FString("PerfectDodgeDummyHitBox_") + local_89)));
-        FQuat local_60 = local_74.Quaternion();
+        ECS::MarkEntityPrefabPendingInit(local_88, this.PerfectDodgePrefabClass, local_38, local_74.Quaternion(), EPrefabCollisionAlignment(2), false);
         local_104.SetOwnerEntity(Context.GetEntity());
         local_104.SetbIsDummy(true);
         local_104.SetHitCount(0);

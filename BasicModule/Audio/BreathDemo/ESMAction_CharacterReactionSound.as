@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CharacterReactionSound : UESMBPBaseInstantAction
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ class UESMAction_CharacterReactionSound : UESMBPBaseInstantAction
     TSoftObjectPtr<UAkAudioEvent> Event = nullptr;
     UPROPERTY()
     TSoftObjectPtr<UAkAudioEvent> StopEvent = nullptr;
-
 
     UFUNCTION()
     EESMAssetWorkflow GetWorkflow_Implementation() const

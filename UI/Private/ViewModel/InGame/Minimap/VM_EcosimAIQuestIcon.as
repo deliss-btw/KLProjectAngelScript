@@ -1,4 +1,3 @@
-﻿
 namespace FVM_EcosimAIQuestIcon
 {
     const int ModelId = 0;

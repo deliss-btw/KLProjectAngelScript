@@ -1,4 +1,3 @@
-﻿
 namespace FMS_WorldMapSpotView
 {
     const int ModelId = 0;

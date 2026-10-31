@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FGTCTransformSampler (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FGTCTimeVector : FGTCSampleRecord
 {
     FGTCSampleRecord _base_FGTCSampleRecord;
@@ -11,7 +6,6 @@ struct FGTCTimeVector : FGTCSampleRecord
 
     FGTCTimeVector()
     {
-        super();
         return;
     }
 }
@@ -30,7 +24,6 @@ struct FGTCTransformSampleResult : FGTCSampleResult
 
     FGTCTransformSampleResult()
     {
-        super();
         return;
     }
     void Clear()
@@ -61,7 +54,6 @@ struct FGTCTransformSampler : FGTCSampler
 
     FGTCTransformSampler()
     {
-        super();
         this.bIsRelative = true;
         this.bSamplePosition = true;
         this.bSampleRotation = false;
@@ -86,7 +78,77 @@ struct FGTCTransformSampler : FGTCSampler
     }
     void Execute_Implementation(const FECSEntity &inout TargetEntity, const FGTCActionContext &inout Context)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        int local_22 = 0;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        FGTCRecordTimeStamp local_14 = Super::GetCurTimeStamp(Context);
+        FGTCTransformSampleResult& local_16 = this.GetSampleResult();
+        if (this.bSamplePosition)
+        {
+            FVector local_46;
+            if (this.bIsRelative)
+            {
+                local_46 = (FVector(local_22.GetPosition()) - local_16.BeginTransform.GetLocation());
+            }
+            else
+            {
+                local_46 = local_22.GetPosition();
+            }
+            if (local_16.Positions.Num() > 0 && (local_16.Positions.Last(0)._base_FGTCSampleRecord.LocalFrame == int(local_14.LocalFrame)))
+            {
+                FGTCTimeVector& local_58 = local_16.Positions.Last(0);
+                local_58._base_FGTCSampleRecord = local_14;
+                local_58.Vector = local_46;
+            }
+            else
+            {
+                FGTCTimeVector local_68;
+                local_68._base_FGTCSampleRecord = Super::GetCurTimeStamp(Context);
+                local_68.Vector = local_46;
+                local_16.Positions.Add(local_68);
+            }
+        }
+        if (this.bSampleRotation)
+        {
+            FRotator local_80 = local_16.BeginTransform.Rotator();
+            FRotator local_74 = local_22.GetRotation().Rotator();
+            FRotator local_98;
+            if (this.bIsRelative)
+            {
+                local_98 = (local_74 - local_80);
+            }
+            else
+            {
+                local_98 = local_74;
+            }
+            if ((local_98.Yaw - local_80.Yaw) > 180.0)
+            {
+                local_98.Yaw = (local_98.Yaw - 360.0);
+            }
+            else
+            {
+                if ((local_98.Yaw - local_80.Yaw) < -180.0)
+                {
+                    local_98.Yaw = (local_98.Yaw + 360.0);
+                }
+            }
+            FVector local_28 = local_98.Euler();
+            if (local_16.Rotations.Num() > 0 && (local_16.Rotations.Last(0)._base_FGTCSampleRecord.LocalFrame == int(local_14.LocalFrame)))
+            {
+                FGTCTimeVector& local_58_2 = local_16.Rotations.Last(0);
+                local_58_2._base_FGTCSampleRecord = local_14;
+                local_58_2.Vector = local_28;
+                return;
+            }
+            FGTCTimeVector local_68;
+            local_68._base_FGTCSampleRecord = Super::GetCurTimeStamp(Context);
+            local_68.Vector = local_28;
+            local_16.Rotations.Add(local_68);
+        }
+        return;
     }
     bool ValidateSampleResult()
     {

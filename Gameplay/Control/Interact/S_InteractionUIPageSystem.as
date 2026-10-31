@@ -1,5 +1,3 @@
-﻿
-
 class US_InteractionUIPageSystem : US_EUIGroupScriptSystemBase
 {
     US_InteractionUIPageSystem()

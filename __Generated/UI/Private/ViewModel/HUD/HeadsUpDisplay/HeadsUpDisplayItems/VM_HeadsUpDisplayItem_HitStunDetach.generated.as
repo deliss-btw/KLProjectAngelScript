@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_HeadsUpDisplayItem_HitStunDetach_Helpers
 {
 UFUNCTION()

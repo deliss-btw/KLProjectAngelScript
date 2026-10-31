@@ -1,5 +1,3 @@
-﻿
-
 struct FInteractTipPreset : FDataObject
 {
     FDataObject _base_FDataObject;

@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_NavSampleIndex
 {
     const int ViewID = 0;
@@ -93,7 +92,6 @@ class UWidget_NavSamplePageBase : UEUIActivatableWidget
     FEUIActionBinding PreviousSampleActionBinding;
     UPROPERTY()
     FEUIActionBinding NextSampleActionBinding;
-
 
     UFUNCTION()
     void OnViewBind_Implementation()
@@ -206,6 +204,7 @@ namespace UWidget_NavSampleIndex
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_NavSampleIndex;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -221,6 +220,7 @@ namespace UWidget_NavSamplePageBase
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_NavSamplePageBase;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

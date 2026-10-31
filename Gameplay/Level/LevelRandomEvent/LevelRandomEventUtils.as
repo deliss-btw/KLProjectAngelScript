@@ -1,4 +1,3 @@
-﻿
 namespace LevelRandomEventUtils
 {
 void DeactivateAllRandomEventDatalayers()

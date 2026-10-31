@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_AI_DebugAIPathPoint = FConsoleVariable();
 const FConsoleVariable CVar_AI_DebugEntityAIPathPoint = FConsoleVariable();
 const FConsoleVariable CVar_AI_DebugAIPathPointEntityID = FConsoleVariable();
@@ -29,7 +28,6 @@ class US_AIPathFollowScriptSystem : UECSScriptSystem
     float32 TryClosePathMaxDistance = 2000.0f;
     float32 TryClosePathAdvanceDistanceMin = 50.0f;
     float32 TryClosePathAdvanceDistanceMax = 500.0f;
-
 
     bool FindNextFollowPosition(FC_AIPathFollow &inout PathFollow, const FVector &inout Location, const bool bIgnoreZ, FVector &inout OutPathStartPosition, const bool bCheckPathDir = false, const FVector &inout Forward = FVector::ZeroVector) const
     {
@@ -282,14 +280,15 @@ class US_AIPathFollowScriptSystem : UECSScriptSystem
     }
     bool FindNextAirFollowPosition(FC_AIPathFollow &inout PathFollow, const FVector &inout Location, const FVector &inout CurrentForward, FVector &inout OutTarget, const bool bFlyColliisonCheckedStuck) const
     {
+        int local_10;
         float local_82;
-        if (PathFollow.bHasReach)
+        if (int(PathFollow.bHasReach) != 0)
         {
             return false;
         }
         OutTarget = Location;
         FVector local_8;
-        bool local_11 = this.FindNextFollowPosition(PathFollow, Location, false, local_8, false, FVector::ZeroVector);
+        bool local_11 = this.FindNextFollowPosition(PathFollow, Location, false, local_8, (0 != 0), FVector::ZeroVector);
         if (local_11)
         {
             OutTarget = PathFollow.CurrentPath[PathFollow.GetCurrentPathIdx()];
@@ -301,7 +300,15 @@ class US_AIPathFollowScriptSystem : UECSScriptSystem
                 float local_40 = local_32.Size();
                 FVector local_38 = local_32.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector);
                 float local_50 = FMath::Abs(local_38.Z);
-                if (local_50 <= this.UseTargetDirectlyThreshold || bFlyColliisonCheckedStuck)
+                if (local_50 <= this.UseTargetDirectlyThreshold)
+                {
+                    local_10 = 1;
+                }
+                else
+                {
+                    local_10 = bFlyColliisonCheckedStuck;
+                }
+                if (local_10 != 0)
                 {
                     float local_70;
                     float local_62;
@@ -400,8 +407,119 @@ class US_AIPathFollowScriptSystem : UECSScriptSystem
     }
     bool HandleJumpOrTeleport(const bool bForceJump, FVector &inout TargetPosition, const FECSEntity &inout Entity, const FC_Transform &inout Transform, FC_AIPathFollow &inout PathFollow) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        bool __r; return __r;
+        FVector local_30;
+        bool local_44;
+        int local_54 = 0;
+        bool local_1 = false;
+        bool local_3 = false;
+        FVector local_10 = TargetPosition;
+        if (bForceJump)
+        {
+            local_1 = true;
+            float32 local_15 = float32(Transform.GetPosition().DistSquared(TargetPosition));
+            if (local_15 > this.JumpMaxDistanceSQ)
+            {
+                float32 local_11 = FMath::Sqrt(local_15);
+                int local_23 = PathFollow.GetCurrentPathIdx();
+                if (local_23 > 1)
+                {
+                    local_30 = PathFollow.CurrentPath[(PathFollow.GetCurrentPathIdx() - 1)];
+                }
+                else
+                {
+                    local_30 = Transform.GetPosition();
+                }
+                local_10 = (TargetPosition + (((local_30 - TargetPosition).GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector)) * (local_11 - this.JumpMaxDistance)));
+            }
+        }
+        else
+        {
+            int local_41;
+            int local_40;
+            int local_23_2 = PathFollow.GetCurrentPathIdx() - 1;
+            int local_38 = FMath::Max(0, local_23_2);
+            local_23_2 = PathFollow.CurrentFlags.Num();
+            local_23_2 = FMath::Min(PathFollow.GetCurrentPathIdx(), (local_23_2 - 1));
+            local_40 = INDEX_NONE;
+            int local_39 = INDEX_NONE;
+            local_41 = local_39;
+            int local_42 = local_38;
+            for (; local_42 <= local_23_2; ++local_42)
+            {
+                if (local_40 == INDEX_NONE && FAINavigationUtils::IsNavLink(PathFollow.CurrentFlags[local_42]))
+                {
+                    local_40 = local_42;
+                }
+                local_39 = INDEX_NONE;
+                if (local_41 == local_39 && FAINavigationUtils::IsForceMoveLink(PathFollow.CurrentFlags[local_42]))
+                {
+                    local_41 = local_42;
+                }
+            }
+            local_39 = INDEX_NONE;
+            if (local_41 != local_39 && (local_41 == PathFollow.GetCurrentPathIdx()))
+            {
+                local_3 = true;
+                TargetPosition = PathFollow.CurrentPath[PathFollow.GetCurrentPathIdx()];
+                local_39 = PathFollow.GetCurrentPathIdx() + 1;
+                if (PathFollow.CurrentPath.IsValidIndex(local_39))
+                {
+                    PathFollow.SetCurrentPathIdx(local_39);
+                }
+            }
+            else
+            {
+                local_42 = INDEX_NONE;
+                if (local_40 != local_42)
+                {
+                    int local_37 = PathFollow.GetCurrentPathIdx() - 1;
+                    if (local_40 == local_37 || (Transform.GetPosition().DistSquaredXY(FVector(PathFollow.CurrentPath[local_40])) < 10000.0))
+                    {
+                        local_1 = true;
+                        if (local_37 != local_40)
+                        {
+                            local_42 = local_40 + 1;
+                            if (PathFollow.CurrentPath.IsValidIndex(local_42))
+                            {
+                                PathFollow.SetCurrentPathIdx(local_42);
+                                TargetPosition = PathFollow.CurrentPath[local_42];
+                            }
+                        }
+                    }
+                }
+            }
+            local_10 = TargetPosition;
+        }
+        if (!(local_1))
+        {
+            local_44 = false;
+        }
+        else
+        {
+            local_44 = local_54;
+        }
+        local_44 = local_44 && FAINavigationUtils::CanEntityJump(Entity);
+        if (local_44)
+        {
+            FNameHandle_EntityBBVar local_66;
+            FESMTriggerUtils::ActivateTrigger(Entity, local_54.Storage, FAINavigationUtils::GetAIJumpTrigger(), ECS::GetContextTime(), ECS::GetContextDeltaTime(), 0);
+            local_66;
+            if (Entity.HasEntityBB(local_66))
+            {
+                FNameHandle_EntityBBVarVector local_70;
+                local_70;
+            }
+        }
+        else
+        {
+            if ((local_3 || local_1))
+            {
+                FC_AIPathFollowRequestTeleport local_96;
+                Assign local_74;
+                local_74.opCall(local_96).Location = local_10;
+            }
+        }
+        return local_1 || local_3;
     }
     EAIMoveSimulateType TriggerTurnStand(FC_AIPathFollow &inout PathFollow, const FECSEntity &inout Entity, const bool bNeedTurn) const
     {
@@ -473,7 +591,7 @@ class US_AIPathFollowScriptSystem : UECSScriptSystem
         float local_10 = 999999999.0;
         FVector local_18;
         int local_19 = 0;
-        while (local_19 < 0)
+        for (; local_19 < (PathFollow.CurrentPath.Num() - 1); ++local_19)
         {
             FVector local_26(PathFollow.CurrentPath[local_19]);
             FVector local_44 = this.GetClosestPointOnLineSegment(Transform.GetPosition(), local_26, FVector(PathFollow.CurrentPath[local_19 + 1]));
@@ -484,7 +602,6 @@ class US_AIPathFollowScriptSystem : UECSScriptSystem
                 local_18 = local_44;
                 local_8 = local_19;
             }
-            ++local_19;
         }
         if (local_8 == -1)
         {
@@ -698,7 +815,7 @@ class US_AIPathFollowScriptSystem : UECSScriptSystem
             }
             else
             {
-                local_12 = FAINavigationUtils::FindNextPathIndex(Transform.GetPosition(), PathFollow.CurrentPath, int(PathFollow.PathPointTolerance), 0, -1);
+                local_12 = FAINavigationUtils::FindNextPathIndex(Transform.GetPosition(), PathFollow.CurrentPath, PathFollow.PathPointTolerance, 0, -1);
             }
             PathFollow.SetCurrentPathIdx(local_12);
             PathFollow.StartLocation = Transform.GetPosition();
@@ -844,18 +961,15 @@ class US_AIPathFollowScriptSystem : UECSScriptSystem
     UFUNCTION()
     void Job_DebugDrawFollowPath(const FC_AIPathFollow &inout PathFollow) const
     {
-        int local_3 = 0;
         int local_1 = 0;
-        while (local_1 < local_3)
+        for (; local_1 < PathFollow.CurrentPath.Num(); )
         {
             if (local_1 == PathFollow.GetCurrentPathIdx())
             {
                 DebugDraw::DrawDebugSphere(this.GetWorld(), PathFollow.CurrentPath[local_1], 100.0f, 12, FColor::Red, false, -1.0f, uint8(0), 1.0f);
             }
             FColor local_11 = FColor(FColor::Green);
-            local_3 = PathFollow.CurrentPath.Num();
-            local_3 = local_3 - 1;
-            if (local_1 == local_3)
+            if (local_1 == (PathFollow.CurrentPath.Num() - 1))
             {
                 local_11 = FColor::Yellow;
             }
@@ -924,20 +1038,17 @@ class US_AIPathFollowScriptSystem : UECSScriptSystem
     UFUNCTION()
     void Job_RevisePath(const FCS_FixedTime &inout Time, FC_AIPathFindingResultDispatcher &inout PathDispatcher, const FC_AICommand &inout Command) const
     {
-        int local_3 = 0;
         if (PathDispatcher.ShouldDispatch(Time.Time) && (PathDispatcher.FullPath.Num() > 0))
         {
             if (CVar_AI_DebugAIPathPoint.GetBool())
             {
                 int local_5 = 0;
-                while (local_5 < local_3)
+                for (; local_5 < (PathDispatcher.FullPath.Num() - 1); )
                 {
                     FVector local_12(PathDispatcher.FullPath[local_5]);
                     FVector local_18(PathDispatcher.FullPath[local_5 + 1]);
                     DebugDraw::DrawDebugLine(this.GetWorld(), local_12, local_18, FColor::Orange, false, -1.0f, uint8(0), 0.0f);
                     ++local_5;
-                    local_3 = PathDispatcher.FullPath.Num();
-                    local_3 = local_3 - 1;
                 }
             }
         }
@@ -1136,7 +1247,6 @@ class US_AIPathFollowScriptSystem : UECSScriptSystem
     {
         bool local_10;
         int local_18 = 0;
-        int local_24 = 0;
         if (!(FECSEntity(CVar_AI_DebugEntityAIPathPoint.GetInt()).IsValid()))
         {
             local_10 = true;
@@ -1155,16 +1265,14 @@ class US_AIPathFollowScriptSystem : UECSScriptSystem
             return;
         }
         int local_23 = 0;
-        while (local_23 < local_24)
+        for (; local_23 < local_18.CurrentPath.Num(); ++local_23)
         {
             if (local_23 == local_18.GetCurrentPathIdx())
             {
                 DebugDraw::DrawDebugSphere(this.GetWorld(), local_18.CurrentPath[local_23], 100.0f, 12, FColor::Red, false, -1.0f, uint8(0), 1.0f);
             }
             FColor local_31 = FColor(FColor::Green);
-            local_24 = local_18.CurrentPath.Num();
-            local_24 = local_24 - 1;
-            if (local_23 == local_24)
+            if (local_23 == (local_18.CurrentPath.Num() - 1))
             {
                 local_31 = FColor::Yellow;
             }
@@ -1173,7 +1281,6 @@ class US_AIPathFollowScriptSystem : UECSScriptSystem
             {
                 DebugDraw::DrawDebugLine(this.GetWorld(), local_18.CurrentPath[local_23 - 1], local_18.CurrentPath[local_23], local_31, false, -1.0f, uint8(0), 0.0f);
             }
-            ++local_23;
         }
         return;
     }

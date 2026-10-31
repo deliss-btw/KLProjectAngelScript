@@ -1,10 +1,7 @@
-﻿
-
 class AKLLevelScriptBaseActor : AKLLevelScriptActor
 {
     UPROPERTY()
     bool bEnableOnLevelMonsterDeadEvent = false;
-
 
     UFUNCTION()
     void OnInitLevelScriptEntity_Implementation()
@@ -39,10 +36,10 @@ class AKLLevelScriptBaseActor : AKLLevelScriptActor
             Has local_10;
             local_5 = local_10.opCall();
         }
-        Get local_16;
         if (local_5)
         {
             Get local_20;
+            Get local_16;
             if ((local_16.opCall().GetOwnerDataLayerName() == local_20.opCall().DataLayerName))
             {
                 this.OnLevelMonsterDead(DeathEvent.Sender, FECSEntity(DeathEvent.KilledByEntity));

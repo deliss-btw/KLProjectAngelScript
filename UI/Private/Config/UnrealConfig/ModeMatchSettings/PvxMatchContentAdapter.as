@@ -1,5 +1,3 @@
-﻿
-
 class UPvxMatchContentAdapter : UModeMatchContentAdapterBase
 {
     default MatchMode = 1;
@@ -11,11 +9,12 @@ class UPvxMatchContentAdapter : UModeMatchContentAdapterBase
     }
     FEUIModelContainer MakeViewModels(const FEUIModelContext &inout Context, const FEUIModelRef &inout Business) const
     {
-        if (!(TEUIModelRef<FM_ModeMatchConfirm>(Business).IsValid()))
+        TEUIModelRef<FM_ModeMatchConfirm> local_2 = TEUIModelRef<FM_ModeMatchConfirm>(Business);
+        if (!(local_2.IsValid()))
         {
             return FEUIModelContainer();
         }
-        return FEUIModelContainer();
+        return FEUIModelContainer(::FVM_PVX_MatchConfirmContent::Create(Context.Manager, local_2));
     }
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommonSideHintList
 {
     const int ViewID = 0;
@@ -174,6 +173,7 @@ namespace UWidget_CommonSideHintList
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonSideHintList;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -189,6 +189,7 @@ namespace UWidget_CommonSideHintEntry_Large
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonSideHintEntry_Large;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -204,6 +205,7 @@ namespace UWidget_CommonSideHintEntry_LargeWithAction
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonSideHintEntry_LargeWithAction;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -219,6 +221,7 @@ namespace UWidget_CommonSideHintEntry_Small
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonSideHintEntry_Small;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

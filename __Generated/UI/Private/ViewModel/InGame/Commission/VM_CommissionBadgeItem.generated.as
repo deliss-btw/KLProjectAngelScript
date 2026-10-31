@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommissionBadgeItem_Helpers
 {
 UFUNCTION()

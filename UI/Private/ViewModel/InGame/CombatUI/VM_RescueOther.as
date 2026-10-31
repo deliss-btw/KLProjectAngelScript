@@ -1,4 +1,3 @@
-﻿
 namespace FVM_RevivalTimeProgressBar
 {
     const int ModelId = 0;
@@ -202,7 +201,6 @@ struct __GeneratedProperties_FVM_RescueOther
     FText RescuedReaminingTimeSecond;
     UPROPERTY()
     TEUIModelRef<FVM_RescueOther> Self;
-
 
 }
 

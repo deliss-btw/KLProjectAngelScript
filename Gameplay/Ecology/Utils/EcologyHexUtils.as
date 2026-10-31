@@ -1,4 +1,3 @@
-﻿
 namespace FEcologyHexUtils
 {
 void IndexToRingOffsetDetailed(const int Index, int &inout OutRing, int &inout OutOffset)

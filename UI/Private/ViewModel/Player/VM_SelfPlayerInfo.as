@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_SelfPlayerInfo
 {
     const int ModelId = 0;

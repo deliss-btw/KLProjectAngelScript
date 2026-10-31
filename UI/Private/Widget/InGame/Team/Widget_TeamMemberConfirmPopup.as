@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TeamMemberConfirmPopup
 {
     const int ViewID = 0;
@@ -30,7 +29,7 @@ class UWidget_TeamMemberConfirmPopup : UEUIActivatableWidget
     UFUNCTION()
     void OnReplyCountdownSecondsChanged(const int Seconds)
     {
-        this.RejectBinding.SetOverrideDisplayText(FText::Format(NSLOCTEXT("DraftRejectCountdown", "ж‹’з»ќ({0}з§’)"), Seconds));
+        this.RejectBinding.SetOverrideDisplayText(FText::Format(NSLOCTEXT("DraftRejectCountdown", "拒绝({0}秒)"), Seconds));
         return;
     }
     UFUNCTION()
@@ -169,6 +168,7 @@ namespace UWidget_TeamMemberConfirmPopup
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TeamMemberConfirmPopup;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnReplyCountdownSecondsChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnIsOpenChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnReplyStatusChanged"));

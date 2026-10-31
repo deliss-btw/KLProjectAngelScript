@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ItemFeature_Count
 {
     const int ModelId = 0;

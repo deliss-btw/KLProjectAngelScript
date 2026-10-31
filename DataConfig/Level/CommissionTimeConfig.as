@@ -1,5 +1,3 @@
-﻿
-
 struct FCommissionTimeConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -11,7 +9,6 @@ struct FCommissionTimeConfig : FDataObject
     uint TimeRange;
     UPROPERTY()
     uint TimeSpeed;
-
 
 }
 

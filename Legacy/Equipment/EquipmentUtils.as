@@ -1,4 +1,3 @@
-﻿
 namespace FEquipmentUtils
 {
 int AddEquipmentByTraits(const FECSEntity &inout OwnerEntity, const FEquipmentConfig &inout EquipmentConfig, const EEquipSlotType Slot, const TArray<FTraitParam> &inout Traits)
@@ -69,7 +68,7 @@ int AddEquipment(const FECSEntity &inout OwnerEntity, const FEquipmentConfig &in
     local_44.SetEquipmentIdCounter((local_44.GetEquipmentIdCounter() + 1));
     FEquipmentAddInfo local_84;
     local_84.SetId(local_44.GetEquipmentIdCounter());
-    local_84.SetConfig(TDataObjectPtr<FEquipmentConfig>());
+    local_84.SetConfig(TDataObjectPtr<FEquipmentConfig>(EquipmentConfig));
     local_84.SetEquipSlot(EEquipSlotType(Slot));
     local_84.SetModifierConfigs(Modifiers);
     local_84.SetCapabilities(Capabilities);
@@ -233,7 +232,7 @@ TDataObjectPtr<FWeaponConfig> GetGameModeOverrideWeapon(const FECSWorldPtr &inou
 }
 void AddInitEquipmentWithoutGS(const FECSEntity &inout PawnEntity)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argint]
+    // body not fully recovered — stub [argmismatch:argint]
 }
 uint64 GetAvatarEquipmentUid(const FECSEntity &inout PlayerEntity, const EEquipSlotType Slot, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
 {

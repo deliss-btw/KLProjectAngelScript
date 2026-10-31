@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MenuBarItem
 {
     const int ModelId = 0;
@@ -147,7 +146,6 @@ struct __GeneratedProperties_FVM_MenuBarItem
     bool HasRedDot;
     UPROPERTY()
     TEUIModelRef<FVM_MenuBarItem> Self;
-
 
 }
 

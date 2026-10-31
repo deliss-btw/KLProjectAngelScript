@@ -1,5 +1,3 @@
-﻿
-
 struct FShopGoodsConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -17,7 +15,6 @@ struct FShopGoodsConfig : FDataObject
     FDataObjectPtr m_CostItem;
     UPROPERTY()
     uint CostCount;
-
 
     const TDataObjectPtr<FServerConditionConfigBase> GetUnlockCondition() const property
     {

@@ -1,5 +1,3 @@
-﻿
-
 class UHTNService_GetDistanceToTarget : UHTNService_ECSScriptBase
 {
     UPROPERTY()

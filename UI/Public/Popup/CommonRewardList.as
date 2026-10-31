@@ -1,4 +1,3 @@
-﻿
 const float32 REWARD_SORT_DEFAULT_ORDER = 1000000f;
 
 struct FRewardItemEntry
@@ -64,7 +63,6 @@ struct FRewardSortItem
     UPROPERTY()
     int Rarity = 0;
 
-
 }
 
 struct FRewardSortItemComparator
@@ -116,13 +114,13 @@ struct FCommonRewardListBuilder
         local_12.bHasSortOverride = bHasSortOverride;
         local_12.SortOrder = SortOrder;
         local_12.SubOrder = SubOrder;
-        this.Add(local_12);
+        this.Entries.Add(local_12);
         return;
     }
     FCommonRewardListBuilder& FromDropConfig(const TDataObjectPtr<FDropItemConfigBase> &inout DropItemConfig, const FName &inout TagKey = FName(), const FText &inout TagText = FText(), const int CountMultiplier = 1, const bool bClaimed = false)
     {
         TArray<TDataObjectPtr<FDropItemConfigBase>> local_4;
-        bool local_27 = false;
+        int local_27 = 0;
         const FDropItemConfig& local_32;
         local_4.Add(DropItemConfig);
         TArray<TDataObjectPtr<FDropItemConfig>> local_14 = ::DropItemsUtils::CollectDisplayDropItemConfigs(local_4);
@@ -137,9 +135,8 @@ struct FCommonRewardListBuilder
                 {
                     if (local_64.Item)
                     {
-                        local_27 = false;
-                        int local_5 = int(local_64.Num) * CountMultiplier;
-                        this.AddTaggedEntry(0, 0, local_27, bClaimed, TagText, TagKey, local_64.Item.opArrow().DataId);
+                        local_27 = 0;
+                        this.AddTaggedEntry(local_64.Item.opArrow().DataId, (int(local_64.Num) * CountMultiplier), TagKey, TagText, bClaimed, (local_27 != 0), 0.0f, 0);
                     }
                 }
             }
@@ -149,14 +146,13 @@ struct FCommonRewardListBuilder
     FCommonRewardListBuilder& FromRewardConfig(const TDataObjectPtr<FRewardConfig> &inout RewardConfig, const FName &inout TagKey = FName(), const FText &inout TagText = FText(), const int CountMultiplier = 1, const bool bClaimed = false)
     {
         const FRewardConfig& local_2;
-        bool local_15 = false;
+        int local_15 = 0;
         for (auto& local_18 : local_2.RewardItems)
         {
             if (local_18.Item)
             {
-                local_15 = false;
-                int local_19 = int(local_18.Count) * CountMultiplier;
-                this.AddTaggedEntry(0, 0, local_15, bClaimed, TagText, TagKey, local_18.Item.opArrow().DataId);
+                local_15 = 0;
+                this.AddTaggedEntry(local_18.Item.opArrow().DataId, (int(local_18.Count) * CountMultiplier), TagKey, TagText, bClaimed, (local_15 != 0), 0.0f, 0);
             }
         }
         return local_15;
@@ -164,7 +160,7 @@ struct FCommonRewardListBuilder
     FCommonRewardListBuilder FromRewardEntries(const TArray<FRewardItemEntry> &inout InEntries)
     {
         FCommonRewardListBuilder __r;
-        this.Append(InEntries);
+        this.Entries.Append(InEntries);
         return __r;
     }
     FCommonRewardListBuilder& FromPbItems(const TArray<FPbItem> &inout PbItems)
@@ -181,7 +177,7 @@ struct FCommonRewardListBuilder
             {
                 local_30 = 1;
             }
-            this.Add(FRewardItemEntry(local_16.GetItemId(), local_30));
+            this.Entries.Add(FRewardItemEntry(local_16.GetItemId(), local_30));
         }
         return local_13;
     }
@@ -199,7 +195,7 @@ struct FCommonRewardListBuilder
     }
     TArray<FRewardItemEntry> Build() const
     {
-        return ::RewardSortUtils::SortEntries(this);
+        return ::RewardSortUtils::SortEntries(this.Entries);
     }
 }
 

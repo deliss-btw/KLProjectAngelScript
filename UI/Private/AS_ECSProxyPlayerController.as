@@ -1,11 +1,9 @@
-﻿
 enum EEnterFrontendSystemActionTriggerAgain
 {
     DoNothing,
     Exit,
     EnterAgain,
 }
-
 
 struct FSystemOpenPageAction
 {
@@ -20,7 +18,6 @@ struct FSystemOpenPageAction
     UPROPERTY()
     float LastTriggerTime = -1.0;
 
-
 }
 
 struct FEnterFrontendSystemAction
@@ -33,7 +30,6 @@ struct FEnterFrontendSystemAction
     EEnterFrontendSystemActionTriggerAgain TriggerAgain;
     UPROPERTY()
     float LastTriggerTime = -1.0;
-
 
 }
 
@@ -74,7 +70,6 @@ class AAS_ECSProxyPlayerController : AAS_ECSPlayerController
     UPROPERTY()
     float LastSocialActionTriggerTime = -1.0;
 
-
     UFUNCTION()
     void BeginPlay_Implementation()
     {
@@ -103,15 +98,13 @@ class AAS_ECSProxyPlayerController : AAS_ECSPlayerController
                 local_98 = local_72.GetDataPtr().opArrow().EntryAction.EnhancedAction;
                 if (local_98 != nullptr)
                 {
-                    local_72.GetDataPtr();
-                    UInputAction local_122;
-                    this.CachedInputActionToMenu.Add(local_98, local_122);
+                    this.CachedInputActionToMenu.Add(local_98, local_72.GetDataPtr());
                     local_12.BindAction(local_98, ETriggerEvent(1), this, n"OnTriggerOpenMenuAction");
                 }
                 local_72.opPreInc();
             }
         }
-        this.UI_HeadBubblePanel = Cast<UWidget_HeadBubblePanel>((Cast<UWidget_HeadBubblePanel>(FEUIWidget::AddWidget(this.GetLocalPlayer(), GameplayTags::UI_Type_HUD_HeadBubble).RequireWidget())));
+        this.UI_HeadBubblePanel = (Cast<UWidget_HeadBubblePanel>(FEUIWidget::AddWidget(this.GetLocalPlayer(), GameplayTags::UI_Type_HUD_HeadBubble).RequireWidget()));
         this.ShowHeadBubble.BindUFunction(this.UI_HeadBubblePanel, n"ShowHeadBubble");
         this.ShowCustomWheelOption.BindUFunction(this.UI_HeadBubblePanel, n"ShowCustomWheelOption");
         this.SetIndicatorIconsVisible.BindUFunction(this, n"SetIndicatorIconsVisible");

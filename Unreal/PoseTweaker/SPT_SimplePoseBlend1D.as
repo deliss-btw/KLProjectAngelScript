@@ -1,5 +1,3 @@
-﻿
-
 class USPT_SimplePoseBlend1D : USkeletalPoseTweaker
 {
     UPROPERTY()
@@ -16,7 +14,6 @@ class USPT_SimplePoseBlend1D : USkeletalPoseTweaker
     bool bWantDebug = false;
     UPROPERTY()
     FVector SourceBoneEulerRelativeToRefLocal = FVector(0.0, 0.0, 0.0);
-
 
     UFUNCTION()
     void EvaluatePose_Implementation()

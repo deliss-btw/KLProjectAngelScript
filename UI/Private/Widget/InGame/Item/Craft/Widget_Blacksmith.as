@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_WeaponCraftCategory
 {
     const int ViewID = 0;
@@ -125,7 +124,48 @@ class UWidget_EquipmentCraftPopup : UEUIActivatableWidget
     UFUNCTION()
     void GoFastEquip()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FVM_AvatarInfo& local_22;
+        int local_30 = 0;
+        bool local_2 = false;
+        bool local_1 = local_2;
+        TEUIModelRef<FVMS_PlayerOwnedAvatarInfo> local_4 = TEUIModelRef<FVMS_PlayerOwnedAvatarInfo>(::FVMS_PlayerOwnedAvatarInfo::Get(this));
+        for (auto& local_20 : GetUnLockAvatarList())
+        {
+            local_20;
+            if (local_22)
+            {
+                if (!(local_22.GetAvatarConfig().IsSet()))
+                {
+                    local_2 = false;
+                }
+                else
+                {
+                    TEUIModelRef<FM_Equipment> local_24 = this.Equipment.opArrow().GetEquipment();
+                    local_2 = ::FEquipmentUtils::AvatarCanEquip(local_22.GetAvatarConfig(), GetEquipmentConfig());
+                }
+                if (local_2)
+                {
+                    local_1 = true;
+                    break;
+                }
+            }
+        }
+        if (local_1)
+        {
+            TEUIModelRef<FM_Equipment> local_24_2 = this.Equipment.opArrow().GetEquipment();
+            ULocalPlayer local_28 = this.GetOwningLocalPlayer();
+            FEUIWidget::AddWidget(this.GetOwningLocalPlayer(), GameplayTags::UI_Type_Avatar_FastEquip, FEUIModelRef(local_30));
+            this.ClosePage(false);
+        }
+        else
+        {
+            if (!(this.CannotEquipTips.IsEmpty()))
+            {
+                FCommonTipsParam local_38;
+                ::CommonPopup::WeakTips(this.CannotEquipTips, local_38);
+            }
+        }
+        return;
     }
     UFUNCTION()
     TArray<FEUIModelWeakRef> Equipment_EquipmentTraits() const
@@ -538,6 +578,7 @@ namespace UWidget_WeaponCraftCategory
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_WeaponCraftCategory;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -553,6 +594,7 @@ namespace UWidget_EquipmentCraftPopup
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_EquipmentCraftPopup;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -568,6 +610,7 @@ namespace UWidget_Blacksmith
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_Blacksmith;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

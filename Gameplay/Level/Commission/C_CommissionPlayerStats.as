@@ -1,4 +1,3 @@
-﻿
 enum ECommissionPlayerStatsType
 {
     DamageToHP,
@@ -56,7 +55,6 @@ struct FCE_CommissionPlayerStatsUpdatedEvent : FECSEvent
     UPROPERTY()
     ECommissionPlayerStatsType PlayerStatsType;
 
-
 }
 
 struct FC_CommissionPlayerStats : FECSComponent
@@ -97,7 +95,6 @@ struct FC_CommissionPlayerStats : FECSComponent
     int SendChatCount;
     UPROPERTY()
     int RescueTeammateCount;
-
 
     int GetPlayerStatsValue(const ECommissionPlayerStatsType PlayerStatsType) const
     {
@@ -193,7 +190,6 @@ struct FCE_CommissionBreakSpecialStateEvent : FECSEvent
     UPROPERTY()
     FECSEntity TargetEntity;
 
-
 }
 
 struct FCE_CommissionAbnormalBuffAddedEvent : FECSEvent
@@ -219,7 +215,6 @@ struct FCE_CommissionCustomNameEvent : FECSEvent
     FECSEntity TargetEntity;
     UPROPERTY()
     int Count;
-
 
 }
 
@@ -300,36 +295,36 @@ bool RemoveCommissionPlayerStats(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCommissionPlayerStatsOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CommissionPlayerStats, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CommissionPlayerStats, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCommissionPlayerStatsOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CommissionPlayerStats, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CommissionPlayerStats, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCommissionPlayerStatsOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CommissionPlayerStats, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CommissionPlayerStats, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCommissionPlayerStatsOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CommissionPlayerStats, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CommissionPlayerStats, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCommissionPlayerStatsOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CommissionPlayerStats, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CommissionPlayerStats, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCommissionPlayerStatsLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CommissionPlayerStats, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CommissionPlayerStats, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionPlayerStatsActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CommissionPlayerStats, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CommissionPlayerStats, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionPlayerStatsModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CommissionPlayerStats, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CommissionPlayerStats, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

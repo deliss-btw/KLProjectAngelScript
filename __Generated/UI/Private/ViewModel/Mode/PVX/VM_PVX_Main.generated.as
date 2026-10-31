@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_PVX_Main_Helpers
 {
 UFUNCTION()

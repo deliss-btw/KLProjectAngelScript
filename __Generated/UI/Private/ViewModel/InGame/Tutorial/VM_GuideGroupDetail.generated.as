@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_GuideGroupDetail_Helpers
 {
 UFUNCTION()

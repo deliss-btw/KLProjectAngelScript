@@ -1,5 +1,3 @@
-﻿
-
 class US_SocialTeamSystem : UECSScriptSystem
 {
     US_SocialTeamSystem()

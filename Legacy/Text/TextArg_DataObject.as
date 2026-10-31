@@ -1,5 +1,3 @@
-﻿
-
 struct FTextArgConfig_DataObject : FTextArgConfig
 {
     FTextArgConfig _base_FTextArgConfig;
@@ -28,7 +26,7 @@ class UTextArgParser_DataObject : UBlueprintTextArgParser
     {
         int local_26 = 0;
         int local_32 = 0;
-        EItemRarity local_87;
+        int local_87;
         TDataObjectPtr<FTextArgConfig_DataObject> local_24 = TDataObjectPtr<FTextArgConfig_DataObject>(Config);
         TDataObjectPtr<FItemConfig> local_56 = TDataObjectPtr<FItemConfig>(local_32);
         if (local_56)
@@ -38,31 +36,32 @@ class UTextArgParser_DataObject : UBlueprintTextArgParser
                 FText local_98;
                 local_87 = local_56.opArrow().Rarity;
                 FString local_92;
-                if (int(local_87) == 0)
+                int local_93 = local_87;
+                if (local_93 == 0)
                 {
                     local_92 = "ItemName_D";
                 }
                 else
                 {
-                    if (int(local_87) == 1)
+                    if (local_87 == 1)
                     {
                         local_92 = "ItemName_C";
                     }
                     else
                     {
-                        if (int(local_87) == 2)
+                        if (local_87 == 2)
                         {
                             local_92 = "ItemName_B";
                         }
                         else
                         {
-                            if (int(local_87) == 3)
+                            if (local_87 == 3)
                             {
                                 local_92 = "ItemName_A";
                             }
                             else
                             {
-                                if (int(local_87) == 4)
+                                if (local_87 == 4)
                                 {
                                     local_92 = "ItemName_S";
                                 }
@@ -77,7 +76,7 @@ class UTextArgParser_DataObject : UBlueprintTextArgParser
             if ((local_26.PropertyPath == "Rarity_Prefix"))
             {
                 local_87 = local_56.opArrow().Rarity;
-                TDataObjectPtr<FItemRarityConfig> local_132 = ::UGlobalItemSettings::Get().GetRarityConfig();
+                TDataObjectPtr<FItemRarityConfig> local_132 = ::UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(local_87));
                 if (local_132)
                 {
                     OutResult = local_132.opArrow().ItemNamePrefix;

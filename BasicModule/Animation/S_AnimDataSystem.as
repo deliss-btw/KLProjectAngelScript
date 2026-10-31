@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_AnimData_DesiredMoveDirRelativeToBodySmoothedMax = FConsoleVariable();
 
 class US_AnimDataSystemAS : UECSScriptSystem
@@ -30,7 +29,7 @@ class US_AnimDataSystemAS : UECSScriptSystem
         const FC_AnimState& local_10 = local_8.opCall();
         if (local_10)
         {
-            EAvatarAnimVariantType local_11 = ::AvatarAnimVariant::GetVariantType(EWeaponType(CharacterWeapon.GetCurrentWeaponType()));
+            EAvatarAnimVariantType local_11 = ::AvatarAnimVariant::GetVariantType(CharacterWeapon.GetCurrentWeaponType());
             if (local_10.GetVariantType() != int(local_11))
             {
                 Modify local_16;

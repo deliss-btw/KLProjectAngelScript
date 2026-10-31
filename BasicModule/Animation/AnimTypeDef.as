@@ -1,4 +1,3 @@
-﻿
 enum EAvatarAnimVariantType
 {
     None,
@@ -32,7 +31,6 @@ enum ECanidaeAnimVariantType
     Default,
     Small,
 }
-
 
 class UAvatarAnimVariantTypeMapper : UAnimVariantTypeMapper
 {

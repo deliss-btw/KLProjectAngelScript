@@ -1,4 +1,3 @@
-﻿
 namespace FEcosimAIV2Utils
 {
 bool GetEntityEngagingTargetList(const FECSEntity &inout Entity, TArray<FTargetEntity> &out EngagingTargetEntityList)

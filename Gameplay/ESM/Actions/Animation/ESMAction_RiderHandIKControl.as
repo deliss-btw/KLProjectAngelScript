@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_RiderHandIKControl : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
@@ -14,7 +12,6 @@ class UESMAction_RiderHandIKControl : UESMBPBaseSpanTickAction
     FName WyvernSocketName = NAME_None;
     UPROPERTY()
     FName WyvernRootBoneName = n"Root";
-
 
     UFUNCTION()
     EESMActionType GetActionType_Implementation() const

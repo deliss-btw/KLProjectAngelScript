@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PVX_Main
 {
     const int ModelId = 0;
@@ -25,15 +24,38 @@ struct FVM_PVX_Main : FEUIViewModel
 
     FVM_PVX_Main()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_DefaultMenuType = EPVXMenuCategoryType(0);
+        this.m_CurrentMenuIndex = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        XError(ELog(17), "Should not construct model'FVM_PVX_Main' by default constructor.");
+        return;
     }
     FVM_PVX_Main(const FVM_PVX_Main &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_DefaultMenuType = EPVXMenuCategoryType(0);
+        this.m_CurrentMenuIndex = INDEX_NONE;
+        this.m_Mode = Other.m_Mode;
+        this.m_DefaultMenuType = Other.m_DefaultMenuType;
+        this.m_CurrentMenuIndex = int(Other.m_CurrentMenuIndex);
+        this.m_DynamicWidget = Other.m_DynamicWidget;
+        this.m_MenuBarEntries = Other.m_MenuBarEntries;
+        this.m_MenuCategoryKeys = Other.m_MenuCategoryKeys;
+        return;
     }
     FVM_PVX_Main(const TEUIModelRef<FM_ModeItem> &inout InMode, const EPVXMenuCategoryType InDefaultMenuType)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_DefaultMenuType = EPVXMenuCategoryType(0);
+        this.m_CurrentMenuIndex = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        this.SetMode(InMode);
+        this.SetDefaultMenuType(EPVXMenuCategoryType(InDefaultMenuType));
+        return;
     }
     FVM_PVX_Main& opAssign(const FVM_PVX_Main &inout Other)
     {
@@ -46,11 +68,23 @@ struct FVM_PVX_Main : FEUIViewModel
     }
     void PostConstruct()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.GetModify_MenuBarEntries().Empty(0);
+        this.GetModify_MenuCategoryKeys().Empty(0);
+        for (auto& local_24 : ::PVXEntrySettings::Get().MenuCategories)
+        {
+            TEUIModelRef<FVM_Text> local_26;
+            this.GetModify_MenuBarEntries().Add(local_26);
+            this.GetModify_MenuCategoryKeys().Add(local_24.GetKey());
+        }
+        this.SetCurrentMenuIndex(this.GetMenuCategoryKeys().IndexOfByKey(EPVXMenuCategoryType(this.GetDefaultMenuType())));
+        if (this.GetCurrentMenuIndex() == INDEX_NONE)
+        {
+            this.SetCurrentMenuIndex(0);
+        }
+        return;
     }
     FEUIModelContainer CreateMenuPageModel(const EPVXMenuCategoryType Type)
     {
-        FEUIModelContainer local_20;
         FEUIModelContainer __return;
         int local_1 = int(Type);
         if (local_1 <= 1)
@@ -63,15 +97,16 @@ struct FVM_PVX_Main : FEUIViewModel
                 else
                 {
                     TEUIModelRef<FM_ModeItem> local_4 = this.GetMode();
-                    __return = local_20;
+                    TEUIModelWeakRef<FM_ModeItem> local_6;
+                    __return = FEUIModelContainer(::FVM_PVX_Match::Create(this.GetContext().Manager, local_6));
                 }
             }
             else
             {
-                __return = local_20;
+                __return = FEUIModelContainer(::FVM_PVX_CombatPreparation::Create(this.GetContext().Manager));
             }
         }
-        return local_20;
+        return FEUIModelContainer();
     }
     FEUIModelContainer GetSelectedMenuBarItem() const
     {
@@ -91,13 +126,18 @@ struct FVM_PVX_Main : FEUIViewModel
     }
     void OnSwitchMenuCategory(const FMsg_PVXSwitchMenuCategory &inout Msg)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_2 = this.GetMenuCategoryKeys().IndexOfByKey(Msg.TargetType);
+        if (local_2 != INDEX_NONE)
+        {
+            this.SetCurrentMenuIndex(local_2);
+        }
+        return;
     }
     void OnCurrentMenuIndexChanged()
     {
         if (this.GetMenuBarEntries().IsValidIndex(this.GetCurrentMenuIndex()))
         {
-            EPVXMenuCategoryType local_3;
+            int local_3;
             local_3 = this.GetMenuCategoryKeys()[this.GetCurrentMenuIndex()];
             FPVXMenuCategorySettings local_20;
             UPVXEntrySettings local_22 = ::PVXEntrySettings::Get();
@@ -265,7 +305,6 @@ struct FMsg_PVXSwitchMenuCategory : FEUIMessage
     UPROPERTY()
     EPVXMenuCategoryType TargetType = EPVXMenuCategoryType(1);
 
-
 }
 
 struct __GeneratedProperties_FVM_PVX_Main
@@ -285,7 +324,7 @@ namespace FVM_PVX_Main
 {
 FVM_PVX_Main& Create(const UObject ContextObject, const TEUIModelRef<FM_ModeItem> &inout Mode, const EPVXMenuCategoryType DefaultMenuType)
 {
-    return FVM_PVX_Main::CreateByManager(EUIInternal::GetContextManager(ContextObject), Mode);
+    return FVM_PVX_Main::CreateByManager(EUIInternal::GetContextManager(ContextObject), Mode, EPVXMenuCategoryType(DefaultMenuType));
 }
 FVM_PVX_Main CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ModeItem> &inout Mode, const EPVXMenuCategoryType DefaultMenuType)
 {

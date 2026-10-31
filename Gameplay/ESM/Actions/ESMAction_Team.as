@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_AddTeamLinkEnergy : UESMBPBaseInstantAction
 {
     UPROPERTY()

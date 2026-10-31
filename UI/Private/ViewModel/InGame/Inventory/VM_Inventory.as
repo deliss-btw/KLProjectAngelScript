@@ -1,4 +1,3 @@
-﻿
 namespace FVM_Inventory
 {
     const int ModelId = 0;
@@ -179,11 +178,11 @@ struct FVM_Inventory : FEUIViewModel
         int local_4 = int(::FItemCategoryTrunkBinding::FindTrunk(this.GetCurrentCategory()));
         if (::ItemConfigUtils::LimitTrunkMax(EItemTrunk(local_4)))
         {
-            return FText::Format(FText::AsCultureInvariant("{0}/{1}"), this.GetPlayerInventory().opArrow().GetCurrentTrunkSlotNum(EItemTrunk(::ItemConfigUtils::GetTrunkMax(EItemTrunk(local_4)))));
+            return FText::Format(FText::AsCultureInvariant("{0}/{1}"), this.GetPlayerInventory().opArrow().GetCurrentTrunkSlotNum(EItemTrunk(local_4)), ::ItemConfigUtils::GetTrunkMax(EItemTrunk(local_4)));
         }
         else
         {
-            return FText::Format(FText::AsCultureInvariant("{0}/в€ћ"), this.GetPlayerInventory().opArrow().GetCurrentTrunkSlotNum());
+            return FText::Format(FText::AsCultureInvariant("{0}/∞"), this.GetPlayerInventory().opArrow().GetCurrentTrunkSlotNum(EItemTrunk(local_4)));
         }
     }
     bool ShouldShowTrunkSlotNum() const
@@ -305,7 +304,39 @@ struct FVM_Inventory : FEUIViewModel
     }
     void InitFilterAndSorter()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        UItemFilterBase local_26;
+        FInventoryCategorySortData local_88;
+        if (this.IsPureDisplayCategory())
+        {
+            return;
+        }
+        FOnCommonDropdownSelected local_24;
+        local_24.Add(this, FVM_Inventory::OnFilterDropdownSelected);
+        if (::InventorySaveGame::Get(this.GetPlayerId()).CategoryFilters.Find(this.GetCurrentCategory(), local_26))
+        {
+            this.SetApplyingFilter(local_26);
+        }
+        else
+        {
+            this.GetInventorySettings().GetFilterConfigAt(this.GetCurrentCategory(), 0);
+        }
+        int local_35 = INDEX_NONE;
+        int local_45 = local_35;
+        this.SetFilterDropdown(TEUIModelRef<FVM_CommonDropdown>(::FVM_CommonDropdown::Create(this.GetContext().Manager, this.MakeFilterDropdownOptions(this.GetApplyingFilter(), local_45), FCommonDropdownDefaultOption(local_45), local_24)));
+        FOnCommonDropdownSelected local_84;
+        local_84.Add(this, FVM_Inventory::OnSorterDropdownSelected);
+        if (::InventorySaveGame::Get(this.GetPlayerId()).CategorySortData.Find(this.GetCurrentCategory(), local_88))
+        {
+            this.SetSelectedSorter(local_88.LastUsedSorter);
+        }
+        else
+        {
+            this.GetInventorySettings().GetSorterConfigAt(this.GetCurrentCategory(), 0);
+        }
+        int local_35_2 = INDEX_NONE;
+        int local_97 = local_35_2;
+        this.SetSorterDropdown(TEUIModelRef<FVM_CommonDropdown>(::FVM_CommonDropdown::Create(this.GetContext().Manager, this.MakeSorterDropdownOptions(this.GetSelectedSorter(), local_97), FCommonDropdownDefaultOption(local_97), local_84)));
+        return;
     }
     void InitCategorySaveData()
     {
@@ -387,20 +418,15 @@ struct FVM_Inventory : FEUIViewModel
     }
     void RefreshCategories()
     {
-        int local_7 = 0;
         this.GetModify_Categories().Empty(0);
-        int local_1 = this.GetRootCategoryIndex();
-        if (this.GetInventorySettings().Categories.IsValidIndex())
+        if (this.GetInventorySettings().Categories.IsValidIndex(this.GetRootCategoryIndex()))
         {
             int local_6 = 0;
-            while (local_6 < local_7)
+            for (; local_6 < this.GetInventorySettings().Categories[this.GetRootCategoryIndex()].Categories.Num(); )
             {
-                local_7 = this.GetRootCategoryIndex();
-                FGameplayTag& local_10 = this.GetInventorySettings().Categories[local_6].Categories[];
+                FGameplayTag& local_10 = this.GetInventorySettings().Categories[this.GetRootCategoryIndex()].Categories[local_6];
                 this.GetModify_Categories().Add(TEUIModelRef<FVM_InventoryCategory>(this.MakeCategory(local_10, local_6)));
                 ++local_6;
-                local_7 = this.GetRootCategoryIndex();
-                local_7 = this.GetInventorySettings().Categories[].Categories.Num();
             }
             this.SetCurrentCategoryIndex(0);
         }
@@ -518,7 +544,7 @@ struct FVM_Inventory : FEUIViewModel
     FVM_InventoryRootCategory MakeRootCategory(const int Index)
     {
         FVM_InventoryRootCategory __r;
-        FInventoryCategoryConfig& local_4 = this.GetInventorySettings().Categories[];
+        FInventoryCategoryConfig& local_4 = this.GetInventorySettings().Categories[Index];
         TEUIModelWeakRef<FVM_Inventory> local_6 = TEUIModelWeakRef<FVM_Inventory>(this);
         return __r;
     }
@@ -542,7 +568,7 @@ struct FVM_Inventory : FEUIViewModel
                 OutDefaultSelectedIndex = local_4.Num();
                 local_5 = true;
             }
-            local_4.Add(FEUIModelContainer());
+            local_4.Add(FEUIModelContainer(::FVM_Text::Create(this.GetContext().Manager, local_28.DisplayName)));
         }
         if (!(local_5))
         {
@@ -564,7 +590,7 @@ struct FVM_Inventory : FEUIViewModel
                 OutDefaultSelectedIndex = local_4.Num();
                 local_5 = true;
             }
-            local_4.Add(FEUIModelContainer());
+            local_4.Add(FEUIModelContainer(::FVM_Text::Create(this.GetContext().Manager, local_28.DisplayName)));
         }
         if (!(local_5))
         {
@@ -947,7 +973,15 @@ struct FVM_CloseVisibilityState : FEUIViewModel
     }
     void RefreshState()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_10 = 0;
+        if (!(this.GetHoverManager()) || !(this.GetQuickSlotHoverCache()))
+        {
+            this.SetbIsSelectListOpen(false);
+            return;
+        }
+        TEUIModelRef<FMS_ItemQuickSlotHoverCache> local_6 = this.GetQuickSlotHoverCache();
+        this.SetbIsSelectListOpen((this.GetHoverManager().opArrow().GetDisplayingHovers().IndexOfByKey(local_10) != INDEX_NONE));
+        return;
     }
     bool GetbIsSelectListOpen() const property
     {
@@ -1022,7 +1056,6 @@ struct __GeneratedProperties_FVM_Inventory
     bool ShouldShowFilterAndSorter;
     UPROPERTY()
     TEUIModelRef<FVM_Inventory> Self;
-
 
 }
 
@@ -1324,7 +1357,32 @@ FVM_CloseVisibilityState CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_CloseVisibilityState>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_CloseVisibilityState;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(3);
+    local_22.AddRefPropertyDirty(0, 0, FMS_CommonHoverManager::__IndexOf_DisplayingHovers());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("HoverManager");
+    int local_2_2 = FMS_CommonHoverManager::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FMS_CommonHoverManager::__IndexOf_DisplayingHovers(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnHoverListChanged";
+    local_40.DirtyFlags.Set(FVM_CloseVisibilityState::__IndexOf_HoverManager());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

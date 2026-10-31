@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_PendingInitAreaEventObjectiveTag_NS
 {
     const TECSComponentDerivedPtr<FC_PendingInitAreaEventObjectiveTag> DerivedPtr = TECSComponentDerivedPtr<FC_PendingInitAreaEventObjectiveTag>();
@@ -30,11 +29,24 @@ struct FObjectiveProgressData
 
     FObjectiveProgressData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_ObjectiveState = EObjectiveStatus(0);
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_SuccessProgressValue = 0;
+        this.m_FailedProgressValue = 0;
+        return;
     }
     FObjectiveProgressData(const FObjectiveProgressData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_ObjectiveState = EObjectiveStatus(0);
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_SuccessProgressValue = 0;
+        this.m_FailedProgressValue = 0;
+        this.m_ObjectiveState = Other.m_ObjectiveState;
+        this.m_SuccessProgressValue = int(Other.m_SuccessProgressValue);
+        this.m_FailedProgressValue = int(Other.m_FailedProgressValue);
+        return;
     }
     FObjectiveProgressData opAssign(const FObjectiveProgressData &inout Other)
     {
@@ -106,11 +118,27 @@ struct FC_AreaEventObjective : FECSComponent
 
     FC_AreaEventObjective()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_CurrentObjectiveIndex = -1;
+        this.m_CurrentObjectiveInstanceId = 0;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_AreaEventObjective(const FC_AreaEventObjective &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_28;
+        this.__DirtyFlags = local_28;
+        this.m_CurrentObjectiveIndex = -1;
+        this.m_CurrentObjectiveInstanceId = 0;
+        this.__InitDirtyFlags();
+        this.m_Objectives = Other.m_Objectives;
+        this.m_CurrentObjectiveIndex = int(Other.m_CurrentObjectiveIndex);
+        this.m_CurrentObjective = Other.m_CurrentObjective;
+        this.m_CurrentObjectiveInstanceId = int(Other.m_CurrentObjectiveInstanceId);
+        this.m_Progress = Other.m_Progress;
+        this.m_ObjectiveGroupSuccessProgress = Other.m_ObjectiveGroupSuccessProgress;
+        return;
     }
     FC_AreaEventObjective opAssign(const FC_AreaEventObjective &inout Other)
     {
@@ -304,37 +332,37 @@ bool RemovePendingInitAreaEventObjectiveTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPendingInitAreaEventObjectiveTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PendingInitAreaEventObjectiveTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PendingInitAreaEventObjectiveTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPendingInitAreaEventObjectiveTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PendingInitAreaEventObjectiveTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PendingInitAreaEventObjectiveTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPendingInitAreaEventObjectiveTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PendingInitAreaEventObjectiveTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PendingInitAreaEventObjectiveTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPendingInitAreaEventObjectiveTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PendingInitAreaEventObjectiveTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PendingInitAreaEventObjectiveTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPendingInitAreaEventObjectiveTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PendingInitAreaEventObjectiveTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PendingInitAreaEventObjectiveTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPendingInitAreaEventObjectiveTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PendingInitAreaEventObjectiveTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PendingInitAreaEventObjectiveTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPendingInitAreaEventObjectiveTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PendingInitAreaEventObjectiveTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PendingInitAreaEventObjectiveTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPendingInitAreaEventObjectiveTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PendingInitAreaEventObjectiveTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PendingInitAreaEventObjectiveTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AreaEventObjective
@@ -414,37 +442,37 @@ bool RemoveAreaEventObjective(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAreaEventObjectiveOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AreaEventObjective, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AreaEventObjective, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAreaEventObjectiveOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AreaEventObjective, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AreaEventObjective, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAreaEventObjectiveOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AreaEventObjective, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AreaEventObjective, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAreaEventObjectiveOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AreaEventObjective, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AreaEventObjective, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAreaEventObjectiveOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AreaEventObjective, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AreaEventObjective, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAreaEventObjectiveLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AreaEventObjective, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AreaEventObjective, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAreaEventObjectiveActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AreaEventObjective, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AreaEventObjective, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAreaEventObjectiveModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AreaEventObjective, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AreaEventObjective, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

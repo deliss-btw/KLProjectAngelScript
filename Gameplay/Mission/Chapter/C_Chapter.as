@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_ChapterNotifyStart_NS
 {
     const TECSEventDerivedPtr<FCE_ChapterNotifyStart> DerivedPtr = TECSEventDerivedPtr<FCE_ChapterNotifyStart>();

@@ -1,4 +1,3 @@
-﻿
 namespace UPage_SettingsMainPage
 {
     const int ViewID = 0;
@@ -54,7 +53,6 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
     UPROPERTY()
     FGetEUIModelRef SystemMainStateDelegate;
 
-
     UFUNCTION()
     void Construct_Implementation()
     {
@@ -77,8 +75,7 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
     {
         if (!(this.Settings.IsValid()))
         {
-            FEUIModelRef local_4;
-            this.Settings = local_4;
+            this.Settings = FEUIModelRef(::FVMS_SettingPage::Get(this));
         }
         InitData();
         if (this.w_list_tab != nullptr)
@@ -93,10 +90,18 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
     UFUNCTION()
     void HandleRelatedFocusChanged_Implementation()
     {
+        float32 local_14;
         this.ActionbarRegister();
         bool local_5 = (this.w_list_tab != nullptr) && this.IsPartOfFocusPath(this.w_list_tab);
         bool local_1 = (this.EUICustomEntryListView != nullptr) && this.IsPartOfFocusPath(this.EUICustomEntryListView);
-        int local_14 = ((int(::UICommonUtil::GetCurrentInputType(this.GetOwningLocalPlayer()))) == 1 && this.IsPartOfFocusPath(this.w_list_tab)) ? 1059481190 : 1065353216;
+        if ((int(::UICommonUtil::GetCurrentInputType(this.GetOwningLocalPlayer()))) == 1 && this.IsPartOfFocusPath(this.w_list_tab))
+        {
+            local_14 = 0.65f;
+        }
+        else
+        {
+            local_14 = 1.0f;
+        }
         local_14.SetItemsOpacity();
         if (this.IsPartOfFocusPath(this.EUICustomEntryListView))
         {
@@ -119,8 +124,7 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
     {
         if (!(this.Settings.IsValid()))
         {
-            FEUIModelRef local_4;
-            this.Settings = local_4;
+            this.Settings = FEUIModelRef(::FVMS_SettingPage::Get(this));
         }
         if (this.Settings.IsValid())
         {
@@ -148,8 +152,9 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
             local_8.BindUFunction(this, n"HandleRequireSwitchCategoryAnswer");
             FCommonDialogParam local_12;
             local_12.bIsForbidIgnored = false;
-            NSLOCTEXT("Settings", "RequireSwitchTitle", "и­¦е‘Љ");
-            ULocalPlayer local_52 = this.GetOwningLocalPlayer();
+            FDialogCallback local_46 = FDialogCallback(local_8);
+            FText local_50 = NSLOCTEXT("Settings", "RequireSwitchTitle", "警告");
+            ::CommonPopup_Internal::OpenDialogForLocalPlayer(this.GetOwningLocalPlayer(), local_50, this.RequireSwitchCategoryTitle, this.RequireSwitchCategoryOptions, local_46, local_12);
         }
         return;
     }
@@ -170,8 +175,9 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
         local_4.BindUFunction(this, n"HandleRequireResetAnswer");
         FCommonDialogParam local_8;
         local_8.bIsForbidIgnored = false;
-        NSLOCTEXT("Settings", "RequireResetTitle", "й‡ЌзЅ®жњ¬йЎµи®ѕзЅ®");
-        ULocalPlayer local_50 = this.GetOwningLocalPlayer();
+        FDialogCallback local_44 = FDialogCallback(local_4);
+        FText local_48 = NSLOCTEXT("Settings", "RequireResetTitle", "重置本页设置");
+        ::CommonPopup_Internal::OpenDialogForLocalPlayer(this.GetOwningLocalPlayer(), local_48, this.RequireResetTitle, this.RequireResetOptions, local_44, local_8);
         return;
     }
     UFUNCTION()
@@ -297,13 +303,13 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
         }
         if (bLeftFocused)
         {
-            this.Exit.SetOverrideDisplayText(NSLOCTEXT("Settings", "Return", "иї”е›ћ"));
+            this.Exit.SetOverrideDisplayText(NSLOCTEXT("Settings", "Return", "返回"));
             this.Save.SetCollapsed(true);
             this.ResetCurrentPage.SetCollapsed(true);
             this.Bind.SetCollapsed(true);
             return;
         }
-        this.Exit.SetOverrideDisplayText(NSLOCTEXT("Settings", "Return", "иї”е›ћ"));
+        this.Exit.SetOverrideDisplayText(NSLOCTEXT("Settings", "Return", "返回"));
         this.Save.SetCollapsed(false);
         this.ResetCurrentPage.SetCollapsed(false);
         bool local_6 = IsGamepadCategory();
@@ -324,12 +330,12 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
         this.Bind.SetCollapsed(true);
         if (GetbIsKeyMapping() && GetbIsKeySelecting())
         {
-            this.Exit.SetOverrideDisplayText(NSLOCTEXT("Settings", "ExitKeySelecting", "еЏ–ж¶€и®ѕзЅ®"));
+            this.Exit.SetOverrideDisplayText(NSLOCTEXT("Settings", "ExitKeySelecting", "取消设置"));
             this.Save.SetCollapsed(true);
             this.ResetCurrentPage.SetCollapsed(true);
             return;
         }
-        this.Exit.SetOverrideDisplayText(NSLOCTEXT("Settings", "Exit", "иї”е›ћ"));
+        this.Exit.SetOverrideDisplayText(NSLOCTEXT("Settings", "Exit", "返回"));
         this.Save.SetCollapsed(false);
         this.ResetCurrentPage.SetCollapsed(false);
         return;
@@ -374,8 +380,9 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
             local_8.BindUFunction(this, n"HandleRequireCloseAnswer");
             FCommonDialogParam local_12;
             local_12.bIsForbidIgnored = false;
-            NSLOCTEXT("Settings", "RequireCloseTitle", "зЎ®и®¤йЂЂе‡є");
-            ULocalPlayer local_52 = this.GetOwningLocalPlayer();
+            FDialogCallback local_46 = FDialogCallback(local_8);
+            FText local_50 = NSLOCTEXT("Settings", "RequireCloseTitle", "确认退出");
+            ::CommonPopup_Internal::OpenDialogForLocalPlayer(this.GetOwningLocalPlayer(), local_50, this.RequireCloseTitle, this.RequireCloseOptions, local_46, local_12);
             return;
         }
         ::FMS_SettingMain::Get(this).PrevIndex = 0;
@@ -647,6 +654,7 @@ namespace UPage_SettingsMainPage
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UPage_SettingsMainPage;
     Result.ObservedModelChangesSubscriberNames.Add(FString("RequireSwitchCategory"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("ActionbarRegister"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnKeyMappingsCanRevertChanged"));

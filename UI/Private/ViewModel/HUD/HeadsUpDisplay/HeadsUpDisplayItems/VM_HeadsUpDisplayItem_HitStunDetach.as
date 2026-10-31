@@ -1,4 +1,3 @@
-﻿
 namespace FVM_HeadsUpDisplayItem_HitStunDetach
 {
     const int ModelId = 0;
@@ -212,7 +211,7 @@ struct FVM_HeadsUpDisplayItem_HitStunDetach : FEUIViewModel
     }
     void ResetTarget()
     {
-        if (this.GetbConditionsMet() || ((this.CachedTargetRatio != 0.0f)))
+        if (this.GetbConditionsMet() || (this.CachedTargetRatio != 0.0f))
         {
             this.CachedTargetRatio = 0.0f;
             this.SetTargetHitStunDetachRatio(0.0f);

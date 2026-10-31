@@ -1,4 +1,3 @@
-﻿
 namespace CommonNewsTickerPendingConsts
 {
     const int MaxPendingNewsTickers = 32;
@@ -16,7 +15,6 @@ struct FPendingNewsTickerRequest
     int Priority = 0;
     UPROPERTY()
     int RepeatCount = 1;
-
 
 }
 
@@ -81,7 +79,24 @@ struct FMS_CommonNewsTickerPending : FEUIModelSingleton
     }
     void FlushPendingNewsTickers()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        if (this.GetPendingNewsTickers().IsEmpty())
+        {
+            return;
+        }
+        if (!(ECS::GetECSWorld().IsValid()))
+        {
+            XWarning(ELog(16), FString().Append("[NewsTickerPending] Flush deferred: ECSWorld still invalid. Pending=").Append(this.GetPendingNewsTickers().Num()));
+            return;
+        }
+        TArray<FPendingNewsTickerRequest> local_14 = this.GetPendingNewsTickers();
+        this.GetModify_PendingNewsTickers().Reset(0);
+        XLog(ELog(16), FString().Append("[NewsTickerPending] Flushing ").Append(local_14.Num()).Append(" pending NewsTicker(s)"));
+        for (auto& local_28 : local_14)
+        {
+            FCommonHintParam local_30;
+            ::CommonPopup::NewsTicker(local_28.Content, local_30, int(local_28.Priority), int(local_28.RepeatCount), nullptr);
+        }
+        return;
     }
     void ClearPendingNewsTickers(const FString &inout Reason)
     {

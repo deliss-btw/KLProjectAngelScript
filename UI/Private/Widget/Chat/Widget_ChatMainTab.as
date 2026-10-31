@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ChatMainTab
 {
     const int ViewID = 0;
@@ -104,6 +103,7 @@ namespace UWidget_ChatMainTab
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ChatMainTab;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnVMSelected"));
     return;
 }

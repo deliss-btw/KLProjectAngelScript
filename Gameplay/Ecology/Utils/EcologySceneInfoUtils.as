@@ -1,4 +1,3 @@
-﻿
 namespace FEcologySceneInfoUtils
 {
     const float32 MinMoveDistance = 25f;
@@ -178,7 +177,7 @@ TDataObjectPtr<FSpawnerCountRatioDefinitionRow> FindSpawnRatioDataByFlock(FCS_Ec
         return TDataObjectPtr<FSpawnerCountRatioDefinitionRow>();
     }
     Get local_62;
-    FVector local_68 = local_62.opCall().GetPosition();
+    FEcologySceneInfoUtils::GetWeatherByPosition(Context, FVector(local_62.opCall().GetPosition()));
     int local_73 = FEcologySceneInfoUtils::GetCurrentTimeSegments(Context);
     Get local_78;
     TDataObjectPtr<FEcologyResourceDefinitionRow> local_102 = local_78.opCall().ResourceType;
@@ -223,14 +222,13 @@ void FindActivityResourceType(const TDataObjectPtr<FEcologyCreatureDefinitionRow
 }
 const FGameplayTagContainer& GetTimeSegmentsGameplayTagContaiers(const FCS_EcologyDataCacheContext &inout Context, const int TimeSegments)
 {
-    const FGameplayTagContainer& local_2 = Context.TimeGameplayTags[TimeSegments];
+    const FGameplayTagContainer& local_2 = Context.DataCache.TimeGameplayTags[TimeSegments];
     return local_2;
 }
 TDataObjectPtr<FSpawnerCountRatioDefinitionRow> FindSpawnRatioDataWithoutCache(const TDataObjectPtr<FCreatureDefinitionRow> &inout Creature, const TDataObjectPtr<FEcologyResourceDefinitionRow> &inout Resource, const FName &inout WeatherName, const int TimeSegments)
 {
     int local_78 = 0;
-    TDataObjectPtr<FSpawnerCountRatioDefinitionRow> local_48 = TDataObjectPtr<FSpawnerCountRatioDefinitionRow>(nullptr);
-    TDataObjectPtr<FSpawnerCountRatioDefinitionRow> local_24 = local_48;
+    TDataObjectPtr<FSpawnerCountRatioDefinitionRow> local_24 = TDataObjectPtr<FSpawnerCountRatioDefinitionRow>(nullptr);
     int local_73 = -1;
     FECSWorldPtr local_76 = ECS::GetECSWorld();
     TDataObjectIterator<FSpawnerCountRatioDefinitionRow> local_94;
@@ -270,7 +268,8 @@ TDataObjectPtr<FSpawnerCountRatioDefinitionRow> FindSpawnRatioDataWithoutCache(c
             local_273 = true;
             if (local_98.DaySegmentsTag.Num() != 0 && local_78.DataCache.TimeGameplayTags.Contains(TimeSegments))
             {
-                if (!(local_78.DataCache.TimeGameplayTags[TimeSegments].HasAll(local_98.DaySegmentsTag)))
+                FGameplayTagContainer& local_276 = local_78.DataCache.TimeGameplayTags[TimeSegments];
+                if (!(local_276.HasAll(local_98.DaySegmentsTag)))
                 {
                     local_273 = false;
                 }
@@ -278,7 +277,7 @@ TDataObjectPtr<FSpawnerCountRatioDefinitionRow> FindSpawnRatioDataWithoutCache(c
             if (((local_95 && local_99) && local_223) && local_273)
             {
                 local_73 = int(local_98.Priority);
-                local_24 = local_48;
+                local_24 = TDataObjectPtr<FSpawnerCountRatioDefinitionRow>(local_94.GetData());
             }
         }
         local_94.Next();
@@ -315,7 +314,101 @@ void UpdateTimeToWorldState(FCS_EcologyScriptGlobalContext &inout Context)
 }
 void InternalRequestResource(const FResourceSearchRequest &inout Request, const FBox &inout SearchBox, FCS_EcologyScriptGlobalContext &inout Context, TArray<FEntitySearchResult> &inout OutResult)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    TMapIterator<FECSEntityId, FEcologyVoxelSceneUnitSummary> local_148;
+    FC_EcologyResourceProviderSummary local_172;
+    int local_180 = 0;
+    bool local_2 = true;
+    int local_1 = local_2;
+    FScopeCycleCounter local_3 = FScopeCycleCounter(FStatID(n"InternalRequestResource"), false);
+    TSet<FECSEntityId> local_26;
+    FVoxelRegionScope local_34 = FVoxelRegionScope(SearchBox);
+    TSet<TDataObjectPtr<FEcologyResourceDefinitionRow>> local_58;
+    TSet<TDataObjectPtr<FEcologyResourceDefinitionRow>> local_78;
+    for (auto& local_96 : Request.IncludeResourceTypes)
+    {
+        local_58.Add(local_96);
+    }
+    if (Request.bFilterByCreatureType)
+    {
+        FEcologySceneInfoUtils::FindActivityResourceType(Request.CreatureRow, Request.WeatherName, Request.TimeSegments, local_78);
+    }
+    FVoxelRegionIterator local_106 = local_34.Iterator();
+    for (; local_106.CanProceed;)
+    {
+        FEcologyVoxelSceneRegion& local_120 = Context.VoxelScene.FindOrAddRegion(local_106.Proceed().Current);
+        for (auto& local_140 : local_120.GetCellSlotDataRef(EEcologyVoxelUnitSlot(0)))
+        {
+            local_140;
+            for (; local_148.CanProceed;)
+            {
+                auto local_158 = local_148.Proceed();
+                if (local_26.Contains(local_158.GetKey()))
+                {
+                    continue;
+                }
+                local_26.Add(local_158.GetKey());
+                FECSEntity local_162 = FECSEntity(local_158.GetKey());
+                if (!(local_162.IsValid()))
+                {
+                    continue;
+                }
+                Has local_166;
+                bool local_2_2 = local_166.opCall();
+                if (local_2_2)
+                {
+                    continue;
+                }
+                int local_4_2 = local_58.Num();
+                if (local_4_2 > 0 && !(local_58.Contains(local_172.ResourceType)))
+                {
+                    continue;
+                }
+                if (Request.bFilterByCreatureType && !(local_78.Contains(local_172.ResourceType)))
+                {
+                    continue;
+                }
+                if (!(Request.bIncludeClaimed) && ((int(local_172.PinedTeamCount) >= int(local_172.MaxTeamCount))))
+                {
+                    continue;
+                }
+                if (!(SearchBox.IsInsideXY(local_180.GetPosition())))
+                {
+                    continue;
+                }
+                local_4_2 = Request.IncludeVolumes.Num();
+                if (local_4_2 > 0 && !(Request.IsInIncludeVolume(local_180.GetPosition())))
+                {
+                    continue;
+                }
+                if (Request.IncludeOtherVolumes.Num() > 0 && !(Request.IsInIncludeOtherVolume(local_180.GetPosition())))
+                {
+                    continue;
+                }
+                if (Request.bCheckSpaceCost)
+                {
+                    local_4_2 = FEcologySceneInfoUtils::GetUnitCountInCell(Context, FVoxelPosition(local_180.GetPosition()), EEcologyVoxelUnitSlot(2));
+                    if ((2 - local_4_2) <= 0)
+                    {
+                        continue;
+                    }
+                }
+                if (!(Request.TagFilter.IsEmpty()) && !(MatchEcologyTags(local_162, Request.TagFilter)))
+                {
+                    continue;
+                }
+                if (Request.IsInExcludeVolume(local_180.GetPosition()))
+                {
+                    continue;
+                }
+                OutResult.Add(FEntitySearchResult(local_158.GetKey()));
+                if (int(Request.MaxResultCount) > 0 && (OutResult.Num() >= int(Request.MaxResultCount)))
+                {
+                    return;
+                }
+            }
+        }
+    }
+    return;
 }
 TArray<FEntitySearchResult> RequestResource(const FResourceSearchRequest &inout Request)
 {
@@ -400,8 +493,51 @@ int RequestCreature(const FECSEntity &inout Requester, const FCreatureSearchRequ
 }
 bool CheckCreatureByRequester(const FECSEntity &inout TargetEntity, const FCreatureSearchRequest &inout Request, const FVector &inout RequesterPosition)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    bool __r; return __r;
+    bool local_1;
+    int local_8 = 0;
+    if (Request.CreatureType.IsSet())
+    {
+        if (Request.CreatureType)
+        {
+            FDataObjectPtr local_80;
+            TDataObjectPtr<FEcologyCreatureDefinitionRow> local_32;
+            local_32 = local_8.CreatureType;
+            local_80;
+            if ((!((local_32 == local_80))))
+            {
+                return false;
+            }
+        }
+    }
+    if (Request.bOnlyFlockMember)
+    {
+        Has local_84;
+        if (!(local_84.opCall()))
+        {
+            return false;
+        }
+    }
+    if (!(!(Request.bIncludeDead)))
+    {
+        local_1 = false;
+    }
+    else
+    {
+        Has local_88;
+        local_1 = local_88.opCall();
+    }
+    if (local_1)
+    {
+        return false;
+    }
+    if (!(Request.CreatureTagFilter.IsEmpty()))
+    {
+        if (!(MatchEcologyTags(TargetEntity, Request.CreatureTagFilter)))
+        {
+            return false;
+        }
+    }
+    return true;
 }
 AECSRegionVolume FindECSRegionVolumeByPosition(const FCS_EcologyScriptGlobalContext &inout Context, const FVector &inout Position)
 {

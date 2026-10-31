@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_EstimatedSpeed_NS
 {
     const TECSComponentDerivedPtr<FC_EstimatedSpeed> DerivedPtr = TECSComponentDerivedPtr<FC_EstimatedSpeed>();
@@ -21,6 +20,8 @@ struct FC_EstimatedSpeed : FECSComponent
 
     FC_EstimatedSpeed()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_SampleTimeOffset = 0.1;
         this.m_bUseInternalSpeed = false;
         this.m_EstimatedSpeed = 0.0f;
@@ -29,6 +30,8 @@ struct FC_EstimatedSpeed : FECSComponent
     }
     FC_EstimatedSpeed(const FC_EstimatedSpeed &inout Other)
     {
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
         this.m_SampleTimeOffset = 0.1;
         this.m_bUseInternalSpeed = false;
         this.m_EstimatedSpeed = 0.0f;
@@ -190,37 +193,37 @@ bool RemoveEstimatedSpeed(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEstimatedSpeedOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EstimatedSpeed, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EstimatedSpeed, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEstimatedSpeedOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EstimatedSpeed, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EstimatedSpeed, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEstimatedSpeedOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EstimatedSpeed, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EstimatedSpeed, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEstimatedSpeedOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EstimatedSpeed, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EstimatedSpeed, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEstimatedSpeedOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EstimatedSpeed, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EstimatedSpeed, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEstimatedSpeedLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EstimatedSpeed, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EstimatedSpeed, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEstimatedSpeedActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EstimatedSpeed, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EstimatedSpeed, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEstimatedSpeedModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EstimatedSpeed, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EstimatedSpeed, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace EntityBB

@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_BossTrackingArea_NS
 {
     const TECSComponentDerivedPtr<FCS_BossTrackingArea> DerivedPtr = TECSComponentDerivedPtr<FCS_BossTrackingArea>();
@@ -17,11 +16,24 @@ struct FCS_BossTrackingArea : FECSSingleton
 
     FCS_BossTrackingArea()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bVisible = false;
+        this.m_Radius = 0.0f;
+        this.__InitDirtyFlags();
+        return;
     }
     FCS_BossTrackingArea(const FCS_BossTrackingArea &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_bVisible = false;
+        this.m_Radius = 0.0f;
+        this.__InitDirtyFlags();
+        this.m_bVisible = Other.m_bVisible;
+        this.m_WorldCenter = Other.m_WorldCenter;
+        this.m_Radius = Other.m_Radius;
+        return;
     }
     FCS_BossTrackingArea opAssign(const FCS_BossTrackingArea &inout Other)
     {
@@ -168,17 +180,17 @@ bool RemoveBossTrackingArea(const FECSWorldPtr &inout World)
 }
 void __MonitorBossTrackingAreaLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_BossTrackingArea, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_BossTrackingArea, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBossTrackingAreaActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_BossTrackingArea, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_BossTrackingArea, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBossTrackingAreaModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_BossTrackingArea, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_BossTrackingArea, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

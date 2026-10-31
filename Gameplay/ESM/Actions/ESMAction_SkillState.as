@@ -1,10 +1,7 @@
-﻿
-
 struct FESMAction_SkillStateInstanceData
 {
     UPROPERTY()
     int PrevState = 0;
-
 
 }
 
@@ -16,7 +13,6 @@ class UESMAction_SkillState : UESMBPBaseSpanAction
     int TargetState = 0;
     UPROPERTY()
     bool bTurnBacktoPrevStateOnExit = false;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const
@@ -67,8 +63,7 @@ class UESMAction_SkillState : UESMBPBaseSpanAction
         }
         if (this.bTurnBacktoPrevStateOnExit)
         {
-            FESMAction_SkillStateInstanceData& local_16 = this.ModifyInstanceData(Context);
-            local_16.PrevState = local_12.GetSkillRuntimeInfos()[local_14].GetSkillState();
+            this.ModifyInstanceData(Context).PrevState = local_12.GetSkillRuntimeInfos()[local_14].GetSkillState();
         }
         FSkillUtils::ChangeSkillState(local_6, local_14, this.TargetState, Time.WorldTime);
         return;

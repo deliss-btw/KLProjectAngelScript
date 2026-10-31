@@ -1,11 +1,9 @@
-﻿
 enum ENPCWatchPlayerLookMode
 {
     DefaultEnabled,
     DefaultDisabled,
     DialogueOnly,
 }
-
 
 struct FCreatureAttributeScaleData
 {
@@ -47,7 +45,6 @@ struct FCombatUnitBaseConfig : FDataObject
     FDataObjectPtr m_PerceptionConfig;
     UPROPERTY()
     EMonsterRank Rank = EMonsterRank(0);
-
 
     const TDataObjectPtr<FGameAttributeInitConfig_CombatUnit> GetInitAttributeValues() const property
     {
@@ -115,7 +112,6 @@ struct FNPCWatchPlayerLookPresetConfig : FDataObject
     UPROPERTY()
     int Priority = 12;
 
-
 }
 
 struct FCreatureUnitConfig : FDataObject
@@ -141,7 +137,6 @@ struct FCreatureUnitConfig : FDataObject
     FDataObjectPtr m_Creature;
     UPROPERTY()
     bool bAvailableForLevelPlacement = true;
-
 
     TSubclassOf<ACharacterPrefab> GetCombatPrefab() const
     {

@@ -1,5 +1,3 @@
-﻿
-
 class AKLGroundPlaneTracer : AKLEditorTickableActor
 {
     UPROPERTY()
@@ -19,13 +17,13 @@ class AKLGroundPlaneTracer : AKLEditorTickableActor
         this.GroundTraceParams.DownOffset = 1000.0f;
         this.GroundTraceParams.UpOffset = 20.0f;
         this.GroundTraceParams.bWantDebugInfo = true;
-        ::FootIKUtils::CreateGroundPlaneTraceParams(this.GroundTraceParams, this.TracePointNum, int(this.TraceRadius), this.TraceRadius);
+        ::FootIKUtils::CreateGroundPlaneTraceParams(this.GroundTraceParams, this.TracePointNum, this.TraceRadius, this.TraceRadius);
         return;
     }
     UFUNCTION()
     void EditorPostEditChange_Implementation()
     {
-        ::FootIKUtils::CreateGroundPlaneTraceParams(this.GroundTraceParams, this.TracePointNum, int(this.TraceRadius), this.TraceRadius);
+        ::FootIKUtils::CreateGroundPlaneTraceParams(this.GroundTraceParams, this.TracePointNum, this.TraceRadius, this.TraceRadius);
         return;
     }
     UFUNCTION()
@@ -127,7 +125,6 @@ struct FMainPlayerSceneQuerySetting
     float HalfHorizonAngle = 60.0;
     UPROPERTY()
     float TraceLineAngleStep = 15.0;
-
 
 }
 

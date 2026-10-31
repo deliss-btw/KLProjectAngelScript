@@ -1,5 +1,3 @@
-﻿
-
 class US_SpeedGuideSpineSystem : UECSScriptSystem
 {
     US_SpeedGuideSpineSystem()
@@ -264,10 +262,9 @@ class US_SpeedGuideSpineSystem : UECSScriptSystem
             FFPTime local_20 = ECS::GetContextTime();
             if (SpeedSplineFXParamValue.bIsBlendIn)
             {
-                float local_24 = (local_20 - SpeedSplineFXParamValue.BlendStartTime).ToSeconds();
-                float32 local_25 = float32(local_24);
+                float32 local_25 = float32(((local_20 - SpeedSplineFXParamValue.BlendStartTime).ToSeconds()));
                 int local_26 = 0;
-                while (local_26 < local_1_2)
+                for (; local_26 < SpeedSplineFXParamConfig.FXParamConfigs.Num(); )
                 {
                     const FSpeedSplineFXParamConfig& local_28 = SpeedSplineFXParamConfig.FXParamConfigs[local_26];
                     FSpeedSplineFXParamValue& local_30 = SpeedSplineFXParamValue.FXParamValues[local_26];
@@ -301,7 +298,7 @@ class US_SpeedGuideSpineSystem : UECSScriptSystem
                     for (auto local_52 : local_16.MIDSplines)
                     {
                         local_26 = 0;
-                        while (local_26 < local_2_2)
+                        for (; local_26 < SpeedSplineFXParamConfig.MaterialParamConfigs.Num(); )
                         {
                             const FSpeedSplineFXParamConfig& local_28_2 = SpeedSplineFXParamConfig.MaterialParamConfigs[local_26];
                             FSpeedSplineFXParamValue& local_30_2 = SpeedSplineFXParamValue.MaterialParamValues[local_26];
@@ -333,7 +330,7 @@ class US_SpeedGuideSpineSystem : UECSScriptSystem
                     for (auto local_68 : local_16.EffectPlaneSplineMeshes)
                     {
                         local_26 = 0;
-                        while (local_26 < local_1_2)
+                        for (; local_26 < SpeedSplineFXParamConfig.MaterialParamConfigs.Num(); )
                         {
                             const FSpeedSplineFXParamConfig& local_28_3 = SpeedSplineFXParamConfig.MaterialParamConfigs[local_26];
                             FSpeedSplineFXParamValue& local_30_3 = SpeedSplineFXParamValue.MaterialParamValues[local_26];
@@ -368,7 +365,7 @@ class US_SpeedGuideSpineSystem : UECSScriptSystem
                 local_21 = float32(((local_20 - SpeedSplineFXParamValue.BlendStartTime).ToSeconds()));
                 local_71 = true;
                 int local_26_2 = 0;
-                while (local_26_2 < local_2_2)
+                for (; local_26_2 < SpeedSplineFXParamConfig.FXParamConfigs.Num(); )
                 {
                     const FSpeedSplineFXParamConfig& local_28_4 = SpeedSplineFXParamConfig.FXParamConfigs[local_26_2];
                     FSpeedSplineFXParamValue& local_30_4 = SpeedSplineFXParamValue.FXParamValues[local_26_2];
@@ -405,7 +402,7 @@ class US_SpeedGuideSpineSystem : UECSScriptSystem
                     for (auto local_52 : local_16.MIDSplines)
                     {
                         local_26_2 = 0;
-                        while (local_26_2 < local_1_2)
+                        for (; local_26_2 < SpeedSplineFXParamConfig.MaterialParamConfigs.Num(); )
                         {
                             const FSpeedSplineFXParamConfig& local_28_5 = SpeedSplineFXParamConfig.MaterialParamConfigs[local_26_2];
                             FSpeedSplineFXParamValue& local_30_5 = SpeedSplineFXParamValue.MaterialParamValues[local_26_2];
@@ -440,7 +437,7 @@ class US_SpeedGuideSpineSystem : UECSScriptSystem
                     for (auto local_68 : local_16.EffectPlaneSplineMeshes)
                     {
                         local_26_2 = 0;
-                        while (local_26_2 < local_2_2)
+                        for (; local_26_2 < SpeedSplineFXParamConfig.MaterialParamConfigs.Num(); )
                         {
                             const FSpeedSplineFXParamConfig& local_28_6 = SpeedSplineFXParamConfig.MaterialParamConfigs[local_26_2];
                             FSpeedSplineFXParamValue& local_30_6 = SpeedSplineFXParamValue.MaterialParamValues[local_26_2];

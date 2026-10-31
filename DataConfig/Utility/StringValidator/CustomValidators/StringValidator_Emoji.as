@@ -1,5 +1,3 @@
-﻿
-
 class UStringValidator_Emoji : UStringValidatorBase
 {
     UPROPERTY()

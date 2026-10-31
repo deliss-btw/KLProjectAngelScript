@@ -1,4 +1,3 @@
-﻿
 namespace FVM_SelectTarget
 {
     const int ModelId = 0;

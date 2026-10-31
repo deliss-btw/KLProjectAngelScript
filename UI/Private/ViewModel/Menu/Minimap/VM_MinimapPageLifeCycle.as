@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MinimapPageLifeCycle
 {
     const int ModelId = 0;

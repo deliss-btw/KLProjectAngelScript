@@ -1,4 +1,3 @@
-﻿
 enum EMaxLockDistanceType
 {
     Normal,
@@ -8,50 +7,45 @@ enum EMaxLockDistanceType
     Max,
 }
 
-
 struct FLockTargetConfigData
 {
     UPROPERTY()
     FName Name;
     UPROPERTY()
-    bool bEnableFanShapeSoftLockRangeSearch;
+    bool bEnableFanShapeSoftLockRangeSearch = true;
     UPROPERTY()
-    float32 FindPointSmallestAngleRange;
+    float32 FindPointSmallestAngleRange = 90.0f;
     UPROPERTY()
-    FRuntimeFloatCurve MinInputAngleXYCurveForDistance;
+    FRuntimeFloatCurve MinInputAngleXYCurveForDistance = FRuntimeCurveUtils::CreateLinear(0.0f, 360.0f, 100.0f, 360.0f);
     UPROPERTY()
-    float32 MinZHeight;
+    float32 MinZHeight = 9999.0f;
     UPROPERTY()
-    TMap<EMaxLockDistanceType, float32> MaxLockDistanceConfig;
+    TMap<EMaxLockDistanceType, float32> MaxLockDistanceConfig = {{EMaxLockDistanceType(0), 3000.0f}, {EMaxLockDistanceType(1), 3000.0f}, {EMaxLockDistanceType(2), 3000.0f}};
     UPROPERTY()
-    FRuntimeFloatCurve MaxLockAngleCurveForDistance;
+    FRuntimeFloatCurve MaxLockAngleCurveForDistance = FRuntimeCurveUtils::CreateLinear(0.0f, 60.0f, 100.0f, 60.0f);
     UPROPERTY()
-    FRuntimeFloatCurve MaxLockDistanceReduceRatioForLockAngle;
+    FRuntimeFloatCurve MaxLockDistanceReduceRatioForLockAngle = FRuntimeCurveUtils::CreateLinear(0.0f, 1.0f, 180.0f, 1.0f);
     UPROPERTY()
-    FRuntimeFloatCurve ScoreCurveForDistance;
+    FRuntimeFloatCurve ScoreCurveForDistance = FRuntimeCurveUtils::CreateLinear(1000.0f, 100.0f, 3000.0f, 1.0f);
     UPROPERTY()
-    FRuntimeFloatCurve ScoreCurveForLockAngle;
+    FRuntimeFloatCurve ScoreCurveForLockAngle = FRuntimeCurveUtils::CreateLinear(20.0f, 200.0f, 60.0f, 1.0f);
     UPROPERTY()
-    FRuntimeFloatCurve ScoreCurveForCameraAngle;
+    FRuntimeFloatCurve ScoreCurveForCameraAngle = FRuntimeCurveUtils::CreateLinear(0.0f, 1.0f, 60.0f, 1.0f);
     UPROPERTY()
-    TMap<EMonsterRank, float32> AdditionalMultiplierForMonsterRank;
+    TMap<EMonsterRank, float32> AdditionalMultiplierForMonsterRank = {{EMonsterRank(0), 1.0f}, {EMonsterRank(1), 1.0f}, {EMonsterRank(2), 1.0f}, {EMonsterRank(3), 1.0f}};
     UPROPERTY()
-    float32 NonCombatMultiplier;
+    float32 NonCombatMultiplier = 0.5f;
     UPROPERTY()
-    bool bShouldStrafe;
+    bool bShouldStrafe = true;
     UPROPERTY()
-    float32 KeepDuration;
+    float32 KeepDuration = 0.0f;
     UPROPERTY()
-    float32 MinDetectBlockDistance;
+    float32 MinDetectBlockDistance = 500.0f;
     UPROPERTY()
-    float32 AutoClearHardLockWhenBlock;
+    float32 AutoClearHardLockWhenBlock = 3.0f;
     UPROPERTY()
-    bool AcceptPlayerSettingInputFirst;
+    bool AcceptPlayerSettingInputFirst = false;
 
-    FLockTargetConfigData()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
     float32 GetMaxLockDistanceByType(const EMaxLockDistanceType MaxLockDistanceType) const
     {
         this.MaxLockDistanceConfig.Contains(MaxLockDistanceType);

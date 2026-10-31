@@ -1,5 +1,3 @@
-﻿
-
 struct FImpactConfigSFX : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -20,12 +18,12 @@ struct FImpactConfigSFX : FDataObject
     }
     const FImpactSFXData GetDataRaw(const EImpactType Value) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FImpactSFXData __r; return __r;
     }
     FImpactSFXData ModifyDataRaw(const EImpactType Value)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         FImpactSFXData __r; return __r;
     }
     const FImpactSFXData GetDataRawByName(const FName &inout EnumName) const
@@ -96,13 +94,13 @@ struct FImpactConfigSFX : FDataObject
             const FImpactSFXData& local_22 = this.GetDataRaw(EImpactType(local_19));
             if (local_22.bFallBack)
             {
+                int local_14 = int(local_22.FallBack);
                 EImpactType local_23;
-                local_23 = local_22.FallBack;
-                EImpactType local_14 = local_22.FallBack;
-                FName local_11 = local_2.GetNameByValue(int(local_14));
+                local_23 = EImpactType(local_14);
+                FName local_11 = local_2.GetNameByValue(int(local_22.FallBack));
                 if (local_2.GetIndexByName(local_11, EGetByNameFlags(0)) < local_7)
                 {
-                    local_14 = local_22.FallBack;
+                    local_14 = int(local_22.FallBack);
                     this.CopyFallbackData(EImpactType(local_14), EImpactType(local_19));
                     continue;
                 }
@@ -134,12 +132,12 @@ struct FImpactConfigVFX : FDataObject
     }
     const FImpactVFXDataWithStrength GetDataRaw(const EImpactType Value) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FImpactVFXDataWithStrength __r; return __r;
     }
     FImpactVFXDataWithStrength ModifyDataRaw(const EImpactType Value)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         FImpactVFXDataWithStrength __r; return __r;
     }
     const FImpactVFXDataWithStrength GetDataRawByName(const FName &inout EnumName) const
@@ -210,13 +208,13 @@ struct FImpactConfigVFX : FDataObject
             const FImpactVFXDataWithStrength& local_22 = this.GetDataRaw(EImpactType(local_19));
             if (local_22.bFallBack)
             {
+                int local_14 = int(local_22.FallBack);
                 EImpactType local_23;
-                local_23 = local_22.FallBack;
-                EImpactType local_14 = local_22.FallBack;
-                FName local_11 = local_2.GetNameByValue(int(local_14));
+                local_23 = EImpactType(local_14);
+                FName local_11 = local_2.GetNameByValue(int(local_22.FallBack));
                 if (local_2.GetIndexByName(local_11, EGetByNameFlags(0)) < local_7)
                 {
-                    local_14 = local_22.FallBack;
+                    local_14 = int(local_22.FallBack);
                     this.CopyFallbackData(EImpactType(local_14), EImpactType(local_19));
                     continue;
                 }

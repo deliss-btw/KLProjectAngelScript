@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_HitTest_HitFrameDebug = FConsoleVariable();
 const FName DebugDrawKey_ArealStrike = n"ArealStrike";
 const FName DebugDrawKey_ArealStrikeHit = n"ArealStrikeHit";
@@ -18,7 +17,6 @@ struct FHitTestEvaluateResult
     FHitTestCheckResult HitTestCheckResult;
     UPROPERTY()
     UCharacterBodyPartDataAsset BodyPartData = nullptr;
-
 
 }
 
@@ -56,8 +54,7 @@ class US_HitTestSystemAS : UECSScriptSystem
         local_132.CustomStrikeTransform = HitTestTramsform;
         local_132.HitDecalConfig = HitDecalConfig;
         local_132.StrikeKey = StrikeKey;
-        TDataObjectPtr<FAttackData> local_158;
-        local_132.AttackData = local_158;
+        local_132.AttackData = TDataObjectPtr<FAttackData>(AttackData);
         return (::FCombatUtils::MakeHitEvent(local_4, Sender, HitEntity, Time, local_132));
     }
     bool CheckEntityControlledByPlayer(const FECSEntity &inout ControlledEntity, const FECSEntity &inout PlayerEntity) const
@@ -72,8 +69,128 @@ class US_HitTestSystemAS : UECSScriptSystem
     }
     FVector GetImpactDir(const FECSEntity &inout Attacker, const FCE_ArealStrikeRequestEvent &inout Event, const FHitTestResult &inout Result, const FAttackData &inout AttackData) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        FVector __r; return __r;
+        int local_6 = 0;
+        bool local_13;
+        UPrimitiveComponent local_16;
+        UStaticMeshComponent local_28;
+        UHierarchicalInstancedStaticMeshComponent local_32;
+        bool local_57 = false;
+        UInstancedSkinnedMeshComponent local_62;
+        FVector __return;
+        FVector local_12;
+        if (Result.HitComponent.IsValid())
+        {
+            local_12 = local_16.GetWorldLocation();
+            if (int(Result.HitItemIndex) == INDEX_NONE)
+            {
+                local_28 = (Cast<UStaticMeshComponent>(local_16));
+                if (local_28 != nullptr)
+                {
+                    local_12 = local_28.GetWorldLocation();
+                }
+            }
+            else
+            {
+                while (local_57)
+                {
+                    local_32 = Cast<UHierarchicalInstancedStaticMeshComponent>(local_16);
+                    if (local_32 != nullptr)
+                    {
+                        FTransform local_56;
+                        if (local_32.GetInstanceTransform(int(Result.HitItemIndex), local_56, true))
+                        {
+                            local_12 = local_56.GetLocation();
+                        }
+                        break;
+                    }
+                    local_62 = Cast<UInstancedSkinnedMeshComponent>(local_16);
+                    if (local_62 != nullptr)
+                    {
+                        FTransform local_56;
+                        if (FSimpleDestructibleUtils::GetInstanceSkinnedMeshTransform(local_62, int(Result.HitItemIndex), local_56, true))
+                        {
+                            local_12 = local_56.GetLocation();
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (!(Result.HitEntity.IsValid()))
+            {
+                local_13 = false;
+            }
+            else
+            {
+                Has local_68;
+                local_13 = local_68.opCall();
+            }
+            if (local_13)
+            {
+                Get local_4;
+                local_12 = local_4.opCall().GetPosition();
+            }
+            else
+            {
+                XError(ELog(42), "HitTestResult has no hit entity(or entity has no transform) or hit component");
+                __return = FVector::ZeroVector;
+            }
+        }
+        FVector local_74(FVector::ZeroVector);
+        if (Result.bIsOverlap)
+        {
+            if ((int(AttackData.HitDirection) == 0 || (int(AttackData.HitDirection) == 1)))
+            {
+                local_74 = (local_12 - local_6.GetPosition());
+            }
+            else
+            {
+                if (int(AttackData.HitDirection) == 2)
+                {
+                    local_74 = local_6.GetRotation().GetForwardVector();
+                }
+                else
+                {
+                    if (int(AttackData.HitDirection) == 3)
+                    {
+                        local_74 = Event.StrikeEventData.StrikeDirection;
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (int(AttackData.HitDirection) == 0)
+            {
+                local_74 = (local_12 - local_6.GetPosition());
+            }
+            else
+            {
+                if (int(AttackData.HitDirection) == 1)
+                {
+                    local_74 = (local_12 - Result.HitPoint);
+                }
+                else
+                {
+                    if (int(AttackData.HitDirection) == 2)
+                    {
+                        local_74 = local_6.GetRotation().GetForwardVector();
+                    }
+                    else
+                    {
+                        if (int(AttackData.HitDirection) == 3)
+                        {
+                            local_74 = Event.StrikeEventData.StrikeDirection;
+                        }
+                    }
+                }
+            }
+        }
+        local_74.Z = 0.0;
+        local_74.Normalize(9.99999993922529e-9);
+        return local_74;
     }
     void TryPausePIEOnHit(const bool bPausePIEOnHit) const
     {
@@ -81,12 +198,656 @@ class US_HitTestSystemAS : UECSScriptSystem
     }
     void RecordMeleeStrikeHitDebug(const FCE_ArealStrikeRequestEvent &inout Event, const FCS_FixedTime &inout FixedTime, const FFPTime &inout Time, const bool bPerEntityQuest, const TArray<FECSEntityId> &inout HitEntityIds) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (int(Event.MeleeStrikeToFrame) == INDEX_NONE || HitEntityIds.IsEmpty())
+        {
+            return;
+        }
+        FHitTestDebugRecord local_32;
+        bool local_4 = this.GetECSRuntime().IsServer;
+        local_32.SetbServer(local_4);
+        local_32.SetServerHitTimeSeconds(ECS::ConvertToAuthorityWorldTimeStamp(Time).ToSeconds());
+        local_32.SetClientHitTime(Time);
+        local_32.SetServerFixedFrame(ECS::ConvertToAuthorityWorldTimeStampFrame(int(FixedTime.Frame)));
+        local_32.SetClientFixedFrame(int(FixedTime.Frame));
+        local_32.SetServerRequestTimeSeconds(ECS::ConvertToAuthorityWorldTimeStamp(Event.GetHitRequestTime()).ToSeconds());
+        local_32.SetClientRequestTime(Event.GetHitRequestTime());
+        local_32.SetRequestCreatedFrame(int(Event.CreatedFrame));
+        local_32.SetRequestEventId(int(Event.EventId));
+        local_32.SetActionFromFrame(int(Event.MeleeStrikeFromFrame));
+        local_32.SetActionToFrame(int(Event.MeleeStrikeToFrame));
+        local_32.SetSenderEntityId(Event.Sender.GetId());
+        local_32.SetActionIdentifier(Event.AttackIdentifier);
+        local_32.SetStrikeKey(Event.StrikeKey);
+        local_32.SetbPerEntityQuest(bPerEntityQuest);
+        local_32.SetHitEntityIds(HitEntityIds);
+        if (this.GetECSRuntime().IsServer)
+        {
+            FECSWorldPtr local_42 = this.GetECSWorld();
+            Modify local_46;
+            FCS_ServerHitTestDebugRecords& local_48 = local_46.opCall();
+            if (local_48)
+            {
+                if (!(local_48.bEnabled))
+                {
+                    return;
+                }
+                TArray<FHitTestDebugRecord> local_52 = local_48.Records;
+                if (local_52.Num() >= 512)
+                {
+                    local_52.RemoveAt(0);
+                }
+                local_52.Add(local_32);
+                local_48.Records = local_52;
+                this.TryPausePIEOnHit(local_48.bPausePIEOnHit);
+            }
+        }
+        else
+        {
+            FECSWorldPtr local_42_2 = this.GetECSWorld();
+            Modify local_56;
+            FCS_ClientHitTestDebugRecords& local_58 = local_56.opCall();
+            if (local_58)
+            {
+                if (!(local_58.bEnabled))
+                {
+                    return;
+                }
+                if (local_58.Records.Num() >= 512)
+                {
+                    local_58.Records.RemoveAt(0);
+                }
+                local_58.Records.Add(local_32);
+                this.TryPausePIEOnHit(local_58.bPausePIEOnHit);
+            }
+        }
+        return;
     }
     bool HandleArealStrike(const FCE_ArealStrikeRequestEvent &inout Event, const FCS_FixedTime &inout FixedTime, const bool bPerEntityQuest, const FECSEntity &inout ForSpecificReceiverEntity, const FFPTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
-        bool __r; return __r;
+        bool local_27;
+        int local_76 = 0;
+        FAttackData local_102;
+        int local_191 = 0;
+        int local_192 = 0;
+        const FC_BodyPartsConfig& local_214;
+        int local_228 = 0;
+        Get local_232;
+        bool local_379 = false;
+        bool local_384;
+        int local_416 = 0;
+        const FHitBoxData& local_422;
+        UCharacterBodyPartDataAsset local_618;
+        int local_636 = 0;
+        bool local_639;
+        UPrimitiveComponent local_690;
+        UCharacterBodyPartDataAsset local_778;
+        int local_816 = 0;
+        int local_822 = 0;
+        if (!(Event.Sender.IsValid()))
+        {
+            return false;
+        }
+        bool local_1 = this.GetECSRuntime().IsClient;
+        if (local_1)
+        {
+            Has local_6;
+            if (!((ForSpecificReceiverEntity.GetId() == ENTITY_ID_NULL)))
+            {
+                if (!(local_6.opCall()))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (!(local_6.opCall()))
+                {
+                    return false;
+                }
+            }
+        }
+        FECSEntity local_10 = FECSEntity(Event.Sender);
+        FFPTime local_18 = bPerEntityQuest ? FCollisionUtils::GetCollisionRollbackTimeWithSyncNetTime(ForSpecificReceiverEntity, FixedTime) : FCollisionUtils::GetCollisionRollbackTime(local_10, FixedTime);
+        TArray<FHitTestResult> local_22;
+        TArray<FECSEntityId> local_26;
+        local_27 = false;
+        bool local_28 = false;
+        FECSEntityId local_2;
+        if (!((FVector3f(Event.SweepFromOffset) == FVector3f::ZeroVector)))
+        {
+            Get local_66;
+            bool local_32;
+            FECSEntityId local_71;
+            if (bPerEntityQuest && !((ForSpecificReceiverEntity == ENTITY_NULL)))
+            {
+                local_27 = Event.Shape.DoHitTestSweepOnEntity(local_22, ForSpecificReceiverEntity, Event.GetTransform(), Event.SweepFromOffset, Event.SweepFromRotation, Event.ShapePositionOffset, EAxisDirection(Event.TipDirection), ECollisionChannel(17), local_18, DebugDrawKey_ArealStrike);
+                const FC_PerfectDodge& local_62 = local_66.opCall();
+                if (local_62)
+                {
+                    if (!(local_62.GetbIsDummy()) && local_62.GetDummyEntity().IsValid())
+                    {
+                        TArray<FHitTestResult> local_70;
+                        local_32 = Event.Shape.DoHitTestSweepOnEntity(local_70, local_62.GetDummyEntity(), Event.GetTransform(), Event.SweepFromOffset, Event.SweepFromRotation, Event.ShapePositionOffset, EAxisDirection(Event.TipDirection), ECollisionChannel(17), local_18, DebugDrawKey_ArealStrike);
+                        if (local_32)
+                        {
+                            local_22.Append(local_70);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                int local_34_2 = int(Event.TipDirection);
+                FTransform local_60 = Event.GetTransform();
+                if (Event.GetbIgnoreSender())
+                {
+                    local_71 = local_10.GetId();
+                }
+                else
+                {
+                    local_71 = ENTITY_ID_NULL;
+                }
+                local_27 = Event.Shape.DoHitTestSweep(local_22, this.GetWorld(), local_71);
+            }
+        }
+        else
+        {
+            Get local_66;
+            bool local_32;
+            if (bPerEntityQuest && !((ForSpecificReceiverEntity == ENTITY_NULL)))
+            {
+                local_27 = Event.Shape.DoHitTestOnEntity(local_22, ForSpecificReceiverEntity, Event.GetTransform(), ECollisionChannel(17), local_18, DebugDrawKey_ArealStrike);
+                const FC_PerfectDodge& local_62_2 = local_66.opCall();
+                if (local_62_2)
+                {
+                    if (!(local_62_2.GetbIsDummy()) && local_62_2.GetDummyEntity().IsValid())
+                    {
+                        TArray<FHitTestResult> local_70;
+                        local_32 = Event.Shape.DoHitTestOnEntity(local_70, local_62_2.GetDummyEntity(), Event.GetTransform(), ECollisionChannel(17), local_18, DebugDrawKey_ArealStrike);
+                        if (local_32)
+                        {
+                            local_22.Append(local_70);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                FTransform local_60_2 = Event.GetTransform();
+                if (Event.GetbIgnoreSender())
+                {
+                    local_2 = local_10.GetId();
+                }
+                else
+                {
+                    local_2 = ENTITY_ID_NULL;
+                }
+                local_27 = Event.Shape.DoHitTest(local_22, this.GetWorld(), local_2);
+            }
+        }
+        if (local_27)
+        {
+            FECSEntityId local_71;
+            bool local_32;
+            Has local_6;
+            if (!(Event.AttackInfo.AttackData.IsValid()))
+            {
+                return false;
+            }
+            TDataObjectPtr<FAttackData> local_100 = TDataObjectPtr<FAttackData>(local_76);
+            FVector local_108(Event.StrikeEventData.StrikeDirection);
+            TMap<FECSEntityId, FHitTestEvaluateResult> local_128;
+            FTransform local_152;
+            for (auto& local_166 : local_22)
+            {
+                FECSEntity local_174 = ::FCombatUtils::GetFinalHitEntity(local_166.HitEntity);
+                if (!((ForSpecificReceiverEntity == ENTITY_NULL)) && !((ForSpecificReceiverEntity == local_174)))
+                {
+                    continue;
+                }
+                bool local_1_2 = Event.GetbIgnorePlayerAndCreatePerEntityQuest() && !(bPerEntityQuest);
+                if (!(local_1_2))
+                {
+                    local_1_2 = false;
+                }
+                else
+                {
+                    Has local_178;
+                    local_1_2 = local_178.opCall();
+                }
+                if (local_1_2)
+                {
+                    continue;
+                }
+                if (!((FECSEntity(Event.OnlyHitPlayerEntity) == ENTITY_NULL)) && !(this.CheckEntityControlledByPlayer(local_174, Event.OnlyHitPlayerEntity)))
+                {
+                    continue;
+                }
+                if (!((FECSEntity(Event.IgnoreHitPlayerEntity) == ENTITY_NULL)) && this.CheckEntityControlledByPlayer(local_174, Event.IgnoreHitPlayerEntity))
+                {
+                    continue;
+                }
+                Get local_182;
+                const FC_OnlyAcceptSpecificEntityAttack& local_184 = local_182.opCall();
+                if (local_184)
+                {
+                    if (!((FECSEntity(local_184.GetAcceptedEntity()) == Event.Sender)))
+                    {
+                        continue;
+                    }
+                }
+                FHitTestCheckResult local_190 = ::FCombatUtils::CheckHitTestResult(local_10, TDataObjectPtr<FAttackData>(local_76), EAttackType(local_102.AttackType), local_102.AttackTag, uint8(int(local_102.AffectFactionRelation)), local_166, Event.HitTestProtectData);
+                local_191 = int(local_190.CheckResult);
+                local_192 = local_191;
+                local_1_2 = (local_192 == 0 || (int(local_190.CheckResult) == 9)) && local_174.IsValid();
+                if (local_1_2)
+                {
+                    if (local_22.Num() == 1)
+                    {
+                        FHitTestEvaluateResult local_212;
+                        local_212.HitResultLocation = local_166.Location;
+                        local_212.HitPoint = local_166.HitPoint;
+                        local_212.HitBoxDataIndex = int(local_166.HitBoxDataIndex);
+                        local_212.HitTestCheckResult = local_190;
+                        Get local_218;
+                        local_214 = local_218.opCall();
+                        if (local_214)
+                        {
+                            local_212.BodyPartData = local_214.BodyPartData;
+                        }
+                        local_128.Add(local_174.GetId(), local_212);
+                        FECSDebugDraw::DrawDebugSphere(DebugDrawKey_ArealStrikeHit, local_166.HitPoint, 5.0f, 12, FColor::Orange, FColor::Orange, 5.0f, uint8(10), 0.0f);
+                    }
+                    else
+                    {
+                        int local_222;
+                        local_222 = -1;
+                        if (local_228)
+                        {
+                            local_222 = local_232.opCall().GetHitBoxIndex(local_228.GetHitBoxName());
+                        }
+                        if (local_222 != int(local_166.HitBoxDataIndex))
+                        {
+                            local_1_2 = false;
+                        }
+                        else
+                        {
+                            local_1_2 = local_228;
+                        }
+                        local_1_2 = local_1_2 && FGameAnimUtils::GetEntityHitboxTransform(local_174, local_18, local_228.GetHitBoxName(), local_152);
+                        if (local_1_2)
+                        {
+                            Get local_244;
+                            FVector local_240(local_244.opCall().GetPosition());
+                            FVector local_250 = FVector(local_244.opCall().GetPosition());
+                            FVector local_262 = local_152.GetLocation();
+                            FVector local_276 = (local_262 - local_240).GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector);
+                            FVector local_268 = (local_250 - local_240).GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector);
+                            if (local_102.AttackCalculationTags.HasTag(GameplayTags::Attack_ArealDamage))
+                            {
+                                local_268 = (Event.GetTransform().GetLocation() - local_240).GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector);
+                            }
+                            FECSDebugDraw::DrawDebugLine(DebugDrawKey_ArealStrikeHit, local_240, local_262, FColor::Green, FColor::Green, 5.0f, uint8(0), 0.0f);
+                            FECSDebugDraw::DrawDebugLine(DebugDrawKey_ArealStrikeHit, local_240, local_250, FColor::Yellow, FColor::Yellow, 5.0f, uint8(0), 0.0f);
+                            if (local_228.GetXYAngleMax() >= ::FCombatUtils::GetHorizontalAngle(local_276, local_268) && (local_228.GetZAngleMax() >= ::FCombatUtils::GetVerticalAngle(local_276, local_268)))
+                            {
+                                FHitTestEvaluateResult local_212;
+                                local_212.HitResultLocation = local_166.Location;
+                                local_212.HitPoint = local_166.HitPoint;
+                                local_212.HitBoxDataIndex = int(local_166.HitBoxDataIndex);
+                                local_212.HitTestCheckResult = local_190;
+                                local_212.Scroe = 1.0f;
+                                if (local_214)
+                                {
+                                    local_212.BodyPartData = local_214.BodyPartData;
+                                }
+                                if (local_128.Contains(local_174.GetId()))
+                                {
+                                    local_71 = local_174.GetId();
+                                    local_128[local_71] = local_212;
+                                }
+                                else
+                                {
+                                    local_128.Add(local_174.GetId(), local_212);
+                                }
+                                FECSDebugDraw::DrawDebugSphere(DebugDrawKey_ArealStrikeHit, local_166.HitPoint, 8.0f, 20, FColor::Red, FColor::Red, 5.0f, uint8(10), 0.0f);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            FVector local_268_2(local_166.HitPoint);
+                            FVector local_292 = (Event.GetTransform().GetLocation() + FVector(Event.SweepFromOffset));
+                            FVector local_256_2 = (local_292 - (local_108 * Event.Shape.GetRadius()));
+                            FVector local_282 = (FVector(local_166.HitPoint) - local_292);
+                            FECSDebugDraw::DrawDebugSphere(DebugDrawKey_ArealStrikeHit, local_166.HitPoint, 5.0f, 12, FColor::Orange, FColor::Orange, 5.0f, uint8(10), 0.0f);
+                            FVector local_240_2 = (FVector(local_166.HitPointNormal) * 100.0);
+                            FECSDebugDraw::DrawDebugLine(DebugDrawKey_ArealStrikeHit, local_166.HitPoint, (FVector(local_166.HitPoint) + local_240_2), FColor::Green, FColor::Green, 5.0f, uint8(0), 0.0f);
+                            if (local_166.HitPointNormal.DotProduct((Event.GetTransform().GetRotation() * FVector::ForwardVector)) > 0.0)
+                            {
+                                FVector local_262_2 = (Event.GetTransform().GetRotation() * FVector::UpVector);
+                                FVector local_276_2 = (local_256_2 + (local_262_2 * local_262_2.DotProduct(local_282)));
+                                FHitResult local_378;
+                                local_379 = false;
+                                const FCollisionInPhysSceneData& local_382 = local_166.TryGetPhysSceneData(local_379);
+                                if (!(local_379))
+                                {
+                                    continue;
+                                }
+                                if (FPhysicsUtils::LineTraceEntityPhysShape(local_378, EPhysicsTraceTag(18), local_382, local_276_2, local_166.HitPoint, false, false))
+                                {
+                                    local_268_2 = local_378.ImpactPoint;
+                                    local_166.HitPoint = local_378.ImpactPoint;
+                                }
+                            }
+                            FVector local_312 = (local_268_2 - local_256_2);
+                            float32 local_219_2 = float32(local_108.DotProduct(local_312));
+                            int local_386 = 0.0f;
+                            if (int(Event.StrikeEventData.StrikeShape.PreferDivisionIndex) < 0)
+                            {
+                                FVector local_306_2 = (local_108 * local_108.DotProduct(local_312));
+                                FVector local_276_3 = (local_256_2 + local_306_2);
+                                float local_285 = float32(((local_276_3 - local_268_2).Size()));
+                                local_386 = int(local_285);
+                            }
+                            else
+                            {
+                                FQuat local_412;
+                                FAreaStrikeShape local_414 = local_412 = (FQuat(Event.SweepFromRotation) * Event.GetTransform().GetRotation());
+                                int local_417 = FMath::Clamp(int(local_414.NumDivision), 2, 16);
+                                int local_415 = FMath::IntegerDivisionTrunc(local_417, 2);
+                                FVector local_276_4 = local_412.GetUpVector();
+                                FVector local_306_3 = local_412.GetForwardVector().RotateAngleAxis(((local_414.Angle / local_417) * (int(local_414.PreferDivisionIndex) - local_415)), local_276_4);
+                                local_276_4 = (local_306_3 * (local_306_3.DotProduct((local_268_2 - local_292))));
+                                FVector local_250_2 = (local_292 + local_276_4);
+                                local_386 = int((float32(((local_250_2 - local_268_2).Size()))));
+                                FVector local_262_3 = (local_306_3 * (local_306_3.DotProduct((local_268_2 - local_292))));
+                                FECSDebugDraw::DrawDebugLine(DebugDrawKey_ArealStrikeHit, local_292, (local_292 + local_262_3), FColor::Cyan, FColor::Cyan, 5.0f, uint8(0), 0.0f);
+                            }
+                            float local_285_3 = local_219_2 + local_386;
+                            FVector local_262_4 = (local_108 * local_219_2);
+                            FECSDebugDraw::DrawDebugLine(DebugDrawKey_ArealStrikeHit, local_256_2, (local_256_2 + local_262_4), FColor::Purple, FColor::Purple, 5.0f, uint8(0), 0.0f);
+                            FECSDebugDraw::DrawDebugSphere(DebugDrawKey_ArealStrikeHit, local_268_2, 5.0f, 12, FColor::Yellow, FColor::Yellow, 5.0f, uint8(10), 0.0f);
+                            FECSDebugDraw::DrawDebugSphere(DebugDrawKey_ArealStrikeHit, local_292, 5.0f, 12, FColor::Blue, FColor::Blue, 5.0f, uint8(10), 0.0f);
+                            FECSDebugDraw::DrawDebugSphere(DebugDrawKey_ArealStrikeHit, local_256_2, 5.0f, 12, FColor::Purple, FColor::Purple, 5.0f, uint8(10), 0.0f);
+                            if (!(local_128.Contains(local_174.GetId())))
+                            {
+                                FHitTestEvaluateResult local_212;
+                                if (local_214)
+                                {
+                                    local_212.BodyPartData = local_214.BodyPartData;
+                                }
+                                local_212.HitResultLocation = local_166.Location;
+                                local_212.HitPoint = local_166.HitPoint;
+                                local_212.HitBoxDataIndex = int(local_166.HitBoxDataIndex);
+                                local_212.HitTestCheckResult = local_190;
+                                local_379 = false;
+                                local_422 = local_166.TryGetHitBoxData(local_379);
+                                if (local_379)
+                                {
+                                    if (!(!(local_422.BodyPartKey.IsNone())))
+                                    {
+                                        local_384 = false;
+                                    }
+                                    else
+                                    {
+                                        local_384 = local_214;
+                                    }
+                                    if (local_384)
+                                    {
+                                        FCharacterBodyPartConfig local_614;
+                                        if (local_214.BodyPartData.BodyParts.Find(local_422.BodyPartKey, local_614))
+                                        {
+                                            local_285_3 = local_285_3 / local_614.BeHitWeight;
+                                            if (local_614.IsWeakness)
+                                            {
+                                                local_285_3 = local_285_3 * 0.8f;
+                                            }
+                                        }
+                                    }
+                                }
+                                local_212.Scroe = local_285_3;
+                                local_128.Add(local_174.GetId(), local_212);
+                            }
+                            else
+                            {
+                                FHitTestEvaluateResult local_616;
+                                local_71 = local_174.GetId();
+                                local_379 = false;
+                                local_422 = local_166.TryGetHitBoxData(local_379);
+                                local_618 = local_616.BodyPartData;
+                                local_1_2 = local_618 != nullptr && local_379;
+                                if (local_1_2 && !(local_422.BodyPartKey.IsNone()))
+                                {
+                                    FCharacterBodyPartConfig local_614;
+                                    if (local_616.BodyPartData.BodyParts.Find(local_422.BodyPartKey, local_614))
+                                    {
+                                        local_285_3 = local_285_3 / local_614.BeHitWeight;
+                                        if (local_614.IsWeakness)
+                                        {
+                                            local_285_3 = local_285_3 * 0.8f;
+                                        }
+                                    }
+                                }
+                                if (local_285_3 < local_616.Scroe)
+                                {
+                                    local_616.HitPoint = local_166.HitPoint;
+                                    local_616.HitBoxDataIndex = int(local_166.HitBoxDataIndex);
+                                    local_616.HitTestCheckResult = local_190;
+                                    local_616.Scroe = local_285_3;
+                                }
+                            }
+                            FECSDebugDraw::DrawDebugString(DebugDrawKey_ArealStrikeHit, local_268_2, FString::Format("{0}", uint(local_285_3)), FColor::White, 2.0f, FColor::White, 5.0f);
+                        }
+                    }
+                }
+                else
+                {
+                    local_191 = int(local_190.CheckResult);
+                    local_192 = local_191;
+                    local_1_2 = local_192 == 4 || (int(local_190.CheckResult) == 5);
+                    local_384 = local_1_2 || (int(local_190.CheckResult) == 6);
+                    local_1_2 = local_384 || (int(local_190.CheckResult) == 7);
+                    if (local_1_2 || ((int(local_190.CheckResult) == 8)))
+                    {
+                        local_416 = int(local_190.CheckResult);
+                        local_1_2 = local_416 == 5 || ((int(local_190.CheckResult) == 6));
+                        if (local_1_2 || ((int(local_190.CheckResult) == 7)))
+                        {
+                            local_384 = this.GetECSRuntime().IsServer;
+                            if (local_384 || ECS::IsAuthorityOrPrediction(local_174))
+                            {
+                                ::FCombatUtils::AddDodgeProtectRecord(local_174, Event.HitTestProtectData, Time);
+                            }
+                            else
+                            {
+                                FECSManualBackupScope local_628 = FECSManualBackupScope(local_174);
+                                local_628.BackupComponent(FC_HitTestProtectRecord);
+                                ::FCombatUtils::AddDodgeProtectRecord(local_174, Event.HitTestProtectData, Time);
+                            }
+                            if (this.GetECSRuntime().IsServer || ECS::IsAuthorityOrPrediction(local_10))
+                            {
+                                if (::FCombatUtils::TryRecordHit(local_636, local_174.GetId(), EHitRecordType(1), Event.StrikeKey, Event.GetHitRequestTime(), Time, Event.HitInterval))
+                                {
+                                    ::FCombatUtils::MakeInvincibleCounterEvent(local_174, local_10, local_190.CheckResult, Time, Event.GetbLocalPrediction());
+                                }
+                            }
+                            else
+                            {
+                                FECSManualBackupScope local_628_2 = FECSManualBackupScope(local_10);
+                                local_628_2.BackupComponent(FC_HitRecords);
+                                if (::FCombatUtils::TryRecordHit(local_636, local_174.GetId(), EHitRecordType(1), Event.StrikeKey, Event.GetHitRequestTime(), Time, Event.HitInterval))
+                                {
+                                    ::FCombatUtils::MakeInvincibleCounterEvent(local_174, local_10, local_190.CheckResult, Time, Event.GetbLocalPrediction());
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        local_191 = int(local_190.CheckResult);
+                        if (local_191 == 10)
+                        {
+                            local_384 = this.GetECSRuntime().IsClient;
+                            if (local_384 && !(local_6.opCall()))
+                            {
+                                FECSManualBackupScope local_628_3 = FECSManualBackupScope(local_10);
+                                local_628_3.BackupComponent(FC_HitRecords);
+                                if (::FCombatUtils::TryRecordHit(local_636, local_174.GetId(), EHitRecordType(1), Event.StrikeKey, Event.GetHitRequestTime(), Time, Event.HitInterval))
+                                {
+                                    this.MakeHitEventByStrike(local_10, local_174, Time, Event.GetTransform(), local_166.HitPoint, local_102, Event.StrikeKey, Event.StrikeEventData, Event.HitDecalConfig, local_166.TryGetHitBoxData(local_379), false, Event.GetbLocalPrediction(), Event.bClientWaitForServerOnHit, Event.GetbNeedHitMeshPresentation(), Event.GetbAttackHitFXSpawnToStrikeCenterLine());
+                                }
+                            }
+                            else
+                            {
+                                if (::FCombatUtils::TryRecordHit(local_636, local_174.GetId(), EHitRecordType(1), Event.StrikeKey, Event.GetHitRequestTime(), Time, Event.HitInterval))
+                                {
+                                    this.MakeHitEventByStrike(local_10, local_174, Time, Event.GetTransform(), local_166.HitPoint, local_102, Event.StrikeKey, Event.StrikeEventData, Event.HitDecalConfig, local_166.TryGetHitBoxData(local_379), false, Event.GetbLocalPrediction(), Event.bClientWaitForServerOnHit, Event.GetbNeedHitMeshPresentation(), Event.GetbAttackHitFXSpawnToStrikeCenterLine());
+                                }
+                            }
+                        }
+                        else
+                        {
+                            local_191 = int(local_190.CheckResult);
+                            if (local_191 == 11)
+                            {
+                                local_192 = int(local_102.HitLevel);
+                                local_192 = local_192;
+                                if (local_192 >= 2)
+                                {
+                                    FCE_DestructibleHitEvent local_648;
+                                    local_648.Receiver = local_174;
+                                    local_648.ImpactType = EImpactType(local_102.ImpactType);
+                                    local_648.ImpactStrength = EImpactStrength(local_102.ImpactStrengthValue);
+                                    local_648.ForceDirection = this.GetImpactDir(local_10, Event, local_166, local_102);
+                                    local_648.DestructibleDamageLevel = local_102.GetDestructibleClassLevelFromDamage(local_10);
+                                }
+                            }
+                            else
+                            {
+                                local_191 = int(local_190.CheckResult);
+                                if (local_191 == 1)
+                                {
+                                    local_639 = ECS::GetRuntimeInfo().IsServer;
+                                    if (local_639)
+                                    {
+                                        FSimpleDestructibleBreakResult local_688;
+                                        if (::SimpleDestructibleUtils::ServerTryBreakFromHitResult(local_10, local_690, int(local_166.HitItemIndex), local_102.GetDestructibleClassLevelFromDamage(local_10), true, EImpactType(local_102.ImpactType), EImpactStrength(local_102.ImpactStrengthValue), this.GetImpactDir(local_10, Event, local_166, local_102), local_688))
+                                        {
+                                            if (local_688.bWasAlreadyDestroyed)
+                                            {
+                                                continue;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            for (auto& local_708 : local_128)
+            {
+                FECSEntity local_174_2 = FECSEntity(local_708.GetKey());
+                local_379 = false;
+                bool local_1_3 = this.GetECSRuntime().IsClient;
+                if (local_1_3 && !(local_6.opCall()))
+                {
+                    XLog(ELog(42), FString().Append("ManualBackup SenderId: '").Append(local_10.GetIdValue()).Append("', Name: '").Append(local_10.GetEntityName().ToString()).Append("'."));
+                    FECSManualBackupScope local_628_4 = FECSManualBackupScope(local_10);
+                    local_628_4.BackupComponent(FC_HitRecords);
+                    local_379 = ::FCombatUtils::TryRecordHit(local_636, local_708.GetKey(), EHitRecordType(1), Event.StrikeKey, Event.GetHitRequestTime(), Time, Event.HitInterval);
+                }
+                else
+                {
+                    local_379 = ::FCombatUtils::TryRecordHit(local_636, local_708.GetKey(), EHitRecordType(1), Event.StrikeKey, Event.GetHitRequestTime(), Time, Event.HitInterval);
+                }
+                if (local_379)
+                {
+                    if (CVar_HitTest_HitFrameDebug.GetBool())
+                    {
+                        local_26.Add(local_708.GetKey());
+                    }
+                    ::FCombatUtils::AddMultiStrikeProtectRecord(local_174_2, Event.HitTestProtectData, Time);
+                    ::FCombatUtils::AddForceHitInvincibleRecord(local_174_2, Event.HitTestProtectData, Time);
+                    FHitBoxData local_772;
+                    if (local_416 >= 0)
+                    {
+                        const FC_HitBoxConfig& local_774 = local_232.opCall();
+                        if (local_774)
+                        {
+                            local_416 = local_774.HitBoxDatas.Num();
+                            if (local_192 < local_416)
+                            {
+                                local_772 = local_774.HitBoxDatas[local_416];
+                            }
+                        }
+                    }
+                    local_1_3 = false;
+                    if (local_778 != nullptr && !(local_772.BodyPartKey.IsNone()))
+                    {
+                        if (unresolved.BodyPartData.BodyParts.Contains(local_772.BodyPartKey))
+                        {
+                        }
+                    }
+                    bool local_638 = Event.GetbAttackHitFXSpawnToStrikeCenterLine();
+                    local_32 = Event.GetbNeedHitMeshPresentation();
+                    local_384 = Event.bClientWaitForServerOnHit;
+                    local_639 = bPerEntityQuest || Event.GetbLocalPrediction();
+                    FTransform local_60_3 = Event.GetTransform();
+                    if (ECS::IsAuthorityOrPrediction(local_174_2))
+                    {
+                        if (local_191 == 9)
+                        {
+                            ::FCombatUtils::MakeInvincibleCounterEvent(local_174_2, local_10, EHitTestCheckResult(9), Time, Event.GetbLocalPrediction());
+                        }
+                        else
+                        {
+                            FCE_HitEvent local_780;
+                            local_1_3 = Event.GetbIgnorePlayerAndCreatePerEntityQuest();
+                            FECSEntity local_786 = local_10;
+                            Get local_790;
+                            const FC_AttackerAttributeValueProvider& local_792 = local_790.opCall();
+                            if (local_792)
+                            {
+                                if (local_792.GetProviderEntity().IsValid())
+                                {
+                                    local_786 = local_792.GetProviderEntity();
+                                }
+                            }
+                            bool local_638_2 = ::FDamageUtils::IsDamageToAvatar(local_174_2);
+                            local_32 = false;
+                            ::FDamageUtils::CalcAttackRecoverEnergyValue(local_10, local_102, Time, Event.ContetxCapabilityId);
+                            FAttackBaseDamageValue local_809;
+                            if (local_638_2)
+                            {
+                                local_809 = Event.DamageToAvatar;
+                            }
+                            else
+                            {
+                                local_809 = Event.Damage;
+                            }
+                            ::FCombatUtils::DamageTargetByHit(local_10, local_10, local_174_2, this.GetECSRuntime().IsServer, local_780.StrikeKey, int(local_780._base_FECSEvent), Event.AttackInfo, local_809);
+                        }
+                    }
+                    local_28 = true;
+                }
+            }
+        }
+        if (CVar_HitTest_HitFrameDebug.GetBool())
+        {
+            this.RecordMeleeStrikeHitDebug(Event, FixedTime, Time, bPerEntityQuest, local_26);
+        }
+        if (!(Event.GetbPerEntityQuest()))
+        {
+            if (local_816 && local_816.AttackIdentifierSet.Contains(Event.AttackIdentifier))
+            {
+                local_822.AttackIdentifier = Event.AttackIdentifier;
+                local_822.StrikeEventData = Event.StrikeEventData;
+                local_822.HitDecal = Event.HitDecalConfig;
+            }
+        }
+        return local_28;
     }
     UFUNCTION()
     void Job_RemoveEnvSurfaceImpactFXRecord(const FCE_EnvSurfaceImpactFXRecordToRemove &inout RecordToRemove) const

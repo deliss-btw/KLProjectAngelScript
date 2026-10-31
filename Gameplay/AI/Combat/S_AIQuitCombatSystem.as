@@ -1,5 +1,3 @@
-﻿
-
 class US_AIQuitCombatSystem : UECSScriptSystem
 {
     FName MuteCombatSource = n"ReturnToHome";
@@ -369,7 +367,30 @@ class US_AIQuitCombatSystem : UECSScriptSystem
     UFUNCTION()
     void Job_CheckExitAnchorCombatArea(const FECSEntity &inout Entity, const FC_AIQuitCombatFixedFlockAnchor &inout QuitCombatAnchor, const FC_Transform &inout Transform) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        if ((int(::FAIQuitCombatUtils::GetQuitCombatRule(Entity))) == 2)
+        {
+            return;
+        }
+        FAIQuitCombatConfig local_24 = ::FAIQuitCombatUtils::GetQuitCombatConfig(Entity);
+        Get local_46;
+        const FC_AIQuitCombatInfo& local_48 = local_46.opCall();
+        if (local_48)
+        {
+            if (int(local_48.bNeedReturnToHome) != 0)
+            {
+                if (::FAIQuitCombatUtils::CheckFlockCombatArea(QuitCombatAnchor.Position, Transform, local_24, true))
+                {
+                    ::FAIQuitCombatUtils::CancelReturnToHomeIntent(Entity);
+                }
+                return;
+            }
+        }
+        bool local_49 = ::FAIQuitCombatUtils::CheckFlockCombatArea(QuitCombatAnchor.Position, Transform, local_24, false);
+        if (local_49)
+        {
+            ::FAIQuitCombatUtils::BeginQuitCombatCheckWithAnchorPosition(Entity, QuitCombatAnchor.Position);
+        }
+        return;
     }
     UFUNCTION()
     void Job_RemoveResumeCombatTimerOnExitCombatRange(const FECSEntity &inout Entity, const FC_AIResumeCombatTimer &inout ResumeCombatTimer, const FC_AIQuitCombatInfo &inout QuitCombatInfo, const FC_Transform &inout Transform) const

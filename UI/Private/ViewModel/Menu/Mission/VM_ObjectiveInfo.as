@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ObjectiveInfo
 {
     const int ModelId = 0;
@@ -69,7 +68,7 @@ struct FVM_ObjectiveInfo : FEUIViewModel
         FText local_8 = ::ObjectiveUtils::GetObjectiveTitle(this.GetObjectiveConfig());
         if ((InCommissionAllSteps > 0 && (InCurrentStep >= 0)))
         {
-            local_8 = FText::Format(NSLOCTEXT("ObjectiveInfo", "ObjectiveTitle", "{0} <Yellow24F>й¶ж®µ{1}/{2}</>"), local_8, InCurrentStep, InCommissionAllSteps);
+            local_8 = FText::Format(NSLOCTEXT("ObjectiveInfo", "ObjectiveTitle", "{0} <Yellow24F>阶段{1}/{2}</>"), local_8, InCurrentStep, InCommissionAllSteps);
         }
         this.SetObjectiveTitle(local_8);
         return;

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_Execute_InputPushProgress
 {
     const int ModelId = 0;
@@ -31,8 +30,8 @@ struct FVM_Execute_InputPushProgress : FEUIViewModel
         this.m_State = EProgressOperationState(0);
         this.m_CurTime = 0.0f;
         this.m_MaxTime = 0.0f;
-        this.m_RiderMutualClashHint = NSLOCTEXT("QTE", "RiderMutualClash_Hint", "иїћз‚№дёЋж•Њдєєи§’еЉ›");
-        this.m_EscapeWolfCubHint = NSLOCTEXT("QTE", "EscapeWolfCub_Hint", "иїћз‚№жЊЈи„±");
+        this.m_RiderMutualClashHint = NSLOCTEXT("QTE", "RiderMutualClash_Hint", "连点与敌人角力");
+        this.m_EscapeWolfCubHint = NSLOCTEXT("QTE", "EscapeWolfCub_Hint", "连点挣脱");
         if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
         {
             return;
@@ -46,8 +45,8 @@ struct FVM_Execute_InputPushProgress : FEUIViewModel
         this.m_State = EProgressOperationState(0);
         this.m_CurTime = 0.0f;
         this.m_MaxTime = 0.0f;
-        this.m_RiderMutualClashHint = NSLOCTEXT("QTE", "RiderMutualClash_Hint", "иїћз‚№дёЋж•Њдєєи§’еЉ›");
-        this.m_EscapeWolfCubHint = NSLOCTEXT("QTE", "EscapeWolfCub_Hint", "иїћз‚№жЊЈи„±");
+        this.m_RiderMutualClashHint = NSLOCTEXT("QTE", "RiderMutualClash_Hint", "连点与敌人角力");
+        this.m_EscapeWolfCubHint = NSLOCTEXT("QTE", "EscapeWolfCub_Hint", "连点挣脱");
         this.m_CurProgress = Other.m_CurProgress;
         this.m_CurProgressRatio = Other.m_CurProgressRatio;
         this.m_State = Other.m_State;
@@ -87,7 +86,7 @@ struct FVM_Execute_InputPushProgress : FEUIViewModel
             const FC_ProgressOperationRuntime& local_22 = local_20.opCall();
             if (local_22)
             {
-                this.SetState(EProgressOperationState(local_22.GetState()));
+                this.SetState(local_22.GetState());
                 this.SetCurProgress(local_22.GetProgressValue());
                 float32 local_24 = local_22.GetProgressValue();
                 float32 local_25 = local_22.GetProgressMaxValue();
@@ -109,18 +108,18 @@ struct FVM_Execute_InputPushProgress : FEUIViewModel
             const FC_ProgressOperationResult& local_40 = local_38.opCall();
             if (local_40)
             {
-                this.SetState(EProgressOperationState(local_40.GetFinalState()));
+                this.SetState(local_40.GetFinalState());
                 this.SetCurTime(local_40.GetFinalProgressTime());
                 this.SetMaxTime(local_40.GetFinalProgressTotalTime());
                 this.SetCurProgress(local_40.GetFinalProgressValue());
-                if ((int(local_40.GetFinalState())) == 3)
+                if (int(local_40.GetFinalState()) == 3)
                 {
                     this.SetCurProgressRatio(1.0f);
                 }
             }
             else
             {
-                this.SetState(EProgressOperationState(EProgressOperationState(5)));
+                this.SetState(EProgressOperationState(5));
             }
         }
         return;
@@ -311,7 +310,6 @@ struct __GeneratedProperties_FVM_Execute_InputPushProgress
     float32 ProgressRatio;
     UPROPERTY()
     TEUIModelRef<FVM_Execute_InputPushProgress> Self;
-
 
 }
 

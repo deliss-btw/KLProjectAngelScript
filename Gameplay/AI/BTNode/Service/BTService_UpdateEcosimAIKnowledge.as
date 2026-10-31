@@ -1,5 +1,3 @@
-﻿
-
 class UBTService_UpdateEcosimAIKnowledge : UBTService_ECSScriptBase
 {
     UPROPERTY()
@@ -31,7 +29,7 @@ class UBTService_UpdateEcosimAIKnowledge : UBTService_ECSScriptBase
     UPROPERTY()
     FBlackboardKeySelector EcosimAITargetQuestVolumeName;
 
-    default SetNodeName("ж›ґж–°з”џжЂЃж•°жЌ®е€°й»‘жќїеЂј");
+    default SetNodeName("更新生态数据到黑板值");
 
     UBTService_UpdateEcosimAIKnowledge()
     {

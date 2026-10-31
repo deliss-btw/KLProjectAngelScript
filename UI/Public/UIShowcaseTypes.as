@@ -1,4 +1,3 @@
-﻿
 enum EShowcaseAnimState
 {
     TestCase001,

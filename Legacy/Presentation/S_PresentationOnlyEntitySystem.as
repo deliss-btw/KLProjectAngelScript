@@ -1,5 +1,3 @@
-﻿
-
 class US_PresentationOnlyEntitySystem : UECSScriptSystem
 {
     US_PresentationOnlyEntitySystem()

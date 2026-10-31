@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ShopGoodsItem
 {
     const int ViewID = 0;
@@ -302,6 +301,7 @@ namespace UWidget_ShopGoodsItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ShopGoodsItem;
     Result.ObservedModelChangesSubscriberNames.Add(FString("SyncItemModel"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("SyncCommonItemModel"));
     return;

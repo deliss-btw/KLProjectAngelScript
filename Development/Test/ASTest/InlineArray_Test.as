@@ -1,7 +1,6 @@
-﻿
 void Test_InlineArray_Fixed(FUnitTest &inout T)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
 }
 void Test_InlineArray_Extended(FUnitTest &inout T)
 {

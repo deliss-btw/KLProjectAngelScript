@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_HideMiniHPBar : UESMBPBaseSpanAction
 {
     UESMAction_HideMiniHPBar()

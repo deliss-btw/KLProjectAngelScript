@@ -1,5 +1,3 @@
-﻿
-
 class UDungeonDraftTypeAdapter : UDraftTypeAdapterBase
 {
     default SupportedTypedDraftDataModelType = FM_Dungeon;
@@ -19,15 +17,14 @@ class UDungeonDraftTypeAdapter : UDraftTypeAdapterBase
     }
     FEUIModelContainer MakeViewModels(const FEUIModelContext &inout Context, const FEUIModelRef &inout TypedDraftData) const
     {
-        TEUIModelRef<FM_Dungeon> local_2 = TEUIModelRef<FM_Dungeon>(TypedDraftData);
-        return FEUIModelContainer();
+        return FEUIModelContainer(::FVM_ChallengeDungeonInfo::Create(Context.Manager, TEUIModelRef<FM_Dungeon>(TypedDraftData)));
     }
     bool HandleDraftInviteFail(const FEUIModelContext &inout Context, const TEUIModelRef<FM_Draft> &inout FailedDraft) const
     {
         if (FailedDraft.opArrow().GetDraftInviteResult() == 6)
         {
             FCommonTipsParam local_12;
-            ::CommonPopup::Tips(NSLOCTEXT("DungeonInviteFail_MemberCondNotMeet", "жњ‰ж€ђе‘жњЄж»Ўи¶іе§”ж‰жЋҐеЏ–жќЎд»¶пјЊж— жі•ејЂеђЇењ°з‰ў"), local_12);
+            ::CommonPopup::Tips(NSLOCTEXT("DungeonInviteFail_MemberCondNotMeet", "有成员未满足委托接取条件，无法开启地牢"), local_12);
             return true;
         }
         return false;

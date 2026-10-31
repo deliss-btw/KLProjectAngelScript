@@ -1,4 +1,3 @@
-﻿
 enum EPrepareGameState
 {
     Init,
@@ -9,10 +8,6 @@ enum EPrepareGameState
     ReadyToStartECSGame,
 }
 
-
-// NOTE: class defaults are not authored in this module: AKLGameModeMP (default scalar field AECSGameModeBase.bIsReadyToStartECSGame has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
-
 class AKLGameModeMP : AECSGameModeMPBase
 {
     float32 CheckReadyToStartECSGameInterval = 0.1f;
@@ -20,7 +15,6 @@ class AKLGameModeMP : AECSGameModeMPBase
     int64 LastSendDSHeartBeatTime = 0;
     bool bSkipDSGlobalInfo = false;
     EPrepareGameState PrepareGameState = EPrepareGameState(0);
-
 
     UFUNCTION()
     bool CheckPlayerToken_Implementation(const APlayerController NewPlayer, const int UID, const int PlayerToken) const

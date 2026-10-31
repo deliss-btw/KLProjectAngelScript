@@ -1,5 +1,3 @@
-﻿
-
 struct FUIItemInteractAbility
 {
     UPROPERTY()
@@ -14,7 +12,6 @@ struct FUIItemInteractAbility
     bool bSetVisibility;
     UPROPERTY()
     TDataObjectPtr<FSystemControlConfig> UnlockSystemControl;
-
 
 }
 
@@ -45,7 +42,9 @@ namespace UIInteractAbilityConfig
 FUIInteractAbilityGroup GetUIInteractAbilityGroup(const FName &inout GroupName)
 {
     FUIInteractAbilityGroup __r;
-    FUIInteractAbilityGroup local_20 = Cast<UUIInteractAbilityConfig>(UGameplayConfigsManager.GetDefaultObject().GlobalUIInteractAbilityConfig.ToSoftObjectPath().TryLoad());
+    UUIInteractAbilityConfig local_8 = (Cast<UUIInteractAbilityConfig>(UGameplayConfigsManager.GetDefaultObject().GlobalUIInteractAbilityConfig.ToSoftObjectPath().TryLoad()));
+    FUIInteractAbilityGroup local_24;
+    local_8.Groups.Find(GroupName, local_24);
     return __r;
 }
 }

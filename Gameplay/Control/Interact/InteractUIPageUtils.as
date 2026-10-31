@@ -1,11 +1,9 @@
-﻿
 namespace FInteractUIPageUtils
 {
 void OpenPageByInteractTarget(const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex, const FGameplayTag &inout WidgetTag, const TSoftClassPtr<UEUIUserWidget> &inout PageWidget)
 {
     int local_6 = 0;
     int local_22 = 0;
-    ULocalPlayer local_24;
     if (local_6.OpenedPage.IsLayoutLayerWidget())
     {
         XWarning(ELog(16), FString().Append("Page already opened on target ").Append(InteractTarget));
@@ -19,8 +17,7 @@ void OpenPageByInteractTarget(const FECSEntity &inout InteractTarget, const FInt
         {
             FVM_SocialViewPage::PrepareFromWorldInteract(local_22.UEPlayerController.GetLocalPlayer(), InteractTarget);
         }
-        local_24 = local_22.UEPlayerController.GetLocalPlayer();
-        FEUIWidgetRef local_40 = ECSWorldLifetimePage::Open(WidgetTag, FEUIModelContainer());
+        FEUIWidgetRef local_40 = ECSWorldLifetimePage::Open(WidgetTag, FEUIModelContainer(FVM_InteractTarget::Create(local_22.UEPlayerController.GetLocalPlayer(), InteractTarget)));
         if (!(local_40.IsValid()))
         {
             XError(ELog(16), FString().Append("Failed to open ui by interact, widget tag=").Append(WidgetTag));
@@ -46,8 +43,7 @@ void OpenPageByInteractTarget(const FECSEntity &inout InteractTarget, const FInt
             return;
         }
         local_6.OpenedPage = local_42;
-        local_24 = local_22.UEPlayerController.GetLocalPlayer();
-        local_6.OpenedPage.AppendViewModel(FEUIModelRef(), NAME_None);
+        local_6.OpenedPage.AppendViewModel(FEUIModelRef(FVM_InteractTarget::Create(local_22.UEPlayerController.GetLocalPlayer(), InteractTarget)), NAME_None);
     }
     local_6.InteractSourceControllerEntity = local_22.PlayerEntity;
     local_6.InteractTargetPointAndBehaviorIndex = InteractTargetPointAndBehaviorIndex;

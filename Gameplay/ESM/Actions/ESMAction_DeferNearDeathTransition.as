@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_DeferNearDeathTransition : UESMBPBaseSpanAction
 {
     UESMAction_DeferNearDeathTransition()

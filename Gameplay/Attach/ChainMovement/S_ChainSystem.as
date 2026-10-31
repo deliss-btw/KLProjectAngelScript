@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Chain_EnableNetPredict = FConsoleVariable();
 const FConsoleVariable CVar_Chain_ForceModifyTransform = FConsoleVariable();
 const FConsoleVariable CVar_Chain_ForceSyncNetTime = FConsoleVariable();

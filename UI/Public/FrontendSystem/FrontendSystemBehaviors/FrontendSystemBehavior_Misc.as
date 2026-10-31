@@ -1,5 +1,3 @@
-﻿
-
 class UFrontendSystemBehavior_ClearSelectSocialInteractionInfo : UFrontendSystemBehaviorBase
 {
     UFrontendSystemBehavior_ClearSelectSocialInteractionInfo()

@@ -1,5 +1,3 @@
-﻿
-
 class UHTNTask_RequestResourceWithContext : UHTNTask_ECSScriptBase
 {
     UPROPERTY()
@@ -80,10 +78,9 @@ class UHTNTask_RequestResourceWithContext : UHTNTask_ECSScriptBase
     }
     void OutputRequestResult(const FHTNContext &inout Context, const UBlackboardComponent blackboard, const TArray<FEntitySearchResult> &inout FinalResult) const
     {
-        FAISmartValueContext local_12;
-        FInstancedStruct::Make(local_12);
-        FName local_20 = this.ResultSaveKey.GetValue(Context.opImplConv());
-        FECSEntity local_16 = Context.GetControllerEntity();
+        FEntitySearchResultList local_8;
+        FInstancedStruct local_12 = FInstancedStruct::Make(local_8);
+        ::SetEcologyBlob(Context.GetControllerEntity(), this.ResultSaveKey.GetValue(Context.opImplConv()), local_12);
         Context.SetWorldStateAsBool(this.IsSpecifiedTarget, false);
         return;
     }
@@ -97,8 +94,8 @@ class UHTNTask_RequestResourceWithContext : UHTNTask_ECSScriptBase
     void SetRequestResultInfo(const FECSEntity &inout FlockEntity, const FHTNContext &inout Context, const FGameplayTag &inout ReasonTag, const FGameplayTag &inout SourceTag, const bool bNeedForceUpdateTargetResource, const bool bNeedChangeAreaMessage, const FChangeAreaMessageInfo &inout MessageInfo, const int Priority) const
     {
         int local_8 = 0;
-        ReasonTag.GetTagName();
-        SourceTag.GetTagName();
+        Context.SetWorldStateAsName(this.ReasonTagOutput, ReasonTag.GetTagName());
+        Context.SetWorldStateAsName(this.SourceTagOutput, SourceTag.GetTagName());
         Context.SetWorldStateAsBool(this.ForceUpdateTargetResource, bNeedForceUpdateTargetResource);
         Context.SetWorldStateAsInt(this.OutputPriorityKey, Priority);
         local_8.ChangeAreaData.bNeedChangeAreaMessage = bNeedChangeAreaMessage;
@@ -143,7 +140,7 @@ class UHTNTask_RequestResourceWithContext : UHTNTask_ECSScriptBase
         }
         if ((RequestInst.CombatRegionPolicyRadiusLayer1 > int(Request.SearchRadius) || (RequestInst.CombatRegionPolicyRadiusLayer2 > int(Request.SearchRadius))))
         {
-            XLog(ELog(30), FString().Append("Warning: RadiusLayerе¤§дєЋSearchRadius, еЇји‡ґ CombatRegionPolicy з”џж•€еј‚еёё"));
+            XLog(ELog(30), FString().Append("Warning: RadiusLayer大于SearchRadius, 导致 CombatRegionPolicy 生效异常"));
         }
         int local_12 = 0;
         for (auto& local_30 : Request.IncludeResourceTypes)
@@ -164,31 +161,24 @@ class UHTNTask_RequestResourceWithContext : UHTNTask_ECSScriptBase
     {
         AECSRegionVolume local_16;
         int local_1 = 0;
-        while (local_1 < 0)
+        for (; local_1 < FlockBehaviorComp.VisitedCombatRegion.Num(); ++local_1)
         {
             FECSEntityId& local_6 = FlockBehaviorComp.VisitedCombatRegion[local_1];
             if ((local_6 == ENTITY_ID_NULL))
             {
+                continue;
             }
-            else
+            if (!(FECSEntity(local_6).IsValid()))
             {
-                if (!(FECSEntity(local_6).IsValid()))
-                {
-                }
-                else
-                {
-                    AActor local_22;
-                    local_16 = Cast<AECSRegionVolume>(local_22);
-                    if ((!((local_16 != nullptr)) || !(local_16.bAffectCombat)))
-                    {
-                    }
-                    else
-                    {
-                        OutRegions.Add(local_16);
-                    }
-                }
+                continue;
             }
-            ++local_1;
+            AActor local_22;
+            local_16 = Cast<AECSRegionVolume>(local_22);
+            if ((!((local_16 != nullptr)) || !(local_16.bAffectCombat)))
+            {
+                continue;
+            }
+            OutRegions.Add(local_16);
         }
         return;
     }
@@ -203,7 +193,7 @@ class UHTNTask_RequestResourceWithContext : UHTNTask_ECSScriptBase
         FString local_4;
         FString local_14;
         int local_5 = 0;
-        while (local_5 < 0)
+        for (; local_5 < FlockBehaviorComp.VisitedCombatRegion.Num(); )
         {
             if (local_5 > 0)
             {
@@ -429,7 +419,6 @@ class UHTNTask_SearchResourceInCurrentCombatRegion : UHTNTask_ECSScriptBase
     UPROPERTY()
     FBlackboardKeySelector ResourceId_Key;
 
-
     UFUNCTION()
     void CreatePlanSteps_Implementation(const FHTNContext &inout Context) const
     {
@@ -497,7 +486,6 @@ class UHTNTask_AddDefaultChangeAreaRequest : UHTNTask_ECSScriptBase
     FGameplayTag ReasonTag;
     UPROPERTY()
     FGameplayTag SourceTag;
-
 
     UFUNCTION()
     void CreatePlanSteps_Implementation(const FHTNContext &inout Context) const

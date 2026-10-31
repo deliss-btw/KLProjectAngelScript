@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_AnimUseAimTargetControl : UESMBPBaseSpanAction
 {
     UESMAction_AnimUseAimTargetControl()

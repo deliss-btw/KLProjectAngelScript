@@ -1,4 +1,3 @@
-﻿
 namespace FVM_DialogueOptionList
 {
     const int ModelId = 0;
@@ -62,7 +61,6 @@ struct __GeneratedProperties_FVM_DialogueOptionList
     bool HasOptionItems;
     UPROPERTY()
     TEUIModelRef<FVM_DialogueOptionList> Self;
-
 
 }
 

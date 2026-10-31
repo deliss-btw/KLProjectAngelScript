@@ -1,4 +1,3 @@
-﻿
 namespace EnhancedInputUtils
 {
 void AddInputContext(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FEnhancedInputContextConfig> &inout InputContextConfig)

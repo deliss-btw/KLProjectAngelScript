@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MinimapMarkDialogOption
 {
     const int ModelId = 0;
@@ -167,15 +166,41 @@ struct FVM_MinimapMarkDialog : FEUIViewModel
 
     FVM_MinimapMarkDialog()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_bHasSelect = false;
+        this.m_bPendingClose = false;
+        this.m_CurrentSelectedIndex = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        XError(ELog(17), "Should not construct model'FVM_MinimapMarkDialog' by default constructor.");
+        return;
     }
     FVM_MinimapMarkDialog(const FVM_MinimapMarkDialog &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_bHasSelect = false;
+        this.m_bPendingClose = false;
+        this.m_CurrentSelectedIndex = INDEX_NONE;
+        this.m_MarkEntityID = Other.m_MarkEntityID;
+        this.m_MarkWorldPosition = Other.m_MarkWorldPosition;
+        this.m_Options = Other.m_Options;
+        this.m_bHasSelect = Other.m_bHasSelect;
+        this.m_CurrentSelectedIndex = int(Other.m_CurrentSelectedIndex);
+        this.m_bPendingClose = Other.m_bPendingClose;
+        return;
     }
     FVM_MinimapMarkDialog(const FECSEntityId &inout InMarkEntityID, const FVector2D &inout InMarkWorldPosition)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_bHasSelect = false;
+        this.m_bPendingClose = false;
+        this.m_CurrentSelectedIndex = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        this.SetMarkEntityID(InMarkEntityID);
+        this.SetMarkWorldPosition(InMarkWorldPosition);
+        return;
     }
     FVM_MinimapMarkDialog opAssign(const FVM_MinimapMarkDialog &inout Other)
     {
@@ -190,7 +215,49 @@ struct FVM_MinimapMarkDialog : FEUIViewModel
     }
     void PostConstruct()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (!(::MarkUtil::GetMarkConfigSetting().bCanEditConstantMark))
+        {
+            return;
+        }
+        int local_4 = 0;
+        for (; local_4 < ::MarkUtil::GetUserSelectableMinimapMarkNum(); ++local_4)
+        {
+            if (::MarkUtil::GetUserSelectableMinimapMarkAt(local_4))
+            {
+                this.GetModify_Options().Add(FEUIModelRef(::FVM_MinimapMarkDialogOption::Create(this.GetContext().Manager, local_4)));
+            }
+        }
+        UMarkSettings local_58 = ::MarkUtil::GetMarkConfigSetting();
+        if (local_58 != nullptr)
+        {
+            int local_4_2 = INDEX_NONE;
+            if (::MarkUtil::IsSelfCreateMark(this.GetContext().GetLocalPlayer(), this.GetMarkEntityID()))
+            {
+                TDataObjectPtr<FMarkConfig> local_54 = ::MarkUtil::GetMarkConfigByEntityId(this.GetContext().GetLocalPlayer(), this.GetMarkEntityID());
+                if (local_54)
+                {
+                    int local_63 = 0;
+                    for (; local_63 < ::MarkUtil::GetUserSelectableMinimapMarkNum(); ++local_63)
+                    {
+                        if ((::MarkUtil::GetUserSelectableMinimapMarkAt(local_63) == local_54.opImplConv()))
+                        {
+                            local_4_2 = local_63;
+                            break;
+                        }
+                    }
+                }
+            }
+            int local_5 = INDEX_NONE;
+            if (local_4_2 == local_5)
+            {
+                local_4_2 = local_58.DefaultMinimapMarkIconIndex;
+            }
+            if (local_4_2 != INDEX_NONE)
+            {
+                this.SetSelectedIndex(local_4_2);
+            }
+        }
+        return;
     }
     bool HasSelectableOptions() const
     {
@@ -326,7 +393,14 @@ struct FVM_MinimapMarkDialog : FEUIViewModel
     }
     void SetSelectedIndex(const int Index)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (this.GetCurrentSelectedIndex() != INDEX_NONE)
+        {
+            this.SetOptionSelectedState(this.GetCurrentSelectedIndex(), false);
+        }
+        this.SetCurrentSelectedIndex(Index);
+        this.SetbHasSelect(true);
+        this.SetOptionSelectedState(this.GetCurrentSelectedIndex(), true);
+        return;
     }
     const FECSEntityId GetMarkEntityID() const property
     {
@@ -463,7 +537,6 @@ struct __GeneratedProperties_FVM_MinimapMarkDialog
     bool IsGuidingTarget;
     UPROPERTY()
     TEUIModelRef<FVM_MinimapMarkDialog> Self;
-
 
 }
 

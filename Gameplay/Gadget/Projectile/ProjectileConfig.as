@@ -1,5 +1,3 @@
-﻿
-
 struct FProjectileConfigBasicData
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ struct FProjectileConfigBasicData
     bool bHasNumLimit = false;
     UPROPERTY()
     FC_NumLimited NumLimitedConfig;
-
 
 }
 

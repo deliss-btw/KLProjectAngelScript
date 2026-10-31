@@ -1,4 +1,3 @@
-﻿
 namespace FMS_MotionUnlock
 {
     const int ModelId = 0;

@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_MarkViewportDisplay_Helpers
 {
 UFUNCTION()

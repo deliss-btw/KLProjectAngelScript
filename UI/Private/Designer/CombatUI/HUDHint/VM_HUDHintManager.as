@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_HUDHintManager
 {
     const int ModelId = 0;

@@ -1,4 +1,3 @@
-﻿
 enum EGameModeDamageCoefficientEntity
 {
     None,
@@ -14,7 +13,6 @@ enum EGameModeDamageCoefficientEntity
     MonsterCommon,
     Max,
 }
-
 
 struct FGameModeDamageCoefficientRow : FDataObject
 {
@@ -42,10 +40,9 @@ struct FGameModeDamageCoefficientRow : FDataObject
     UPROPERTY()
     float32 MonsterCommon = 1.0f;
 
-
     TArray<float32> ToArray() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         TArray<float32> __r; return __r;
     }
     float32 GetByEntity(const EGameModeDamageCoefficientEntity Entity) const

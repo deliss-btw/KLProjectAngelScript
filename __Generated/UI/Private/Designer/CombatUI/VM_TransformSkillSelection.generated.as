@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_TransformSkillSelection_Helpers
 {
 UFUNCTION()

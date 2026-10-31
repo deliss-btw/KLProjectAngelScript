@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_LinkSkill
 {
     const int ModelId = 0;

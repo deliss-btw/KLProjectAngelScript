@@ -1,11 +1,9 @@
-﻿
 enum EItemSortCompareResult
 {
     Less,
     Equal,
     Greater,
 }
-
 
 struct FItemSortContext
 {
@@ -17,7 +15,6 @@ struct FItemSortContext
     int64 LastModifiedTimestamp;
     UPROPERTY()
     bool bIsNewItem;
-
 
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 struct FT_Projectile : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -207,7 +205,6 @@ struct FT_Projectile : FECSTrait
     bool bHas_FC_AdditionalMovementConfig = false;
     UPROPERTY()
     FC_AdditionalMovementConfig Config_FC_AdditionalMovementConfig;
-
 
 }
 

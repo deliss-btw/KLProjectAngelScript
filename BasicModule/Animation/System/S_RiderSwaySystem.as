@@ -1,5 +1,3 @@
-﻿
-
 class US_S_RiderSwaySystemAS : UECSScriptSystem
 {
     US_S_RiderSwaySystemAS()
@@ -14,14 +12,32 @@ class US_S_RiderSwaySystemAS : UECSScriptSystem
     UFUNCTION()
     void Job_S_RiderSwayControl(const FECSEntity &inout Entity, FC_AnimParamRiderSwayControl &inout AnimParamRiderSwayControl) const
     {
-        if (AnimParamRiderSwayControl.GetTargetWeight() == 0.0f && (AnimParamRiderSwayControl.GetWeight() == 0.0f))
+        int local_3;
+        if (AnimParamRiderSwayControl.GetTargetWeight() != 0.0f)
+        {
+            local_3 = 0;
+        }
+        else
+        {
+            bool local_4 = (AnimParamRiderSwayControl.GetWeight() == 0.0f);
+            local_3 = local_4;
+        }
+        if (local_3 != 0)
         {
             AnimParamRiderSwayControl.SetbIsEnabled(false);
             return;
         }
         AnimParamRiderSwayControl.SetbIsEnabled(true);
         AnimParamRiderSwayControl.SetWeight(FMath::FInterpTo(AnimParamRiderSwayControl.GetWeight(), AnimParamRiderSwayControl.GetTargetWeight(), this.GetWorld().GetDeltaSeconds(), AnimParamRiderSwayControl.GetInterpSpeed()));
-        if (AnimParamRiderSwayControl.GetTargetWeight() == 0.0f && (AnimParamRiderSwayControl.GetWeight() < 0.001f))
+        if (AnimParamRiderSwayControl.GetTargetWeight() != 0.0f)
+        {
+            local_3 = 0;
+        }
+        else
+        {
+            local_3 = (AnimParamRiderSwayControl.GetWeight() < 0.001f);
+        }
+        if (local_3 != 0)
         {
             AnimParamRiderSwayControl.SetWeight(0.0f);
             AnimParamRiderSwayControl.SetbIsEnabled(false);

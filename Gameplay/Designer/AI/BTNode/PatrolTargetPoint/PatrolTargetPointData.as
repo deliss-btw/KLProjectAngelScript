@@ -1,5 +1,3 @@
-﻿
-
 struct FPatrolTargetPointData
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ struct FPatrolTargetPointData
     int Weight = 1;
     UPROPERTY()
     float32 Probability = 1.0f;
-
 
 }
 
@@ -22,7 +19,6 @@ struct FPatrolTargetPointConfig
     TArray<TSoftObjectPtr<APatrolTargetPoint>> PatrolTargetPoints;
     UPROPERTY()
     TArray<TSoftObjectPtr<ATargetPoint>> PlainTargetPoints;
-
 
     ATargetPoint PickSpawnPoint() const
     {

@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_CommissionPanel_Helpers
 {
 UFUNCTION()

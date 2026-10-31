@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_AvatarBuildBar_Helpers
 {
 UFUNCTION()

@@ -1,5 +1,3 @@
-﻿
-
 struct FCompareInteractionTargetParam
 {
     UPROPERTY()
@@ -15,7 +13,6 @@ struct FCompareInteractionTargetParam
     UPROPERTY()
     bool bShowFailFromSource = false;
 
-
 }
 
 struct FInteractSourceCheckBaseParam
@@ -28,7 +25,6 @@ struct FInteractSourceCheckBaseParam
     float32 InteractTipDistance = 0.0f;
     UPROPERTY()
     EInteractSourceType SourceType = EInteractSourceType(1);
-
 
 }
 
@@ -44,12 +40,15 @@ struct FClientInteractSourceCheckParam : FInteractSourceCheckBaseParam
 
     FClientInteractSourceCheckParam()
     {
-        super();
         return;
     }
     FClientInteractSourceCheckParam(const FInteractSourceCheckBaseParam &inout BaseParam)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this._base_FInteractSourceCheckBaseParam = BaseParam.InteractSourceEntity;
+        this.InteractDistance = BaseParam.InteractDistance;
+        this.InteractTipDistance = BaseParam.InteractTipDistance;
+        this.SourceType = BaseParam.SourceType;
+        return;
     }
 }
 
@@ -74,7 +73,6 @@ class US_InteractionSystem : UECSScriptSystem
     float32 MaxInteractDistance = 1000.0f;
     UPROPERTY()
     float32 MaxInteractTipDistance = 1000.0f;
-
 
     bool CheckInteractTargetPointInScreen(const FVector &inout InteractPointLocation, const FClientInteractSourceCheckParam &inout InteractSourceCheckParam, FVector2D &inout InteractPointScreenRatio) const
     {
@@ -141,7 +139,7 @@ class US_InteractionSystem : UECSScriptSystem
     }
     void GetAutoInteractTargetInfo(const FInteractionCandidateEntity &inout CandidateEntity, const EAutoInteractChannelType AutoInteractChannelType, const EInteractMode InteractMode, const FClientInteractSourceCheckParam &inout InteractSourceCheckParam, TArray<FInteractTargetInfo> &inout AutoInteractTargetInfo) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     TArray<FECSEntity> GetAddingProgressPlayerList(const FECSEntity &inout TargetEntity, const FC_RuntimeInteractTargetStatus &inout RuntimeInteractTargetStatus, const FInteractionPointAndBehaviorIndex &inout PointAndBehaviorIndex) const
     {
@@ -194,7 +192,7 @@ class US_InteractionSystem : UECSScriptSystem
     {
         int local_18 = 0;
         int local_24 = 0;
-        EInteractionSubTypeForESM local_26;
+        int local_26;
         int local_50 = 0;
         int local_134 = 0;
         int local_140 = 0;
@@ -215,7 +213,7 @@ class US_InteractionSystem : UECSScriptSystem
                     if (bIsSecondaryInteract)
                     {
                         local_18.SetInteractType(local_24.GetInteractType());
-                        local_26 = local_24.GetSubType();
+                        local_26 = int(local_24.GetSubType());
                         local_18.SetSubType(EInteractionSubTypeForESM(local_26));
                         local_18.SetTargetEntity(local_24.GetTargetEntity());
                         local_18.SetTargetPointAndBehaviorIndex(local_24.GetTargetPointAndBehaviorIndex());
@@ -224,7 +222,7 @@ class US_InteractionSystem : UECSScriptSystem
                     UInteractionBehaviorBase local_34 = ::FInteractUtils::GetInteractionBehaviorFromEntity(InteractTargetEntity, InteractTargetPointAndBehaviorIndex);
                     local_24.SetInteractType(local_34.InteractType);
                     int local_12 = InteractTargetPointAndBehaviorIndex.GetPointIndex();
-                    if (local_34.bOverrideInteractPointSubType)
+                    if local_34.bOverrideInteractPointSubType
                     {
                         local_26 = local_34.OverrideSubType;
                     }
@@ -257,7 +255,7 @@ class US_InteractionSystem : UECSScriptSystem
                     local_24.SetTargetPointAndBehaviorIndex(InteractTargetPointAndBehaviorIndex);
                     local_24.SetTargetEntity(InteractTargetEntity);
                     local_24.SetExpireTime(local_50.Time);
-                    if (ECS::GetRuntimeInfo().IsServer)
+                    if (int(ECS::GetRuntimeInfo().IsServer) != 0)
                     {
                         local_134.AddPending(InteractTargetPointAndBehaviorIndex.GetPointIndex(), InteractTargetPointAndBehaviorIndex.GetBehaviorIndex());
                         this.ReportSocialActionTrigger(InteractSourceEntity, InteractTargetEntity, EInteractionSubTypeForESM(local_24.GetSubType()));
@@ -391,7 +389,122 @@ class US_InteractionSystem : UECSScriptSystem
     }
     void CollectPossibleInteractTargets(const FECSEntity &inout SourceEntity, const FVector &inout QueryLocation, const bool bCollectBestF, const bool bCollectBestZ, const float32 SourceInteractDistance, const bool bCollectInteractTipTarget, const float32 SourceInteractTipDistance, const EInteractSourceType SourceType, const bool bIsSecondaryTarget, TArray<FInteractionCandidateEntity> &inout OutCandidateEntities) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        float32 local_6 = 0.0f;
+        FC_InteractionTargetConfig local_44;
+        bool local_47;
+        int local_54 = 0;
+        bool local_60;
+        int local_70 = 0;
+        if (!(bCollectBestF) && !(bCollectBestZ) && !(bCollectInteractTipTarget))
+        {
+            return;
+        }
+        float32 local_5 = FMath::Max(SourceInteractDistance, this.MaxInteractDistance);
+        float32 local_3 = FMath::Max(SourceInteractTipDistance, this.MaxInteractTipDistance);
+        if (bCollectBestF || bCollectBestZ)
+        {
+        }
+        else
+        {
+        }
+        float32 local_7 = local_6;
+        bool local_2 = bCollectBestF || bCollectBestZ;
+        if (local_2 && bCollectInteractTipTarget)
+        {
+            local_7 = FMath::Max(local_5, local_3);
+        }
+        TArray<uint> local_12;
+        FSceneGridUtils::QueryCircle(ECS::GetECSWorld(), ESceneGridType(0), QueryLocation, local_7, local_12);
+        if (local_12.Num() == 0)
+        {
+            return;
+        }
+        float32 local_4 = FMath::Square(SourceInteractDistance);
+        local_6 = FMath::Square(SourceInteractTipDistance);
+        for (auto local_33 : local_12)
+        {
+            if (local_33 == SourceEntity.GetIdValue())
+            {
+                continue;
+            }
+            FECSEntity local_38 = FECSEntity(local_33);
+            if (!(local_38.IsActive()))
+            {
+                continue;
+            }
+            if (!(local_44))
+            {
+                continue;
+            }
+            bool local_1_2 = bCollectBestF && local_44.HasInteractPointWithMode(EInteractMode(0));
+            local_2 = bCollectBestZ && local_44.HasInteractPointWithMode(EInteractMode(1));
+            if (!(bCollectInteractTipTarget))
+            {
+                local_47 = false;
+            }
+            else
+            {
+                local_47 = local_44.bHasTip;
+            }
+            if (!(local_1_2) && !(local_2) && !(local_47))
+            {
+                continue;
+            }
+            if (!(local_54))
+            {
+                continue;
+            }
+            float32 local_19 = float32(QueryLocation.DistSquared(local_54.GetPosition()));
+            bool local_45 = local_1_2 || local_2;
+            local_60 = local_45 && (local_19 <= local_4 || (local_19 <= local_44.MaxInteractDistanceSQ));
+            local_45 = local_47 && ((local_19 <= local_6) || (local_19 <= local_44.MaxInteractTipDistanceSQ));
+            if (!(local_60) && !(local_45))
+            {
+                continue;
+            }
+            bool local_48 = local_1_2 && local_60;
+            bool local_59 = local_48 && !(this.NeedExcludeInteractTargetEntity(SourceEntity, local_38, EInteractMode(0)));
+            local_48 = local_2 && local_60;
+            bool local_62 = !(local_59);
+            if ((local_62 && !(local_48)) && !(local_45))
+            {
+                continue;
+            }
+            if (!(local_70) || local_70.GetbRuntimeDisabled())
+            {
+                continue;
+            }
+            if (!((local_44.InteractionPoints.Num() <= 32)))
+            {
+                continue;
+            }
+            FInteractionCandidateEntity local_76;
+            local_76.Entity = local_38;
+            local_76.bBestF = local_59;
+            local_76.bBestZ = local_48;
+            local_76.bTip = local_45;
+            local_76.bIsSecondaryTarget = bIsSecondaryTarget;
+            int local_77 = 0;
+            for (; local_77 < local_44.InteractionPoints.Num(); ++local_77)
+            {
+                if (!(local_70.IsRuntimePointEnabled(local_77)))
+                {
+                    continue;
+                }
+                const FInteractionPoint& local_80 = local_44.InteractionPoints[local_77];
+                int local_81 = int(local_80.AvailableSourceTypeMask) & int(SourceType);
+                if (local_81 == 0 || !(local_80.PointType.IsValid()))
+                {
+                    continue;
+                }
+                local_76.PointIndices.SetBit(local_77, true);
+            }
+            if (!(local_76.PointIndices.IsEmpty()))
+            {
+                OutCandidateEntities.Add(local_76);
+            }
+        }
+        return;
     }
     void BuildInteractionCandidates(const TArray<FInteractionCandidateEntity> &inout CandidateEntities, const FInteractSourceCheckBaseParam &inout InteractSourceCheckParam, FC_InteractionCandidates &inout InteractionCandidates) const
     {
@@ -402,6 +515,7 @@ class US_InteractionSystem : UECSScriptSystem
         FInteractionPointTypeConfig local_34;
         bool local_59;
         bool local_62;
+        int local_117 = 0;
         bool local_119;
         bool local_120;
         for (auto& local_16 : CandidateEntities)
@@ -461,7 +575,6 @@ class US_InteractionSystem : UECSScriptSystem
                     local_62 = local_16.bIsSecondaryTarget;
                     local_116.bIsSecondaryTarget = local_62;
                     EInteractionBehaviorEvaluateResult local_118 = EInteractionBehaviorEvaluateResult(0);
-                    EInteractionBehaviorEvaluateResult local_117;
                     local_117 = local_118;
                     local_119 = false;
                     local_120 = false;
@@ -469,7 +582,7 @@ class US_InteractionSystem : UECSScriptSystem
                     {
                         FCompareInteractionTargetParam local_130;
                         local_118 = ::FInteractUtils::EvaluateInteractionBehaviorWithTarget(InteractSourceCheckParam, local_18, local_32, local_84, local_68, local_76, false, local_130);
-                        if (int(local_118) == 1)
+                        if (local_118 == 1)
                         {
                             bool local_133;
                             int local_132 = -1;
@@ -522,12 +635,11 @@ class US_InteractionSystem : UECSScriptSystem
     }
     void SortInteractionCandidatePriorities(FC_InteractionCandidates &inout InteractionCandidates) const
     {
-        int local_1 = 0;
         bool local_4;
         int local_8;
         InteractionCandidates.PrioritySortedIndices.Reset(0);
         int local_2 = 0;
-        while (local_2 < 0)
+        for (; local_2 < InteractionCandidates.CandidateBehaviors.Num(); ++local_2)
         {
             FInteractionCandidateBehaviorInfo& local_6 = InteractionCandidates.CandidateBehaviors[local_2];
             local_4 = local_6.bBestF;
@@ -543,10 +655,9 @@ class US_InteractionSystem : UECSScriptSystem
             {
                 InteractionCandidates.PrioritySortedIndices.Add(local_2);
             }
-            ++local_2;
         }
         int local_2_2 = 1;
-        while (local_2_2 < local_1)
+        for (; local_2_2 < InteractionCandidates.PrioritySortedIndices.Num(); )
         {
             local_8 = InteractionCandidates.PrioritySortedIndices[local_2_2];
             int local_9 = local_2_2;
@@ -556,9 +667,7 @@ class US_InteractionSystem : UECSScriptSystem
             }
             else
             {
-                local_1 = local_9 - 1;
-                local_1 = InteractionCandidates.CandidateBehaviors[InteractionCandidates.PrioritySortedIndices[local_1]].Priority;
-                local_4 = (local_1 < InteractionCandidates.CandidateBehaviors[local_8].Priority);
+                local_4 = ((InteractionCandidates.CandidateBehaviors[InteractionCandidates.PrioritySortedIndices[(local_9 - 1)]].Priority) < InteractionCandidates.CandidateBehaviors[local_8].Priority);
             }
             if (local_4)
             {
@@ -572,7 +681,7 @@ class US_InteractionSystem : UECSScriptSystem
     }
     bool IsInteractionCandidateCameraValid(const FInteractionCandidateBehaviorInfo &inout Candidate, const FClientInteractSourceCheckParam &inout InteractSourceCheckParam, const bool bCheckViewDir, float32 &out OutScore) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
         bool __r; return __r;
     }
     UFUNCTION()
@@ -597,26 +706,214 @@ class US_InteractionSystem : UECSScriptSystem
         FInteractSourceCheckBaseParam local_52 = ::FInteractUtils::BuildInteractSourceCheckBaseParam(Entity);
         if (local_27)
         {
-            this.CollectPossibleInteractTargets(Entity, Transform.GetPosition(), local_34, local_21, local_52.InteractDistance, true, int(local_52.InteractTipDistance), local_52.SourceType, false, local_20.CandidateEntities);
+            this.CollectPossibleInteractTargets(Entity, Transform.GetPosition(), local_34, local_21, local_52.InteractDistance, true, local_52.InteractTipDistance, local_52.SourceType, false, local_20.CandidateEntities);
         }
         GetDefaulted local_68;
         local_20.bSecondaryInteracting = local_27 && local_68.opCall().GetbIsSecondaryInteractSource();
         if (local_20.bSecondaryInteracting)
         {
-            this.CollectPossibleSecondaryInteractTargets(Entity, Transform.GetPosition(), true, int(local_52.InteractDistance), true, local_52.InteractTipDistance, local_52.SourceType, true, local_20.CandidateEntities);
+            this.CollectPossibleSecondaryInteractTargets(Entity, Transform.GetPosition(), true, local_52.InteractDistance, true, local_52.InteractTipDistance, local_52.SourceType, true, local_20.CandidateEntities);
         }
         return;
     }
     UFUNCTION()
     void ClientJob_BuildInteractionCandidates(const FECSEntity &inout Entity, FC_InteractionCandidates &inout InteractionCandidates) const
     {
+        FInteractSourceCheckBaseParam local_8 = ::FInteractUtils::BuildInteractSourceCheckBaseParam(Entity);
+        this.BuildInteractionCandidates(InteractionCandidates.CandidateEntities, local_8, InteractionCandidates);
         this.SortInteractionCandidatePriorities(InteractionCandidates);
         return;
     }
     UFUNCTION()
     void ClientJob_TickInteraction(const FECSEntity &inout Entity, const FC_TransformHistory &inout TransformHistory) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        FC_InteractionCandidates local_6;
+        int local_70 = 0;
+        int local_89;
+        int local_94;
+        int local_95;
+        int local_116 = 0;
+        int local_133;
+        if (!(local_6))
+        {
+            Remove local_16;
+            Remove local_12;
+            local_12.opCall();
+            local_16.opCall();
+            Remove local_20;
+            local_20.opCall();
+            return;
+        }
+        FClientInteractSourceCheckParam local_44 = ::FInteractUtils::BuildClientInteractSourceCheckParam(Entity, TransformHistory);
+        int local_69 = -1;
+        int local_71 = -1;
+        int local_72 = -1;
+        float32 local_73 = -1.0f;
+        float32 local_75 = -1.0f;
+        float32 local_76 = -1.0f;
+        auto local_82 = local_6.PrioritySortedIndices.Iterator();
+        for (; local_82.CanProceed;)
+        {
+            local_70 = local_82.Proceed();
+            local_89 = local_70;
+            const FInteractionCandidateBehaviorInfo& local_92 = local_6.CandidateBehaviors[local_89];
+            float32 local_93 = -1.0f;
+            if (local_92.bBestF)
+            {
+                if (!(local_92.bIsSecondaryTarget))
+                {
+                    if (local_69 >= 0)
+                    {
+                        local_95 = local_6.CandidateBehaviors[local_69].Priority;
+                    }
+                    else
+                    {
+                        local_95 = -1;
+                    }
+                    if (int(local_92.Priority) >= local_95)
+                    {
+                        if (this.IsInteractionCandidateCameraValid(local_92, local_44, true, local_93) && (int(local_92.Priority) > local_95 || (local_93 > local_73)))
+                        {
+                            local_69 = local_89;
+                            local_73 = local_93;
+                        }
+                    }
+                }
+                else
+                {
+                    if (local_92.bIsSecondaryTarget)
+                    {
+                        if (local_72 >= 0)
+                        {
+                            local_94 = local_6.CandidateBehaviors[local_72].Priority;
+                        }
+                        else
+                        {
+                            local_94 = -1;
+                        }
+                        if (int(local_92.Priority) >= local_94)
+                        {
+                            if ((this.IsInteractionCandidateCameraValid(local_92, local_44, true, local_93) && (int(local_92.Priority) > local_94 || (local_93 > local_76))))
+                            {
+                                local_72 = local_89;
+                                local_76 = local_93;
+                            }
+                        }
+                    }
+                }
+            }
+            if (local_92.bBestZ)
+            {
+                if (local_71 >= 0)
+                {
+                    local_95 = local_6.CandidateBehaviors[local_71].Priority;
+                }
+                else
+                {
+                    local_95 = -1;
+                }
+                local_70 = int(local_92.Priority);
+                if (local_70 >= local_95)
+                {
+                    if (this.IsInteractionCandidateCameraValid(local_92, local_44, true, local_93) && (int(local_92.Priority) > local_95 || (local_93 > local_75)))
+                    {
+                        local_71 = local_89;
+                        local_75 = local_93;
+                    }
+                }
+            }
+        }
+        if (local_6.bSecondaryInteracting)
+        {
+        }
+        else
+        {
+        }
+        local_95 = local_70;
+        if (local_95 >= 0)
+        {
+            FC_BestInteractionTargetInfo local_104;
+            const FInteractionCandidateBehaviorInfo& local_92_2 = local_6.CandidateBehaviors[local_95];
+            local_104.TargetEntity = local_92_2.TargetEntity;
+            local_104.InteractTargetPointAndBehaviorIndex = local_92_2.PointAndBehaviorIndex;
+            local_104.bIsSecondaryTarget = local_92_2.bIsSecondaryTarget;
+            local_104.ShowFailConditionIndex = int(local_92_2.ShowFailConditionIndex);
+            local_104.bShowFailFromSource = local_92_2.bShowFailFromSource;
+        }
+        else
+        {
+            Remove local_12;
+            local_12.opCall();
+        }
+        if (local_71 >= 0)
+        {
+            FC_BestInteractionTargetInfoModeZ local_110;
+            const FInteractionCandidateBehaviorInfo& local_92_3 = local_6.CandidateBehaviors[local_71];
+            local_110.TargetEntity = local_92_3.TargetEntity;
+            local_110.InteractTargetPointAndBehaviorIndex = local_92_3.PointAndBehaviorIndex;
+            local_110.ShowFailConditionIndex = int(local_92_3.ShowFailConditionIndex);
+            local_110.bShowFailFromSource = local_92_3.bShowFailFromSource;
+        }
+        else
+        {
+            Remove local_16;
+            local_16.opCall();
+        }
+        local_116.Targets.Reset(0);
+        bool local_117 = false;
+        int local_118 = 0;
+        local_89 = -1;
+        bool local_120 = false;
+        auto local_126 = local_6.CandidateBehaviors.Iterator();
+        for (; local_126.CanProceed;)
+        {
+            const FInteractionCandidateBehaviorInfo& local_92_4 = local_126.Proceed();
+            if (!(local_92_4.bTip))
+            {
+                continue;
+            }
+            bool local_7 = !(local_92_4.bIsSecondaryTarget) != !(local_117) || (local_92_4.TargetEntity.GetIdValue() != local_118);
+            if (local_7 || (local_92_4.PointAndBehaviorIndex.GetPointIndex() != local_89))
+            {
+                local_117 = local_92_4.bIsSecondaryTarget;
+                local_118 = local_92_4.TargetEntity.GetIdValue();
+                local_70 = local_92_4.PointAndBehaviorIndex.GetPointIndex();
+                local_89 = local_70;
+                local_120 = false;
+            }
+            if (local_120)
+            {
+                continue;
+            }
+            if (local_92_4.bIsSecondaryTarget)
+            {
+            }
+            else
+            {
+            }
+            local_133 = local_70;
+            if (local_133 >= 0)
+            {
+                const FInteractionCandidateBehaviorInfo& local_136 = local_6.CandidateBehaviors[local_133];
+                local_7 = (local_136.TargetEntity == local_92_4.TargetEntity);
+                if (local_7 && (local_136.PointAndBehaviorIndex.GetPointIndex() == local_92_4.PointAndBehaviorIndex.GetPointIndex()))
+                {
+                    continue;
+                }
+            }
+            float32 local_93_2 = -1.0f;
+            if (!(this.IsInteractionCandidateCameraValid(local_92_4, local_44, false, local_93_2)))
+            {
+                continue;
+            }
+            FInteractTipTargetInfo local_144;
+            local_144.EntityId = local_92_4.TargetEntity.GetId();
+            local_144.InteractPointIndex = local_92_4.PointAndBehaviorIndex.GetPointIndex();
+            local_144.BehaviorIndex = local_92_4.PointAndBehaviorIndex.GetBehaviorIndex();
+            local_116.Targets.Add(local_144);
+            local_120 = true;
+        }
+        return;
     }
     UFUNCTION()
     void ClientJob_AutoInteractWithTargets(const FECSEntity &inout Entity, const FCS_FixedTime &inout FixedTime, const FC_Transform &inout Transform, const FC_TransformHistory &inout TransformHistory, const FC_AutoInteractSourceConfig &inout AutoInteractSourceConfig, const FC_InteractionInfoForESM &inout InteractionInfoForESM) const
@@ -638,7 +935,7 @@ class US_InteractionSystem : UECSScriptSystem
         }
         FClientInteractSourceCheckParam local_38 = ::FInteractUtils::BuildClientInteractSourceCheckParam(Entity, TransformHistory);
         TArray<FInteractionCandidateEntity> local_66;
-        this.CollectPossibleInteractTargets(Entity, Transform.GetPosition(), true, false, int(local_38.InteractDistance), false, 0.0f, local_38.SourceType, false, local_66);
+        this.CollectPossibleInteractTargets(Entity, Transform.GetPosition(), true, false, local_38.InteractDistance, false, 0.0f, local_38.SourceType, false, local_66);
         for (auto& local_86 : local_66)
         {
             this.GetAutoInteractTargetInfo(local_86, local_10.AutoInteractChannelType, EInteractMode(0), local_38, local_6);
@@ -652,7 +949,117 @@ class US_InteractionSystem : UECSScriptSystem
     }
     void CollectPossibleSecondaryInteractTargets(const FECSEntity &inout SourceEntity, const FVector &inout QueryLocation, const bool bCollectBestF, const float32 SourceInteractDistance, const bool bCollectInteractTipTarget, const float32 SourceInteractTipDistance, const EInteractSourceType SourceType, const bool bIsSecondaryTarget, TArray<FInteractionCandidateEntity> &inout OutCandidateEntities) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        FC_InteractionTargetConfig local_48;
+        bool local_49;
+        bool local_51;
+        int local_58 = 0;
+        bool local_63;
+        int local_72 = 0;
+        if (!(bCollectBestF) && !(bCollectInteractTipTarget))
+        {
+            return;
+        }
+        float32 local_5 = FMath::Max(SourceInteractDistance, this.MaxInteractDistance);
+        float32 local_4 = this.MaxInteractTipDistance;
+        float32 local_3 = FMath::Max(SourceInteractTipDistance, local_4);
+        if (bCollectBestF)
+        {
+        }
+        else
+        {
+        }
+        float32 local_7 = local_4;
+        if (bCollectBestF && bCollectInteractTipTarget)
+        {
+            local_7 = FMath::Max(local_5, local_3);
+        }
+        TArray<uint> local_12;
+        FSceneGridUtils::QueryCircle(ECS::GetECSWorld(), ESceneGridType(0), QueryLocation, local_7, local_12);
+        if (local_12.Num() == 0)
+        {
+            return;
+        }
+        float32 local_6 = FMath::Square(SourceInteractDistance);
+        float32 local_4_2 = FMath::Square(SourceInteractTipDistance);
+        Has local_42;
+        for (auto local_33 : local_12)
+        {
+            FECSEntity local_38 = FECSEntity(local_33);
+            if ((local_38 == SourceEntity) || !(local_38.IsActive()))
+            {
+                continue;
+            }
+            if (!(local_42.opCall()))
+            {
+                continue;
+            }
+            if (!(local_48))
+            {
+                continue;
+            }
+            bool local_2 = bCollectBestF && local_48.HasInteractPointWithMode(EInteractMode(0));
+            if (!(bCollectInteractTipTarget))
+            {
+                local_49 = false;
+            }
+            else
+            {
+                local_49 = local_48.bHasTip;
+            }
+            if (!(local_2) && !(local_49))
+            {
+                continue;
+            }
+            if (!(local_58))
+            {
+                continue;
+            }
+            float32 local_19 = float32(QueryLocation.DistSquared(local_58.GetPosition()));
+            local_51 = local_2 && (local_19 <= local_6 || (local_19 <= local_48.MaxInteractDistanceSQ));
+            local_63 = local_49 && (local_19 <= local_4_2 || (local_19 <= local_48.MaxInteractTipDistanceSQ));
+            if (!(local_51) && !(local_63))
+            {
+                continue;
+            }
+            bool local_64 = local_2 && local_51 && !(this.NeedExcludeInteractTargetEntity(SourceEntity, local_38, EInteractMode(0)));
+            if (!(local_64) && !(local_63))
+            {
+                continue;
+            }
+            if (!(local_72) || local_72.GetbRuntimeDisabled())
+            {
+                continue;
+            }
+            if (!((local_48.InteractionPoints.Num() <= 32)))
+            {
+                continue;
+            }
+            FInteractionCandidateEntity local_78;
+            local_78.Entity = local_38;
+            local_78.bBestF = local_64;
+            local_78.bTip = local_63;
+            local_78.bIsSecondaryTarget = bIsSecondaryTarget;
+            int local_79 = 0;
+            for (; local_79 < local_48.InteractionPoints.Num(); ++local_79)
+            {
+                if (!(local_72.IsRuntimePointEnabled(local_79)))
+                {
+                    continue;
+                }
+                const FInteractionPoint& local_82 = local_48.InteractionPoints[local_79];
+                int local_83 = int(local_82.AvailableSourceTypeMask) & int(SourceType);
+                if (local_83 == 0 || !(local_82.PointType.IsValid()))
+                {
+                    continue;
+                }
+                local_78.PointIndices.SetBit(local_79, true);
+            }
+            if (!(local_78.PointIndices.IsEmpty()))
+            {
+                OutCandidateEntities.Add(local_78);
+            }
+        }
+        return;
     }
     UFUNCTION()
     void Job_HandleSetEntityInteractTargetEnabled(const FCE_SetEntityInteractTargetEnabled &inout Event) const

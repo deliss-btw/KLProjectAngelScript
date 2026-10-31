@@ -1,4 +1,3 @@
-﻿
 namespace FVM_HeadsUpDisplayList
 {
     const int ModelId = 0;
@@ -70,7 +69,7 @@ struct FVM_HeadsUpDisplayList : FEUIViewModel
             }
             this.PendingHeadsUpDisplays.Add(TEUIModelRef<FVM_HeadsUpDisplay>(::FVM_HeadsUpDisplay::Create(this.GetContext().Manager, local_34)));
         }
-        __Lambda_UI_Private_ViewModel_HUD_HeadsUpDisplay_VM_HeadsUpDisplayList_54(FTransformUtils::GetLocation(this.GetContext().GetLocalPlayerPawn(), FFPTime(-1)));
+        FVector local_104 = FTransformUtils::GetLocation(this.GetContext().GetLocalPlayerPawn(), FFPTime(-1));
         this.CommitHeadsUpDisplaysIfChanged(this.PendingHeadsUpDisplays);
         return;
     }
@@ -138,7 +137,8 @@ struct __Lambda_UI_Private_ViewModel_HUD_HeadsUpDisplay_VM_HeadsUpDisplayList_54
     }
     __Lambda_UI_Private_ViewModel_HUD_HeadsUpDisplay_VM_HeadsUpDisplayList_54(const FVector &inout _InPlayerLocation)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.__PlayerLocation = _InPlayerLocation;
+        return;
     }
     FVector GetPlayerLocation() property
     {

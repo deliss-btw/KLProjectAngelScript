@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_CharacterVaultingConfig_NS
 {
     const TECSComponentDerivedPtr<FC_CharacterVaultingConfig> DerivedPtr = TECSComponentDerivedPtr<FC_CharacterVaultingConfig>();
@@ -17,7 +16,6 @@ struct FCharacterVaultProbePerHeightLevelConfig
     float32 ForwardCheckDistance = -1.0f;
     UPROPERTY()
     FFPTime KeepSteerTime = -1.0;
-
 
 }
 
@@ -77,10 +75,9 @@ struct FCharacterVaultProbeConfig : FDataObject
     UPROPERTY()
     TArray<int> LeapOffLevelSeparationHeights;
 
-
     const TArray<int> GetLevelSeparationHeights(const EVaultActionType VaultActionType) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const TArray<int> __r; return __r;
     }
     float32 GetMaxReachUpHeight() const property
@@ -111,7 +108,6 @@ struct FC_CharacterVaultingConfig : FECSComponent
     FDataObjectPtr VaultProbeOnWall;
     UPROPERTY()
     FDataObjectPtr VaultProbeInAir;
-
 
     void PostPrefabLoad(const FECSEntity &inout Entity)
     {
@@ -240,36 +236,36 @@ bool RemoveCharacterVaultingConfig(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCharacterVaultingConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CharacterVaultingConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CharacterVaultingConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCharacterVaultingConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CharacterVaultingConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CharacterVaultingConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCharacterVaultingConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CharacterVaultingConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CharacterVaultingConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCharacterVaultingConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CharacterVaultingConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CharacterVaultingConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCharacterVaultingConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CharacterVaultingConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CharacterVaultingConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCharacterVaultingConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CharacterVaultingConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CharacterVaultingConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCharacterVaultingConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CharacterVaultingConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CharacterVaultingConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCharacterVaultingConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CharacterVaultingConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CharacterVaultingConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_EquipmentSelectListItem
 {
     const int ModelId = 0;
@@ -56,8 +55,7 @@ struct FVM_EquipmentSelectListItem : FEUIViewModel
     void PostConstruct()
     {
         this.SetEquipment(::FMS_EquipmentDataCache::Get(this.GetContext().Manager).GetEquipment(this.GetEquipmentUid()));
-        TEUIModelRef<FM_Equipment> local_4 = this.GetEquipment();
-        this.SetEquipmentInfo(FEUIModelRef());
+        this.SetEquipmentInfo(FEUIModelRef(::FVM_EquipmentInfo::Create(this.GetContext().Manager, this.GetEquipment())));
         return;
     }
     void SelectEquipment()

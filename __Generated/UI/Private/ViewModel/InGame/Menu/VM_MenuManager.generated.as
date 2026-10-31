@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_MenuManager_Helpers
 {
 UFUNCTION()

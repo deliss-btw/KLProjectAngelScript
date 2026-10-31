@@ -1,5 +1,3 @@
-﻿
-
 class US_CommonBannerSystem : UECSScriptSystem
 {
     US_CommonBannerSystem()
@@ -9,7 +7,44 @@ class US_CommonBannerSystem : UECSScriptSystem
     UFUNCTION()
     void ClientJob_OnCommonPopupManagerChanged(const FCE_NotifyCommonPopupManagerChanged &inout Event, FCS_CommonBannerManager &inout Manager, const FCS_LocalPlayer &inout C_LocalPlayer) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        if (!(::CommonPopupUtils::HasMatchingPopupType(Event.AffectedPopupTypes, FGameplayTag::RequestGameplayTag(n"UI.Type.Commonpupop.Banner", true))))
+        {
+            return;
+        }
+        FEUIWidgetRef local_22;
+        for (auto local_18 : Event.RemovedPopupIds)
+        {
+            if (int(Manager.DisplayingBannerPopupId) == int(local_18))
+            {
+                FEUIWidget::RemoveWidget(Manager.DisplayingBanner);
+                Manager.DisplayingBanner = local_22;
+                continue;
+            }
+        }
+        for (auto local_23 : Event.NewDisplayingPopupIds)
+        {
+            FCommonBannerInfo local_80;
+            if (Manager.PendingBanners.RemoveAndCopyValue(local_23, local_80))
+            {
+                FVM_CommonBanner& local_86 = ::FVM_CommonBanner::Create(this.GetOwner(), local_80.Title, local_80.Tips, local_80.Icon, local_80.bEnd, local_80.BGType);
+                TSoftClassPtr<UEUIUserWidget> local_96 = ::CommonPopupSettings::Get().CommonBannerWidget;
+                TSoftClassPtr<UEUIUserWidget> local_108;
+                if (::CommonPopupSettings::Get().SpecialBannerWidget.Find(local_80.BannerType, local_108) && !(local_108.IsNull()))
+                {
+                    local_96 = local_108;
+                }
+                local_22 = FEUIWidget::AddWidgetByClass(C_LocalPlayer.UEPlayerController.GetLocalPlayer(), local_96, FEUIModelRef(local_86));
+                if (local_22)
+                {
+                    Manager.DisplayingBanner = local_22;
+                    Manager.DisplayingBannerLifetime = (local_80.Lifetime + ::CommonPopupSettings::Get().BannerOutAnimLifetime);
+                    Manager.DisplayingBannerPopupId = local_23;
+                }
+                local_86.SetTimeForAnimOut(local_80.Lifetime);
+                break;
+            }
+        }
+        return;
     }
     UFUNCTION()
     void ClientJob_TickDisplayingCommonBanner(FCS_CommonBannerManager &inout Manager, const FCS_LocalTime &inout C_LocalTime) const

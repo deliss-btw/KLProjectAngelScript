@@ -1,5 +1,3 @@
-﻿
-
 struct FSyncFloatValueVariant
 {
     FSubDirtyFlags8 __DirtyFlags;
@@ -14,15 +12,33 @@ struct FSyncFloatValueVariant
 
     FSyncFloatValueVariant()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_ValueMode = EValueVariantMode(0);
+        this.m_ConstValue = 0.0f;
+        return;
     }
     FSyncFloatValueVariant(const FSyncFloatValueVariant &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_ValueMode = EValueVariantMode(0);
+        this.m_ConstValue = 0.0f;
+        this.m_ValueMode = Other.m_ValueMode;
+        this.m_ConstValue = Other.m_ConstValue;
+        this.m_TwoTurnPointValueCurve = Other.m_TwoTurnPointValueCurve;
+        this.m_CustomValueCurve = Other.m_CustomValueCurve;
+        return;
     }
     FSyncFloatValueVariant(const float32 Value)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_ValueMode = EValueVariantMode(0);
+        this.m_ConstValue = 0.0f;
+        this.SetValueMode(EValueVariantMode(0));
+        this.SetConstValue(Value);
+        return;
     }
     FSyncFloatValueVariant opAssign(const FSyncFloatValueVariant &inout Other)
     {

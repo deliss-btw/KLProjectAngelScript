@@ -1,11 +1,8 @@
-﻿
-
 class UESMAnimInstance_DecoPhysics : UAnimInstance
 {
     UPROPERTY()
     float32 RBANAlpha = 0.0f;
     bool bClothCollisionInitialized = false;
-
 
     UFUNCTION()
     void BlueprintUpdateAnimation_Implementation(const float32 DeltaTime)

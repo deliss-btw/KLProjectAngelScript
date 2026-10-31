@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_PVP_SessionData_NS
 {
     const TECSComponentDerivedPtr<FCS_PVP_SessionData> DerivedPtr = TECSComponentDerivedPtr<FCS_PVP_SessionData>();
@@ -11,7 +10,6 @@ struct FPVP_PlayerSessionExtra
     bool m_bIsBot = false;
     UPROPERTY()
     bool m_bWantsBackToRoom = false;
-
 
     bool GetbIsBot() const property
     {
@@ -53,11 +51,34 @@ struct FCS_PVP_SessionData : FECSSingleton
 
     FCS_PVP_SessionData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_HostPlayerUID = 0;
+        this.m_MatchRoomID = 0;
+        this.m_bHostSayGO = false;
+        this.m_SelectedGameRuleType = EPVPGameRuleType(1);
+        this.m_NextBotUID = 100001;
+        this.__InitDirtyFlags();
+        return;
     }
     FCS_PVP_SessionData(const FCS_PVP_SessionData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_4;
+        this.__DirtyFlags = local_4;
+        this.m_HostPlayerUID = 0;
+        this.m_MatchRoomID = 0;
+        this.m_bHostSayGO = false;
+        this.m_SelectedGameRuleType = EPVPGameRuleType(1);
+        this.m_NextBotUID = 100001;
+        this.__InitDirtyFlags();
+        this.m_PlayerExtras = Other.m_PlayerExtras;
+        this.m_HostPlayerUID = int(Other.m_HostPlayerUID);
+        this.m_MatchRoomID = int(Other.m_MatchRoomID);
+        this.m_bHostSayGO = Other.m_bHostSayGO;
+        this.m_SelectedGameRuleType = Other.m_SelectedGameRuleType;
+        this.m_NextBotUID = int(Other.m_NextBotUID);
+        this.m_BotPlayerEntities = Other.m_BotPlayerEntities;
+        return;
     }
     FCS_PVP_SessionData opAssign(const FCS_PVP_SessionData &inout Other)
     {
@@ -396,17 +417,17 @@ bool RemovePVP_SessionData(const FECSWorldPtr &inout World)
 }
 void __MonitorPVP_SessionDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_PVP_SessionData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_PVP_SessionData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVP_SessionDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_PVP_SessionData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_PVP_SessionData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVP_SessionDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_PVP_SessionData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_PVP_SessionData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

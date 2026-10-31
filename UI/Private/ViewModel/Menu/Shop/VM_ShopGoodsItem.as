@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ShopGoodsItem
 {
     const int ModelId = 0;
@@ -145,7 +144,8 @@ struct FVM_ShopGoodsItem : FEUIViewModel
     }
     void SyncRemainingCount()
     {
-        int local_12 = 0;
+        int local_11;
+        int local_12;
         if (this.GetItemData())
         {
             this.GetItemData().opArrow().SetNum(this.GetShopGoods().opArrow().GetRemainingCount());
@@ -155,12 +155,14 @@ struct FVM_ShopGoodsItem : FEUIViewModel
             if (this.GetShopGoods().opArrow().HasPersonalLimit())
             {
                 local_12 = 0;
+                local_11 = local_12;
             }
             else
             {
                 local_12 = 1;
+                local_11 = local_12;
             }
-            this.GetItem().opArrow().SetNumStyle();
+            this.GetItem().opArrow().SetNumStyle(EItemViewModelNumStyle(local_11));
         }
         if (this.GetComposableItem())
         {
@@ -384,7 +386,6 @@ struct __GeneratedProperties_FVM_ShopGoodsItem
     bool CannotPurchase;
     UPROPERTY()
     TEUIModelRef<FVM_ShopGoodsItem> Self;
-
 
 }
 

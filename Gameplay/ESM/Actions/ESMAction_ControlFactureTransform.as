@@ -1,5 +1,3 @@
-﻿
-
 struct FESMControlTargetInstanceData
 {
     UPROPERTY()
@@ -19,7 +17,6 @@ class UESMAction_ControlFactureTransform : UESMBPBaseSpanTickAction
     bool ControlPosition = false;
     UPROPERTY()
     bool ControlRotation = true;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const
@@ -44,10 +41,10 @@ class UESMAction_ControlFactureTransform : UESMBPBaseSpanTickAction
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        bool local_1;
         int local_32 = 0;
         int local_62 = 0;
-        if (!(ECS::GetRuntimeInfo().IsServer))
+        bool local_1 = !(ECS::GetRuntimeInfo().IsServer);
+        if (local_1)
         {
             return;
         }
@@ -71,7 +68,8 @@ class UESMAction_ControlFactureTransform : UESMBPBaseSpanTickAction
         if (local_1)
         {
             Has local_24;
-            if (local_24.opCall())
+            bool local_19 = local_24.opCall();
+            if (local_19)
             {
                 return;
             }
@@ -88,15 +86,15 @@ class UESMAction_ControlFactureTransform : UESMBPBaseSpanTickAction
             {
                 local_56.SetManipulatorEntity(local_4);
                 local_62.SetManipulatedPropEntity(local_8);
-                local_62.SetFireResourceType(EProjectileFireResourceType(local_56.GetFireResourceType()));
-                if ((int(local_62.GetFireResourceType())) == 0)
+                local_62.SetFireResourceType(local_56.GetFireResourceType());
+                if (int(local_62.GetFireResourceType()) == 0)
                 {
                     local_62.SetEnergy(local_56.GetEnergy());
                     local_62.SetEnergyMax(local_56.GetEnergyMax());
                 }
                 else
                 {
-                    if ((int(local_62.GetFireResourceType())) == 1)
+                    if (int(local_62.GetFireResourceType()) == 1)
                     {
                         local_62.SetHeatValue(local_56.GetHeatValue());
                         local_62.SetHeatValueMax(local_56.GetHeatValueMax());

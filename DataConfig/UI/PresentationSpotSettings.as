@@ -1,4 +1,3 @@
-﻿
 enum EPresentationSpotUsage
 {
     Minimap,
@@ -8,7 +7,6 @@ enum EPresentationSpotUsage
     MarkViewportDisplay,
     WorldMap,
 }
-
 
 class UPresentationSpotSettings : UGameplaySettingsBase
 {

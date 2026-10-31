@@ -1,4 +1,3 @@
-﻿
 namespace FMS_ShippingCulture
 {
     const int ModelId = 0;

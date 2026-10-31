@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_DebugHermiteCurve = FConsoleVariable();
 
 class USolver_HermiteCurve : UAimPoseSegmentSolver
@@ -12,7 +11,6 @@ class USolver_HermiteCurve : UAimPoseSegmentSolver
     bool bNeckLengthCached = false;
     TArray<float> NeckLengthRatios;
     float32 HeadRefPoseRoll = 0.0f;
-
 
     void ResetToConfigDefaults()
     {

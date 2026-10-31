@@ -1,4 +1,3 @@
-﻿
 namespace FMS_BossTrackingAreaDisplay
 {
     const int ModelId = 0;
@@ -120,7 +119,7 @@ struct FMS_BossTrackingAreaDisplay : FEUIModelSingleton
         }
         if (!(local_17) != !(this.GetbCurrentlyVisible()))
         {
-            XWarning(ELog(51), FString().Append("[DIAG-BossTrack] DESYNC DETECTED! ECS.bVisible=").Append(local_17).Append(", UI.bCurrentlyVisible=").Append(this.GetbCurrentlyVisible()).Append(" вЂ” Monitor missed, forcing sync"));
+            XWarning(ELog(51), FString().Append("[DIAG-BossTrack] DESYNC DETECTED! ECS.bVisible=").Append(local_17).Append(", UI.bCurrentlyVisible=").Append(this.GetbCurrentlyVisible()).Append(" — Monitor missed, forcing sync"));
             this.DS_OnBossTrackingAreaChanged(local_14);
         }
         return;
@@ -137,7 +136,7 @@ struct FMS_BossTrackingAreaDisplay : FEUIModelSingleton
         UMinimapGlobalConfig local_12 = ::MinimapUtils::GetMinimapGlobalConfig();
         if (local_12 == nullptr || local_12.BossTrackingAreaIconWidget.IsNull())
         {
-            XWarning(ELog(51), "[DIAG-BossTrack] CreateIcon: FAILED вЂ” BossTrackingAreaIconWidget not configured in MinimapGlobalConfig");
+            XWarning(ELog(51), "[DIAG-BossTrack] CreateIcon: FAILED — BossTrackingAreaIconWidget not configured in MinimapGlobalConfig");
             return;
         }
         FMinimapIconInfo local_56;
@@ -306,7 +305,9 @@ void __DiagTick(FMS_BossTrackingAreaDisplay &inout Model)
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorBossTrackingAreaLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorBossTrackingAreaModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_IconHandle()
 {

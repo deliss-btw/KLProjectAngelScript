@@ -1,4 +1,3 @@
-﻿
 namespace FEcoWorldStateUtils
 {
     const FPlTerm None = FPlTerm();
@@ -6,32 +5,32 @@ namespace FEcoWorldStateUtils
 
 FEcoQueryContext Context(const FEcoFunctorDeclare &inout Declare, const FPlTerm &inout Arg1)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     FEcoQueryContext __r; return __r;
 }
 FEcoQueryContext Context(const FEcoFunctorDeclare &inout Declare, const FPlTerm &inout Arg1, const FPlTerm &inout Arg2)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     FEcoQueryContext __r; return __r;
 }
 FEcoQueryContext Context(const FEcoFunctorDeclare &inout Declare, const FPlTerm &inout Arg1, const FPlTerm &inout Arg2, const FPlTerm &inout Arg3)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     FEcoQueryContext __r; return __r;
 }
 FEcoQueryContext Context(const FEcoFunctorDeclare &inout Declare, const FPlTerm &inout Arg1, const FPlTerm &inout Arg2, const FPlTerm &inout Arg3, const FPlTerm &inout Arg4)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     FEcoQueryContext __r; return __r;
 }
 FEcoQueryContext Context(const FEcoFunctorDeclare &inout Declare, const FPlTerm &inout Arg1, const FPlTerm &inout Arg2, const FPlTerm &inout Arg3, const FPlTerm &inout Arg4, const FPlTerm &inout Arg5)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     FEcoQueryContext __r; return __r;
 }
 FEcoQueryContext Context(const FEcoFunctorDeclare &inout Declare, const FPlTerm &inout Arg1, const FPlTerm &inout Arg2, const FPlTerm &inout Arg3, const FPlTerm &inout Arg4, const FPlTerm &inout Arg5, const FPlTerm &inout Arg6, const FPlTerm &inout Arg7 = None, const FPlTerm &inout Arg8 = None)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     FEcoQueryContext __r; return __r;
 }
 }

@@ -1,9 +1,7 @@
-﻿
-
 struct FSocialViewPageOperatorContext
 {
     UPROPERTY()
-    ULocalPlayer LocalPlayer;
+    ULocalPlayer LocalPlayer = nullptr;
     UPROPERTY()
     FECSEntity LocalPlayerEntity;
     UPROPERTY()
@@ -16,7 +14,6 @@ struct FSocialViewPageOperatorContext
     bool bIsFriend;
     UPROPERTY()
     ESocialViewPageTargetTeamStatus TargetTeamStatus;
-
 
 }
 
@@ -60,7 +57,7 @@ namespace SocialViewPageOperatorUtils
 USocialViewPageOperator GetOperator(const ESocialViewPageOperatorType Type)
 {
     const USocialViewPageSettings local_2;
-    ESocialViewPageOperatorType local_12;
+    USocialViewPageOperator local_12;
     GetGameplaySettings<USocialViewPageSettings> local_4;
     local_2 = local_4;
     if (local_2 == nullptr)

@@ -1,5 +1,3 @@
-﻿
-
 class USPT_QiongqiLookAt_v2 : USPT_Qiongqi_FootIK_Base
 {
     UPROPERTY()

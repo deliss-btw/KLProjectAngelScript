@@ -1,5 +1,3 @@
-﻿
-
 struct FT_EcoCollectableSpawnerRuntime : FECSTrait
 {
     FECSTrait _base_FECSTrait;

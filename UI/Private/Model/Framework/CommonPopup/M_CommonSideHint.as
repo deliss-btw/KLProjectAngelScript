@@ -1,4 +1,3 @@
-﻿
 namespace FM_CommonSideHintManager
 {
     const int ModelId = 0;
@@ -35,15 +34,36 @@ struct FM_CommonSideHintManager : FEUIModel
 
     FM_CommonSideHintManager()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_DisplayInterval = 0.0f;
+        this.m_PrivateCurrentOccupyingSideHintId = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        XError(ELog(17), "Should not construct model'FM_CommonSideHintManager' by default constructor.");
+        return;
     }
     FM_CommonSideHintManager(const FM_CommonSideHintManager &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_DisplayInterval = 0.0f;
+        this.m_PrivateCurrentOccupyingSideHintId = INDEX_NONE;
+        this.m_DisplayInterval = Other.m_DisplayInterval;
+        this.m_PopupType = Other.m_PopupType;
+        this.m_PendingSideHintInfos = Other.m_PendingSideHintInfos;
+        this.m_IntervalCooldown = Other.m_IntervalCooldown;
+        this.m_PrivateCurrentOccupyingSideHintId = int(Other.m_PrivateCurrentOccupyingSideHintId);
+        return;
     }
     FM_CommonSideHintManager(const float32 InDisplayInterval)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_DisplayInterval = 0.0f;
+        this.m_PrivateCurrentOccupyingSideHintId = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        this.SetDisplayInterval(InDisplayInterval);
+        return;
     }
     FM_CommonSideHintManager opAssign(const FM_CommonSideHintManager &inout Other)
     {
@@ -57,7 +77,15 @@ struct FM_CommonSideHintManager : FEUIModel
     }
     void ShowSideHint(const FEUIDynamicWidgetData &inout SideHintInfo, const int Priority = 0)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_1 = ::CommonPopupUtils::TryEnqueuePopup(this.GetPopupType(), Priority);
+        if (local_1 == INDEX_NONE)
+        {
+            XLog(ELog(16), FString().Append("Show side hint failed rejected by popup manager"));
+            return;
+        }
+        XLog(ELog(16), FString().Append("Enqueued side hint: ").Append(local_1));
+        this.GetModify_PendingSideHintInfos().Add(local_1, SideHintInfo);
+        return;
     }
     void OnCommonPopupChanged(const FCE_NotifyCommonPopupManagerChanged &inout Event)
     {
@@ -91,7 +119,18 @@ struct FM_CommonSideHintManager : FEUIModel
     }
     void Tick()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (this.GetCurrentOccupyingSideHintId() == INDEX_NONE)
+        {
+            return;
+        }
+        FFPTime local_6 = (this.GetIntervalCooldown() - this.GetContext().DeltaTime);
+        this.SetIntervalCooldown(local_6);
+        if (FFPTime(this.GetIntervalCooldown()).opCmp(0.0) <= 0)
+        {
+            ::CommonPopupUtils::DequeuePopupInternal(this.GetCurrentOccupyingSideHintId());
+            this.SetCurrentOccupyingSideHintId(INDEX_NONE);
+        }
+        return;
     }
     int GetCurrentOccupyingSideHintId() const property
     {
@@ -99,7 +138,18 @@ struct FM_CommonSideHintManager : FEUIModel
     }
     void SetCurrentOccupyingSideHintId(const int InCurrentOccupyingSideHintId)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (this.GetPrivateCurrentOccupyingSideHintId() != INDEX_NONE)
+        {
+            int local_1 = this.GetPrivateCurrentOccupyingSideHintId();
+        }
+        this.SetPrivateCurrentOccupyingSideHintId(InCurrentOccupyingSideHintId);
+        if (this.GetPrivateCurrentOccupyingSideHintId() == INDEX_NONE)
+        {
+            this.SetIntervalCooldown(FFPTime(0));
+            return;
+        }
+        this.SetIntervalCooldown(FFPTime(this.GetDisplayInterval()));
+        return;
     }
     const float32 GetDisplayInterval() const property
     {

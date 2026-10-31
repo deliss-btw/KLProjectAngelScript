@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_SkillBtns
 {
     const int ViewID = 0;
@@ -22,7 +21,6 @@ class UWidget_SkillBtns : UEUIUserWidget
     FEUIActionBinding RightShoulderPressBinding;
     FEUIActionBinding RightShoulderReleaseBinding;
     FEUIModelWeakRef __SkillBts;
-
 
     UFUNCTION()
     void Construct_Implementation()
@@ -73,7 +71,7 @@ class UWidget_SkillBtns : UEUIUserWidget
     UFUNCTION()
     void OnGamepadRightShoulderPressChanged(const bool bGamepadRightShoulderPress)
     {
-        if ((this.Anim_RB_Pressed == nullptr || ((this.Anim_RB_Released == nullptr))))
+        if (this.Anim_RB_Pressed == nullptr || (this.Anim_RB_Released == nullptr))
         {
             return;
         }
@@ -185,6 +183,7 @@ namespace UWidget_SkillBtns
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SkillBtns;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnGamepadRightShoulderPressChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnPlayerPawnEntityChanged"));
     return;

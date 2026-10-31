@@ -1,5 +1,3 @@
-﻿
-
 class UMinimapIconDecorator_Ecosim : UMinimapIconDecoratorBase
 {
     UPROPERTY()

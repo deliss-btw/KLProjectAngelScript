@@ -1,5 +1,3 @@
-﻿
-
 class US_EcosimAIV2LevelSystem : UECSScriptSystem
 {
     US_EcosimAIV2LevelSystem()

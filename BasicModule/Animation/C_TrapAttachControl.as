@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_TrapAttachData_NS
 {
     const TECSComponentDerivedPtr<FC_TrapAttachData> DerivedPtr = TECSComponentDerivedPtr<FC_TrapAttachData>();
@@ -38,7 +37,6 @@ struct FC_TrapAttachData : FECSComponent
     UPROPERTY()
     bool IsOpen = false;
 
-
 }
 
 class UESMAction_TrapAttachUpdate : UESMBPBaseSpanTickAction
@@ -51,7 +49,6 @@ class UESMAction_TrapAttachUpdate : UESMBPBaseSpanTickAction
     float32 InterpSpeed = 1000.0f;
 
     default TrapOffsetTable = Cast<UDataTable>(LoadObject(nullptr, "/Script/Engine.DataTable'/Game/MoleRes/Dev/Data/Combat/Ability/Prop/DT_TrapAttachOffset.DT_TrapAttachOffset'"));
-
 
     UFUNCTION()
     EESMActionType GetActionType_Implementation() const
@@ -391,36 +388,36 @@ bool RemoveTrapAttachData(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTrapAttachDataOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TrapAttachData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TrapAttachData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTrapAttachDataOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TrapAttachData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TrapAttachData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTrapAttachDataOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TrapAttachData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TrapAttachData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTrapAttachDataOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TrapAttachData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TrapAttachData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTrapAttachDataOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TrapAttachData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TrapAttachData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTrapAttachDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TrapAttachData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TrapAttachData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTrapAttachDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TrapAttachData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TrapAttachData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTrapAttachDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TrapAttachData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TrapAttachData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

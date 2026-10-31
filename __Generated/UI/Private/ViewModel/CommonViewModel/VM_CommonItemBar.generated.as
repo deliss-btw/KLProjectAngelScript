@@ -1,12 +1,9 @@
-﻿
-
 struct FConfigVM_CommonItemBar : FConfigEUIModelBase
 {
     UPROPERTY()
     bool bEnableClickLock = false;
     UPROPERTY()
     TDataObjectPtr<FItemConfig> ItemConfig;
-
 
 }
 

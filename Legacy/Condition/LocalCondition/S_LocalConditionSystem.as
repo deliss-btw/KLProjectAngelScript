@@ -1,5 +1,3 @@
-﻿
-
 class US_LocalConditionSystem : UECSScriptSystem
 {
     US_LocalConditionSystem()
@@ -187,8 +185,8 @@ class US_LocalConditionSystem : UECSScriptSystem
     }
     bool IsReachStateChanged(const int ValueA, const int ValueB, const TDataObjectPtr<FLocalConditionConfig> &inout ConditionConfig) const
     {
-        ECondCmpType local_1 = ConditionConfig.opArrow().CompareType;
-        bool local_4 = ((!(::ConditionUtils_Internal::IsValueReached(ValueA, ConditionConfig.opArrow().TargetValue))) != !(::ConditionUtils_Internal::IsValueReached(ValueB, ConditionConfig.opArrow().TargetValue)));
+        int local_1 = ConditionConfig.opArrow().CompareType;
+        bool local_4 = ((!(::ConditionUtils_Internal::IsValueReached(ValueA, ConditionConfig.opArrow().TargetValue, ECondCmpType(local_1)))) != !(::ConditionUtils_Internal::IsValueReached(ValueB, ConditionConfig.opArrow().TargetValue, ECondCmpType(local_1))));
         return local_4;
     }
     UFUNCTION()

@@ -1,5 +1,3 @@
-﻿
-
 class UMessageHintHandler_SmallHint : UMessageHintHandler
 {
     UMessageHintHandler_SmallHint()

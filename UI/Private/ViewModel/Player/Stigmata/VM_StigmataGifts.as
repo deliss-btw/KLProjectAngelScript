@@ -1,4 +1,3 @@
-﻿
 namespace FVM_StigmataGifts
 {
     const int ModelId = 0;
@@ -199,7 +198,28 @@ struct FVM_StigmataGifts : FEUIViewModel
     }
     void RefreshHintTexts()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_2 = INDEX_NONE;
+        int local_1 = local_2;
+        for (auto& local_18 : this.GetGiftItems())
+        {
+            local_18;
+            if (!(GetIsUnlocked()))
+            {
+                int local_19 = GetConfig().opArrow().RoleLevel;
+                local_1 = local_19;
+                break;
+            }
+        }
+        int local_2_2 = INDEX_NONE;
+        if (local_1 == local_2_2)
+        {
+            this.SetNextBreakthroughName(FText());
+            this.SetNextBreakthroughLevel(FText());
+            return;
+        }
+        this.SetNextBreakthroughName(FText::Format(NSLOCTEXT("NextBtName", "{0}级解锁下一个内在能力"), local_1));
+        this.SetNextBreakthroughLevel(NSLOCTEXT("NextBtLevel", "达到等级自动生效"));
+        return;
     }
     void RefreshUnlockPercent()
     {
@@ -220,7 +240,7 @@ struct FVM_StigmataGifts : FEUIViewModel
             local_4 = local_7 / local_2;
             local_3 = FMath::FloorToInt(local_4 * 100.0f);
         }
-        this.SetUnlockPercentText(FText::Format(NSLOCTEXT("UnlockPercentFmt", "зїјз—•е®Њж•ґеє¦пјљ{0}%"), local_3));
+        this.SetUnlockPercentText(FText::Format(NSLOCTEXT("UnlockPercentFmt", "翼痕完整度：{0}%"), local_3));
         this.SetUnlockPercent((FMath::TruncToFloat(local_4 * 100.0f)) / 100.0f);
         return;
     }

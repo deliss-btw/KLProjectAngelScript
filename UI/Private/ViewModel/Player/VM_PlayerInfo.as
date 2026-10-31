@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PlayerInfo
 {
     const int ModelId = 0;
@@ -108,16 +107,16 @@ struct FVM_PlayerInfo : FEUIViewModel
         {
             if (this.GetPlayer().opArrow().IsInSameMapWithLocalPlayer())
             {
-                return NSLOCTEXT("PlayerStatusText_OnlineInSameWorld", "ењЁзєї");
+                return NSLOCTEXT("PlayerStatusText_OnlineInSameWorld", "在线");
             }
             else
             {
-                return NSLOCTEXT("PlayerStatusText_OnlineInDifferentWorld", "дёЌењЁеђЊдёЂењ°е›ѕ");
+                return NSLOCTEXT("PlayerStatusText_OnlineInDifferentWorld", "不在同一地图");
             }
         }
         else
         {
-            return NSLOCTEXT("PlayerStatusText_Offline", "з¦»зєї");
+            return NSLOCTEXT("PlayerStatusText_Offline", "离线");
         }
     }
     uint GetPlayerUid() const
@@ -134,7 +133,7 @@ struct FVM_PlayerInfo : FEUIViewModel
     {
         FPlatformApplicationMisc::ClipboardCopy(FString().Append(this.GetPlayerUid()));
         FCommonTipsParam local_14;
-        ::CommonPopup::WeakTips(NSLOCTEXT("CopyToClipboard", "е¤Ќе€¶ж€ђеЉџ"), local_14);
+        ::CommonPopup::WeakTips(NSLOCTEXT("CopyToClipboard", "复制成功"), local_14);
         return;
     }
     TEUIModelRef<FM_Player> GetPlayer() const property
@@ -186,7 +185,6 @@ struct __GeneratedProperties_FVM_PlayerInfo
     FText PlayerUidText;
     UPROPERTY()
     TEUIModelRef<FVM_PlayerInfo> Self;
-
 
 }
 

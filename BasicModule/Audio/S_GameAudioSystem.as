@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_AudioSyncEnable = FConsoleVariable();
 const FConsoleVariable CVar_AudioTimeOfDayEnable = FConsoleVariable();
 
@@ -185,7 +184,20 @@ class US_GameAudioSystem : UECSScriptSystem
     UFUNCTION()
     void Job_HandleWeatherChanged(const FCE_ClientPlayerWeatherChanged &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Has local_4;
+        if (!(local_4.opCall()))
+        {
+            return;
+        }
+        if (Event.PrevWeatherConfig.IsSet())
+        {
+            ::FAsGameAudioUtils::PlayAudioWhenWeatherExit(Event.Sender, Event.PrevWeatherConfig.GetDataName(), this.WeatherAudioTable);
+        }
+        if (Event.NewWeatherConfig.IsSet())
+        {
+            ::FAsGameAudioUtils::PlayAudioWhenWeatherEnter(Event.Sender, Event.NewWeatherConfig.GetDataName(), this.WeatherAudioTable);
+        }
+        return;
     }
     UFUNCTION()
     void Job_UpdateCombatBGM(const FECSEntity &inout PlayerEntity, FC_PlayerBGMInfo &inout PlayerBGMInfo) const
@@ -1084,7 +1096,7 @@ class US_GameAudioSystem : UECSScriptSystem
     {
         int local_24 = 0;
         ECS::GetContextJob();
-        if (ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_TimeOfDay, EECSRegType(0), false, true).bIsMonitored)
+        if (int(ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_TimeOfDay, EECSRegType(0), false, true).bIsMonitored) != 0)
         {
             this.Monitor_ClientTimeOfDayAssign(local_24);
         }

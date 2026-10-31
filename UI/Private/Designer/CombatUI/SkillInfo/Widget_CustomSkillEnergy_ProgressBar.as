@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CustomSkillEnergy_ProgressBar
 {
     const int ViewID = 0;
@@ -27,7 +26,6 @@ class UWidget_CustomSkillEnergy_ProgressBar : UEUIUserWidget
     UPROPERTY()
     FLinearColor ProgressNoFullColor = FLinearColor(0.69f, 0.24f, 1.0f, 1.0f);
     FEUIModelWeakRef __SkillInfo;
-
 
     UFUNCTION()
     void Construct_Implementation()
@@ -196,6 +194,7 @@ namespace UWidget_CustomSkillEnergy_ProgressBar
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CustomSkillEnergy_ProgressBar;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCustomSkillEnergyRatioChanged"));
     return;
 }

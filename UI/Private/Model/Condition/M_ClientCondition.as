@@ -1,4 +1,3 @@
-﻿
 namespace FMS_ClientCondition
 {
     const int ModelId = 0;
@@ -15,14 +14,12 @@ struct FMsg_ClientConditionChanged : FEUIMessage
     UPROPERTY()
     bool bTeamStateChanged = false;
 
-
 }
 
 struct FMsg_LoadingStateChanged : FEUIMessage
 {
     UPROPERTY()
     bool bIsLoading = false;
-
 
 }
 
@@ -32,7 +29,6 @@ struct FMsg_SubPagePresence : FEUIMessage
     FGameplayTag WidgetTag;
     UPROPERTY()
     bool bPresented = false;
-
 
 }
 

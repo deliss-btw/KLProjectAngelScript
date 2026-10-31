@@ -1,5 +1,3 @@
-﻿
-
 struct FItemActionConfigPtr
 {
     UPROPERTY()
@@ -15,7 +13,11 @@ struct FItemActionConfigPtr
     }
     UItemActionConfigBase Get() const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        TSubclassOf<UItemActionConfigBase> local_2;
+        if (this.GetItemConfig() && ::ItemActionUtils::FindItemActionConfig(this.GetItemConfig(), EItemActionType(this.GetActionType()), local_2))
+        {
+            return local_2.GetDefaultObject();
+        }
         return nullptr;
     }
     bool IsValid() const
@@ -55,7 +57,8 @@ struct FItemActionConfigPtr
     }
     void SetItemConfig(const TDataObjectPtr<FItemConfig> &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_ItemConfig = __Value;
+        return;
     }
     EItemActionType GetActionType() const property
     {

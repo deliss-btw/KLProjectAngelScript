@@ -1,4 +1,3 @@
-﻿
 namespace PresentationDataUtils
 {
     const FInstancedStruct EmptyPresentationData = FInstancedStruct();
@@ -6,12 +5,11 @@ namespace PresentationDataUtils
 const FInstancedStruct& GetPresentationData(const FM_Spot &inout Spot, const EPresentationDataType DataType, const FSpotViewAdapter &inout View = FSpotViewAdapter())
 {
     FSpotViewAdapter local_8;
-    return (local_8.GetSpotView(Spot.GetManager()).GetPresentationData(Spot, local_8));
+    return (local_8.GetSpotView(Spot.GetManager()).GetPresentationData(Spot, EPresentationDataType(DataType)));
 }
 void AddPresentationData(FM_Spot &inout Spot, const EPresentationDataType DataType, const FInstancedStruct &inout Data, const TEUIModelRef<FM_SpotRegistry> &inout Registry = FEUIModelRef())
 {
-    TEUIModelRef<FM_Spot> local_4 = TEUIModelRef<FM_Spot>(Spot);
-    UEUIManagerSubsystem local_2 = Spot.GetManager();
+    PresentationSpotUtils::GetDefaulted(Spot.GetManager(), Registry).SetPresentationData(TEUIModelRef<FM_Spot>(Spot), EPresentationDataType(DataType), Data);
     return;
 }
 void RemovePresentationData(FM_Spot &inout Spot, const EPresentationDataType DataType, const TEUIModelRef<FM_SpotRegistry> &inout Registry = FEUIModelRef())
@@ -19,11 +17,11 @@ void RemovePresentationData(FM_Spot &inout Spot, const EPresentationDataType Dat
     if (Registry)
     {
         TEUIModelRef<FM_Spot> local_4 = TEUIModelRef<FM_Spot>(Spot);
-        Registry.opArrow().RemovePresentationData(local_4);
+        Registry.opArrow().RemovePresentationData(local_4, EPresentationDataType(DataType));
         return;
     }
     TEUIModelRef<FM_Spot> local_4_2 = TEUIModelRef<FM_Spot>(Spot);
-    PresentationSpotUtils::GetDefaultRegistry(Spot.GetManager()).RemovePresentationData(local_4_2);
+    PresentationSpotUtils::GetDefaultRegistry(Spot.GetManager()).RemovePresentationData(local_4_2, EPresentationDataType(DataType));
     return;
 }
 void SetupSpotPresentationRuleConfigs(FM_Spot &inout InSpot, const TDataObjectPtr<FPresentationRuleConfig> &inout Config, const TEUIModelRef<FM_SpotRegistry> &inout Registry = FEUIModelRef())

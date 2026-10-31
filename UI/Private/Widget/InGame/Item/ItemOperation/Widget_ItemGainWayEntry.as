@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ItemGainWayEntry
 {
     const int ViewID = 0;
@@ -46,6 +45,7 @@ namespace UWidget_ItemGainWayEntry
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ItemGainWayEntry;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

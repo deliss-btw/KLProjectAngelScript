@@ -1,5 +1,3 @@
-﻿
-
 class UMessageHintHandler_ImportantTips : UMessageHintHandler
 {
     UMessageHintHandler_ImportantTips()

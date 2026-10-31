@@ -1,5 +1,3 @@
-﻿
-
 class US_CompVisibilitySystem : UECSScriptSystem
 {
     US_CompVisibilitySystem()

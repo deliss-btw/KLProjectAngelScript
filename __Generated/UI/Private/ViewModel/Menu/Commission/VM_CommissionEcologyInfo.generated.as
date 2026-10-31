@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommissionEcologyInfo_Helpers
 {
 UFUNCTION()

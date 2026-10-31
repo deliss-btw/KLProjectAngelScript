@@ -1,5 +1,3 @@
-﻿
-
 struct FDelaySpawnFlockTask
 {
     UPROPERTY()
@@ -11,7 +9,6 @@ struct FDelaySpawnFlockTask
     UPROPERTY()
     float32 UsedCost;
 
-
     void opCall()
     {
         int local_4 = 0;
@@ -22,7 +19,7 @@ struct FDelaySpawnFlockTask
         {
             return;
         }
-        ::FEcologySpawnerUtils::SpawnFlockEntityByFlockSpawner(local_4, this, local_10, this.SpawnerInfoIndex, this.RandomGenerator, int(this.UsedCost));
+        ::FEcologySpawnerUtils::SpawnFlockEntityByFlockSpawner(local_4, this.SpawnerEntity, local_10, this.SpawnerInfoIndex, this.RandomGenerator, this.UsedCost);
         return;
     }
 }
@@ -38,7 +35,8 @@ struct __Lambda_Gameplay_Ecology_Utils_EcologySpawnerUtils_480
     }
     __Lambda_Gameplay_Ecology_Utils_EcologySpawnerUtils_480(const FECSEntity &inout _InFlockEntity)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.__FlockEntity = _InFlockEntity;
+        return;
     }
     FECSEntity GetFlockEntity() property
     {
@@ -63,7 +61,8 @@ struct __Lambda_Gameplay_Ecology_Utils_EcologySpawnerUtils_768
     }
     __Lambda_Gameplay_Ecology_Utils_EcologySpawnerUtils_768(const FECSEntity &inout _InNewCreatureEntity)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.__NewCreatureEntity = _InNewCreatureEntity;
+        return;
     }
     FECSEntity GetNewCreatureEntity() property
     {
@@ -103,13 +102,13 @@ void SpawnEcologyTeamEntityBySpawner(const FCS_FixedTime &inout FixedTime, const
 }
 float32 GetFlockInfoBatchRatio(FCS_EcologyScriptGlobalContext &inout GlobalContext, const FECSEntity &inout SpawnerEntity, FC_EcologyRuntimeClassicFlockSpawner &inout SpawnerComponent, const int SpawnerInfoIndex)
 {
-    TDataObjectPtr<FSpawnerCountRatioDefinitionRow> local_128;
     float32 local_155;
     float32 local_156 = 0.0f;
-    int local_8 = FEcologySceneInfoUtils::GetCurrentTimeSegments(GlobalContext);
+    FFlockSpawnerData& local_2 = SpawnerComponent.SpawnerData[SpawnerInfoIndex];
+    FName local_4 = FEcologySceneInfoUtils::GetWeatherByVolume(SpawnerComponent.WeatherSource);
     TDataObjectPtr<FEcologyResourceDefinitionRow> local_104 = TDataObjectPtr<FEcologyResourceDefinitionRow>(nullptr);
-    TDataObjectPtr<FCreatureDefinitionRow> local_56 = TDataObjectPtr<FCreatureDefinitionRow>(SpawnerComponent.SpawnerData[SpawnerInfoIndex].CreatureType.GetCreatureType().opImplConv());
-    if (local_128)
+    TDataObjectPtr<FCreatureDefinitionRow> local_56 = TDataObjectPtr<FCreatureDefinitionRow>(local_2.CreatureType.GetCreatureType().opImplConv());
+    if (FEcologySceneInfoUtils::FindSpawnRatioData(local_56, local_104, local_4, FEcologySceneInfoUtils::GetCurrentTimeSegments(GlobalContext)))
     {
         local_155 = local_156;
     }
@@ -133,7 +132,7 @@ void DelaySpawnFlockEntityByFlockSpawner(const FCS_FixedTime &inout FixedTime, c
 }
 void SpawnFlockEntityByFlockSpawner(const FCS_FixedTime &inout FixedTime, const FECSEntity &inout SpawnerEntity, FC_EcologyRuntimeClassicFlockSpawner &inout Spawner, const int SpawnerInfoIndex, const FRandomGenerator &inout InRandomGenerator, const float32 UsedCost = 0.0f)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    // body not fully recovered — stub [argmismatch:argtype]
 }
 int InternalSpawnFlockWithResource(FC_EcologyRuntimeClassicFlockSpawner &inout Spawner, FFlockSpawnerData &inout FlockInfo, const FRuntimeSpawnerReference &inout SpawnDataRef, TArray<FResourceSummaryForFlockSpawner> &inout SpwanableResource, FRandomGenerator &inout RandomGenerator, const int MatchBatches)
 {
@@ -500,8 +499,7 @@ void InitEcologyAIKnowledge(const FECSEntity &inout CreatureEntity, const FECSEn
     local_528.ForceMoveStanceEmergency = local_536.ForceMoveStanceEmergency;
     local_528.RunMoveStanceDistanceWithEmergency = local_536.RunMoveStanceDistanceWithEmergency;
     local_528.ForceMuteCombatInChangeArea = local_536.ForceMuteCombatInChangeArea;
-    ECS::GetContextTime();
-    FString local_574 = FString();
+    FAIInputUtils::ChangeMoveStance(ECharacterMoveStance(2), CreatureEntity, ECS::GetContextTime(), ECharacterMoveStanceLayer(1));
     return;
 }
 FC_CreatureMeta& SetupCreatureMeta(const FECSEntity &inout NewCreatureEntity, const FEcologyCreatureSpawnerContext &inout Context)
@@ -665,7 +663,7 @@ void RefreshFlockChildCount(const FECSEntity &inout FlockEntity, const FC_Ecolog
         int local_83_2 = local_8;
         for (; local_83_2 < local_7; )
         {
-            FEcologySpawnerUtils::SpawnCreatureEntityByFlockEntity(FlockEntity, local_6, ChildManager, ChildManager.CreatureDefinition.GetCreaturePrefab());
+            FEcologySpawnerUtils::SpawnCreatureEntityByFlockEntity(FlockEntity, local_6, ChildManager, ChildManager.CreatureDefinition.GetCreaturePrefab(), local_83_2);
             ++local_83_2;
         }
     }

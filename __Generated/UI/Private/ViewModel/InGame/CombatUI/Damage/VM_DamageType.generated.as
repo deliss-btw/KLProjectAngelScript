@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_DamageType_Helpers
 {
 UFUNCTION()

@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_EntityBBVarLifeTime : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ class UESMAction_EntityBBVarLifeTime : UESMBPBaseSpanAction
     bool bClearOnEnter = true;
     UPROPERTY()
     bool bClearOnExit = true;
-
 
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
@@ -46,23 +43,23 @@ class UESMAction_EntityBBVarLifeTime : UESMBPBaseSpanAction
         FString local_4;
         if ((this.bClearOnEnter && this.bClearOnExit))
         {
-            local_4 = "жё…й™¤ EBB <ењЁејЂе§‹/з»“жќџ> пјљ";
+            local_4 = "清除 EBB <在开始/结束> ：";
         }
         else
         {
             if (this.bClearOnEnter)
             {
-                local_4 = " жё…й™¤ EBB <ењЁејЂе§‹>пјљ";
+                local_4 = " 清除 EBB <在开始>：";
             }
             else
             {
                 if (this.bClearOnExit)
                 {
-                    local_4 = " жё…й™¤ EBB <ењЁз»“жќџ>пјљ";
+                    local_4 = " 清除 EBB <在结束>：";
                 }
                 else
                 {
-                    local_4 = " жё…й™¤ EBB <жњЄз”џж•€>пјљ";
+                    local_4 = " 清除 EBB <未生效>：";
                 }
             }
         }

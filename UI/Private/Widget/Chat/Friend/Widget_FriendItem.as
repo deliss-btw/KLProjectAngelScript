@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_FriendItem
 {
     const int ViewID = 0;
@@ -148,6 +147,7 @@ namespace UWidget_FriendItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_FriendItem;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleActionState"));
     return;
 }

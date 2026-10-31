@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FMissionAction_OpenPage (default scalar field FMissionActionBase.ActionType has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FMissionAction_OpenPage : FMissionActionBase
 {
     FMissionActionBase _base_FMissionActionBase;
@@ -52,7 +47,7 @@ struct FMissionAction_OpenShop : FMissionActionBase
             if (!(::UScriptAsToCppModelFunctionRouter::Get().OnIsShopUnlocked.Execute(this.ShopConfig)))
             {
                 FCommonTipsParam local_22;
-                ::CommonPopup::WeakTips(NSLOCTEXT("Shop", "ShopNotUnlocked", "е•†еє—жњЄи§Јй”Ѓ"), local_22);
+                ::CommonPopup::WeakTips(NSLOCTEXT("Shop", "ShopNotUnlocked", "商店未解锁"), local_22);
             }
             else
             {

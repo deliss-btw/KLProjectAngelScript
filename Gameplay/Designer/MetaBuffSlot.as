@@ -1,4 +1,3 @@
-﻿
 enum EMetaBuffSlot
 {
     None,

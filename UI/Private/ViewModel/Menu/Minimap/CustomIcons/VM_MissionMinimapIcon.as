@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MissionMinimapIcon
 {
     const int ModelId = 0;
@@ -202,7 +201,6 @@ struct __GeneratedProperties_FVM_MissionMinimapIcon
     bool HasAnyReward;
     UPROPERTY()
     TEUIModelRef<FVM_MissionMinimapIcon> Self;
-
 
 }
 

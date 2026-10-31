@@ -1,5 +1,3 @@
-﻿
-
 class US_TimeOfDaySystem : UECSScriptSystem
 {
     US_TimeOfDaySystem()
@@ -9,6 +7,7 @@ class US_TimeOfDaySystem : UECSScriptSystem
     void InitTimeOfDay() const
     {
         int local_8 = 0;
+        int local_17;
         float32 local_27 = 0.0f;
         bool local_41 = false;
         FECSWorldPtr local_2 = this.GetECSWorld();
@@ -42,7 +41,16 @@ class US_TimeOfDaySystem : UECSScriptSystem
             {
                 if (local_40.CommissionConfig)
                 {
-                    if ((local_20 < 0.0f && (local_27 > 0.0f)))
+                    if (local_20 >= 0.0f)
+                    {
+                        local_17 = 0;
+                    }
+                    else
+                    {
+                        local_41 = (local_27 > 0.0f);
+                        local_17 = local_41;
+                    }
+                    if (local_17 != 0)
                     {
                         local_20 = local_27;
                         XLog(ELog(22), FString().Append("CommissionDayTime override Day Time: ").Append(local_20));

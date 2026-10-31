@@ -1,5 +1,3 @@
-﻿
-
 class USPT_ArcheryAim : USkeletalPoseTweaker
 {
     UPROPERTY()
@@ -150,7 +148,6 @@ class USPT_UpperBodyFaceAtBase : USkeletalPoseTweaker
     float MaxSpineRotRad = 1.5707963705062866;
     UPROPERTY()
     bool bWantDebugDraw = false;
-
 
     UFUNCTION()
     void OnInitialization_Implementation()

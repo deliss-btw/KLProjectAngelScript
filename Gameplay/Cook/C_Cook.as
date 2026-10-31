@@ -1,4 +1,3 @@
-﻿
 enum ECookState
 {
     Idle,
@@ -85,7 +84,6 @@ struct FC_CookConfig : FECSComponent
     UPROPERTY()
     FVector CookStartFXLOcationOffset = FVector::ZeroVector;
 
-
 }
 
 struct FCookPlayerCostItem
@@ -111,7 +109,8 @@ struct FCookPlayerCostItem
     }
     void SetCookCostItem(const TDataObjectPtr<FItemConfig> &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_CookCostItem = __Value;
+        return;
     }
     const FFPTime GetPushTime() const property
     {
@@ -144,11 +143,23 @@ struct FCookPlayerData
 
     FCookPlayerData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bPlayerReady = false;
+        this.m_bCancelMetaBuff = false;
+        return;
     }
     FCookPlayerData(const FCookPlayerData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bPlayerReady = false;
+        this.m_bCancelMetaBuff = false;
+        this.m_PlayerEntity = Other.m_PlayerEntity;
+        this.m_bPlayerReady = Other.m_bPlayerReady;
+        this.m_CookCostItems = Other.m_CookCostItems;
+        this.m_bCancelMetaBuff = Other.m_bCancelMetaBuff;
+        return;
     }
     FCookPlayerData opAssign(const FCookPlayerData &inout Other)
     {
@@ -241,12 +252,16 @@ struct FC_CookPropAutoReady : FECSComponent
 
     FC_CookPropAutoReady()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_AutoReadyTime = -1;
         this.__InitDirtyFlags();
         return;
     }
     FC_CookPropAutoReady(const FC_CookPropAutoReady &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_AutoReadyTime = -1;
         this.__InitDirtyFlags();
         this.m_AutoReadyTime = Other.m_AutoReadyTime;
@@ -315,11 +330,35 @@ struct FC_CookProp : FECSComponent
 
     FC_CookProp()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_CookState = ECookState(0);
+        FRootDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_PendingConfirmCount = 0;
+        this.m_ConfirmedSuccessCount = 0;
+        this.m_ConfirmedFailCount = 0;
+        this.m_CurrentSessionId = 0;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_CookProp(const FC_CookProp &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_CookState = ECookState(0);
+        FRootDirtyFlags16 local_28;
+        this.__DirtyFlags = local_28;
+        this.m_PendingConfirmCount = 0;
+        this.m_ConfirmedSuccessCount = 0;
+        this.m_ConfirmedFailCount = 0;
+        this.m_CurrentSessionId = 0;
+        this.__InitDirtyFlags();
+        this.m_CookState = Other.m_CookState;
+        this.m_CookPlayerDatas = Other.m_CookPlayerDatas;
+        this.m_PendingConfirmCount = int(Other.m_PendingConfirmCount);
+        this.m_ConfirmedSuccessCount = int(Other.m_ConfirmedSuccessCount);
+        this.m_ConfirmedFailCount = int(Other.m_ConfirmedFailCount);
+        this.m_PendingProductFood = Other.m_PendingProductFood;
+        this.m_PendingModifiers = Other.m_PendingModifiers;
+        this.m_CurrentSessionId = int(Other.m_CurrentSessionId);
+        return;
     }
     FC_CookProp opAssign(const FC_CookProp &inout Other)
     {
@@ -586,7 +625,6 @@ struct FCE_PushCostFood : FECSEvent
     UPROPERTY()
     int ClientItemNum = 0;
 
-
 }
 
 struct FCE_PopCostFood : FECSEvent
@@ -697,7 +735,6 @@ struct FCE_CookFinisehd : FECSEvent
     UPROPERTY()
     FECSEntity CookPropEntity;
 
-
 }
 
 struct FCE_CookEventForPresentation : FECSEvent
@@ -705,7 +742,6 @@ struct FCE_CookEventForPresentation : FECSEvent
     FECSEvent _base_FECSEvent;
     UPROPERTY()
     bool bStart = false;
-
 
 }
 
@@ -789,37 +825,37 @@ bool RemoveCookConfig(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCookConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CookConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CookConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCookConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CookConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CookConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCookConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CookConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CookConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCookConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CookConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CookConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCookConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CookConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CookConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCookConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CookConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CookConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCookConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CookConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CookConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCookConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CookConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CookConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_CookPropAutoReady
@@ -899,37 +935,37 @@ bool RemoveCookPropAutoReady(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCookPropAutoReadyOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CookPropAutoReady, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CookPropAutoReady, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCookPropAutoReadyOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CookPropAutoReady, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CookPropAutoReady, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCookPropAutoReadyOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CookPropAutoReady, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CookPropAutoReady, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCookPropAutoReadyOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CookPropAutoReady, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CookPropAutoReady, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCookPropAutoReadyOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CookPropAutoReady, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CookPropAutoReady, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCookPropAutoReadyLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CookPropAutoReady, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CookPropAutoReady, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCookPropAutoReadyActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CookPropAutoReady, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CookPropAutoReady, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCookPropAutoReadyModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CookPropAutoReady, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CookPropAutoReady, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_CookPropForPresentation
@@ -1012,37 +1048,37 @@ bool RemoveCookPropForPresentation(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCookPropForPresentationOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CookPropForPresentation, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CookPropForPresentation, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCookPropForPresentationOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CookPropForPresentation, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CookPropForPresentation, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCookPropForPresentationOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CookPropForPresentation, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CookPropForPresentation, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCookPropForPresentationOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CookPropForPresentation, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CookPropForPresentation, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCookPropForPresentationOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CookPropForPresentation, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CookPropForPresentation, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCookPropForPresentationLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CookPropForPresentation, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CookPropForPresentation, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCookPropForPresentationActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CookPropForPresentation, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CookPropForPresentation, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCookPropForPresentationModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CookPropForPresentation, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CookPropForPresentation, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_CookProp
@@ -1122,37 +1158,37 @@ bool RemoveCookProp(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCookPropOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CookProp, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CookProp, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCookPropOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CookProp, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CookProp, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCookPropOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CookProp, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CookProp, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCookPropOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CookProp, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CookProp, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCookPropOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CookProp, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CookProp, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCookPropLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CookProp, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CookProp, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCookPropActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CookProp, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CookProp, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCookPropModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CookProp, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CookProp, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

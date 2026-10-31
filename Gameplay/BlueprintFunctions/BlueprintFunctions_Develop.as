@@ -1,4 +1,3 @@
-﻿
 namespace BlueprintFunctions_Develop
 {
 UFUNCTION()

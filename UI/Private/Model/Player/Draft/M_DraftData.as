@@ -1,4 +1,3 @@
-﻿
 namespace FMS_DraftData
 {
     const int ModelId = 0;
@@ -193,13 +192,13 @@ struct FMS_DraftData : FEUIModelSingleton
             {
                 if (local_26.GetReply() == 3)
                 {
-                    ::CommonPopup::Tips(NSLOCTEXT("DraftInviteReply_InCommission", "жњ‰зЋ©е®¶е·ІењЁе§”ж‰дё­пјЊж— жі•еЉ е…ҐеЊ№й…Ќ"), local_50);
+                    ::CommonPopup::Tips(NSLOCTEXT("DraftInviteReply_InCommission", "有玩家已在委托中，无法加入匹配"), local_50);
                 }
                 else
                 {
                     if (local_26.GetReply() == 4)
                     {
-                        ::CommonPopup::Tips(NSLOCTEXT("DraftInviteReply_CommissionNotActive", "жњ‰зЋ©е®¶е§”ж‰жњЄжїЂжґ»пјЊж— жі•еЉ е…ҐеЊ№й…Ќ"), local_50);
+                        ::CommonPopup::Tips(NSLOCTEXT("DraftInviteReply_CommissionNotActive", "有玩家委托未激活，无法加入匹配"), local_50);
                     }
                     else
                     {
@@ -245,7 +244,7 @@ struct FMS_DraftData : FEUIModelSingleton
         if (!(local_16.HandleDraftInviteFail(this.GetContext(), TEUIModelRef<FM_Draft>(local_34))))
         {
             FCommonTipsParam local_72;
-            ::CommonPopup::Tips(NSLOCTEXT("DraftInviteFail_Default", "еЊ№й…Ќе¤±иґҐ"), local_72);
+            ::CommonPopup::Tips(NSLOCTEXT("DraftInviteFail_Default", "匹配失败"), local_72);
         }
         return;
     }

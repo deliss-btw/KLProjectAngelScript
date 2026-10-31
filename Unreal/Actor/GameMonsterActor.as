@@ -1,5 +1,3 @@
-﻿
-
 class AGameMonsterActor : AGameCharacterActor
 {
     AGameMonsterActor()

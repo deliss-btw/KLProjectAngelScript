@@ -1,4 +1,3 @@
-﻿
 namespace FMS_SettingMain
 {
     const int ModelId = 0;
@@ -80,7 +79,24 @@ FMS_SettingMain GetByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    FEUIModelRefPropertyDirtyIndexer local_10 = FEUIModelRefPropertyDirtyIndexer(1);
+    local_10.AddRefPropertyDirty(0, 0, FVMS_SettingPage::__IndexOf_SelectedCategoryIndex());
+    local_10.ApplySort();
+    FEUIModelRefPropertyDirty local_18;
+    local_18.PropertyName = FName("Settings");
+    int local_2_2 = FVMS_SettingPage::ModelId;
+    int local_2_3 = local_10.GetMappingDirtyOffset(0);
+    local_18.RelatedDirtyMask.SetBit(FVMS_SettingPage::__IndexOf_SelectedCategoryIndex(), true);
+    Result.ListeningModelRefDirties.Add(local_18);
+    FEUIModelDirtyDefine local_28;
+    local_28.FunctionName = "__OnSelectedCategoryIndexChanged";
+    local_28.DirtyFlags.Set(FMS_SettingMain::__IndexOf_Settings());
+    local_28.DirtyFlags.Set(local_10.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_28);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

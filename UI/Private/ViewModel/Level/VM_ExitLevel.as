@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_ExitLevel
 {
     const int ModelId = 0;
@@ -203,8 +202,8 @@ struct FVMS_ExitLevel : FEUIViewModelSingleton
         FText local_72 = FText();
         FText local_76 = FText();
         FDialogCallback local_58 = FDialogCallback(local_26);
-        FText local_62 = NSLOCTEXT("ExitLevel_DialogMessage", "зЎ®е®љи¦Ѓз¦»ејЂе…іеЌЎеђ—пјџ");
-        FText local_66 = NSLOCTEXT("ExitLevel_DialogTitle", "з¦»ејЂе…іеЌЎ");
+        FText local_62 = NSLOCTEXT("ExitLevel_DialogMessage", "确定要离开关卡吗？");
+        FText local_66 = NSLOCTEXT("ExitLevel_DialogTitle", "离开关卡");
         FCommonDialogParam local_68;
         ::CommonPopup::Dialog_Decision(local_66, local_62, local_58, local_76, local_72, local_68);
         return;
@@ -320,7 +319,6 @@ struct __GeneratedProperties_FVMS_ExitLevel
     bool ShouldDisplay;
     UPROPERTY()
     TEUIModelRef<FVMS_ExitLevel> Self;
-
 
 }
 

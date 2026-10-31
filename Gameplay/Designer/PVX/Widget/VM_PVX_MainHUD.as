@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_PVX_MainHUD
 {
     const int ModelId = 0;
@@ -24,7 +23,6 @@ struct FPVX_PlayerKDAEntry
     FSoftBrush AvatarIcon;
     UPROPERTY()
     bool bIsLocalPlayer = false;
-
 
 }
 
@@ -389,7 +387,7 @@ struct FVMS_PVX_MainHUD : FEUIViewModelSingleton
             FString local_132;
             if (local_60.GetPlayerName().IsEmpty())
             {
-                local_132 = "зЋ©е®¶";
+                local_132 = "玩家";
             }
             else
             {
@@ -485,7 +483,7 @@ struct FVMS_PVX_MainHUD : FEUIViewModelSingleton
                     this.SetTargetPanelSwitcherIndex(0);
                 }
                 const FFPTime& local_22 = ScoreData.GetMissionEndTime();
-                if ((local_22.ToSeconds()) > (0.0))
+                if (local_22.ToSeconds() > 0.0)
                 {
                     this.SetMissionEndTime_Record(local_22);
                     this.UpdateCountDownUI();
@@ -493,8 +491,7 @@ struct FVMS_PVX_MainHUD : FEUIViewModelSingleton
                 local_28 = ScoreData.GetPlayerInfoMap()[local_10];
                 this.SetLevel(local_28.GetLevel());
                 this.SetExp(local_28.GetExp());
-                EFaction local_17 = local_16.GetFaction();
-                int local_18 = ::PVXUtil::GetLevelRequiredExp((this.GetLevel() + 1));
+                int local_18 = ::PVXUtil::GetLevelRequiredExp((this.GetLevel() + 1), local_16.GetFaction());
                 if (local_18 != -1)
                 {
                     FNumberFormattingOptions local_35;
@@ -504,8 +501,7 @@ struct FVMS_PVX_MainHUD : FEUIViewModelSingleton
                 {
                     this.SetNextLevelExpStr(NSLOCTEXT("PVX", "MaxLevel", "MAX"));
                 }
-                EFaction local_17_2 = local_16.GetFaction();
-                local_29 = ::PVXUtil::GetLevelRequiredExp(this.GetLevel());
+                local_29 = ::PVXUtil::GetLevelRequiredExp(this.GetLevel(), local_16.GetFaction());
                 this.UpdateExpBarTarget(local_29, local_18);
                 if (this.GetoldExp() != this.GetExp())
                 {
@@ -541,14 +537,14 @@ struct FVMS_PVX_MainHUD : FEUIViewModelSingleton
                         FString local_80 = FString(local_28.GetPlayerName());
                         if (local_80.IsEmpty())
                         {
-                            local_80 = "зЋ©е®¶";
+                            local_80 = "玩家";
                         }
                         local_58.Add(local_80);
                     }
                 }
                 if (local_58.Num() > 0)
                 {
-                    this.SetCachedWinnerFactionText(FText::Format(NSLOCTEXT("PVX", "Winner", "иѓње€©иЂ…пјљ\n{0} !!!"), FText::FromString(FString::Join(local_58, "\n"))));
+                    this.SetCachedWinnerFactionText(FText::Format(NSLOCTEXT("PVX", "Winner", "胜利者：\n{0} !!!"), FText::FromString(FString::Join(local_58, "\n"))));
                     if (this.GetbWinnerAnnounceAllowed())
                     {
                         this.SetWinnerFactionText(this.GetCachedWinnerFactionText());
@@ -579,9 +575,10 @@ struct FVMS_PVX_MainHUD : FEUIViewModelSingleton
         FECSEntity local_54 = FECSEntity(this.GetContext().GetLocalPlayer());
         if (local_30.Contains(local_54))
         {
-            this.SetTargetPanelSwitcherIndex((int(::FGameModeDataBridge::GetPVXPlayerFaction(local_8, local_54)) == 6 ? 1 : 0));
+            int local_56 = int(::FGameModeDataBridge::GetPVXPlayerFaction(local_8, local_54));
+            this.SetTargetPanelSwitcherIndex((local_56 == 6 ? 1 : 0));
             FFPTime local_64 = ::FGameModeDataBridge::GetPVXMissionEndTime(local_8);
-            if ((local_64.ToSeconds()) > (0.0))
+            if (local_64.ToSeconds() > 0.0)
             {
                 this.SetMissionEndTime_Record(local_64);
                 this.UpdateCountDownUI();
@@ -589,7 +586,7 @@ struct FVMS_PVX_MainHUD : FEUIViewModelSingleton
             FPVX_PlayerData& local_70 = local_30[local_54];
             this.SetLevel(local_70.GetLevel());
             this.SetExp(local_70.GetExp());
-            int local_57 = ::PVXGameModeUtils::GetLevelRequiredExp(this.GetLevel() + 1);
+            int local_57 = ::PVXGameModeUtils::GetLevelRequiredExp(this.GetLevel() + 1, EFaction(local_56));
             if (local_57 != -1)
             {
                 FNumberFormattingOptions local_77;
@@ -599,7 +596,7 @@ struct FVMS_PVX_MainHUD : FEUIViewModelSingleton
             {
                 this.SetNextLevelExpStr(NSLOCTEXT("PVX", "MaxLevel", "MAX"));
             }
-            int local_71 = ::PVXGameModeUtils::GetLevelRequiredExp(this.GetLevel());
+            int local_71 = ::PVXGameModeUtils::GetLevelRequiredExp(this.GetLevel(), EFaction(local_56));
             this.UpdateExpBarTarget(local_71, local_57);
             int local_83 = this.GetExp();
             if (this.GetoldExp() != local_83)
@@ -644,7 +641,7 @@ struct FVMS_PVX_MainHUD : FEUIViewModelSingleton
                     FString local_122 = local_126;
                     if (local_122.IsEmpty())
                     {
-                        local_122 = "зЋ©е®¶";
+                        local_122 = "玩家";
                     }
                     local_100.Add(local_122);
                 }
@@ -693,7 +690,57 @@ struct FVMS_PVX_MainHUD : FEUIViewModelSingleton
     }
     void UpdateEscapePanelVisibility()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        bool local_36;
+        if (!(this.GetAvatarEscapeTag().IsValid()) || (this.GetEscapeSkillList().Num() == 0))
+        {
+            this.SetbEscapePanelVisible(false);
+            return;
+        }
+        bool local_1 = !(this.GetContext().GetLocalPlayer().IsValid());
+        if (local_1)
+        {
+            local_1 = true;
+        }
+        else
+        {
+            FECSEntity local_8 = this.GetContext().GetLocalPlayer();
+            Has local_12;
+            local_1 = !(local_12.opCall());
+        }
+        if (local_1)
+        {
+            this.SetbEscapePanelVisible(false);
+            return;
+        }
+        FECSEntity local_8_2 = this.GetContext().GetLocalPlayer();
+        Get local_20;
+        FECSEntity local_16 = local_20.opCall().GetPlayerPawnEntity();
+        if (!(local_16.IsValid()) || !(local_16.MatchGameplayTag(this.GetAvatarEscapeTag())))
+        {
+            this.SetbEscapePanelVisible(false);
+            return;
+        }
+        for (auto local_34 : this.GetEscapeSkillList())
+        {
+            if (local_34 == nullptr)
+            {
+                continue;
+            }
+            int local_2 = FSkillUtils::GetSkillIndex(local_16, local_34);
+            if (local_2 == INDEX_NONE)
+            {
+                continue;
+            }
+            local_36 = false;
+            const FC_SkillInstance& local_38 = FSkillUtils::GetSkillInstance(local_16, local_2, local_36);
+            if (local_36 && (local_38.GetCDRemainTime(ECS::GetContextTime()).opCmp(0.0) <= 0))
+            {
+                this.SetbEscapePanelVisible(true);
+                return;
+            }
+        }
+        this.SetbEscapePanelVisible(false);
+        return;
     }
     void UpdateEscapeEnergyFull()
     {
@@ -1607,7 +1654,13 @@ void __Tick(FVMS_PVX_MainHUD &inout Model)
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorPVX_ScoreDataLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPVX_ScoreDataModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorGameMode_ScoreDataLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorGameMode_ScoreDataModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPVX_ProgressDataLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPVX_ProgressDataModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __UIGetter_Level(const FVMS_PVX_MainHUD &inout Model)
 {

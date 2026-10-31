@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ItemFeature_RedDot
 {
     const int ViewID = 0;
@@ -46,6 +45,7 @@ namespace UWidget_ItemFeature_RedDot
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ItemFeature_RedDot;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

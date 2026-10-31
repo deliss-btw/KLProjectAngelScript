@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_PresentationTopAnimatedCameraTag_NS
 {
     const TECSComponentDerivedPtr<FC_PresentationTopAnimatedCameraTag> DerivedPtr = TECSComponentDerivedPtr<FC_PresentationTopAnimatedCameraTag>();
@@ -19,7 +18,6 @@ struct FAnimatedCameraData : FCameraRuntimeDataBasic
 
     FAnimatedCameraData()
     {
-        super();
         return;
     }
 }
@@ -41,7 +39,6 @@ struct FAnimatedCameraPresentationData : FAnimatedCameraData
     bool bRuntimeOriginInited = false;
     UPROPERTY()
     FFPTime StartTime;
-
 
 }
 
@@ -67,7 +64,6 @@ struct FAnimatedCameraParamsInput
     bool bEnableCollisionCorrection = true;
     UPROPERTY()
     float32 CollisionCorrectionStrength = 1.0f;
-
 
 }
 
@@ -96,7 +92,6 @@ struct FAnimatedCameraParams : FCameraParamsBasic
     bool bEnableCollisionCorrection = true;
     UPROPERTY()
     float32 CollisionCorrectionStrength = 1.0f;
-
 
     void CopyFromParamsInput(const FAnimatedCameraParamsInput &inout ParamsInput)
     {
@@ -141,11 +136,19 @@ struct FAnimatedCameraPresentation
     void SetBlendPhaseByConfig(const ECameraBlendPhase Phase, const FFPTime &inout WorldTime)
     {
         const FAnimCameraData& local_4;
-        if (!(this.CameraConfig))
+        float32 local_8;
+        if (!(this.Params.CameraConfig))
         {
             return;
         }
-        int local_8 = local_4.FadeInDuration >= 0.0f ? int(local_4.FadeInDuration) : 1056964608;
+        if (local_4.FadeInDuration >= 0.0f)
+        {
+            local_8 = local_4.FadeInDuration;
+        }
+        else
+        {
+            local_8 = 0.5f;
+        }
         this.SetBlendPhaseByParams(ECameraBlendPhase(Phase), WorldTime, local_4.FadeInType, local_8);
         return;
     }
@@ -182,7 +185,6 @@ struct FCE_PushAnimatedCamera : FECSEvent
     UPROPERTY()
     FName CameraName;
 
-
 }
 
 struct FCE_PushAnimatedCameraLocal : FECSEvent
@@ -194,7 +196,6 @@ struct FCE_PushAnimatedCameraLocal : FECSEvent
     EPresentationCameraLayer Layer;
     UPROPERTY()
     FName CameraName;
-
 
 }
 
@@ -286,36 +287,36 @@ bool RemovePresentationTopAnimatedCameraTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPresentationTopAnimatedCameraTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PresentationTopAnimatedCameraTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PresentationTopAnimatedCameraTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPresentationTopAnimatedCameraTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PresentationTopAnimatedCameraTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PresentationTopAnimatedCameraTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPresentationTopAnimatedCameraTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PresentationTopAnimatedCameraTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PresentationTopAnimatedCameraTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPresentationTopAnimatedCameraTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PresentationTopAnimatedCameraTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PresentationTopAnimatedCameraTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPresentationTopAnimatedCameraTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PresentationTopAnimatedCameraTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PresentationTopAnimatedCameraTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPresentationTopAnimatedCameraTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PresentationTopAnimatedCameraTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PresentationTopAnimatedCameraTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPresentationTopAnimatedCameraTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PresentationTopAnimatedCameraTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PresentationTopAnimatedCameraTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPresentationTopAnimatedCameraTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PresentationTopAnimatedCameraTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PresentationTopAnimatedCameraTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

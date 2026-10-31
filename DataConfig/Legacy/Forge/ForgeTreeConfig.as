@@ -1,5 +1,3 @@
-﻿
-
 struct FForgeTreeData
 {
     UPROPERTY()
@@ -36,7 +34,6 @@ struct FForgeTreeConfig : FDataObject
     TArray<FForgeTreeData> BranchArray2;
     UPROPERTY()
     TArray<FForgeTreeData> BranchArray3;
-
 
     const TArray<TDataObjectPtr<FConditionConfig>> GetShowCondition() const property
     {

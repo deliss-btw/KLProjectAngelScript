@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_MonsterWeaknessInfo
 {
     const int ViewID = 0;
@@ -145,6 +144,7 @@ namespace UWidget_MonsterWeaknessInfo
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MonsterWeaknessInfo;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -160,6 +160,7 @@ namespace UWidget_MonsterWeaknessInfoTips
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MonsterWeaknessInfoTips;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

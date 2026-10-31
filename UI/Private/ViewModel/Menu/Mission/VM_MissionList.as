@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MissionList
 {
     const int ModelId = 0;
@@ -275,7 +274,7 @@ struct FVM_MissionList : FEUIViewModel
         TEUIModelRef<FVM_MissionListEntry> local_6;
         for (auto& local_20 : this.GetAllMissionEntries())
         {
-            local_3 = this.NeedShowMissionForTab(GetMissionType());
+            local_3 = this.NeedShowMissionForTab(GetMissionType(), EMissionTabType(TabType));
             if (local_3)
             {
                 if (local_20.opArrow().IsMissionEntry() && local_20.opArrow().GetChapterConfig().IsSet())
@@ -516,14 +515,13 @@ struct FVM_MissionList : FEUIViewModel
         for (; local_5 < this.GetAllMissionEntries().Num(); ++local_5)
         {
             local_9 = GetMissionType();
-            if ((local_5 == 0 || (int(local_9) != local_3)))
+            if (local_5 == 0 || (int(local_9) != local_3))
             {
                 local_3 = local_9;
-                bool local_11 = true;
-                local_11.SetbShowCategory();
+                true.SetbShowCategory();
                 continue;
             }
-            false.SetbShowCategory();
+            0.SetbShowCategory();
         }
         return;
     }
@@ -759,7 +757,6 @@ struct __GeneratedProperties_FVM_MissionList
     bool HasSelectedMission;
     UPROPERTY()
     TEUIModelRef<FVM_MissionList> Self;
-
 
 }
 

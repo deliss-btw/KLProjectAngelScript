@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ChatChannelPanel_Helpers
 {
 UFUNCTION()

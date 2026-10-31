@@ -1,5 +1,3 @@
-﻿
-
 namespace FLLMUtils
 {
 struct FPromptData
@@ -25,17 +23,17 @@ void MergeLLMCallArgs(TMap<FString, FString> &inout ArgBaseKeyValue, const TMap<
 UFUNCTION()
 void RequestChatForGPT(const FECSEntity &inout PawnEntity, const FString &inout LLMContent)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
 }
 UFUNCTION()
 void RequestQuestForGPTWithEntity(const FECSEntity &inout PawnEntity, const FString &inout LLMContent, const TMap<FString, FString> &inout ArgAdditionalKeyValue, const UObject Object, const FName &inout CallBackName)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
 }
 UFUNCTION()
 void RequestQuestForGPTWithCallContext(const FString &inout CallContext, const FString &inout LLMContent, const TMap<FString, FString> &inout ArgAdditionalKeyValue, const UObject Object, const FName &inout CallBackName)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
 }
 UFUNCTION()
 bool EntitySpeak(const FECSEntity &inout PawnEntity, const FString &inout Content)

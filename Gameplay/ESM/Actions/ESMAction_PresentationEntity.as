@@ -1,4 +1,3 @@
-﻿
 enum ESpawnPresentationEntityPosType
 {
     Socket,
@@ -13,7 +12,6 @@ enum ESpawnPresentationEntityRotType
     EntityRotation,
     WorldSpace,
 }
-
 
 struct FSpawnPresentationEntityActionInstanceData
 {
@@ -42,7 +40,6 @@ class UESMAction_SpawnPresentationEntity : UESMBPBaseSpanTickAction
     ESpawnPresentationEntityRotType SpawnRotationType;
     UPROPERTY()
     FRotator3f RotationOffset;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const
@@ -99,8 +96,7 @@ class UESMAction_SpawnPresentationEntity : UESMBPBaseSpanTickAction
             }
             local_4_2 = FFPTime((Time.ActionDuration.ToSeconds() / Time.PlaySpeed));
         }
-        local_22.GetRotation().Rotator();
-        TSubclassOf<AECSPrefab> local_34 = this.EntityPrefab.Get();
+        FECSEntity local_40 = ECS::RequestEntityByPrefabDeferred(this.EntityPrefab.Get(), local_22.GetPosition(), local_22.GetRotation().Rotator(), EPrefabCollisionAlignment(2), EECSRegType(0), false);
         local_46.SetSpawnTime(Time.WorldTime);
         if (local_4_2.opCmp(0.0) > 0)
         {
@@ -114,9 +110,7 @@ class UESMAction_SpawnPresentationEntity : UESMBPBaseSpanTickAction
         local_72.SetRotationOffset(this.RotationOffset);
         if (this.bControlEntityLifeTimeByAction)
         {
-            FSpawnPresentationEntityActionInstanceData& local_76 = this.ModifyInstanceData(Context);
-            FECSEntity local_40;
-            local_76.PresentationEntity = local_40.GetId();
+            this.ModifyInstanceData(Context).PresentationEntity = local_40.GetId();
         }
         return;
     }

@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_BreathSFX_EnableDebug = FConsoleVariable();
 
 namespace BreathSFXUtils
@@ -21,26 +20,26 @@ void EnableBreathSFX(const FECSEntity &inout Entity, const int Index, const bool
     {
         local_8.EnableSFX(Index);
         int local_12 = local_8.GetEnableCounterValue(Index);
-        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("EnableBreathSFX: еЏ еЉ жЁЎејЏ - еђЇз”Ёи®Ўж•°е™Ёд»Ћ ").Append(local_11).Append(" еўћеЉ е€° ").Append(local_12));
+        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("EnableBreathSFX: 叠加模式 - 启用计数器从 ").Append(local_11).Append(" 增加到 ").Append(local_12));
     }
     else
     {
         local_8.EnableSFXToOne(Index);
         int local_12_2 = local_8.GetEnableCounterValue(Index);
-        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("EnableBreathSFX: еЌ•ж¬ЎжЁЎејЏ - еђЇз”Ёи®Ўж•°е™Ёд»Ћ ").Append(local_11).Append(" и®ѕзЅ®дёє ").Append(local_12_2));
+        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("EnableBreathSFX: 单次模式 - 启用计数器从 ").Append(local_11).Append(" 设置为 ").Append(local_12_2));
     }
     FString local_16 = BreathSFXUtils::GetConfigDebugInfo(Entity, Index, true);
     FString local_22;
     if (bAllowStacking)
     {
-        local_22 = " [еЏ еЉ ]";
+        local_22 = " [叠加]";
     }
     else
     {
-        local_22 = " [еЌ•ж¬Ў]";
+        local_22 = " [单次]";
     }
-    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("еђЇз”Ёе‘јеђёйџіж•€: Entity ").Append(Entity.ToString()).Append(", SFXзґўеј• ").Append(Index).Append(local_22).Append(local_16));
-    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), local_22.Append("и®Ўж•°е™ЁзЉ¶жЂЃ: еђЇз”Ё=").Append(local_8.GetEnableCounterValue(Index)).Append(" (д№‹е‰Ќ=").Append(local_11).Append("), з¦Ѓз”Ё=").Append(local_8.GetDisableCounterValue(Index)).Append(" (д№‹е‰Ќ=").Append(local_10).Append(")"));
+    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("启用呼吸音效: Entity ").Append(Entity.ToString()).Append(", SFX索引 ").Append(Index).Append(local_22).Append(local_16));
+    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), local_22.Append("计数器状态: 启用=").Append(local_8.GetEnableCounterValue(Index)).Append(" (之前=").Append(local_11).Append("), 禁用=").Append(local_8.GetDisableCounterValue(Index)).Append(" (之前=").Append(local_10).Append(")"));
     return;
 }
 UFUNCTION()
@@ -55,7 +54,7 @@ void EnableBreathSFXByName(const FECSEntity &inout Entity, const FName &inout Co
     int local_16 = BreathSFXUtils::FindAudioComponentIndex(local_14, ComponentName);
     if (local_16 == -1)
     {
-        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("EnableBreathSFXByName: жњЄж‰ѕе€°йџійў‘з»„д»¶ ").Append(ComponentName).Append(", Entity: ").Append(Entity.ToString()));
+        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("EnableBreathSFXByName: 未找到音频组件 ").Append(ComponentName).Append(", Entity: ").Append(Entity.ToString()));
         return;
     }
     BreathSFXUtils::EnableBreathSFX(Entity, local_16, bAllowStacking);
@@ -79,26 +78,26 @@ void DisableBreathSFX(const FECSEntity &inout Entity, const int Index, const boo
     {
         local_8.DisableSFX(Index);
         int local_12 = local_8.GetDisableCounterValue(Index);
-        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("DisableBreathSFX: еЏ еЉ жЁЎејЏ - з¦Ѓз”Ёи®Ўж•°е™Ёд»Ћ ").Append(local_10).Append(" еўћеЉ е€° ").Append(local_12));
+        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("DisableBreathSFX: 叠加模式 - 禁用计数器从 ").Append(local_10).Append(" 增加到 ").Append(local_12));
     }
     else
     {
         local_8.DisableSFXToOne(Index);
         int local_12_2 = local_8.GetEnableCounterValue(Index);
-        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("DisableBreathSFX: еЌ•ж¬ЎжЁЎејЏ - еђЇз”Ёи®Ўж•°е™Ёд»Ћ ").Append(local_11).Append(" жё…й›¶дёє ").Append(local_12_2));
+        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("DisableBreathSFX: 单次模式 - 启用计数器从 ").Append(local_11).Append(" 清零为 ").Append(local_12_2));
     }
     FString local_16 = BreathSFXUtils::GetConfigDebugInfo(Entity, Index, false);
     FString local_22;
     if (bAllowStacking)
     {
-        local_22 = " [еЏ еЉ ]";
+        local_22 = " [叠加]";
     }
     else
     {
-        local_22 = " [еЌ•ж¬Ў]";
+        local_22 = " [单次]";
     }
-    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("з¦Ѓз”Ёе‘јеђёйџіж•€: Entity ").Append(Entity.ToString()).Append(", SFXзґўеј• ").Append(Index).Append(local_22).Append(local_16));
-    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), local_22.Append("и®Ўж•°е™ЁзЉ¶жЂЃ: еђЇз”Ё=").Append(local_8.GetEnableCounterValue(Index)).Append(" (д№‹е‰Ќ=").Append(local_11).Append("), з¦Ѓз”Ё=").Append(local_8.GetDisableCounterValue(Index)).Append(" (д№‹е‰Ќ=").Append(local_10).Append(")"));
+    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("禁用呼吸音效: Entity ").Append(Entity.ToString()).Append(", SFX索引 ").Append(Index).Append(local_22).Append(local_16));
+    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), local_22.Append("计数器状态: 启用=").Append(local_8.GetEnableCounterValue(Index)).Append(" (之前=").Append(local_11).Append("), 禁用=").Append(local_8.GetDisableCounterValue(Index)).Append(" (之前=").Append(local_10).Append(")"));
     return;
 }
 UFUNCTION()
@@ -113,7 +112,7 @@ void DisableBreathSFXByName(const FECSEntity &inout Entity, const FName &inout C
     int local_16 = BreathSFXUtils::FindAudioComponentIndex(local_14, ComponentName);
     if (local_16 == -1)
     {
-        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("DisableBreathSFXByName: жњЄж‰ѕе€°йџійў‘з»„д»¶ ").Append(ComponentName).Append(", Entity: ").Append(Entity.ToString()));
+        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("DisableBreathSFXByName: 未找到音频组件 ").Append(ComponentName).Append(", Entity: ").Append(Entity.ToString()));
         return;
     }
     BreathSFXUtils::DisableBreathSFX(Entity, local_16, bAllowStacking);
@@ -131,7 +130,7 @@ void EnableAllBreathSFX(const FECSEntity &inout Entity, const bool bAllowStackin
     int local_16 = local_14.BreathEnablePatterns.Num();
     if (local_16 == 0)
     {
-        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("EnableAllBreathSFX: е®ћдЅ“ ").Append(Entity.ToString()).Append(" жІЎжњ‰й…ЌзЅ®е‘јеђёйџіж•€"));
+        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("EnableAllBreathSFX: 实体 ").Append(Entity.ToString()).Append(" 没有配置呼吸音效"));
         return;
     }
     int local_26 = 0;
@@ -140,7 +139,7 @@ void EnableAllBreathSFX(const FECSEntity &inout Entity, const bool bAllowStackin
         BreathSFXUtils::EnableBreathSFX(Entity, local_26, bAllowStacking);
         ++local_26;
     }
-    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("EnableAllBreathSFX: е·ІеђЇз”Ёе®ћдЅ“ ").Append(Entity.ToString()).Append(" зљ„ж‰Ђжњ‰е‘јеђёйџіж•€ (е…± ").Append(local_16).Append(" дёЄз»„д»¶)"));
+    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("EnableAllBreathSFX: 已启用实体 ").Append(Entity.ToString()).Append(" 的所有呼吸音效 (共 ").Append(local_16).Append(" 个组件)"));
     return;
 }
 UFUNCTION()
@@ -155,7 +154,7 @@ void DisableAllBreathSFX(const FECSEntity &inout Entity, const bool bAllowStacki
     int local_16 = local_14.BreathDisablePatterns.Num();
     if (local_16 == 0)
     {
-        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("DisableAllBreathSFX: е®ћдЅ“ ").Append(Entity.ToString()).Append(" жІЎжњ‰й…ЌзЅ®е‘јеђёйџіж•€"));
+        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("DisableAllBreathSFX: 实体 ").Append(Entity.ToString()).Append(" 没有配置呼吸音效"));
         return;
     }
     int local_26 = 0;
@@ -164,7 +163,7 @@ void DisableAllBreathSFX(const FECSEntity &inout Entity, const bool bAllowStacki
         BreathSFXUtils::DisableBreathSFX(Entity, local_26, bAllowStacking);
         ++local_26;
     }
-    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("DisableAllBreathSFX: е·Із¦Ѓз”Ёе®ћдЅ“ ").Append(Entity.ToString()).Append(" зљ„ж‰Ђжњ‰е‘јеђёйџіж•€ (е…± ").Append(local_16).Append(" дёЄз»„д»¶)"));
+    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("DisableAllBreathSFX: 已禁用实体 ").Append(Entity.ToString()).Append(" 的所有呼吸音效 (共 ").Append(local_16).Append(" 个组件)"));
     return;
 }
 UFUNCTION()
@@ -177,7 +176,7 @@ void ResetAllBreathSFX(const FECSEntity &inout Entity)
         return;
     }
     local_14.ResetAll();
-    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("ResetAllBreathSFX: е·Ій‡ЌзЅ®е®ћдЅ“ ").Append(Entity.ToString()).Append(" зљ„ж‰Ђжњ‰е‘јеђёйџіж•€зЉ¶жЂЃ"));
+    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("ResetAllBreathSFX: 已重置实体 ").Append(Entity.ToString()).Append(" 的所有呼吸音效状态"));
     return;
 }
 void PlayEnableBreathAudio(const FECSEntity &inout Entity, const int Index)
@@ -195,31 +194,31 @@ void PlayEnableBreathAudio(const FECSEntity &inout Entity, const int Index)
     const FSFXBreathEnablePatterns& local_14 = local_12.BreathEnablePatterns[Index];
     FString local_22 = BreathSFXUtils::GetPatternDebugInfo(local_14, Index, "Enable");
     local_14.SourceConfig.PostEvent(Entity, local_14.EnterEvent);
-    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("ж’­ж”ѕејЂеђЇе‘јеђёйџійў‘: Entity ").Append(Entity.ToString()).Append(", зґўеј• ").Append(Index).Append(local_22));
+    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("播放开启呼吸音频: Entity ").Append(Entity.ToString()).Append(", 索引 ").Append(Index).Append(local_22));
     return;
 }
 void PlayDisableBreathAudio(const FECSEntity &inout Entity, const int Index)
 {
     int local_20 = 0;
-    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("PlayDisableBreathAudio: ејЂе§‹е¤„зђ†е®ћдЅ“ ").Append(Entity.ToString()).Append(", зґўеј• ").Append(Index));
+    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("PlayDisableBreathAudio: 开始处理实体 ").Append(Entity.ToString()).Append(", 索引 ").Append(Index));
     Has local_14;
     if (!(local_14.opCall()))
     {
-        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("PlayDisableBreathAudio: е®ћдЅ“ ").Append(Entity.ToString()).Append(" жІЎжњ‰FC_SFXStateConfigз»„д»¶пјЊйЂЂе‡є"));
+        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("PlayDisableBreathAudio: 实体 ").Append(Entity.ToString()).Append(" 没有FC_SFXStateConfig组件，退出"));
         return;
     }
-    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("PlayDisableBreathAudio: жЈЂжџҐеЃњж­ўжЁЎејЏпјЊзґўеј• ").Append(Index).Append(", еЃњж­ўжЁЎејЏж•°й‡Џ: ").Append(local_20.BreathDisablePatterns.Num()));
+    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("PlayDisableBreathAudio: 检查停止模式，索引 ").Append(Index).Append(", 停止模式数量: ").Append(local_20.BreathDisablePatterns.Num()));
     if (!(local_20.HasStopPattern(Index)))
     {
-        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("PlayDisableBreathAudio: зґўеј• ").Append(Index).Append(" жІЎжњ‰й…ЌзЅ®еЃњж­ўжЁЎејЏпјЊйЂЂе‡є"));
+        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("PlayDisableBreathAudio: 索引 ").Append(Index).Append(" 没有配置停止模式，退出"));
         return;
     }
     const FSFXBreathDisablePatterns& local_24 = local_20.BreathDisablePatterns[Index];
     FString local_8 = BreathSFXUtils::GetPatternDebugInfo(local_24, Index, "Disable");
-    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("PlayDisableBreathAudio: е‡†е¤‡ж’­ж”ѕеЃњж­ўйџійў‘пјЊдє‹д»¶: ").Append(local_24.EnterEvent.GetAssetName()));
+    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("PlayDisableBreathAudio: 准备播放停止音频，事件: ").Append(local_24.EnterEvent.GetAssetName()));
     local_24.SourceConfig.PostEvent(Entity, local_24.EnterEvent);
-    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("ж’­ж”ѕеЃњж­ўе‘јеђёйџійў‘: Entity ").Append(Entity.ToString()).Append(", зґўеј• ").Append(Index).Append(local_8));
-    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("PlayDisableBreathAudio: е®Њж€ђе¤„зђ†е®ћдЅ“ ").Append(Entity.ToString()).Append(", зґўеј• ").Append(Index));
+    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("播放停止呼吸音频: Entity ").Append(Entity.ToString()).Append(", 索引 ").Append(Index).Append(local_8));
+    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("PlayDisableBreathAudio: 完成处理实体 ").Append(Entity.ToString()).Append(", 索引 ").Append(Index));
     return;
 }
 void HandleBreathStateChange(const FECSEntity &inout Entity, const int Index, const bool bEnable)
@@ -268,24 +267,24 @@ FString GetPatternDebugInfo(const FSFXPatternsBase &inout Pattern, const int Ind
     {
         local_16 = "Invalid";
     }
-    return FString().Append(", ").Append(Type).Append("жЁЎејЏзґўеј• ").Append(Index).Append(", дє‹д»¶: ").Append(local_16).Append(", Socket: ").Append(Pattern.SourceConfig.Socket.ToString());
+    return FString().Append(", ").Append(Type).Append("模式索引 ").Append(Index).Append(", 事件: ").Append(local_16).Append(", Socket: ").Append(Pattern.SourceConfig.Socket.ToString());
 }
 UFUNCTION()
 void ProcessEntityBreathSFX(const FECSEntity &inout Entity, const EBreathSFXTriggerType TriggerType, const FName &inout AudioComponentName, const bool bAllowStacking)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
 }
 int FindAudioComponentIndex(const FC_SFXStateConfig &inout Config, const FName &inout AudioComponentName)
 {
     if (AudioComponentName.IsNone())
     {
-        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("FindAudioComponentIndex: з»„д»¶еђЌз§°дёєз©єпјЊдЅїз”Ёй»и®¤зґўеј• -1"));
+        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("FindAudioComponentIndex: 组件名称为空，使用默认索引 -1"));
         return -1;
     }
-    int local_8 = Config.Num();
+    int local_8 = Config.BreathEnablePatterns.Num();
     if (local_8 == 0)
     {
-        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("FindAudioComponentIndex: жІЎжњ‰й…ЌзЅ®д»»дЅ•йџійў‘з»„д»¶"));
+        XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("FindAudioComponentIndex: 没有配置任何音频组件"));
         return -1;
     }
     int local_10 = 0;
@@ -293,11 +292,11 @@ int FindAudioComponentIndex(const FC_SFXStateConfig &inout Config, const FName &
     {
         if (local_10 < Config.AudioComponentNames.Num() && (FName(Config.AudioComponentNames[local_10]) == AudioComponentName))
         {
-            XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("FindAudioComponentIndex: ж‰ѕе€°з»„д»¶ ").Append(AudioComponentName).Append(" ењЁзґўеј• ").Append(local_10));
+            XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("FindAudioComponentIndex: 找到组件 ").Append(AudioComponentName).Append(" 在索引 ").Append(local_10));
             return local_10;
         }
     }
-    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("FindAudioComponentIndex: жњЄж‰ѕе€°з»„д»¶ ").Append(AudioComponentName).Append("пјЊеЏЇз”Ёз»„д»¶ж•°й‡Џ: ").Append(local_8));
+    XLogIf(CVar_BreathSFX_EnableDebug.GetBool(), ELog(1), FString().Append("FindAudioComponentIndex: 未找到组件 ").Append(AudioComponentName).Append("，可用组件数量: ").Append(local_8));
     return -1;
 }
 UFUNCTION()
@@ -310,37 +309,37 @@ FString GetBreathSFXStatusInfo(const FECSEntity &inout Entity)
     int local_47;
     if (!(Entity.IsValid()))
     {
-        return "е®ћдЅ“ж— ж•€";
+        return "实体无效";
     }
     FString local_6 = "";
     Has local_10;
     if (!(local_10.opCall()))
     {
-        return "е®ћдЅ“жІЎжњ‰е‘јеђёйџіж•€й…ЌзЅ®";
+        return "实体没有呼吸音效配置";
     }
     int local_18 = local_16.BreathEnablePatterns.Num();
     if (local_18 == 0)
     {
-        return "е®ћдЅ“жІЎжњ‰й…ЌзЅ®д»»дЅ•е‘јеђёйџіж•€";
+        return "实体没有配置任何呼吸音效";
     }
-    local_6 += FString().Append("е‘јеђёйџіж•€й…ЌзЅ®дїЎжЃЇ:\n");
-    local_6 += FString().Append("  жЂ»з»„д»¶ж•°: ").Append(local_18).Append("\n");
-    local_6 += FString().Append("  еђЇз”ЁжЁЎејЏж•°: ").Append(local_16.BreathEnablePatterns.Num()).Append("\n");
-    local_6 += FString().Append("  з¦Ѓз”ЁжЁЎејЏж•°: ").Append(local_16.BreathDisablePatterns.Num()).Append("\n");
-    local_6 += FString().Append("  й»и®¤зЉ¶жЂЃж•°: ").Append(local_16.DefaultStates.Num()).Append("\n");
+    local_6 += FString().Append("呼吸音效配置信息:\n");
+    local_6 += FString().Append("  总组件数: ").Append(local_18).Append("\n");
+    local_6 += FString().Append("  启用模式数: ").Append(local_16.BreathEnablePatterns.Num()).Append("\n");
+    local_6 += FString().Append("  禁用模式数: ").Append(local_16.BreathDisablePatterns.Num()).Append("\n");
+    local_6 += FString().Append("  默认状态数: ").Append(local_16.DefaultStates.Num()).Append("\n");
     Has local_26;
     if (!(local_26.opCall()))
     {
-        local_6 += "  иїђиЎЊж—¶зЉ¶жЂЃ: жњЄе€ќе§‹еЊ–\n";
+        local_6 += "  运行时状态: 未初始化\n";
         return local_6;
     }
-    local_6 += FString().Append("  иїђиЎЊж—¶зЉ¶жЂЃ: е·Іе€ќе§‹еЊ–\n");
-    local_6 += FString().Append("  еђЇз”Ёи®Ўж•°е™Ёж•°: ").Append(local_32.GetEnableCountersNum()).Append("\n");
-    local_6 += FString().Append("  з¦Ѓз”Ёи®Ўж•°е™Ёж•°: ").Append(local_32.GetDisableCountersNum()).Append("\n");
+    local_6 += FString().Append("  运行时状态: 已初始化\n");
+    local_6 += FString().Append("  启用计数器数: ").Append(local_32.GetEnableCountersNum()).Append("\n");
+    local_6 += FString().Append("  禁用计数器数: ").Append(local_32.GetDisableCountersNum()).Append("\n");
     int local_33 = 0;
     for (; local_33 < local_18; )
     {
-        FString local_38 = "жњЄзџҐз»„д»¶";
+        FString local_38 = "未知组件";
         if (local_33 < local_16.AudioComponentNames.Num())
         {
             local_38 = local_16.AudioComponentNames[local_33].ToString();
@@ -367,13 +366,13 @@ FString GetBreathSFXStatusInfo(const FECSEntity &inout Entity)
         }
         if (local_1)
         {
-            local_22 = "жґ»и·ѓ";
+            local_22 = "活跃";
         }
         else
         {
-            local_22 = "йќћжґ»и·ѓ";
+            local_22 = "非活跃";
         }
-        local_6 += FString().Append("    [").Append(local_33).Append("] ").Append(local_38).Append(": ").Append(local_22).Append(" (еђЇз”Ё:").Append(local_45).Append(" з¦Ѓз”Ё:").Append(local_47).Append(")\n");
+        local_6 += FString().Append("    [").Append(local_33).Append("] ").Append(local_38).Append(": ").Append(local_22).Append(" (启用:").Append(local_45).Append(" 禁用:").Append(local_47).Append(")\n");
         ++local_33;
     }
     return local_6;

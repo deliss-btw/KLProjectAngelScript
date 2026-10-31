@@ -1,4 +1,3 @@
-﻿
 namespace FEcosimAIV2Utils
 {
 void SetLevelControlMoveToSpecifiedTransform(const FECSEntity &inout Entity, const FName &inout MoveToKeyName, const FVector &inout SpecifiedLocation, const bool bSpecifiedDirection, const FVector &inout SpecifiedDirection)

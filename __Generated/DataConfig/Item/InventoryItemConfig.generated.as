@@ -1,11 +1,19 @@
-﻿
 namespace __FInventoryItemConfigFunctions
 {
 UFUNCTION()
 int __FInventoryItemConfig_GetInventorySortPriority(const TDataObjectPtr<FInventoryItemConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    int __r; return __r;
+
+    if (DataObject == nullptr)
+    {
+        if (!EUIGlobals::GIsDuringPropertyConversion)
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'InventorySortPriority' from a null 'FInventoryItemConfig' DataObject!");
+        }
+        FInventoryItemConfig defaultValue;
+        return defaultValue.InventorySortPriority;
+    }
+    return DataObject.Get().InventorySortPriority;
 }
 UFUNCTION()
 FInventoryItemConfig CastToFInventoryItemConfig(const TDataObjectPtr<FInventoryItemConfig> &inout DataObject)

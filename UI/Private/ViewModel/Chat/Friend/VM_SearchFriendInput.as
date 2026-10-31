@@ -1,4 +1,3 @@
-﻿
 namespace FVM_SearchFriendInput
 {
     const int ModelId = 0;
@@ -143,7 +142,7 @@ struct FVM_SearchFriendInput : FEUIViewModel
         {
             return;
         }
-        EStringValidationResult local_3 = this.GetStringValidationHelper().GetValidationResult();
+        int local_3 = int(this.GetStringValidationHelper().GetValidationResult());
         if (this.GetbPendingFriendSearchAfterValidation())
         {
             if (!((this.GetTempInputText().TrimStartAndEnd() == this.GetPendingFriendSearchTrimmedText())))
@@ -156,7 +155,7 @@ struct FVM_SearchFriendInput : FEUIViewModel
             this.SetbPendingFriendSearchAfterValidation(false);
             FString local_16 = FString(this.GetPendingFriendSearchTrimmedText());
             this.SetPendingFriendSearchTrimmedText("");
-            if ((int(local_3)) == 0)
+            if (local_3 == 0)
             {
                 if (this.GetFriendDataModel().IsValid())
                 {
@@ -167,7 +166,7 @@ struct FVM_SearchFriendInput : FEUIViewModel
             }
             else
             {
-                if ((int(local_3)) == 1)
+                if (local_3 == 1)
                 {
                     ::FriendUtil::PublishDeferredPopup(true, this.GetStringValidationHelper().GetFailReason());
                 }
@@ -228,7 +227,7 @@ struct FVM_SearchFriendInput : FEUIViewModel
         local_22 = local_24;
         if ((!((local_22.PlayerNameValidator != nullptr))))
         {
-            XError(ELog(74), "жњЄй…ЌзЅ®жµз§°ж ЎйЄЊпјЊж— жі•жЊ‰жµз§°жђњзґў");
+            XError(ELog(74), "未配置昵称校验，无法按昵称搜索");
             return;
         }
         this.SetbPendingFriendSearchAfterValidation(false);
@@ -472,7 +471,6 @@ struct __GeneratedProperties_FVM_SearchFriendInput
     UPROPERTY()
     TEUIModelRef<FVM_SearchFriendInput> Self;
 
-
 }
 
 namespace FVM_SearchFriendInput
@@ -489,7 +487,46 @@ FVM_SearchFriendInput CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "bShowSearchResult";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsShowCancelButton";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_SearchFriendInput>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_SearchFriendInput;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(9);
+    local_22.AddRefPropertyDirty(0, 0, FMS_ChatRuntimeData::__IndexOf_bShowFriendSearchResult());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("ChatRuntimeData");
+    int local_2_2 = FMS_ChatRuntimeData::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FMS_ChatRuntimeData::__IndexOf_bShowFriendSearchResult(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnInputTextChanged";
+    local_40.DirtyFlags.Set(FVM_SearchFriendInput::__IndexOf_TempInputText());
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnFriendSearchStateChange";
+    local_40.DirtyFlags.Set(FVM_SearchFriendInput::__IndexOf_ChatRuntimeData());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    Result.TickFunction.FunctionName = "__TickSearchInputValidation";
+    return;
 }
 UScriptStruct GetModelStruct()
 {

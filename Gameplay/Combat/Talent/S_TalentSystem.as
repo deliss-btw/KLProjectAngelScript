@@ -1,5 +1,3 @@
-﻿
-
 class US_TalentSystem : UECSScriptSystem
 {
     US_TalentSystem()
@@ -223,7 +221,7 @@ class US_TalentSystem : UECSScriptSystem
                 TArray<TDataObjectPtr<FTalentConfig>> local_160;
                 this.CalcNewlyAddRemoveTalent(local_148.GetAllActiveTalentConfigs(), local_152, local_156, local_160);
                 this.UpdateTalentEffect(local_142, local_148, local_156, local_160, local_152);
-                if ((local_156.Num()) > 0)
+                if (local_156.Num() > 0)
                 {
                     TDataObjectPtr<FAvatarPrefabConfig> local_192 = ::GetAvatarConfig(local_142);
                     if (!(local_168))
@@ -271,7 +269,7 @@ class US_TalentSystem : UECSScriptSystem
                                     if (::FTalentUtils::GetSkillInitConfigByTalentId(local_77_2))
                                     {
                                         local_7 = false;
-                                        ESkillSlot local_457 = local_250.GetKey();
+                                        int local_457 = int(local_250.GetKey());
                                         FECSWorldPtr local_460 = ECS::GetECSWorld();
                                     }
                                     break;
@@ -395,7 +393,7 @@ class US_TalentSystem : UECSScriptSystem
         }
         if (local_12.IsValid())
         {
-            if ((local_74.Num()) > 0)
+            if (local_74.Num() > 0)
             {
                 for (auto& local_154 : local_74)
                 {
@@ -405,7 +403,7 @@ class US_TalentSystem : UECSScriptSystem
                     {
                         if (::FTalentUtils::GetSkillInitConfigByTalentId(local_52))
                         {
-                            ESkillSlot local_301 = local_154.GetKey();
+                            int local_301 = int(local_154.GetKey());
                             FECSWorldPtr local_304 = ECS::GetECSWorld();
                         }
                     }

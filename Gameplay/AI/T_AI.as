@@ -1,5 +1,3 @@
-﻿
-
 struct FT_AI : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -71,7 +69,6 @@ struct FT_AI : FECSTrait
     bool bHas_FC_AIStandTurnConfig = false;
     UPROPERTY()
     FC_AIStandTurnConfig Config_FC_AIStandTurnConfig;
-
 
 }
 

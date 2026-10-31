@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_RescueOther
 {
     const int ViewID = 0;
@@ -78,6 +77,7 @@ namespace UWidget_RescueOther
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_RescueOther;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -93,6 +93,7 @@ namespace UWidget_RevivalTimeProgressBar
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_RevivalTimeProgressBar;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

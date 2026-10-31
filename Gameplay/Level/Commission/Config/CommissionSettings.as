@@ -1,4 +1,3 @@
-﻿
 enum ECommissionFinishScoreTier
 {
     TierNone,
@@ -10,7 +9,6 @@ enum ECommissionFinishScoreTier
     TierSPlusPlus,
 }
 
-
 struct FCommissionRating
 {
     UPROPERTY()
@@ -19,7 +17,6 @@ struct FCommissionRating
     FText RatingText;
     UPROPERTY()
     int RatingImageIndex;
-
 
 }
 
@@ -34,7 +31,6 @@ struct FCommissionScoreToTier
     UPROPERTY()
     int RatingImageIndex;
 
-
 }
 
 struct FCommissionFinishScoreRulePair
@@ -43,7 +39,6 @@ struct FCommissionFinishScoreRulePair
     int Metric;
     UPROPERTY()
     int Score;
-
 
 }
 
@@ -59,7 +54,6 @@ struct FCommissionFinishScoreRule
     TArray<FCommissionFinishScoreRulePair> TeamTotalDeathCount;
     UPROPERTY()
     TArray<FCommissionFinishScoreRulePair> TeamTotalNearDeathCount;
-
 
 }
 
@@ -151,7 +145,6 @@ class UCommissionSettings : UGameplaySettingsBase
     FBuffConfigRef CommissionDeathBuffConfig;
     UPROPERTY()
     TMap<ECommissionType, TDataObjectPtr<FPveCommissionMatchConfig>> DefaultMatchConfigs;
-
 
 }
 

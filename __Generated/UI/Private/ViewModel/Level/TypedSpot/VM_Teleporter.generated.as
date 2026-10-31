@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_Teleporter_Helpers
 {
 UFUNCTION()

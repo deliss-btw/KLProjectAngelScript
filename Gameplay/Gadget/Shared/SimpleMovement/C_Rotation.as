@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_RotationRuntimeInfo_NS
 {
     const TECSComponentDerivedPtr<FC_RotationRuntimeInfo> DerivedPtr = TECSComponentDerivedPtr<FC_RotationRuntimeInfo>();
@@ -27,6 +26,8 @@ struct FC_RotationRuntimeInfo : FECSComponent
 
     FC_RotationRuntimeInfo()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_RotationBeginTime = 0;
         this.m_DeltaRotation = FQuat4f::Identity;
         this.__InitDirtyFlags();
@@ -34,6 +35,8 @@ struct FC_RotationRuntimeInfo : FECSComponent
     }
     FC_RotationRuntimeInfo(const FC_RotationRuntimeInfo &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_RotationBeginTime = 0;
         this.m_DeltaRotation = FQuat4f::Identity;
         this.__InitDirtyFlags();
@@ -133,7 +136,6 @@ struct FC_RotationByTime : FECSComponent
     UPROPERTY()
     FVector3f RotationAxis = FVector3f::ForwardVector;
 
-
     float32 GetAngularVelocity(const float32 Time) const
     {
         if (this.bUseVelocityCurve)
@@ -161,11 +163,29 @@ struct FC_RotationWithDecreaseAngleVelocity : FECSComponent
 
     FC_RotationWithDecreaseAngleVelocity()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bEnable = true;
+        this.m_AngleVelocity = 0.0f;
+        this.m_DecreaseAngleVelocityRate = 0.0f;
+        this.m_RotationAxis = FVector3f::ForwardVector;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_RotationWithDecreaseAngleVelocity(const FC_RotationWithDecreaseAngleVelocity &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_bEnable = true;
+        this.m_AngleVelocity = 0.0f;
+        this.m_DecreaseAngleVelocityRate = 0.0f;
+        this.m_RotationAxis = FVector3f::ForwardVector;
+        this.__InitDirtyFlags();
+        this.m_bEnable = Other.m_bEnable;
+        this.m_AngleVelocity = Other.m_AngleVelocity;
+        this.m_DecreaseAngleVelocityRate = Other.m_DecreaseAngleVelocityRate;
+        this.m_RotationAxis = Other.m_RotationAxis;
+        return;
     }
     FC_RotationWithDecreaseAngleVelocity opAssign(const FC_RotationWithDecreaseAngleVelocity &inout Other)
     {
@@ -319,37 +339,37 @@ bool RemoveRotationRuntimeInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorRotationRuntimeInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_RotationRuntimeInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_RotationRuntimeInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRotationRuntimeInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_RotationRuntimeInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_RotationRuntimeInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRotationRuntimeInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_RotationRuntimeInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_RotationRuntimeInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRotationRuntimeInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_RotationRuntimeInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_RotationRuntimeInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRotationRuntimeInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_RotationRuntimeInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_RotationRuntimeInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorRotationRuntimeInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_RotationRuntimeInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_RotationRuntimeInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRotationRuntimeInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_RotationRuntimeInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_RotationRuntimeInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRotationRuntimeInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_RotationRuntimeInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_RotationRuntimeInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_RotationByTime
@@ -432,37 +452,37 @@ bool RemoveRotationByTime(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorRotationByTimeOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_RotationByTime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_RotationByTime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRotationByTimeOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_RotationByTime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_RotationByTime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRotationByTimeOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_RotationByTime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_RotationByTime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRotationByTimeOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_RotationByTime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_RotationByTime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRotationByTimeOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_RotationByTime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_RotationByTime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorRotationByTimeLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_RotationByTime, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_RotationByTime, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRotationByTimeActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_RotationByTime, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_RotationByTime, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRotationByTimeModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_RotationByTime, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_RotationByTime, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_RotationWithDecreaseAngleVelocity
@@ -542,37 +562,37 @@ bool RemoveRotationWithDecreaseAngleVelocity(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorRotationWithDecreaseAngleVelocityOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_RotationWithDecreaseAngleVelocity, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_RotationWithDecreaseAngleVelocity, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRotationWithDecreaseAngleVelocityOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_RotationWithDecreaseAngleVelocity, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_RotationWithDecreaseAngleVelocity, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRotationWithDecreaseAngleVelocityOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_RotationWithDecreaseAngleVelocity, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_RotationWithDecreaseAngleVelocity, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRotationWithDecreaseAngleVelocityOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_RotationWithDecreaseAngleVelocity, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_RotationWithDecreaseAngleVelocity, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRotationWithDecreaseAngleVelocityOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_RotationWithDecreaseAngleVelocity, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_RotationWithDecreaseAngleVelocity, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorRotationWithDecreaseAngleVelocityLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_RotationWithDecreaseAngleVelocity, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_RotationWithDecreaseAngleVelocity, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRotationWithDecreaseAngleVelocityActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_RotationWithDecreaseAngleVelocity, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_RotationWithDecreaseAngleVelocity, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRotationWithDecreaseAngleVelocityModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_RotationWithDecreaseAngleVelocity, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_RotationWithDecreaseAngleVelocity, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

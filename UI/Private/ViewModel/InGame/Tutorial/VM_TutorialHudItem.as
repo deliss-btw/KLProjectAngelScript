@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TutorialHudItem
 {
     const int ModelId = 0;

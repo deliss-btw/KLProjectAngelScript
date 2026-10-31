@@ -1,4 +1,3 @@
-﻿
 namespace FVM_BreakthroughLevelInfo
 {
     const int ModelId = 0;
@@ -121,7 +120,63 @@ struct FVM_BreakthroughLevelInfo : FEUIViewModel
     }
     void Refresh()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        bool local_6;
+        int local_7;
+        const UPlayerInfoSettings local_12;
+        this.SetBreakthroughLevel(this.GetPlayerLevel().opArrow().GetCurrentBreakthroughLevel());
+        int local_5 = this.GetPlayerLevel().opArrow().GetNextBreakthroughLevelAfter(this.GetBreakthroughLevel());
+        int local_4 = INDEX_NONE;
+        this.SetbNoBreakthroughLevel((this.GetBreakthroughLevel() == local_4));
+        if (local_5 != INDEX_NONE)
+        {
+            local_7 = local_5;
+        }
+        else
+        {
+            local_7 = this.GetPlayerLevel().opArrow().GetMaxLevel();
+        }
+        this.SetNextLimitLevel(local_7);
+        int local_8 = this.GetPlayerLevel().opArrow().GetLevelBreakthroughStatus();
+        this.SetbReadyBreakthrough(local_8 == 2 || (local_8 == 3));
+        GetGameplaySettings<UPlayerInfoSettings> local_14;
+        local_12 = local_14;
+        TDataObjectPtr<FPlayerLevelConfig> local_64 = local_12.GetLevelConfig(this.GetBreakthroughLevel());
+        if (local_64)
+        {
+            this.SetBreakthroughLevelName(local_64.opArrow().BreakthroughLevelName);
+            TEUIModelRef<FVM_TitleAndDescAndStatus> local_70 = TEUIModelRef<FVM_TitleAndDescAndStatus>(::FVM_TitleAndDescAndStatus::Create(this.GetContext().Manager, this.GetBreakthroughLevelName(), FText()));
+            this.SetBreakthroughLevelNameVM(local_70);
+            local_6 = this.GetbReadyBreakthrough();
+            TEUIModelRef<FVM_TitleAndDescAndStatus> local_70_2 = this.GetBreakthroughLevelNameVM();
+            local_70_2.opArrow().SetbDone(local_6);
+            TDataObjectPtr<FRewardConfig> local_94;
+            local_94 = local_64.opArrow().GetBreakthroughRewardConfig();
+            this.SetbHasBreakthroughReward(!((local_94 == nullptr)));
+            TDataObjectPtr<FRewardConfig> local_142 = local_64.opArrow().GetBreakthroughRewardConfig();
+            if (local_142)
+            {
+                this.SetBreakthroughRewardList(TEUIModelRef<FVM_CommonRewardList>(::FVM_CommonRewardList::Create(this.GetContext().Manager, ::FCommonRewardListBuilder::BuildFromRewardConfig(local_142))));
+            }
+        }
+        else
+        {
+            this.SetBreakthroughLevelName(FText());
+            this.SetbHasBreakthroughReward(false);
+        }
+        this.BuildBreakthroughConditions(local_64, local_8);
+        if (!(this.GetbNoBreakthroughLevel()))
+        {
+            this.SetCurrentBreakthroughRow(TEUIModelRef<FVM_StigmataRow>(::FVM_StigmataRow::Create(this.GetContext().Manager, this.GetBreakthroughLevel())));
+            this.SetNextBreakthroughRow(TEUIModelRef<FVM_StigmataRow>(::FVM_StigmataRow::Create(this.GetContext().Manager, this.GetNextLimitLevel())));
+        }
+        else
+        {
+            this.SetCurrentBreakthroughRow(TEUIModelRef<FVM_StigmataRow>());
+            this.SetNextBreakthroughRow(TEUIModelRef<FVM_StigmataRow>());
+        }
+        this.BuildNoCostStigmataItems();
+        this.SetBreakthroughStatus(local_8);
+        return;
     }
     TArray<TEUIModelRef<FVM_CommonRewardItem>> GetBreakthroughRewards() const
     {
@@ -176,7 +231,7 @@ struct FVM_BreakthroughLevelInfo : FEUIViewModel
         FText local_130 = FText();
         FText local_134 = FText();
         FDialogCallback local_120 = FDialogCallback(local_88);
-        FText local_124 = NSLOCTEXT("StartBtCommissionTitle", "зЄЃз ґжЊ‘ж€");
+        FText local_124 = NSLOCTEXT("StartBtCommissionTitle", "突破挑战");
         FCommonDialogParam local_126;
         ::CommonPopup::Dialog_Decision(local_124, local_62, local_120, local_134, local_130, local_126);
         return;
@@ -198,12 +253,75 @@ struct FVM_BreakthroughLevelInfo : FEUIViewModel
     }
     void BuildBreakthroughConditions(const TDataObjectPtr<FPlayerLevelConfig> &inout LevelConfig, const int BtStatus)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_22 = 0;
+        int local_44 = 0;
+        this.GetModify_BreakthroughConditionList().Empty(0);
+        this.GetModify_UnmetConditionList().Empty(0);
+        if (!(LevelConfig))
+        {
+            return;
+        }
+        bool local_2 = (this.GetPlayerLevel().opArrow().GetLevel() >= this.GetBreakthroughLevel());
+        FText::Format(NSLOCTEXT("BtLevelCondDesc", "{0}/{1}"), this.GetPlayerLevel().opArrow().GetLevel(), this.GetBreakthroughLevel());
+        FText::Format(NSLOCTEXT("BtLevelCondTitle", "角色等级达到{0}级"), this.GetBreakthroughLevel());
+        local_22.SetbDone(local_2);
+        TEUIModelRef<FVM_TitleAndDescAndStatus> local_24 = TEUIModelRef<FVM_TitleAndDescAndStatus>(local_22);
+        this.GetModify_BreakthroughConditionList().Add(local_24);
+        if (!(local_2))
+        {
+            TEUIModelRef<FVM_TitleAndDescAndStatus> local_24_2 = TEUIModelRef<FVM_TitleAndDescAndStatus>(local_22);
+            this.GetModify_UnmetConditionList().Add(local_24_2);
+        }
+        for (auto& local_38 : LevelConfig.opArrow().GetBreakthroughCondition())
+        {
+            if (!(local_38))
+            {
+                continue;
+            }
+            int local_7 = this.GetConditionDataId(local_38);
+            bool local_3 = (local_7 != INDEX_NONE) && this.GetPlayerLevel().opArrow().IsBreakthroughCondMet(local_7);
+            if (local_3)
+            {
+                NSLOCTEXT("CondCompleted", "已完成");
+            }
+            else
+            {
+                NSLOCTEXT("CondIncompleted", "未完成");
+            }
+            local_44.SetbDone(local_3);
+            TEUIModelRef<FVM_TitleAndDescAndStatus> local_24_3 = TEUIModelRef<FVM_TitleAndDescAndStatus>(local_44);
+            this.GetModify_BreakthroughConditionList().Add(local_24_3);
+            if (!(local_3))
+            {
+                local_24_3 = TEUIModelRef<FVM_TitleAndDescAndStatus>(local_44);
+                this.GetModify_UnmetConditionList().Add(local_24_3);
+            }
+        }
+        if (LevelConfig.opArrow().GetAchieveCondition())
+        {
+            bool local_41 = (BtStatus == 3);
+            TEUIModelRef<FVM_TitleAndDescAndStatus> local_24_4 = TEUIModelRef<FVM_TitleAndDescAndStatus>(::FVM_TitleAndDescAndStatus::Create(this.GetContext().Manager, LevelConfig.opArrow().GetAchieveCondition().opArrow().ConditionTips, local_41 ? NSLOCTEXT("AchieveCompleted", "已完成") : NSLOCTEXT("AchieveIncompleted", "未完成")));
+            this.SetAchieveCondition(local_24_4);
+            TEUIModelRef<FVM_TitleAndDescAndStatus> local_24_5 = this.GetAchieveCondition();
+            local_24_5.opArrow().SetbDone(local_41);
+        }
+        return;
     }
     int GetConditionDataId(const TDataObjectPtr<FServerConditionConfigBase> &inout Cond) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        CastTo local_28;
+        TDataObjectPtr<FConditionConfig> local_52 = local_28.opCall();
+        if (local_52)
+        {
+            return ::NumericUtils::AsInt32(local_52.opArrow().DataId);
+        }
+        CastTo local_84;
+        TDataObjectPtr<FGsConditionGroupConfig> local_108 = local_84.opCall();
+        if (local_108)
+        {
+            return ::NumericUtils::AsInt32(local_108.opArrow().DataId);
+        }
+        return INDEX_NONE;
     }
     void BuildNoCostStigmataItems()
     {

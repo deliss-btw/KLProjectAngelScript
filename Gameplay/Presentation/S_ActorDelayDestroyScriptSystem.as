@@ -1,5 +1,3 @@
-﻿
-
 class US_ActorDelayDestroyScriptSystem : UECSScriptSystem
 {
     US_ActorDelayDestroyScriptSystem()
@@ -41,6 +39,7 @@ class US_ActorDelayDestroyScriptSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_ClientProcessActorDelayDestroyHideComponents(const FC_ViewEntityDelayDestroy &inout DelayDestroy, const FECSEntity &inout GameActorViewEntity) const
     {
+        int local_25;
         AGameActor local_6 = (Cast<AGameActor>(GameActorViewEntity.GetActor()));
         if (!((local_6 != nullptr)))
         {
@@ -52,7 +51,17 @@ class US_ActorDelayDestroyScriptSystem : UECSScriptSystem
         }
         for (auto& local_22 : local_6.NameToSceneComponentEntries)
         {
-            if (local_22.VisualComponentToggleInitStateSettings.bActive && (local_22.VisualComponentToggleInitStateSettings.GetDelayHiddenTime() == 0.0f))
+            local_25 = int(local_22.VisualComponentToggleInitStateSettings.bActive);
+            if (local_25 == 0)
+            {
+                local_25 = 0;
+            }
+            else
+            {
+                bool local_7 = (local_22.VisualComponentToggleInitStateSettings.GetDelayHiddenTime() == 0.0f);
+                local_25 = local_7;
+            }
+            if (local_25 != 0)
             {
                 TArray<USceneComponent> local_34 = local_6.GetCachedSceneComponentByLogicName(local_22.LogicName);
                 for (auto local_48 : local_34)
@@ -66,7 +75,16 @@ class US_ActorDelayDestroyScriptSystem : UECSScriptSystem
         }
         for (auto& local_62 : local_6.NameToSceneComponentGroups)
         {
-            if (local_62.VisualComponentToggleInitStateSettings.bActive && (local_62.VisualComponentToggleInitStateSettings.GetDelayHiddenTime() == 0.0f))
+            local_25 = int(local_62.VisualComponentToggleInitStateSettings.bActive);
+            if (local_25 == 0)
+            {
+                local_25 = 0;
+            }
+            else
+            {
+                local_25 = (local_62.VisualComponentToggleInitStateSettings.GetDelayHiddenTime() == 0.0f);
+            }
+            if (local_25 != 0)
             {
                 TArray<USceneComponent> local_30 = local_6.GetCachedSceneComponentByLogicName(local_62.LogicName);
                 for (auto local_48 : local_30)

@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_MakeNoResourceActivityInfo : UBTTask_ECSScriptBase
 {
     UPROPERTY()

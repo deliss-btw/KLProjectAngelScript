@@ -1,4 +1,3 @@
-﻿
 namespace FVM_SettingSystemMainState
 {
     const int ModelId = 0;
@@ -331,7 +330,7 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
         if (bShowTips)
         {
             FCommonTipsParam local_4;
-            ::CommonPopup_Internal::OpenTipsWithoutECSWorld(this.GetContext().UELocalPlayer, NSLOCTEXT("SettingPage", "SaveSettingsSuccess", "дїќе­ж€ђеЉџ"), local_4, ECommonTipsType(0), FEUIModelContainer());
+            ::CommonPopup_Internal::OpenTipsWithoutECSWorld(this.GetContext().UELocalPlayer, NSLOCTEXT("SettingPage", "SaveSettingsSuccess", "保存成功"), local_4, ECommonTipsType(0), FEUIModelContainer());
         }
         this.GetModify_SettingsCollection().Configs.Reset(0);
         for (auto& local_44 : this.GetItems())
@@ -533,7 +532,7 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
         {
             this.SetKeyMappings(TEUIModelRef<FVMS_PlayerKeyMappings>(::FVMS_PlayerKeyMappings::Get(this.GetContext().Manager)));
         }
-        this.SetWarningMessage(NSLOCTEXT("Settings", "CannotModifyKey", "ж— жі•дї®ж”№жЊ‰й”®"));
+        this.SetWarningMessage(NSLOCTEXT("Settings", "CannotModifyKey", "无法修改按键"));
         if (!(this.CheckHasValueActuallyChanged()))
         {
             this.SetSelectedCategoryIndex(Index);
@@ -786,7 +785,7 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
     }
     void UpdateResolutionDropDownOptions()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argint]
+        // body not fully recovered — stub [argmismatch:argint]
     }
     void SyncItemValueDisplay()
     {
@@ -894,7 +893,7 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
             TEUIModelRef<FVMS_PlayerKeyMappings> local_28 = this.GetKeyMappings();
             SaveKeySettings();
             FCommonTipsParam local_32;
-            ::CommonPopup_Internal::OpenTipsWithoutECSWorld(this.GetContext().UELocalPlayer, NSLOCTEXT("SettingPage", "SaveSettingsSuccess", "дїќе­ж€ђеЉџ"), local_32, ECommonTipsType(0), FEUIModelContainer());
+            ::CommonPopup_Internal::OpenTipsWithoutECSWorld(this.GetContext().UELocalPlayer, NSLOCTEXT("SettingPage", "SaveSettingsSuccess", "保存成功"), local_32, ECommonTipsType(0), FEUIModelContainer());
             return;
         }
         for (auto& local_66 : this.GetChangedItemVMs())
@@ -1725,7 +1724,6 @@ struct __GeneratedProperties_FVM_SettingSystemMainState
     UPROPERTY()
     TEUIModelRef<FVM_SettingSystemMainState> Self;
 
-
 }
 
 struct __GeneratedProperties_FVMS_SettingPage
@@ -1809,7 +1807,109 @@ FVMS_SettingPage GetByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(true);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "KeyMappings";
+    local_14.TypeName = "TEUIModelRef<FVMS_PlayerKeyMappings>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CategoryListItems";
+    local_14.TypeName = "TArray<FEUIModelContainer>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectedListItems";
+    local_14.TypeName = "TArray<FEUIDynamicWidgetData>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "FirstItem";
+    local_14.TypeName = "FEUIDynamicWidgetData";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PrevSelectedItem";
+    local_14.TypeName = "FEUIDynamicWidgetData";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectedItemConfig";
+    local_14.TypeName = "TDataObjectPtr<FSettingItemConfig>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bHasVideoMemoryInfo";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bShowWarningMessage";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "WarningMessage";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bCanRevert";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bIsKeyMapping";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ChangedItemVMs";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_SettingItem>>";
+    local_14.bAllowGet = (0 != 0);
+    local_14.bAllowSet = (1 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ItemsOpacity";
+    local_14.TypeName = "float32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVMS_SettingPage>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVMS_SettingPage;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(33);
+    local_22.AddRefPropertyDirty(0, 0, FVMS_PlayerKeyMappings::__IndexOf_bCanRevert());
+    local_22.AddRefPropertyDirty(1, 0, FVMS_PlayerKeyMappings::__IndexOf_bIsKeySelecting());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("KeyMappings");
+    int local_2_2 = FVMS_PlayerKeyMappings::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FVMS_PlayerKeyMappings::__IndexOf_bCanRevert(), true);
+    local_30.RelatedDirtyMask.SetBit(FVMS_PlayerKeyMappings::__IndexOf_bIsKeySelecting(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__RefreshVideoMemoryVisibility";
+    local_40.DirtyFlags.Set(FVMS_SettingPage::__IndexOf_SelectedCategoryIndex());
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnKeyMappingsIsKeySelectingChanged";
+    local_40.DirtyFlags.Set(FVMS_SettingPage::__IndexOf_KeyMappings());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(1));
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__RefreshCategorySelection";
+    local_40.DirtyFlags.Set(FVMS_SettingPage::__IndexOf_SelectedCategoryIndex());
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnKeyMappingsCanRevertChanged";
+    local_40.DirtyFlags.Set(FVMS_SettingPage::__IndexOf_KeyMappings());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

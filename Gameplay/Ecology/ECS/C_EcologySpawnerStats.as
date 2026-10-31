@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_EcologySpawnerStats_NS
 {
     const TECSComponentDerivedPtr<FC_EcologySpawnerStats> DerivedPtr = TECSComponentDerivedPtr<FC_EcologySpawnerStats>();
@@ -22,7 +21,6 @@ struct FCreatureStatsEntry
     UPROPERTY()
     bool bAlive = true;
 
-
 }
 
 struct FCreatureTypeAggregate
@@ -35,7 +33,6 @@ struct FCreatureTypeAggregate
     int Destroyed = 0;
     UPROPERTY()
     int Alive = 0;
-
 
 }
 
@@ -60,22 +57,33 @@ struct FC_EcologySpawnerStats : FECSComponent
     UPROPERTY()
     FFPTime LastDeathTime;
 
-
     int GetCurrentAlive() const
     {
         return this.CurrentAlive;
     }
     void RecordSpawn(const FECSEntityId &inout CreatureId, const FName &inout RowName, const FECSEntityId &inout FlockId, const FFPTime &inout Time)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FCreatureStatsEntry local_12;
+        local_12.CreatureRowName = RowName;
+        local_12.FlockEntity = FlockId;
+        local_12.SpawnTime = Time;
+        this.CreatureStats.Add(CreatureId, local_12);
+        ++this.TotalSpawned;
+        ++this.CurrentAlive;
+        if (this.TotalSpawned == 1)
+        {
+            this.FirstSpawnTime = Time;
+        }
+        this.LastSpawnTime = Time;
+        return;
     }
     void RecordDeath(const FECSEntityId &inout CreatureId, const FFPTime &inout Time)
     {
-        if (!(this.Contains(CreatureId)))
+        if (!(this.CreatureStats.Contains(CreatureId)))
         {
             return;
         }
-        FCreatureStatsEntry& local_4 = this[CreatureId];
+        FCreatureStatsEntry& local_4 = this.CreatureStats[CreatureId];
         if (!(local_4.bAlive))
         {
             return;
@@ -90,11 +98,11 @@ struct FC_EcologySpawnerStats : FECSComponent
     }
     void RecordDestroy(const FECSEntityId &inout CreatureId, const FFPTime &inout Time, const bool bAlreadyDead)
     {
-        if (!(this.Contains(CreatureId)))
+        if (!(this.CreatureStats.Contains(CreatureId)))
         {
             return;
         }
-        FCreatureStatsEntry& local_4 = this[CreatureId];
+        FCreatureStatsEntry& local_4 = this.CreatureStats[CreatureId];
         local_4.DestroyTime = Time;
         bool local_1 = !(bAlreadyDead);
         if (!(local_1))
@@ -117,7 +125,7 @@ struct FC_EcologySpawnerStats : FECSComponent
     {
         TMap<FName, FCreatureTypeAggregate> local_20;
         FName local_42;
-        for (auto& local_40 : this)
+        for (auto& local_40 : this.CreatureStats)
         {
             local_40;
             bool local_37 = !(local_20.Contains(local_42));
@@ -150,7 +158,7 @@ struct FC_EcologySpawnerStats : FECSComponent
     {
         TMap<FECSEntityId, FCreatureTypeAggregate> local_20;
         FECSEntityId local_41;
-        for (auto& local_40 : this)
+        for (auto& local_40 : this.CreatureStats)
         {
             local_40;
             bool local_37 = !(local_20.Contains(local_41));
@@ -261,36 +269,36 @@ bool RemoveEcologySpawnerStats(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcologySpawnerStatsOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologySpawnerStats, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologySpawnerStats, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologySpawnerStatsOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologySpawnerStats, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologySpawnerStats, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologySpawnerStatsOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologySpawnerStats, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologySpawnerStats, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologySpawnerStatsOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologySpawnerStats, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologySpawnerStats, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologySpawnerStatsOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologySpawnerStats, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologySpawnerStats, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcologySpawnerStatsLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcologySpawnerStats, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcologySpawnerStats, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologySpawnerStatsActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcologySpawnerStats, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcologySpawnerStats, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologySpawnerStatsModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcologySpawnerStats, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcologySpawnerStats, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_HitTestByMoveTrail_NS
 {
     const TECSComponentDerivedPtr<FC_HitTestByMoveTrail> DerivedPtr = TECSComponentDerivedPtr<FC_HitTestByMoveTrail>();
@@ -23,24 +22,20 @@ namespace __INTENRAL_FC_FXByMoveTrailRuntimeData_NS
 struct FC_HitTestByMoveTrail : FECSComponent
 {
     UPROPERTY()
-    FFPTime HitTestDelayTimeAfterSpawn;
+    FFPTime HitTestDelayTimeAfterSpawn = 3.0;
     UPROPERTY()
-    float32 HitTestCheckIntervalTime;
+    float32 HitTestCheckIntervalTime = 0.5f;
     UPROPERTY()
-    float32 HitTestWidth;
+    float32 HitTestWidth = 300.0f;
     UPROPERTY()
-    float32 HitTestHeight;
+    float32 HitTestHeight = 300.0f;
     UPROPERTY()
     FDataObjectPtr AttackData;
     UPROPERTY()
     FAreaStrikeShape StrikeShape;
     UPROPERTY()
-    FVector3f StrikeDirection;
+    FVector3f StrikeDirection = FVector3f::UpVector;
 
-    FC_HitTestByMoveTrail()
-    {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
-    }
 }
 
 struct FC_HitTestByMoveTrailRunTimeData : FECSComponent
@@ -53,12 +48,16 @@ struct FC_HitTestByMoveTrailRunTimeData : FECSComponent
 
     FC_HitTestByMoveTrailRunTimeData()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_LastRecordTime = 0;
         this.__InitDirtyFlags();
         return;
     }
     FC_HitTestByMoveTrailRunTimeData(const FC_HitTestByMoveTrailRunTimeData &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_LastRecordTime = 0;
         this.__InitDirtyFlags();
         this.m_LastPos = Other.m_LastPos;
@@ -131,7 +130,6 @@ struct FFXByMoveTrailConfig
     UPROPERTY()
     float32 FXLengthDesiredDistance = 3000.0f;
 
-
 }
 
 struct FFXByMoveTrailRuntimeData
@@ -142,7 +140,6 @@ struct FFXByMoveTrailRuntimeData
     FName FXLengthParamName;
     UPROPERTY()
     float32 FXLengthDesiredDistance;
-
 
 }
 
@@ -250,37 +247,37 @@ bool RemoveHitTestByMoveTrail(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorHitTestByMoveTrailOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_HitTestByMoveTrail, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_HitTestByMoveTrail, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorHitTestByMoveTrailOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_HitTestByMoveTrail, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_HitTestByMoveTrail, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorHitTestByMoveTrailOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_HitTestByMoveTrail, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_HitTestByMoveTrail, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorHitTestByMoveTrailOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_HitTestByMoveTrail, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_HitTestByMoveTrail, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorHitTestByMoveTrailOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_HitTestByMoveTrail, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_HitTestByMoveTrail, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorHitTestByMoveTrailLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_HitTestByMoveTrail, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_HitTestByMoveTrail, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorHitTestByMoveTrailActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_HitTestByMoveTrail, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_HitTestByMoveTrail, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorHitTestByMoveTrailModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_HitTestByMoveTrail, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_HitTestByMoveTrail, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_HitTestByMoveTrailRunTimeData
@@ -360,37 +357,37 @@ bool RemoveHitTestByMoveTrailRunTimeData(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorHitTestByMoveTrailRunTimeDataOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_HitTestByMoveTrailRunTimeData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_HitTestByMoveTrailRunTimeData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorHitTestByMoveTrailRunTimeDataOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_HitTestByMoveTrailRunTimeData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_HitTestByMoveTrailRunTimeData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorHitTestByMoveTrailRunTimeDataOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_HitTestByMoveTrailRunTimeData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_HitTestByMoveTrailRunTimeData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorHitTestByMoveTrailRunTimeDataOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_HitTestByMoveTrailRunTimeData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_HitTestByMoveTrailRunTimeData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorHitTestByMoveTrailRunTimeDataOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_HitTestByMoveTrailRunTimeData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_HitTestByMoveTrailRunTimeData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorHitTestByMoveTrailRunTimeDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_HitTestByMoveTrailRunTimeData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_HitTestByMoveTrailRunTimeData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorHitTestByMoveTrailRunTimeDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_HitTestByMoveTrailRunTimeData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_HitTestByMoveTrailRunTimeData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorHitTestByMoveTrailRunTimeDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_HitTestByMoveTrailRunTimeData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_HitTestByMoveTrailRunTimeData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_FXByMoveTrail
@@ -473,37 +470,37 @@ bool RemoveFXByMoveTrail(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorFXByMoveTrailOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_FXByMoveTrail, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_FXByMoveTrail, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFXByMoveTrailOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_FXByMoveTrail, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_FXByMoveTrail, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFXByMoveTrailOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_FXByMoveTrail, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_FXByMoveTrail, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFXByMoveTrailOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_FXByMoveTrail, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_FXByMoveTrail, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFXByMoveTrailOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_FXByMoveTrail, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_FXByMoveTrail, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorFXByMoveTrailLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_FXByMoveTrail, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_FXByMoveTrail, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFXByMoveTrailActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_FXByMoveTrail, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_FXByMoveTrail, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFXByMoveTrailModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_FXByMoveTrail, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_FXByMoveTrail, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_FXByMoveTrailRuntimeData
@@ -586,37 +583,37 @@ bool RemoveFXByMoveTrailRuntimeData(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorFXByMoveTrailRuntimeDataOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_FXByMoveTrailRuntimeData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_FXByMoveTrailRuntimeData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFXByMoveTrailRuntimeDataOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_FXByMoveTrailRuntimeData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_FXByMoveTrailRuntimeData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFXByMoveTrailRuntimeDataOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_FXByMoveTrailRuntimeData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_FXByMoveTrailRuntimeData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFXByMoveTrailRuntimeDataOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_FXByMoveTrailRuntimeData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_FXByMoveTrailRuntimeData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFXByMoveTrailRuntimeDataOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_FXByMoveTrailRuntimeData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_FXByMoveTrailRuntimeData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorFXByMoveTrailRuntimeDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_FXByMoveTrailRuntimeData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_FXByMoveTrailRuntimeData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFXByMoveTrailRuntimeDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_FXByMoveTrailRuntimeData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_FXByMoveTrailRuntimeData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFXByMoveTrailRuntimeDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_FXByMoveTrailRuntimeData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_FXByMoveTrailRuntimeData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

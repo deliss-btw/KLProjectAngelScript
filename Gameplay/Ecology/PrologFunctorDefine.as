@@ -1,4 +1,3 @@
-﻿
 namespace FPrologDeclare
 {
     const FEcoFunctorDeclare SearchablePrefab = FEcoFunctorDeclare();

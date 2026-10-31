@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_WorldMapIcon
 {
     const int ViewID = 0;
@@ -31,7 +30,6 @@ class UWidget_WorldMapIcon : UEUIUserWidget
     FConfigVM_WorldRegionIcon RegionIconConfig;
     UPROPERTY()
     FGetEUIModelRef RegionIconDelegate;
-
 
     UFUNCTION()
     void PreConstruct_Implementation(const bool IsDesignTime)
@@ -92,6 +90,7 @@ namespace UWidget_WorldMapIcon
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_WorldMapIcon;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

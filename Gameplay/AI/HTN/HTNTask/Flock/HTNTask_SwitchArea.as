@@ -1,5 +1,3 @@
-﻿
-
 class UHTNTask_SwitchAreaResourceFilter : UHTNTask_ECSScriptBase
 {
     UPROPERTY()

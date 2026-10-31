@@ -1,4 +1,3 @@
-﻿
 namespace UPage_PairMotionPage
 {
     const int ViewID = 0;
@@ -87,6 +86,7 @@ namespace UPage_PairMotionPage
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UPage_PairMotionPage;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

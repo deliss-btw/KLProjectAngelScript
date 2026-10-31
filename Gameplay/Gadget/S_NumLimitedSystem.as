@@ -1,5 +1,3 @@
-﻿
-
 class US_NumLimitSystem : UECSScriptSystem
 {
     US_NumLimitSystem()
@@ -40,7 +38,33 @@ class US_NumLimitSystem : UECSScriptSystem
     UFUNCTION()
     void Job_HandleNumLimitedItemBeginPlay(const FECSEntity &inout Entity, const FC_NumLimited &inout NumLimited) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_6 = 0;
+        int local_22 = 0;
+        if ((!((this.GetManagerEntity(Entity, NumLimited) == ENTITY_NULL))))
+        {
+            int local_31;
+            FNumLimitedItem local_26;
+            local_26.SetEntity(Entity.GetId());
+            local_26.SetIdentifier(local_6.GetBPPathName());
+            local_22.GetModify_ManagerItems().Add(local_26);
+            local_31 = NumLimited.LimitNum;
+            ModifyOrAdd local_36;
+            FC_NumLimitedOverrides& local_38 = local_36.opCall();
+            if (local_38)
+            {
+                if (local_38.FindDefaultItemIdx(local_26.GetIdentifier()) == INDEX_NONE)
+                {
+                    FNumLimitedPairItem local_44;
+                    local_44.SetIdentifier(local_26.GetIdentifier());
+                    local_44.SetLimitNum(int(NumLimited.LimitNum));
+                    local_38.GetModify_DefaultItems().Add(local_44);
+                }
+                local_38.TryGetRealLimitedNum(local_26.GetIdentifier(), local_31);
+            }
+            ModifyOrAdd local_48;
+            local_48.opCall().LimitNums.Add(local_26.GetIdentifier(), local_31);
+        }
+        return;
     }
     UFUNCTION()
     void Job_DestroyNumLimitedEntity(const FECSEntity &inout Entity, FC_NumLimitManagerChanged &inout ManagerChanged, FC_NumLimitManager &inout Manager) const

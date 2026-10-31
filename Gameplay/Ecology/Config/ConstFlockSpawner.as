@@ -1,14 +1,9 @@
-﻿
 enum EConstSpawnerResourceMode
 {
     None,
     InternalCreate,
     External,
 }
-
-
-// NOTE: class defaults are not authored in this module: FConstFlockSpawnerConfig (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
 
 struct FConstSpawnCreatureEntry
 {
@@ -47,7 +42,6 @@ struct FConstFlockSpawnerConfig : FSpawnerConfig
 
     FConstFlockSpawnerConfig()
     {
-        super();
         this.SpawnOnStart = true;
         this.ResourceMode = EConstSpawnerResourceMode(0);
         this.__InitDefaults();
@@ -185,8 +179,7 @@ void RefreshConstSpawnerCreatures(const FECSEntity &inout SpawnerEntity, FC_Ecol
     TSoftObjectPtr<UBaseEcologyPlanerDefine> local_166 = local_70.PlanerDefine;
     if (!((local_168 != nullptr)) && (local_70.CreatureList.Num() > 0))
     {
-        TSoftObjectPtr<UBaseEcologyPlanerDefine> local_198;
-        if (local_198.GetCreatureType())
+        if (FCreatureConfigProxy(local_70.CreatureList[0].MonsterConfig).GetCreatureType())
         {
             UBaseEcologyPlanerDefine local_248;
             local_166 = local_248;
@@ -197,9 +190,9 @@ void RefreshConstSpawnerCreatures(const FECSEntity &inout SpawnerEntity, FC_Ecol
     local_296.bSkipDelayActivation = true;
     local_296.SpawnNum = 0;
     local_296.DefaultPosition = local_126.GetPosition();
-    int local_169 = local_70.CreatureList.Num();
-    if (local_169 > 0)
+    if (local_70.CreatureList.Num() > 0)
     {
+        FCreatureConfigProxy local_198 = FCreatureConfigProxy(local_70.CreatureList[0].MonsterConfig);
     }
     local_296.PlanerDefine = local_166;
     if (local_154.IsValid())
@@ -215,10 +208,11 @@ void RefreshConstSpawnerCreatures(const FECSEntity &inout SpawnerEntity, FC_Ecol
     Assign local_310;
     local_310.opCall(local_312);
     int local_313 = 0;
-    while (local_313 < local_169)
+    for (; local_313 < local_70.CreatureList.Num(); )
     {
         FConstSpawnCreatureEntry& local_316 = local_70.CreatureList[local_313];
         FEcologyCreatureSpawnerContext local_376;
+        FCreatureConfigProxy local_198_2 = FCreatureConfigProxy(local_316.MonsterConfig);
         local_376.SpawnerConfigRef = local_6.ConfigRef;
         local_376.RuntimeSpawnerEntity = SpawnerEntity.GetId();
         local_376.FlockEntity = local_134.GetId();
@@ -228,7 +222,6 @@ void RefreshConstSpawnerCreatures(const FECSEntity &inout SpawnerEntity, FC_Ecol
         local_376.SpawnInitEntryName = local_316.SpawnInitEntryName;
         FEcologySpawnerUtils::SpawnCreatureByContext(local_376);
         ++local_313;
-        local_169 = local_70.CreatureList.Num();
     }
     return;
 }

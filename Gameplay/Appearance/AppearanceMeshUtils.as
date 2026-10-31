@@ -1,4 +1,3 @@
-﻿
 namespace AppearanceMeshUtils
 {
     const FName FaceChildName = n"Face";

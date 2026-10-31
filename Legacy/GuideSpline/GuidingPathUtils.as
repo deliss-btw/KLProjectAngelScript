@@ -1,4 +1,3 @@
-﻿
 namespace FGuidingPathUtils
 {
 void EmitOrQueueGuidingPathRequest(const FECSEntity &inout Requester, const int Kind, const FECSEntity &inout TargetEntity, const FVector2D &inout TargetLocation2D, const FVector &inout TargetLocation, const bool bHasTargetLocation)

@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_ESMTriggerResponded_NS
 {
     const TECSEventDerivedPtr<FCE_ESMTriggerResponded> DerivedPtr = TECSEventDerivedPtr<FCE_ESMTriggerResponded>();
@@ -18,7 +17,6 @@ struct FCE_ESMTriggerResponded : FECSEvent
     UPROPERTY()
     int StateMachineIndex = -1;
 
-
 }
 
 struct FCE_ESMLevelActionEvent : FECSEvent
@@ -30,7 +28,6 @@ struct FCE_ESMLevelActionEvent : FECSEvent
     FName EventName;
     UPROPERTY()
     bool bIsEnter = true;
-
 
 }
 

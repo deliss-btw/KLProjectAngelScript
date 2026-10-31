@@ -1,5 +1,3 @@
-﻿
-
 struct FEcologyResourceModifierFilter
 {
     UPROPERTY()
@@ -31,7 +29,6 @@ struct FEcologyResourceModifier_SpecialTimeSegments : FEcologyResourceModifier
 
     FEcologyResourceModifier_SpecialTimeSegments()
     {
-        super();
         return;
     }
 }

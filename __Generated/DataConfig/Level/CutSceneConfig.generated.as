@@ -1,17 +1,34 @@
-﻿
 namespace __FCutSceneDataFunctions
 {
 UFUNCTION()
 TSoftObjectPtr<ULevelSequence> __FCutSceneData_GetLevelSequence(const TDataObjectPtr<FCutSceneData> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TSoftObjectPtr<ULevelSequence> __r; return __r;
+    TSoftObjectPtr<ULevelSequence> __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'LevelSequence' from a null 'FCutSceneData' DataObject!");
+        }
+        FCutSceneData local_46;
+        return local_46.LevelSequence;
+    }
+    return __r;
 }
 UFUNCTION()
 TMap<FName, FCutSceneEntityInfo> __FCutSceneData_GetEntityInfos(const TDataObjectPtr<FCutSceneData> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TMap<FName, FCutSceneEntityInfo> __r; return __r;
+    TMap<FName, FCutSceneEntityInfo> __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'EntityInfos' from a null 'FCutSceneData' DataObject!");
+        }
+        FCutSceneData local_46;
+        return local_46.EntityInfos;
+    }
+    return __r;
 }
 UFUNCTION()
 FCutSceneData CastToFCutSceneData(const TDataObjectPtr<FCutSceneData> &inout DataObject)

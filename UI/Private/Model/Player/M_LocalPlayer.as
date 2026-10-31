@@ -1,4 +1,3 @@
-﻿
 namespace FM_LocalPlayerLevel
 {
     const int ModelId = 0;
@@ -24,7 +23,6 @@ struct FMsg_LocalPlayerChangeNameRsp : FEUIMessage
 {
     UPROPERTY()
     int RetCode = 0;
-
 
 }
 
@@ -159,18 +157,55 @@ struct FM_LocalPlayerLevel : FEUIModelSingleton
     }
     int GetCurrentBreakthroughLevel() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        const UPlayerInfoSettings local_6;
+        if (this.GetLevelBreakthroughStatus() >= 1 && (this.GetLevelBreakthroughStatus() <= 3))
+        {
+            return this.GetLevel();
+        }
+        GetGameplaySettings<UPlayerInfoSettings> local_8;
+        local_6 = local_8;
+        for (auto local_27 : local_6.GetBreakthroughLevels())
+        {
+            if (local_27 > this.GetLevel())
+            {
+                return local_27;
+            }
+        }
+        return INDEX_NONE;
     }
     int GetNextBreakthroughLevel() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        const UPlayerInfoSettings local_6;
+        int local_2 = this.GetCurrentBreakthroughLevel();
+        int local_1 = INDEX_NONE;
+        if (local_2 == local_1)
+        {
+            return INDEX_NONE;
+        }
+        GetGameplaySettings<UPlayerInfoSettings> local_8;
+        local_6 = local_8;
+        for (auto local_27 : local_6.GetBreakthroughLevels())
+        {
+            if (local_27 > local_2)
+            {
+                return local_27;
+            }
+        }
+        return INDEX_NONE;
     }
     int GetNextBreakthroughLevelAfter(const int InLevel) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        const UPlayerInfoSettings local_2;
+        GetGameplaySettings<UPlayerInfoSettings> local_4;
+        local_2 = local_4;
+        for (auto local_24 : local_2.GetBreakthroughLevels())
+        {
+            if (local_24 > InLevel)
+            {
+                return local_24;
+            }
+        }
+        return INDEX_NONE;
     }
     bool IsBreakthroughLevel(const int InLevel) const
     {
@@ -339,7 +374,15 @@ struct FM_LocalPlayerLevel : FEUIModelSingleton
     }
     void GS_RequestLevelBreakthrough()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_2 = this.GetCurrentBreakthroughLevel();
+        if (local_2 == INDEX_NONE)
+        {
+            return;
+        }
+        FPbLevelBreakthroughReq local_8;
+        local_8.SetLevel(local_2);
+        this.SendProto(local_8.ToWrapper());
+        return;
     }
     void GS_RequestChangePlayerName(const FString &inout NewPlayerName)
     {
@@ -390,12 +433,13 @@ struct FM_LocalPlayerLevel : FEUIModelSingleton
             {
                 continue;
             }
-            FSoftBrush local_154;
-            FText::Format(local_146.Name, local_2.StigmataUnlockContentFormat, local_154);
+            FText local_154 = FText::Format(local_2.StigmataUnlockContentFormat, local_146.Name, local_146.Instructions);
             FSimpleModelEvent local_176;
             local_176.Add(local_34, FVMS_PlayerLevelInfo::GotoStigmataDetail);
             FInputActionListConstructParam local_180;
             local_180.InputActionListConstructParamItems.Add(FInputActionListConstructParamItem(FEUIInputAction(local_2.StigmataUnlockConfirmAction), local_176));
+            FCommonHintParam local_308;
+            ::CommonPopup::LargeHintWithAction(local_146.NodeIcon, local_2.StigmataUnlockTitle, local_154, local_180, local_308, 0);
         }
         return;
     }

@@ -1,5 +1,3 @@
-﻿
-
 struct FESMTargetIgnoreOtherAttackInstanceData
 {
     UPROPERTY()

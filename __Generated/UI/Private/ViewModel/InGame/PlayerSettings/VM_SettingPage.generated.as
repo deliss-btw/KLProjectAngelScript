@@ -1,9 +1,7 @@
-﻿
-
 struct FVMS_SettingPageConfigDefault : FConfigEUIModelDefaultBase
 {
     UPROPERTY()
-    UCameraSettings CameraSettings;
+    UCameraSettings CameraSettings = nullptr;
 
     FVMS_SettingPageConfigDefault()
     {
@@ -13,11 +11,10 @@ struct FVMS_SettingPageConfigDefault : FConfigEUIModelDefaultBase
 
 struct FOnSettingsChanged : FEUIModelEvent
 {
-    FEUIModelEvent _base_FEUIModelEvent;
+    FEUIModelEvent _base_FEUIModelEvent = FEUIModelEvent("", "");
 
     FOnSettingsChanged()
     {
-        FEUIModelEvent local_22 = FEUIModelEvent("", "");
         return;
     }
     void Broadcast() const

@@ -1,5 +1,3 @@
-﻿
-
 struct FTrapAttachOffsetRow : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -33,7 +31,6 @@ struct FTrapAttachOffsetRow : FDataObject
     float32 UpperLayerBlendRatio = 0.65f;
     UPROPERTY()
     float32 HalfLayerRadiusScale = 1.0f;
-
 
 }
 

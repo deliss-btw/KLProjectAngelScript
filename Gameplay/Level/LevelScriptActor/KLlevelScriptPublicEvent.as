@@ -1,5 +1,3 @@
-﻿
-
 class AKLLevelScriptPublicEvent : AKLLevelScriptAreaEventBase
 {
     UPROPERTY()

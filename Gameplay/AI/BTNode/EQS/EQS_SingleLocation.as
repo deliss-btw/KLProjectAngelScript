@@ -1,5 +1,3 @@
-﻿
-
 class UEQS_SingleLocation : UEnvQueryContext_ECS_BlueprintBase
 {
     UEQS_SingleLocation()

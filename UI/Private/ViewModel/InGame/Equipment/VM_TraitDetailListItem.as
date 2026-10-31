@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TraitDetailListItem
 {
     const int ModelId = 0;

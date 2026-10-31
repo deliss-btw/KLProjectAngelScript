@@ -1,4 +1,3 @@
-﻿
 namespace FVM_WorldMapInfo
 {
     const int ModelId = 0;
@@ -174,7 +173,6 @@ struct __GeneratedProperties_FVM_WorldMapInfo
     ESlateVisibility SelfVisisbility;
     UPROPERTY()
     TEUIModelRef<FVM_WorldMapInfo> Self;
-
 
 }
 

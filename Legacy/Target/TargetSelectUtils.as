@@ -1,4 +1,3 @@
-﻿
 namespace FTargetSelectUtils
 {
 void AddSelectTargetEntityByViewportRequest(const FECSEntity &inout Entity, const FName &inout RequestName, const ESelectTargetRequestType RequestType, const TDataObjectPtr<FViewportSelectTargetParams> &inout Params)

@@ -1,4 +1,3 @@
-﻿
 enum EShowInfoType
 {
     None,
@@ -511,14 +510,14 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
                 {
                     FCommissionObjItemModelData local_112;
                     local_112.UIState = EObjectiveItemUIState(0);
-                    local_112.DefaultText = NSLOCTEXT("LevelAreaHUDProgress", "UpdateUnActiveLevelEvent_PrepareToInteract", "з­‰еѕ…й›†з»“д№‹еЌ°еЅўж€ђ");
+                    local_112.DefaultText = NSLOCTEXT("LevelAreaHUDProgress", "UpdateUnActiveLevelEvent_PrepareToInteract", "等待集结之印形成");
                     this.GetModify_TargetModels().Add(local_128.opImplConv());
                 }
                 if (int(local_76.GetStatus()) == 1)
                 {
                     FCommissionObjItemModelData local_112;
                     local_112.UIState = EObjectiveItemUIState(0);
-                    local_112.DefaultText = NSLOCTEXT("LevelAreaHUDProgress", "UpdateUnActiveLevelEvent_Interact", "дє¤дє’й›†з»“д№‹еЌ°пјЊејЂеђЇдє‹д»¶");
+                    local_112.DefaultText = NSLOCTEXT("LevelAreaHUDProgress", "UpdateUnActiveLevelEvent_Interact", "交互集结之印，开启事件");
                     this.GetModify_TargetModels().Add(local_128.opImplConv());
                 }
                 local_143 = false;
@@ -803,7 +802,7 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
             }
             FCommissionObjItemModelData local_572;
             local_572.SubObj = false;
-            local_572.UIState = ::ObjectiveUtils::ConvertObjectiveStatusToUIState(EObjectiveStatus(local_484.GetObjectiveStatus()));
+            local_572.UIState = ::ObjectiveUtils::ConvertObjectiveStatusToUIState(local_484.GetObjectiveStatus());
             local_572.SingleObjectiveConfig = local_536;
             FEUIModelContainer::MakeCached local_588;
             this.GetModify_TargetModels().Add(local_588.opImplConv());
@@ -827,8 +826,15 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
     }
     int FindKeyIndex(const TArray<uint64> &inout Keys, const uint64 Key)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        int local_1 = 0;
+        for (; local_1 < Keys.Num(); ++local_1)
+        {
+            if (Keys[local_1] == Key)
+            {
+                return local_1;
+            }
+        }
+        return INDEX_NONE;
     }
     bool KeysEqual(const TArray<uint64> &inout A, const TArray<uint64> &inout B)
     {
@@ -870,17 +876,124 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
     }
     int FindTargetModelIndexForKey(const uint64 Key)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        int local_1 = 0;
+        for (; local_1 < this.GetTargetModels().Num(); ++local_1)
+        {
+            if (this.MakeItemKey(this.GetModify_TargetModels()[local_1]) == Key)
+            {
+                return local_1;
+            }
+        }
+        return INDEX_NONE;
     }
     int GetViewInsertIndexForNewKey(const TArray<uint64> &inout ViewOrderKeys, const uint64 AddKey)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        int local_2 = this.FindKeyIndex(ViewOrderKeys, AddKey);
+        if (local_2 == INDEX_NONE)
+        {
+            return this.GetViewTargetModels().Num();
+        }
+        int local_4 = 0;
+        int local_5 = 0;
+        for (; local_5 < local_2; ++local_5)
+        {
+            if (this.FindKeyIndex(this.GetViewTargetKeys(), ViewOrderKeys[local_5]) != INDEX_NONE)
+            {
+                ++local_4;
+            }
+        }
+        return local_4;
     }
     void SyncViewTargetModels()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        TArray<uint64> local_4;
+        this.BuildViewKeyOrderMainBeforeSub(local_4);
+        this.LevelAreaEventDbg_LogState("SyncView:enter", 2);
+        if (this.LevelAreaEventDbg_Level() >= 2 && (local_4.Num() > 0))
+        {
+            FString local_12 = "newKeys=";
+            int local_13 = 0;
+            for (; local_13 < local_4.Num(); )
+            {
+                local_12 += FString().Append(local_4[local_13]).Append(",");
+                ++local_13;
+            }
+            XLog(ELog(16), FString().Append("[FVMS_LevelAreaEvent] SyncView:enter detail ").Append(local_12));
+        }
+        if (int(this.GetTransitionPhase()) != 0)
+        {
+            this.UpdateViewDataDuringTransition();
+            this.LevelAreaEventDbg_LogState("SyncView:defer_while_transition", 1);
+            return;
+        }
+        if (this.KeysEqual(local_4, this.GetViewTargetKeys()))
+        {
+            this.UpdateKeptItemsData(local_4);
+            this.LevelAreaEventDbg_LogState("SyncView:keys_unchanged_update_kept_only", 2);
+            return;
+        }
+        if (this.GetViewTargetModels().Num() == 0)
+        {
+            int local_13_2 = 0;
+            for (; local_13_2 < local_4.Num(); ++local_13_2)
+            {
+                int local_6 = this.FindTargetModelIndexForKey(local_4[local_13_2]);
+                if (local_6 != INDEX_NONE)
+                {
+                    this.GetModify_ViewTargetModels().Add(this.GetModify_TargetModels()[local_6]);
+                }
+            }
+            this.GetModify_ViewTargetKeys().Empty(0);
+            int local_6_2 = 0;
+            for (; local_6_2 < local_4.Num(); )
+            {
+                this.GetModify_ViewTargetKeys().Add(local_4[local_6_2]);
+                ++local_6_2;
+            }
+            if (this.GetViewTargetModels().Num() > 0)
+            {
+                this.SetAllViewAnimState(ECommissionObjAnimState(1));
+                this.StartAppearingTransition();
+                this.LevelAreaEventDbg_LogState("SyncView:init_view_from_empty -> Appearing", 1);
+            }
+            return;
+        }
+        bool local_26 = false;
+        int local_13_3 = 0;
+        for (; local_13_3 < this.GetViewTargetKeys().Num(); ++local_13_3)
+        {
+            if (!(local_4.Contains(this.GetViewTargetKeys()[local_13_3])))
+            {
+                FEUIModelContainer::RequireModel(this.GetModify_ViewTargetModels()[local_13_3]).opCall().SetAnimState(ECommissionObjAnimState(2));
+                local_26 = true;
+                this.LevelAreaEventDbg_LogState(FString().Append("SyncView:mark_disappearing viewIdx=").Append(local_13_3).Append(" key=").Append(this.GetViewTargetKeys()[local_13_3]), 1);
+            }
+        }
+        this.UpdateKeptItemsData(local_4);
+        this.GetModify_PendingAddModels().Empty(0);
+        int local_6_3 = 0;
+        for (; local_6_3 < this.GetTargetModels().Num(); ++local_6_3)
+        {
+            if (this.FindKeyIndex(this.GetViewTargetKeys(), this.MakeItemKey(this.GetModify_TargetModels()[local_6_3])) == (INDEX_NONE))
+            {
+                this.GetModify_PendingAddModels().Add(this.GetModify_TargetModels()[local_6_3]);
+            }
+        }
+        if (local_26)
+        {
+            this.StartDisappearingTransition();
+            this.LevelAreaEventDbg_LogState("SyncView:start_transition Disappearing", 1);
+        }
+        else
+        {
+            if (this.GetPendingAddModels().Num() > 0)
+            {
+                this.ApplyPendingAddModels();
+                this.StartAppearingTransition();
+                this.LevelAreaEventDbg_LogState("SyncView:ApplyPendingAdd -> Appearing", 1);
+            }
+        }
+        return;
     }
     void StartDisappearingTransition()
     {
@@ -915,36 +1028,75 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
         {
             this.LevelAreaEventDbg_LogState(FString().Append("FinishDisappearingTransition removed=").Append(local_5), 1);
         }
-        this.SetTransitionPhase(ECommissionViewTransitionPhase(ECommissionViewTransitionPhase(0)));
+        this.SetTransitionPhase(ECommissionViewTransitionPhase(0));
         this.SyncViewTargetModels();
         return;
     }
     void FinishAppearingTransition()
     {
-        if ((int(this.GetTransitionPhase())) != 2)
+        if (int(this.GetTransitionPhase()) != 2)
         {
             return;
         }
         this.SetAllViewAnimState(ECommissionObjAnimState(0));
-        this.SetTransitionPhase(ECommissionViewTransitionPhase(ECommissionViewTransitionPhase(0)));
+        this.SetTransitionPhase(ECommissionViewTransitionPhase(0));
         this.LevelAreaEventDbg_LogState("FinishAppearingTransition -> Normal & Phase None", 1);
         this.SyncViewTargetModels();
         return;
     }
     void UpdateKeptItemsData(const TArray<uint64> &inout NewKeys)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_16 = 0;
+        int local_18 = 0;
+        int local_1 = 0;
+        for (; local_1 < NewKeys.Num(); ++local_1)
+        {
+            int local_3 = this.FindKeyIndex(this.GetViewTargetKeys(), NewKeys[local_1]);
+            if (local_3 != INDEX_NONE)
+            {
+                int local_5 = this.FindTargetModelIndexForKey(NewKeys[local_1]);
+                if (local_5 == INDEX_NONE)
+                {
+                    continue;
+                }
+                FEUIModelContainer::RequireModel(this.GetModify_TargetModels()[local_5]);
+                FEUIModelContainer::RequireModel(this.GetModify_ViewTargetModels()[local_3]);
+                local_18.SetProgress(local_16.GetProgress());
+                local_18.SetUIState(local_16.GetUIState());
+                local_18.SetDefaultText(local_16.GetDefaultText());
+            }
+        }
+        return;
     }
     void UpdateViewDataDuringTransition()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_10 = 0;
+        int local_18 = 0;
+        int local_1 = 0;
+        for (; local_1 < this.GetViewTargetKeys().Num(); ++local_1)
+        {
+            FEUIModelContainer::RequireModel(this.GetModify_ViewTargetModels()[local_1]);
+            if (int(local_10.GetAnimState()) == 2)
+            {
+                continue;
+            }
+            int local_12 = this.FindTargetModelIndexForKey(this.GetViewTargetKeys()[local_1]);
+            if (local_12 != INDEX_NONE)
+            {
+                FEUIModelContainer::RequireModel(this.GetModify_TargetModels()[local_12]);
+                local_10.SetProgress(local_18.GetProgress());
+                local_10.SetUIState(local_18.GetUIState());
+                local_10.SetDefaultText(local_18.GetDefaultText());
+            }
+        }
+        return;
     }
     void SetAllViewAnimState(const ECommissionObjAnimState State)
     {
         int local_1 = 0;
         for (; local_1 < this.GetViewTargetModels().Num(); )
         {
-            FEUIModelContainer::RequireModel(this.GetModify_ViewTargetModels()[local_1]).opCall().SetAnimState();
+            FEUIModelContainer::RequireModel(this.GetModify_ViewTargetModels()[local_1]).opCall().SetAnimState(ECommissionObjAnimState(State));
             ++local_1;
         }
         return;
@@ -1236,7 +1388,6 @@ struct __GeneratedProperties_FVMS_LevelAreaEvent
     UPROPERTY()
     TEUIModelRef<FVMS_LevelAreaEvent> Self;
 
-
 }
 
 namespace FVMS_LevelAreaEvent
@@ -1350,7 +1501,19 @@ void __Monitor_OnTrackingMission(FVMS_LevelAreaEvent &inout Model, const FECSEnt
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorPlayerLevelAreaEventInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerLevelAreaEventInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorAreaEventObjectiveLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorAreaEventObjectiveModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerUnActiveLevelAreaEventInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerUnActiveLevelAreaEventInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorLevelPublicEventInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorLevelPublicEventInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorTrackingMissionLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorTrackingMissionModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerMissionInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerMissionInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TArray<FEUIModelContainer> __UIGetter_ViewTargetModels(const FVMS_LevelAreaEvent &inout Model)
 {

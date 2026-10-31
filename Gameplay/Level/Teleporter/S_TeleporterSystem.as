@@ -1,5 +1,3 @@
-﻿
-
 class US_TeleporterSystem : UECSScriptSystem
 {
     US_TeleporterSystem()

@@ -1,10 +1,8 @@
-﻿
 enum EDivineSkillType
 {
     DivineType_Main,
     DivineType_PVP,
 }
-
 
 struct FDivineSkillConfig : FDataObject
 {
@@ -43,7 +41,6 @@ struct FDivineSkillConfig : FDataObject
     TArray<FCapabilityConfigWithLevel> Capabilities;
     UPROPERTY()
     UMediaSource PreviewMovie = nullptr;
-
 
     const TDataObjectPtr<FDivineSkillConfig> GetUpgradeSkill() const property
     {

@@ -1,4 +1,3 @@
-﻿
 namespace NumericUtils
 {
 int AsInt32(const uint Value)

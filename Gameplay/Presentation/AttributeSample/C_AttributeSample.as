@@ -1,4 +1,3 @@
-﻿
 enum EAttributeSampleType
 {
     None,
@@ -87,11 +86,15 @@ struct FCS_GlobalAttributeSampler : FECSSingleton
 
     FCS_GlobalAttributeSampler()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FCS_GlobalAttributeSampler(const FCS_GlobalAttributeSampler &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_AttributeSampleEntities = Other.m_AttributeSampleEntities;
         return;
@@ -134,11 +137,15 @@ struct FC_AttributeSampler : FECSComponent
 
     FC_AttributeSampler()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_AttributeSampler(const FC_AttributeSampler &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_AttributeSampleEntities = Other.m_AttributeSampleEntities;
         return;
@@ -186,7 +193,7 @@ struct FAttributeSampleInfo
     }
     bool IsEmpty() const
     {
-        return this.IsEmpty() && this.GlobalRequesters.IsEmpty();
+        return this.SamplerRequesters.IsEmpty() && this.GlobalRequesters.IsEmpty();
     }
     void AddSample(const EAttributeSampleRequester Requester, const FECSEntity &inout Sampler = ENTITY_NULL)
     {
@@ -195,9 +202,7 @@ struct FAttributeSampleInfo
             this.GlobalRequesters.SetBit(int(Requester), true);
             return;
         }
-        int local_1 = 1;
-        int local_2 = int(Requester);
-        this.FindOrAdd(Sampler).SetBit(local_1);
+        this.SamplerRequesters.FindOrAdd(Sampler).SetBit(int(Requester), true);
         return;
     }
     void RemoveSample(const EAttributeSampleRequester Requester, const FECSEntity &inout Sampler = ENTITY_NULL)
@@ -207,7 +212,7 @@ struct FAttributeSampleInfo
             this.GlobalRequesters.SetBit(int(Requester), false);
             return;
         }
-        TRawPtr<FBitSet32> local_4 = this.Find(Sampler);
+        TRawPtr<FBitSet32> local_4 = this.SamplerRequesters.Find(Sampler);
         if (local_4)
         {
             local_4.opArrow().SetBit(int(Requester), false);
@@ -223,7 +228,7 @@ struct FAttributeSampleInfo
         {
             return this.GlobalRequesters.GetBit(int(Requester));
         }
-        TConstRawPtr<FBitSet32> local_4 = this.Find(Sampler);
+        TConstRawPtr<FBitSet32> local_4 = this.SamplerRequesters.Find(Sampler);
         if (local_4)
         {
             int local_2 = int(Requester);
@@ -237,14 +242,14 @@ struct FAttributeSampleInfo
         {
             return !(this.GlobalRequesters.IsEmpty());
         }
-        return this.Contains(Sampler);
+        return this.SamplerRequesters.Contains(Sampler);
     }
     TArray<FECSEntity> GetAllSamplers() const
     {
         TArray<FECSEntity> local_4;
         if (this.GlobalRequesters.IsEmpty())
         {
-            this.GetKeys(local_4);
+            this.SamplerRequesters.GetKeys(local_4);
         }
         else
         {
@@ -270,12 +275,12 @@ struct FAttributeSampleInfo
         }
         for (auto& local_30 : Other.SamplerRequesters)
         {
-            if (!(this.Contains(local_30.GetKey())))
+            if (!(this.SamplerRequesters.Contains(local_30.GetKey())))
             {
                 AddedSamplers.Add(local_30.GetKey());
             }
         }
-        for (auto& local_30_2 : this)
+        for (auto& local_30_2 : this.SamplerRequesters)
         {
             if (!(Other.SamplerRequesters.Contains(local_30_2.GetKey())))
             {
@@ -324,11 +329,15 @@ struct FCS_Position2DAttributeSample : FECSSingleton
 
     FCS_Position2DAttributeSample()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FCS_Position2DAttributeSample(const FCS_Position2DAttributeSample &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_Position2DMap = Other.m_Position2DMap;
         return;
@@ -371,11 +380,15 @@ struct FCS_PositionZAttributeSample : FECSSingleton
 
     FCS_PositionZAttributeSample()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FCS_PositionZAttributeSample(const FCS_PositionZAttributeSample &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_PositionZMap = Other.m_PositionZMap;
         return;
@@ -418,11 +431,15 @@ struct FCS_RotationXYAttributeSample : FECSSingleton
 
     FCS_RotationXYAttributeSample()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FCS_RotationXYAttributeSample(const FCS_RotationXYAttributeSample &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_RotationXYMap = Other.m_RotationXYMap;
         return;
@@ -465,11 +482,15 @@ struct FCS_RotationZAttributeSample : FECSSingleton
 
     FCS_RotationZAttributeSample()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FCS_RotationZAttributeSample(const FCS_RotationZAttributeSample &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_RotationZMap = Other.m_RotationZMap;
         return;
@@ -512,11 +533,15 @@ struct FCS_PresentationConfigAttributeSample : FECSSingleton
 
     FCS_PresentationConfigAttributeSample()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FCS_PresentationConfigAttributeSample(const FCS_PresentationConfigAttributeSample &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_PresentationConfigMap = Other.m_PresentationConfigMap;
         return;
@@ -559,11 +584,15 @@ struct FCS_HPAttributeSample : FECSSingleton
 
     FCS_HPAttributeSample()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FCS_HPAttributeSample(const FCS_HPAttributeSample &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_HPMap = Other.m_HPMap;
         return;
@@ -683,17 +712,17 @@ bool RemoveGlobalAttributeSampler(const FECSWorldPtr &inout World)
 }
 void __MonitorGlobalAttributeSamplerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_GlobalAttributeSampler, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_GlobalAttributeSampler, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGlobalAttributeSamplerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_GlobalAttributeSampler, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_GlobalAttributeSampler, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGlobalAttributeSamplerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_GlobalAttributeSampler, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_GlobalAttributeSampler, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AttributeSampler
@@ -773,37 +802,37 @@ bool RemoveAttributeSampler(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAttributeSamplerOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AttributeSampler, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AttributeSampler, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttributeSamplerOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AttributeSampler, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AttributeSampler, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttributeSamplerOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AttributeSampler, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AttributeSampler, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttributeSamplerOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AttributeSampler, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AttributeSampler, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttributeSamplerOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AttributeSampler, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AttributeSampler, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAttributeSamplerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AttributeSampler, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AttributeSampler, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAttributeSamplerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AttributeSampler, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AttributeSampler, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAttributeSamplerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AttributeSampler, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AttributeSampler, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AttributeSample
@@ -886,37 +915,37 @@ bool RemoveAttributeSample(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAttributeSampleOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AttributeSample, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AttributeSample, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttributeSampleOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AttributeSample, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AttributeSample, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttributeSampleOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AttributeSample, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AttributeSample, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttributeSampleOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AttributeSample, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AttributeSample, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttributeSampleOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AttributeSample, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AttributeSample, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAttributeSampleLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AttributeSample, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AttributeSample, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAttributeSampleActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AttributeSample, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AttributeSample, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAttributeSampleModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AttributeSample, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AttributeSample, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AttributeSampleSnapshot
@@ -999,37 +1028,37 @@ bool RemoveAttributeSampleSnapshot(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAttributeSampleSnapshotOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AttributeSampleSnapshot, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AttributeSampleSnapshot, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttributeSampleSnapshotOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AttributeSampleSnapshot, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AttributeSampleSnapshot, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttributeSampleSnapshotOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AttributeSampleSnapshot, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AttributeSampleSnapshot, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttributeSampleSnapshotOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AttributeSampleSnapshot, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AttributeSampleSnapshot, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttributeSampleSnapshotOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AttributeSampleSnapshot, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AttributeSampleSnapshot, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAttributeSampleSnapshotLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AttributeSampleSnapshot, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AttributeSampleSnapshot, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAttributeSampleSnapshotActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AttributeSampleSnapshot, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AttributeSampleSnapshot, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAttributeSampleSnapshotModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AttributeSampleSnapshot, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AttributeSampleSnapshot, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AttributeSampleModifyDeferTag
@@ -1109,37 +1138,37 @@ bool RemoveAttributeSampleModifyDeferTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAttributeSampleModifyDeferTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AttributeSampleModifyDeferTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AttributeSampleModifyDeferTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttributeSampleModifyDeferTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AttributeSampleModifyDeferTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AttributeSampleModifyDeferTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttributeSampleModifyDeferTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AttributeSampleModifyDeferTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AttributeSampleModifyDeferTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttributeSampleModifyDeferTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AttributeSampleModifyDeferTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AttributeSampleModifyDeferTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAttributeSampleModifyDeferTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AttributeSampleModifyDeferTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AttributeSampleModifyDeferTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAttributeSampleModifyDeferTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AttributeSampleModifyDeferTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AttributeSampleModifyDeferTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAttributeSampleModifyDeferTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AttributeSampleModifyDeferTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AttributeSampleModifyDeferTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAttributeSampleModifyDeferTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AttributeSampleModifyDeferTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AttributeSampleModifyDeferTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_Position2DAttributeSample
@@ -1227,17 +1256,17 @@ bool RemovePosition2DAttributeSample(const FECSWorldPtr &inout World)
 }
 void __MonitorPosition2DAttributeSampleLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_Position2DAttributeSample, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_Position2DAttributeSample, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPosition2DAttributeSampleActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_Position2DAttributeSample, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_Position2DAttributeSample, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPosition2DAttributeSampleModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_Position2DAttributeSample, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_Position2DAttributeSample, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_PositionZAttributeSample
@@ -1325,17 +1354,17 @@ bool RemovePositionZAttributeSample(const FECSWorldPtr &inout World)
 }
 void __MonitorPositionZAttributeSampleLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_PositionZAttributeSample, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_PositionZAttributeSample, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPositionZAttributeSampleActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_PositionZAttributeSample, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_PositionZAttributeSample, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPositionZAttributeSampleModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_PositionZAttributeSample, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_PositionZAttributeSample, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_RotationXYAttributeSample
@@ -1423,17 +1452,17 @@ bool RemoveRotationXYAttributeSample(const FECSWorldPtr &inout World)
 }
 void __MonitorRotationXYAttributeSampleLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_RotationXYAttributeSample, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_RotationXYAttributeSample, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRotationXYAttributeSampleActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_RotationXYAttributeSample, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_RotationXYAttributeSample, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRotationXYAttributeSampleModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_RotationXYAttributeSample, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_RotationXYAttributeSample, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_RotationZAttributeSample
@@ -1521,17 +1550,17 @@ bool RemoveRotationZAttributeSample(const FECSWorldPtr &inout World)
 }
 void __MonitorRotationZAttributeSampleLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_RotationZAttributeSample, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_RotationZAttributeSample, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRotationZAttributeSampleActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_RotationZAttributeSample, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_RotationZAttributeSample, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRotationZAttributeSampleModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_RotationZAttributeSample, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_RotationZAttributeSample, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_PresentationConfigAttributeSample
@@ -1619,17 +1648,17 @@ bool RemovePresentationConfigAttributeSample(const FECSWorldPtr &inout World)
 }
 void __MonitorPresentationConfigAttributeSampleLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_PresentationConfigAttributeSample, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_PresentationConfigAttributeSample, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPresentationConfigAttributeSampleActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_PresentationConfigAttributeSample, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_PresentationConfigAttributeSample, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPresentationConfigAttributeSampleModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_PresentationConfigAttributeSample, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_PresentationConfigAttributeSample, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_HPAttributeSample
@@ -1717,17 +1746,17 @@ bool RemoveHPAttributeSample(const FECSWorldPtr &inout World)
 }
 void __MonitorHPAttributeSampleLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_HPAttributeSample, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_HPAttributeSample, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorHPAttributeSampleActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_HPAttributeSample, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_HPAttributeSample, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorHPAttributeSampleModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_HPAttributeSample, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_HPAttributeSample, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

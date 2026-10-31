@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonAnnularProgressBar
 {
     const int ModelId = 0;
@@ -173,7 +172,6 @@ struct __GeneratedProperties_FVM_CommonAnnularProgressBar
     float ShowProgress;
     UPROPERTY()
     TEUIModelRef<FVM_CommonAnnularProgressBar> Self;
-
 
 }
 

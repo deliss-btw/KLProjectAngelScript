@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TalentUpgradeTreeTiitle
 {
     const int ViewID = 0;
@@ -36,6 +35,7 @@ namespace UWidget_TalentUpgradeTreeTiitle
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TalentUpgradeTreeTiitle;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

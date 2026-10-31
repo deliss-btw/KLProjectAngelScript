@@ -1,4 +1,3 @@
-﻿
 enum EEcosimAIHumanityMainStance
 {
     Normal,

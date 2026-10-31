@@ -1,4 +1,3 @@
-﻿
 enum EPVXExpChangeReason
 {
     None,
@@ -61,11 +60,21 @@ struct FC_PVXPlayerRuntime : FECSComponent
 
     FC_PVXPlayerRuntime()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_PlayerAvatarID = 0;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_PVXPlayerRuntime(const FC_PVXPlayerRuntime &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_PlayerAvatarID = 0;
+        this.__InitDirtyFlags();
+        this.m_PlayerAvatarID = int(Other.m_PlayerAvatarID);
+        this.m_SpawnPoint = Other.m_SpawnPoint;
+        return;
     }
     FC_PVXPlayerRuntime opAssign(const FC_PVXPlayerRuntime &inout Other)
     {
@@ -158,11 +167,57 @@ struct FPVX_PlayerProgressData
 
     FPVX_PlayerProgressData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags32 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_Level = 1;
+        this.m_LastEvolveLevel_Boss = 0;
+        this.m_Exp = 0;
+        this.m_Score = 0;
+        this.m_bInLevelProtect = false;
+        this.m_TeamId = -1;
+        this.m_PlayerInTeamIndex = INDEX_NONE;
+        this.m_PlayerUID = 0;
+        this.m_PlayerAvatarID = 0;
+        this.m_PlayerDivineSkillID = 0;
+        this.m_CurrencyAmount = 0;
+        this.m_FinalState = EPVXPlayerFinalState(0);
+        this.m_FinishReason = EPVXPlayerFinishReason(0);
+        return;
     }
     FPVX_PlayerProgressData(const FPVX_PlayerProgressData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags32 local_7;
+        this.__DirtyFlags = local_7;
+        this.m_Level = 1;
+        this.m_LastEvolveLevel_Boss = 0;
+        this.m_Exp = 0;
+        this.m_Score = 0;
+        this.m_bInLevelProtect = false;
+        this.m_TeamId = -1;
+        this.m_PlayerInTeamIndex = INDEX_NONE;
+        this.m_PlayerUID = 0;
+        this.m_PlayerAvatarID = 0;
+        this.m_PlayerDivineSkillID = 0;
+        this.m_CurrencyAmount = 0;
+        this.m_FinalState = EPVXPlayerFinalState(0);
+        this.m_FinishReason = EPVXPlayerFinishReason(0);
+        this.m_Level = int(Other.m_Level);
+        this.m_LastEvolveLevel_Boss = int(Other.m_LastEvolveLevel_Boss);
+        this.m_Exp = int(Other.m_Exp);
+        this.m_Score = int(Other.m_Score);
+        this.m_bInLevelProtect = Other.m_bInLevelProtect;
+        this.m_TeamId = int(Other.m_TeamId);
+        this.m_PlayerInTeamIndex = int(Other.m_PlayerInTeamIndex);
+        this.m_PlayerName = Other.m_PlayerName;
+        this.m_PlayerUID = int(Other.m_PlayerUID);
+        this.m_PlayerAvatarID = int(Other.m_PlayerAvatarID);
+        this.m_PlayerDivineSkillID = int(Other.m_PlayerDivineSkillID);
+        this.m_CurrencyAmount = int(Other.m_CurrencyAmount);
+        this.m_LastOverrideAttributeData = Other.m_LastOverrideAttributeData;
+        this.m_PendingSettlementEvents = Other.m_PendingSettlementEvents;
+        this.m_FinalState = Other.m_FinalState;
+        this.m_FinishReason = Other.m_FinishReason;
+        return;
     }
     FPVX_PlayerProgressData opAssign(const FPVX_PlayerProgressData &inout Other)
     {
@@ -443,11 +498,26 @@ struct FCS_PVX_ProgressData : FECSSingleton
 
     FCS_PVX_ProgressData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_ExpMultiplier = 1.0f;
+        this.m_WinnerFinishReason = EPVXPlayerFinishReason(0);
+        this.__InitDirtyFlags();
+        return;
     }
     FCS_PVX_ProgressData(const FCS_PVX_ProgressData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_ExpMultiplier = 1.0f;
+        this.m_WinnerFinishReason = EPVXPlayerFinishReason(0);
+        this.__InitDirtyFlags();
+        this.m_PlayerProgressMap = Other.m_PlayerProgressMap;
+        this.m_HasTriggeredLevelProgressArray = Other.m_HasTriggeredLevelProgressArray;
+        this.m_ExpMultiplier = Other.m_ExpMultiplier;
+        this.m_MonsterPowerBuffConfig = Other.m_MonsterPowerBuffConfig;
+        this.m_WinnerFinishReason = Other.m_WinnerFinishReason;
+        return;
     }
     FCS_PVX_ProgressData opAssign(const FCS_PVX_ProgressData &inout Other)
     {
@@ -573,7 +643,6 @@ struct FPVX_SettlementRewardEntry
     UPROPERTY()
     int Num = 0;
 
-
 }
 
 struct FC_PVX_SettlementReward : FECSComponent
@@ -582,7 +651,6 @@ struct FC_PVX_SettlementReward : FECSComponent
     TArray<FPVX_SettlementRewardEntry> RewardEntries;
     UPROPERTY()
     int RewardCurrencyAmount = 0;
-
 
 }
 
@@ -663,37 +731,37 @@ bool RemovePVXPlayerRuntime(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPVXPlayerRuntimeOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PVXPlayerRuntime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PVXPlayerRuntime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPVXPlayerRuntimeOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PVXPlayerRuntime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PVXPlayerRuntime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPVXPlayerRuntimeOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PVXPlayerRuntime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PVXPlayerRuntime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPVXPlayerRuntimeOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PVXPlayerRuntime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PVXPlayerRuntime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPVXPlayerRuntimeOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PVXPlayerRuntime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PVXPlayerRuntime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPVXPlayerRuntimeLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PVXPlayerRuntime, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PVXPlayerRuntime, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVXPlayerRuntimeActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PVXPlayerRuntime, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PVXPlayerRuntime, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVXPlayerRuntimeModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PVXPlayerRuntime, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PVXPlayerRuntime, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_PVXPlayerFullyInitializedTag
@@ -773,37 +841,37 @@ bool RemovePVXPlayerFullyInitializedTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPVXPlayerFullyInitializedTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PVXPlayerFullyInitializedTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PVXPlayerFullyInitializedTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPVXPlayerFullyInitializedTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PVXPlayerFullyInitializedTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PVXPlayerFullyInitializedTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPVXPlayerFullyInitializedTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PVXPlayerFullyInitializedTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PVXPlayerFullyInitializedTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPVXPlayerFullyInitializedTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PVXPlayerFullyInitializedTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PVXPlayerFullyInitializedTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPVXPlayerFullyInitializedTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PVXPlayerFullyInitializedTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PVXPlayerFullyInitializedTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPVXPlayerFullyInitializedTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PVXPlayerFullyInitializedTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PVXPlayerFullyInitializedTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVXPlayerFullyInitializedTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PVXPlayerFullyInitializedTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PVXPlayerFullyInitializedTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVXPlayerFullyInitializedTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PVXPlayerFullyInitializedTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PVXPlayerFullyInitializedTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_PVX_ProgressData
@@ -891,17 +959,17 @@ bool RemovePVX_ProgressData(const FECSWorldPtr &inout World)
 }
 void __MonitorPVX_ProgressDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_PVX_ProgressData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_PVX_ProgressData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVX_ProgressDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_PVX_ProgressData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_PVX_ProgressData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVX_ProgressDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_PVX_ProgressData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_PVX_ProgressData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_PVX_PendingSettlement
@@ -992,17 +1060,17 @@ bool RemovePVX_PendingSettlement(const FECSWorldPtr &inout World)
 }
 void __MonitorPVX_PendingSettlementLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_PVX_PendingSettlement, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_PVX_PendingSettlement, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVX_PendingSettlementActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_PVX_PendingSettlement, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_PVX_PendingSettlement, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVX_PendingSettlementModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_PVX_PendingSettlement, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_PVX_PendingSettlement, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_PVX_SettlementReward
@@ -1085,37 +1153,37 @@ bool RemovePVX_SettlementReward(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPVX_SettlementRewardOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PVX_SettlementReward, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PVX_SettlementReward, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPVX_SettlementRewardOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PVX_SettlementReward, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PVX_SettlementReward, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPVX_SettlementRewardOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PVX_SettlementReward, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PVX_SettlementReward, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPVX_SettlementRewardOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PVX_SettlementReward, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PVX_SettlementReward, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPVX_SettlementRewardOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PVX_SettlementReward, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PVX_SettlementReward, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPVX_SettlementRewardLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PVX_SettlementReward, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PVX_SettlementReward, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVX_SettlementRewardActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PVX_SettlementReward, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PVX_SettlementReward, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVX_SettlementRewardModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PVX_SettlementReward, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PVX_SettlementReward, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

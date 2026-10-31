@@ -1,4 +1,3 @@
-﻿
 namespace TalentUpgradeRuntimeAutoLineBuilder
 {
 bool IsNodeNormal(const FM_TalentNode &inout Node)
@@ -445,17 +444,17 @@ UWidget ResolveTalentItemIconWidget(const FM_TalentNode &inout Node, const int C
 }
 UWidget ResolveTalentItemPlateWidget(const UWidget_TalentUpgradeItem ItemWidget)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     return nullptr;
 }
 UWidget ResolveTalentChoiceBranchPlateWidget(const UWidget_TalentUpgradeItem ItemWidget)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     return nullptr;
 }
 UWidget ResolveTalentChoiceBranchStablePortWidget(const UWidget_TalentUpgradeItem ItemWidget)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     return nullptr;
 }
 UWidget ResolveTalentItemPortWidget(const FM_TalentNode &inout Node, const int ChoiceIndex, const UWidget_TalentUpgradeItem ItemWidget)
@@ -532,11 +531,37 @@ void AddNodeFallbackPortGraphNodes(const FM_TalentNode &inout Node, const UWidge
 }
 void AddChoiceHubPortGraphNode(const FM_TalentNode &inout Node, const UWidget_TalentSkillUpgradeNode ItemWidget, const EEUIAutoLinePort Port, const bool bAttachLinesAtCenter, TArray<FEUIAutoLineNode> &inout OutNodes)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    UWidget local_4;
+    UWidget local_6;
+    if (ItemWidget == nullptr)
+    {
+        return;
+    }
+    if ((int(Port) == 2 || (int(Port) == 3)))
+    {
+        local_6 = ItemWidget.GetAutoLineChoiceHubCenterMarkerWidget();
+    }
+    else
+    {
+        local_4 = ItemWidget.GetAutoLineChoiceHubWidget();
+        local_6 = ItemWidget.GetAutoLineChoiceHubAnchorWidget();
+    }
+    TalentUpgradeRuntimeAutoLineBuilder::AddGraphNode(TalentUpgradeRuntimeAutoLineBuilder::MakeChoiceHubPortId(Node, EEUIAutoLinePort(Port)), TalentUpgradeRuntimeAutoLineBuilder::ResolveNodeStyleState(Node), local_4, local_6, bAttachLinesAtCenter, OutNodes);
+    return;
 }
 void AddChoiceItemPortGraphNode(const FM_TalentNode &inout Node, const int ChoiceIndex, const UWidget_TalentUpgradeItem ChoiceWidget, const EEUIAutoLinePort Port, const bool bAttachLinesAtCenter, TArray<FEUIAutoLineNode> &inout OutNodes)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    if (ChoiceWidget == nullptr)
+    {
+        return;
+    }
+    UWidget local_4 = TalentUpgradeRuntimeAutoLineBuilder::ResolveTalentChoiceBranchPortWidget(ChoiceWidget);
+    if (local_4 == nullptr)
+    {
+        local_4 = TalentUpgradeRuntimeAutoLineBuilder::ResolveTalentItemIconWidget(Node, ChoiceIndex, ChoiceWidget);
+    }
+    TalentUpgradeRuntimeAutoLineBuilder::AddGraphNode(TalentUpgradeRuntimeAutoLineBuilder::MakeChoiceNodePortId(Node, ChoiceIndex, EEUIAutoLinePort(Port)), TalentUpgradeRuntimeAutoLineBuilder::ResolveChoiceStyleState(Node, ChoiceIndex), local_4, local_4, bAttachLinesAtCenter, OutNodes);
+    return;
 }
 void BuildLegacyGraphNodes(const TArray<TEUIModelWeakRef<FM_TalentNode>> &inout NodeList, const TMap<uint, UWidget_TalentSkillUpgradeNode> &inout NodeWidgetMap, TArray<FEUIAutoLineNode> &inout OutNodes)
 {
@@ -563,7 +588,7 @@ void BuildLegacyGraphNodes(const TArray<TEUIModelWeakRef<FM_TalentNode>> &inout 
 }
 void BuildGraphNodes(const TArray<TEUIModelWeakRef<FM_TalentNode>> &inout NodeList, const TMap<uint, UWidget_TalentSkillUpgradeNode> &inout NodeWidgetMap, const bool bAttachLinesAtCenter, TArray<FEUIAutoLineNode> &inout OutNodes)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    // body not fully recovered — stub [argmismatch:argtype]
 }
 FName ResolveChoiceBranchLineId(const TEUIModelWeakRef<FM_TalentNode> &inout Node, const int ChoiceIndex)
 {
@@ -642,11 +667,11 @@ void AddChoiceBranchConnection(const FM_TalentNode &inout Node, const int Choice
 }
 void BuildChoiceBranchConnections(const TArray<TEUIModelWeakRef<FM_TalentNode>> &inout NodeList, const TMap<uint, UWidget_TalentSkillUpgradeNode> &inout NodeWidgetMap, TArray<FEUIAutoLineConnection> &inout OutConnections)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argint]
+    // body not fully recovered — stub [argmismatch:argint]
 }
 void BuildGraphConnections(const UObject ContextObject, const TArray<TEUIModelWeakRef<FM_TalentNode>> &inout NodeList, const TMap<uint, UWidget_TalentSkillUpgradeNode> &inout NodeWidgetMap, const float32 FromExtend, const float32 ToExtend, const TArray<FTalentUpgradeAutoLineRouteOverride> &inout RouteOverrides, const bool bUsePortChoiceGraph, TArray<FEUIAutoLineConnection> &inout OutConnections)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    // body not fully recovered — stub [argmismatch:argtype]
 }
 void BuildAndApplyGraph(const UObject ContextObject, const UEUIAutoLineCanvas AutoLineCanvas, const TArray<TEUIModelWeakRef<FM_TalentNode>> &inout NodeList, const TMap<uint, UWidget_TalentSkillUpgradeNode> &inout NodeWidgetMap, const float32 FromExtend, const float32 ToExtend, const TArray<FTalentUpgradeAutoLineRouteOverride> &inout RouteOverrides, const bool bUsePortChoiceGraph, const bool bAttachLinesAtCenter)
 {

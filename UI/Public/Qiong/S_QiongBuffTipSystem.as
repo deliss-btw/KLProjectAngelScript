@@ -1,5 +1,3 @@
-﻿
-
 class US_QiongBuffTipSystem : UECSScriptSystem
 {
     UPROPERTY()

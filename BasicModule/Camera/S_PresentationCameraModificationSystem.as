@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Debug_PresentationCameraSystemLookAt = FConsoleVariable();
 const FConsoleVariable CVar_Debug_PresentationCameraModifier = FConsoleVariable();
 
@@ -15,7 +14,7 @@ class US_PresentationCameraModificationSystem : UECSScriptSystem
             if (local_16.GetScriptStruct().IsChildOf(FCameraModifierEventData_PresentationCameraLookAtTarget))
             {
                 FCameraModifierEventData_PresentationCameraLookAtTarget local_26;
-                ::FPresentationCameraModificationUtils::ApplyPresentationCameraLookAtInner(Params.GetLookAtParams(), PlayerEntity, local_26.LookAtTargetEntity, local_26.LookAtSocketOffset, local_26.LookAtTargetSocketName, local_26.bContributeInput, local_26.LookAtConfig, local_26.RequestTime, local_26.bOverrideWorldDir, local_26.OverrideWorldDir);
+                ::FPresentationCameraModificationUtils::ApplyPresentationCameraLookAtInner(Params.GetLookAtParams(), PlayerEntity, local_26.LookAtTargetEntity, local_26.LookAtSocketOffset, local_26.LookAtTargetSocketName, (int(local_26.bContributeInput) != 0), local_26.LookAtConfig, local_26.RequestTime, local_26.bOverrideWorldDir, local_26.OverrideWorldDir);
                 continue;
             }
             if (local_16.GetScriptStruct().IsChildOf(FCameraModifierEventData_PresentationCameraLookAtLocation))
@@ -46,7 +45,7 @@ class US_PresentationCameraModificationSystem : UECSScriptSystem
                 {
                     continue;
                 }
-                ::FPresentationCameraModificationUtils::StopPresentationCameraModifierInner(local_48.TargetEntity, local_48.RequestTime, local_48.SourceIdentifier, local_48.ModifierConfig, local_48.OverrideExitDuration, local_48.bWarnIfNotExists);
+                ::FPresentationCameraModificationUtils::StopPresentationCameraModifierInner(local_48.TargetEntity, local_48.RequestTime, local_48.SourceIdentifier, local_48.ModifierConfig, local_48.OverrideExitDuration, (int(local_48.bWarnIfNotExists) != 0));
             }
         }
         Params.GetPendingCameraModifierEventDatas().Empty(0);

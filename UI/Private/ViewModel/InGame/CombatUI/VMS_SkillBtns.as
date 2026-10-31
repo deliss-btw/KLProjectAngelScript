@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_SkillBts
 {
     const int ModelId = 0;
@@ -75,7 +74,6 @@ struct __GeneratedProperties_FVMS_SkillBts
     ESlateVisibility SkillBtnsPanelVisibility;
     UPROPERTY()
     TEUIModelRef<FVMS_SkillBts> Self;
-
 
 }
 

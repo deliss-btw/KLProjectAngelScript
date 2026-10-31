@@ -1,4 +1,3 @@
-﻿
 enum ETreasureBoxState
 {
     Default,
@@ -8,13 +7,12 @@ enum ETreasureBoxState
     Opening,
 }
 
-
 struct FTreasureBoxStateData
 {
     UPROPERTY()
-    FName StateMachineName;
+    FName StateMachineName = FName("Main");
     UPROPERTY()
-    FName StateName;
+    FName StateName = FName("CoolDown");
     UPROPERTY()
     TDataObjectPtr<FPresentationConfig> PresentationConfig;
     UPROPERTY()
@@ -24,13 +22,5 @@ struct FTreasureBoxStateData
     UPROPERTY()
     ETreasureBoxState FallBack;
 
-    FTreasureBoxStateData()
-    {
-        this.bFallBack = false;
-        this.FallBack = ETreasureBoxState(0);
-        FName local_4 = FName("Main");
-        this.StateName = FName("CoolDown");
-        return;
-    }
 }
 

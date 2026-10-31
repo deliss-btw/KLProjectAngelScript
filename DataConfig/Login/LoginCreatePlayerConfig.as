@@ -1,5 +1,3 @@
-﻿
-
 struct FLoginCreatePlayerConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -49,7 +47,6 @@ struct FLoginCreatePlayerConfig : FDataObject
     float32 MaskTime = 0.5f;
     UPROPERTY()
     float32 MaskFadeOutTime = 0.5f;
-
 
     const TDataObjectPtr<FCharacterDefaultFashionConfig> GetMaleDefaultFashion() const property
     {

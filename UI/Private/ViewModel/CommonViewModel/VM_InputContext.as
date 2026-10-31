@@ -1,4 +1,3 @@
-﻿
 namespace FVM_InputContext
 {
     const int ModelId = 0;

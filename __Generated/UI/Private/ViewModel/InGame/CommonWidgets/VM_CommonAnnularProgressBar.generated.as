@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommonAnnularProgressBar_Helpers
 {
 UFUNCTION()

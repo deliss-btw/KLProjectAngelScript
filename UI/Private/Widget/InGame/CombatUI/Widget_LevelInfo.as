@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_LevelInfo
 {
     const int ViewID = 0;
@@ -29,7 +28,6 @@ struct FLevelInfoCurrentAnim
     bool bForwardPlayed;
     UPROPERTY()
     bool bReversePlayed;
-
 
     void Reset(const float32 InWaitTime)
     {
@@ -64,7 +62,17 @@ class UWidget_LevelInfo : UEUIUserWidget
     UFUNCTION()
     void OnTriggerAddExpAnim(const uint AnimShowWeatherID)
     {
-        if (this.Weather.IsValid() && (AnimShowWeatherID > 0))
+        int local_1;
+        if (!(this.Weather.IsValid()))
+        {
+            local_1 = 0;
+        }
+        else
+        {
+            bool local_3 = (AnimShowWeatherID > 0);
+            local_1 = local_3;
+        }
+        if (local_1 != 0)
         {
             if (this.UI_Common_WeatherUnfold != nullptr)
             {
@@ -74,7 +82,7 @@ class UWidget_LevelInfo : UEUIUserWidget
             {
                 this.WeatherOld.SetRenderOpacity(1.0f);
             }
-            this.PlayAnimation(this.Anim_Switch, 0.0f, 1, EUMGSequencePlayMode(0), 1.0f, false);
+            this.PlayAnimation(this.Anim_Switch, 0.0f, 1, EUMGSequencePlayMode(0), 1.0f, (0 != 0));
         }
         return;
     }
@@ -187,6 +195,7 @@ namespace UWidget_LevelInfo
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_LevelInfo;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnTriggerAddExpAnim"));
     return;
 }

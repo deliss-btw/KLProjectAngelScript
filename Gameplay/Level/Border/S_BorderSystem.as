@@ -1,11 +1,8 @@
-﻿
-
 class US_BorderSystemAS : UECSScriptSystem
 {
     float32 RevivePointSearchDistance = 500.0f;
     float32 BorderPeriodCheckInterval = 0.5f;
     float32 DynamicMeshUpdateInterval = 2.0f;
-
 
     UFUNCTION()
     void ClientJob_PeriodCheckRelevantBorder(const FECSEntity &inout Entity, const FC_RelevantBorders &inout RelevantBorders, const FCS_FixedTime &inout FixedTime) const
@@ -212,7 +209,7 @@ class US_BorderSystemAS : UECSScriptSystem
                             local_56.CurrentPos = Transform.GetPosition();
                             local_56.TargetPos = Transform.GetPosition();
                         }
-                        local_54 = this.UpdateDynamicMeshInterpPosition(local_56, Transform.GetPosition(), local_15, local_48.DynamicMeshInterpSpeed, local_48.DynamicMeshInterpCurve, int(local_48.DynamicMeshInterpThreshold), local_48.DynamicMeshInterpMode);
+                        local_54 = this.UpdateDynamicMeshInterpPosition(local_56, Transform.GetPosition(), local_15, local_48.DynamicMeshInterpSpeed, local_48.DynamicMeshInterpCurve, local_48.DynamicMeshInterpThreshold, local_48.DynamicMeshInterpMode);
                     }
                     local_48.CreateDynamicMesh(local_8.GetEntityName(), local_54);
                 }
@@ -439,17 +436,24 @@ class US_BorderSystemAS : UECSScriptSystem
             local_14 = (Cast<AKLBorderActor>(local_10));
             if (local_14 != nullptr)
             {
-                ECS::GetContextTime();
+                FFXConfig local_130 = local_14.WarningFX;
+                FFPTime local_134 = ECS::GetContextTime();
                 if (int(local_14.WarningType) == 0)
                 {
-                    bool local_7 = !(local_14.bInstantFX) && false;
+                    if (local_14.bInstantFX)
+                    {
+                        ECSFX::PlayFXInstant(Event.Sender, local_130, local_134, 1.0f, false, false);
+                    }
+                    else
+                    {
+                        ECSFX::PlayFXDurational(Event.Sender, local_130, local_134, 1.0f, false);
+                    }
                 }
                 else
                 {
                     if (int(local_14.WarningType) == 1)
                     {
-                        FECSEntity local_144;
-                        local_154.FXEntities.Add(local_144);
+                        local_154.FXEntities.Add(ECSFX::PlayFXDurational(Event.Sender, local_130, local_134, 1.0f, false));
                     }
                 }
             }

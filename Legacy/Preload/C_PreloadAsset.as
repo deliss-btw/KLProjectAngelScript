@@ -1,4 +1,3 @@
-﻿
 enum EGameAudioType
 {
     Bank,
@@ -79,7 +78,6 @@ struct FAudioSimpleLoadingContext
     UPROPERTY()
     EGameAudioEmitterPartType Part;
 
-
 }
 
 struct FAudioPreloadContext
@@ -90,7 +88,6 @@ struct FAudioPreloadContext
     FOnSoftObjectLoaded LoadedCallBack;
     UPROPERTY()
     EGameAudioType AudioType;
-
 
 }
 
@@ -124,7 +121,7 @@ struct FCS_AudioBankPreloadRequest : FECSSingleton
     }
     void AddToRequestBanks(TArray<TSoftObjectPtr<UAkAudioBank>> &inout List)
     {
-        this.Append(List);
+        this.RequestBanks.Append(List);
         return;
     }
     void AddToRequestBanks(TArray<FName> &inout List)
@@ -153,7 +150,7 @@ struct FCS_AssetPreloadRequest : FECSSingleton
     }
     void AddToRequestEvents(TArray<TSoftObjectPtr<UAkAudioEvent>> &inout List)
     {
-        this.Append(List);
+        this.RequestEvents.Append(List);
         return;
     }
     void AddToRequestStates(TArray<TSoftObjectPtr<UAkStateValue>> &inout List)
@@ -290,17 +287,17 @@ bool RemoveAudioBankPreloadRequest(const FECSWorldPtr &inout World)
 }
 void __MonitorAudioBankPreloadRequestLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_AudioBankPreloadRequest, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_AudioBankPreloadRequest, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAudioBankPreloadRequestActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_AudioBankPreloadRequest, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_AudioBankPreloadRequest, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAudioBankPreloadRequestModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_AudioBankPreloadRequest, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_AudioBankPreloadRequest, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_AssetPreloadRequest
@@ -391,17 +388,17 @@ bool RemoveAssetPreloadRequest(const FECSWorldPtr &inout World)
 }
 void __MonitorAssetPreloadRequestLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_AssetPreloadRequest, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_AssetPreloadRequest, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAssetPreloadRequestActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_AssetPreloadRequest, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_AssetPreloadRequest, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAssetPreloadRequestModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_AssetPreloadRequest, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_AssetPreloadRequest, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_AssetPreloadManagerTag
@@ -489,17 +486,17 @@ bool RemoveAssetPreloadManagerTag(const FECSWorldPtr &inout World)
 }
 void __MonitorAssetPreloadManagerTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_AssetPreloadManagerTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_AssetPreloadManagerTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAssetPreloadManagerTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_AssetPreloadManagerTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_AssetPreloadManagerTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAssetPreloadManagerTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_AssetPreloadManagerTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_AssetPreloadManagerTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_MonsterESMAssetPreloadPendingTag
@@ -579,36 +576,36 @@ bool RemoveMonsterESMAssetPreloadPendingTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorMonsterESMAssetPreloadPendingTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_MonsterESMAssetPreloadPendingTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_MonsterESMAssetPreloadPendingTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMonsterESMAssetPreloadPendingTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_MonsterESMAssetPreloadPendingTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_MonsterESMAssetPreloadPendingTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMonsterESMAssetPreloadPendingTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_MonsterESMAssetPreloadPendingTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_MonsterESMAssetPreloadPendingTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMonsterESMAssetPreloadPendingTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_MonsterESMAssetPreloadPendingTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_MonsterESMAssetPreloadPendingTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorMonsterESMAssetPreloadPendingTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_MonsterESMAssetPreloadPendingTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_MonsterESMAssetPreloadPendingTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorMonsterESMAssetPreloadPendingTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_MonsterESMAssetPreloadPendingTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_MonsterESMAssetPreloadPendingTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorMonsterESMAssetPreloadPendingTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_MonsterESMAssetPreloadPendingTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_MonsterESMAssetPreloadPendingTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorMonsterESMAssetPreloadPendingTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_MonsterESMAssetPreloadPendingTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_MonsterESMAssetPreloadPendingTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TeamOperatorBtnItem_Helpers
 {
 UFUNCTION()

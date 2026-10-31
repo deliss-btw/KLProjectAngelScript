@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ImportantSideHintItem
 {
     const int ViewID = 0;
@@ -79,6 +78,7 @@ namespace UWidget_ImportantSideHintItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ImportantSideHintItem;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

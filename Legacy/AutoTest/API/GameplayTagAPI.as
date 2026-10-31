@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::API::GameplayTagAPI
 {
 bool HasTag(const int EntityId, const FName &inout TagName)

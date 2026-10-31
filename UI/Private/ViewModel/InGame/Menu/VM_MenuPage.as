@@ -1,10 +1,6 @@
-﻿
 namespace FVM_MenuPage
 {
     const int ModelId = 0;
-
-// NOTE: class defaults are not authored in this module: FVM_MenuPage (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
 
 }
 struct FVM_MenuPage : FEUIViewModel

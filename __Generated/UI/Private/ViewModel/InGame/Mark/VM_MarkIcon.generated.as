@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_MarkIcon_Helpers
 {
 UFUNCTION()

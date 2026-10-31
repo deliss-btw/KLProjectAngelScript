@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_Mode_EntranceItem
 {
     const int ViewID = 0;
@@ -78,6 +77,7 @@ namespace UWidget_Mode_EntranceItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_Mode_EntranceItem;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

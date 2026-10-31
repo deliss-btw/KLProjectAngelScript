@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_ForceKeepSprint : UESMBPBaseSpanAction
 {
     UESMAction_ForceKeepSprint()

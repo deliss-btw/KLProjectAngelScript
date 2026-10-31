@@ -1,5 +1,3 @@
-﻿
-
 class US_AccountExclusiveCollectionPrefabSystem : UECSScriptSystem
 {
     US_AccountExclusiveCollectionPrefabSystem()
@@ -116,8 +114,7 @@ class US_AccountExclusiveCollectionPrefabSystem : UECSScriptSystem
         {
             return;
         }
-        FName local_40 = FName("CollectionPrefabCollected");
-        ECS::GetContextTime();
+        ::VisualComponentToggleUtils::SetVisualComponentHiddenWithPotentialDelay(Event.CollectionPrefabEntity, local_38, local_38.Names, true, ECS::GetContextTime(), FName("CollectionPrefabCollected"), true);
         return;
     }
     UFUNCTION()

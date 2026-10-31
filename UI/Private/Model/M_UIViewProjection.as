@@ -1,4 +1,3 @@
-﻿
 namespace FMS_UIViewProjection
 {
     const int ModelId = 0;

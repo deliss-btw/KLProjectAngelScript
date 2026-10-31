@@ -1,5 +1,3 @@
-﻿
-
 class UCommissionDraftTypeAdapter : UDraftTypeAdapterBase
 {
     default SupportedTypedDraftDataModelType = FM_Commission;
@@ -19,8 +17,7 @@ class UCommissionDraftTypeAdapter : UDraftTypeAdapterBase
     }
     FEUIModelContainer MakeViewModels(const FEUIModelContext &inout Context, const FEUIModelRef &inout TypedDraftData) const
     {
-        TEUIModelRef<FM_Commission> local_2 = TEUIModelRef<FM_Commission>(TypedDraftData);
-        return FEUIModelContainer();
+        return FEUIModelContainer(::FVM_CommissionInfo::Create(Context.Manager, TEUIModelRef<FM_Commission>(TypedDraftData)));
     }
     bool HandleDraftInviteFail(const FEUIModelContext &inout Context, const TEUIModelRef<FM_Draft> &inout FailedDraft) const
     {
@@ -32,7 +29,7 @@ class UCommissionDraftTypeAdapter : UDraftTypeAdapterBase
             if (!(local_8.IsEmpty()))
             {
                 FText local_16 = ::DraftPlayerUtils::FormatDraftPlayerNames(local_8);
-                FText local_30 = FText::Format(NSLOCTEXT("CommissionInviteFail_CommissionNotActive", "зЋ©е®¶ {0} жњЄи§Јй”ЃеҐ‘зє¦ {1}пјЊж— жі•ејЂеђЇиЇҐеҐ‘зє¦"), local_16, local_22.GetCommissionConfig().opArrow().CommissionName);
+                FText local_30 = FText::Format(NSLOCTEXT("CommissionInviteFail_CommissionNotActive", "玩家 {0} 未解锁契约 {1}，无法开启该契约"), local_16, local_22.GetCommissionConfig().opArrow().CommissionName);
                 ::CommonPopup::Tips(local_30, local_34);
                 return true;
             }
@@ -40,7 +37,7 @@ class UCommissionDraftTypeAdapter : UDraftTypeAdapterBase
             if (!(local_12.IsEmpty()))
             {
                 FText local_30_2 = ::DraftPlayerUtils::FormatDraftPlayerNames(local_12);
-                FText local_16_2 = FText::Format(NSLOCTEXT("CommissionInviteFail_InCommission", "зЋ©е®¶ {0} е·ІењЁеҐ‘зє¦дё­пјЊж— жі•ејЂеђЇеҐ‘зє¦"), local_30_2);
+                FText local_16_2 = FText::Format(NSLOCTEXT("CommissionInviteFail_InCommission", "玩家 {0} 已在契约中，无法开启契约"), local_30_2);
                 ::CommonPopup::Tips(local_16_2, local_34);
                 return true;
             }
@@ -48,7 +45,7 @@ class UCommissionDraftTypeAdapter : UDraftTypeAdapterBase
             if (!(local_8_2.IsEmpty()))
             {
                 FText local_16_3 = ::DraftPlayerUtils::FormatDraftPlayerNames(local_8_2);
-                FText local_30_3 = FText::Format(NSLOCTEXT("CommissionInviteFail_Banned", "з»„йџж€ђе‘ {0} иїќи§„зЉ¶жЂЃпјЊж— жі•иї›е…ҐеҐ‘зє¦"), local_16_3);
+                FText local_30_3 = FText::Format(NSLOCTEXT("CommissionInviteFail_Banned", "组队成员 {0} 违规状态，无法进入契约"), local_16_3);
                 ::CommonPopup::Tips(local_30_3, local_34);
                 return true;
             }
@@ -56,11 +53,11 @@ class UCommissionDraftTypeAdapter : UDraftTypeAdapterBase
             if (!(local_12_2.IsEmpty()))
             {
                 FText local_30_4 = ::DraftPlayerUtils::FormatDraftPlayerNames(local_12_2);
-                FText local_16_4 = FText::Format(NSLOCTEXT("CommissionInviteFail_ClientVersionNotMatch", "зЋ©е®¶ {0} зљ„з‰€жњ¬иї‡дЅЋпјЊж— жі•ејЂеђЇеҐ‘зє¦"), local_30_4);
+                FText local_16_4 = FText::Format(NSLOCTEXT("CommissionInviteFail_ClientVersionNotMatch", "玩家 {0} 的版本过低，无法开启契约"), local_30_4);
                 ::CommonPopup::Tips(local_16_4, local_34);
                 return true;
             }
-            FText local_16_5 = NSLOCTEXT("CommissionInviteFail_MemberCondNotMeet", "жњ‰ж€ђе‘жњЄж»Ўи¶іеҐ‘зє¦жЋҐеЏ–жќЎд»¶пјЊж— жі•ејЂеђЇеҐ‘зє¦");
+            FText local_16_5 = NSLOCTEXT("CommissionInviteFail_MemberCondNotMeet", "有成员未满足契约接取条件，无法开启契约");
             ::CommonPopup::Tips(local_16_5, local_34);
             return true;
         }

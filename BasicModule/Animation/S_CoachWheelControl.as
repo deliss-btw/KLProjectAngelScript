@@ -1,5 +1,3 @@
-﻿
-
 class US_CoachWheelControlSystemAS : UECSScriptSystem
 {
     US_CoachWheelControlSystemAS()
@@ -49,7 +47,7 @@ class US_CoachWheelControlSystemAS : UECSScriptSystem
         {
             FTransform local_60 = TransformComp.ToFTransform();
             int local_61 = 0;
-            while (local_61 < 0)
+            for (; local_61 < CoachWheelControl.WheelData.Num(); )
             {
                 FName local_65 = CoachWheelControl.WheelData[local_61].WheelCtrlName;
                 FVector local_72 = CoachWheelControl.WheelData[local_61].LocationOffset;
@@ -65,9 +63,7 @@ class US_CoachWheelControlSystemAS : UECSScriptSystem
                     float32 local_147 = -local_137;
                     local_137 = local_147;
                 }
-                local_10.GetControlRotator(local_65, EControlRigComponentSpace(4)).Quaternion();
-                EControlRigComponentSpace local_176;
-                FQuat local_192 = (local_176 * FRotator(local_137, 0.0, 0.0).Quaternion());
+                FQuat local_192 = (local_10.GetControlRotator(local_65, EControlRigComponentSpace(4)).Quaternion() * FRotator(local_137, 0.0, 0.0).Quaternion());
                 FECSActorComponentProxy local_198 = Entity.ModifyActorComponent(local_10.GetFName());
                 ModifyOrAdd local_206;
                 local_206.opCall().SetControlRotator(local_65, local_192.Rotator(), EControlRigComponentSpace(4));

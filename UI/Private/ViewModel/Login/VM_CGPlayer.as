@@ -1,4 +1,3 @@
-﻿
 enum ECgPlayerPagePhase
 {
     Idle,
@@ -307,12 +306,12 @@ struct FVM_CGPlayer : FEUIViewModel
     }
     void EnterIdleAfterFadeIn()
     {
-        if ((int(this.GetPagePhase())) != 1)
+        if (int(this.GetPagePhase()) != 1)
         {
             return;
         }
         FCGContextConfig local_108 = this.GetCurrentPageConfig();
-        this.SetPagePhase(ECgPlayerPagePhase(ECgPlayerPagePhase(0)));
+        this.SetPagePhase(ECgPlayerPagePhase(0));
         this.SetbIsCountDownVisible(true);
         this.SetCurrentAlpha(1.0f);
         this.StartBtnState(local_108.NextButtonShowDelay);
@@ -324,7 +323,7 @@ struct FVM_CGPlayer : FEUIViewModel
         {
             return;
         }
-        this.SetPagePhase(ECgPlayerPagePhase(ECgPlayerPagePhase(0)));
+        this.SetPagePhase(ECgPlayerPagePhase(0));
         if (this.GetbPendingFinishAfterFadeOut())
         {
             this.SetbPendingFinishAfterFadeOut(false);

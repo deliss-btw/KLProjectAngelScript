@@ -1,4 +1,3 @@
-﻿
 namespace FAIGroupFollowCaptainLayout
 {
     const int NumAngles = 5;
@@ -39,8 +38,25 @@ FVector GetSlotLocalOffset(const int SlotIndex)
 }
 bool IsFollowSlotAcceptableByLineTrace(const FECSEntity &inout MemberEntity, const FECSEntity &inout CaptainEntity, const FVector &inout SlotWorldPos, const FVector &inout CaptainWorldPos)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    bool __r; return __r;
+    if (!(MemberEntity.IsValid()) || !(CaptainEntity.IsValid()))
+    {
+        return false;
+    }
+    int local_3 = 1117782016;
+    FVector local_28 = (SlotWorldPos + FVector(0.0, 0.0, 80.0));
+    FVector local_10 = (CaptainWorldPos + FVector(0.0, 0.0, 80.0));
+    FCollisionQueryParams local_72;
+    local_72.bTraceComplex = false;
+    local_72.AddIgnoredEntityId(MemberEntity.GetIdValue());
+    ECollisionChannel local_76 = FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(5));
+    FHitResult local_142;
+    FCollisionResponseParams local_151;
+    bool local_1 = FPhysicsUtils::LineTraceSingle(MemberEntity, false, EPhysicsTraceTag(26), local_142, local_28, local_10, local_76, local_72, local_151);
+    if (!(local_1))
+    {
+        return true;
+    }
+    return (int(local_142.ECSEntityId) == CaptainEntity.GetIdValue());
 }
 FVector ClaimFollowSlot(FC_AIGroupFollowCaptain &inout FollowCaptain, bool &out bFound, int &out OutSlotIndex, const FECSEntity &inout MemberEntity, const FECSEntity &inout CaptainEntity, const FVector &inout CaptainWorldPos, const FQuat &inout CaptainWorldRot)
 {
@@ -115,7 +131,53 @@ void ResetInvalidSlots(FC_AIGroupFollowCaptain &inout FollowCaptain)
 }
 void UpdateMemberTargetPos(const float IntervalTime, FC_AIGroupData &inout InGroupData, FC_AIGroupFollowCaptain &inout FollowCaptain)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    int local_12 = 0;
+    int local_48;
+    bool local_65;
+    FECSEntity local_4 = InGroupData.CaptainEntity;
+    if (!(local_4.IsValid()))
+    {
+        return;
+    }
+    FVector local_18 = local_12.GetPosition();
+    FQuat local_28 = local_12.GetRotation();
+    FAIGroupFollowCaptainUtils::ResetInvalidSlots(FollowCaptain);
+    for (auto& local_42 : InGroupData.MemberEntityInfos)
+    {
+        FECSEntity local_46 = FECSEntity(local_42.MemberEntity);
+        if (!(local_46.IsValid()) || (local_46 == local_4))
+        {
+            continue;
+        }
+        bool local_47 = FollowCaptain.MemberSlotMap.Find(local_46, local_48);
+        if (FASCommonUtils::IsInCombat(local_46))
+        {
+            if (local_47)
+            {
+                FAIGroupFollowCaptainUtils::ReleaseFollowSlot(FollowCaptain, local_48);
+            }
+            continue;
+        }
+        if (local_47)
+        {
+            if (FAIGroupFollowCaptainUtils::IsSlotStillValid(FollowCaptain, local_48, local_46, local_4, local_18, local_28))
+            {
+                InGroupData.SetMemberCommand(local_46, EGroupCommandType(1), ENTITY_NULL, FAIGroupFollowCaptainUtils::GetSlotLocalOffset(local_48));
+                continue;
+            }
+            FAIGroupFollowCaptainUtils::ReleaseFollowSlot(FollowCaptain, local_48);
+            FollowCaptain.SlotStates[local_48] = -1;
+        }
+        local_65 = false;
+        int local_66 = -1;
+        FVector local_56 = FAIGroupFollowCaptainUtils::ClaimFollowSlot(FollowCaptain, local_65, local_66, local_46, local_4, local_18, local_28);
+        if (local_65)
+        {
+            FollowCaptain.MemberSlotMap.Add(local_46, local_66);
+            InGroupData.SetMemberCommand(local_46, EGroupCommandType(1), ENTITY_NULL, local_56);
+        }
+    }
+    return;
 }
 void Tick(const float DeltaTime, FC_AIGroupData &inout InGroupData, FC_AIGroupFollowCaptain &inout FollowCaptain)
 {

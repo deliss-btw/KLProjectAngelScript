@@ -1,4 +1,3 @@
-﻿
 FDataObjectPtr GetConfigData(const FM_Spot &inout Spot, const EPresentationDataType ConfigDataType, const FSpotViewAdapter &inout View = FSpotViewAdapter())
 {
     if (Spot)
@@ -12,11 +11,10 @@ void SetConfigData(FM_Spot &inout Spot, const EPresentationDataType ConfigDataTy
 {
     if (ConfigData)
     {
-        TEUIModelRef<FM_Spot> local_6 = TEUIModelRef<FM_Spot>(Spot);
-        UEUIManagerSubsystem local_4 = Spot.GetManager();
+        PresentationSpotUtils::GetDefaulted(Spot.GetManager(), Registry).SetConfigData(TEUIModelRef<FM_Spot>(Spot), EPresentationDataType(ConfigDataType), ConfigData);
         return;
     }
-    PresentationSpotUtils::GetDefaulted(Spot.GetManager(), Registry).RemoveConfigData(TEUIModelRef<FM_Spot>(Spot));
+    PresentationSpotUtils::GetDefaulted(Spot.GetManager(), Registry).RemoveConfigData(TEUIModelRef<FM_Spot>(Spot), EPresentationDataType(ConfigDataType));
     return;
 }
 TDataObjectPtr<FPresentationConfig> GetPresentationConfig(const FM_Spot &inout Spot, const FSpotViewAdapter &inout View = FSpotViewAdapter())

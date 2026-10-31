@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PVX_MatchConfirmContent
 {
     const int ModelId = 0;

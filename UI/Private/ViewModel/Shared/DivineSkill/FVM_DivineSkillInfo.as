@@ -1,4 +1,3 @@
-﻿
 namespace FVM_DivineSkillInfo
 {
     const int ModelId = 0;
@@ -121,8 +120,16 @@ struct FVM_DivineSkillInfo : FEUIViewModel
     }
     int GetDivineSkillTypeIndex() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        TDataObjectPtr<FDivineSkillConfig> local_24 = this.GetEquipableSkillConfig();
+        if (local_24)
+        {
+            TDataObjectPtr<FDivineSkillTypeConfig> local_74 = local_24.opArrow().GetTypeConfig();
+            if (local_74)
+            {
+                return int(local_74.opArrow().TargetIllustrate);
+            }
+        }
+        return INDEX_NONE;
     }
     FText GetDivineSkillTypeDesc() const
     {
@@ -145,7 +152,7 @@ struct FVM_DivineSkillInfo : FEUIViewModel
         {
             if (!(this.SuitForCurrentAvatar()))
             {
-                local_54 = NSLOCTEXT("DivineSkillAttributeDescriptionNotSuit", "{0}пј€жњЄжїЂжґ»пј‰");
+                local_54 = NSLOCTEXT("DivineSkillAttributeDescriptionNotSuit", "{0}（未激活）");
                 return FText::Format(local_54, local_24.opArrow().AttributeDescription);
             }
             return local_24.opArrow().AttributeDescription;
@@ -193,7 +200,7 @@ struct FVM_DivineSkillInfo : FEUIViewModel
         {
             return FText();
         }
-        return FText::Format(NSLOCTEXT("DivineSkillUnactiveDesc", "дё»ж€и§’и‰І[<img id=\"{0}\"/>{1}]дёЋзҐћж је®љдЅЌдёЌеЊ№й…Ќ"), FText::FromString(local_24.opArrow().RichTextImageName), local_24.opArrow().TypeName);
+        return FText::Format(NSLOCTEXT("DivineSkillUnactiveDesc", "主战角色[<img id=\"{0}\"/>{1}]与神格定位不匹配"), FText::FromString(local_24.opArrow().RichTextImageName), local_24.opArrow().TypeName);
     }
     TDataObjectPtr<FDivineSkillTypeConfig> GetMainAvatarTypeConfig() const
     {
@@ -338,7 +345,6 @@ struct __GeneratedProperties_FVM_DivineSkillInfo
     FText UnactiveDescription;
     UPROPERTY()
     TEUIModelRef<FVM_DivineSkillInfo> Self;
-
 
 }
 

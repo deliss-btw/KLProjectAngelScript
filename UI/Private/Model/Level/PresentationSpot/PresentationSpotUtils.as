@@ -1,4 +1,3 @@
-﻿
 namespace PresentationSpotUtils
 {
 FM_SpotRegistry& GetDefaultRegistry(const UObject WorldContextObject)
@@ -68,9 +67,7 @@ TDataObjectPtr<FMapConfig> GetCurrentMapConfig(const UObject WorldContextObject)
     }
     else
     {
-        TDataObjectPtr<FMapConfig> local_30;
-        FMapUtils::GetMapConfigByRefrence(TSoftObjectPtr<UWorld>(local_4));
-        local_78 = local_30;
+        local_78 = (TDataObjectPtr<FMapConfig>(FMapUtils::GetMapConfigByRefrence(TSoftObjectPtr<UWorld>(local_4))));
     }
     return local_78;
 }
@@ -180,7 +177,7 @@ FM_Spot& RequireEntitySpot(const UObject WorldContextObject, const FECSEntityId 
 }
 void BindEntitySpot(const TEUIModelRef<FM_Spot> &inout Spot, const FECSEntityId &inout EntityId)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    // body not fully recovered — stub [argmismatch:argtype]
 }
 TArray<TEUIModelRef<FM_Spot>> FindSpotsByEntityId(const UObject WorldContextObject, const FECSEntityId &inout EntityId, const TEUIModelRef<FM_SpotRegistry> &inout SpecificRegistry = FEUIModelRef())
 {
@@ -371,8 +368,36 @@ FVector ComputeSpotLocation(const TEUIModelRef<FM_Spot> &inout Spot)
 }
 bool ComputeMatchesDisplayRule(const TEUIModelRef<FM_Spot> &inout Spot, const FPresentationDisplayRule &inout DisplayRule)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    bool __r; return __r;
+    if (!(Spot))
+    {
+        return false;
+    }
+    int local_2 = PresentationSpotUtils_Internal::FindFirstMatchDisplayRuleIndex(Spot, DisplayRule.ConditionalRules);
+    if (local_2 != INDEX_NONE)
+    {
+        return PresentationSpotUtils_Internal::MatchesDisplayRuleBasic(Spot, DisplayRule.ConditionalRules[local_2].Rule);
+    }
+    if (DisplayRule.bDisplayOnlyInCombat)
+    {
+        if (!(FASCommonUtils::IsInCombat(Spot.opArrow().GetContext().GetLocalPlayerPawn())))
+        {
+            return false;
+        }
+    }
+    if (!(DisplayRule.bEnableDisplay))
+    {
+        return false;
+    }
+    float local_10 = PresentationSpotUtils::GetDistanceToPlayerSq(Spot);
+    if (local_10 < FMath::Square(DisplayRule.MinDistance))
+    {
+        return false;
+    }
+    if (DisplayRule.MaxDistance > 0.0f && ((local_10 > FMath::Square(DisplayRule.MaxDistance))))
+    {
+        return false;
+    }
+    return true;
 }
 bool MatchesDisplayRuleBasic(const TEUIModelRef<FM_Spot> &inout Spot, const FPresentationDisplayRuleBasic &inout BasicRule)
 {
@@ -393,8 +418,45 @@ bool MatchesDisplayRuleBasic(const TEUIModelRef<FM_Spot> &inout Spot, const FPre
 }
 int FindFirstMatchDisplayRuleIndex(const TEUIModelRef<FM_Spot> &inout Spot, const TArray<FPresentationDisplayConditionalRule> &inout ConditionalRules)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    int __r; return __r;
+    bool local_9;
+    int local_1 = 0;
+    for (; local_1 < ConditionalRules.Num(); ++local_1)
+    {
+        const FPresentationDisplayConditionalRule& local_6 = ConditionalRules[local_1];
+        if (int(local_6.Condition.PlayerInCombat) != 0)
+        {
+            local_9 = false;
+            FECSEntity local_14 = FECSEntity(Spot.opArrow().GetContext().GetLocalPlayerPawn());
+            if (local_14)
+            {
+                local_9 = FASCommonUtils::IsInCombat(local_14);
+            }
+            if (!(PresentationSpotUtils_Internal::ConditionRequirementToBool(EPresentationDisplayConditionRequirement(local_6.Condition.PlayerInCombat))) != !(local_9))
+            {
+                continue;
+            }
+        }
+        if (int(local_6.Condition.EntityInCombat) != 0)
+        {
+            local_9 = false;
+            FECSEntity local_14_2 = FECSEntity(GetOwnerEntityId(Spot.opArrow()));
+            if (local_14_2)
+            {
+                FECSEntity local_24 = FASCommonUtils::GetControlledPawnEntity(local_14_2);
+                if (local_24)
+                {
+                    local_9 = FASCommonUtils::IsInCombat(local_24);
+                }
+            }
+            bool local_4 = !(local_9);
+            if (!(PresentationSpotUtils_Internal::ConditionRequirementToBool(EPresentationDisplayConditionRequirement(local_6.Condition.EntityInCombat))) != local_4)
+            {
+                continue;
+            }
+        }
+        return local_1;
+    }
+    return INDEX_NONE;
 }
 bool ConditionRequirementToBool(const EPresentationDisplayConditionRequirement Requirement)
 {

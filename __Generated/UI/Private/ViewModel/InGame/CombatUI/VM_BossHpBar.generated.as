@@ -1,5 +1,3 @@
-﻿
-
 struct FVMS_BossHpBarConfigDefault : FConfigEUIModelDefaultBase
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ struct FVMS_BossHpBarConfigDefault : FConfigEUIModelDefaultBase
     float32 PreviewHpBarChaseSeconds = 0.7f;
     UPROPERTY()
     float32 HitShowHpBarDistance = 1500.0f;
-
 
 }
 

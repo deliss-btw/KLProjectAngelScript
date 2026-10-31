@@ -1,12 +1,9 @@
-﻿
-
 struct FTimeOfDayDefine
 {
     UPROPERTY()
     int StartTime;
     UPROPERTY()
     TDataObjectPtr<FTODStageConfig> StageConfig;
-
 
 }
 

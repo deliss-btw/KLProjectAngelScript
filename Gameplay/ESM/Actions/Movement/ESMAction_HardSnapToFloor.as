@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_HardSnapToFloor : UESMBPBaseSpanAction
 {
     UESMAction_HardSnapToFloor()

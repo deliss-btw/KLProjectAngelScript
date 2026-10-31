@@ -1,5 +1,3 @@
-﻿
-
 class US_FactionSystem : UECSScriptSystem
 {
     US_FactionSystem()

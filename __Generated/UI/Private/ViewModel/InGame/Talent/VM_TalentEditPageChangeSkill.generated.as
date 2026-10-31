@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TalentEditPageChangeSkill_Helpers
 {
 UFUNCTION()

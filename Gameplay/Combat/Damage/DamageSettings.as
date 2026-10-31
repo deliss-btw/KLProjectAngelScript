@@ -1,4 +1,3 @@
-﻿
 enum EHitStateESMTransitType
 {
     LieDown,
@@ -8,25 +7,44 @@ enum EHitStateESMTransitType
     Ground,
 }
 
-
 struct FHitLevelESMTransitInfo
 {
     FSubDirtyFlags8 __DirtyFlags;
     UPROPERTY()
-    FName m_ESMTransitName = NAME_None;
+    FName m_ESMTransitName;
     UPROPERTY()
-    float32 m_StrikeRatio = 1.0f;
+    float32 m_StrikeRatio;
     UPROPERTY()
-    bool m_bOverrideStrikeX = false;
+    bool m_bOverrideStrikeX;
     UPROPERTY()
-    float32 m_OverrideStrikeX = 1.0f;
+    float32 m_OverrideStrikeX;
     UPROPERTY()
-    bool m_bOverrideStrikeZ = false;
+    bool m_bOverrideStrikeZ;
     UPROPERTY()
-    float32 m_OverrideStrikeZ = 1.0f;
+    float32 m_OverrideStrikeZ;
 
+    FHitLevelESMTransitInfo()
+    {
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_ESMTransitName = NAME_None;
+        this.m_StrikeRatio = 1.0f;
+        this.m_bOverrideStrikeX = false;
+        this.m_OverrideStrikeX = 1.0f;
+        this.m_bOverrideStrikeZ = false;
+        this.m_OverrideStrikeZ = 1.0f;
+        return;
+    }
     FHitLevelESMTransitInfo(const FHitLevelESMTransitInfo &inout Other)
     {
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_ESMTransitName = NAME_None;
+        this.m_StrikeRatio = 1.0f;
+        this.m_bOverrideStrikeX = false;
+        this.m_OverrideStrikeX = 1.0f;
+        this.m_bOverrideStrikeZ = false;
+        this.m_OverrideStrikeZ = 1.0f;
         this.m_ESMTransitName = Other.m_ESMTransitName;
         this.m_StrikeRatio = Other.m_StrikeRatio;
         this.m_bOverrideStrikeX = Other.m_bOverrideStrikeX;
@@ -37,11 +55,27 @@ struct FHitLevelESMTransitInfo
     }
     FHitLevelESMTransitInfo(const FName &inout Name)
     {
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_ESMTransitName = NAME_None;
+        this.m_StrikeRatio = 1.0f;
+        this.m_bOverrideStrikeX = false;
+        this.m_OverrideStrikeX = 1.0f;
+        this.m_bOverrideStrikeZ = false;
+        this.m_OverrideStrikeZ = 1.0f;
         this.SetESMTransitName(Name);
         return;
     }
     FHitLevelESMTransitInfo(const FName &inout Name, const float32 Ratio)
     {
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_ESMTransitName = NAME_None;
+        this.m_StrikeRatio = 1.0f;
+        this.m_bOverrideStrikeX = false;
+        this.m_OverrideStrikeX = 1.0f;
+        this.m_bOverrideStrikeZ = false;
+        this.m_OverrideStrikeZ = 1.0f;
         this.SetESMTransitName(Name);
         this.SetStrikeRatio(Ratio);
         return;
@@ -218,7 +252,6 @@ struct FDamageTextDurationConfig
     UPROPERTY()
     float32 WeaknessCriticalDuration = 1.08f;
 
-
 }
 
 class UDamageSettings : UGameplaySettingsBase
@@ -255,7 +288,6 @@ class UDamageSettings : UGameplaySettingsBase
     float32 EcologyPostureProtectTakeRatio;
     UPROPERTY()
     TMap<FName, int> HitStatePriorityMap;
-
 
     FHitLevelESMTransitInfo GetESMTransitHitState(const EHitStateESMTransitType HitStateESMTransitType, const EHitReactionPrefabBodyType PrefabBodyType, const EAttackDataHitState HitLevel)
     {

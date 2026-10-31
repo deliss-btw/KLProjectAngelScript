@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_AvatarWardrobeSlotItem_Helpers
 {
 UFUNCTION()

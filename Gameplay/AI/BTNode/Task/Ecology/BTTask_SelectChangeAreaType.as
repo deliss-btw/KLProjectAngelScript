@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_SelectChangeAreaType : UBTTask_ECSScriptBase
 {
     UPROPERTY()

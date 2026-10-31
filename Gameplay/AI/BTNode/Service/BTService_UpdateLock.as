@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FAICommand_UpdateLock (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FAICommand_UpdateLockData
 {
     UPROPERTY()
@@ -15,7 +10,6 @@ struct FAICommand_UpdateLockData
     int64 QueryHandle = 0;
     UPROPERTY()
     bool bHoldTarget = true;
-
 
 }
 
@@ -86,7 +80,6 @@ class UBTService_UpdateLock : UBTService_AICommandScript
     UPROPERTY()
     FAICommand_UpdateLock AICommand;
 
-
     UFUNCTION()
     void OnInitCommandInstanceData_Implementation(const FAICommandInstanceDataInitContextPtr &inout Context) const
     {
@@ -94,10 +87,7 @@ class UBTService_UpdateLock : UBTService_AICommandScript
         FAICommand_UpdateLockData local_6;
         local_6.QueryConfig = this.TargetingQueryConfig;
         local_6.QueryHandle = ::FAITargetingUtils::AllocateQueryHandle(Context.GetPawnEntity());
-        Context.GetOwnerContext();
-        FECSEntity local_34 = Context.GetPawnEntity();
-        TArray<FAISmartEntityValue> local_42;
-        local_6.QueryOutputs = local_42;
+        local_6.QueryOutputs = ::FAITargetingUtils::BuildQueryOutputs(Context.GetPawnEntity(), this.TargetingQueryConfig, this.TargetIDs, Context.GetOwnerContext(), local_6.QueryResult);
         local_6.bHoldTarget = this.bHoldTarget;
         return;
     }

@@ -1,4 +1,3 @@
-﻿
 enum ETaskDataSource
 {
     None,
@@ -314,10 +313,9 @@ struct FM_Task : FEUIModel
 
 namespace FM_Task
 {
-FM_Task Create(const UObject ContextObject, const ETaskDataSource DataSource, const TEUIModelRef<FM_Commission> &inout Commission)
+FM_Task& Create(const UObject ContextObject, const ETaskDataSource DataSource, const TEUIModelRef<FM_Commission> &inout Commission)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    FM_Task __r; return __r;
+    return FM_Task::CreateByManager(EUIInternal::GetContextManager(ContextObject), ETaskDataSource(DataSource), Commission);
 }
 FM_Task CreateByManager(const UEUIManagerSubsystem Manager, const ETaskDataSource DataSource, const TEUIModelRef<FM_Commission> &inout Commission)
 {

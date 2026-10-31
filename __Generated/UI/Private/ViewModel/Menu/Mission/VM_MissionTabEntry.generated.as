@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_MissionTabEntry_Helpers
 {
 UFUNCTION()

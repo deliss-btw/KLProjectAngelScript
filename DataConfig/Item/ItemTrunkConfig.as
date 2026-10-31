@@ -1,4 +1,3 @@
-﻿
 enum EItemTrunk
 {
     None,
@@ -16,7 +15,6 @@ enum EItemTrunk
     Other,
 }
 
-
 struct FItemTrunkConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -26,7 +24,6 @@ struct FItemTrunkConfig : FDataObject
     EItemTrunk Trunk;
     UPROPERTY()
     uint MaxSlotNum;
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_SettingMemory_Helpers
 {
 UFUNCTION()

@@ -1,5 +1,3 @@
-﻿
-
 class UWidget_HeadBubble : UASUserWidget
 {
     UPROPERTY()
@@ -21,7 +19,6 @@ class UWidget_HeadBubble : UASUserWidget
     float32 DialogShowTimer = -1.0f;
     float32 DefaultDialogShowTime = 6.0f;
     float32 HideDistance = 2000.0f;
-
 
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)

@@ -1,12 +1,9 @@
-﻿
-
 class UESMAction_SplineMoveRootMotion : UESMAction_SplineMoveRootMotionBase
 {
     UPROPERTY()
     bool bScaleRootMotionSpeedBySplinePeak = true;
     UPROPERTY()
     float32 RootMotionSpeedPct = 1.0f;
-
 
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const

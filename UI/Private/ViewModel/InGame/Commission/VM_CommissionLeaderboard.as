@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommissionLeaderboard
 {
     const int ModelId = 0;
@@ -184,10 +183,8 @@ struct FVM_CommissionLeaderboard : FEUIViewModel
             {
                 local_1 = local_6.Num();
             }
-            TDataObjectPtr<FCommissionConfig> local_96;
-            this.GetModify_AllCommissionConfigs().Add(local_96);
-            UEUIManagerSubsystem local_98 = this.GetManager();
-            local_6.Add(FEUIModelContainer());
+            this.GetModify_AllCommissionConfigs().Add(TDataObjectPtr<FCommissionConfig>(local_22.GetData()));
+            local_6.Add(FEUIModelContainer(::FVM_Text::Create(this.GetManager(), local_22.GetData().CommissionName)));
             local_22.Next();
         }
         FOnCommonDropdownSelected local_134;

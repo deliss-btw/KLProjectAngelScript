@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_HealStatistic_NS
 {
     const TECSComponentDerivedPtr<FC_HealStatistic> DerivedPtr = TECSComponentDerivedPtr<FC_HealStatistic>();
@@ -29,7 +28,6 @@ struct FCE_HealOtherEvent : FECSEvent
     UPROPERTY()
     float32 OverHealHP;
 
-
 }
 
 struct FCE_HealedEvent : FECSEvent
@@ -48,7 +46,6 @@ struct FCE_HealedEvent : FECSEvent
     UPROPERTY()
     float32 OverHealHP;
 
-
 }
 
 struct FHealRecord
@@ -61,7 +58,6 @@ struct FHealRecord
     EHealHPType HealHPType;
     UPROPERTY()
     FECSEntity HealedEntity;
-
 
 }
 
@@ -78,12 +74,12 @@ struct FC_HealStatistic : FECSComponent
     {
         float32 local_1 = 0.0f;
         FFPTime local_10 = (CurrentTime - FFPTime(DurationSeconds));
-        int local_14 = this.Num() - 1;
+        int local_14 = this.HealRecords.Num() - 1;
         for (; local_14 >= 0; --local_14)
         {
-            if (FFPTime(this[local_14].Time).opCmp(local_10) >= 0)
+            if (FFPTime(this.HealRecords[local_14].Time).opCmp(local_10) >= 0)
             {
-                local_1 = local_1 + this[local_14].HealAmount;
+                local_1 = local_1 + this.HealRecords[local_14].HealAmount;
                 continue;
             }
             break;
@@ -95,9 +91,9 @@ struct FC_HealStatistic : FECSComponent
         FFPTime local_8 = (CurrentTime - FFPTime(120.0));
         int local_9 = 0;
         int local_11 = 0;
-        for (; local_11 < this.Num(); ++local_11)
+        for (; local_11 < this.HealRecords.Num(); ++local_11)
         {
-            if (FFPTime(this[local_11].Time).opCmp(local_8) < 0)
+            if (FFPTime(this.HealRecords[local_11].Time).opCmp(local_8) < 0)
             {
                 ++local_9;
                 continue;
@@ -106,14 +102,14 @@ struct FC_HealStatistic : FECSComponent
         }
         if (local_9 > 0)
         {
-            this.RemoveAt(0, local_9);
+            this.HealRecords.RemoveAt(0, local_9);
         }
         FHealRecord local_22;
         local_22.Time = CurrentTime;
         local_22.HealAmount = HealAmount;
         local_22.HealHPType = HealHPType;
         local_22.HealedEntity = HealedEntity;
-        this.Add(local_22);
+        this.HealRecords.Add(local_22);
         return;
     }
 }
@@ -198,36 +194,36 @@ bool RemoveHealStatistic(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorHealStatisticOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_HealStatistic, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_HealStatistic, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorHealStatisticOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_HealStatistic, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_HealStatistic, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorHealStatisticOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_HealStatistic, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_HealStatistic, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorHealStatisticOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_HealStatistic, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_HealStatistic, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorHealStatisticOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_HealStatistic, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_HealStatistic, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorHealStatisticLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_HealStatistic, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_HealStatistic, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorHealStatisticActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_HealStatistic, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_HealStatistic, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorHealStatisticModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_HealStatistic, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_HealStatistic, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

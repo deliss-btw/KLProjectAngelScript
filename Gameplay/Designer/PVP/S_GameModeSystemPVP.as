@@ -1,5 +1,3 @@
-﻿
-
 class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
 {
     FName BrawlPrepStartLevelEventName = n"PVP_BRAWL_PREP_START";
@@ -839,7 +837,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
     {
         TDataObjectPtr<FLevelInfoConfig> local_48 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
         ESpawnPointSelectionRule local_50 = ESpawnPointSelectionRule(0);
-        ESpawnPointSelectionRule local_49 = local_50;
+        int local_49 = local_50;
         if (local_48.IsSet())
         {
             local_49 = local_50;
@@ -2149,7 +2147,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
         {
             return;
         }
-        local_8.SetSelectedGameRuleType(EPVPGameRuleType(Event.NewGameRuleType));
+        local_8.SetSelectedGameRuleType(Event.NewGameRuleType);
         return;
     }
     UFUNCTION()
@@ -2230,7 +2228,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
         FECSWorldPtr local_2_4 = this.GetECSWorld();
         TDataObjectPtr<FLevelInfoConfig> local_102 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
         ESpawnPointSelectionRule local_104 = ESpawnPointSelectionRule(0);
-        ESpawnPointSelectionRule local_103 = local_104;
+        int local_103 = local_104;
         if (local_102.IsSet())
         {
             local_103 = local_104;
@@ -2353,8 +2351,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_PVPPlayerRequestBackToRoom, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_PVPPlayerRequestBackToRoom, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());
@@ -2434,8 +2431,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_PlayerSetReady, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_PlayerSetReady, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());
@@ -2455,8 +2451,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_PVPPlayerSetGO, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_PVPPlayerSetGO, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());
@@ -2476,8 +2471,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_PVPPlayerSwitchTeam, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_PVPPlayerSwitchTeam, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());
@@ -2497,8 +2491,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_PVPPlayerSwitchGameRule, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_PVPPlayerSwitchGameRule, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());
@@ -2518,8 +2511,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_PVPAddBot, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_PVPAddBot, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());
@@ -2539,8 +2531,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_PVPRemoveBot, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_PVPRemoveBot, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());

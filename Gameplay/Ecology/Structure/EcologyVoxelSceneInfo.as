@@ -1,4 +1,3 @@
-﻿
 enum EEcologyVoxelUnitSlot
 {
     Resource,
@@ -13,7 +12,6 @@ enum ESearchCreatureSpecialFilter
     None,
     Corpse,
 }
-
 
 struct FVoxelRegionIndex
 {
@@ -40,22 +38,20 @@ struct FVoxelPosition
     UPROPERTY()
     FVector StdPosition;
     UPROPERTY()
-    int X;
+    int X = 0;
     UPROPERTY()
-    int Y;
+    int Y = 0;
     UPROPERTY()
-    int Z;
+    int Z = 0;
 
-    FVoxelPosition()
-    {
-        this.X = 0;
-        this.Y = 0;
-        this.Z = 0;
-        return;
-    }
     FVoxelPosition(const FVector &inout Position)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.StdPosition = Position;
+        int local_1 = 33554432;
+        this.X = ((int((Position.X + local_1))) >> 10);
+        this.Y = ((int((Position.Y + local_1))) >> 10);
+        this.Z = ((int((Position.Z + local_1))) >> 10);
+        return;
     }
     FVoxelRegionIndex ToRegionPos() const
     {
@@ -95,9 +91,9 @@ struct FVoxelIterator
 
     FVoxelIterator(const FVoxelPosition &inout inMin, const FVoxelPosition &inout inMax)
     {
-        this = inMin;
+        this.Min = inMin;
         this.Max = inMax;
-        this.Current = this;
+        this.Current = this.Min;
         this.Next = this.Current;
         this.CanProceed = (this.Next.X <= this.Max.X && (this.Next.Y <= this.Max.Y) && (this.Next.Z <= this.Max.Z));
         return;
@@ -109,12 +105,12 @@ struct FVoxelIterator
         if (this.Next.X > this.Max.X)
         {
             ++this.Next.Z;
-            this.Next.X = this.X;
+            this.Next.X = this.Min.X;
         }
         if (this.Next.Z > this.Max.Z)
         {
             ++this.Next.Y;
-            this.Next.Z = this.Z;
+            this.Next.Z = this.Min.Z;
         }
         this.CanProceed = (this.Next.Y <= this.Max.Y);
         return;
@@ -150,9 +146,9 @@ struct FVoxelRegionIterator
     {
         int local_3;
         this.CanProceed = false;
-        this = inMin;
+        this.Min = inMin;
         this.Max = inMax;
-        this.Current = this;
+        this.Current = this.Min;
         this.Next = this.Current;
         if (this.Next.X > this.Max.X)
         {
@@ -172,7 +168,7 @@ struct FVoxelRegionIterator
         if (this.Next.X > this.Max.X)
         {
             ++this.Next.Y;
-            this.Next.X = this.X;
+            this.Next.X = this.Min.X;
         }
         this.CanProceed = (this.Next.Y <= this.Max.Y);
         return;
@@ -201,19 +197,19 @@ struct FVoxelRegionScope
     {
         FVoxelPosition local_10 = FVoxelPosition(Scope.Min);
         FVoxelPosition local_20 = FVoxelPosition(Scope.Max);
-        this = local_10.ToRegionPos();
+        this.Min = local_10.ToRegionPos();
         this.Max = local_20.ToRegionPos();
         return;
     }
     FVoxelRegionScope(const FVoxelPosition &inout inMin, const FVoxelPosition &inout inMax)
     {
-        this = inMin.ToRegionPos();
+        this.Min = inMin.ToRegionPos();
         this.Max = inMax.ToRegionPos();
         return;
     }
     FVoxelRegionIterator Iterator() const
     {
-        return FVoxelRegionIterator(this, this.Max);
+        return FVoxelRegionIterator(this.Min, this.Max);
     }
 }
 
@@ -232,19 +228,19 @@ struct FVoxelScope
     {
         FVoxelPosition local_10 = FVoxelPosition(Scope.Min);
         FVoxelPosition local_20 = FVoxelPosition(Scope.Max);
-        this = local_10;
+        this.Min = local_10;
         this.Max = local_20;
         return;
     }
     FVoxelScope(const FVoxelPosition &inout inMin, const FVoxelPosition &inout inMax)
     {
-        this = inMin;
+        this.Min = inMin;
         this.Max = inMax;
         return;
     }
     FVoxelIterator Iterator() const
     {
-        return FVoxelIterator(this, this.Max);
+        return FVoxelIterator(this.Min, this.Max);
     }
 }
 
@@ -256,7 +252,6 @@ struct FEcologyVoxelSceneUnitSummary
     FBox Box;
     UPROPERTY()
     int SceneSpaceCost;
-
 
 }
 
@@ -289,7 +284,7 @@ struct FEcologyVoxelSceneCell
 
     FEcologyVoxelSceneCell()
     {
-        this.SetNum(4);
+        this.RegionData.SetNum(4);
         return;
     }
 }
@@ -316,7 +311,6 @@ struct FRegionVolumeSummary
     int Priority = 0;
     UPROPERTY()
     TWeakObjectPtr<AECSVolumeBase> Volume;
-
 
 }
 
@@ -399,27 +393,27 @@ struct FEcologyVoxelScene
     }
     TConstRawPtr<FEcologyVoxelSceneRegion> FindRegion(const FVoxelPosition &inout Pos) const
     {
-        return this.Find(Pos.ToRegionIndex());
+        return this.RegionMap.Find(Pos.ToRegionIndex());
     }
     FEcologyVoxelSceneRegion& FindOrAddRegion(const FVoxelPosition &inout Pos)
     {
-        return this.FindOrAdd(Pos.ToRegionIndex());
+        return this.RegionMap.FindOrAdd(Pos.ToRegionIndex());
     }
     FEcologyVoxelSceneRegion& FindOrAddRegion(const FVoxelRegionIndex &inout Pos)
     {
-        return this.FindOrAdd(Pos.ToRegionIndex());
+        return this.RegionMap.FindOrAdd(Pos.ToRegionIndex());
     }
     TConstRawPtr<FEcologyVoxelSceneRegion> Find(const FVoxelPosition &inout Pos) const
     {
-        return this.Find(Pos.ToRegionIndex());
+        return this.RegionMap.Find(Pos.ToRegionIndex());
     }
     TConstRawPtr<FEcologyVoxelSceneRegion> Find(const FVoxelRegionIndex &inout Pos) const
     {
-        return this.Find(Pos.ToRegionIndex());
+        return this.RegionMap.Find(Pos.ToRegionIndex());
     }
     bool ExitRegion(const FVoxelPosition &inout Pos) const
     {
-        if (this.Contains(Pos.ToRegionIndex()))
+        if (this.RegionMap.Contains(Pos.ToRegionIndex()))
         {
             return true;
         }
@@ -429,11 +423,11 @@ struct FEcologyVoxelScene
     {
         int local_4 = Pos.ToCellIndex();
         int local_6 = Pos.ToRegionIndex();
-        if (!(this.Contains(local_6)))
+        if (!(this.RegionMap.Contains(local_6)))
         {
             return;
         }
-        FEcologyVoxelSceneRegion& local_10 = this[local_6];
+        FEcologyVoxelSceneRegion& local_10 = this.RegionMap[local_6];
         return;
     }
     void AddEntity(const FVoxelPosition &inout Pos, const FEcologyVoxelSceneUnitSummary &inout Summary, const EEcologyVoxelUnitSlot Slot)
@@ -445,11 +439,11 @@ struct FEcologyVoxelScene
     int GetUnitCountInCell(const FVoxelPosition &inout Position, const EEcologyVoxelUnitSlot Slot)
     {
         int local_1 = Position.ToRegionIndex();
-        if (!(this.Contains(local_1)))
+        if (!(this.RegionMap.Contains(local_1)))
         {
             return 0;
         }
-        FEcologyVoxelSceneRegion& local_6 = this[local_1];
+        FEcologyVoxelSceneRegion& local_6 = this.RegionMap[local_1];
         return local_6.GetUnitCountInCell(Position, EEcologyVoxelUnitSlot(Slot));
     }
 }
@@ -465,11 +459,12 @@ struct FEntitySearchResult
     }
     FEntitySearchResult(const FECSEntityId &inout ID)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.EntityId = ID;
+        return;
     }
     FECSEntity GetEntity()
     {
-        return FECSEntity(this);
+        return FECSEntity(this.EntityId);
     }
 }
 
@@ -484,7 +479,8 @@ struct FEntitySearchResultList
     }
     FEntitySearchResultList(const TArray<FEntitySearchResult> &inout InResults)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.Results = InResults;
+        return;
     }
 }
 
@@ -499,15 +495,16 @@ struct FVolumeProxy
     }
     FVolumeProxy(const AECSRegionVolume VolumeComponent)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.Volume = VolumeComponent;
+        return;
     }
     bool IsValid()
     {
-        return this.IsValid();
+        return this.Volume.IsValid();
     }
     bool QuickEncompassesPoint(const FVector &inout Point) const
     {
-        if (!(this.IsValid()))
+        if (!(this.Volume.IsValid()))
         {
             return false;
         }
@@ -516,7 +513,7 @@ struct FVolumeProxy
     }
     FBox GetBounds() const
     {
-        if (!(this.IsValid()))
+        if (!(this.Volume.IsValid()))
         {
             return FBox();
         }
@@ -525,7 +522,7 @@ struct FVolumeProxy
     }
     FECSEntity GetRegionEntity()
     {
-        if (!(this.IsValid()))
+        if (!(this.Volume.IsValid()))
         {
             return ENTITY_NULL;
         }
@@ -566,7 +563,6 @@ struct FResourceSearchRequest
     TArray<FVolumeProxy> ExcludeVolumes;
     UPROPERTY()
     FKLGameplayTagQuery TagFilter;
-
 
     bool IsInExcludeVolume(const FVector &inout Position) const
     {
@@ -619,7 +615,6 @@ struct FCreatureSearchRequest
     bool bOnlyFlockMember = false;
     UPROPERTY()
     bool bIncludeDead = false;
-
 
 }
 

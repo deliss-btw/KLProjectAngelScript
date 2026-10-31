@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_CombatPresentation_EnableOtherPlayerHitFx = FConsoleVariable();
 const FConsoleVariable CVar_CombatPresentation_HitFxDetachTime = FConsoleVariable();
 
@@ -175,13 +174,13 @@ class US_CombatPresentationSystem : UECSScriptSystem
     void Job_HandleHitCameraShake(const FCE_HitEvent &inout Event) const
     {
         const FAttackData& local_4;
-        if (Event.bBanPresentation)
+        if Event.bBanPresentation
         {
             return;
         }
         FECSEntity local_8 = Event.Receiver;
         FECSEntity local_12 = Event.Attacker;
-        if (Event.bHitWeakness)
+        if Event.bHitWeakness
         {
             float32 local_14;
             local_14 = local_4.HitWeaknessCameraShakeRatio;
@@ -206,7 +205,7 @@ class US_CombatPresentationSystem : UECSScriptSystem
     UFUNCTION()
     void Job_HandleHitEffect(const FCE_HitEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [unresolved-operand]
+        // body not fully recovered — stub [unresolved-operand]
     }
     UFUNCTION()
     void Run_Job_HandleHitShake() const
@@ -281,15 +280,15 @@ void SpawnDecalByHitResult(const USkeletalMeshComponent SkelMeshComp, const FNam
     }
     if (!((TDataObjectPtr<FHitDecalConfig>(DecalCfgTableRow))))
     {
-        FString local_36 = "[HitDecal] Can not find table row: ";
-        FString local_32 = DecalCfgTableRow.GetDataName().ToString();
+        XError(ELog(0), (FString("[HitDecal] Can not find table row: ") + DecalCfgTableRow.GetDataName().ToString()));
         return;
     }
     TDataObjectPtr<FHitDecalConfig> local_26 = TDataObjectPtr<FHitDecalConfig>(DecalCfgTableRow);
     FVector local_54 = FanPlaneNormal.CrossProduct(HitNormal);
     local_54 *= FMath::Sign(local_54.DotProduct(HitFromDir));
     FHitDecalConfig local_42;
-    FHitDecalScriptUtils::AddHitDecal(SkelMeshComp, HitBoneName, int(local_42.DecalTextureID), HitLocation, local_54, HitNormal, local_42.Size, local_42.Duration, local_42.InitOpacity, local_42.bFadeOutByTime, local_42.FadeStartTime, int(local_42.Emissive));
+    bool local_1 = local_42.bFadeOutByTime;
+    FHitDecalScriptUtils::AddHitDecal(SkelMeshComp, HitBoneName, int(local_42.DecalTextureID), HitLocation, local_54, HitNormal, local_42.Size, local_42.Duration, local_42.InitOpacity, local_1, local_42.FadeStartTime, local_42.Emissive);
     return;
 }
 }

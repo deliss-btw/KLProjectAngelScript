@@ -1,5 +1,3 @@
-﻿
-
 struct FConfigVM_Mode_Main : FConfigEUIModelBase
 {
     UPROPERTY()

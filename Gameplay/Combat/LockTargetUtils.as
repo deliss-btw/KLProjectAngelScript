@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_LockTarget_Debug = FConsoleVariable();
 const FConsoleVariable CVar_LockTarget_Debug_Time = FConsoleVariable();
 
@@ -64,7 +63,7 @@ void ClearLockTarget(const FECSEntity &inout Entity)
 }
 void DisposeChangeLockTarget(const FCE_LockTargetChangeEvent &inout Event, const ULockTargetConfig LockTargetConfigRef)
 {
-    FLockTargetUtils::DisposeChangeLockTarget(Event.Sender, Event.TargetEntity, Event.PreTargetEntity, int(Event.LockPointIndex), LockTargetConfigRef.Data.bShouldStrafe, Event.ChangeTargetReason, ELockTargetType(2));
+    FLockTargetUtils::DisposeChangeLockTarget(Event.Sender, Event.TargetEntity, Event.PreTargetEntity, int(Event.LockPointIndex), (LockTargetConfigRef.Data.bShouldStrafe), Event.ChangeTargetReason, ELockTargetType(2));
     return;
 }
 void DisposeChangeLockTarget(const FECSEntity &inout Sender, const FECSEntity &inout TargetEntity, const FECSEntity &inout PreTargetEntity, const int LockPointIndex = -1, const bool bShouldStrafe = true, const EPreChangeTargetReason ChangeTargetReason = EPreChangeTargetReason::Default, const ELockTargetType LockTargetType = ELockTargetType::HardLock)
@@ -148,19 +147,28 @@ void PickSoftLockTarget(const FECSEntity &inout Entity, const FFPTime &inout Tim
     FC_LockTarget local_6 = local_4.opCall();
     if (local_6)
     {
-        if ((int(local_6.GetType())) == 2)
+        if (int(local_6.GetType()) == 2)
         {
             return;
         }
     }
-    FLockTargetResult local_42 = FLockTargetUtils::PickLockTargetResult(ELockTargetType(ELockTargetType(1)), Entity, Time, Config, OverrideInfo);
-    int local_44 = bKeepBeforeExit ? -1082130432 : int(Config.KeepDuration);
+    FLockTargetResult local_42 = FLockTargetUtils::PickLockTargetResult(ELockTargetType(1), Entity, Time, Config, OverrideInfo);
+    if (bKeepBeforeExit)
+    {
+        float32 local_44;
+        local_44 = -1.0f;
+    }
+    else
+    {
+        float32 local_44;
+        local_44 = Config.KeepDuration;
+    }
     Remove local_50;
     local_50.opCall();
     if ((!((local_42.LockTarget == ENTITY_NULL))))
     {
-        ELockTargetType local_8_2 = ELockTargetType(1);
-        FLockTargetUtils::UpdateLockTarget(Entity, local_42.LockTarget, int(local_42.LockPointIndex), ELockTargetType(local_8_2), Config.bShouldStrafe, local_44);
+        float32 local_44;
+        FLockTargetUtils::UpdateLockTarget(Entity, local_42.LockTarget, int(local_42.LockPointIndex), ELockTargetType(1), Config.bShouldStrafe, local_44);
         Modify local_58;
         FC_LockTarget local_6_2 = local_58.opCall();
         if (local_6_2)
@@ -276,11 +284,9 @@ void KeepLockTargetWhenSwitchControlEntity(const FECSEntity &inout SourceEntity,
     }
     else
     {
-        if ((int(local_8.GetType())) != 0)
+        if (int(local_8.GetType()) != 0)
         {
-            bool local_1 = local_8.GetbShouldStrafe();
-            ELockTargetType local_10 = local_8.GetType();
-            FLockTargetUtils::UpdateLockTarget(TargetEntity, local_8.GetTargetEntity(), local_8.GetLockPointIndex(), local_1, false);
+            FLockTargetUtils::UpdateLockTarget(TargetEntity, local_8.GetTargetEntity(), local_8.GetLockPointIndex(), local_8.GetType(), local_8.GetbShouldStrafe(), 0.0f);
             Modify local_18;
             FC_LockTarget& local_20 = local_18.opCall();
             if (local_20)
@@ -781,14 +787,33 @@ bool IsPointsDistributedCloseToMoveDir(const FVector &inout ZeroPosition, const 
         local_76 = local_22[local_69];
     }
     float32 local_77 = 0.0f;
-    int local_79 = false;
+    int local_3_2 = 0;
+    int local_79 = local_3_2;
     if (local_66 <= local_76)
     {
-        local_79 = (local_77 >= local_66 && ((local_77 <= local_76)));
+        if (local_77 < local_66)
+        {
+            local_3_2 = 0;
+        }
+        else
+        {
+            bool local_80 = (local_77 <= local_76);
+            local_3_2 = local_80;
+        }
+        local_79 = local_3_2;
     }
     else
     {
-        local_79 = (local_77 >= local_66 || ((local_77 <= local_76)));
+        if (local_77 >= local_66)
+        {
+            local_3_2 = 1;
+        }
+        else
+        {
+            bool local_80_2 = (local_77 <= local_76);
+            local_3_2 = local_80_2;
+        }
+        local_79 = local_3_2;
     }
     return (local_79 != 0);
 }
@@ -945,7 +970,7 @@ void DisposeMultiLockTargetExtraInfo(const FECSEntity &inout Entity, const FC_Lo
         {
             FLockTargetUtils::GetLockPointsFromEntity(LockTarget.GetTargetEntity(), local_34, local_30, false);
         }
-        FLockTargetResult local_102 = FLockTargetUtils::PickEntityLockPoint(ELockTargetType(ELockTargetType(1)), Entity, LockTarget.GetTargetEntity(), Config.Data, OverrideInfo, local_34);
+        FLockTargetResult local_102 = FLockTargetUtils::PickEntityLockPoint(ELockTargetType(1), Entity, LockTarget.GetTargetEntity(), Config.Data, OverrideInfo, local_34);
         if ((local_102.LockPointPosition == FVector::ZeroVector))
         {
             local_102.LockPointPosition = LockTarget.GetLogicLockTargetPosition();
@@ -1010,10 +1035,10 @@ void ExitSoftLock(const FECSEntity &inout Entity, const FFPTime &inout WorldTime
             local_72.bOverrideMaxLockDistance = true;
             local_72.MaxMaxLockDistance = OverrideMaxDistance;
         }
-        FLockTargetResult local_104 = FLockTargetUtils::PickLockTargetResult(ELockTargetType(ELockTargetType(1)), Entity, WorldTime, Config.Data, local_72);
+        FLockTargetResult local_104 = FLockTargetUtils::PickLockTargetResult(ELockTargetType(1), Entity, WorldTime, Config.Data, local_72);
         if (!((local_104.LockTarget == ENTITY_NULL)))
         {
-            FLockTargetUtils::UpdateLockTarget(Entity, local_104.LockTarget, int(local_104.LockPointIndex), ELockTargetType(ELockTargetType(1)), Config.Data.bShouldStrafe, int(Config.Data.KeepDuration));
+            FLockTargetUtils::UpdateLockTarget(Entity, local_104.LockTarget, int(local_104.LockPointIndex), ELockTargetType(1), Config.Data.bShouldStrafe, Config.Data.KeepDuration);
         }
         return;
     }
@@ -1021,7 +1046,8 @@ void ExitSoftLock(const FECSEntity &inout Entity, const FFPTime &inout WorldTime
     {
         if (bKeepBeforeExit && TargetEntity.IsValid())
         {
-            FLockTargetUtils::UpdateLockTarget(Entity, TargetEntity, LockPointIndex, ELockTargetType(ELockTargetType(1)), Config.Data.bShouldStrafe, int(Config.Data.KeepDuration));
+            bool local_5_3 = Config.Data.bShouldStrafe;
+            FLockTargetUtils::UpdateLockTarget(Entity, TargetEntity, LockPointIndex, ELockTargetType(1), local_5_3, Config.Data.KeepDuration);
         }
         return;
     }
@@ -1036,7 +1062,7 @@ void ExitSoftLock(const FECSEntity &inout Entity, const FFPTime &inout WorldTime
     }
     if (bKeepBeforeExit)
     {
-        FLockTargetUtils::UpdateLockTarget(Entity, local_26.GetTargetEntity(), local_26.GetLockPointIndex(), ELockTargetType(ELockTargetType(1)), Config.Data.bShouldStrafe, int(Config.Data.KeepDuration));
+        FLockTargetUtils::UpdateLockTarget(Entity, local_26.GetTargetEntity(), local_26.GetLockPointIndex(), ELockTargetType(1), Config.Data.bShouldStrafe, Config.Data.KeepDuration);
     }
     return;
 }
@@ -1238,15 +1264,12 @@ void UpdateLockTargetInternal(const FECSEntity &inout Entity, const FECSEntity &
     }
     if (local_87 == false)
     {
-        ELog local_154;
-        FString local_150 = "Invalid Lock Target Entity:";
         int local_50 = Entity.GetIdValue();
-        (local_150 + int(local_154));
-        FString local_150_2 = (local_154 + " TargetEntity:");
+        FString local_150 = ((FString("Invalid Lock Target Entity:") + local_50) + " TargetEntity:");
         local_50 = NewLockTarget.GetIdValue();
-        (local_150_2 + int(local_154));
-        FString local_150_3 = (local_154 + " LockPointIndex:");
-        (local_150_3 + int(local_154));
+        FString local_154_2 = (local_150 + local_50);
+        FString local_150_2 = (local_154_2 + " LockPointIndex:");
+        XError(ELog(0), (local_150_2 + LockPointIndex));
         return;
     }
     if (local_85 == false)
@@ -1294,7 +1317,7 @@ void PickLockTargetInternal(FLockTargetResult &inout OutResult, const ELockTarge
     bool local_39;
     bool local_52;
     Get local_58;
-    float local_115;
+    float32 local_115;
     int local_127;
     FScopeCycleCounter local_1 = FScopeCycleCounter(FStatID(n"PickLockTargetInternal"), false);
     bool local_5 = false;
@@ -1374,8 +1397,7 @@ void PickLockTargetInternal(FLockTargetResult &inout OutResult, const ELockTarge
         local_79 = local_90.Radius;
         if (local_79 > 0.0f)
         {
-            local_115 = local_90.Radius;
-            local_114 = FMath::Max(0.0f, local_114 - local_115);
+            local_114 = FMath::Max(0.0f, local_114 - local_90.Radius);
         }
         local_79 = ConfigData.MaxLockAngleCurveForDistance.GetFloatValue(local_114, 0.0f);
         local_26 = local_90.Position;
@@ -1415,11 +1437,10 @@ void PickLockTargetInternal(FLockTargetResult &inout OutResult, const ELockTarge
         }
         else
         {
-            local_115 = int(ConfigData.NonCombatMultiplier);
+            local_115 = ConfigData.NonCombatMultiplier;
         }
         local_126 = local_126 * local_115;
-        local_115 = local_113 + local_116;
-        float32 local_124 = (local_115 + local_122) * local_126;
+        float32 local_124 = ((local_113 + local_116) + local_122) * local_126;
         if (local_6)
         {
             local_124 = local_124 * local_58.opCall().GetPickTargetScoreRatio();
@@ -1452,9 +1473,8 @@ void PickLockTargetInternal(FLockTargetResult &inout OutResult, const ELockTarge
             FECSDebugDraw::SetDebugKeyEnable(n"LockTarget", true);
             local_100 = local_90.Position;
             FECSDebugDraw::DrawDebugString(n"LockTarget", (local_100 + FVector(0.0, 0.0, 150.0)), FString().Append("Scr:").Append(LockableEntity).Append("\nAagScr:").Append(FString::ApplyFormat(local_116, ".2f")).Append(" (").Append(FString::ApplyFormat(local_80_2, ".3f")).Append(")\nDisScr").Append(FString::ApplyFormat(local_113, ".2f")).Append(" (").Append(FString::ApplyFormat(local_114, ".3f")).Append(")\nCamAngScr").Append(FString::ApplyFormat(local_122, ".2f")).Append(" (").Append(FString::ApplyFormat(local_81_2, ".3f")).Append(")"), FColor::Red, 1.3f, FColor::Blue, CVar_LockTarget_Debug_Time.GetFloat());
-            int local_123 = CVar_LockTarget_Debug_Time.GetFloat();
             local_144 = local_90.Position;
-            FECSDebugDraw::DrawDebugString(n"LockTarget", (local_144 + FVector(0.0, 0.0, 250.0)), (FString("CameraAngleDist ") + local_81_2), FColor::Red, 1.3f, FColor::Blue);
+            FECSDebugDraw::DrawDebugString(n"LockTarget", (local_144 + FVector(0.0, 0.0, 250.0)), (FString("CameraAngleDist ") + local_81_2), FColor::Red, 1.3f, FColor::Blue, CVar_LockTarget_Debug_Time.GetFloat());
             if (local_90.Radius > 0.0f)
             {
                 FECSDebugDraw::DrawDebugSphere(n"LockTarget", local_90.Position, local_90.Radius, 12, FColor::Green, FColor::Blue, CVar_LockTarget_Debug_Time.GetFloat(), uint8(0), 0.0f);
@@ -1466,12 +1486,9 @@ void PickLockTargetInternal(FLockTargetResult &inout OutResult, const ELockTarge
         FECSDebugDraw::SetDebugKeyEnable(n"LockTarget", true);
         FECSDebugDraw::DrawDebugSphere(n"LockTarget", OutResult.LockPointPosition, 200.0f, 12, FColor::Yellow, FColor::Yellow, CVar_LockTarget_Debug_Time.GetFloat(), uint8(0), 0.0f);
         FECSDebugDraw::DrawDebugPoint(n"LockTarget", OverrideInfo.MoveOriginPos, 30.0f, FColor::Red, FColor::Blue, CVar_LockTarget_Debug_Time.GetFloat(), uint8(0));
-        int local_123_2 = CVar_LockTarget_Debug_Time.GetFloat();
         FVector local_100_2 = (FVector(OverrideInfo.MoveDir.GetForwardVector()) * 300.0);
-        FECSDebugDraw::DrawDebugLine(n"LockTarget", OverrideInfo.MoveOriginPos, (OverrideInfo.MoveOriginPos + local_100_2), FColor::Red, FColor::Blue, 0.0f, uint8(0));
-        float32 local_120 = CVar_LockTarget_Debug_Time.GetFloat();
-        LockableEntity.GetEntityName();
-        FString local_162 = FString();
+        FECSDebugDraw::DrawDebugLine(n"LockTarget", OverrideInfo.MoveOriginPos, (OverrideInfo.MoveOriginPos + local_100_2), FColor::Red, FColor::Blue, CVar_LockTarget_Debug_Time.GetFloat(), uint8(0), 0.0f);
+        FECSDebugDraw::DrawDebugString(n"LockTarget", OverrideInfo.MoveOriginPos, FString().Append("[").Append(ConfigData.Name).Append("]\n[").Append(LockableEntity.GetEntityName()).Append("]"), FColor::Red, 1.3f, FColor::Blue, CVar_LockTarget_Debug_Time.GetFloat());
     }
     else
     {

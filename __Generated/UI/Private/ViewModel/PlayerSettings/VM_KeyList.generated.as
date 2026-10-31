@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_KeyList_Helpers
 {
 UFUNCTION()

@@ -1,4 +1,3 @@
-﻿
 enum EEcoCollectableNonSyncedVisibilityStatus
 {
     DitherInAndShow,
@@ -106,7 +105,6 @@ struct FTimeAndSpaceRelatedInstantFXConfig
     UPROPERTY()
     FPlayFXCallParam FXParams;
 
-
 }
 
 struct FTimeAndSpaceRelatedDurationalFXConfig
@@ -120,7 +118,6 @@ struct FTimeAndSpaceRelatedDurationalFXConfig
     UPROPERTY()
     TArray<FName> FXLogicNames;
 
-
 }
 
 struct FEcoCollectableSFXConfig
@@ -129,7 +126,6 @@ struct FEcoCollectableSFXConfig
     TSoftObjectPtr<UAkAudioEvent> Event;
     UPROPERTY()
     bool bOnlyLocalPlayer = true;
-
 
 }
 
@@ -173,7 +169,6 @@ struct FC_EcoCollectableConfig : FECSComponent
     TArray<FEcoCollectableSFXConfig> CollectedSFXConfigs;
     UPROPERTY()
     float32 CollectedRecoverTimeSeconds = 5.0f;
-
 
     void PostPrefabActorConstruct(const AECSPrefab Prefab)
     {
@@ -244,7 +239,6 @@ struct FC_EcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimer : FECSCompo
     UPROPERTY()
     FFPTime TurnOffDynamicMaskedMaterialTimer;
 
-
 }
 
 struct FC_EcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimer : FECSComponent
@@ -253,7 +247,6 @@ struct FC_EcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimer : 
     bool bTargetMeshHiddenState;
     UPROPERTY()
     FFPTime TurnOffDynamicMaskedMaterialTimer;
-
 
 }
 
@@ -271,7 +264,6 @@ struct FEcoCollectableLayoutInfo
     TDataObjectPtr<FEcoCollectableCreatureDefinitionRow> CreatureDef;
     UPROPERTY()
     TDataObjectPtr<FEcoCollectableCreatureDefinitionRow> BundleDef;
-
 
     FString CheckForErrorsRuntime(const FECSEntity &inout Entity) const
     {
@@ -337,7 +329,6 @@ struct FC_EcoCollectableNonSyncedVisualStatus : FECSComponent
     bool bInteractTipDurationalFXActive;
     UPROPERTY()
     TArray<int> EnvDurationalFXActiveIndices;
-
 
 }
 
@@ -428,11 +419,15 @@ struct FCS_EcoCollectableDataCache : FECSSingleton
 
     FCS_EcoCollectableDataCache()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FCS_EcoCollectableDataCache(const FCS_EcoCollectableDataCache &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_Static2DynamicEntityIdMap = Other.m_Static2DynamicEntityIdMap;
         this.m_Dynamic2StaticEntityIdMap = Other.m_Dynamic2StaticEntityIdMap;
@@ -512,7 +507,6 @@ struct FCE_EcoCollectableCollected_DataTracker : FECSEvent
     int ResourcePointIndex;
     UPROPERTY()
     TDataObjectPtr<FEcoCollectableCreatureDefinitionRow> CreatureDef;
-
 
 }
 
@@ -596,37 +590,37 @@ bool RemoveEcoCollectableConfig(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcoCollectableConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcoCollectableConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcoCollectableConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcoCollectableConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcoCollectableConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcoCollectableConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcoCollectableConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcoCollectableRemoveManualInteractTimer
@@ -709,37 +703,37 @@ bool RemoveEcoCollectableRemoveManualInteractTimer(const FECSEntity &inout Entit
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableRemoveManualInteractTimerOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableRemoveManualInteractTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableRemoveManualInteractTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableRemoveManualInteractTimerOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableRemoveManualInteractTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableRemoveManualInteractTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableRemoveManualInteractTimerOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableRemoveManualInteractTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableRemoveManualInteractTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableRemoveManualInteractTimerOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableRemoveManualInteractTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableRemoveManualInteractTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableRemoveManualInteractTimerOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableRemoveManualInteractTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableRemoveManualInteractTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcoCollectableRemoveManualInteractTimerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcoCollectableRemoveManualInteractTimer, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcoCollectableRemoveManualInteractTimer, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableRemoveManualInteractTimerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcoCollectableRemoveManualInteractTimer, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcoCollectableRemoveManualInteractTimer, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableRemoveManualInteractTimerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcoCollectableRemoveManualInteractTimer, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcoCollectableRemoveManualInteractTimer, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimer
@@ -822,37 +816,37 @@ bool RemoveEcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimer(const FECS
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimerOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimerOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimerOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimerOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimerOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimer, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimer, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimer, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimer, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimer, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcoCollectableTurnOffFruitDitherDynamicMaskedMaterialTimer, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimer
@@ -935,37 +929,37 @@ bool RemoveEcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimer(c
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimerOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimerOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimerOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimerOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimerOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimer, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimer, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimer, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimer, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimer, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimer, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimer, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcoCollectableTurnOffEnvDitherExceptFruitDynamicMaskedMaterialTimer, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcoCollectableNonSyncedVisualStatus
@@ -1048,37 +1042,37 @@ bool RemoveEcoCollectableNonSyncedVisualStatus(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableNonSyncedVisualStatusOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableNonSyncedVisualStatus, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableNonSyncedVisualStatus, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableNonSyncedVisualStatusOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableNonSyncedVisualStatus, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableNonSyncedVisualStatus, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableNonSyncedVisualStatusOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableNonSyncedVisualStatus, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableNonSyncedVisualStatus, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableNonSyncedVisualStatusOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableNonSyncedVisualStatus, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableNonSyncedVisualStatus, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableNonSyncedVisualStatusOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableNonSyncedVisualStatus, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableNonSyncedVisualStatus, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcoCollectableNonSyncedVisualStatusLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcoCollectableNonSyncedVisualStatus, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcoCollectableNonSyncedVisualStatus, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableNonSyncedVisualStatusActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcoCollectableNonSyncedVisualStatus, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcoCollectableNonSyncedVisualStatus, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableNonSyncedVisualStatusModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcoCollectableNonSyncedVisualStatus, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcoCollectableNonSyncedVisualStatus, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcoCollectableNonSyncedPendingViewInitTag
@@ -1158,37 +1152,37 @@ bool RemoveEcoCollectableNonSyncedPendingViewInitTag(const FECSEntity &inout Ent
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableNonSyncedPendingViewInitTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableNonSyncedPendingViewInitTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableNonSyncedPendingViewInitTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableNonSyncedPendingViewInitTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableNonSyncedPendingViewInitTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableNonSyncedPendingViewInitTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableNonSyncedPendingViewInitTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableNonSyncedPendingViewInitTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableNonSyncedPendingViewInitTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableNonSyncedPendingViewInitTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableNonSyncedPendingViewInitTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableNonSyncedPendingViewInitTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableNonSyncedPendingViewInitTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableNonSyncedPendingViewInitTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableNonSyncedPendingViewInitTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcoCollectableNonSyncedPendingViewInitTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcoCollectableNonSyncedPendingViewInitTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcoCollectableNonSyncedPendingViewInitTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableNonSyncedPendingViewInitTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcoCollectableNonSyncedPendingViewInitTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcoCollectableNonSyncedPendingViewInitTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableNonSyncedPendingViewInitTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcoCollectableNonSyncedPendingViewInitTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcoCollectableNonSyncedPendingViewInitTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcoCollectableNonSyncedPendingEnvInitTag
@@ -1268,37 +1262,37 @@ bool RemoveEcoCollectableNonSyncedPendingEnvInitTag(const FECSEntity &inout Enti
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableNonSyncedPendingEnvInitTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableNonSyncedPendingEnvInitTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableNonSyncedPendingEnvInitTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableNonSyncedPendingEnvInitTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableNonSyncedPendingEnvInitTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableNonSyncedPendingEnvInitTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableNonSyncedPendingEnvInitTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableNonSyncedPendingEnvInitTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableNonSyncedPendingEnvInitTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableNonSyncedPendingEnvInitTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableNonSyncedPendingEnvInitTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableNonSyncedPendingEnvInitTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableNonSyncedPendingEnvInitTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableNonSyncedPendingEnvInitTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableNonSyncedPendingEnvInitTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcoCollectableNonSyncedPendingEnvInitTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcoCollectableNonSyncedPendingEnvInitTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcoCollectableNonSyncedPendingEnvInitTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableNonSyncedPendingEnvInitTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcoCollectableNonSyncedPendingEnvInitTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcoCollectableNonSyncedPendingEnvInitTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableNonSyncedPendingEnvInitTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcoCollectableNonSyncedPendingEnvInitTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcoCollectableNonSyncedPendingEnvInitTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcoCollectableLayoutInfoPendingCheckErrorServerTag
@@ -1378,37 +1372,37 @@ bool RemoveEcoCollectableLayoutInfoPendingCheckErrorServerTag(const FECSEntity &
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoPendingCheckErrorServerTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableLayoutInfoPendingCheckErrorServerTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableLayoutInfoPendingCheckErrorServerTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoPendingCheckErrorServerTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableLayoutInfoPendingCheckErrorServerTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableLayoutInfoPendingCheckErrorServerTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoPendingCheckErrorServerTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableLayoutInfoPendingCheckErrorServerTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableLayoutInfoPendingCheckErrorServerTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoPendingCheckErrorServerTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableLayoutInfoPendingCheckErrorServerTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableLayoutInfoPendingCheckErrorServerTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoPendingCheckErrorServerTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableLayoutInfoPendingCheckErrorServerTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableLayoutInfoPendingCheckErrorServerTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcoCollectableLayoutInfoPendingCheckErrorServerTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcoCollectableLayoutInfoPendingCheckErrorServerTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcoCollectableLayoutInfoPendingCheckErrorServerTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableLayoutInfoPendingCheckErrorServerTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcoCollectableLayoutInfoPendingCheckErrorServerTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcoCollectableLayoutInfoPendingCheckErrorServerTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableLayoutInfoPendingCheckErrorServerTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcoCollectableLayoutInfoPendingCheckErrorServerTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcoCollectableLayoutInfoPendingCheckErrorServerTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcoCollectableLayoutInfoErrorServerTag
@@ -1488,37 +1482,37 @@ bool RemoveEcoCollectableLayoutInfoErrorServerTag(const FECSEntity &inout Entity
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoErrorServerTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableLayoutInfoErrorServerTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableLayoutInfoErrorServerTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoErrorServerTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableLayoutInfoErrorServerTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableLayoutInfoErrorServerTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoErrorServerTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableLayoutInfoErrorServerTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableLayoutInfoErrorServerTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoErrorServerTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableLayoutInfoErrorServerTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableLayoutInfoErrorServerTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoErrorServerTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableLayoutInfoErrorServerTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableLayoutInfoErrorServerTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcoCollectableLayoutInfoErrorServerTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcoCollectableLayoutInfoErrorServerTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcoCollectableLayoutInfoErrorServerTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableLayoutInfoErrorServerTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcoCollectableLayoutInfoErrorServerTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcoCollectableLayoutInfoErrorServerTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableLayoutInfoErrorServerTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcoCollectableLayoutInfoErrorServerTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcoCollectableLayoutInfoErrorServerTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcoCollectableLayoutInfoPendingCheckErrorClientTag
@@ -1598,37 +1592,37 @@ bool RemoveEcoCollectableLayoutInfoPendingCheckErrorClientTag(const FECSEntity &
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoPendingCheckErrorClientTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableLayoutInfoPendingCheckErrorClientTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableLayoutInfoPendingCheckErrorClientTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoPendingCheckErrorClientTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableLayoutInfoPendingCheckErrorClientTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableLayoutInfoPendingCheckErrorClientTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoPendingCheckErrorClientTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableLayoutInfoPendingCheckErrorClientTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableLayoutInfoPendingCheckErrorClientTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoPendingCheckErrorClientTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableLayoutInfoPendingCheckErrorClientTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableLayoutInfoPendingCheckErrorClientTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoPendingCheckErrorClientTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableLayoutInfoPendingCheckErrorClientTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableLayoutInfoPendingCheckErrorClientTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcoCollectableLayoutInfoPendingCheckErrorClientTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcoCollectableLayoutInfoPendingCheckErrorClientTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcoCollectableLayoutInfoPendingCheckErrorClientTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableLayoutInfoPendingCheckErrorClientTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcoCollectableLayoutInfoPendingCheckErrorClientTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcoCollectableLayoutInfoPendingCheckErrorClientTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableLayoutInfoPendingCheckErrorClientTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcoCollectableLayoutInfoPendingCheckErrorClientTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcoCollectableLayoutInfoPendingCheckErrorClientTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcoCollectableLayoutInfoErrorClientTag
@@ -1708,37 +1702,37 @@ bool RemoveEcoCollectableLayoutInfoErrorClientTag(const FECSEntity &inout Entity
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoErrorClientTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableLayoutInfoErrorClientTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableLayoutInfoErrorClientTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoErrorClientTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableLayoutInfoErrorClientTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableLayoutInfoErrorClientTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoErrorClientTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableLayoutInfoErrorClientTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableLayoutInfoErrorClientTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoErrorClientTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableLayoutInfoErrorClientTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableLayoutInfoErrorClientTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoErrorClientTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableLayoutInfoErrorClientTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableLayoutInfoErrorClientTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcoCollectableLayoutInfoErrorClientTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcoCollectableLayoutInfoErrorClientTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcoCollectableLayoutInfoErrorClientTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableLayoutInfoErrorClientTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcoCollectableLayoutInfoErrorClientTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcoCollectableLayoutInfoErrorClientTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableLayoutInfoErrorClientTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcoCollectableLayoutInfoErrorClientTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcoCollectableLayoutInfoErrorClientTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcoCollectableLayoutInfo
@@ -1821,37 +1815,37 @@ bool RemoveEcoCollectableLayoutInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableLayoutInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableLayoutInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableLayoutInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableLayoutInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableLayoutInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableLayoutInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableLayoutInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableLayoutInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableLayoutInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableLayoutInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableLayoutInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcoCollectableLayoutInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcoCollectableLayoutInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcoCollectableLayoutInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableLayoutInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcoCollectableLayoutInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcoCollectableLayoutInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableLayoutInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcoCollectableLayoutInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcoCollectableLayoutInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcoCollectablePendingInitSpawnerInfoTag
@@ -1931,37 +1925,37 @@ bool RemoveEcoCollectablePendingInitSpawnerInfoTag(const FECSEntity &inout Entit
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectablePendingInitSpawnerInfoTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectablePendingInitSpawnerInfoTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectablePendingInitSpawnerInfoTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectablePendingInitSpawnerInfoTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectablePendingInitSpawnerInfoTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectablePendingInitSpawnerInfoTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectablePendingInitSpawnerInfoTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectablePendingInitSpawnerInfoTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectablePendingInitSpawnerInfoTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectablePendingInitSpawnerInfoTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectablePendingInitSpawnerInfoTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectablePendingInitSpawnerInfoTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectablePendingInitSpawnerInfoTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectablePendingInitSpawnerInfoTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectablePendingInitSpawnerInfoTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcoCollectablePendingInitSpawnerInfoTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcoCollectablePendingInitSpawnerInfoTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcoCollectablePendingInitSpawnerInfoTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectablePendingInitSpawnerInfoTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcoCollectablePendingInitSpawnerInfoTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcoCollectablePendingInitSpawnerInfoTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectablePendingInitSpawnerInfoTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcoCollectablePendingInitSpawnerInfoTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcoCollectablePendingInitSpawnerInfoTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcoCollectablePendingInitStateAccordingToSyncedDataTag
@@ -2041,37 +2035,37 @@ bool RemoveEcoCollectablePendingInitStateAccordingToSyncedDataTag(const FECSEnti
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectablePendingInitStateAccordingToSyncedDataTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectablePendingInitStateAccordingToSyncedDataTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectablePendingInitStateAccordingToSyncedDataTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectablePendingInitStateAccordingToSyncedDataTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectablePendingInitStateAccordingToSyncedDataTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectablePendingInitStateAccordingToSyncedDataTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectablePendingInitStateAccordingToSyncedDataTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectablePendingInitStateAccordingToSyncedDataTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectablePendingInitStateAccordingToSyncedDataTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectablePendingInitStateAccordingToSyncedDataTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectablePendingInitStateAccordingToSyncedDataTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectablePendingInitStateAccordingToSyncedDataTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectablePendingInitStateAccordingToSyncedDataTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectablePendingInitStateAccordingToSyncedDataTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectablePendingInitStateAccordingToSyncedDataTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcoCollectablePendingInitStateAccordingToSyncedDataTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcoCollectablePendingInitStateAccordingToSyncedDataTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcoCollectablePendingInitStateAccordingToSyncedDataTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectablePendingInitStateAccordingToSyncedDataTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcoCollectablePendingInitStateAccordingToSyncedDataTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcoCollectablePendingInitStateAccordingToSyncedDataTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectablePendingInitStateAccordingToSyncedDataTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcoCollectablePendingInitStateAccordingToSyncedDataTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcoCollectablePendingInitStateAccordingToSyncedDataTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_EcoCollectableDataCache
@@ -2159,17 +2153,17 @@ bool RemoveEcoCollectableDataCache(const FECSWorldPtr &inout World)
 }
 void __MonitorEcoCollectableDataCacheLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_EcoCollectableDataCache, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_EcoCollectableDataCache, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableDataCacheActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_EcoCollectableDataCache, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_EcoCollectableDataCache, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableDataCacheModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_EcoCollectableDataCache, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_EcoCollectableDataCache, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcoCollectableIncrementalUpdateTag
@@ -2249,37 +2243,37 @@ bool RemoveEcoCollectableIncrementalUpdateTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableIncrementalUpdateTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableIncrementalUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcoCollectableIncrementalUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableIncrementalUpdateTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableIncrementalUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcoCollectableIncrementalUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableIncrementalUpdateTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableIncrementalUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcoCollectableIncrementalUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableIncrementalUpdateTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableIncrementalUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcoCollectableIncrementalUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcoCollectableIncrementalUpdateTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableIncrementalUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcoCollectableIncrementalUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcoCollectableIncrementalUpdateTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcoCollectableIncrementalUpdateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcoCollectableIncrementalUpdateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableIncrementalUpdateTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcoCollectableIncrementalUpdateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcoCollectableIncrementalUpdateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcoCollectableIncrementalUpdateTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcoCollectableIncrementalUpdateTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcoCollectableIncrementalUpdateTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

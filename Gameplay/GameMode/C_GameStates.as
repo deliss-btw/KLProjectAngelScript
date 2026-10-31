@@ -1,4 +1,3 @@
-﻿
 enum EFCS_GameStageType
 {
     None,
@@ -83,11 +82,24 @@ struct FCS_GameStates : FECSSingleton
 
     FCS_GameStates()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_bForceGo = false;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_StageType = EFCS_GameStageType(0);
+        this.__InitDirtyFlags();
+        return;
     }
     FCS_GameStates(const FCS_GameStates &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_bForceGo = false;
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_StageType = EFCS_GameStageType(0);
+        this.__InitDirtyFlags();
+        this.m_StageType = Other.m_StageType;
+        this.m_ConfirmReadyTime = Other.m_ConfirmReadyTime;
+        this.m_bForceGo = Other.m_bForceGo;
+        return;
     }
     FCS_GameStates opAssign(const FCS_GameStates &inout Other)
     {
@@ -167,11 +179,35 @@ struct FCS_GameMode : FECSSingleton
 
     FCS_GameMode()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bPVPGame = false;
+        this.m_bPVXGame = false;
+        this.m_bHiddenExitLevel = false;
+        this.m_GameModeType = EGameModeType(0);
+        this.m_FairModeFlags = 0;
+        this.m_CombatRestrictionFlags = 0;
+        this.__InitDirtyFlags();
+        return;
     }
     FCS_GameMode(const FCS_GameMode &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_4;
+        this.__DirtyFlags = local_4;
+        this.m_bPVPGame = false;
+        this.m_bPVXGame = false;
+        this.m_bHiddenExitLevel = false;
+        this.m_GameModeType = EGameModeType(0);
+        this.m_FairModeFlags = 0;
+        this.m_CombatRestrictionFlags = 0;
+        this.__InitDirtyFlags();
+        this.m_bPVPGame = Other.m_bPVPGame;
+        this.m_bPVXGame = Other.m_bPVXGame;
+        this.m_bHiddenExitLevel = Other.m_bHiddenExitLevel;
+        this.m_GameModeType = Other.m_GameModeType;
+        this.m_FairModeFlags = int(Other.m_FairModeFlags);
+        this.m_CombatRestrictionFlags = int(Other.m_CombatRestrictionFlags);
+        return;
     }
     FCS_GameMode opAssign(const FCS_GameMode &inout Other)
     {
@@ -434,17 +470,17 @@ bool RemoveGameStates(const FECSWorldPtr &inout World)
 }
 void __MonitorGameStatesLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_GameStates, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_GameStates, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameStatesActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_GameStates, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_GameStates, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameStatesModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_GameStates, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_GameStates, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_GameMode
@@ -532,17 +568,17 @@ bool RemoveGameMode(const FECSWorldPtr &inout World)
 }
 void __MonitorGameModeLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_GameMode, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_GameMode, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameModeActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_GameMode, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_GameMode, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameModeModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_GameMode, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_GameMode, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_StartPlayerUids
@@ -633,17 +669,17 @@ bool RemoveStartPlayerUids(const FECSWorldPtr &inout World)
 }
 void __MonitorStartPlayerUidsLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_StartPlayerUids, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_StartPlayerUids, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorStartPlayerUidsActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_StartPlayerUids, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_StartPlayerUids, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorStartPlayerUidsModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_StartPlayerUids, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_StartPlayerUids, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_GameModePreparingTag
@@ -731,17 +767,17 @@ bool RemoveGameModePreparingTag(const FECSWorldPtr &inout World)
 }
 void __MonitorGameModePreparingTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_GameModePreparingTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_GameModePreparingTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameModePreparingTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_GameModePreparingTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_GameModePreparingTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameModePreparingTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_GameModePreparingTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_GameModePreparingTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace EntityBB

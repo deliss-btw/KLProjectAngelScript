@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_EnableOnGroundPenetratingSlide : UESMBPBaseSpanAction
 {
     UESMAction_EnableOnGroundPenetratingSlide()

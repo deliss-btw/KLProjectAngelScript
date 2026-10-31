@@ -1,4 +1,3 @@
-﻿
 namespace FMS_Condition
 {
     const int ModelId = 0;
@@ -19,7 +18,6 @@ struct FMsg_SystemUnlockFromGS : FEUIMessage
 {
     UPROPERTY()
     ESystemModule SystemModule;
-
 
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_TrySendChangeAreaMessage : UBTTask_ECSScriptBase
 {
     default SetNodeName("TrySendChangeAreaMessage");

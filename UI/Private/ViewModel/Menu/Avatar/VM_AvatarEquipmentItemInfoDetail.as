@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AvatarEquipmentItemInfoDetail
 {
     const int ModelId = 0;
@@ -96,7 +95,7 @@ struct FVM_AvatarEquipmentItemInfoDetail : FEUIViewModel
             this.SetbCanShowRandomTraitText((0 > 0));
             if (this.GetbCanShowRandomTraitText())
             {
-                this.SetEquipmentRandomTraitText(FText::Format(NSLOCTEXT("RandomTraitText", "йљЏжњє{0}дёЄиЇЌжќЎ"), local_53));
+                this.SetEquipmentRandomTraitText(FText::Format(NSLOCTEXT("RandomTraitText", "随机{0}个词条"), local_53));
             }
         }
         return;

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_HeadsUpDisplayItem_HP
 {
     const int ModelId = 0;
@@ -236,7 +235,6 @@ struct __GeneratedProperties_FVM_HeadsUpDisplayItem_HP
     UPROPERTY()
     TEUIModelRef<FVM_HeadsUpDisplayItem_HP> Self;
 
-
 }
 
 namespace FVM_HeadsUpDisplayItem_HP
@@ -309,7 +307,11 @@ void __OnMiniHPBarConfigChanged(FVM_HeadsUpDisplayItem_HP &inout Model, const FE
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorProjectileHealthConfigLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorProjectileHealthConfigModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorMiniHPBarConfigLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorMiniHPBarConfigModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TEUIModelRef<FVM_MiniHPBarV2> __UIGetter_MiniHpBar(const FVM_HeadsUpDisplayItem_HP &inout Model)
 {

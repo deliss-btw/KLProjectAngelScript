@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ItemFeature_RedDot_Helpers
 {
 UFUNCTION()

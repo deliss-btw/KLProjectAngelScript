@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TalentUpgradeItem
 {
     const int ViewID = 0;
@@ -227,6 +226,7 @@ namespace UWidget_TalentUpgradeItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TalentUpgradeItem;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnUpgradeAnimIndexChanged"));
     return;
 }

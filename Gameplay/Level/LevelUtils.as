@@ -1,4 +1,3 @@
-﻿
 namespace FLevelUtils
 {
 UFUNCTION()
@@ -38,12 +37,14 @@ void AddExtraDropItemToPrefab(AECSPrefab &inout Prefab, const UDataTable &inout 
 UFUNCTION()
 void RegisterEntityAttributeChanged(const FECSEntity &inout SpecificEntity, const ELevelListeningAttributeType AttributeType, const FEntityAttributeChangedDelegate &inout Callback)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    ULevelEventManager::Get().RegisterEntityAttributeChanged(SpecificEntity, ELevelListeningAttributeType(AttributeType), Callback);
+    return;
 }
 UFUNCTION()
 void UnRegisterEntityAttributeChanged(const FECSEntity &inout SpecificEntity, const ELevelListeningAttributeType AttributeType, const FEntityAttributeChangedDelegate &inout Callback)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    ULevelEventManager::Get().UnRegisterEntityAttributeChanged(SpecificEntity, ELevelListeningAttributeType(AttributeType), Callback);
+    return;
 }
 UFUNCTION()
 void SendCustomLevelEvent(const FECSEntity &inout Entity, const FName &inout CustomName)

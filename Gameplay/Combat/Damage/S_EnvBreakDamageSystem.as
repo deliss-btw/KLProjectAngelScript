@@ -1,5 +1,3 @@
-﻿
-
 class US_EnvBreakDamageSystem : UECSScriptSystem
 {
     US_EnvBreakDamageSystem()

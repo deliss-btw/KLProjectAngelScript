@@ -1,5 +1,3 @@
-﻿
-
 struct FTrainingInfoConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -17,7 +15,6 @@ struct FTrainingInfoConfig : FDataObject
     TArray<FDataObjectPtr> m_UnlockCondition;
     UPROPERTY()
     FDataObjectPtr m_FinishReward;
-
 
     const TArray<TDataObjectPtr<FAvatarBuildOverrideConfig>> GetTrainingAvatarConfigs() const property
     {

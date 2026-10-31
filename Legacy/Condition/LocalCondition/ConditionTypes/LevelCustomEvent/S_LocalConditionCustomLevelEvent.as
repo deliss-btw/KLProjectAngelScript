@@ -1,5 +1,3 @@
-﻿
-
 class US_LocalConditionCustomLevelEvent : UECSScriptSystem
 {
     US_LocalConditionCustomLevelEvent()

@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_BipedAimOffset_NS
 {
     const TECSComponentDerivedPtr<FC_BipedAimOffset> DerivedPtr = TECSComponentDerivedPtr<FC_BipedAimOffset>();
@@ -41,11 +40,56 @@ struct FC_BipedAimOffset : FECSComponent
 
     FC_BipedAimOffset()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Weight = 0.0f;
+        this.m_InitializeTargetLocation = FVector(70.0, 0.0, 100.0);
+        this.m_InputPitch = 0.0f;
+        this.m_MinPitch = -30.0f;
+        this.m_MaxPitch = 30.0f;
+        this.m_InputYaw = 0.0f;
+        this.m_MinYaw = -0.0f;
+        this.m_MaxYaw = 0.0f;
+        this.m_EnableAdjustPelvis = true;
+        this.m_EnableAdjustSpine = true;
+        this.m_EnableAdjustHead = true;
+        this.m_EnableAdjustLeftArm = true;
+        this.m_EnableAdjustRightArm = true;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_BipedAimOffset(const FC_BipedAimOffset &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_Weight = 0.0f;
+        this.m_InitializeTargetLocation = FVector(70.0, 0.0, 100.0);
+        this.m_InputPitch = 0.0f;
+        this.m_MinPitch = -30.0f;
+        this.m_MaxPitch = 30.0f;
+        this.m_InputYaw = 0.0f;
+        this.m_MinYaw = -0.0f;
+        this.m_MaxYaw = 0.0f;
+        this.m_EnableAdjustPelvis = true;
+        this.m_EnableAdjustSpine = true;
+        this.m_EnableAdjustHead = true;
+        this.m_EnableAdjustLeftArm = true;
+        this.m_EnableAdjustRightArm = true;
+        this.__InitDirtyFlags();
+        this.m_Weight = Other.m_Weight;
+        this.m_InitializeTargetLocation = Other.m_InitializeTargetLocation;
+        this.m_InputPitch = Other.m_InputPitch;
+        this.m_MinPitch = Other.m_MinPitch;
+        this.m_MaxPitch = Other.m_MaxPitch;
+        this.m_InputYaw = Other.m_InputYaw;
+        this.m_MinYaw = Other.m_MinYaw;
+        this.m_MaxYaw = Other.m_MaxYaw;
+        this.m_EnableAdjustPelvis = Other.m_EnableAdjustPelvis;
+        this.m_EnableAdjustSpine = Other.m_EnableAdjustSpine;
+        this.m_EnableAdjustHead = Other.m_EnableAdjustHead;
+        this.m_EnableAdjustLeftArm = Other.m_EnableAdjustLeftArm;
+        this.m_EnableAdjustRightArm = Other.m_EnableAdjustRightArm;
+        return;
     }
     FC_BipedAimOffset opAssign(const FC_BipedAimOffset &inout Other)
     {
@@ -288,7 +332,6 @@ class UESMAction_BipedAimOffset : UESMBPBaseSpanTickAction
     UPROPERTY()
     bool EnableAdjustLeftArm = true;
 
-
     UFUNCTION()
     EESMAssetWorkflow GetWorkflow_Implementation() const
     {
@@ -330,11 +373,16 @@ class UESMAction_BipedAimOffset : UESMBPBaseSpanTickAction
             local_6.SetMaxPitch(this.MaxPitch);
             local_6.SetMinYaw(this.MinYaw);
             local_6.SetMaxYaw(this.MaxYaw);
-            local_6.SetEnableAdjustPelvis(this.EnableAdjustPelvis);
-            local_6.SetEnableAdjustSpine(this.EnableAdjustSpine);
-            local_6.SetEnableAdjustHead(this.EnableAdjustHead);
-            local_6.SetEnableAdjustRightArm(this.EnableAdjustRightArm);
-            local_6.SetEnableAdjustLeftArm(this.EnableAdjustLeftArm);
+            int local_7 = this.EnableAdjustPelvis;
+            local_6.SetEnableAdjustPelvis((local_7 != 0));
+            local_7 = this.EnableAdjustSpine;
+            local_6.SetEnableAdjustSpine((local_7 != 0));
+            local_7 = this.EnableAdjustHead;
+            local_6.SetEnableAdjustHead((local_7 != 0));
+            local_7 = this.EnableAdjustRightArm;
+            local_6.SetEnableAdjustRightArm((local_7 != 0));
+            local_7 = this.EnableAdjustLeftArm;
+            local_6.SetEnableAdjustLeftArm((local_7 != 0));
         }
         return;
     }
@@ -547,37 +595,37 @@ bool RemoveBipedAimOffset(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorBipedAimOffsetOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_BipedAimOffset, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_BipedAimOffset, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBipedAimOffsetOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_BipedAimOffset, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_BipedAimOffset, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBipedAimOffsetOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_BipedAimOffset, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_BipedAimOffset, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBipedAimOffsetOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_BipedAimOffset, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_BipedAimOffset, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBipedAimOffsetOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_BipedAimOffset, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_BipedAimOffset, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorBipedAimOffsetLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_BipedAimOffset, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_BipedAimOffset, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBipedAimOffsetActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_BipedAimOffset, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_BipedAimOffset, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBipedAimOffsetModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_BipedAimOffset, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_BipedAimOffset, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_GuideMinimapIcon
 {
     const int ModelId = 0;

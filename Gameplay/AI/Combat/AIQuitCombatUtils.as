@@ -1,4 +1,3 @@
-﻿
 namespace FAIQuitCombatUtils
 {
     const FName MuteCombatSource = n"ReturnToHome";

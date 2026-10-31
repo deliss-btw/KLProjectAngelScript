@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ForgeWeaponTitle
 {
     const int ModelId = 0;
@@ -160,7 +159,6 @@ struct __GeneratedProperties_FVM_ForgeWeaponTitle
     int ActiveIndexBG;
     UPROPERTY()
     TEUIModelRef<FVM_ForgeWeaponTitle> Self;
-
 
 }
 

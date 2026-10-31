@@ -1,10 +1,8 @@
-﻿
 enum EFootPosition
 {
     Front,
     Back,
 }
-
 
 struct FRandomFootstepBoneSetting
 {
@@ -27,7 +25,6 @@ struct FRandomFootstepBoneSetting
     UPROPERTY()
     FPT_FloatSpring Spring;
 
-
 }
 
 class USPT_RandomFootstep : USkeletalPoseTweaker
@@ -39,7 +36,6 @@ class USPT_RandomFootstep : USkeletalPoseTweaker
     UPROPERTY()
     TArray<FRandomFootstepBoneSetting> Bones;
     bool bInitialized = false;
-
 
     UFUNCTION()
     void OnInitialization_Implementation()

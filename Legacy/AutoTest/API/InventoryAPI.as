@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::API::InventoryAPI
 {
 bool HasItemInInventoryByName(const FName &inout ItemName)
@@ -67,7 +66,7 @@ void PerformChangeFilter(const int FilterIndex)
 }
 TEUIModelRef<FVM_InventoryMain> GetInventoryViewModel()
 {
-    // body not fully recovered вЂ” stub [unresolved-operand]
+    // body not fully recovered — stub [unresolved-operand]
     TEUIModelRef<FVM_InventoryMain> __r; return __r;
 }
 }

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TalentUpgradeInfo
 {
     const int ModelId = 0;
@@ -63,6 +62,7 @@ struct FVM_TalentUpgradeInfo : FEUIViewModel
         {
             return;
         }
+        FItemParamConfig local_30;
         TArray<TEUIModelRef<FVM_ForgeWeaponItemMaterialItem>> local_34;
         TArray<FItemParamConfig> local_38;
         TEUIModelWeakRef<FM_ForgeNode> local_2 = this.GetNode();
@@ -101,8 +101,7 @@ struct FVM_TalentUpgradeInfo : FEUIViewModel
                 local_34.Add(TEUIModelRef<FVM_ForgeWeaponItemMaterialItem>(local_138));
             }
         }
-        bool local_3 = this.GetIsUnlock();
-        this.SetItemMaterial(TEUIModelRef<FVM_ForgeWeaponItemMaterial>());
+        this.SetItemMaterial(TEUIModelRef<FVM_ForgeWeaponItemMaterial>(::FVM_ForgeWeaponItemMaterial::Create(this.GetContext().Manager, this.GetIsUnlock(), local_34, local_30)));
         TArray<TDataObjectPtr<FConditionConfig>> local_148;
         TEUIModelWeakRef<FM_ForgeNode> local_2_6 = this.GetNode();
         if (int(GetStateType()) == 2)
@@ -203,7 +202,7 @@ struct FVM_TalentUpgradeInfo : FEUIViewModel
         FText local_54;
         if (this.GetEquipmentConfig())
         {
-            local_54 = NSLOCTEXT("RandomTraitText", "йљЏжњє{0}дёЄиў«еЉЁжЉЂиѓЅ");
+            local_54 = NSLOCTEXT("RandomTraitText", "随机{0}个被动技能");
             return FText::Format(local_54, local_50);
         }
         return local_54;
@@ -250,12 +249,12 @@ struct FVM_TalentUpgradeInfo : FEUIViewModel
             TEUIModelWeakRef<FM_ForgeNode> local_2 = this.GetNode();
             if ((int(GetStateType())) == 3)
             {
-                return NSLOCTEXT("HideForgeDisplayText", "жљ‚жњЄи§Јй”ЃиЇҐзі»е€—ж­¦е™Ё");
+                return NSLOCTEXT("HideForgeDisplayText", "暂未解锁该系列武器");
             }
             TEUIModelWeakRef<FM_ForgeNode> local_2_2 = this.GetNode();
             if ((int(GetStateType())) == 2)
             {
-                return NSLOCTEXT("LockForgeDisplayText", "жљ‚жњЄи§Јй”Ѓй…Ќж–№");
+                return NSLOCTEXT("LockForgeDisplayText", "暂未解锁配方");
             }
         }
         return FText();
@@ -383,7 +382,6 @@ struct __GeneratedProperties_FVM_TalentUpgradeInfo
     FText LockDisplayText;
     UPROPERTY()
     TEUIModelRef<FVM_TalentUpgradeInfo> Self;
-
 
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 struct FGameplayItemConfig : FInventoryItemConfig
 {
     FInventoryItemConfig _base_FInventoryItemConfig;
@@ -8,7 +6,6 @@ struct FGameplayItemConfig : FInventoryItemConfig
 
     FGameplayItemConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -27,7 +24,6 @@ struct FCombatItemConfig : FGameplayItemConfig
 
     FCombatItemConfig()
     {
-        super();
         this.ItemSkillConfig = nullptr;
         this.__InitDefaults();
         return;

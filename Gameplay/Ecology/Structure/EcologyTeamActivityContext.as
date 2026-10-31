@@ -1,10 +1,8 @@
-﻿
 enum EChangeAreaResourceSearchType
 {
     Request,
     Specified,
 }
-
 
 struct FChangeAreaMessageInfo
 {
@@ -14,7 +12,6 @@ struct FChangeAreaMessageInfo
     float32 Radius = 8000.0f;
     UPROPERTY()
     float32 HalfHeight = 9999.0f;
-
 
 }
 
@@ -50,7 +47,6 @@ struct FEcologyFlockSpawnParam
     UPROPERTY()
     bool bSkipDelayActivation = false;
 
-
 }
 
 struct FEcologyCreatureSpawnerContext
@@ -77,7 +73,6 @@ struct FEcologyCreatureSpawnerContext
     FVector TargetLocation;
     UPROPERTY()
     FQuat TargetRotation;
-
 
     TSoftClassPtr<ACharacterPrefab> GetMonsterPrefab() const
     {
@@ -164,7 +159,6 @@ struct FFlockBehaviorRequest
     UPROPERTY()
     int Priority;
 
-
 }
 
 struct FFlockChangeAreaRequest : FFlockBehaviorRequest
@@ -190,7 +184,6 @@ struct FFlockChangeAreaRequest : FFlockBehaviorRequest
     bool bNeedChangeAreaMessage;
     UPROPERTY()
     FChangeAreaMessageInfo MessageInfo;
-
 
     EChangeAreaResourceSearchType GetSearchType() const
     {

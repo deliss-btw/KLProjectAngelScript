@@ -1,5 +1,3 @@
-﻿
-
 class US_LayeredConduitCameraSystem : UECSScriptSystem
 {
     US_LayeredConduitCameraSystem()
@@ -8,12 +6,12 @@ class US_LayeredConduitCameraSystem : UECSScriptSystem
     }
     void BlendToLayeredConduitCamera(const FLayerConduitCamera &inout LayerConduitCamera, FCameraInstancedData &inout LastCameraData, FCameraInstancedData &inout CurrentCameraData, const float32 CameraWeight) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     UFUNCTION()
     void ClientJob_UpdateLayerConduitCamera(const FECSEntity &inout Entity) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     UFUNCTION()
     void ClientJob_BlendLayerConduitCamera(const FECSEntity &inout Entity) const

@@ -1,12 +1,9 @@
-﻿
-
 struct FShopGoodsItemSelected : FEUIModelEvent
 {
-    FEUIModelEvent _base_FEUIModelEvent;
+    FEUIModelEvent _base_FEUIModelEvent = FEUIModelEvent("", "FEUIModelRef");
 
     FShopGoodsItemSelected()
     {
-        FEUIModelEvent local_22 = FEUIModelEvent("", "FEUIModelRef");
         return;
     }
     void Broadcast(const FEUIModelRef &inout Arg0) const

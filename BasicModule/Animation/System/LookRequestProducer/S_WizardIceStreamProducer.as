@@ -1,5 +1,3 @@
-﻿
-
 class US_WizardIceStreamProducerSystemAS : UECSScriptSystem
 {
     US_WizardIceStreamProducerSystemAS()

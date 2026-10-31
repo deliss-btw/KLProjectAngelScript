@@ -1,4 +1,3 @@
-﻿
 namespace FVM_SkillInfoItem_Monster_Test
 {
     const int ModelId = 0;
@@ -334,7 +333,6 @@ struct __GeneratedProperties_FVM_SkillInfoItem_Monster_Test
     ESlateVisibility CDVisibility;
     UPROPERTY()
     TEUIModelRef<FVM_SkillInfoItem_Monster_Test> Self;
-
 
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 struct FConfigVM_ItemCraft : FConfigEUIModelBase
 {
     UPROPERTY()
@@ -13,11 +11,10 @@ struct FConfigVM_ItemCraft : FConfigEUIModelBase
 
 struct FCraftableItemSelected : FEUIModelDelegate
 {
-    FEUIModelDelegate _base_FEUIModelDelegate;
+    FEUIModelDelegate _base_FEUIModelDelegate = FEUIModelDelegate("bool", "FEUIModelRef");
 
     FCraftableItemSelected()
     {
-        FEUIModelDelegate local_26 = FEUIModelDelegate("bool", "FEUIModelRef");
         return;
     }
     bool Execute(const FEUIModelRef &inout Arg0) const

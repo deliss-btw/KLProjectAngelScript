@@ -1,5 +1,3 @@
-﻿
-
 struct FInteractTipParam
 {
     UPROPERTY()
@@ -11,7 +9,6 @@ struct FInteractTipParam
     UPROPERTY()
     float32 FaceYawAngle = -1.0f;
 
-
 }
 
 struct FInteractTipTargetInfo
@@ -22,7 +19,6 @@ struct FInteractTipTargetInfo
     int InteractPointIndex;
     UPROPERTY()
     int BehaviorIndex;
-
 
 }
 

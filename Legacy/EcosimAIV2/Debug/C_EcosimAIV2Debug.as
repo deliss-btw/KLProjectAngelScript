@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_EcosimAIV2DebugEvent_NS
 {
     const TECSEventDerivedPtr<FCE_EcosimAIV2DebugEvent> DerivedPtr = TECSEventDerivedPtr<FCE_EcosimAIV2DebugEvent>();

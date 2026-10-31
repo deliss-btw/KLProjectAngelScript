@@ -1,5 +1,3 @@
-﻿
-
 class UMessageHintHandler_Banner : UMessageHintHandler
 {
     UMessageHintHandler_Banner()
@@ -11,12 +9,7 @@ class UMessageHintHandler_Banner : UMessageHintHandler
     {
         CastTo local_28;
         TDataObjectPtr<FMessageHintConfig_Banner> local_52 = local_28.opCall();
-        int local_149 = local_52.opArrow().Priority;
-        int local_150 = int(local_52.opArrow().SpecialWidgetType);
-        int local_151 = int(local_52.opArrow().ExtraParam.LifetimeOverride);
-        ::MessageHintUtils::ParseText(local_52.opArrow().Content, Params.GetArguments());
-        int local_153 = int(local_52.opArrow().BGType);
-        ::MessageHintUtils::ParseText(local_52.opArrow().Title, Params.GetArguments());
+        ::CommonPopup::Banner(local_52.opArrow().HintType, ::MessageHintUtils::ParseText(local_52.opArrow().Title, Params.GetArguments()), local_52.opArrow().BGType, ::MessageHintUtils::ParseIcon(local_52.opArrow().Icon, Params.GetArguments()), ::MessageHintUtils::ParseText(local_52.opArrow().Content, Params.GetArguments()), false, local_52.opArrow().ExtraParam.LifetimeOverride, local_52.opArrow().SpecialWidgetType, local_52.opArrow().Priority);
         return;
     }
 }

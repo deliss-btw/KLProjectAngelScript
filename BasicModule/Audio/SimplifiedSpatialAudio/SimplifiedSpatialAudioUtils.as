@@ -1,4 +1,3 @@
-﻿
 namespace FSimplifiedSpatialAudioUtils
 {
     const FConsoleVariable CVar_SimplifiedSpatialAudio_Log = FConsoleVariable();
@@ -134,9 +133,8 @@ void PrecomputeReflectionPoints(FC_SimplifiedSpatialAudio &inout Volume)
     }
     Volume.ReflectionPoints.Empty(0);
     Volume.ReflectionPlanes.Empty(0);
-    FVector local_14;
-    FVector local_20 = (local_14 - Volume.VolumeExtent);
-    FVector local_8 = (local_14 + Volume.VolumeExtent);
+    FVector local_20 = (Volume.VolumeCenter - Volume.VolumeExtent);
+    FVector local_8 = (Volume.VolumeCenter + Volume.VolumeExtent);
     Volume.ReflectionPlanes.Add(FPlane(local_8, FVector::UpVector));
     Volume.ReflectionPlanes.Add(FPlane(local_20, FVector::UpVector.opNeg()));
     Volume.ReflectionPlanes.Add(FPlane(local_8, FVector::ForwardVector));
@@ -146,9 +144,8 @@ void PrecomputeReflectionPoints(FC_SimplifiedSpatialAudio &inout Volume)
     int local_37 = 0;
     for (; local_37 < Volume.ReflectionPlanes.Num(); )
     {
-        FVector local_26 = ((FVector(FPlane(Volume.ReflectionPlanes[local_37]).GetNormal()) * Volume.MaxReflectionDistance) * 0.5);
-        FVector local_64;
-        Volume.ReflectionPoints.Add((local_64 + local_26));
+        FPlane local_48 = Volume.ReflectionPlanes[local_37];
+        Volume.ReflectionPoints.Add((Volume.VolumeCenter + ((FVector(local_48.GetNormal()) * Volume.MaxReflectionDistance) * 0.5)));
         ++local_37;
     }
     Volume.bReflectionDataPrecomputed = true;

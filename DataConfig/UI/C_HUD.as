@@ -1,4 +1,3 @@
-﻿
 enum EMotionType
 {
     Single,
@@ -19,7 +18,6 @@ enum EEmojiType
     DynamicEmoji,
 }
 
-
 struct FEmojiData : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -31,7 +29,6 @@ struct FEmojiData : FDataObject
     UTexture2D EmojiIcon = nullptr;
     UPROPERTY()
     FSoftBrush EmojiIconObject;
-
 
 }
 
@@ -93,7 +90,6 @@ struct FMotionData : FDataObject
     FDataObjectPtr m_SelectParams;
     UPROPERTY()
     EEcosimAIV2ActionExpressionMeaning ActionExpressionMeaning;
-
 
     const TDataObjectPtr<FSkillTargetPositionSelectParams> GetSelectParams() const property
     {

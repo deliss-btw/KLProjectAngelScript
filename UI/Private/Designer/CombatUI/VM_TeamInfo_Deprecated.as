@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TeamInfo
 {
     const int ModelId = 0;
@@ -179,7 +178,7 @@ struct FVM_TeamInfo : FEUIViewModel
         }
         if (this.GetTargetEntity().IsValid())
         {
-            this.SetVM_BuffInfo(FEUIModelRef());
+            this.SetVM_BuffInfo(FEUIModelRef(::FVM_BuffInfo::Create(this.GetContext().Manager, this.GetTargetEntity())));
             TEUIModelRef<FVM_PlayerHpBar> local_76 = this.GetPlayerHpBar();
             this.GetTargetEntity().SetEntity();
         }

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_QiongSkillResourceItem
 {
     const int ModelId = 0;
@@ -312,11 +311,78 @@ struct FVM_QiongSkillResource : FEUIViewModel
 
     FVM_QiongSkillResource()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_CustomSkillEnergy = 0.0f;
+        this.m_CustomSkillEnergyMax = 0.0f;
+        this.m_CustomSkillEnergyRatio = 0.0f;
+        this.m_CustomSkillEnergy_2 = 0.0f;
+        this.m_CustomSkillEnergyMax_2 = 0.0f;
+        this.m_CustomSkillEnergyRatio_2 = 0.0f;
+        this.m_bHasCoreEnergyType = false;
+        this.m_bBanProgress = false;
+        this.m_ChargeEnhanceCount = 0;
+        this.m_bFifthItemShow = false;
+        this.m_LastChargeEnhanceCount = 0;
+        this.ENERGY_INTERVAL = 50.0f;
+        this.LEFT_ITEM_COUNT = 2;
+        this.RIGHT_ITEM_COUNT = 5;
+        this.LEFT_ITEM_INDEX_OFFSET = 100;
+        this.RIGHT_ITEM_INDEX_OFFSET = 0;
+        this.SRight5 = {0.0f, 0.22f, 0.44f, 0.66f, 0.87f};
+        this.ERight5 = {0.13f, 0.35f, 0.56f, 0.78f, 1.0f};
+        this.SRight4WithLeft = {0.0f, 0.3f, 0.57f, 0.84f};
+        this.ERight4WithLeft = {0.18f, 0.45f, 0.72f, 1.0f};
+        this.SRight4 = {0.0f, 0.27f, 0.55f, 0.83f};
+        this.ERight4 = {0.15f, 0.43f, 0.71f, 1.0f};
+        this.SLeft = {0.0f, 0.68f};
+        this.ELeft = {0.45f, 1.0f};
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVM_QiongSkillResource(const FVM_QiongSkillResource &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_CustomSkillEnergy = 0.0f;
+        this.m_CustomSkillEnergyMax = 0.0f;
+        this.m_CustomSkillEnergyRatio = 0.0f;
+        this.m_CustomSkillEnergy_2 = 0.0f;
+        this.m_CustomSkillEnergyMax_2 = 0.0f;
+        this.m_CustomSkillEnergyRatio_2 = 0.0f;
+        this.m_bHasCoreEnergyType = false;
+        this.m_bBanProgress = false;
+        this.m_ChargeEnhanceCount = 0;
+        this.m_bFifthItemShow = false;
+        this.m_LastChargeEnhanceCount = 0;
+        this.ENERGY_INTERVAL = 50.0f;
+        this.LEFT_ITEM_COUNT = 2;
+        this.RIGHT_ITEM_COUNT = 5;
+        this.LEFT_ITEM_INDEX_OFFSET = 100;
+        this.RIGHT_ITEM_INDEX_OFFSET = 0;
+        this.SRight5 = {0.0f, 0.22f, 0.44f, 0.66f, 0.87f};
+        this.ERight5 = {0.13f, 0.35f, 0.56f, 0.78f, 1.0f};
+        this.SRight4WithLeft = {0.0f, 0.3f, 0.57f, 0.84f};
+        this.ERight4WithLeft = {0.18f, 0.45f, 0.72f, 1.0f};
+        this.SRight4 = {0.0f, 0.27f, 0.55f, 0.83f};
+        this.ERight4 = {0.15f, 0.43f, 0.71f, 1.0f};
+        this.SLeft = {0.0f, 0.68f};
+        this.ELeft = {0.45f, 1.0f};
+        this.m_LeftResourceItems = Other.m_LeftResourceItems;
+        this.m_RightResourceItems = Other.m_RightResourceItems;
+        this.m_LeftResourcePointer = Other.m_LeftResourcePointer;
+        this.m_RightResourcePointer = Other.m_RightResourcePointer;
+        this.m_CustomSkillEnergy = Other.m_CustomSkillEnergy;
+        this.m_CustomSkillEnergyMax = Other.m_CustomSkillEnergyMax;
+        this.m_CustomSkillEnergyRatio = Other.m_CustomSkillEnergyRatio;
+        this.m_CustomSkillEnergy_2 = Other.m_CustomSkillEnergy_2;
+        this.m_CustomSkillEnergyMax_2 = Other.m_CustomSkillEnergyMax_2;
+        this.m_CustomSkillEnergyRatio_2 = Other.m_CustomSkillEnergyRatio_2;
+        this.m_bHasCoreEnergyType = Other.m_bHasCoreEnergyType;
+        this.m_bBanProgress = Other.m_bBanProgress;
+        this.m_ChargeEnhanceCount = int(Other.m_ChargeEnhanceCount);
+        this.m_bFifthItemShow = Other.m_bFifthItemShow;
+        this.m_LastChargeEnhanceCount = int(Other.m_LastChargeEnhanceCount);
+        return;
     }
     FVM_QiongSkillResource opAssign(const FVM_QiongSkillResource &inout Other)
     {
@@ -985,7 +1051,6 @@ struct __GeneratedProperties_FVM_QiongSkillResourceItem
     UPROPERTY()
     TEUIModelRef<FVM_QiongSkillResourceItem> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_QiongSkillResource
@@ -1022,7 +1087,6 @@ struct __GeneratedProperties_FVM_QiongSkillResource
     float32 LeftRawProgress;
     UPROPERTY()
     TEUIModelRef<FVM_QiongSkillResource> Self;
-
 
 }
 

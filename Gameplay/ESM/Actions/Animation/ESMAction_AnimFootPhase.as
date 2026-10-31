@@ -1,12 +1,9 @@
-﻿
-
 class UESMAction_AnimFootPhase : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
     float32 FootPhaseStart = 0.0f;
     UPROPERTY()
     float32 FootPhaseEnd = 1.0f;
-
 
     UFUNCTION()
     bool IsNotifyTypeAllowed_Implementation(const EESMNotifyType InType) const

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TaskTarget
 {
     const int ModelId = 0;
@@ -112,7 +111,6 @@ struct __GeneratedProperties_FVM_TaskTarget
     FText Progress;
     UPROPERTY()
     TEUIModelRef<FVM_TaskTarget> Self;
-
 
 }
 

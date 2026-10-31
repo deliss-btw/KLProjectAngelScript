@@ -1,5 +1,3 @@
-﻿
-
 struct FGameAttribute_DefaultConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -160,7 +158,6 @@ struct FGameAttribute_DefaultConfig : FDataObject
     UPROPERTY()
     float32 EcologyPostureRecoverSpeed;
 
-
 }
 
 struct FGameAttributeGrowByLevelConfig : FDataObject
@@ -170,7 +167,6 @@ struct FGameAttributeGrowByLevelConfig : FDataObject
     float32 HPMax = 0.0f;
     UPROPERTY()
     float32 StaminaMax = 0.0f;
-
 
 }
 

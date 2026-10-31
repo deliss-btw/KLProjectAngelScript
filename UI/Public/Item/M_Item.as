@@ -1,4 +1,3 @@
-﻿
 namespace FM_ItemData
 {
     const int ModelId = 0;

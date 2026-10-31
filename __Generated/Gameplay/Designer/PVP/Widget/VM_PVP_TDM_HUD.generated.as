@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_PVP_TDM_HUD_Helpers
 {
 UFUNCTION()

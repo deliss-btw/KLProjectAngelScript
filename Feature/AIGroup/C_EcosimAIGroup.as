@@ -1,4 +1,3 @@
-﻿
 enum EGroupCommandType
 {
     BeAFreeMan,
@@ -19,35 +18,29 @@ namespace __INTENRAL_FC_AIGroupFollowCaptain_NS
 struct FGroupMemberEntityInfo
 {
     UPROPERTY()
-    FECSEntity MemberEntity;
+    FECSEntity MemberEntity = ENTITY_NULL;
     UPROPERTY()
-    EGroupCommandType GroupCommand;
+    EGroupCommandType GroupCommand = EGroupCommandType(0);
     UPROPERTY()
-    FVector GroupOffset;
+    FVector GroupOffset = FVector::ZeroVector;
     UPROPERTY()
-    FECSEntity GroupSpecifiedTarget;
+    FECSEntity GroupSpecifiedTarget = ENTITY_NULL;
 
-    FGroupMemberEntityInfo()
-    {
-        this.GroupCommand = EGroupCommandType(0);
-        this.GroupOffset = FVector::ZeroVector;
-        this.GroupSpecifiedTarget = ENTITY_NULL;
-        return;
-    }
     FGroupMemberEntityInfo(const FECSEntity &inout InMemberEntity)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.MemberEntity = InMemberEntity;
+        return;
     }
     bool opEquals(const FGroupMemberEntityInfo &inout Other) const
     {
-        return (FECSEntity(this) == Other.MemberEntity);
+        return (this.MemberEntity == Other.MemberEntity);
     }
 }
 
 struct FGroupTargetEntityInfo
 {
     UPROPERTY()
-    FECSEntity TargetEntity;
+    FECSEntity TargetEntity = ENTITY_NULL;
     UPROPERTY()
     TArray<FECSEntity> MemberEntityWhoIsTargetingThisEntity;
 
@@ -73,7 +66,6 @@ struct FC_AIGroupData : FECSComponent
     TArray<FGroupMemberEntityInfo> MemberEntityInfos;
     UPROPERTY()
     FECSEntity CaptainEntity;
-
 
     void Initialize(const FECSEntity &inout InTeamEntity)
     {
@@ -152,7 +144,7 @@ struct FC_AIGroupData : FECSComponent
             FC_AIGroupFollowCaptain& local_16 = local_14.opCall();
             if (local_16)
             {
-                FECSEntity local_17;
+                int local_17;
                 if (local_16.MemberSlotMap.Find(InMemberEntity, local_17))
                 {
                     if (local_17 >= 0 && (local_17 < local_16.SlotStates.Num()))
@@ -218,7 +210,6 @@ struct FC_AIGroupFollowCaptain : FECSComponent
     TMap<FECSEntity, int> MemberSlotMap;
     UPROPERTY()
     float32 AccumulatedTime = 0.0f;
-
 
 }
 
@@ -302,37 +293,37 @@ bool RemoveAIGroupData(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAIGroupDataOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AIGroupData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AIGroupData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAIGroupDataOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AIGroupData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AIGroupData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAIGroupDataOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AIGroupData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AIGroupData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAIGroupDataOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AIGroupData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AIGroupData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAIGroupDataOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AIGroupData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AIGroupData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAIGroupDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AIGroupData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AIGroupData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAIGroupDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AIGroupData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AIGroupData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAIGroupDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AIGroupData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AIGroupData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AIGroupFollowCaptain
@@ -415,36 +406,36 @@ bool RemoveAIGroupFollowCaptain(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAIGroupFollowCaptainOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AIGroupFollowCaptain, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AIGroupFollowCaptain, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAIGroupFollowCaptainOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AIGroupFollowCaptain, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AIGroupFollowCaptain, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAIGroupFollowCaptainOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AIGroupFollowCaptain, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AIGroupFollowCaptain, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAIGroupFollowCaptainOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AIGroupFollowCaptain, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AIGroupFollowCaptain, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAIGroupFollowCaptainOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AIGroupFollowCaptain, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AIGroupFollowCaptain, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAIGroupFollowCaptainLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AIGroupFollowCaptain, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AIGroupFollowCaptain, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAIGroupFollowCaptainActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AIGroupFollowCaptain, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AIGroupFollowCaptain, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAIGroupFollowCaptainModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AIGroupFollowCaptain, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AIGroupFollowCaptain, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

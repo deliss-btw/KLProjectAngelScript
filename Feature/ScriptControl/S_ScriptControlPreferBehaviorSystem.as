@@ -1,5 +1,3 @@
-﻿
-
 class US_SCtrlPreferBehaviorSystem : UECSScriptSystem
 {
     US_SCtrlPreferBehaviorSystem()

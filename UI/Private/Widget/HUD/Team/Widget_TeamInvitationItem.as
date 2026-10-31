@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TeamInvitationItem
 {
     const int ViewID = 0;
@@ -16,7 +15,6 @@ class UWidget_TeamInvitationItem : UEUIActivatableWidget
     bool bItemSelected = false;
     UPROPERTY()
     FGetEUIModelRef InvitationItemDelegate;
-
 
     UFUNCTION()
     void OnItemSelected()
@@ -69,6 +67,7 @@ namespace UWidget_TeamInvitationItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TeamInvitationItem;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

@@ -1,5 +1,3 @@
-﻿
-
 class US_CommissionSystem : UECSScriptSystem
 {
     US_CommissionSystem()
@@ -131,6 +129,7 @@ class US_CommissionSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_StartCommission(const FCE_FinishPrepareGameEvent &inout Event, const FCS_FixedTime &inout C_FixedTime) const
     {
+        int local_9;
         FObjectiveInstance local_358;
         FECSWorldPtr local_2 = ECS::GetECSWorld();
         Modify local_6;
@@ -163,7 +162,16 @@ class US_CommissionSystem : UECSScriptSystem
                 FObjectiveContext local_42;
                 local_36.SetObjectiveInstanceId(::ObjectiveUtils::ActivateObjective(local_36.GetSubTargetConfig(), local_42));
                 int local_28 = local_36.GetObjectiveInstanceId();
-                if ((local_28 > 0 && (0 == 1)))
+                if (local_28 <= 0)
+                {
+                    local_9 = 0;
+                }
+                else
+                {
+                    bool local_46 = (0 == 1);
+                    local_9 = local_46;
+                }
+                if (local_9 != 0)
                 {
                     FObjectiveInstance local_192;
                     int local_43 = local_36.GetObjectiveInstanceId();
@@ -216,7 +224,7 @@ class US_CommissionSystem : UECSScriptSystem
                     const FCommissionConfig& local_22;
                     if (int(local_22.MaxDeathCount) > 0 && (int(local_18.TotalDeathCount) >= int(local_22.MaxDeathCount)))
                     {
-                        ::CommissionUtils::FinishCommission(TDataObjectPtr<FCommissionConfig>(), false, ECommissionFailReason(2));
+                        ::CommissionUtils::FinishCommission(TDataObjectPtr<FCommissionConfig>(local_22), false, ECommissionFailReason(2));
                     }
                     else
                     {
@@ -419,6 +427,7 @@ class US_CommissionSystem : UECSScriptSystem
         for (auto& local_42 : ::CommissionUtils::FindCurrentCommissionTargets())
         {
             C_CommissionInfo.CommissionTargetEntityInfos.Add(FCommissionEntityInfo(local_42, ::FASCommonUtils::GetEntityLocation(local_42), ::GetBasePrefabConfig(local_42)));
+            ::EntityLevelSpotUtils::AddSpotData(local_42, ELevelSpotDataSource(2), FLevelSpotData(local_20.CommissionTargetPresentationRule));
         }
         FECSWorldPtr local_236 = ECS::GetECSWorld();
         Remove local_240;

@@ -1,4 +1,3 @@
-﻿
 enum ECameraModifierSlot
 {
     None,

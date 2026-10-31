@@ -1,5 +1,3 @@
-﻿
-
 class US_EcologyLifyCycle : UECSScriptSystem
 {
     US_EcologyLifyCycle()
@@ -110,7 +108,7 @@ class US_EcologyLifyCycle : UECSScriptSystem
     {
         int local_110 = 0;
         int local_262 = 0;
-        EMonsterRank local_339 = EMonsterRank(0);
+        int local_339 = 0;
         UDataTable local_342;
         int local_362 = 0;
         int local_382 = 0;
@@ -149,7 +147,7 @@ class US_EcologyLifyCycle : UECSScriptSystem
                 }
                 local_342 = this.GetDifficultyLevelConfig(Entity, CreatureMeta);
                 int local_345 = int(local_110.GetMonsterRank());
-                this.ApplyDifficultyAttributeScale(Entity, local_342, local_110.GetMonsterLevel());
+                this.ApplyDifficultyAttributeScale(Entity, local_342, local_110.GetMonsterLevel(), EDifficultyRank(local_345));
             }
             if (local_52.GetDropItems().Num() > 0)
             {
@@ -239,7 +237,7 @@ class US_EcologyLifyCycle : UECSScriptSystem
     UFUNCTION()
     void Job_AfterViewPrefabLoaded(const FECSEntity &inout Entity, const FC_CreatureMeta &inout CreatureMeta) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argint]
+        // body not fully recovered — stub [argmismatch:argint]
     }
     UFUNCTION()
     void Job_OnCreatureInited(const FCE_EcologySpawnerCreateEntityInited &inout Event) const

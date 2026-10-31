@@ -1,4 +1,3 @@
-﻿
 namespace FVM_Common_Center_Spend
 {
     const int ModelId = 0;

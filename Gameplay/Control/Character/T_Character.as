@@ -1,5 +1,3 @@
-﻿
-
 struct FT_Character : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -111,7 +109,6 @@ struct FT_Character : FECSTrait
     FECSInternalTraitCompDefinition FC_CharacterVaultingConfig_Defination = FECSInternalTraitCompDefinition::CreateNoCheck(FC_CharacterVaultingConfig, FName("bSupportVaulting"));
     UPROPERTY()
     FC_CharacterVaultingConfig Config_FC_CharacterVaultingConfig;
-
 
 }
 

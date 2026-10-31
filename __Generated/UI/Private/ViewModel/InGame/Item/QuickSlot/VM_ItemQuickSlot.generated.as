@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ItemQuickSlot_Helpers
 {
 UFUNCTION()

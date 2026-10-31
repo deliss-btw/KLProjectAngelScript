@@ -1,4 +1,3 @@
-﻿
 namespace FEcosimAIV2Utils
 {
 FECSEntity CreateWaveEntity()

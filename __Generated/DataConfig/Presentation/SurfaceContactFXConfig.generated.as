@@ -1,5 +1,3 @@
-﻿
-
 struct FSurfaceVFXCode : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -30,12 +28,12 @@ struct FSurfaceVFXCode : FDataObject
     }
     const FVFXCodeData GetDataRaw(const ESurfaceMaterialType Value) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FVFXCodeData __r; return __r;
     }
     FVFXCodeData ModifyDataRaw(const ESurfaceMaterialType Value)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         FVFXCodeData __r; return __r;
     }
     const FVFXCodeData GetDataRawByName(const FName &inout EnumName) const
@@ -136,13 +134,13 @@ struct FSurfaceVFXCode : FDataObject
             const FVFXCodeData& local_22 = this.GetDataRaw(ESurfaceMaterialType(local_19));
             if (local_22.bFallBack)
             {
+                int local_14 = int(local_22.FallBack);
                 ESurfaceMaterialType local_23;
-                local_23 = local_22.FallBack;
-                ESurfaceMaterialType local_14 = local_22.FallBack;
-                FName local_11 = local_2.GetNameByValue(int(local_14));
+                local_23 = ESurfaceMaterialType(local_14);
+                FName local_11 = local_2.GetNameByValue(int(local_22.FallBack));
                 if (local_2.GetIndexByName(local_11, EGetByNameFlags(0)) < local_7)
                 {
-                    local_14 = local_22.FallBack;
+                    local_14 = int(local_22.FallBack);
                     this.CopyFallbackData(ESurfaceMaterialType(local_14), ESurfaceMaterialType(local_19));
                     continue;
                 }
@@ -184,12 +182,12 @@ struct FSurfaceContactConfigVFX : FDataObject
     }
     const FCharacterSizeVFXData GetDataRaw(const ESurfaceMaterialType Value) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FCharacterSizeVFXData __r; return __r;
     }
     FCharacterSizeVFXData ModifyDataRaw(const ESurfaceMaterialType Value)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         FCharacterSizeVFXData __r; return __r;
     }
     const FCharacterSizeVFXData GetDataRawByName(const FName &inout EnumName) const
@@ -272,17 +270,19 @@ struct FSurfaceContactConfigVFX : FDataObject
     }
     const FImpactFXData& GetData(const ESurfaceMaterialType FirstType, const ECharacterBodySize SecondType) const
     {
-        const FImpactFXData& local_4 = this.GetDataRawBySecondType(this.GetDataRaw(ESurfaceMaterialType(FirstType)), ECharacterBodySize(SecondType));
+        const FCharacterSizeVFXData& local_2 = this.GetDataRaw(ESurfaceMaterialType(FirstType));
+        const FImpactFXData& local_4 = this.GetDataRawBySecondType(local_2, ECharacterBodySize(SecondType));
         return local_4;
     }
     const FImpactFXData& GetData(const FName &inout FirstType, const ECharacterBodySize SecondType) const
     {
-        const FImpactFXData& local_4 = this.GetDataRawBySecondType(this.GetDataRawByName(FirstType), ECharacterBodySize(SecondType));
+        const FCharacterSizeVFXData& local_2 = this.GetDataRawByName(FirstType);
+        const FImpactFXData& local_4 = this.GetDataRawBySecondType(local_2, ECharacterBodySize(SecondType));
         return local_4;
     }
     const FImpactFXData GetDataRawBySecondType(const FCharacterSizeVFXData &inout Data, const ECharacterBodySize Value) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FImpactFXData __r; return __r;
     }
     void CopyFallbackData(const ESurfaceMaterialType Src, const ESurfaceMaterialType Dst)
@@ -306,13 +306,13 @@ struct FSurfaceContactConfigVFX : FDataObject
             local_22.OnDataTableRowChanged();
             if (local_22.bFallBack)
             {
+                int local_14 = int(local_22.FallBack);
                 ESurfaceMaterialType local_23;
-                local_23 = local_22.FallBack;
-                ESurfaceMaterialType local_14 = local_22.FallBack;
-                FName local_11 = local_2.GetNameByValue(int(local_14));
+                local_23 = ESurfaceMaterialType(local_14);
+                FName local_11 = local_2.GetNameByValue(int(local_22.FallBack));
                 if (local_2.GetIndexByName(local_11, EGetByNameFlags(0)) < local_7)
                 {
-                    local_14 = local_22.FallBack;
+                    local_14 = int(local_22.FallBack);
                     this.CopyFallbackData(ESurfaceMaterialType(local_14), ESurfaceMaterialType(local_19));
                     continue;
                 }
@@ -344,12 +344,12 @@ struct FEnvSurfaceHitConfigVFX : FDataObject
     }
     const FArealStrikeEnvSurfaceVFXData GetDataRaw(const ECharacterBodySize Value) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FArealStrikeEnvSurfaceVFXData __r; return __r;
     }
     FArealStrikeEnvSurfaceVFXData ModifyDataRaw(const ECharacterBodySize Value)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         FArealStrikeEnvSurfaceVFXData __r; return __r;
     }
     const FArealStrikeEnvSurfaceVFXData GetDataRawByName(const FName &inout EnumName) const
@@ -402,12 +402,14 @@ struct FEnvSurfaceHitConfigVFX : FDataObject
     }
     const FImpactFXData& GetData(const ECharacterBodySize FirstType, const EArealStrikeEnvSurfaceFXStyle_Sparks SecondType) const
     {
-        const FImpactFXData& local_4 = this.GetDataRawBySecondType(this.GetDataRaw(ECharacterBodySize(FirstType)), EArealStrikeEnvSurfaceFXStyle_Sparks(SecondType));
+        const FArealStrikeEnvSurfaceVFXData& local_2 = this.GetDataRaw(ECharacterBodySize(FirstType));
+        const FImpactFXData& local_4 = this.GetDataRawBySecondType(local_2, EArealStrikeEnvSurfaceFXStyle_Sparks(SecondType));
         return local_4;
     }
     const FImpactFXData& GetData(const FName &inout FirstType, const EArealStrikeEnvSurfaceFXStyle_Sparks SecondType) const
     {
-        const FImpactFXData& local_4 = this.GetDataRawBySecondType(this.GetDataRawByName(FirstType), EArealStrikeEnvSurfaceFXStyle_Sparks(SecondType));
+        const FArealStrikeEnvSurfaceVFXData& local_2 = this.GetDataRawByName(FirstType);
+        const FImpactFXData& local_4 = this.GetDataRawBySecondType(local_2, EArealStrikeEnvSurfaceFXStyle_Sparks(SecondType));
         return local_4;
     }
     const FImpactFXData GetDataRawBySecondType(const FArealStrikeEnvSurfaceVFXData &inout Data, const EArealStrikeEnvSurfaceFXStyle_Sparks Value) const
@@ -449,13 +451,13 @@ struct FEnvSurfaceHitConfigVFX : FDataObject
             local_22.OnDataTableRowChanged();
             if (local_22.bFallBack)
             {
+                int local_14 = int(local_22.FallBack);
                 ECharacterBodySize local_23;
-                local_23 = local_22.FallBack;
-                ECharacterBodySize local_14 = local_22.FallBack;
-                FName local_11 = local_2.GetNameByValue(int(local_14));
+                local_23 = ECharacterBodySize(local_14);
+                FName local_11 = local_2.GetNameByValue(int(local_22.FallBack));
                 if (local_2.GetIndexByName(local_11, EGetByNameFlags(0)) < local_7)
                 {
-                    local_14 = local_22.FallBack;
+                    local_14 = int(local_22.FallBack);
                     this.CopyFallbackData(ECharacterBodySize(local_14), ECharacterBodySize(local_19));
                     continue;
                 }

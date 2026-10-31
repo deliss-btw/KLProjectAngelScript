@@ -1,4 +1,3 @@
-﻿
 namespace FSplineMoveUtils
 {
 void FindBestSplinePoint(FVector &inout EntryPointLocation, float &inout SplineStartLocationDistance, const USplineComponent SplineComponent, const FECSEntity &inout Entity, const float32 FindBestPointDistanceWeight = 0.5f, const float32 FindBestPointAngleWeight = 0.5f, const float32 FindBestPointSampleInterval = 1000.0f)

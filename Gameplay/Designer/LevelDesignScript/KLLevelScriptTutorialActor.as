@@ -1,4 +1,3 @@
-﻿
 enum ETutorialStepResult
 {
     TutorialIncomplete,
@@ -11,7 +10,6 @@ enum ETutorialMonsterTestState
     UseSkill,
     MoveToTargetOnly,
 }
-
 
 class AKLLevelScriptTutorialActor : AKLLevelScriptBaseActor
 {
@@ -27,7 +25,6 @@ class AKLLevelScriptTutorialActor : AKLLevelScriptBaseActor
     TArray<int> PendingStepQueue;
     float32 TutorialStepDelay = 1.0f;
     FLevelTimerCallback StepTimerCallback;
-
 
     UFUNCTION()
     void OnTutorialStep_Implementation(const int InStepIndex)
@@ -104,9 +101,9 @@ class AKLLevelScriptTutorialActor : AKLLevelScriptBaseActor
             return;
         }
         int local_3 = ProgressIndex - 1;
-        if (this.CurrentTutorialInfo.GetStepProgress().IsValidIndex())
+        if (this.CurrentTutorialInfo.GetStepProgress().IsValidIndex(local_3))
         {
-            FTutorialStepProgress local_8 = this.CurrentTutorialInfo.GetModify_StepProgress()[];
+            FTutorialStepProgress local_8 = this.CurrentTutorialInfo.GetModify_StepProgress()[local_3];
             if (local_8.GetCurrentProgress() < local_8.GetMaxProgress())
             {
                 local_8.SetCurrentProgress((local_8.GetCurrentProgress() + 1));

@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_AddOffsetToBBVector : UBTTask_ECSScriptBase
 {
     UPROPERTY()

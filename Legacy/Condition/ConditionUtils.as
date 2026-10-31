@@ -1,4 +1,3 @@
-﻿
 namespace ConditionUtils
 {
 int GetTargetValue(const TDataObjectPtr<FConditionConfigBase> &inout ConditionConfig)
@@ -131,11 +130,11 @@ void UnregisterLocalConditionInstance(const FConditionInstanceHandle &inout Cond
 }
 void SetLocalConditionValueForEntity(const FECSEntity &inout ContextEntity, const TSubclassOf<ULocalConditionTypeDefineBase> &inout ConditionType, const int Value)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
 }
 void SetLocalConditionValueForServer(const TSubclassOf<ULocalConditionTypeDefineBase> &inout ConditionType, const int Value)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
 }
 void SetLocalConditionValueForInstance(const FConditionInstanceHandle &inout ConditionInstance, const int Value)
 {

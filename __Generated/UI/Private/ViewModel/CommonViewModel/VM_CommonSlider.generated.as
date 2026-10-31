@@ -1,12 +1,9 @@
-﻿
-
 struct FOnCommonSliderRatioChanged : FEUIModelEvent
 {
-    FEUIModelEvent _base_FEUIModelEvent;
+    FEUIModelEvent _base_FEUIModelEvent = FEUIModelEvent("", "float");
 
     FOnCommonSliderRatioChanged()
     {
-        FEUIModelEvent local_22 = FEUIModelEvent("", "float");
         return;
     }
     void Broadcast(const float32 Arg0) const

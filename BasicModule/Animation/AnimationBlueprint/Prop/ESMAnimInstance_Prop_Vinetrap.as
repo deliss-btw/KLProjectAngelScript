@@ -1,5 +1,3 @@
-﻿
-
 class UESMAnimInstance_Prop_Vinetrap : UESMAnimInstance_Prop
 {
     UPROPERTY()

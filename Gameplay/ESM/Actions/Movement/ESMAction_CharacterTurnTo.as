@@ -1,4 +1,3 @@
-﻿
 enum ECharacterTurnUpdateDirectionMode
 {
     Free,
@@ -14,11 +13,10 @@ enum ECharacterTurnUpdateDirectionLimitedAction
     Exit,
 }
 
-
 struct FESMCharacterTurnToActionInstanceData
 {
     UPROPERTY()
-    FQuat InitRotation;
+    FQuat InitRotation = FQuat::Identity;
     UPROPERTY()
     FQuat TargetRotation = FQuat::Identity;
     UPROPERTY()
@@ -27,7 +25,6 @@ struct FESMCharacterTurnToActionInstanceData
     bool bDefaultTurnSilenced = false;
     UPROPERTY()
     bool bValid = true;
-
 
 }
 
@@ -80,7 +77,6 @@ class UESMAction_CharacterTurnTo : UESMBPBaseSpanTickAction
     bool bIgnoreSpan = false;
     UPROPERTY()
     FRuntimeFloatCurve Curve = FRuntimeCurveUtils::CreateLinear(0.0f, 0.0f, 1.0f, 1.0f);
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const
@@ -409,6 +405,8 @@ class UESMAction_CharacterTurnTo : UESMBPBaseSpanTickAction
         }
         case 6:
         {
+                int local_89;
+            local_89 = int(this.TargetDirection);
             Get local_94;
             const FC_FanShapeSoftLockRangeSearch& local_96 = local_94.opCall();
             if (local_96)
@@ -427,17 +425,18 @@ class UESMAction_CharacterTurnTo : UESMBPBaseSpanTickAction
                     {
                         if (local_96.GetbUseTransformForward())
                         {
-                            this.TargetDirection = ECharacterDirectionType(0);
+                            local_89 = 0;
                         }
                         else
                         {
-                            ECharacterDirectionType local_7 = ECharacterDirectionType(1);
+                            int local_7_2 = 1;
+                            local_89 = local_7_2;
                         }
                     }
                 }
             }
             local_51 = false;
-            local_6 = ::FCharacterDirectionUtils::GetTargetRotation(Context.GetEntity(), this.bAllowPitch, Time, local_51);
+            local_6 = ::FCharacterDirectionUtils::GetTargetRotation(Context.GetEntity(), ECharacterDirectionType(local_89), this.bAllowPitch, Time, local_51);
             if (this.bDisableLockTargetDirFallback && local_51)
             {
                 local_6 = EntityTransform.GetRotation().Rotator();
@@ -463,7 +462,7 @@ class UESMAction_CharacterTurnTo : UESMBPBaseSpanTickAction
         case 7:
         default:
         {
-            local_6 = ::FCharacterDirectionUtils::GetTargetRotation(Context.GetEntity(), ECharacterDirectionType(this.TargetDirection), this.bAllowPitch, Time);
+            local_6 = ::FCharacterDirectionUtils::GetTargetRotation(Context.GetEntity(), this.TargetDirection, this.bAllowPitch, Time);
             break;
         }
         }

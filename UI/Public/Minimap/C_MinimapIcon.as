@@ -1,4 +1,3 @@
-﻿
 enum EEntityMinimapIconVisibility
 {
     Invisible,

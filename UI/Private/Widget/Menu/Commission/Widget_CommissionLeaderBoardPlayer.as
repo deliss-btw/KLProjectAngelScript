@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommissionLeaderBoardPlayer
 {
     const int ViewID = 0;
@@ -111,6 +110,7 @@ namespace UWidget_CommissionLeaderBoardPlayer
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionLeaderBoardPlayer;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnPlayerModelChanged"));
     return;
 }

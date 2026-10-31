@@ -1,5 +1,3 @@
-﻿
-
 struct FLandedImpactConfigSFX : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -30,12 +28,12 @@ struct FLandedImpactConfigSFX : FDataObject
     }
     const FLandedImpactSFXData GetDataRaw(const ELandedMaterialType Value) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FLandedImpactSFXData __r; return __r;
     }
     FLandedImpactSFXData ModifyDataRaw(const ELandedMaterialType Value)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         FLandedImpactSFXData __r; return __r;
     }
     const FLandedImpactSFXData GetDataRawByName(const FName &inout EnumName) const
@@ -118,22 +116,26 @@ struct FLandedImpactConfigSFX : FDataObject
     }
     const FLISStrengthData& GetData(const ELandedMaterialType FirstType, const EPrefabSize SecondType, const ELandedStrength ThirdType) const
     {
-        const FLISStrengthData& local_6 = this.GetDataRawByThirdType(this.GetDataRawBySecondType(this.GetDataRaw(ELandedMaterialType(FirstType)), EPrefabSize(SecondType)), ELandedStrength(ThirdType));
+        const FLandedImpactSFXData& local_2 = this.GetDataRaw(ELandedMaterialType(FirstType));
+        const FLISCharacterSizeData& local_4 = this.GetDataRawBySecondType(local_2, EPrefabSize(SecondType));
+        const FLISStrengthData& local_6 = this.GetDataRawByThirdType(local_4, ELandedStrength(ThirdType));
         return local_6;
     }
     const FLISStrengthData& GetData(const FName &inout FirstType, const EPrefabSize SecondType, const ELandedStrength ThirdType) const
     {
-        const FLISStrengthData& local_6 = this.GetDataRawByThirdType(this.GetDataRawBySecondType(this.GetDataRawByName(FirstType), EPrefabSize(SecondType)), ELandedStrength(ThirdType));
+        const FLandedImpactSFXData& local_2 = this.GetDataRawByName(FirstType);
+        const FLISCharacterSizeData& local_4 = this.GetDataRawBySecondType(local_2, EPrefabSize(SecondType));
+        const FLISStrengthData& local_6 = this.GetDataRawByThirdType(local_4, ELandedStrength(ThirdType));
         return local_6;
     }
     const FLISCharacterSizeData GetDataRawBySecondType(const FLandedImpactSFXData &inout Data, const EPrefabSize Value) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FLISCharacterSizeData __r; return __r;
     }
     const FLISStrengthData GetDataRawByThirdType(const FLISCharacterSizeData &inout Data, const ELandedStrength Value) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FLISStrengthData __r; return __r;
     }
     void CopyFallbackData(const ELandedMaterialType Src, const ELandedMaterialType Dst)
@@ -156,13 +158,13 @@ struct FLandedImpactConfigSFX : FDataObject
             const FLandedImpactSFXData& local_22 = this.GetDataRaw(ELandedMaterialType(local_19));
             if (local_22.bFallBack)
             {
+                int local_14 = int(local_22.FallBack);
                 ELandedMaterialType local_23;
-                local_23 = local_22.FallBack;
-                ELandedMaterialType local_14 = local_22.FallBack;
-                FName local_11 = local_2.GetNameByValue(int(local_14));
+                local_23 = ELandedMaterialType(local_14);
+                FName local_11 = local_2.GetNameByValue(int(local_22.FallBack));
                 if (local_2.GetIndexByName(local_11, EGetByNameFlags(0)) < local_7)
                 {
-                    local_14 = local_22.FallBack;
+                    local_14 = int(local_22.FallBack);
                     this.CopyFallbackData(ELandedMaterialType(local_14), ELandedMaterialType(local_19));
                     continue;
                 }
@@ -204,12 +206,12 @@ struct FLandedImpactConfigVFX : FDataObject
     }
     const FLandedImpactVFXData GetDataRaw(const ELandedMaterialType Value) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FLandedImpactVFXData __r; return __r;
     }
     FLandedImpactVFXData ModifyDataRaw(const ELandedMaterialType Value)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         FLandedImpactVFXData __r; return __r;
     }
     const FLandedImpactVFXData GetDataRawByName(const FName &inout EnumName) const
@@ -292,22 +294,26 @@ struct FLandedImpactConfigVFX : FDataObject
     }
     const FLIVStrengthData& GetData(const ELandedMaterialType FirstType, const EPrefabSize SecondType, const ELandedStrength ThirdType) const
     {
-        const FLIVStrengthData& local_6 = this.GetDataRawByThirdType(this.GetDataRawBySecondType(this.GetDataRaw(ELandedMaterialType(FirstType)), EPrefabSize(SecondType)), ELandedStrength(ThirdType));
+        const FLandedImpactVFXData& local_2 = this.GetDataRaw(ELandedMaterialType(FirstType));
+        const FLIVCharacterSizeData& local_4 = this.GetDataRawBySecondType(local_2, EPrefabSize(SecondType));
+        const FLIVStrengthData& local_6 = this.GetDataRawByThirdType(local_4, ELandedStrength(ThirdType));
         return local_6;
     }
     const FLIVStrengthData& GetData(const FName &inout FirstType, const EPrefabSize SecondType, const ELandedStrength ThirdType) const
     {
-        const FLIVStrengthData& local_6 = this.GetDataRawByThirdType(this.GetDataRawBySecondType(this.GetDataRawByName(FirstType), EPrefabSize(SecondType)), ELandedStrength(ThirdType));
+        const FLandedImpactVFXData& local_2 = this.GetDataRawByName(FirstType);
+        const FLIVCharacterSizeData& local_4 = this.GetDataRawBySecondType(local_2, EPrefabSize(SecondType));
+        const FLIVStrengthData& local_6 = this.GetDataRawByThirdType(local_4, ELandedStrength(ThirdType));
         return local_6;
     }
     const FLIVCharacterSizeData GetDataRawBySecondType(const FLandedImpactVFXData &inout Data, const EPrefabSize Value) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FLIVCharacterSizeData __r; return __r;
     }
     const FLIVStrengthData GetDataRawByThirdType(const FLIVCharacterSizeData &inout Data, const ELandedStrength Value) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FLIVStrengthData __r; return __r;
     }
     void CopyFallbackData(const ELandedMaterialType Src, const ELandedMaterialType Dst)
@@ -330,13 +336,13 @@ struct FLandedImpactConfigVFX : FDataObject
             const FLandedImpactVFXData& local_22 = this.GetDataRaw(ELandedMaterialType(local_19));
             if (local_22.bFallBack)
             {
+                int local_14 = int(local_22.FallBack);
                 ELandedMaterialType local_23;
-                local_23 = local_22.FallBack;
-                ELandedMaterialType local_14 = local_22.FallBack;
-                FName local_11 = local_2.GetNameByValue(int(local_14));
+                local_23 = ELandedMaterialType(local_14);
+                FName local_11 = local_2.GetNameByValue(int(local_22.FallBack));
                 if (local_2.GetIndexByName(local_11, EGetByNameFlags(0)) < local_7)
                 {
-                    local_14 = local_22.FallBack;
+                    local_14 = int(local_22.FallBack);
                     this.CopyFallbackData(ELandedMaterialType(local_14), ELandedMaterialType(local_19));
                     continue;
                 }

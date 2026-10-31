@@ -1,5 +1,3 @@
-﻿
-
 class UEQC_TargetEcosimPoint : UEnvQueryContext_ECS_BlueprintBase
 {
     UEQC_TargetEcosimPoint()

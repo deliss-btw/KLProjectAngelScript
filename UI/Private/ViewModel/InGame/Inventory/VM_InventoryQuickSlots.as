@@ -1,4 +1,3 @@
-﻿
 namespace FVM_InventoryQuickSlotsFocus
 {
     const int ModelId = 0;
@@ -381,7 +380,6 @@ struct __GeneratedProperties_FVM_InventoryQuickSlots
     bool IsHealQuickSlotUnlock;
     UPROPERTY()
     TEUIModelRef<FVM_InventoryQuickSlots> Self;
-
 
 }
 

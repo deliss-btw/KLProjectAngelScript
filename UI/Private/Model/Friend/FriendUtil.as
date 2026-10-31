@@ -1,4 +1,3 @@
-﻿
 namespace FriendUtil
 {
 bool IsFriendSystemOpen()
@@ -257,7 +256,7 @@ void ShowSearchFriendEmptyWeakTips()
     }
     if (local_10.IsEmpty())
     {
-        local_10 = NSLOCTEXT("Friend", "SearchFriendEmpty", "иЇ·иѕ“е…ҐеҐЅеЏ‹жµз§°ж€–UID");
+        local_10 = NSLOCTEXT("Friend", "SearchFriendEmpty", "请输入好友昵称或UID");
     }
     FriendUtil::PublishDeferredPopup(true, local_10);
     return;

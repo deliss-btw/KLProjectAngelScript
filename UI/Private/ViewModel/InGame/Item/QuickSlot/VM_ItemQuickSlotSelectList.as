@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ItemQuickSlotSelectListEntry
 {
     const int ModelId = 0;
@@ -110,6 +109,7 @@ struct FVM_ItemQuickSlotSelectListEntry : FEUIViewModel
         FItemTipData local_68 = ::CommonItemTip::MakeSimpleFromItemData(ItemDataModel);
         FSimpleModelEvent local_90;
         local_90.Add(this, FVM_ItemQuickSlotSelectListEntry::OnClick);
+        ::CommonItemTip::AddAction(local_68, EItemTipActionId(7), local_90);
         this.SetTipHoverModels(::CommonItemTip::MakeModels(this.GetContext().Manager, local_68));
         return;
     }
@@ -118,6 +118,7 @@ struct FVM_ItemQuickSlotSelectListEntry : FEUIViewModel
         FItemTipData local_68 = ::CommonItemTip::MakeSimpleFromDisplayData(DisplayDataModel);
         FSimpleModelEvent local_90;
         local_90.Add(this, FVM_ItemQuickSlotSelectListEntry::OnClick);
+        ::CommonItemTip::AddAction(local_68, EItemTipActionId(7), local_90);
         this.SetTipHoverModels(::CommonItemTip::MakeModels(this.GetContext().Manager, local_68));
         return;
     }
@@ -451,7 +452,6 @@ struct __GeneratedProperties_FVM_ItemQuickSlotSelectListEntry
     UPROPERTY()
     TEUIModelRef<FVM_ItemQuickSlotSelectListEntry> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_ItemQuickSlotSelectList
@@ -462,7 +462,6 @@ struct __GeneratedProperties_FVM_ItemQuickSlotSelectList
     bool HasEntries;
     UPROPERTY()
     TEUIModelRef<FVM_ItemQuickSlotSelectList> Self;
-
 
 }
 
@@ -476,12 +475,10 @@ FCommonHoverHandle OpenSelectList(const UWidget HoverForWidget, const UWidget Ho
     }
     else
     {
-        FCommonHoverInfo local_132;
         FVM_ItemQuickSlotSelectList::FOpenSelectListParam local_26;
         local_26.CurrentQuickSlot = QuickSlot;
         Make local_64;
-        local_64;
-        InventoryUtils::GetGlobalItemSettings();
+        FCommonHoverInfo local_132 = FCommonHoverInfo::MakeForWidget(HoverForWidget, InventoryUtils::GetGlobalItemSettings().ItemQuickSlotSelectListWidget, local_64.opImplConv());
         local_132.SetHoverLimitationByWidget(HoverLimitationWidget);
         local_132.SetClickClose(true);
         local_132.SetTargetLayer(FEUIWidget::GetWidgetLayoutLayer(HoverForWidget));

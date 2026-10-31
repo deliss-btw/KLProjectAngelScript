@@ -1,5 +1,3 @@
-﻿
-
 class US_AutoTestSystemAS : UECSScriptSystem
 {
     US_AutoTestSystemAS()

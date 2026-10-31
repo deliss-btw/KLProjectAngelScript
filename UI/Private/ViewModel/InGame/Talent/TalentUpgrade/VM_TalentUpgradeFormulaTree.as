@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TalentUpgradeFormulaTree
 {
     const int ModelId = 0;
@@ -308,7 +307,8 @@ struct FVM_TalentUpgradeFormulaTree : FEUIViewModel
         if (local_101)
         {
             TEUIModelWeakRef<FM_TalentTree> local_2_8 = this.GetTreeM();
-            this.SetDivisionTypeIconVM(TEUIModelRef<FVM_TalentDivisionTypeIcon>(::FVM_TalentDivisionTypeIcon::Create(this.GetContext().Manager)));
+            ETalentDivision local_104;
+            this.SetDivisionTypeIconVM(TEUIModelRef<FVM_TalentDivisionTypeIcon>(::FVM_TalentDivisionTypeIcon::Create(this.GetContext().Manager, ETalentDivision(local_104))));
         }
         return;
     }
@@ -509,7 +509,6 @@ struct __GeneratedProperties_FVM_TalentUpgradeFormulaTree
     bool ShowRightLine;
     UPROPERTY()
     TEUIModelRef<FVM_TalentUpgradeFormulaTree> Self;
-
 
 }
 

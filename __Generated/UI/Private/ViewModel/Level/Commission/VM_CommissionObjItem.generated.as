@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommissionObjItemModel_Helpers
 {
 UFUNCTION()

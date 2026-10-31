@@ -1,4 +1,3 @@
-﻿
 namespace FVM_HPBar
 {
     const int ModelId = 0;

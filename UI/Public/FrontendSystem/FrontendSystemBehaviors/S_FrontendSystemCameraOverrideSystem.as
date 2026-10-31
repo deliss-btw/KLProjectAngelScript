@@ -1,5 +1,3 @@
-﻿
-
 class US_FrontendSystemCameraOverrideSystem : UECSScriptSystem
 {
     US_FrontendSystemCameraOverrideSystem()

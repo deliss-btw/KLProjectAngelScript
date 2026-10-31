@@ -1,11 +1,9 @@
-﻿
 enum EBuffAttachConditionType
 {
     RandomEventNormal,
     RandomEventHard,
     PublicEvent,
 }
-
 
 struct FBuffAttachListConfig : FDataObject
 {
@@ -33,7 +31,6 @@ struct FBuffAttachLevelEventMapping
     TDataObjectPtr<FLevelPublicEventInfoConfig> PublicEventInfo;
     UPROPERTY()
     TDataObjectPtr<FBuffAttachListConfig> BuffList;
-
 
 }
 

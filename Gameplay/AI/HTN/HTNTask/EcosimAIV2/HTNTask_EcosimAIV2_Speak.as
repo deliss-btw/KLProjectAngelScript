@@ -1,5 +1,3 @@
-﻿
-
 class UHTNTask_EcosimAIV2_TriggerLLMSpeak : UHTNTask_ECSScriptBase
 {
     UPROPERTY()
@@ -100,7 +98,7 @@ class UHTNTask_EcosimAIV2_GetLLMCallBACK : UHTNTask_ECSScriptBase
                 const FC_EcosimAIV2LLMSpeakMemory& local_70 = local_68.opCall();
                 if (local_70)
                 {
-                    FString local_74 = "и‡Єе·±еЇ№зЋ©е®¶иЇґиЇќзљ„еЋ†еЏІ:\n";
+                    FString local_74 = "自己对玩家说话的历史:\n";
                     for (auto& local_88 : local_70.SpeakMemoryContentList)
                     {
                         FString local_60 = (local_88 + "\n");
@@ -157,7 +155,6 @@ struct FHTNTask_EntityPublicSpeakByTypeWriterStyleInstanceData
     int LastProcessedCharacterIndex = 0;
     UPROPERTY()
     float32 NextCharacterTime = 0.0f;
-
 
 }
 
@@ -245,7 +242,7 @@ class UHTNTask_EcosimAIV2_EntityPublicSpeakByTypeWriterStyle : UHTNTask_ECSScrip
                         local_28_2 = this.GetCharacterDelay(local_26, local_32);
                         float32 local_27_2 = local_2.NextCharacterTime + local_28_2;
                         local_2.NextCharacterTime = local_27_2;
-                        if ((local_20 == "пјЊ") || (local_20 == "гЂ‚") || (local_20 == "пјџ") || (local_20 == "пјЃ"))
+                        if ((local_20 == "，") || (local_20 == "。") || (local_20 == "？") || (local_20 == "！"))
                         {
                             local_15 = true;
                             local_2.bIsPausedForPunctuation = local_15;
@@ -284,7 +281,7 @@ class UHTNTask_EcosimAIV2_EntityPublicSpeakByTypeWriterStyle : UHTNTask_ECSScrip
                         {
                             FString local_20_2 = local_26.Mid(local_38, 1);
                             local_37 = local_38 + 1;
-                            if ((local_20_2 == "пјЊ") || (local_20_2 == "гЂ‚") || (local_20_2 == "пјџ") || (local_20_2 == "пјЃ"))
+                            if ((local_20_2 == "，") || (local_20_2 == "。") || (local_20_2 == "？") || (local_20_2 == "！"))
                             {
                                 local_2.bIsPausedForPunctuation = true;
                                 local_28_3 = 0.0f;
@@ -338,7 +335,7 @@ class UHTNTask_EcosimAIV2_EntityPublicSpeakByTypeWriterStyle : UHTNTask_ECSScrip
         for (; local_3 < Str.Len(); ++local_3)
         {
             FString local_14 = Str.Mid(local_3, 1);
-            if ((local_14 == "пјЊ") || (local_14 == "гЂ‚") || (local_14 == "пјџ") || (local_14 == "пјЃ"))
+            if ((local_14 == "，") || (local_14 == "。") || (local_14 == "？") || (local_14 == "！"))
             {
                 ++local_1;
             }
@@ -373,7 +370,7 @@ class UHTNTask_EcosimAIV2_EntityPublicSpeakByTypeWriterStyle : UHTNTask_ECSScrip
         {
             FString local_12_2 = "";
         }
-        if ((local_26 == "пјЊ") || (local_26 == "гЂ‚") || (local_26 == "пјџ") || (local_26 == "пјЃ"))
+        if ((local_26 == "，") || (local_26 == "。") || (local_26 == "？") || (local_26 == "！"))
         {
             return (this.BaseCharacterDelay * 1.1f);
         }
@@ -390,15 +387,15 @@ class UHTNTask_EcosimAIV2_EntityPublicSpeakByTypeWriterStyle : UHTNTask_ECSScrip
         {
             return this.SpaceDelay;
         }
-        if ((local_16 == "е•Љ") || (local_16 == "е‘ў") || (local_16 == "еђ§") || (local_16 == "е“¦") || (local_16 == "е—Ї") || (local_16 == "е”‰"))
+        if ((local_16 == "啊") || (local_16 == "呢") || (local_16 == "吧") || (local_16 == "哦") || (local_16 == "嗯") || (local_16 == "唉"))
         {
             return (this.BaseCharacterDelay * 1.5f);
         }
-        if ((local_16 == "е“Ћ") || (local_16 == "е’¦") || (local_16 == "е“‡") || (local_16 == "е‘Ђ") || (local_16 == "еї") || (local_16 == "е’і"))
+        if ((local_16 == "哎") || (local_16 == "咦") || (local_16 == "哇") || (local_16 == "呀") || (local_16 == "嘿") || (local_16 == "咳"))
         {
             return (this.BaseCharacterDelay * 1.8f);
         }
-        if (CharIndex == 0 || (local_26 == "гЂ‚") || (local_26 == "пјџ") || (local_26 == "пјЃ"))
+        if (CharIndex == 0 || (local_26 == "。") || (local_26 == "？") || (local_26 == "！"))
         {
             return (this.BaseCharacterDelay * 1.3f);
         }

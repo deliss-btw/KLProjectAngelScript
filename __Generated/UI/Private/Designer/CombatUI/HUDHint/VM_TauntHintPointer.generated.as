@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TauntHintPointer_Helpers
 {
 UFUNCTION()

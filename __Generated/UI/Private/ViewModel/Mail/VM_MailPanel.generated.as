@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_MailPanel_Helpers
 {
 UFUNCTION()

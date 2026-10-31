@@ -1,4 +1,3 @@
-﻿
 const TArray<FName> EntityType_Level_CompCategory = TArray<FName>();
 namespace FECSEntityType
 {

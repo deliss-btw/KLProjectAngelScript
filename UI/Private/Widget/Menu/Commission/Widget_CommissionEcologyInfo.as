@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommissionEcologyInfo
 {
     const int ViewID = 0;
@@ -103,6 +102,7 @@ namespace UWidget_CommissionEcologyInfo
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionEcologyInfo;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedEcologyElementChanged"));
     return;
 }

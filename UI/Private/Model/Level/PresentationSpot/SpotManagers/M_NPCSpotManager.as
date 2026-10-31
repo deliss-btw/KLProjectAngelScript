@@ -1,4 +1,3 @@
-﻿
 namespace FMS_NPCSpotManager
 {
     const int ModelId = 0;
@@ -140,9 +139,9 @@ struct FMS_NPCSpotManager : FEUIModelSingleton
                         }
                         else
                         {
-                            this.GetModify_PresentationToMainConfig().Add(local_44, TDataObjectPtr<FNPCMainConfig>());
+                            this.GetModify_PresentationToMainConfig().Add(local_44, TDataObjectPtr<FNPCMainConfig>(local_20));
                             FM_SpotRegistry& local_222 = ::PresentationSpotUtils::GetMapRegistry(this.GetManager(), local_122);
-                            this.GetModify_NPCMapSpots().Add(local_44, this.CreatePlaceholderInMapRegistry(TDataObjectPtr<FNPCMainConfig>(), local_222));
+                            this.GetModify_NPCMapSpots().Add(local_44, this.CreatePlaceholderInMapRegistry(TDataObjectPtr<FNPCMainConfig>(local_20), local_222));
                         }
                     }
                 }

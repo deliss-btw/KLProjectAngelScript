@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CameraLockTargetModifier : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ class UESMAction_CameraLockTargetModifier : UESMBPBaseSpanTickAction
     float32 BlendIn = 0.2f;
     UPROPERTY()
     float32 BlendOut = 0.2f;
-
 
     UFUNCTION()
     bool NeedTick_Implementation() const

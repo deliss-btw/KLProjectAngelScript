@@ -1,15 +1,9 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FKLFlowNode_ListenTrigger (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FKLFlowNodeMemory_ListenTrigger
 {
     UPROPERTY()
     int HandleBeginOverlap = 0;
     UPROPERTY()
     int HandleEndOverlap = 0;
-
 
 }
 
@@ -34,7 +28,7 @@ struct FKLFlowNode_ListenTrigger : FKLFlowNode
     }
     void OnBuild_Implementation()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     void OnInit_Implementation()
     {

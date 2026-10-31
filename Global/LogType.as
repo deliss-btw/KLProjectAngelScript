@@ -1,4 +1,3 @@
-﻿
 enum ELog
 {
     Temp,

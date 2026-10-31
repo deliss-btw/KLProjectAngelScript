@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_CutSceneLogicData_NS
 {
     const TECSComponentDerivedPtr<FC_CutSceneLogicData> DerivedPtr = TECSComponentDerivedPtr<FC_CutSceneLogicData>();
@@ -55,11 +54,36 @@ struct FC_CutSceneLogicData : FECSComponent
 
     FC_CutSceneLogicData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bCrossDS = false;
+        this.m_bPrevTeleported = false;
+        this.m_bSupportSkip = true;
+        this.m_PlayerTag = n"Player0";
+        this.__InitDirtyFlags();
+        return;
     }
     FC_CutSceneLogicData(const FC_CutSceneLogicData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_26;
+        this.__DirtyFlags = local_26;
+        this.m_bCrossDS = false;
+        this.m_bPrevTeleported = false;
+        this.m_bSupportSkip = true;
+        this.m_PlayerTag = n"Player0";
+        this.__InitDirtyFlags();
+        this.m_StartTime = Other.m_StartTime;
+        this.m_Duration = Other.m_Duration;
+        this.m_LevelSequence = Other.m_LevelSequence;
+        this.m_CutSceneData = Other.m_CutSceneData;
+        this.m_OriginLocation = Other.m_OriginLocation;
+        this.m_OriginRotation = Other.m_OriginRotation;
+        this.m_bCrossDS = Other.m_bCrossDS;
+        this.m_bPrevTeleported = Other.m_bPrevTeleported;
+        this.m_bSupportSkip = Other.m_bSupportSkip;
+        this.m_PlayerTag = Other.m_PlayerTag;
+        this.m_Entities = Other.m_Entities;
+        return;
     }
     FC_CutSceneLogicData opAssign(const FC_CutSceneLogicData &inout Other)
     {
@@ -430,37 +454,37 @@ bool RemoveCutSceneLogicData(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCutSceneLogicDataOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CutSceneLogicData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CutSceneLogicData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCutSceneLogicDataOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CutSceneLogicData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CutSceneLogicData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCutSceneLogicDataOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CutSceneLogicData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CutSceneLogicData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCutSceneLogicDataOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CutSceneLogicData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CutSceneLogicData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCutSceneLogicDataOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CutSceneLogicData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CutSceneLogicData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCutSceneLogicDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CutSceneLogicData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CutSceneLogicData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCutSceneLogicDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CutSceneLogicData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CutSceneLogicData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCutSceneLogicDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CutSceneLogicData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CutSceneLogicData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_CutSceneViewData
@@ -551,17 +575,17 @@ bool RemoveCutSceneViewData(const FECSWorldPtr &inout World)
 }
 void __MonitorCutSceneViewDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_CutSceneViewData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_CutSceneViewData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCutSceneViewDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_CutSceneViewData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_CutSceneViewData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCutSceneViewDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_CutSceneViewData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_CutSceneViewData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_CutSceneRequestSpawnPoint
@@ -641,37 +665,37 @@ bool RemoveCutSceneRequestSpawnPoint(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCutSceneRequestSpawnPointOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CutSceneRequestSpawnPoint, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CutSceneRequestSpawnPoint, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCutSceneRequestSpawnPointOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CutSceneRequestSpawnPoint, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CutSceneRequestSpawnPoint, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCutSceneRequestSpawnPointOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CutSceneRequestSpawnPoint, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CutSceneRequestSpawnPoint, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCutSceneRequestSpawnPointOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CutSceneRequestSpawnPoint, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CutSceneRequestSpawnPoint, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCutSceneRequestSpawnPointOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CutSceneRequestSpawnPoint, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CutSceneRequestSpawnPoint, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCutSceneRequestSpawnPointLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CutSceneRequestSpawnPoint, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CutSceneRequestSpawnPoint, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCutSceneRequestSpawnPointActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CutSceneRequestSpawnPoint, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CutSceneRequestSpawnPoint, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCutSceneRequestSpawnPointModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CutSceneRequestSpawnPoint, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CutSceneRequestSpawnPoint, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

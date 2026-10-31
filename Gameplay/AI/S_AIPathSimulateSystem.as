@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_AI_DebugAIPathPointSimulate = FConsoleVariable();
 const FConsoleVariable CVar_AI_DebugAIPathPointModeSimulate = FConsoleVariable();
 const FConsoleVariable CVar_AI_UseMovementControlAirCheck = FConsoleVariable();
@@ -28,7 +27,6 @@ class US_AIPathSimulateSystem : UECSScriptSystem
     float32 PathAnimationPredictionSamplesInterval = 200.0f;
     UPROPERTY()
     float32 PathAnimationPredictionNextDeltaTime = 0.1f;
-
 
     void EnableAIPathSimulateDebugDraw() const
     {
@@ -65,7 +63,7 @@ class US_AIPathSimulateSystem : UECSScriptSystem
     UFUNCTION()
     void Job_SimulateMove(const FCS_FixedTime &inout FixedTime, const FECSEntity &inout Entity, FC_Transform &inout Transform, FC_AIPathSimulate &inout C_Simulate) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     bool IsRVOLocalCorridorMoveType(const EAISimulateMoveType MoveType) const
     {
@@ -217,7 +215,6 @@ class US_AIPathSimulateSystem : UECSScriptSystem
     }
     void DrawRVOLocalCorridorPathComparison(const FECSEntity &inout Entity, const FC_Transform &inout Transform, const FC_AIPathSimulate &inout C_Simulate, const FSimulateData &inout SegmentData, const FC_AIRVOLocalCorridor &inout Corridor) const
     {
-        int local_41 = 0;
         if (!(this.IsRVOLocalCorridorPathDrawTarget(Entity)))
         {
             return;
@@ -228,9 +225,7 @@ class US_AIPathSimulateSystem : UECSScriptSystem
         for (; local_33 < C_Simulate.GetSimulateList().Num(); )
         {
             const FSimulateData& local_38 = C_Simulate.GetSimulateList()[local_33];
-            int local_35 = int(local_38.GetMoveType());
-            local_41 = int(SegmentData.GetMoveType());
-            if (local_35 != local_41)
+            if (int(local_38.GetMoveType()) != int(SegmentData.GetMoveType()))
             {
                 break;
             }
@@ -245,7 +240,7 @@ class US_AIPathSimulateSystem : UECSScriptSystem
         FVector local_48_2 = FVector(0.0, 0.0, 20.0);
         FVector local_60 = (local_8 + local_48_2);
         int local_33_2 = Corridor.CurrentPointIndex;
-        while (local_33_2 < local_41)
+        for (; local_33_2 < Corridor.Points.Num(); )
         {
             FVector local_48_3 = Corridor.Points[local_33_2];
             FVector local_26_2 = (local_48_3 + local_14);
@@ -254,7 +249,6 @@ class US_AIPathSimulateSystem : UECSScriptSystem
             DebugDraw::DrawDebugSphere(this.GetWorld(), local_48_3, 30.0f, 8, FColor::Green, false, -1.0f, uint8(0), 0.0f);
             local_60 = local_48_3;
             ++local_33_2;
-            local_41 = Corridor.Points.Num();
         }
         int local_33_3 = C_Simulate.GetCurrentSimulateIndex();
         for (; local_33_3 < C_Simulate.GetSimulateList().Num(); )
@@ -339,7 +333,7 @@ class US_AIPathSimulateSystem : UECSScriptSystem
                             {
                                 float32 local_61 = 0.0f;
                                 float32 local_62 = 0.0f;
-                                FVector local_63 = 0.0f;
+                                float32 local_63 = 0.0f;
                                 FVector local_70(FVector::ZeroVector);
                                 FVector local_76(local_30.Points[int(local_30.CurrentPointIndex)]);
                                 FVector local_50 = this.BuildRVOCorridorAvoidPoint(Entity, Transform, C_Simulate, SegmentData, MoveParam.MoveInput, local_56, local_61, local_62, local_70, local_63);
@@ -358,9 +352,8 @@ class US_AIPathSimulateSystem : UECSScriptSystem
                 {
                     FVector local_50_2(local_30.Points[int(local_30.CurrentPointIndex)]);
                     FVector local_94 = (FVector(Transform.GetPosition()) - local_50_2);
-                    FVector local_63_2 = this.GetDistanceToSegment2D(Transform.GetPosition(), this.GetCurrentSegmentStartForRVO(Transform, C_Simulate), SegmentData.GetTargetPoint());
                     int local_87 = Entity.GetIdValue();
-                    XLog(ELog(14), FString().Append("RVO Corridor Reuse Entity=").Append(local_87).Append(" SimIndex=").Append(C_Simulate.GetCurrentSimulateIndex()).Append(" CurrentPoint=").Append(local_30.CurrentPointIndex).Append("/").Append(local_30.Points.Num()).Append(" DistToPoint=").Append(float32(local_94.Size2D())).Append(" DistToSegment=").Append(local_63_2).Append(" Pos=").Append(Transform.GetPosition()).Append(" Point=").Append(local_50_2).Append(" Elapsed=").Append(local_30.ElapsedTime));
+                    XLog(ELog(14), FString().Append("RVO Corridor Reuse Entity=").Append(local_87).Append(" SimIndex=").Append(C_Simulate.GetCurrentSimulateIndex()).Append(" CurrentPoint=").Append(local_30.CurrentPointIndex).Append("/").Append(local_30.Points.Num()).Append(" DistToPoint=").Append(float32(local_94.Size2D())).Append(" DistToSegment=").Append(this.GetDistanceToSegment2D(Transform.GetPosition(), this.GetCurrentSegmentStartForRVO(Transform, C_Simulate), SegmentData.GetTargetPoint())).Append(" Pos=").Append(Transform.GetPosition()).Append(" Point=").Append(local_50_2).Append(" Elapsed=").Append(local_30.ElapsedTime));
                 }
             }
             else
@@ -399,20 +392,20 @@ class US_AIPathSimulateSystem : UECSScriptSystem
                     FVector local_76_2(SegmentData.GetTargetPoint());
                     float32 local_62_2 = 0.0f;
                     float32 local_61_2 = 0.0f;
-                    FVector local_63_3 = 0.0f;
+                    float32 local_63_2 = 0.0f;
                     FVector local_70_2(FVector::ZeroVector);
-                    FVector local_50_3 = this.BuildRVOCorridorAvoidPoint(Entity, Transform, C_Simulate, SegmentData, MoveParam.MoveInput, local_94_2, local_62_2, local_61_2, local_70_2, local_63_3);
+                    FVector local_50_3 = this.BuildRVOCorridorAvoidPoint(Entity, Transform, C_Simulate, SegmentData, MoveParam.MoveInput, local_94_2, local_62_2, local_61_2, local_70_2, local_63_2);
                     local_30.bActive = true;
                     local_30.AnchorSimulateIndex = C_Simulate.GetCurrentSimulateIndex();
                     local_30.Points.Empty(0);
                     local_30.Points.Add(local_50_3);
                     local_30.CurrentPointIndex = 0;
                     local_30.ElapsedTime = 0.0f;
-                    local_30.AllowedOffset = FMath::Max(local_63_3 * local_6, 300.0f);
-                    local_30.HardRepathOffset = FMath::Max(local_63_3 * local_8, 800.0f);
+                    local_30.AllowedOffset = FMath::Max(local_63_2 * local_6, 300.0f);
+                    local_30.HardRepathOffset = FMath::Max(local_63_2 * local_8, 800.0f);
                     if (local_1)
                     {
-                        XLog(ELog(14), FString().Append("RVO Corridor Create Entity=").Append(Entity.GetIdValue()).Append(" SimIndex=").Append(C_Simulate.GetCurrentSimulateIndex()).Append(" Pos=").Append(Transform.GetPosition()).Append(" SegStart=").Append(local_82).Append(" SegEnd=").Append(local_76_2).Append(" MoveInput=").Append(MoveParam.MoveInput).Append(" RVOInput=").Append(local_94_2).Append(" AvoidanceAge=").Append(local_12).Append(" SideDir=").Append(local_70_2).Append(" AvoidDistance=").Append(local_62_2).Append(" SideOffset=").Append(local_61_2).Append(" AvoidPoint=").Append(local_50_3).Append(" AgentRadius=").Append(local_63_3).Append(" DistToSegment=").Append(this.GetDistanceToSegment2D(Transform.GetPosition(), local_82, local_76_2)));
+                        XLog(ELog(14), FString().Append("RVO Corridor Create Entity=").Append(Entity.GetIdValue()).Append(" SimIndex=").Append(C_Simulate.GetCurrentSimulateIndex()).Append(" Pos=").Append(Transform.GetPosition()).Append(" SegStart=").Append(local_82).Append(" SegEnd=").Append(local_76_2).Append(" MoveInput=").Append(MoveParam.MoveInput).Append(" RVOInput=").Append(local_94_2).Append(" AvoidanceAge=").Append(local_12).Append(" SideDir=").Append(local_70_2).Append(" AvoidDistance=").Append(local_62_2).Append(" SideOffset=").Append(local_61_2).Append(" AvoidPoint=").Append(local_50_3).Append(" AgentRadius=").Append(local_63_2).Append(" DistToSegment=").Append(this.GetDistanceToSegment2D(Transform.GetPosition(), local_82, local_76_2)));
                     }
                 }
                 else
@@ -488,6 +481,7 @@ class US_AIPathSimulateSystem : UECSScriptSystem
     {
         bool local_14 = false;
         float32 local_38;
+        int local_68 = 0;
         FNameHandle_EntityBBVar local_78;
         FNameHandle_EntityBBVarVector local_94;
         if (C_Simulate.GetCurrentSimulateIndex() < C_Simulate.GetSimulateList().Num())
@@ -523,9 +517,7 @@ class US_AIPathSimulateSystem : UECSScriptSystem
             {
                 int local_61;
                 local_61 = 1;
-                ECS::GetContextDeltaTime();
-                ECS::GetContextTime();
-                ::FAINavigationUtils::GetAIMoveAbilityTrigger();
+                FESMTriggerUtils::ActivateTrigger(Entity, local_68.Storage, ::FAINavigationUtils::GetAIMoveAbilityTrigger(), ECS::GetContextTime(), ECS::GetContextDeltaTime(), 0);
                 local_78;
                 if (Entity.HasEntityBB(local_78))
                 {
@@ -560,9 +552,7 @@ class US_AIPathSimulateSystem : UECSScriptSystem
                 }
                 return;
             }
-            ECS::GetContextDeltaTime();
-            ECS::GetContextTime();
-            ::FAINavigationUtils::GetAIJumpTriggerV2();
+            FESMTriggerUtils::ActivateTrigger(Entity, local_68.Storage, ::FAINavigationUtils::GetAIJumpTriggerV2(), ECS::GetContextTime(), ECS::GetContextDeltaTime(), 0);
             local_78;
             if (Entity.HasEntityBB(local_78))
             {
@@ -754,15 +744,235 @@ class US_AIPathSimulateSystem : UECSScriptSystem
     }
     void JumpMove(const FECSEntity &inout Entity, FC_Transform &inout Transform, FC_AIPathSimulate &inout C_Simulate, FSimulateData &inout SegmentData) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        bool local_2 = false;
+        Get local_88;
+        float32 local_89 = 0.0f;
+        float32 local_90;
+        FNameHandle_EntityBBVar local_120;
+        FNameHandle_EntityBBVarVector local_124;
+        FNameHandle_EntityBBVarFloat local_130;
+        int local_138 = 0;
+        if (this.JumpSorption(Entity, Transform, SegmentData))
+        {
+            return;
+        }
+        bool local_1 = !(SegmentData.GetbHasTrigger());
+        FGameplayTag local_154;
+        if (local_1)
+        {
+            Get local_6;
+            local_1 = false;
+            local_2 = local_1;
+            if (local_6.opCall().GetMoveAbilityConfig() && local_1)
+            {
+                Has local_84;
+                int local_62;
+                int local_61;
+                TDataObjectPtr<FAIMoveConfig> local_36 = local_6.opCall().GetMoveAbilityConfig();
+                local_2 = true;
+                local_62 = 0;
+                local_61 = local_62;
+                FVector local_80 = (FVector(SegmentData.GetTargetPoint()) - Transform.GetPosition());
+                local_1 = local_84.opCall();
+                if (local_1)
+                {
+                    local_90 = local_88.opCall().GetScaledHalfHeight();
+                }
+                else
+                {
+                    local_90 = 0.0f;
+                }
+                FVector local_102 = (local_80 + FVector(0.0, 0.0, local_90));
+                bool local_11 = local_102.Z < 100.0 && local_1;
+                if (local_11)
+                {
+                    FVector local_68 = ((FVector(SegmentData.GetTargetPoint()) - Transform.GetPosition()) * FVector(1.0, 1.0, 0.0));
+                    FVector local_108(Transform.GetPosition());
+                    local_1 = local_84.opCall();
+                    if (local_1)
+                    {
+                        local_90 = local_88.opCall().GetScaledHalfHeight();
+                    }
+                    else
+                    {
+                        local_90 = 0.0f;
+                    }
+                    FVector local_80_2 = (local_108 + FVector(0.0, 0.0, local_90));
+                    local_89 = CVar_AI_LeapOffIntervalRatio.GetFloat();
+                    FVector local_74_2 = (local_68 * local_89);
+                    FVector local_108_2 = (local_80_2 + local_74_2);
+                    local_120;
+                    if (Entity.HasEntityBB(local_120))
+                    {
+                        local_124;
+                    }
+                    local_62 = 3;
+                    local_61 = local_62;
+                }
+                else
+                {
+                    local_11 = local_102.Z > local_90 || (local_102.Size2D() > local_89);
+                    if (local_11)
+                    {
+                        if (local_1)
+                        {
+                            local_62 = 2;
+                            local_61 = local_62;
+                            if (local_90 != 0.0f)
+                            {
+                                float local_94 = local_102.Z / local_89;
+                                local_120;
+                                local_11 = Entity.HasEntityBB(local_120);
+                                if (local_11)
+                                {
+                                    local_90 = float32(local_94);
+                                    local_130;
+                                    Entity.SetBB_Float(local_130, n"MoveAbility.fNormalizedMantleHeight");
+                                }
+                            }
+                        }
+                    }
+                }
+                local_11 = local_11 && (local_61 == 0);
+                if (local_11)
+                {
+                    local_62 = 1;
+                    local_61 = local_62;
+                    if (local_89 != 0.0f)
+                    {
+                        float local_96_3 = local_102.Z / local_90;
+                        local_120;
+                        if (Entity.HasEntityBB(local_120))
+                        {
+                            local_89 = float32(local_96_3);
+                            local_130;
+                            Entity.SetBB_Float(local_130, n"MoveAbility.fNormalizedUpstairsHeight");
+                        }
+                    }
+                }
+                FESMTriggerUtils::ActivateTrigger(Entity, local_138.Storage, ::FAINavigationUtils::GetAIMoveAbilityTrigger(), ECS::GetContextTime(), ECS::GetContextDeltaTime(), 0);
+                local_120;
+                if (Entity.HasEntityBB(local_120))
+                {
+                    FNameHandle_EntityBBVarEnum local_150;
+                    int local_131 = local_61;
+                    local_150;
+                    Entity.SetBB_Enum(local_150, n"MoveAbility.eMoveAbilityType");
+                }
+                local_120;
+                if (Entity.HasEntityBB(local_120))
+                {
+                    FVector local_74_3 = FVector(SegmentData.GetTargetPoint());
+                    bool local_11_2 = local_84.opCall();
+                    if (local_11_2)
+                    {
+                        local_89 = local_88.opCall().GetScaledHalfHeight();
+                    }
+                    else
+                    {
+                        local_89 = 0.0f;
+                    }
+                    FVector local_114 = (local_74_3 + FVector(0.0, 0.0, local_89));
+                    local_124;
+                }
+                switch (local_61)
+                {
+                case 1:
+                {
+                    local_154 = FGameplayTag::RequestGameplayTag(n"ESM.MotionFlag.Upstairs", true);
+                    break;
+                }
+                case 2:
+                {
+                    local_154 = FGameplayTag::RequestGameplayTag(n"ESM.MotionFlag.Mantle", true);
+                    break;
+                }
+                case 3:
+                {
+                    local_154 = FGameplayTag::RequestGameplayTag(n"ESM.MotionFlag.LeapOff", true);
+                    break;
+                }
+                default:
+                {
+                    local_154 = FGameplayTag::RequestGameplayTag(n"ESM.MotionFlag.Jump", true);
+                }
+                }
+                if (Entity.MatchGameplayTag(local_154))
+                {
+                    SegmentData.SetbHasTrigger(true);
+                }
+            }
+            else
+            {
+                ModifyOrAdd local_158;
+                TMap<int, FAIESMTriggerResponse> local_178 = local_158.opCall().WaitingTriggers;
+                if (local_178.Contains(SegmentData.GetESMTriggerListenerID()))
+                {
+                    int local_131_2 = INDEX_NONE;
+                    if (int(local_178[SegmentData.GetESMTriggerListenerID()].RespondStateMachineIndex) != local_131_2)
+                    {
+                        SegmentData.SetbHasTrigger(true);
+                    }
+                    else
+                    {
+                        FESMTriggerUtils::ActivateTrigger(Entity, local_138.Storage, ::FAINavigationUtils::GetAIJumpTriggerV2(), ECS::GetContextTime(), ECS::GetContextDeltaTime(), 0);
+                        local_120;
+                        if (Entity.HasEntityBB(local_120))
+                        {
+                            local_124;
+                        }
+                    }
+                }
+                else
+                {
+                    FAIESMTriggerResponse local_182;
+                    local_182.TriggerName = ::FAINavigationUtils::GetAIJumpTriggerV2();
+                    local_158.opCall().WaitingTriggers.Add(SegmentData.GetESMTriggerListenerID(), local_182);
+                    FESMTriggerUtils::ActivateTrigger(Entity, local_138.Storage, ::FAINavigationUtils::GetAIJumpTriggerV2(), ECS::GetContextTime(), ECS::GetContextDeltaTime(), 0);
+                    local_120;
+                    local_1 = Entity.HasEntityBB(local_120);
+                    if (local_1)
+                    {
+                        local_124;
+                    }
+                }
+            }
+        }
+        else
+        {
+            Get local_10;
+            if (local_10.opCall().GetMoveAbilityConfig() && local_1)
+            {
+                if (!(Entity.MatchGameplayTag(FGameplayTag::RequestGameplayTag(n"ESM.MotionFlag.Jump", true))) && !(Entity.MatchGameplayTag(FGameplayTag::RequestGameplayTag(n"ESM.MotionFlag.FallCycle", true))))
+                {
+                    if (float32((FVector(Transform.GetPosition()) - SegmentData.GetTargetPoint()).Size2D()) > FMath::Max(FECSAIUtils::GetEntityAgentRadius(Entity), ::FAINavigationUtils::GetToleranceDistance()))
+                    {
+                        FString local_194;
+                        FString local_190;
+                        C_Simulate.SetbStuck(true);
+                        SegmentData.GetTargetPoint().ToString();
+                        Transform.GetPosition().ToString();
+                        XWarning(ELog(14), FString::Format("JumpMove: landed off-target, mark stuck. EntityID:{0} Pos:{1} Target:{2} PlanarDist:{3} Threshold:{4}", Entity.GetIdValue(), local_194, local_194, local_190, local_190));
+                        return;
+                    }
+                    SegmentData.SetSimulateState(EAIPathSimulateState(2));
+                    return;
+                }
+            }
+        }
+        FVector local_80_3 = (FVector(Transform.GetPosition()) - SegmentData.GetTargetPoint());
+        if (local_80_3.Size() < ::FAINavigationUtils::GetToleranceDistance())
+        {
+            SegmentData.SetSimulateState(EAIPathSimulateState(2));
+        }
+        return;
     }
     void TakeOffMove(const FECSEntity &inout Entity, FC_Transform &inout Transform, FSimulateData &inout SegmentData) const
     {
+        int local_8 = 0;
         if (!(SegmentData.GetbHasTrigger()))
         {
-            ECS::GetContextDeltaTime();
-            ECS::GetContextTime();
-            ::FAINavigationUtils::GetGroundToAirTrigger();
+            FESMTriggerUtils::ActivateTrigger(Entity, local_8.Storage, ::FAINavigationUtils::GetGroundToAirTrigger(), ECS::GetContextTime(), ECS::GetContextDeltaTime(), 0);
             if (::AIPathSimulateHelper::IsEntityInAir(Entity))
             {
                 SegmentData.SetbHasTrigger(true);
@@ -776,11 +986,10 @@ class US_AIPathSimulateSystem : UECSScriptSystem
     }
     void LandMove(const FECSEntity &inout Entity, FC_Transform &inout Transform, FSimulateData &inout SegmentData) const
     {
+        int local_8 = 0;
         if (!(SegmentData.GetbHasTrigger()))
         {
-            ECS::GetContextDeltaTime();
-            ECS::GetContextTime();
-            ::FAINavigationUtils::GetAirToGroundTrigger();
+            FESMTriggerUtils::ActivateTrigger(Entity, local_8.Storage, ::FAINavigationUtils::GetAirToGroundTrigger(), ECS::GetContextTime(), ECS::GetContextDeltaTime(), 0);
             if (!(::AIPathSimulateHelper::IsEntityInAir(Entity)))
             {
                 SegmentData.SetbHasTrigger(true);
@@ -828,6 +1037,7 @@ class US_AIPathSimulateSystem : UECSScriptSystem
     }
     void DoStandTurn(const FECSEntity &inout Entity, FC_Transform &inout Transform, FSimulateData &inout SegmentData, FAIPathSimulateMoveParam &inout MoveParam, const FCS_FixedTime &inout FixedTime) const
     {
+        int local_48 = 0;
         FGameplayTag local_6 = FGameplayTag::RequestGameplayTag(n"ESM.MotionFlag.GroundTurnInplace", true);
         SegmentData.SetElapsedTime((SegmentData.GetElapsedTime() + float32(FixedTime.DeltaTime.ToSeconds())));
         if (SegmentData.GetElapsedTime() >= 5.0f)
@@ -840,9 +1050,7 @@ class US_AIPathSimulateSystem : UECSScriptSystem
         {
             FNameHandle_EntityBBVar local_58;
             FAIInputUtils::SimulateViewInput(Entity, SegmentData.GetTurnTargetDirection().GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector).Rotation());
-            ECS::GetContextDeltaTime();
-            ECS::GetContextTime();
-            ::FAINavigationUtils::GetAIMoveAbilityTrigger();
+            FESMTriggerUtils::ActivateTrigger(Entity, local_48.Storage, ::FAINavigationUtils::GetAIMoveAbilityTrigger(), ECS::GetContextTime(), ECS::GetContextDeltaTime(), 0);
             local_58;
             if (Entity.HasEntityBB(local_58))
             {
@@ -990,12 +1198,9 @@ class US_AIPathSimulateSystem : UECSScriptSystem
                 FSimulateData& local_8_2 = C_Simulate.GetSimulateList()[local_29];
                 if (int(local_8_2.GetSimulateState()) != 2)
                 {
-                    ELog local_44;
-                    FString local_40 = "  SimulatePath: ";
-                    FString local_36 = local_8_2.GetTargetPoint().ToString();
-                    FString local_40_2 = (local_44 + "State: ");
+                    FString local_40 = ((FString("  SimulatePath: ") + local_8_2.GetTargetPoint().ToString()) + "State: ");
                     EAIPathSimulateState local_30 = local_8_2.GetSimulateState();
-                    (local_40_2 + local_44);
+                    XError(ELog(15), (local_40 + local_30));
                 }
             }
             return;
@@ -1130,18 +1335,14 @@ class US_AIPathSimulateSystem : UECSScriptSystem
         bool local_1 = ::AIPathSimulateHelper::IsEntityInAir(Entity);
         if ((int(local_4) == 1 && local_1))
         {
-            ELog local_12;
             C_Simulate.SetbMovementStateMismatch(true);
-            int local_2 = C_Simulate.GetCurrentSimulateIndex();
-            FString::Format(Entity.GetIdValue(), "AIPathSimulate MovementStateMismatch: EntityID:{0} expected Ground but InAir, segment={1}", local_12);
+            XLog(ELog(14), FString::Format("AIPathSimulate MovementStateMismatch: EntityID:{0} expected Ground but InAir, segment={1}", Entity.GetIdValue(), C_Simulate.GetCurrentSimulateIndex()));
             return;
         }
         if ((int(local_4) == 2 && !(local_1)))
         {
-            ELog local_12;
             C_Simulate.SetbMovementStateMismatch(true);
-            int local_2_2 = C_Simulate.GetCurrentSimulateIndex();
-            FString::Format(Entity.GetIdValue(), "AIPathSimulate MovementStateMismatch: EntityID:{0} expected Air but OnGround, segment={1}", local_12);
+            XLog(ELog(14), FString::Format("AIPathSimulate MovementStateMismatch: EntityID:{0} expected Air but OnGround, segment={1}", Entity.GetIdValue(), C_Simulate.GetCurrentSimulateIndex()));
         }
         return;
     }
@@ -1290,7 +1491,7 @@ class US_AIPathSimulateSystem : UECSScriptSystem
     }
     void UpdateSimulateSegment(const FECSEntity &inout Entity, FC_Transform &inout Transform, FC_AIPathSimulate &inout C_Simulate, FAIPathSimulateMoveParam &inout MoveParam) const
     {
-        bool local_7 = false;
+        int local_7 = 0;
         Get local_6;
         const FC_AIControlledMotion& local_2 = local_6.opCall();
         if (local_2)
@@ -1301,21 +1502,21 @@ class US_AIPathSimulateSystem : UECSScriptSystem
                 FVector local_42 = (FVector(Transform.GetPosition()) + FVector(0.0, 0.0, 50.0));
                 FVector local_18 = (FVector(local_2.GetMoveNextTarget()) + FVector(0.0, 0.0, 50.0));
                 this.EnableAIPathSimulateDebugDraw();
-                local_7 = true;
-                FECSDebugDraw::DrawDebugDirectionalArrow(DebugDrawKey_AIPathSimulate, local_42, local_18, 50.0f, FLinearColor::Purple.ToFColor(local_7), FColor(uint8(0), uint8(0), uint8(0), uint8(0)), -1.0f, uint8(0), 0.0f);
+                local_7 = 1;
+                FECSDebugDraw::DrawDebugDirectionalArrow(DebugDrawKey_AIPathSimulate, local_42, local_18, 50.0f, FLinearColor::Purple.ToFColor((local_7 != 0)), FColor(uint8(0), uint8(0), uint8(0), uint8(0)), -1.0f, uint8(0), 0.0f);
             }
             if (C_Simulate.GetCurrentSimulateIndex() <= local_2.GetReachedPoint().GetSimulateIndex())
             {
                 int local_58;
                 local_58 = C_Simulate.GetCurrentSimulateIndex();
-                while (local_7)
+                while (local_7 != 0)
                 {
-                    C_Simulate.GetSimulateList()[local_58].SetSimulateState(EAIPathSimulateState(EAIPathSimulateState(2)));
+                    C_Simulate.GetSimulateList()[local_58].SetSimulateState(EAIPathSimulateState(2));
                     C_Simulate.SetCurrentSimulateIndex(local_58);
                     ++local_58;
                     if (local_58 > local_2.GetReachedPoint().GetSimulateIndex())
                     {
-                        local_7 = false;
+                        local_7 = 0;
                         continue;
                     }
                     local_7 = (local_58 < C_Simulate.GetSimulateList().Num());
@@ -1327,10 +1528,18 @@ class US_AIPathSimulateSystem : UECSScriptSystem
         if (C_Simulate.GetCurrentSimulateIndex() < C_Simulate.GetSimulateList().Num())
         {
             FSimulateData& local_66 = C_Simulate.GetSimulateList()[C_Simulate.GetCurrentSimulateIndex()];
-            if (int(local_66.GetMoveType()) == 0 || (int(local_66.GetSimulateState()) == 2))
+            if (int(local_66.GetMoveType()) == 0)
+            {
+                local_7 = 1;
+            }
+            else
+            {
+                local_7 = (int(local_66.GetSimulateState()) == 2);
+            }
+            if (local_7 != 0)
             {
                 this.EndSimulateSegment(Entity, local_66, MoveParam);
-                local_66.SetSimulateState(EAIPathSimulateState(EAIPathSimulateState(2)));
+                local_66.SetSimulateState(EAIPathSimulateState(2));
                 C_Simulate.SetCurrentSimulateIndex((C_Simulate.GetCurrentSimulateIndex() + 1));
                 if (C_Simulate.GetCurrentSimulateIndex() < C_Simulate.GetSimulateList().Num())
                 {
@@ -1343,7 +1552,7 @@ class US_AIPathSimulateSystem : UECSScriptSystem
     }
     void EndSimulateSegment(const FECSEntity &inout Entity, const FSimulateData &inout SegmentData, FAIPathSimulateMoveParam &inout MoveParam) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     void EnterSegment(FC_Transform &inout Transform, FC_AIPathSimulate &inout C_Simulate, FSimulateData &inout NextSegment) const
     {

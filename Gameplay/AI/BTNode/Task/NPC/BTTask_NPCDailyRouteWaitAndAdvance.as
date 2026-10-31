@@ -1,12 +1,9 @@
-﻿
-
 struct FNPCDailyRouteWaitInstanceData
 {
     UPROPERTY()
     float32 ElapsedTime = 0.0f;
     UPROPERTY()
     float32 WaitTime = 0.0f;
-
 
 }
 
@@ -55,7 +52,7 @@ class UBTTask_NPCDailyRouteWaitAndAdvance : UBTTask_ECSScriptBase
     void TickTask_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory, const float32 DeltaSeconds) const
     {
         FC_NPCDailyRouteRuntime local_38;
-        if (!(::FNPCDailyRouteUtils::TryGetPreparedTarget(local_38, Context.PawnEntity)))
+        if (!(::FNPCDailyRouteUtils::TryGetPreparedTarget(Context.PawnEntity, local_38)))
         {
             if (Context.PawnEntity.IsValid())
             {

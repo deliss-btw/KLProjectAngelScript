@@ -1,5 +1,3 @@
-﻿
-
 struct FT_PresentationOnly : FECSTrait
 {
     FECSTrait _base_FECSTrait;

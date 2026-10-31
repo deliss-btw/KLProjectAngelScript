@@ -1,5 +1,3 @@
-﻿
-
 class US_AIGeneration : UECSScriptSystem
 {
     US_AIGeneration()
@@ -9,7 +7,7 @@ class US_AIGeneration : UECSScriptSystem
     UFUNCTION()
     void HandleAIGenEnvDataPromptCallBack(const FString &inout CallContext, const FString &inout CallBackContent) const
     {
-        FString local_4 = "HandleAIGenEnvDataPromptCallBack: \n";
+        XError(ELog(0), (FString("HandleAIGenEnvDataPromptCallBack: \n") + CallBackContent));
         return;
     }
 }

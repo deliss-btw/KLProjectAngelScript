@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonItemTipOperationItem
 {
     const int ModelId = 0;
@@ -61,11 +60,10 @@ struct FItemTipData
     UPROPERTY()
     TArray<FItemTipActionRequest> ActionRequests;
 
-
     bool IsValid() const
     {
         bool local_1;
-        if (this.IsValid())
+        if (this.ItemData.IsValid())
         {
             local_1 = true;
         }
@@ -1060,12 +1058,13 @@ struct FVM_CommonItemTip : FEUIViewModel
     {
         FSimpleModelEvent local_22;
         local_22.Add(this, FVM_CommonItemTip::ExecuteGSUseAction);
+        this.AddItemActionInput(EItemActionType(0), local_22);
         return;
     }
     void AddItemAction(const EItemActionType ActionType)
     {
         TEUIModelRef<FM_ItemData> local_2 = this.GetItemData();
-        if (!(::ItemActionUtils::CanExecuteAction(this.GetItemData().opArrow().GetConfig(), ::FItemActionSource::InvokeFromInventory(this.GetContext()))))
+        if (!(::ItemActionUtils::CanExecuteAction(this.GetItemData().opArrow().GetConfig(), ::FItemActionSource::InvokeFromInventory(this.GetContext()), EItemActionType(ActionType))))
         {
             return;
         }
@@ -1099,6 +1098,7 @@ struct FVM_CommonItemTip : FEUIViewModel
                 }
             }
         }
+        this.AddItemActionInput(EItemActionType(ActionType), local_60);
         return;
     }
     void AddItemActionInput(const EItemActionType ActionType, const FSimpleModelEvent &inout ExecuteEvent)
@@ -1211,7 +1211,7 @@ struct FVM_CommonItemTip : FEUIViewModel
     void ExecuteItemAction(const EItemActionType ActionType)
     {
         TEUIModelRef<FM_ItemData> local_2 = this.GetItemData();
-        ::ItemActionUtils::ExecuteActionFromUI(this.GetItemData().opArrow().GetConfig(), ::FItemActionSource::InvokeFromInventory(this.GetContext()));
+        ::ItemActionUtils::ExecuteActionFromUI(this.GetItemData().opArrow().GetConfig(), ::FItemActionSource::InvokeFromInventory(this.GetContext()), EItemActionType(ActionType));
         return;
     }
     void BuildItemData()
@@ -1697,7 +1697,7 @@ struct FItemTipHandle
     }
     void PrepareForDisplay() const
     {
-        if (this.IsValid())
+        if (this.State.IsValid())
         {
             EnsureDisplayTip();
         }
@@ -1707,52 +1707,53 @@ struct FItemTipHandle
     {
         if (!(Data.IsValid()))
         {
+            this.State = TEUIModelRef<FVM_CommonItemTipHost>();
             return;
         }
         FVM_CommonItemTipHost& local_8 = ::FVM_CommonItemTipHost::Create(ContextObject);
         local_8.ShowHover(Data);
-        TEUIModelRef<FVM_CommonItemTipHost> local_6 = TEUIModelRef<FVM_CommonItemTipHost>(local_8);
+        this.State = (TEUIModelRef<FVM_CommonItemTipHost>(local_8));
         return;
     }
     FEUIModelContainer GetModels() const
     {
         FEUIModelContainer local_14;
-        if (!(this.IsValid()))
+        if (!(this.State.IsValid()))
         {
             return local_14;
         }
         FEUIModelRef local_18;
         local_18;
-        local_14.AddModel(local_18, this);
-        if (this.opArrow().GetDisplayTip().IsValid())
+        local_14.AddModel(local_18, this.State);
+        if (this.State.opArrow().GetDisplayTip().IsValid())
         {
-            local_14.AddModel(this.opArrow().GetDisplayTip().opImplConv(), false);
-            if (this.opArrow().GetDisplayTip().opArrow().GetItem().IsValid())
+            local_14.AddModel(this.State.opArrow().GetDisplayTip().opImplConv(), false);
+            if (this.State.opArrow().GetDisplayTip().opArrow().GetItem().IsValid())
             {
-                local_14.AddModel(this.opArrow().GetDisplayTip().opArrow().GetItem().opImplConv(), false);
+                local_14.AddModel(this.State.opArrow().GetDisplayTip().opArrow().GetItem().opImplConv(), false);
             }
-            if (this.opArrow().GetDisplayTip().opArrow().GetDisplayItem().IsValid())
+            if (this.State.opArrow().GetDisplayTip().opArrow().GetDisplayItem().IsValid())
             {
-                local_14.AddModel(this.opArrow().GetDisplayTip().opArrow().GetDisplayItem().opImplConv(), false);
+                local_14.AddModel(this.State.opArrow().GetDisplayTip().opArrow().GetDisplayItem().opImplConv(), false);
             }
-            if (this.opArrow().GetDisplayTip().opArrow().GetCommonItem().IsValid())
+            if (this.State.opArrow().GetDisplayTip().opArrow().GetCommonItem().IsValid())
             {
-                local_14.AddModel(this.opArrow().GetDisplayTip().opArrow().GetCommonItem().opImplConv(), false);
+                local_14.AddModel(this.State.opArrow().GetDisplayTip().opArrow().GetCommonItem().opImplConv(), false);
             }
-            if (this.opArrow().GetDisplayTip().opArrow().GetTipDisplay().IsValid())
+            if (this.State.opArrow().GetDisplayTip().opArrow().GetTipDisplay().IsValid())
             {
-                local_14.AddModel(this.opArrow().GetDisplayTip().opArrow().GetTipDisplay().opImplConv(), false);
+                local_14.AddModel(this.State.opArrow().GetDisplayTip().opArrow().GetTipDisplay().opImplConv(), false);
             }
-            if (this.opArrow().GetDisplayTip().opArrow().GetOperationList().IsValid())
+            if (this.State.opArrow().GetDisplayTip().opArrow().GetOperationList().IsValid())
             {
-                local_14.AddModel(this.opArrow().GetDisplayTip().opArrow().GetOperationList().opImplConv(), false);
+                local_14.AddModel(this.State.opArrow().GetDisplayTip().opArrow().GetOperationList().opImplConv(), false);
             }
         }
         return local_14;
     }
     void PinAndOpenOperations() const
     {
-        if (this.IsValid())
+        if (this.State.IsValid())
         {
             PinAndOpenOperations();
         }
@@ -1760,7 +1761,7 @@ struct FItemTipHandle
     }
     void Unpin() const
     {
-        if (this.IsValid())
+        if (this.State.IsValid())
         {
             Unpin();
         }
@@ -1791,7 +1792,6 @@ struct __GeneratedProperties_FVM_CommonItemTipOperationItem
     UPROPERTY()
     TEUIModelRef<FVM_CommonItemTipOperationItem> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_CommonItemTipOperationList
@@ -1805,7 +1805,6 @@ struct __GeneratedProperties_FVM_CommonItemTipOperationList
     UPROPERTY()
     TEUIModelRef<FVM_CommonItemTipOperationList> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_CommonItemTip
@@ -1814,7 +1813,6 @@ struct __GeneratedProperties_FVM_CommonItemTip
     bool HasTipActions;
     UPROPERTY()
     TEUIModelRef<FVM_CommonItemTip> Self;
-
 
 }
 

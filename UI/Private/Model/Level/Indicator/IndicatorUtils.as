@@ -1,4 +1,3 @@
-﻿
 namespace IndicatorUtils
 {
 bool IsSpotOutOfScreen(const TEUIModelRef<FM_Spot> &inout Spot)

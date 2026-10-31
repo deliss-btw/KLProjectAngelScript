@@ -1,5 +1,3 @@
-﻿
-
 class AKLLevelScriptTutorialCombatFree : AKLLevelScriptTutorialActor
 {
     UPROPERTY()
@@ -14,7 +12,6 @@ class AKLLevelScriptTutorialCombatFree : AKLLevelScriptTutorialActor
     FECSEntity PlayerEntity;
     int CurrentStep = 0;
     FECSEntity PlayerInvincibleBuffEntity;
-
 
     UFUNCTION()
     void OnTutorialStep_Implementation(const int InStepIndex)

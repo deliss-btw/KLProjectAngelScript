@@ -1,4 +1,3 @@
-﻿
 enum ECameraAnimBlendParamType
 {
     None,
@@ -21,9 +20,6 @@ enum ECameraAnimOriginTransfromType
 const FConsoleVariable CVar_ForceConvexCollision = FConsoleVariable();
 const FConsoleVariable CVar_DrawConvex = FConsoleVariable();
 const FConsoleVariable CVar_DrawHitConvex = FConsoleVariable();
-
-// NOTE: class defaults are not authored in this module: UESMAction_CameraAnim (default scalar field UESMAction.NetSimulateMode has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
 
 struct FESMCameraAnimInstanceData
 {
@@ -57,7 +53,6 @@ struct FESMCameraAnimInstanceData
     bool bFallbackModifierStarted = false;
     UPROPERTY()
     FVector CustomCollisionOrigin;
-
 
 }
 
@@ -95,7 +90,6 @@ class UESMAction_CameraAnim : UESMBPBaseSpanTickAction
     bool bLoop = false;
     UPROPERTY()
     bool bFadeOutCheckByWorldTime = false;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetViewInstanceDataInfo_Implementation() const
@@ -201,9 +195,7 @@ class UESMAction_CameraAnim : UESMBPBaseSpanTickAction
                 {
                     if (local_38)
                     {
-                        local_38.ToFTransform();
-                        FVector local_76;
-                        local_22.CustomCollisionOrigin = local_76;
+                        local_22.CustomCollisionOrigin = FTransformUtils::GetOffsetRefLocation(local_22.OriginEntity, local_38.ToFTransform(), EOffsetRefType(1));
                         local_20.CustomCollisionOrigin = local_22.CustomCollisionOrigin;
                     }
                 }
@@ -458,9 +450,7 @@ class UESMAction_CameraAnim : UESMBPBaseSpanTickAction
         {
             if (local_106)
             {
-                local_106.ToFTransform();
-                FVector local_144;
-                InstanceData.CustomCollisionOrigin = local_144;
+                InstanceData.CustomCollisionOrigin = FTransformUtils::GetOffsetRefLocation(InstanceData.OriginEntity, local_106.ToFTransform(), EOffsetRefType(1));
                 local_74.CustomCollisionOrigin = InstanceData.CustomCollisionOrigin;
             }
         }
@@ -527,7 +517,6 @@ class UESMAction_CameraAnim : UESMBPBaseSpanTickAction
     void InitConvexCollisionCheck(const FESMViewContext &inout Context, const FESMActionTime &inout Time, FESMCameraAnimInstanceData &inout InstanceData, const FAnimCameraData &inout Config, FC_AnimatedCamera &inout AnimatedCamera) const
     {
         bool local_4;
-        int local_15 = 0;
         float32 local_85;
         bool local_2 = (this.bEnableCollisionCorrection && this.bEnableCollisionPreCheck) || CVar_ForceConvexCollision.GetBool();
         local_4 = CVar_DrawConvex.GetBool();
@@ -540,17 +529,15 @@ class UESMAction_CameraAnim : UESMBPBaseSpanTickAction
             local_7 = local_7 * Config.Duration;
             TArray<FAnimCameraCollisionSegment> local_12;
             int local_13 = 0;
-            for (auto& local_30 : Config.SequenceDatas[local_13].CollisionSegments)
+            for (; local_13 < Config.SequenceDatas.Num(); ++local_13)
             {
-                if ((local_30.TimeStart >= local_6 && ((local_30.TimeEnd <= local_7))))
+                for (auto& local_30 : Config.SequenceDatas[local_13].CollisionSegments)
                 {
-                    local_12.Add(local_30);
+                    if ((local_30.TimeStart >= local_6 && ((local_30.TimeEnd <= local_7))))
+                    {
+                        local_12.Add(local_30);
+                    }
                 }
-            }
-            while (local_13 < local_15)
-            {
-                ++local_13;
-                local_15 = Config.SequenceDatas.Num();
             }
             if (local_12.Num() == 0)
             {
@@ -667,7 +654,6 @@ class UESMAction_CameraAnim : UESMBPBaseSpanTickAction
     }
     void DrawRemainingCollisionBounds(const FAnimCameraData &inout Config, const float32 CurrentNormalizedTime, const FVector &inout OriginPosition, const FQuat4f &inout OriginRotation) const
     {
-        int local_59 = 0;
         if (!(CVar_DrawConvex.GetBool()))
         {
             return;
@@ -677,17 +663,15 @@ class UESMAction_CameraAnim : UESMBPBaseSpanTickAction
         float32 local_49 = UAnimatedCameraSettings::GetSettings().ConvexScale;
         TArray<FAnimCameraCollisionSegment> local_56;
         int local_57 = 0;
-        for (auto local_74 : Config.SequenceDatas[local_57].CollisionSegments)
+        for (; local_57 < Config.SequenceDatas.Num(); ++local_57)
         {
-            if (local_74.TimeEnd > (CurrentNormalizedTime * Config.Duration))
+            for (auto local_74 : Config.SequenceDatas[local_57].CollisionSegments)
             {
-                local_56.Add(local_74);
+                if (local_74.TimeEnd > (CurrentNormalizedTime * Config.Duration))
+                {
+                    local_56.Add(local_74);
+                }
             }
-        }
-        while (local_57 < local_59)
-        {
-            ++local_57;
-            local_59 = Config.SequenceDatas.Num();
         }
         if (local_56.Num() == 0)
         {

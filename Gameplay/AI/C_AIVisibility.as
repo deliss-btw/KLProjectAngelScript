@@ -1,4 +1,3 @@
-﻿
 enum EVisibilityTier
 {
     FullTrace,
@@ -45,7 +44,6 @@ struct FCachedVisibility
     UPROPERTY()
     int PendingCycles = 0;
 
-
 }
 
 struct FPrioritizedTarget
@@ -56,7 +54,6 @@ struct FPrioritizedTarget
     FVector TargetPos;
     UPROPERTY()
     int Priority = 0;
-
 
 }
 
@@ -90,7 +87,6 @@ struct FCS_AIVisibilityBudget : FECSSingleton
     UPROPERTY()
     FFPTime LastResetTime = -1;
 
-
     bool CanTrace() const
     {
         return (this.TracesThisFrame < this.MaxTracesPerFrame);
@@ -105,31 +101,23 @@ struct FCS_AIVisibilityBudget : FECSSingleton
 struct FAIVisibilityPriorityConfig
 {
     UPROPERTY()
-    TMap<EVisibilityPriorityBase, int> PriorityWeights;
+    TMap<EVisibilityPriorityBase, int> PriorityWeights = {{EVisibilityPriorityBase(0), 0}, {EVisibilityPriorityBase(1), 10}, {EVisibilityPriorityBase(2), 20}, {EVisibilityPriorityBase(3), 30}, {EVisibilityPriorityBase(4), 50}, {EVisibilityPriorityBase(5), 80}, {EVisibilityPriorityBase(6), 90}};
     UPROPERTY()
-    int NonCombatOffset;
+    int NonCombatOffset = 40;
 
-    FAIVisibilityPriorityConfig()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
 }
 
 struct FAIVisibilityCacheConfig
 {
     UPROPERTY()
-    TMap<EMonsterRank, float32> CacheDurations;
+    TMap<EMonsterRank, float32> CacheDurations = {{EMonsterRank(2), 0.5f}, {EMonsterRank(1), 1.0f}, {EMonsterRank(0), 2.0f}};
     UPROPERTY()
-    float32 DefaultCacheDuration;
+    float32 DefaultCacheDuration = 3.0f;
     UPROPERTY()
-    TMap<EMonsterRank, float32> CachePositionThresholds;
+    TMap<EMonsterRank, float32> CachePositionThresholds = {{EMonsterRank(2), 300.0f}, {EMonsterRank(1), 200.0f}, {EMonsterRank(0), 300.0f}};
     UPROPERTY()
-    float32 DefaultCachePositionThreshold;
+    float32 DefaultCachePositionThreshold = 300.0f;
 
-    FAIVisibilityCacheConfig()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
 }
 
 namespace ECSFunc_FC_AIVisibilityCache
@@ -212,37 +200,37 @@ bool RemoveAIVisibilityCache(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAIVisibilityCacheOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AIVisibilityCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AIVisibilityCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAIVisibilityCacheOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AIVisibilityCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AIVisibilityCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAIVisibilityCacheOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AIVisibilityCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AIVisibilityCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAIVisibilityCacheOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AIVisibilityCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AIVisibilityCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAIVisibilityCacheOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AIVisibilityCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AIVisibilityCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAIVisibilityCacheLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AIVisibilityCache, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AIVisibilityCache, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAIVisibilityCacheActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AIVisibilityCache, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AIVisibilityCache, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAIVisibilityCacheModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AIVisibilityCache, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AIVisibilityCache, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_AIVisibilityBudget
@@ -333,16 +321,16 @@ bool RemoveAIVisibilityBudget(const FECSWorldPtr &inout World)
 }
 void __MonitorAIVisibilityBudgetLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_AIVisibilityBudget, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_AIVisibilityBudget, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAIVisibilityBudgetActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_AIVisibilityBudget, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_AIVisibilityBudget, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAIVisibilityBudgetModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_AIVisibilityBudget, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_AIVisibilityBudget, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

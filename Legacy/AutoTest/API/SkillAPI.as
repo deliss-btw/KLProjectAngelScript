@@ -1,10 +1,13 @@
-﻿
 namespace AutoTest::API::SkillAPI
 {
 int GetSkillIndexBySlot(const uint EntityId, const int SkillSlot)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    int __r; return __r;
+    int local_20 = 0;
+    ThrowIf(!(FECSEntity(EntityId).IsValid()), FString().Append("EntityID: ").Append(EntityId).Append(" is invalid."));
+    bool local_13 = !(local_20);
+    ThrowIf(local_13, FString().Append("EntityID: ").Append(EntityId).Append(", FC_Skill is null."));
+    int local_24 = local_20.IndexOfSkill(ESkillSlot(SkillSlot));
+    return local_24 == INDEX_NONE ? -1 : local_24;
 }
 int GetAvatarSkillIndexBySlot(const int SkillSlot)
 {

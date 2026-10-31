@@ -1,11 +1,9 @@
-﻿
 enum ECheckDistanceCompareType
 {
     LessThan,
     GreaterThan,
     GreaterThanOrEqual,
 }
-
 
 struct FBTDecorator_CheckDistanceToTargetLocationMemory
 {
@@ -15,7 +13,6 @@ struct FBTDecorator_CheckDistanceToTargetLocationMemory
     bool bHasLastResult;
     UPROPERTY()
     float32 TimeUntilNextCheck;
-
 
 }
 

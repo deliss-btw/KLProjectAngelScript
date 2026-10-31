@@ -1,4 +1,3 @@
-﻿
 namespace FEcologyConditionUtils
 {
 bool CheckDOTCondition(const FEcologyDOTCondition &inout Condition, const FName &inout Weather, const int DaySegment, FCS_EcologyDataCacheContext &inout CacheContext = FEcologyUtils::ModifyDataCacheContext())
@@ -55,7 +54,43 @@ bool UpdateEntityConditionState(const FECSEntity &inout Entity, FC_EcologyCondit
 }
 bool CheckCreatureCanDoActivity(const FECSEntity &inout Creature, const TDataObjectPtr<FEcologyActivityDefinitionRow> &inout ActivityDefine, const FEcologyConditionWorldContext &inout WorldContext)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    bool __r; return __r;
+    bool local_1;
+    int local_4 = 0;
+    FEcologyDOTCondition local_8;
+    FEcologyUserCondition local_12;
+    if (!(Creature))
+    {
+        return false;
+    }
+    if (!(ActivityDefine))
+    {
+        return false;
+    }
+    FECSWorldPtr local_6 = ECS::GetECSWorld();
+    if (local_8.Enable())
+    {
+        local_1 = FEcologyConditionUtils::CheckDOTCondition(local_8, WorldContext.WeatherName, int(WorldContext.TimeSegments), local_4);
+        if (!(local_1))
+        {
+            return false;
+        }
+    }
+    if (local_12.Enable())
+    {
+        local_1 = true;
+        if (!(local_12.UserGameplayTagCondition.IsEmpty()))
+        {
+            local_1 = local_1 && Creature.MatchAllGameplayTags(local_12.UserGameplayTagCondition);
+        }
+        if (!(local_12.UserEcologyGameplayTagQuery.IsEmpty()))
+        {
+            local_1 = local_1 && MatchEcologyTags(Creature, local_12.UserEcologyGameplayTagQuery);
+        }
+        if (!(local_1))
+        {
+            return false;
+        }
+    }
+    return true;
 }
 }

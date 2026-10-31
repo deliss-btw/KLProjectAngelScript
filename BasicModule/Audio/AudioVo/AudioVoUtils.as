@@ -1,4 +1,3 @@
-﻿
 namespace FAudioVoUtils
 {
     const FConsoleVariable CVar_AudioVoDebugAbility = FConsoleVariable();

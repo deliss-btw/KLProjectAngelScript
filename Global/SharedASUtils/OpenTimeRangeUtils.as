@@ -1,4 +1,3 @@
-﻿
 namespace OpenTimeRangeUtils
 {
     const int64 SecondsPerDay = 86400;
@@ -83,7 +82,7 @@ int64 GetNowRef(const bool bUseUtc0)
 }
 bool GetLastOccurrence(const FOpenTimeRange &inout Range, const int64 NowRef, int64 &out OutStart)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     bool __r; return __r;
 }
 bool IsNowInAnyRange(const TArray<TDataObjectPtr<FOpenTimeRange>> &inout Ranges)
@@ -161,6 +160,6 @@ FText GetRangesDisplayText(const TArray<TDataObjectPtr<FOpenTimeRange>> &inout R
         OpenTimeRangeUtils::FormatHourMinute(local_42);
         local_4.Add(FText::Format(NSLOCTEXT("OpenTimeRange", "Segment", "{0}~{1}"), local_42, OpenTimeRangeUtils::FormatHourMinute((local_22 + local_32))));
     }
-    return FText::Join(NSLOCTEXT("OpenTimeRange", "Separator", "пјЊ"), local_4);
+    return FText::Join(NSLOCTEXT("OpenTimeRange", "Separator", "，"), local_4);
 }
 }

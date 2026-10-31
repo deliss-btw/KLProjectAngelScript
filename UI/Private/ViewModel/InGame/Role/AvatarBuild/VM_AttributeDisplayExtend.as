@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AttributeDisplayExtend
 {
     const int ModelId = 0;
@@ -12,11 +11,18 @@ struct FVM_AttributeDisplayExtend : FEUIViewModel
 
     FVM_AttributeDisplayExtend()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_AttributeCompareStateIndex = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVM_AttributeDisplayExtend(const FVM_AttributeDisplayExtend &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_AttributeCompareStateIndex = INDEX_NONE;
+        this.m_AttributeCompareStateIndex = int(Other.m_AttributeCompareStateIndex);
+        return;
     }
     FVM_AttributeDisplayExtend opAssign(const FVM_AttributeDisplayExtend &inout Other)
     {
@@ -26,8 +32,16 @@ struct FVM_AttributeDisplayExtend : FEUIViewModel
     }
     ESlateVisibility GetCanAttributeCompareStateShow() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        ESlateVisibility __r; return __r;
+        int local_4;
+        if (this.GetAttributeCompareStateIndex() != INDEX_NONE)
+        {
+            local_4 = 4;
+        }
+        else
+        {
+            local_4 = 1;
+        }
+        return ESlateVisibility(local_4);
     }
     int GetAttributeCompareStateIndex() const property
     {
@@ -52,7 +66,6 @@ struct __GeneratedProperties_FVM_AttributeDisplayExtend
     ESlateVisibility CanAttributeCompareStateShow;
     UPROPERTY()
     TEUIModelRef<FVM_AttributeDisplayExtend> Self;
-
 
 }
 

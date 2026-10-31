@@ -1,12 +1,9 @@
-﻿
-
 struct FConfigVM_BindCompPosition : FConfigEUIModelBase
 {
     UPROPERTY()
     bool bDebugDraw = false;
     UPROPERTY()
     FName TagName;
-
 
 }
 

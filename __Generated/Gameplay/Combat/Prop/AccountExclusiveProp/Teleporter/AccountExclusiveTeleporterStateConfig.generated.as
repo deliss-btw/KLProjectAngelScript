@@ -1,5 +1,3 @@
-﻿
-
 struct FAccountExclusiveTeleporterStateConfig
 {
     UPROPERTY()
@@ -19,12 +17,12 @@ struct FAccountExclusiveTeleporterStateConfig
     }
     const FAccountExclusiveTeleporterStateData GetDataRaw(const ETeleporterState Value) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FAccountExclusiveTeleporterStateData __r; return __r;
     }
     FAccountExclusiveTeleporterStateData ModifyDataRaw(const ETeleporterState Value)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         FAccountExclusiveTeleporterStateData __r; return __r;
     }
     const FAccountExclusiveTeleporterStateData GetDataRawByName(const FName &inout EnumName) const
@@ -90,13 +88,13 @@ struct FAccountExclusiveTeleporterStateConfig
             const FAccountExclusiveTeleporterStateData& local_22 = this.GetDataRaw(ETeleporterState(local_19));
             if (local_22.bFallBack)
             {
+                int local_14 = int(local_22.FallBack);
                 ETeleporterState local_23;
-                local_23 = local_22.FallBack;
-                ETeleporterState local_14 = local_22.FallBack;
-                FName local_11 = local_2.GetNameByValue(int(local_14));
+                local_23 = ETeleporterState(local_14);
+                FName local_11 = local_2.GetNameByValue(int(local_22.FallBack));
                 if (local_2.GetIndexByName(local_11, EGetByNameFlags(0)) < local_7)
                 {
-                    local_14 = local_22.FallBack;
+                    local_14 = int(local_22.FallBack);
                     this.CopyFallbackData(ETeleporterState(local_14), ETeleporterState(local_19));
                     continue;
                 }

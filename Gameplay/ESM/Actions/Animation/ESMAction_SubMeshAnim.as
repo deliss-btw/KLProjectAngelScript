@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_SubMeshAnim : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ class UESMAction_SubMeshAnim : UESMBPBaseSpanTickAction
     FName SlotName = NAME_None;
     UPROPERTY()
     bool bLoop = true;
-
 
     UFUNCTION()
     EESMActionType GetActionType_Implementation() const
@@ -32,7 +29,7 @@ class UESMAction_SubMeshAnim : UESMBPBaseSpanTickAction
         {
             FSubMeshSlotAnim local_14;
             local_14.Anim = this.SubMeshAnim;
-            local_14.bLoop = this.bLoop;
+            local_14.bLoop = (this.bLoop);
             local_10.SubMeshSlotAnims.Add(this.SlotName, local_14);
             return;
         }

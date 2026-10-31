@@ -1,4 +1,3 @@
-﻿
 namespace FDelayTaskConst
 {
     const int BaseCost = 100;

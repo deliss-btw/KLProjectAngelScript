@@ -1,4 +1,3 @@
-﻿
 namespace FMS_UILayerBlocker
 {
     const int ModelId = 0;
@@ -70,6 +69,8 @@ void __MonitorCutScene(FMS_UILayerBlocker &inout Model, const FECSEntity &inout 
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorCutSceneLogicDataLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorCutSceneLogicDataModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 }

@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_SyncNetTimeSameAsOwner : UESMBPBaseSpanAction
 {
     UESMAction_SyncNetTimeSameAsOwner()

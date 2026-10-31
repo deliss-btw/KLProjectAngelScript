@@ -1,5 +1,3 @@
-﻿
-
 struct FVMS_PlayerKeyMappingsConfigDefault : FConfigEUIModelDefaultBase
 {
     UPROPERTY()
@@ -13,11 +11,10 @@ struct FVMS_PlayerKeyMappingsConfigDefault : FConfigEUIModelDefaultBase
 
 struct FOnPlayerKeyMappingChanged : FEUIModelEvent
 {
-    FEUIModelEvent _base_FEUIModelEvent;
+    FEUIModelEvent _base_FEUIModelEvent = FEUIModelEvent("", "");
 
     FOnPlayerKeyMappingChanged()
     {
-        FEUIModelEvent local_22 = FEUIModelEvent("", "");
         return;
     }
     void Broadcast() const

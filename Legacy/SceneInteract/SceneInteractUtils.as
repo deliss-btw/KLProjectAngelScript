@@ -1,4 +1,3 @@
-﻿
 namespace FSceneInteractUtils
 {
     const FName CustomProfileName = n"Custom";

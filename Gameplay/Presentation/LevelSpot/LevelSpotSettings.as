@@ -1,5 +1,3 @@
-﻿
-
 class ULevelSpotSettings : UGameplaySettingsBase
 {
     UPROPERTY()

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_BonfireProvisionPage
 {
     const int ModelId = 0;
@@ -20,7 +19,7 @@ struct FVM_BonfireProvisionPage : FEUIViewModel
 
     FVM_BonfireProvisionPage()
     {
-        this.m_TitleText = NSLOCTEXT("Title", "ењ°и„‰иЎҐз»™");
+        this.m_TitleText = NSLOCTEXT("Title", "地脉补给");
         this.m_CoinsAmount = 0;
         this.m_CoinsCost = 500;
         if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
@@ -31,7 +30,7 @@ struct FVM_BonfireProvisionPage : FEUIViewModel
     }
     FVM_BonfireProvisionPage(const FVM_BonfireProvisionPage &inout Other)
     {
-        this.m_TitleText = NSLOCTEXT("Title", "ењ°и„‰иЎҐз»™");
+        this.m_TitleText = NSLOCTEXT("Title", "地脉补给");
         this.m_CoinsAmount = 0;
         this.m_CoinsCost = 500;
         this.m_TitleText = Other.m_TitleText;

@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Test_SingletonJobAssign = FConsoleVariable();
 const FConsoleVariable CVar_Test_SingletonJobModify = FConsoleVariable();
 const FConsoleVariable CVar_Test_SingletonJobRemove = FConsoleVariable();
@@ -8,7 +7,6 @@ class US_SingletonJobTestSystem : UECSScriptSystem
     bool bStep1 = false;
     bool bStep2 = false;
     bool bStep3 = false;
-
 
     UFUNCTION()
     bool IsDisabled_Implementation() const

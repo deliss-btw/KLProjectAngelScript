@@ -1,4 +1,3 @@
-﻿
 namespace FAbilityUtils
 {
 bool CanTriggerAbilityEffectEvent(const FECSEntity &inout TriggerEntity, const EAbilityEffectEvent EventType)

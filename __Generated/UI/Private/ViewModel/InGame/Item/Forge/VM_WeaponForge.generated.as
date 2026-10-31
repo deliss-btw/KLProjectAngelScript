@@ -1,5 +1,3 @@
-﻿
-
 struct FConfigVM_WeaponForge : FConfigEUIModelBase
 {
     UPROPERTY()

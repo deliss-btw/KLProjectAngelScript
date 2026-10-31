@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_StigmataGifts
 {
     const int ViewID = 0;
@@ -50,6 +49,7 @@ namespace UWidget_StigmataGifts
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_StigmataGifts;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

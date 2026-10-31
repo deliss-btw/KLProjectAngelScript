@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AbnormalIcon
 {
     const int ModelId = 0;
@@ -159,8 +158,7 @@ struct FVM_AbnormalIcon : FEUIViewModel
         {
             return;
         }
-        TDataObjectPtr<FBuffConfig> local_42;
-        float32 local_17 = local_42.opArrow().BuffDuration;
+        float32 local_17 = TDataObjectPtr<FBuffConfig>(this.GetAbnormalStateConfig().AbnormalStateBuffConfig).opArrow().BuffDuration;
         for (auto& local_58 : local_16.GetBuffData())
         {
             if (!(FECSEntity(local_58.BuffEntityId).IsValid()))
@@ -460,10 +458,9 @@ struct __GeneratedProperties_FVM_AbnormalIcon
 
 namespace FVM_AbnormalIcon
 {
-FVM_AbnormalIcon Create(const UObject ContextObject, const EAbnormalState TargetAbnormal, const TEUIModelWeakRef<FVMS_AbnormalInfo> &inout AbnormalInfoOwner)
+FVM_AbnormalIcon& Create(const UObject ContextObject, const EAbnormalState TargetAbnormal, const TEUIModelWeakRef<FVMS_AbnormalInfo> &inout AbnormalInfoOwner)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    FVM_AbnormalIcon __r; return __r;
+    return FVM_AbnormalIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), EAbnormalState(TargetAbnormal), AbnormalInfoOwner);
 }
 FVM_AbnormalIcon CreateByManager(const UEUIManagerSubsystem Manager, const EAbnormalState TargetAbnormal, const TEUIModelWeakRef<FVMS_AbnormalInfo> &inout AbnormalInfoOwner)
 {

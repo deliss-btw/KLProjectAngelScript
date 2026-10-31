@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_AbilityDelayEvent_NS
 {
     const TECSEventDerivedPtr<FCE_AbilityDelayEvent> DerivedPtr = TECSEventDerivedPtr<FCE_AbilityDelayEvent>();
@@ -20,7 +19,6 @@ struct FCE_AbilityDelayEvent : FECSEvent
     UPROPERTY()
     bool bAbilityPredictable = true;
 
-
 }
 
 struct FCE_AbilityDelayEventByClass : FECSEvent
@@ -34,7 +32,6 @@ struct FCE_AbilityDelayEventByClass : FECSEvent
     FName SignalName;
     UPROPERTY()
     bool bAbilityPredictable = true;
-
 
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 class UEQG_EntityOfClass : UEnvQueryGenerator_ECS_BlueprintBase
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ class UEQG_EntityOfClass : UEnvQueryGenerator_ECS_BlueprintBase
     FECSQueryParam Param;
 
     default GeneratedItemType = UEnvQueryItemType_ECSEntity;
-
 
     UFUNCTION()
     void DoItemGenerationFromEntities_Implementation(const TArray<FECSEntityId> &inout ContextEntities) const

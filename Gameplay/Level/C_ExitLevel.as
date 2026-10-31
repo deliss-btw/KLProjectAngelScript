@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_ExitLevelOverride_NS
 {
     const TECSComponentDerivedPtr<FCS_ExitLevelOverride> DerivedPtr = TECSComponentDerivedPtr<FCS_ExitLevelOverride>();
@@ -14,12 +13,16 @@ struct FCS_ExitLevelOverride : FECSSingleton
     FCS_ExitLevelOverride()
     {
         this.m_bCanExitLevel = false;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FCS_ExitLevelOverride(const FCS_ExitLevelOverride &inout Other)
     {
         this.m_bCanExitLevel = false;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_bCanExitLevel = Other.m_bCanExitLevel;
         return;
@@ -131,17 +134,17 @@ bool RemoveExitLevelOverride(const FECSWorldPtr &inout World)
 }
 void __MonitorExitLevelOverrideLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_ExitLevelOverride, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_ExitLevelOverride, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorExitLevelOverrideActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_ExitLevelOverride, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_ExitLevelOverride, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorExitLevelOverrideModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_ExitLevelOverride, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_ExitLevelOverride, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

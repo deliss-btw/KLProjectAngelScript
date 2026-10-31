@@ -1,4 +1,3 @@
-﻿
 enum EAvatarCombatType
 {
     Default,
@@ -117,7 +116,6 @@ struct FTrainingLevelConfig
     UPROPERTY()
     uint AvatarId;
 
-
 }
 
 struct FAvatarPrefabConfig : FBasePrefabConfig
@@ -203,7 +201,6 @@ struct FAvatarPrefabConfig : FBasePrefabConfig
     TArray<FDataObjectPtr> m_TrainingInfoConfigs;
     UPROPERTY()
     FDataObjectPtr m_DefaultFashion;
-
 
     TRawPtr<FAvatarIllustrateInfo> GetAvatarIllustrateInfo() const
     {

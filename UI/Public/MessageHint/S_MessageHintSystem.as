@@ -1,5 +1,3 @@
-﻿
-
 class US_MessageHintSystem : UECSScriptSystem
 {
     US_MessageHintSystem()

@@ -1,5 +1,3 @@
-﻿
-
 class US_MetaBuffSystem : UECSScriptSystem
 {
     US_MetaBuffSystem()

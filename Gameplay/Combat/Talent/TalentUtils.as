@@ -1,4 +1,3 @@
-﻿
 namespace FTalentUtils
 {
 TArray<uint> GetAllChildrenTalentIdByFoundationTalentId(const uint FoundationTalentId)

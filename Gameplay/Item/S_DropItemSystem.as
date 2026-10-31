@@ -1,5 +1,3 @@
-﻿
-
 class US_DropItemSystem : UECSScriptSystem
 {
     US_DropItemSystem()

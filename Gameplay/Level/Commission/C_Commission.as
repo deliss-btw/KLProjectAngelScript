@@ -1,4 +1,3 @@
-﻿
 enum ECommissionPrepareState
 {
     Pending,
@@ -150,10 +149,14 @@ struct FCommissionEntityInfo
 
     FCommissionEntityInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        return;
     }
     FCommissionEntityInfo(const FCommissionEntityInfo &inout Other)
     {
+        FSubDirtyFlags8 local_25;
+        this.__DirtyFlags = local_25;
         this.m_Entity = Other.m_Entity;
         this.m_Position = Other.m_Position;
         this.m_PrefabConfig = Other.m_PrefabConfig;
@@ -161,6 +164,8 @@ struct FCommissionEntityInfo
     }
     FCommissionEntityInfo(const FECSEntity &inout InEntity, const FVector &inout InPosition, const TDataObjectPtr<FBasePrefabConfig> &inout InPrefabConfig)
     {
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.SetEntity(InEntity);
         this.SetPosition(InPosition);
         this.SetPrefabConfig(InPrefabConfig);
@@ -249,7 +254,6 @@ struct FCommissionTargetProgress
     UPROPERTY()
     int m_FailedProgressValue;
 
-
     int GetSuccessProgressValue() const property
     {
         return this.m_SuccessProgressValue;
@@ -295,7 +299,6 @@ struct FCS_CommissionDSGlobalInfo : FECSSingleton
     UPROPERTY()
     TDataObjectPtr<FCommissionEntryRuleConfig> EntryRuleConfig;
 
-
 }
 
 struct FCS_CommissionDSGlobalInfoView : FECSSingleton
@@ -316,11 +319,25 @@ struct FCS_CommissionDSGlobalInfoView : FECSSingleton
 
     FCS_CommissionDSGlobalInfoView()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_StartTimeInHoursOverride = -1.0f;
+        this.__InitDirtyFlags();
+        return;
     }
     FCS_CommissionDSGlobalInfoView(const FCS_CommissionDSGlobalInfoView &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_123;
+        this.__DirtyFlags = local_123;
+        this.m_StartTimeInHoursOverride = -1.0f;
+        this.__InitDirtyFlags();
+        this.m_StartTimeInHoursOverride = Other.m_StartTimeInHoursOverride;
+        this.m_SubTargetConfig = Other.m_SubTargetConfig;
+        this.m_IntrusionPolicyConfig = Other.m_IntrusionPolicyConfig;
+        this.m_SpawnAreaConfig = Other.m_SpawnAreaConfig;
+        this.m_StartWeatherConfig = Other.m_StartWeatherConfig;
+        this.m_EntryRuleConfig = Other.m_EntryRuleConfig;
+        return;
     }
     FCS_CommissionDSGlobalInfoView opAssign(const FCS_CommissionDSGlobalInfoView &inout Other)
     {
@@ -494,7 +511,6 @@ struct FCS_CommissionInfo : FECSSingleton
     UPROPERTY()
     bool bMonsterHPBar;
 
-
 }
 
 struct FCS_CommissionGuideInfo : FECSSingleton
@@ -503,7 +519,6 @@ struct FCS_CommissionGuideInfo : FECSSingleton
     uint CommissionTargetObjectiveInstanceId;
     UPROPERTY()
     EGuideStyleType GuideStyleType;
-
 
 }
 
@@ -527,11 +542,28 @@ struct FFinishTeamMemberInfo
 
     FFinishTeamMemberInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_PlayerID = 0;
+        this.m_PlayerIndex = false;
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_LikeCount = 0;
+        return;
     }
     FFinishTeamMemberInfo(const FFinishTeamMemberInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_PlayerID = 0;
+        this.m_PlayerIndex = false;
+        FSubDirtyFlags8 local_29;
+        this.__DirtyFlags = local_29;
+        this.m_LikeCount = 0;
+        this.m_PlayerID = int(Other.m_PlayerID);
+        this.m_PlayerEntityId = Other.m_PlayerEntityId;
+        this.m_PlayerNameCached = Other.m_PlayerNameCached;
+        this.m_AvatarPrefabConfig = Other.m_AvatarPrefabConfig;
+        this.m_LikeCount = int(Other.m_LikeCount);
+        this.m_PlayerIndex = (int(Other.m_PlayerIndex) != 0);
+        this.m_RewardBadge = Other.m_RewardBadge;
+        return;
     }
     FFinishTeamMemberInfo opAssign(const FFinishTeamMemberInfo &inout Other)
     {
@@ -681,11 +713,24 @@ struct FCommissionFinishScoreItem
 
     FCommissionFinishScoreItem()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Type = ECommissionFinishScoreType(0);
+        this.m_Num = 0;
+        this.m_Score = 0;
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        return;
     }
     FCommissionFinishScoreItem(const FCommissionFinishScoreItem &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Type = ECommissionFinishScoreType(0);
+        this.m_Num = 0;
+        this.m_Score = 0;
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_Type = Other.m_Type;
+        this.m_Num = int(Other.m_Num);
+        this.m_Score = int(Other.m_Score);
+        return;
     }
     FCommissionFinishScoreItem opAssign(const FCommissionFinishScoreItem &inout Other)
     {
@@ -786,6 +831,8 @@ struct FCS_CommissionFinish : FECSSingleton
         this.m_TotalScore = 0;
         this.m_FinishTier = 0;
         this.m_Special_EnvironmentEndingFinish = false;
+        FRootDirtyFlags16 local_5;
+        this.__DirtyFlags = local_5;
         this.__InitDirtyFlags();
         return;
     }
@@ -802,6 +849,8 @@ struct FCS_CommissionFinish : FECSSingleton
         this.m_TotalScore = 0;
         this.m_FinishTier = 0;
         this.m_Special_EnvironmentEndingFinish = false;
+        FRootDirtyFlags16 local_5;
+        this.__DirtyFlags = local_5;
         this.__InitDirtyFlags();
         this.m_bSuccess = Other.m_bSuccess;
         this.m_FailReason = Other.m_FailReason;
@@ -1094,11 +1143,15 @@ struct FC_CommissionFinishReward : FECSComponent
 
     FC_CommissionFinishReward()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_CommissionFinishReward(const FC_CommissionFinishReward &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_CommissionReward = Other.m_CommissionReward;
         this.m_CommissionFirstReward = Other.m_CommissionFirstReward;
@@ -1174,6 +1227,8 @@ struct FC_CommissionFinishRaceResult : FECSComponent
         this.m_CostTimeSec = 0;
         this.m_OldBestCostTimeSec = 0;
         this.m_bIsNewBest = false;
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
         this.__InitDirtyFlags();
         return;
     }
@@ -1182,6 +1237,8 @@ struct FC_CommissionFinishRaceResult : FECSComponent
         this.m_CostTimeSec = 0;
         this.m_OldBestCostTimeSec = 0;
         this.m_bIsNewBest = false;
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
         this.__InitDirtyFlags();
         this.m_AchievedTierList = Other.m_AchievedTierList;
         this.m_CostTimeSec = int(Other.m_CostTimeSec);
@@ -1324,7 +1381,6 @@ struct FCE_CommissionObjectiveFinished : FECSEvent
     UPROPERTY()
     bool bSuccess;
 
-
 }
 
 struct FCE_CommissionFinished : FECSEvent
@@ -1334,7 +1390,6 @@ struct FCE_CommissionFinished : FECSEvent
     bool bSuccess;
     UPROPERTY()
     ECommissionFailReason FailReason;
-
 
 }
 
@@ -1346,13 +1401,12 @@ struct FCE_RequestCommissionFinishedLikePlayer : FECSEvent
     UPROPERTY()
     uint TargetPlayerID;
 
-
 }
 
 struct FC_DifficultyConfigOverride : FECSComponent
 {
     UPROPERTY()
-    UDataTable DifficultyLevelConfig;
+    UDataTable DifficultyLevelConfig = nullptr;
 
     FC_DifficultyConfigOverride()
     {
@@ -1448,17 +1502,17 @@ bool RemoveCommissionDSGlobalInfo(const FECSWorldPtr &inout World)
 }
 void __MonitorCommissionDSGlobalInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_CommissionDSGlobalInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_CommissionDSGlobalInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionDSGlobalInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_CommissionDSGlobalInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_CommissionDSGlobalInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionDSGlobalInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_CommissionDSGlobalInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_CommissionDSGlobalInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_CommissionDSGlobalInfoView
@@ -1546,17 +1600,17 @@ bool RemoveCommissionDSGlobalInfoView(const FECSWorldPtr &inout World)
 }
 void __MonitorCommissionDSGlobalInfoViewLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_CommissionDSGlobalInfoView, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_CommissionDSGlobalInfoView, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionDSGlobalInfoViewActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_CommissionDSGlobalInfoView, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_CommissionDSGlobalInfoView, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionDSGlobalInfoViewModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_CommissionDSGlobalInfoView, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_CommissionDSGlobalInfoView, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_CommissionInfo
@@ -1647,17 +1701,17 @@ bool RemoveCommissionInfo(const FECSWorldPtr &inout World)
 }
 void __MonitorCommissionInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_CommissionInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_CommissionInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_CommissionInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_CommissionInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_CommissionInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_CommissionInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_CommissionGuideInfo
@@ -1745,17 +1799,17 @@ bool RemoveCommissionGuideInfo(const FECSWorldPtr &inout World)
 }
 void __MonitorCommissionGuideInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_CommissionGuideInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_CommissionGuideInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionGuideInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_CommissionGuideInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_CommissionGuideInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionGuideInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_CommissionGuideInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_CommissionGuideInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_CommissionFinish
@@ -1843,17 +1897,17 @@ bool RemoveCommissionFinish(const FECSWorldPtr &inout World)
 }
 void __MonitorCommissionFinishLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_CommissionFinish, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_CommissionFinish, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionFinishActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_CommissionFinish, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_CommissionFinish, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionFinishModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_CommissionFinish, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_CommissionFinish, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_CommissionFinishReward
@@ -1933,37 +1987,37 @@ bool RemoveCommissionFinishReward(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCommissionFinishRewardOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CommissionFinishReward, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CommissionFinishReward, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCommissionFinishRewardOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CommissionFinishReward, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CommissionFinishReward, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCommissionFinishRewardOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CommissionFinishReward, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CommissionFinishReward, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCommissionFinishRewardOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CommissionFinishReward, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CommissionFinishReward, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCommissionFinishRewardOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CommissionFinishReward, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CommissionFinishReward, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCommissionFinishRewardLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CommissionFinishReward, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CommissionFinishReward, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionFinishRewardActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CommissionFinishReward, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CommissionFinishReward, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionFinishRewardModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CommissionFinishReward, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CommissionFinishReward, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_CommissionFinishRaceResult
@@ -2043,37 +2097,37 @@ bool RemoveCommissionFinishRaceResult(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCommissionFinishRaceResultOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CommissionFinishRaceResult, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CommissionFinishRaceResult, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCommissionFinishRaceResultOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CommissionFinishRaceResult, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CommissionFinishRaceResult, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCommissionFinishRaceResultOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CommissionFinishRaceResult, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CommissionFinishRaceResult, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCommissionFinishRaceResultOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CommissionFinishRaceResult, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CommissionFinishRaceResult, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCommissionFinishRaceResultOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CommissionFinishRaceResult, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CommissionFinishRaceResult, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCommissionFinishRaceResultLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CommissionFinishRaceResult, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CommissionFinishRaceResult, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionFinishRaceResultActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CommissionFinishRaceResult, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CommissionFinishRaceResult, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionFinishRaceResultModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CommissionFinishRaceResult, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CommissionFinishRaceResult, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_PlayerFinishCommissionTag
@@ -2153,37 +2207,37 @@ bool RemovePlayerFinishCommissionTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPlayerFinishCommissionTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerFinishCommissionTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerFinishCommissionTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerFinishCommissionTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerFinishCommissionTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerFinishCommissionTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerFinishCommissionTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerFinishCommissionTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerFinishCommissionTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerFinishCommissionTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerFinishCommissionTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerFinishCommissionTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerFinishCommissionTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerFinishCommissionTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerFinishCommissionTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPlayerFinishCommissionTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PlayerFinishCommissionTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PlayerFinishCommissionTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerFinishCommissionTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PlayerFinishCommissionTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PlayerFinishCommissionTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerFinishCommissionTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PlayerFinishCommissionTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PlayerFinishCommissionTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_CommissionTargetNeedUpdateTag
@@ -2271,17 +2325,17 @@ bool RemoveCommissionTargetNeedUpdateTag(const FECSWorldPtr &inout World)
 }
 void __MonitorCommissionTargetNeedUpdateTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_CommissionTargetNeedUpdateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_CommissionTargetNeedUpdateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionTargetNeedUpdateTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_CommissionTargetNeedUpdateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_CommissionTargetNeedUpdateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionTargetNeedUpdateTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_CommissionTargetNeedUpdateTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_CommissionTargetNeedUpdateTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_PlayerCommissionTargetNeedUpdateTag
@@ -2361,37 +2415,37 @@ bool RemovePlayerCommissionTargetNeedUpdateTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPlayerCommissionTargetNeedUpdateTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerCommissionTargetNeedUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerCommissionTargetNeedUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerCommissionTargetNeedUpdateTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerCommissionTargetNeedUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerCommissionTargetNeedUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerCommissionTargetNeedUpdateTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerCommissionTargetNeedUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerCommissionTargetNeedUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerCommissionTargetNeedUpdateTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerCommissionTargetNeedUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerCommissionTargetNeedUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerCommissionTargetNeedUpdateTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerCommissionTargetNeedUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerCommissionTargetNeedUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPlayerCommissionTargetNeedUpdateTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PlayerCommissionTargetNeedUpdateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PlayerCommissionTargetNeedUpdateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerCommissionTargetNeedUpdateTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PlayerCommissionTargetNeedUpdateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PlayerCommissionTargetNeedUpdateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerCommissionTargetNeedUpdateTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PlayerCommissionTargetNeedUpdateTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PlayerCommissionTargetNeedUpdateTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_CommissionInfoChangedTag
@@ -2479,17 +2533,17 @@ bool RemoveCommissionInfoChangedTag(const FECSWorldPtr &inout World)
 }
 void __MonitorCommissionInfoChangedTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_CommissionInfoChangedTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_CommissionInfoChangedTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionInfoChangedTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_CommissionInfoChangedTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_CommissionInfoChangedTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommissionInfoChangedTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_CommissionInfoChangedTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_CommissionInfoChangedTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_DifficultyConfigOverride
@@ -2569,37 +2623,37 @@ bool RemoveDifficultyConfigOverride(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorDifficultyConfigOverrideOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_DifficultyConfigOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_DifficultyConfigOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDifficultyConfigOverrideOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_DifficultyConfigOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_DifficultyConfigOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDifficultyConfigOverrideOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_DifficultyConfigOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_DifficultyConfigOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDifficultyConfigOverrideOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_DifficultyConfigOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_DifficultyConfigOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDifficultyConfigOverrideOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_DifficultyConfigOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_DifficultyConfigOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorDifficultyConfigOverrideLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_DifficultyConfigOverride, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_DifficultyConfigOverride, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDifficultyConfigOverrideActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_DifficultyConfigOverride, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_DifficultyConfigOverride, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDifficultyConfigOverrideModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_DifficultyConfigOverride, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_DifficultyConfigOverride, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

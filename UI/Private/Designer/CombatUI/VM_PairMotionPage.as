@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_PairMotionPage
 {
     const int ModelId = 0;
@@ -129,7 +128,6 @@ struct FVMS_PairMotionPage : FEUIViewModelSingleton
     }
     void RefreshMotionList()
     {
-        FEUIModelRef local_106;
         this.GetModify_MultiMotionRefs().Empty(0);
         this.GetModify_MotionTabs().Empty(0);
         TDataObjectIterator<FMotionData> local_18;
@@ -144,18 +142,16 @@ struct FVMS_PairMotionPage : FEUIViewModelSingleton
                 bool local_19 = ::FMS_MotionUnlock::Get(this.GetContext().Manager).IsMotionLocked(local_22);
                 if (int(local_22.ShowType) == 0 || (int(local_22.ShowType) == 1 && !(local_19)))
                 {
-                    TDataObjectPtr<FMotionData> local_76;
-                    TDataObjectPtr<FMotionData> local_52 = local_76;
+                    TDataObjectPtr<FMotionData> local_52 = TDataObjectPtr<FMotionData>(local_22);
                     if (int(local_22.MotionType) == 1)
                     {
-                        local_106 = FEUIModelRef(::FVM_SocialMotionItem::Create(this.GetContext().Manager, EMotionType(1), local_52, local_19));
-                        this.GetModify_MultiMotionRefs().Add(local_106);
+                        this.GetModify_MultiMotionRefs().Add(FEUIModelRef(::FVM_SocialMotionItem::Create(this.GetContext().Manager, EMotionType(1), local_52, local_19)));
                     }
                 }
             }
             local_18.Next();
         }
-        this.GetModify_MotionTabs().Add(local_106);
+        this.GetModify_MotionTabs().Add(FEUIModelRef(::FVM_MotionTab::Create(this.GetContext().Manager, 0)));
         this.UpdateDisplayMotionRefs();
         return;
     }

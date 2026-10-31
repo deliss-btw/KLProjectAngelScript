@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_SkillInfo_Avatar_PlayerSword_Helpers
 {
 UFUNCTION()

@@ -1,5 +1,3 @@
-﻿
-
 class US_AnimOrientationWarpingSystem : UECSScriptSystem
 {
     US_AnimOrientationWarpingSystem()

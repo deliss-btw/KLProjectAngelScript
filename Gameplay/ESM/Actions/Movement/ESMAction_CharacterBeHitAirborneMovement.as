@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CharacterBeHitAirborneMovement : UESMCharacterBeHitAirborneMovementAction
 {
     UESMAction_CharacterBeHitAirborneMovement()

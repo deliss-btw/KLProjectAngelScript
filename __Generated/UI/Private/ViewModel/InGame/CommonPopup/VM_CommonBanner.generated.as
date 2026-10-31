@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommonBanner_Helpers
 {
 UFUNCTION()

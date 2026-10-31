@@ -1,5 +1,3 @@
-﻿
-
 struct FGuideDataSourceConfig
 {
     FSubDirtyFlags8 __DirtyFlags;
@@ -14,15 +12,30 @@ struct FGuideDataSourceConfig
 
     FGuideDataSourceConfig()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_GuideIndex = 0;
+        return;
     }
     FGuideDataSourceConfig(const FGuideDataSourceConfig &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_74;
+        this.__DirtyFlags = local_74;
+        this.m_GuideIndex = 0;
+        this.m_FromMission = Other.m_FromMission;
+        this.m_FromCommission = Other.m_FromCommission;
+        this.m_ObjectiveConfig = Other.m_ObjectiveConfig;
+        this.m_GuideIndex = int(Other.m_GuideIndex);
+        return;
     }
     FGuideDataSourceConfig(const TDataObjectPtr<FObjectiveSingleConfig> &inout InObjectiveConfig, const int InGuideIndex = 0)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_GuideIndex = 0;
+        this.SetObjectiveConfig(InObjectiveConfig);
+        this.SetGuideIndex(InGuideIndex);
+        return;
     }
     FGuideDataSourceConfig opAssign(const FGuideDataSourceConfig &inout Other)
     {

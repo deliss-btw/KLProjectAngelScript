@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::WidgetUtils
 {
 bool IsWidgetVisible(const UWidget Widget)

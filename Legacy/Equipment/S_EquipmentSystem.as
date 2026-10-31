@@ -1,5 +1,3 @@
-﻿
-
 class US_EquipmentSystem : UECSScriptSystem
 {
     US_EquipmentSystem()
@@ -27,12 +25,12 @@ class US_EquipmentSystem : UECSScriptSystem
     UFUNCTION()
     void Job_InitNewlyCreatedCharacterEquipment(const FECSEntity &inout Entity, const FC_ControlledByPlayer &inout ControlledByPlayer, const FC_EquipmentHolder &inout EquipmentHolder) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argint]
+        // body not fully recovered — stub [argmismatch:argint]
     }
     UFUNCTION()
     void Job_OnWearEquipReq(const FCE_OnWearEquipReq &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argint]
     }
     UFUNCTION()
     void Job_UpdateEquipment(const FECSEntity &inout Entity, const FC_EquipmentUpdateRequest &inout EquipmentUpdateRequest, FC_EquipmentHolder &inout EquipmentHolder, const FCS_FixedTime &inout FixedTime) const
@@ -98,7 +96,7 @@ class US_EquipmentSystem : UECSScriptSystem
             FEquipmentRuntimeInfo local_202;
             local_202.SetId(local_154.GetId());
             local_202.SetConfig(local_154.GetConfig());
-            local_202.SetEquipSlot(EEquipSlotType(local_154.GetEquipSlot()));
+            local_202.SetEquipSlot(local_154.GetEquipSlot());
             local_202.SetModifierConfigs(local_154.GetModifierConfigs());
             local_202.SetCapabilities(local_154.GetCapabilities());
             for (auto& local_36 : local_202.GetCapabilities())

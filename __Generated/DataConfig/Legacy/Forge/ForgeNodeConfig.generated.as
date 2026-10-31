@@ -1,35 +1,77 @@
-﻿
 namespace __FForgeNodeConfigFunctions
 {
 UFUNCTION()
 FString __FForgeNodeConfig_GetForgeName(const TDataObjectPtr<FForgeNodeConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FString __r; return __r;
+    FString __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'ForgeName' from a null 'FForgeNodeConfig' DataObject!");
+        }
+        FForgeNodeConfig local_54;
+        return local_54.ForgeName;
+    }
+    return __r;
 }
 UFUNCTION()
 int __FForgeNodeConfig_GetForgeLv(const TDataObjectPtr<FForgeNodeConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    int __r; return __r;
+
+    if (DataObject == nullptr)
+    {
+        if (!EUIGlobals::GIsDuringPropertyConversion)
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'ForgeLv' from a null 'FForgeNodeConfig' DataObject!");
+        }
+        FForgeNodeConfig defaultValue;
+        return defaultValue.ForgeLv;
+    }
+    return DataObject.Get().ForgeLv;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FConditionConfig>> __FForgeNodeConfig_GetUnlockCondition(const TDataObjectPtr<FForgeNodeConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TArray<TDataObjectPtr<FConditionConfig>> __r; return __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'UnlockCondition' from a null 'FForgeNodeConfig' DataObject!");
+        }
+        FForgeNodeConfig local_54;
+        return local_54.GetUnlockCondition();
+    }
+    return GetUnlockCondition();
 }
 UFUNCTION()
 TArray<FItemParamConfig> __FForgeNodeConfig_GetCost(const TDataObjectPtr<FForgeNodeConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TArray<FItemParamConfig> __r; return __r;
+    TArray<FItemParamConfig> __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Cost' from a null 'FForgeNodeConfig' DataObject!");
+        }
+        FForgeNodeConfig local_54;
+        return local_54.Cost;
+    }
+    return __r;
 }
 UFUNCTION()
 TDataObjectPtr<FCraftConfig> __FForgeNodeConfig_GetCraft(const TDataObjectPtr<FForgeNodeConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TDataObjectPtr<FCraftConfig> __r; return __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Craft' from a null 'FForgeNodeConfig' DataObject!");
+        }
+        FForgeNodeConfig local_54;
+        return local_54.GetCraft();
+    }
+    return GetCraft();
 }
 UFUNCTION()
 FForgeNodeConfig CastToFForgeNodeConfig(const TDataObjectPtr<FForgeNodeConfig> &inout DataObject)

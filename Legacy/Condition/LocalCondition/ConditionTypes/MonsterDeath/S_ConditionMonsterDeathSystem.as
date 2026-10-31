@@ -1,5 +1,3 @@
-﻿
-
 class US_ConditionMonsterDeathSystem : UECSScriptSystem
 {
     US_ConditionMonsterDeathSystem()

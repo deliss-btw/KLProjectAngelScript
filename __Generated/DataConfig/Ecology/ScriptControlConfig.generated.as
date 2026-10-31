@@ -1,11 +1,19 @@
-﻿
 namespace __FScriptControlESMSkillConfigFunctions
 {
 UFUNCTION()
 TSoftObjectPtr<UBehaviorTree> __FScriptControlESMSkillConfig_GetBehaviorTreeAsset(const TDataObjectPtr<FScriptControlESMSkillConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TSoftObjectPtr<UBehaviorTree> __r; return __r;
+    TSoftObjectPtr<UBehaviorTree> __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'BehaviorTreeAsset' from a null 'FScriptControlESMSkillConfig' DataObject!");
+        }
+        FScriptControlESMSkillConfig local_24;
+        return local_24.BehaviorTreeAsset;
+    }
+    return __r;
 }
 UFUNCTION()
 FScriptControlESMSkillConfig CastToFScriptControlESMSkillConfig(const TDataObjectPtr<FScriptControlESMSkillConfig> &inout DataObject)

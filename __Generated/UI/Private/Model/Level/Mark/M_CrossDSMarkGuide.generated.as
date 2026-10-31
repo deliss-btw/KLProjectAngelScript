@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CrossDSMarkGuideDialogHelper_Helpers
 {
 UFUNCTION()

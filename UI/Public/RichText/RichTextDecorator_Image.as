@@ -1,5 +1,3 @@
-﻿
-
 class URichTextDecorator_Image : UEUIRichTextBlockBlueprintDecoratorBase
 {
     URichTextDecorator_Image()

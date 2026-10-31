@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_FriendAssemble
 {
     const int ModelId = 0;
@@ -38,11 +37,11 @@ struct FVMS_FriendAssemble : FEUIViewModelSingleton
     {
         FDialogModelCallback local_26;
         local_26.Bind(this, FVMS_FriendAssemble::OnConfirmFriendSwitchLine);
-        FText local_30 = NSLOCTEXT("FriendSwitchLineCancel", "еЏ–ж¶€");
-        FText local_34 = NSLOCTEXT("FriendSwitchLineConfirm", "зЎ®и®¤жЌўзєї");
+        FText local_30 = NSLOCTEXT("FriendSwitchLineCancel", "取消");
+        FText local_34 = NSLOCTEXT("FriendSwitchLineConfirm", "确认换线");
         FDialogCallback local_66 = FDialogCallback(local_26);
-        FText local_70 = NSLOCTEXT("FriendSwitchLineContent", "еЅ“е‰Ќе€†зєїе·Іж»Ўе‘пјЊжЇеђ¦з¦»ејЂе‰ЌеѕЂж–°е€†зєї\nпј€е‰ЌеѕЂеЅ“е‰ЌдЅЌзЅ®жњЂиї‘зљ„дј йЂЃењ°и„‰пј‰");
-        FText local_74 = NSLOCTEXT("FriendSwitchLineTitle", "жЏђз¤є");
+        FText local_70 = NSLOCTEXT("FriendSwitchLineContent", "当前分线已满员，是否离开前往新分线\n（前往当前位置最近的传送地脉）");
+        FText local_74 = NSLOCTEXT("FriendSwitchLineTitle", "提示");
         FCommonDialogParam local_76;
         ::CommonPopup::Dialog_Decision(local_74, local_70, local_66, local_34, local_30, local_76);
         return;
@@ -64,11 +63,11 @@ struct FVMS_FriendAssemble : FEUIViewModelSingleton
     {
         FDialogModelCallback local_26;
         local_26.Bind(this, FVMS_FriendAssemble::OnConfirmTeamSwitchLine);
-        FText local_30 = NSLOCTEXT("TeamSwitchLineCancel", "еЏ–ж¶€");
-        FText local_34 = NSLOCTEXT("TeamSwitchLineConfirm", "зЎ®и®¤жЌўзєї");
+        FText local_30 = NSLOCTEXT("TeamSwitchLineCancel", "取消");
+        FText local_34 = NSLOCTEXT("TeamSwitchLineConfirm", "确认换线");
         FDialogCallback local_66 = FDialogCallback(local_26);
-        FText local_70 = NSLOCTEXT("TeamSwitchLineContent", "еЅ“е‰Ќзєїи·Їе®№й‡ЏдёЌи¶іпјЊйњЂи¦Ѓж‚ЁжЌўзєїж‰ЌиѓЅеЏ¬й›†йџдјЌпјЊжЇеђ¦зЎ®и®¤пјџ");
-        FText local_74 = NSLOCTEXT("TeamSwitchLineTitle", "жЏђз¤є");
+        FText local_70 = NSLOCTEXT("TeamSwitchLineContent", "当前线路容量不足，需要您换线才能召集队伍，是否确认？");
+        FText local_74 = NSLOCTEXT("TeamSwitchLineTitle", "提示");
         FCommonDialogParam local_76;
         ::CommonPopup::Dialog_Decision(local_74, local_70, local_66, local_34, local_30, local_76);
         return;

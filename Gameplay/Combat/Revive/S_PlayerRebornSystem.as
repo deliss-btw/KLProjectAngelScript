@@ -1,5 +1,3 @@
-﻿
-
 class US_PlayerRebornSystem : UECSScriptSystem
 {
     US_PlayerRebornSystem()
@@ -74,8 +72,7 @@ class US_PlayerRebornSystem : UECSScriptSystem
                 local_60;
                 local_28 = local_54.GetBB_Int(local_60);
                 XLog(ELog(0), FString().Append("PlayerReborn consume refill timer, Operate resurlt ").Append(local_28));
-                UNearDeathSettings local_64 = ::NearDeathSettings::Get();
-                int local_55 = ::InventoryUtils::GetInventoryItemNumber(local_54, TDataObjectPtr<FItemConfig>());
+                int local_55 = ::InventoryUtils::GetInventoryItemNumber(local_54, TDataObjectPtr<FItemConfig>(::NearDeathSettings::Get().PotionItemConfig));
                 local_60;
                 local_61 = local_54.GetBB_Int(local_60);
                 if (local_61 <= 0)
@@ -130,8 +127,7 @@ class US_PlayerRebornSystem : UECSScriptSystem
                         local_60;
                         XLog(ELog(0), FString().Append("PlayerReborn consume refill timer, Operate resurlt ").Append(local_54.GetBB_Int(local_60)));
                     }
-                    UNearDeathSettings local_64_2 = ::NearDeathSettings::Get();
-                    ::InventoryUtils::AddInventoryItem(local_54, TDataObjectPtr<FItemConfig>(), local_90);
+                    ::InventoryUtils::AddInventoryItem(local_54, TDataObjectPtr<FItemConfig>(::NearDeathSettings::Get().PotionItemConfig), local_90);
                 }
             }
         }
@@ -182,7 +178,66 @@ class US_PlayerRebornSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_PlayerDeath(const FCE_DeathEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_22 = 0;
+        int local_44 = 0;
+        Get local_54;
+        if (Event.Sender)
+        {
+            Has local_6;
+            bool local_1 = local_6.opCall();
+            if (local_1)
+            {
+                int local_68;
+                int local_67;
+                FECSWorldPtr local_8 = ECS::GetECSWorld();
+                Get local_12;
+                const FCS_NearDeathRule& local_14 = local_12.opCall();
+                if (local_14)
+                {
+                    if (local_14.GetReviveData())
+                    {
+                        FECSEntity local_20 = FECSEntity(Event.Sender);
+                        int local_45 = local_22.GetPunishDeathEndTime().Num() * 0;
+                        local_44.SetWaitEndTime(FFPTime(0 + local_45));
+                        local_44.SetKilledByEntity(Event.KilledByEntity);
+                        const FC_DeathInfo& local_56 = local_54.opCall();
+                        if (local_56)
+                        {
+                            local_44.SetDeathReason(local_56.GetReason());
+                        }
+                        else
+                        {
+                            local_44.SetDeathReason(EDeathReason(0));
+                        }
+                        local_22.GetModify_PunishDeathEndTime().Add((FFPTime(Event.Time) + FFPTime(local_45)));
+                        return;
+                    }
+                }
+                FECSEntity local_20_2 = FECSEntity(Event.Sender);
+                TArray<EReviveType> local_66;
+                local_68 = 0;
+                local_67 = local_68;
+                for (; local_67 < 4; )
+                {
+                    int local_71 = local_67;
+                    local_66.Add(EReviveType(local_71));
+                    ++local_67;
+                }
+                local_44.SetWaitEndTime(FFPTime(10.0));
+                local_44.SetKilledByEntity(Event.KilledByEntity);
+                local_44.SetAvailableReviveTypes(local_66);
+                const FC_DeathInfo& local_56_2 = local_54.opCall();
+                if (local_56_2)
+                {
+                    local_44.SetDeathReason(local_56_2.GetReason());
+                }
+                else
+                {
+                    local_44.SetDeathReason(EDeathReason(0));
+                }
+            }
+        }
+        return;
     }
     UFUNCTION()
     void Run_ServerJob_PlayerReborn() const

@@ -1,5 +1,3 @@
-﻿
-
 void Test_LocalizationMacro(FUnitTest &inout T)
 {
     T.AssertEquals("nNSLOCTEXT test Same Namespace", NSLOCTEXT("LocalizationMacro_Test", "LocalizationMacro_TestSameNamespace", "nNSLOCTEXT test Same Namespace").ToString(), "");

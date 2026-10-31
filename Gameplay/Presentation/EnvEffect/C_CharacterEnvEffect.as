@@ -1,4 +1,3 @@
-﻿
 enum EGlobalEnvEffectWeatherType
 {
     Rainy,
@@ -28,7 +27,6 @@ struct FCharacterEnvEffectGroundSettings
     FName FallMaterialParameterName;
     UPROPERTY()
     FRuntimeFloatCurve FallFadeOutCurve = FRuntimeCurveUtils::CreateLinear(2.0f, 0.0f, 4.0f, 1.0f);
-
 
 }
 
@@ -92,7 +90,6 @@ struct FCharacterEnvEffectGroundData
     UPROPERTY()
     float32 FallWeight = 0.0f;
 
-
 }
 
 struct FC_CharacterEnvEffect : FECSComponent
@@ -116,7 +113,6 @@ struct FC_CharacterEnvEffect : FECSComponent
     UPROPERTY()
     TMap<EPhysicalSurface, FCharacterEnvEffectGroundData> GroundData;
 
-
 }
 
 struct FGlobalEnvEffectWeatherData
@@ -127,7 +123,6 @@ struct FGlobalEnvEffectWeatherData
     float32 EnterDurationSeconds;
     UPROPERTY()
     float32 ExitDurationSeconds;
-
 
 }
 
@@ -222,37 +217,37 @@ bool RemoveCharacterEnvEffect(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCharacterEnvEffectOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CharacterEnvEffect, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CharacterEnvEffect, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCharacterEnvEffectOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CharacterEnvEffect, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CharacterEnvEffect, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCharacterEnvEffectOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CharacterEnvEffect, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CharacterEnvEffect, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCharacterEnvEffectOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CharacterEnvEffect, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CharacterEnvEffect, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCharacterEnvEffectOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CharacterEnvEffect, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CharacterEnvEffect, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCharacterEnvEffectLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CharacterEnvEffect, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CharacterEnvEffect, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCharacterEnvEffectActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CharacterEnvEffect, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CharacterEnvEffect, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCharacterEnvEffectModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CharacterEnvEffect, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CharacterEnvEffect, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_GlobalEnvEffect
@@ -343,16 +338,16 @@ bool RemoveGlobalEnvEffect(const FECSWorldPtr &inout World)
 }
 void __MonitorGlobalEnvEffectLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_GlobalEnvEffect, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_GlobalEnvEffect, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGlobalEnvEffectActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_GlobalEnvEffect, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_GlobalEnvEffect, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGlobalEnvEffectModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_GlobalEnvEffect, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_GlobalEnvEffect, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

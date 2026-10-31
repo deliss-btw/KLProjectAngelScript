@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_FrontendSystemInputContextCounter_NS
 {
     const TECSComponentDerivedPtr<FCS_FrontendSystemInputContextCounter> DerivedPtr = TECSComponentDerivedPtr<FCS_FrontendSystemInputContextCounter>();
@@ -106,16 +105,16 @@ bool RemoveFrontendSystemInputContextCounter(const FECSWorldPtr &inout World)
 }
 void __MonitorFrontendSystemInputContextCounterLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_FrontendSystemInputContextCounter, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_FrontendSystemInputContextCounter, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFrontendSystemInputContextCounterActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_FrontendSystemInputContextCounter, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_FrontendSystemInputContextCounter, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFrontendSystemInputContextCounterModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_FrontendSystemInputContextCounter, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_FrontendSystemInputContextCounter, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

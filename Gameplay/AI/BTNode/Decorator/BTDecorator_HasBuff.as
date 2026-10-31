@@ -1,5 +1,3 @@
-﻿
-
 class UBTDecorator_HasBuff : UBTDecorator_ECSScriptBase
 {
     UPROPERTY()

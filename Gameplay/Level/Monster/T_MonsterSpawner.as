@@ -1,5 +1,3 @@
-﻿
-
 struct FT_RandomMonsterSpawner : FECSTrait
 {
     FECSTrait _base_FECSTrait;

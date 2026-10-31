@@ -1,4 +1,3 @@
-﻿
 namespace DropItemsUtils
 {
     const FConsoleVariable CVar_DropItem_ProjectToNavMesh = FConsoleVariable();
@@ -11,7 +10,7 @@ namespace DropItemsUtils
 struct FDropWeigthChooseItem
 {
     UPROPERTY()
-    FName ConfigName;
+    FName ConfigName = NAME_None;
     UPROPERTY()
     TArray<FDropItemData> Drops;
     UPROPERTY()
@@ -23,7 +22,7 @@ struct FDropWeigthChooseItem
 
     FDropWeigthChooseItem(const FDropItemConfig &inout Config)
     {
-        FName local_2 = Config.GetDataName();
+        this.ConfigName = Config.GetDataName();
         this.Drops = Config.Drops;
         this.DropAllocation = Config.DropAllocation;
         this.GroundBagConfig = Config.GetGroundBagConfig();
@@ -42,7 +41,6 @@ struct FDropItemDeliver
     UPROPERTY()
     TDataObjectPtr<FDropItemGroundBagConfig> GroundBagConfig;
 
-
 }
 
 struct FDropRequestContext
@@ -53,7 +51,6 @@ struct FDropRequestContext
     bool bHasOverrideTransform;
     UPROPERTY()
     FTransform OverrideTransform;
-
 
 }
 
@@ -76,7 +73,6 @@ struct FDropSpawnParams
     UPROPERTY()
     TArray<TDataObjectPtr<FItemConfig>> PendingItemConfigs;
 
-
     void ResetPendingItems()
     {
         this.PendingItemNums.Reset(0);
@@ -87,7 +83,8 @@ struct FDropSpawnParams
 
 void FillDropItemPackages(const FDropItemData &inout DropItemData, TArray<FDropItemPackage> &inout OutDropItemPackages)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    OutDropItemPackages = DropItemData.DropItemPackages;
+    return;
 }
 bool IsDropMuted(const FECSEntity &inout DropSourceEntity, const EMuteDropItemType DropType)
 {
@@ -215,7 +212,90 @@ void TryTriggerDropItemsByManualEvent(const FCE_DropManualTrigger &inout Event)
 }
 void FlushRewardPopup(const TArray<FInventoryAddItemRecord> &inout Records, const float32 DelaySeconds = 0.f)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    bool local_2;
+    int local_102;
+    FDataObjectPtr local_128;
+    if (!(ECS::GetRuntimeInfo().IsServer) || Records.IsEmpty())
+    {
+        return;
+    }
+    TArray<FECSEntity> local_6;
+    for (auto& local_20 : Records)
+    {
+        if (local_20.Player.IsValid() && !(local_6.Contains(local_20.Player)))
+        {
+            local_6.Add(local_20.Player);
+        }
+    }
+    Has local_40;
+    for (auto& local_36 : local_6)
+    {
+        if (!(local_36.IsValid()) || !(local_40.opCall()))
+        {
+            continue;
+        }
+        TArray<TDataObjectPtr<FItemConfig>> local_44;
+        TArray<int> local_48;
+        for (auto& local_20 : Records)
+        {
+            local_2 = !((local_20.Player == local_36));
+            if (local_2)
+            {
+                local_2 = true;
+            }
+            else
+            {
+                TDataObjectPtr<FItemConfig> local_76;
+                local_76 = local_20.Item;
+                local_2 = (local_76 == nullptr);
+            }
+            local_2 = local_2 || (int(local_20.Number) <= 0);
+            if (local_2)
+            {
+                continue;
+            }
+            int local_101 = INDEX_NONE;
+            local_102 = local_101;
+            int local_103 = 0;
+            for (; local_103 < local_44.Num(); ++local_103)
+            {
+                TDataObjectPtr<FItemConfig> local_100;
+                local_100 = local_44[local_103];
+                local_128;
+                if ((local_100 == local_128))
+                {
+                    local_102 = local_103;
+                    break;
+                }
+            }
+            local_101 = INDEX_NONE;
+            if (local_102 == local_101)
+            {
+                local_48.Add(local_44.Add(local_20.Item));
+                continue;
+            }
+            local_101 = int(local_20.Number);
+            int local_21 = local_48[local_102] + local_101;
+        }
+        if (local_44.IsEmpty())
+        {
+            continue;
+        }
+        FFPTime local_134 = FFPTime(-1);
+        SendEvent local_132;
+        FCE_RewardPopupNotify& local_136 = local_132.opCall(local_134);
+        if (local_136)
+        {
+            local_136.DelaySeconds = DelaySeconds;
+            int local_103_2 = 0;
+            for (; local_103_2 < local_44.Num(); )
+            {
+                local_136.Items.Add(FGameplayInventoryBatchAddItemData(local_44[local_103_2], local_48[local_103_2]));
+                ++local_103_2;
+            }
+        }
+    }
+    return;
 }
 void DropItemsFromBaseConfig(const TArray<TDataObjectPtr<FDropItemConfigBase>> &inout DropBaseConfigs, const FDropMovementConfigData &inout Movement, const FECSEntity &inout DropSourceEntity = ENTITY_NULL, const FECSEntity &inout DropTriggerBy = ENTITY_NULL)
 {
@@ -242,9 +322,8 @@ void DropBodyPartDestroyDropItems(const FCharacterBodyPartConfig &inout ConfigDa
     }
     if (!(ConfigData.DestroyDropItemAttachmentSocket.IsNone()))
     {
-        ECS::GetContextTime();
+        FTransform local_112 = FTransformUtils::GetSocketTransformInGameMesh(DropSourceEntity, ConfigData.DestroyDropItemAttachmentSocket, ECS::GetContextTime(), FDownsampleConfig());
         local_52.bHasOverrideTransform = true;
-        FTransform local_112;
         local_52.OverrideTransform = local_112;
     }
     TArray<DropItemsUtils::FDropItemDeliver> local_116;
@@ -275,8 +354,34 @@ TArray<FECSEntity> DropItemsFromBPCaller(const TDataObjectPtr<FDropItemConfigBas
 }
 int RandomChooseFromDropItems(const DropItemsUtils::FDropWeigthChooseItem &inout WeightChooseItem)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    int __r; return __r;
+    int local_1 = 0;
+    for (auto& local_18 : WeightChooseItem.Drops)
+    {
+        if (int(local_18.Weight) > 0)
+        {
+            local_1 = local_1 + int(local_18.Weight);
+        }
+    }
+    XLog(ELog(71), FString().Append("config ").Append(WeightChooseItem.ConfigName).Append(" TotalWeight: ").Append(local_1));
+    if (local_1 <= 0)
+    {
+        return INDEX_NONE;
+    }
+    int local_19 = FMath::RandRange(1, local_1);
+    int local_27 = 0;
+    int local_28 = 0;
+    for (; local_28 < WeightChooseItem.Drops.Num(); ++local_28)
+    {
+        if (WeightChooseItem.Drops[local_28].Weight > 0)
+        {
+            local_27 = local_27 + WeightChooseItem.Drops[local_28].Weight;
+            if (local_19 <= local_27)
+            {
+                return local_28;
+            }
+        }
+    }
+    return INDEX_NONE;
 }
 FECSEntity CreateDropGroundBagEntity(const DropItemsUtils::FDropRequestContext &inout RequestCtx, DropItemsUtils::FDropSpawnParams &inout SpawnParams, const TDataObjectPtr<FDropItemGroundBagConfig> &inout GroundBagConfig)
 {
@@ -384,11 +489,273 @@ void DropItemsFromWeightChooseItem(const DropItemsUtils::FDropWeigthChooseItem &
 }
 void InternalDropItemsFromWeightChooseItem(const DropItemsUtils::FDropWeigthChooseItem &inout WeightChooseItem, const DropItemsUtils::FDropRequestContext &inout RequestCtx, DropItemsUtils::FDropSpawnParams &inout SpawnParams, TArray<FECSEntity> &inout ResultEntities)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    int local_31;
+    const FItemConfig& local_82;
+    EDropItemAllocation local_83;
+    UClass local_200;
+    int local_232 = 0;
+    int local_2 = DropItemsUtils::RandomChooseFromDropItems(WeightChooseItem);
+    int local_1 = INDEX_NONE;
+    if (local_2 == local_1)
+    {
+        XLog(ELog(71), FString().Append("RandomChooseFromDropItems: no valid drop item"));
+        return;
+    }
+    const FDropItemData& local_12 = WeightChooseItem.Drops[local_2];
+    EDropItemAllocation local_13 = WeightChooseItem.DropAllocation;
+    if (int(SpawnParams.OverrideAllocation) != 0)
+    {
+        local_13 = SpawnParams.OverrideAllocation;
+    }
+    if (int(local_13) == 3)
+    {
+        if (int(SpawnParams.OverrideAllocation) != 3)
+        {
+            SpawnParams.ResetPendingItems();
+        }
+    }
+    else
+    {
+        if (int(local_13) != 1)
+        {
+            if (!(SpawnParams.bNeedSobelSample))
+            {
+                bool local_3;
+                local_3 = (local_12.DropItemPackages.Num() > 1);
+                SpawnParams.bNeedSobelSample = local_3;
+            }
+        }
+    }
+    for (auto& local_30 : local_12.DropItemPackages)
+    {
+        local_31 = int(local_30.Num);
+        TDataObjectPtr<FItemConfig> local_56 = local_30.Item;
+        if ((local_56 == nullptr))
+        {
+            XLog(ELog(71), FString().Append("DropItemPackage: is not valid"));
+            continue;
+        }
+        local_83 = local_82.DefaultDropAllocation;
+        if (int(local_13) != 0)
+        {
+            local_83 = local_13;
+        }
+        if (int(local_83) == 0)
+        {
+            local_83 = EDropItemAllocation(2);
+        }
+        FECSEntity local_88 = SpawnParams.PlayerEntity;
+        if (int(local_83) == 1)
+        {
+            Has local_92;
+            if (!(local_88.IsValid()) || !(local_92.opCall()))
+            {
+                XError(ELog(71), FString().Append("AddInventoryItem: PlayerEntity (").Append(local_88).Append(") is not a valid player entity. Item: ").Append(local_82.ItemName).Append(", DropNum: ").Append(local_31));
+                return;
+            }
+            local_31 = InventoryUtils::AddInventoryItem(local_88, TDataObjectPtr<FItemConfig>(local_82), local_31);
+        }
+        if (local_31 > 0)
+        {
+            EItemRarity local_171;
+            bool local_94;
+            local_94 = false;
+            TDataObjectPtr<FTestThreeChooseOneItemConfig> local_142 = TDataObjectPtr<FTestThreeChooseOneItemConfig>(local_56.opImplConv());
+            TArray<FTraitParam> local_170;
+            EItemRarity local_172 = EItemRarity(0);
+            local_171 = local_172;
+            if (local_142)
+            {
+                local_94 = true;
+                if (GetBoonRandomSlots())
+                {
+                    local_170 = BoonRandomDropUtils::RandomTraitsFromSlotsConfig(SpawnParams.PlayerEntity);
+                    int local_177 = 0;
+                    for (; local_177 < local_170.Num(); ++local_177)
+                    {
+                        FTraitParam& local_180 = local_170[local_177];
+                        if (local_180.GetTrait())
+                        {
+                            if (int(local_172) > int(local_171))
+                            {
+                                local_171 = local_172;
+                            }
+                        }
+                    }
+                }
+            }
+            FECSEntity local_186 = FECSEntity(ENTITY_NULL);
+            if (int(local_13) != 3)
+            {
+                FVector local_192;
+                FRotator local_198;
+                if (local_94)
+                {
+                    TSoftClassPtr<ACollectionPrefab> local_210;
+                    if (UGlobalItemSettings::Get().BoonRarityPrefabs.Find(local_171, local_210))
+                    {
+                        local_200 = local_210.Get();
+                    }
+                }
+                else
+                {
+                    local_200 = UGlobalItemSettings::Get().GetItemDropPrefab(local_82);
+                }
+                DropItemsUtils::CreateDropInitPositionAndRotation(RequestCtx, SpawnParams, local_192, local_198);
+                local_186 = DropItemsUtils::SpawnDropItemEntity(local_192, local_198, local_200, RequestCtx.Movement, SpawnParams.PlayerEntity);
+                if (local_186.IsValid())
+                {
+                    ResultEntities.Add(local_186);
+                }
+            }
+            if (local_94)
+            {
+                if (local_186.IsValid())
+                {
+                    local_232.SetInfos(local_170);
+                }
+            }
+            else
+            {
+                DropItemsUtils::AddDropCollectItem(local_186, local_31, local_56, WeightChooseItem, SpawnParams);
+            }
+        }
+    }
+    if (int(local_13) == 3 && ((int(SpawnParams.OverrideAllocation) != 3)) && (SpawnParams.PendingItemConfigs.Num() > 0))
+    {
+        FECSEntity local_220 = DropItemsUtils::CreateDropGroundBagEntity(RequestCtx, SpawnParams, WeightChooseItem.GroundBagConfig);
+        DropItemsUtils::AddPendingItemToDropGroundBag(local_220, SpawnParams);
+        if (local_220.IsValid())
+        {
+            ResultEntities.Add(local_220);
+        }
+    }
+    return;
 }
 void CreateDropInitPositionAndRotation(const DropItemsUtils::FDropRequestContext &inout RequestCtx, DropItemsUtils::FDropSpawnParams &inout SpawnParams, FVector &out DropInitPosition, FRotator &out DropInitRotation)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    FDropMovementConfigData local_14;
+    FVector local_6;
+    DropInitPosition = local_6;
+    DropInitRotation = FRotator();
+    FECSEntity local_16 = SpawnParams.DropSourceEntity;
+    if (int(local_14.Type) == 0)
+    {
+        const FC_Transform& local_52;
+        Get local_50;
+        float32 local_73;
+        if (RequestCtx.bHasOverrideTransform)
+        {
+            DropInitPosition = RequestCtx.OverrideTransform.GetLocation();
+            float local_32 = local_14.LocationZOffset;
+            DropInitPosition.Z += local_32;
+            local_32 = RequestCtx.OverrideTransform.GetRotation().Rotator().Yaw;
+            DropInitRotation.Yaw = local_32;
+        }
+        else
+        {
+            local_52 = local_50.opCall();
+            if (local_52)
+            {
+                DropInitPosition = local_52.GetPosition();
+                float local_28_2 = FTransformUtils::GetGroundingPosition(SpawnParams.DropSourceEntity, local_52).Z;
+                float32 local_29_2 = local_14.LocationZOffset;
+                local_28_2 = local_28_2 + local_29_2;
+                DropInitPosition.Z = local_28_2;
+                local_28_2 = local_52.GetRotation().Rotator().Yaw;
+                DropInitRotation.Yaw = local_28_2;
+            }
+        }
+        if (SpawnParams.bNeedSobelSample)
+        {
+            if (int(SpawnParams.SobelSequenceIndex) == 0)
+            {
+                SpawnParams.LastSobelValue = (FMath::RandPointInCircle(0.5f) + FVector2D(0.5, 0.5));
+            }
+            FVector2D local_64 = ImportanceSampling::NextSobolCell2D(int(SpawnParams.SobelSequenceIndex), 1, SpawnParams.LastSobelValue);
+            FVector2D local_56 = (local_64 * 2.0);
+            float32 local_29_3 = local_14.DropAreaSize;
+            float local_32_3 = local_29_3;
+            FVector2D local_56_2 = ((local_56 - FVector2D::UnitVector) * local_32_3);
+            DropInitPosition.X += local_56_2.X;
+            local_32_3 = DropInitPosition.Y;
+            local_32_3 = local_32_3 + local_56_2.Y;
+            DropInitPosition.Y = local_32_3;
+            ++SpawnParams.SobelSequenceIndex;
+            SpawnParams.LastSobelValue = local_64;
+        }
+        local_73 = 100.0f;
+        Get local_78;
+        const FC_Collision& local_80 = local_78.opCall();
+        if (local_80)
+        {
+            local_73 = local_80.GetScaledHeight();
+        }
+        if (DropItemsUtils::CVar_DropItem_ProjectToNavMesh.GetBool())
+        {
+            FVector local_86;
+            FVector local_26(FVector::OneVector);
+            float32 local_29_4 = DropItemsUtils::CVar_DropItem_ProjectToNavMeshQueryExtent.GetFloat();
+            bool local_20 = UNavigationSystemV1::ProjectPointToNavigation(__GetWorldContext(), DropInitPosition, local_86, nullptr, TSubclassOf<UNavigationQueryFilter>(nullptr), (local_26 * local_29_4));
+            if (local_20)
+            {
+                DropInitPosition = local_86;
+                local_73 = DropItemsUtils::CVar_DropItem_ProjectToNavMeshCheckUpDistance.GetFloat();
+            }
+            if (DropItemsUtils::CVar_DropItem_ProjectToNavMeshShowDebug.GetBool())
+            {
+                Print(FString().Append("NaviLocation find ").Append(local_20).Append(": ").Append(local_86), 10.0f, FLinearColor::Yellow);
+                DebugDraw::DrawDebugPoint(ECS::GetUEWorld(), local_86, 10.0f, FColor::Red, false, 10.0f, uint8(0));
+            }
+        }
+        FHitResult local_172;
+        FCollisionQueryParams local_210;
+        local_210.bTraceComplex = false;
+        local_210.AddIgnoredEntityId(local_16.GetId());
+        FCollisionRollbackScope local_214 = FCollisionRollbackScope(ECS::GetECSWorld());
+        FCollisionResponseParams local_232;
+        FVector local_26_2(FVector::DownVector);
+        float local_32_5 = (local_73 + 2000.0f);
+        FVector local_26_3 = (DropInitPosition + (local_26_2 * local_32_5));
+        FVector local_94_2(FVector::UpVector);
+        float local_28_4 = local_73;
+        bool local_234 = FPhysicsUtils::LineTraceSingle(local_16, false, EPhysicsTraceTag(21), local_172, (DropInitPosition + (local_94_2 * local_28_4)), local_26_3, FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(5)), local_210, local_232);
+        if (local_234)
+        {
+            local_32_5 = local_172.ImpactPoint.Z;
+            local_32_5 = local_32_5 + 10.0;
+            local_28_4 = local_32_5 + local_14.LocationZOffset;
+            DropInitPosition.Z = local_28_4;
+        }
+        return;
+    }
+    if (int(local_14.Type) == 1)
+    {
+        const FC_Transform& local_52;
+        Get local_50;
+        if RequestCtx.bHasOverrideTransform
+        {
+            DropInitPosition = RequestCtx.OverrideTransform.GetLocation();
+            DropInitRotation.Yaw = RequestCtx.OverrideTransform.GetRotation().Rotator().Yaw;
+        }
+        else
+        {
+            local_52 = local_50.opCall();
+            if (local_52)
+            {
+                DropInitPosition = (FVector(local_52.GetPosition()) + local_14.StartLocationOffset);
+                DropInitRotation.Yaw = local_52.GetRotation().Rotator().Yaw;
+            }
+        }
+        float32 local_29_5 = local_14.RandomYawAngle;
+        if (local_29_5 > 0.0f)
+        {
+            local_29_5 = (FMath::RandRange(0.0f, local_14.RandomYawAngle)) - (local_14.RandomYawAngle / 2.0f);
+            float local_32_6 = DropInitRotation.Yaw;
+            DropInitRotation.Yaw = (local_32_6 + local_29_5);
+        }
+    }
+    return;
 }
 FECSEntity SpawnDropItemEntity(const FVector &inout DropInitPosition, const FRotator &inout DropInitRotation, const UClass DropPrefab, const FDropMovementConfigData &inout Movement, const FECSEntity &inout PlayerEntity)
 {

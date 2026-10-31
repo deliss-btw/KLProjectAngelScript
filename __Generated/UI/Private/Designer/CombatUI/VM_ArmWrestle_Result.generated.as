@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ArmWrestle_Result_Helpers
 {
 UFUNCTION()

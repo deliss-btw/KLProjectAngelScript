@@ -1,12 +1,9 @@
-﻿
-
 struct FHTNMoveStanceDistanceConfig
 {
     UPROPERTY()
     float32 MaxDistance = 0.0f;
     UPROPERTY()
     ECreatureMoveStance MoveStance = ECreatureMoveStance(0);
-
 
 }
 
@@ -66,8 +63,34 @@ class UHTNService_UpdateMoveStanceByDistance : UHTNService_ECSScriptBase
     }
     ECreatureMoveStance SelectMoveStance(const float32 Distance) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        ECreatureMoveStance __r; return __r;
+        bool local_1 = false;
+        float32 local_3 = 0.0f;
+        ECreatureMoveStance local_6 = ECreatureMoveStance(0);
+        bool local_7 = false;
+        float32 local_8 = 0.0f;
+        ECreatureMoveStance local_6_2 = ECreatureMoveStance(0);
+        for (auto& local_24 : this.DistanceConfigs)
+        {
+            if (!(local_7) || (local_24.MaxDistance > local_8))
+            {
+                local_7 = true;
+                local_8 = local_24.MaxDistance;
+                local_6_2 = local_24.MoveStance;
+            }
+            if (Distance <= local_24.MaxDistance && (!(local_1) || ((local_24.MaxDistance < local_3))))
+            {
+                local_1 = true;
+                local_3 = local_24.MaxDistance;
+                local_6_2 = local_24.MoveStance;
+            }
+        }
+        if (local_1)
+        {
+        }
+        else
+        {
+        }
+        return local_6_2;
     }
     void UpdateMoveStance(const FHTNContext &inout Context) const
     {

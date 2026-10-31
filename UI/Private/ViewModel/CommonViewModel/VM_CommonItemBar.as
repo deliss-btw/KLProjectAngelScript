@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonItemBar
 {
     const int ModelId = 0;
@@ -281,6 +280,7 @@ struct FVM_CommonItemBar : FEUIViewModel
         {
             FSimpleModelEvent local_98;
             local_98.Add(this, FVM_CommonItemBar::OpenRechargePage);
+            ::CommonItemTip::AddAction(local_36, EItemTipActionId(8), local_98);
         }
         this.SetCommonTipHoverModels(::CommonItemTip::MakeModels(this.GetContext().Manager, local_36));
         return;
@@ -520,7 +520,6 @@ struct __GeneratedProperties_FVM_CommonItemBar
     bool ShouldShowVoucherAction;
     UPROPERTY()
     TEUIModelRef<FVM_CommonItemBar> Self;
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace FMS_PlayerBriefInfo
 {
     const int ModelId = 0;

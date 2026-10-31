@@ -1,4 +1,3 @@
-﻿
 namespace __FCommissionTimeConfigFunctions
 {
 UFUNCTION()

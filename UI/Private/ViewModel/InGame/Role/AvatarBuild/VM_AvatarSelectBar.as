@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AvatarSelectBar
 {
     const int ModelId = 0;

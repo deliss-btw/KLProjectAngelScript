@@ -1,10 +1,8 @@
-﻿
 enum EProgressOperationEntityType
 {
     Self,
     FromBlackBoard,
 }
-
 
 class UESMAction_StartProgressOperation : UESMBPBaseInstantAction
 {
@@ -23,7 +21,6 @@ class UESMAction_StartProgressOperation : UESMBPBaseInstantAction
     UPROPERTY()
     bool bLocalPrediction = false;
 
-
     UFUNCTION()
     void Do_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
@@ -39,7 +36,7 @@ class UESMAction_StartProgressOperation : UESMBPBaseInstantAction
                 return;
             }
         }
-        ::FProgressOperationUtils::StartProgressOperation(local_10, local_4, this.Config, this.bLocalPrediction);
+        ::FProgressOperationUtils::StartProgressOperation(local_10, local_4, this.Config, (this.bLocalPrediction));
         return;
     }
     FECSEntity GetEntityByType(const FESMContext &inout Context, const EProgressOperationEntityType Type) const
@@ -78,7 +75,6 @@ class UESMAction_BreakProgressOperation : UESMBPBaseSpanAction
     EProgressOperationEntityType MemberEntityType = EProgressOperationEntityType(0);
     UPROPERTY()
     FNameHandle_EntityBBVarEntity MemberEntityBBVar;
-
 
     UFUNCTION()
     bool IsUseAsInstant_Implementation() const
@@ -151,7 +147,6 @@ class UESMAction_LeaveProgressOperation : UESMBPBaseSpanAction
     EProgressOperationEntityType MemberEntityType = EProgressOperationEntityType(0);
     UPROPERTY()
     FNameHandle_EntityBBVarEntity MemberEntityBBVar;
-
 
     UFUNCTION()
     bool IsUseAsInstant_Implementation() const

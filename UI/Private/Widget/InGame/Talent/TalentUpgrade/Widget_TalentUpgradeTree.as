@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TalentUpgradeTree
 {
     const int ViewID = 0;
@@ -34,7 +33,6 @@ class UWidget_TalentUpgradeTree : UEUIUserListItemWidget
     FEUIModelWeakRef __FormulaTree;
     UPROPERTY()
     FGetEUIModelRef FormulaTreeDelegate;
-
 
     UFUNCTION()
     void OnViewUnbind_Implementation()
@@ -192,7 +190,31 @@ class UWidget_TalentUpgradeTree : UEUIUserListItemWidget
     }
     void UpdateNodeLineStyle(const TEUIModelWeakRef<FM_TalentNode> &inout NodeM)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FName local_5;
+        if (!(this.ShouldUseAutoLineCanvas()) || !(NodeM.IsValid()))
+        {
+            return;
+        }
+        if (!(this.AutoLineNodeWidgetMap.Contains(GetDataId())))
+        {
+            return;
+        }
+        if (!(this.bUseTalentPortChoiceAutoLineGraph))
+        {
+            local_5 = ::TalentUpgradeRuntimeAutoLineBuilder::ResolveNodeStyleState();
+            this.AutoLineCanvas.UpdateNodeStyleState(::TalentUpgradeRuntimeAutoLineBuilder::MakeNodeId(), local_5);
+            return;
+        }
+        if (HasChoice())
+        {
+            this.RequestRefreshAutoLineGraph();
+            return;
+        }
+        this.AutoLineCanvas.UpdateNodeStyleState(local_5, ::TalentUpgradeRuntimeAutoLineBuilder::ResolveNodeStyleState());
+        this.AutoLineCanvas.UpdateNodeStyleState(local_5, ::TalentUpgradeRuntimeAutoLineBuilder::ResolveNodeStyleState());
+        this.AutoLineCanvas.UpdateNodeStyleState(local_5, ::TalentUpgradeRuntimeAutoLineBuilder::ResolveNodeStyleState());
+        this.AutoLineCanvas.UpdateNodeStyleState(local_5, ::TalentUpgradeRuntimeAutoLineBuilder::ResolveNodeStyleState());
+        return;
     }
     void RequestRefreshAutoLineGraph()
     {
@@ -371,6 +393,7 @@ namespace UWidget_TalentUpgradeTree
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TalentUpgradeTree;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleFormulaTreeNodeListChanged"));
     return;
 }

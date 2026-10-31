@@ -1,12 +1,9 @@
-﻿
-
 struct FCompensatorParams_TwistSmooth
 {
     UPROPERTY()
     int NumBonesToAdjust = 3;
     UPROPERTY()
     float32 DecayPercent = 0.9f;
-
 
 }
 

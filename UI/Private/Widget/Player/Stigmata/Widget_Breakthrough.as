@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_Breakthrough
 {
     const int ViewID = 0;
@@ -31,7 +30,6 @@ class UWidget_Breakthrough : UEUIActivatableWidget
     FEUIModelWeakRef __BreakthroughLevelInfo;
     UPROPERTY()
     FGetEUIModelRef BreakthroughLevelInfoDelegate;
-
 
     UFUNCTION()
     void OnInitialized_Implementation()
@@ -250,6 +248,7 @@ namespace UWidget_Breakthrough
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_Breakthrough;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnBreakthroughStatusChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnReadyBreakthroughChanged"));
     return;

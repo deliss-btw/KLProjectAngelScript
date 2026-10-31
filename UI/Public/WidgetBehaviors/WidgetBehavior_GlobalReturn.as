@@ -1,23 +1,20 @@
-﻿
-
 class UWidgetBehavior_GlobalReturn : UEUIBlueprintWidgetBehavior_ToEventBase
 {
     UPROPERTY()
     bool bShouldDisplayInActionBar = true;
     FEUIActionBindingHandle Handle;
 
-
     UFUNCTION()
     void OnWidgetConstruct_Implementation(const UEUIUserWidget InWidget)
     {
-        const UUtilitySettings local_10;
+        const UUtilitySettings local_14;
         UEnhancedInputSettings local_4 = Cast<UEnhancedInputSettings>(System::LoadAsset_Blocking(UGameplayConfigsManager::GetEnhancedInputSettings()));
         if (local_4 != nullptr)
         {
-            this.Handle = CommonUI::RegisterUIActionBinding(InWidget, local_4.GlobalReturnAction, this.bShouldDisplayInActionBar, this, n"InputTriggerReturn");
+            this.Handle = CommonUI::RegisterUIActionBinding(InWidget, local_4.GlobalReturnAction, (this.bShouldDisplayInActionBar), this, n"InputTriggerReturn");
         }
         GetGameplaySettings<UUtilitySettings> local_12;
-        local_10 = local_12;
+        local_14 = local_12;
         FDataObjectPtr local_42;
         local_42;
         UKLEnhancedInputManagerSubsystem::Get(InWidget.GetOwningLocalPlayer()).RequireInputContext(local_42);
@@ -26,13 +23,13 @@ class UWidgetBehavior_GlobalReturn : UEUIBlueprintWidgetBehavior_ToEventBase
     UFUNCTION()
     void OnWidgetDestruct_Implementation(const UEUIUserWidget InWidget)
     {
-        const UUtilitySettings local_6;
+        const UUtilitySettings local_10;
         this.Handle.Reset();
         if (ECS::GetECSWorld().IsValid())
         {
             FDataObjectPtr local_38;
             GetGameplaySettings<UUtilitySettings> local_8;
-            local_6 = local_8;
+            local_10 = local_8;
             local_38;
             UKLEnhancedInputManagerSubsystem::Get(InWidget.GetOwningLocalPlayer()).ReleaseInputContext(local_38);
         }

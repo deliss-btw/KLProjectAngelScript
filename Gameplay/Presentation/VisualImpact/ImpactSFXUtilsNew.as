@@ -1,5 +1,3 @@
-﻿
-
 class USFXSettings : UDataAsset
 {
     UPROPERTY()
@@ -88,9 +86,7 @@ void HandleAttackImpact(const FCE_ImpactFXEvent &inout Event)
         }
     }
     FGameAudioUtils::SetAudioSwitch(local_16, Event.Sender, FOnLoadEventCallbackWithEntity(), true, FGameAudioUtils::GetCachedAudioWorld());
-    FGameAudioUtils::GetCachedAudioWorld();
-    Event.ImpactRotation.Quaternion();
-    FLoadEventCallback local_40 = FLoadEventCallback();
+    FGameAudioUtils::PlayEventAtLocation(Event.ImpactSFXEvent, Event.Sender, FLoadEventCallback(), Event.ImpactPosition, Event.ImpactRotation.Quaternion(), FGameAudioUtils::GetCachedAudioWorld(), false, true);
     return;
 }
 }

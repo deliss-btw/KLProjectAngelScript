@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MarkMinimapIcon
 {
     const int ModelId = 0;

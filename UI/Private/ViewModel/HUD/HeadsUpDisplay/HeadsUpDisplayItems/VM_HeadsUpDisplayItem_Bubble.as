@@ -1,4 +1,3 @@
-﻿
 namespace FVM_HeadsUpDisplayItem_Bubble
 {
     const int ModelId = 0;
@@ -274,7 +273,6 @@ struct __GeneratedProperties_FVM_HeadsUpDisplayItem_Bubble
     FSoftBrush EmojiIcon;
     UPROPERTY()
     TEUIModelRef<FVM_HeadsUpDisplayItem_Bubble> Self;
-
 
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 struct FEcologyActivityDefinitionRow : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -21,7 +19,6 @@ struct FEcologyActivityDefinitionRow : FDataObject
     FEcologyDOTCondition DOTCondition;
     UPROPERTY()
     FEcologyUserCondition UserCondition;
-
 
     const TDataObjectPtr<FEcologyCreatureDefinitionRow> GetCreature() const property
     {

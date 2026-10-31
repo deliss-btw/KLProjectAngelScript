@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_BuffHoverDialog_Helpers
 {
 UFUNCTION()

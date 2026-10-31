@@ -1,5 +1,3 @@
-﻿
-
 class UHTNTask_EcosimAIV2_Plan_GetTeamMemberEntityContainsAnyGameplayTag : UHTNTask_ECSScriptBase
 {
     UPROPERTY()
@@ -22,7 +20,7 @@ class UHTNTask_EcosimAIV2_Plan_GetTeamMemberEntityContainsAnyGameplayTag : UHTNT
             {
                 if (local_28.GetEntity().MatchGameplayTag(this.Tag))
                 {
-                    local_28.GetEntity().GetId();
+                    HTNNode::SetWorldStateValueAsEntityId(Context, this.TeamMemberEntityID, local_28.GetEntity().GetId());
                     this.SubmitPlanStep(1, "");
                 }
             }
@@ -65,10 +63,7 @@ class UHTNTask_EcosimAIV2_Plan_EntityRelationWithTarget : UHTNTask_ECSScriptBase
         bool local_5 = this.bIsEntityIDVar;
         if (!(this.bIsEntityIDVar))
         {
-            FECSEntity local_12;
-            FBlackboardKeySelector local_7;
-            HTNNode::GetWorldStateValueAsEntityId(Context, local_7);
-            local_4 = local_12;
+            local_4 = FECSEntity(HTNNode::GetWorldStateValueAsEntityId(Context, this.EntityID));
             if (!(local_4.IsValid()))
             {
                 local_5 = true;
@@ -78,10 +73,7 @@ class UHTNTask_EcosimAIV2_Plan_EntityRelationWithTarget : UHTNTask_ECSScriptBase
         bool local_17 = this.bIsTargetEntityIDVar;
         if (!(this.bIsTargetEntityIDVar))
         {
-            FECSEntity local_12;
-            FBlackboardKeySelector local_7;
-            HTNNode::GetWorldStateValueAsEntityId(Context, local_7);
-            local_16 = local_12;
+            local_16 = FECSEntity(HTNNode::GetWorldStateValueAsEntityId(Context, this.TargetEntityID));
             if (!(local_16.IsValid()))
             {
                 local_17 = true;
@@ -105,8 +97,8 @@ class UHTNTask_EcosimAIV2_Plan_EntityRelationWithTarget : UHTNTask_ECSScriptBase
                 int local_26_2 = 0;
                 for (; local_26_2 < local_22.Num(); )
                 {
-                    local_22[local_26_2].Source.GetId();
-                    local_22[local_26_2].Target.GetId();
+                    HTNNode::SetWorldStateValueAsEntityId(Context, this.EntityID, local_22[local_26_2].Source.GetId());
+                    HTNNode::SetWorldStateValueAsEntityId(Context, this.TargetEntityID, local_22[local_26_2].Target.GetId());
                     this.SubmitPlanStep(100, "");
                     ++local_26_2;
                 }
@@ -126,8 +118,8 @@ class UHTNTask_EcosimAIV2_Plan_EntityRelationWithTarget : UHTNTask_ECSScriptBase
                     {
                         if (local_22.Num() > 0)
                         {
-                            local_22[0].Source.GetId();
-                            local_22[0].Target.GetId();
+                            HTNNode::SetWorldStateValueAsEntityId(Context, this.EntityID, local_22[0].Source.GetId());
+                            HTNNode::SetWorldStateValueAsEntityId(Context, this.TargetEntityID, local_22[0].Target.GetId());
                             this.SubmitPlanStep(100, "");
                         }
                     }
@@ -186,7 +178,7 @@ class UHTNTask_EcosimAIV2_Plan_GetPointEntityByTag : UHTNTask_ECSScriptBase
             if (local_56.Num() > 0)
             {
                 FECSEntity local_134 = FECSEntity(local_56[FMath::RandRange(0, (local_56.Num() - 1))]);
-                local_134.GetId();
+                HTNNode::SetWorldStateValueAsEntityId(Context, this.EntityID, local_134.GetId());
                 this.SubmitPlanStep(1, "");
             }
         }
@@ -198,7 +190,7 @@ class UHTNTask_EcosimAIV2_Plan_GetPointEntityByTag : UHTNTask_ECSScriptBase
                 const FECSEntity& local_126_2 = local_124.Proceed();
                 if (local_126_2.MatchGameplayTag(local_6) && this.MatchCondition(Context, local_126_2))
                 {
-                    local_126_2.GetId();
+                    HTNNode::SetWorldStateValueAsEntityId(Context, this.EntityID, local_126_2.GetId());
                     this.SubmitPlanStep(1, "");
                 }
             }
@@ -330,11 +322,11 @@ class UHTNTask_EcosimAIV2_Plan_GetEntityCurrentAttackTarget : UHTNTask_ECSScript
     UFUNCTION()
     void CreatePlanSteps_Implementation(const FHTNContext &inout Context) const
     {
-        FAISmartValueContext local_6 = Context.opImplConv();
-        FECSEntity local_4 = ::FAITargetingUtils::GetCurrentAttackTarget(FECSEntity());
+        FECSEntity local_12 = FECSEntity(this.EntityID.GetValue(Context.opImplConv()));
+        FECSEntity local_4 = ::FAITargetingUtils::GetCurrentAttackTarget(local_12);
         if (local_4.IsValid())
         {
-            local_4.GetId();
+            HTNNode::SetWorldStateValueAsEntityId(Context, this.CurrentAttackTargetEntityID, local_4.GetId());
             this.SubmitPlanStep(1, "");
         }
         return;
@@ -467,7 +459,7 @@ class UHTNTask_EcosimAIV2_Plan_EntityInteractingWithTarget : UHTNTask_ECSScriptB
         FECSEntity local_12 = FECSEntity(this.TargetEntityID.GetValue(Context.opImplConv()));
         FString local_24 = ::FEcosimAIV2Utils::GetEntityShowName(local_4);
         FString local_20 = ::FEcosimAIV2Utils::GetEntityShowName(local_12);
-        FString local_32 = FString().Append(local_24).Append(" еќђењЁ ").Append(local_20).Append(" дёЉ\n");
+        FString local_32 = FString().Append(local_24).Append(" 坐在 ").Append(local_20).Append(" 上\n");
         ::FEcosimAIV2Utils::AppendContentToBB(Context, local_32, this.AppendToPrompt);
         this.FinishExecuteWithContext(Context, true);
         return;
@@ -493,9 +485,7 @@ class UHTNTask_EcosimAIV2_Plan_GetEntityInteractingTarget : UHTNTask_ECSScriptBa
     UFUNCTION()
     void CreatePlanSteps_Implementation(const FHTNContext &inout Context) const
     {
-        FAISmartValueContext local_6 = Context.opImplConv();
-        FECSEntity local_12;
-        FECSEntity local_4 = local_12;
+        FECSEntity local_4 = FECSEntity(this.SourceEntityID.GetValue(Context.opImplConv()));
         Get local_16;
         const FC_InteractionInfoForESM& local_18 = local_16.opCall();
         if (local_18)
@@ -509,7 +499,7 @@ class UHTNTask_EcosimAIV2_Plan_GetEntityInteractingTarget : UHTNTask_ECSScriptBa
                 {
                     if (local_46.GetPointIndex() == local_18.GetTargetPointAndBehaviorIndex().GetPointIndex() && (local_46.GetBehaviorIndex() == local_18.GetTargetPointAndBehaviorIndex().GetBehaviorIndex()))
                     {
-                        local_24.GetId();
+                        HTNNode::SetWorldStateValueAsEntityId(Context, this.InteractingTargetEntityID, local_24.GetId());
                         this.SubmitPlanStep(1, "");
                     }
                 }

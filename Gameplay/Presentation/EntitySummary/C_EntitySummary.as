@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_PlayerEntitySummary_NS
 {
     const TECSComponentDerivedPtr<FCS_PlayerEntitySummary> DerivedPtr = TECSComponentDerivedPtr<FCS_PlayerEntitySummary>();
@@ -28,11 +27,15 @@ struct FCS_PlayerEntitySummary : FECSSingleton
 
     FCS_PlayerEntitySummary()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FCS_PlayerEntitySummary(const FCS_PlayerEntitySummary &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_PlayerEntities = Other.m_PlayerEntities;
         return;
@@ -75,11 +78,15 @@ struct FCS_BossMonsterChangeAreaSummary : FECSSingleton
 
     FCS_BossMonsterChangeAreaSummary()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FCS_BossMonsterChangeAreaSummary(const FCS_BossMonsterChangeAreaSummary &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_MonsterTargetLocationMap = Other.m_MonsterTargetLocationMap;
         return;
@@ -220,17 +227,17 @@ bool RemovePlayerEntitySummary(const FECSWorldPtr &inout World)
 }
 void __MonitorPlayerEntitySummaryLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_PlayerEntitySummary, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_PlayerEntitySummary, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerEntitySummaryActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_PlayerEntitySummary, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_PlayerEntitySummary, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerEntitySummaryModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_PlayerEntitySummary, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_PlayerEntitySummary, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_BossMonsterChangeAreaSummary
@@ -318,17 +325,17 @@ bool RemoveBossMonsterChangeAreaSummary(const FECSWorldPtr &inout World)
 }
 void __MonitorBossMonsterChangeAreaSummaryLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_BossMonsterChangeAreaSummary, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_BossMonsterChangeAreaSummary, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBossMonsterChangeAreaSummaryActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_BossMonsterChangeAreaSummary, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_BossMonsterChangeAreaSummary, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBossMonsterChangeAreaSummaryModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_BossMonsterChangeAreaSummary, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_BossMonsterChangeAreaSummary, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_EcologyFlockComponentSummaryServerCache
@@ -419,17 +426,17 @@ bool RemoveEcologyFlockComponentSummaryServerCache(const FECSWorldPtr &inout Wor
 }
 void __MonitorEcologyFlockComponentSummaryServerCacheLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_EcologyFlockComponentSummaryServerCache, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_EcologyFlockComponentSummaryServerCache, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyFlockComponentSummaryServerCacheActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_EcologyFlockComponentSummaryServerCache, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_EcologyFlockComponentSummaryServerCache, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyFlockComponentSummaryServerCacheModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_EcologyFlockComponentSummaryServerCache, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_EcologyFlockComponentSummaryServerCache, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_EcologyFlockComponentSummaryNeedUpdateTag
@@ -517,17 +524,17 @@ bool RemoveEcologyFlockComponentSummaryNeedUpdateTag(const FECSWorldPtr &inout W
 }
 void __MonitorEcologyFlockComponentSummaryNeedUpdateTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_EcologyFlockComponentSummaryNeedUpdateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_EcologyFlockComponentSummaryNeedUpdateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyFlockComponentSummaryNeedUpdateTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_EcologyFlockComponentSummaryNeedUpdateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_EcologyFlockComponentSummaryNeedUpdateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyFlockComponentSummaryNeedUpdateTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_EcologyFlockComponentSummaryNeedUpdateTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_EcologyFlockComponentSummaryNeedUpdateTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_BonfirePage_Helpers
 {
 UFUNCTION()

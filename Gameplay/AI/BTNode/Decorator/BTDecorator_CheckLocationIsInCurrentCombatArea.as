@@ -1,5 +1,3 @@
-﻿
-
 class UBTDecorator_CheckLocationIsInCurrentCombatArea : UBTDecorator_ECSScriptBase
 {
     UPROPERTY()

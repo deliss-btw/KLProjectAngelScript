@@ -1,4 +1,3 @@
-﻿
 namespace FVM_DynamicWidgetSelector
 {
     const int ModelId = 0;
@@ -181,7 +180,6 @@ struct __GeneratedProperties_FVM_DynamicWidgetSelector
     bool HasNextModel;
     UPROPERTY()
     TEUIModelRef<FVM_DynamicWidgetSelector> Self;
-
 
 }
 

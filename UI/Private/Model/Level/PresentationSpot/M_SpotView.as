@@ -1,4 +1,3 @@
-﻿
 namespace FM_SpotView
 {
     const int ModelId = 0;
@@ -15,7 +14,7 @@ struct FSpotView
     {
         if (InSpotRegistry)
         {
-            this.Add(InSpotRegistry);
+            this.SpotRegistries.Add(InSpotRegistry);
             this.Scope = InSpotRegistry.opArrow().GetDefaultDisplayScope();
         }
         return;
@@ -26,7 +25,7 @@ struct FSpotView
         {
             if (local_16)
             {
-                this.Add(local_16);
+                this.SpotRegistries.Add(local_16);
             }
         }
         if (!(!(!(InSpotRegistries.IsEmpty()))) && InSpotRegistries[0])
@@ -45,7 +44,7 @@ struct FSpotView
         {
             return false;
         }
-        for (auto& local_16 : this)
+        for (auto& local_16 : this.SpotRegistries)
         {
             if (local_16 && local_16.opArrow().HasSpot((TEUIModelRef<FM_Spot>(Spot))))
             {
@@ -60,9 +59,9 @@ struct FSpotView
         const FInstancedStruct __r;
         if (this.IsSpotVisible(Spot))
         {
-            for (auto& local_16 : this)
+            for (auto& local_16 : this.SpotRegistries)
             {
-                if (local_16 && local_16.opArrow().HasPresentationData((TEUIModelRef<FM_Spot>(Spot))))
+                if (local_16 && local_16.opArrow().HasPresentationData((TEUIModelRef<FM_Spot>(Spot)), EPresentationDataType(DataType)))
                 {
                     TEUIModelRef<FM_Spot> local_18 = TEUIModelRef<FM_Spot>(Spot);
                     return __r;
@@ -75,11 +74,11 @@ struct FSpotView
     {
         if (this.IsSpotVisible(Spot))
         {
-            for (auto& local_16 : this)
+            for (auto& local_16 : this.SpotRegistries)
             {
-                if (local_16 && local_16.opArrow().HasConfigData((TEUIModelRef<FM_Spot>(Spot))))
+                if (local_16 && local_16.opArrow().HasConfigData((TEUIModelRef<FM_Spot>(Spot)), EPresentationDataType(DataType)))
                 {
-                    return local_16.opArrow().GetConfigData((TEUIModelRef<FM_Spot>(Spot)));
+                    return local_16.opArrow().GetConfigData((TEUIModelRef<FM_Spot>(Spot)), EPresentationDataType(DataType));
                 }
             }
         }
@@ -89,7 +88,7 @@ struct FSpotView
     {
         if (this.IsSpotVisible(Spot))
         {
-            for (auto& local_16 : this)
+            for (auto& local_16 : this.SpotRegistries)
             {
                 if (local_16 && local_16.opArrow().HasPresentationConfigData((TEUIModelRef<FM_Spot>(Spot))))
                 {
@@ -103,7 +102,7 @@ struct FSpotView
     {
         if (this.IsSpotVisible(Spot))
         {
-            for (auto& local_16 : this)
+            for (auto& local_16 : this.SpotRegistries)
             {
                 if (local_16 && local_16.opArrow().HasMinimapIconConfigData((TEUIModelRef<FM_Spot>(Spot))))
                 {
@@ -117,7 +116,7 @@ struct FSpotView
     {
         if (this.IsSpotVisible(Spot))
         {
-            for (auto& local_16 : this)
+            for (auto& local_16 : this.SpotRegistries)
             {
                 if (local_16 && local_16.opArrow().HasIndicatorConfigData((TEUIModelRef<FM_Spot>(Spot))))
                 {
@@ -131,7 +130,7 @@ struct FSpotView
     {
         if (this.IsSpotVisible(Spot))
         {
-            for (auto& local_16 : this)
+            for (auto& local_16 : this.SpotRegistries)
             {
                 if (local_16 && local_16.opArrow().HasNavigationBarIconConfigData((TEUIModelRef<FM_Spot>(Spot))))
                 {
@@ -145,7 +144,7 @@ struct FSpotView
     {
         if (this.IsSpotVisible(Spot))
         {
-            for (auto& local_16 : this)
+            for (auto& local_16 : this.SpotRegistries)
             {
                 if (local_16 && local_16.opArrow().HasHeadsUpDisplayConfigData((TEUIModelRef<FM_Spot>(Spot))))
                 {
@@ -161,9 +160,9 @@ struct FSpotView
         {
             return false;
         }
-        for (auto& local_16 : this)
+        for (auto& local_16 : this.SpotRegistries)
         {
-            if (local_16 && local_16.opArrow().HasPresentationData((TEUIModelRef<FM_Spot>(Spot))))
+            if (local_16 && local_16.opArrow().HasPresentationData((TEUIModelRef<FM_Spot>(Spot)), EPresentationDataType(DataType)))
             {
                 return true;
             }
@@ -172,7 +171,7 @@ struct FSpotView
     }
     bool IsValid() const
     {
-        return !(this.IsEmpty());
+        return !(this.SpotRegistries.IsEmpty());
     }
     bool opConv() const
     {
@@ -208,7 +207,6 @@ struct FMsg_InterestedSpotDataModified : FEUIMessage
     TEUIModelRef<FM_Spot> Spot;
     UPROPERTY()
     EPresentationDataType DataType;
-
 
 }
 
@@ -554,7 +552,7 @@ struct FSpotViewAdapter
         {
             return FDataObjectPtr();
         }
-        return this.GetSpotView(Spot.GetManager()).GetConfigData(Spot);
+        return this.GetSpotView(Spot.GetManager()).GetConfigData(Spot, EPresentationDataType(DataType));
     }
     FDataObjectPtr GetPresentationConfigData(const FM_Spot &inout Spot)
     {

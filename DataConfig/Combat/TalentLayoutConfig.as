@@ -1,5 +1,3 @@
-﻿
-
 struct FTalentTreeNode
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ struct FTalentTreeNode
     int Column;
     UPROPERTY()
     TDataObjectPtr<FTalentConfig> NodeConfig;
-
 
 }
 
@@ -29,7 +26,6 @@ struct FTalentLayoutTreeConfig : FDataObject
     FSoftBrush TitleImage;
     UPROPERTY()
     TArray<FTalentTreeNode> TalentTreeArray;
-
 
     TDataObjectPtr<FAvatarMappingConfig> GetAvatar() const property
     {

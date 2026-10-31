@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ItemGainWayList
 {
     const int ModelId = 0;
@@ -180,7 +179,6 @@ struct __GeneratedProperties_FVM_ItemGainWayList
     TArray<FEUIDynamicWidgetData> GainWayEntryDataList;
     UPROPERTY()
     TEUIModelRef<FVM_ItemGainWayList> Self;
-
 
 }
 

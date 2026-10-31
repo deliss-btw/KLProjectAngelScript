@@ -1,9 +1,7 @@
-﻿
-
 struct FSpeedGuideSplineActorRibbonMeshConfig
 {
     UPROPERTY()
-    UStaticMesh RibbonStaticMesh;
+    UStaticMesh RibbonStaticMesh = nullptr;
     UPROPERTY()
     FVector2D Offset;
 
@@ -16,7 +14,7 @@ struct FSpeedGuideSplineActorRibbonMeshConfig
 struct FSpeedGuideSplineActorConfig
 {
     UPROPERTY()
-    UStaticMesh DecalStaticMesh;
+    UStaticMesh DecalStaticMesh = nullptr;
     UPROPERTY()
     UMaterialInterface DecalMaterial = nullptr;
     UPROPERTY()
@@ -33,7 +31,6 @@ struct FSpeedGuideSplineActorConfig
     float32 RiMeshRotation = 0.0f;
     UPROPERTY()
     float32 RiMeshScale = 1.0f;
-
 
 }
 
@@ -207,58 +204,57 @@ class ASpeedGuideSplineActor : AGameActor
         }
         local_12.UpdateSpline();
         int local_13_2 = 0;
-        FSpeedGuideSplineActorRibbonMeshConfig& local_54 = this.Config.RibbonMesh[local_13_2];
-        UInstancedSplineMeshComponent local_58 = UInstancedSplineMeshComponent::Create(this, NAME_None);
-        local_58.AttachToComponent(this.GetRootComponent(), NAME_None, EAttachmentRule(2), EAttachmentRule(1));
-        local_58.SetStaticMesh(local_54.RibbonStaticMesh);
-        local_58.SetMaterial(0, this.Config.RibbonMaterial);
-        local_58.SetCollisionEnabled(ECollisionEnabled(0));
-        local_58.SetCollisionProfileName(n"NoCollision", true);
-        local_58.SetbEnableVertexColorMeshPainting(true);
-        local_58.SetbEnableTextureColorMeshPainting(true);
-        local_58.SetForwardAxis(this.Config.ForwardAxis, false);
-        local_58.SetStartRollDegrees(this.Config.RiMeshRotation, false);
-        local_58.SetEndRollDegrees(this.Config.RiMeshRotation, false);
-        local_58.SetStartScale(FVector2D(this.Config.RiMeshScale, this.Config.RiMeshScale), false);
-        local_58.SetEndScale(FVector2D(this.Config.RiMeshScale, this.Config.RiMeshScale), false);
-        local_58.InitFromSplineComponent(local_12, false);
-        local_58.SetUniformOffset(local_54.Offset, true);
-        local_58.SetScalarParameterForDefaultCustomPrimitiveData(n"SplineLength", local_4);
-        local_58.SetScalarParameterForDefaultCustomPrimitiveData(n"OUTLerp", 0.0f);
-        local_58.SetScalarParameterForDefaultCustomPrimitiveData(n"Delta Time", 0.0f);
-        int local_8 = local_58.GetInstanceCount();
-        local_58.SetNumCustomDataFloats(2);
-        int local_70 = 0;
-        for (; local_70 < local_8; )
+        for (; local_13_2 < this.Config.RibbonMesh.Num(); )
         {
-            float32 local_32 = (local_70 + 1);
-            local_32 = local_32 * this.Config.SplineTileLength;
-            float32 local_7_3 = FMath::Min(local_32, local_4);
-            if (local_4 > 0.0f)
+            FSpeedGuideSplineActorRibbonMeshConfig& local_54 = this.Config.RibbonMesh[local_13_2];
+            UInstancedSplineMeshComponent local_58 = UInstancedSplineMeshComponent::Create(this, NAME_None);
+            local_58.AttachToComponent(this.GetRootComponent(), NAME_None, EAttachmentRule(2), EAttachmentRule(1));
+            local_58.SetStaticMesh(local_54.RibbonStaticMesh);
+            local_58.SetMaterial(0, this.Config.RibbonMaterial);
+            local_58.SetCollisionEnabled(ECollisionEnabled(0));
+            local_58.SetCollisionProfileName(n"NoCollision", true);
+            local_58.SetbEnableVertexColorMeshPainting(true);
+            local_58.SetbEnableTextureColorMeshPainting(true);
+            local_58.SetForwardAxis(this.Config.ForwardAxis, false);
+            local_58.SetStartRollDegrees(this.Config.RiMeshRotation, false);
+            local_58.SetEndRollDegrees(this.Config.RiMeshRotation, false);
+            local_58.SetStartScale(FVector2D(this.Config.RiMeshScale, this.Config.RiMeshScale), false);
+            local_58.SetEndScale(FVector2D(this.Config.RiMeshScale, this.Config.RiMeshScale), false);
+            local_58.InitFromSplineComponent(local_12, false);
+            local_58.SetUniformOffset(local_54.Offset, true);
+            local_58.SetScalarParameterForDefaultCustomPrimitiveData(n"SplineLength", local_4);
+            local_58.SetScalarParameterForDefaultCustomPrimitiveData(n"OUTLerp", 0.0f);
+            local_58.SetScalarParameterForDefaultCustomPrimitiveData(n"Delta Time", 0.0f);
+            int local_8 = local_58.GetInstanceCount();
+            local_58.SetNumCustomDataFloats(2);
+            int local_70 = 0;
+            for (; local_70 < local_8; )
             {
-                local_32 = (local_70 * this.Config.SplineTileLength) / local_4;
+                float32 local_32 = (local_70 + 1);
+                local_32 = local_32 * this.Config.SplineTileLength;
+                float32 local_7_3 = FMath::Min(local_32, local_4);
+                if (local_4 > 0.0f)
+                {
+                    local_32 = (local_70 * this.Config.SplineTileLength) / local_4;
+                }
+                else
+                {
+                    local_32 = 0.0f;
+                }
+                if (local_4 > 0.0f)
+                {
+                    local_31 = local_7_3 / local_4;
+                }
+                else
+                {
+                    local_31 = 0.0f;
+                }
+                local_58.SetCustomDataValue(local_70, 0, local_32, false);
+                local_58.SetCustomDataValue(local_70, 1, local_31, (local_70 == (local_8 - 1)));
+                ++local_70;
             }
-            else
-            {
-                local_32 = 0.0f;
-            }
-            if (local_4 > 0.0f)
-            {
-                local_31 = local_7_3 / local_4;
-            }
-            else
-            {
-                local_31 = 0.0f;
-            }
-            local_58.SetCustomDataValue(local_70, 0, local_32, false);
-            local_58.SetCustomDataValue(local_70, 1, local_31, (local_70 == (local_8 - 1)));
-            ++local_70;
-        }
-        while (local_13_2 < local_8)
-        {
             this.EffectPlaneSplineMeshes.Add(local_58);
             ++local_13_2;
-            local_8 = this.Config.RibbonMesh.Num();
         }
         local_12.DestroyComponent();
         return;

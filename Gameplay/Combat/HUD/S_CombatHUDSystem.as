@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_HUDSlotUseBehaviorSemantic = FConsoleVariable();
 
 class US_CombatHUDSystem : UECSScriptSystem

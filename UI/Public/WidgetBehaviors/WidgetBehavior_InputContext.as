@@ -1,5 +1,3 @@
-﻿
-
 class UWidgetBehavior_InputContext : UEUIBlueprintWidgetBehaviorBase
 {
     UPROPERTY()

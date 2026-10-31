@@ -1,5 +1,3 @@
-﻿
-
 class UMessageHintHandler_NewsTicker : UMessageHintHandler
 {
     UMessageHintHandler_NewsTicker()

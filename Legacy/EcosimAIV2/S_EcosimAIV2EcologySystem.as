@@ -1,5 +1,3 @@
-﻿
-
 class US_EcosimAIV2EcologySystem : UECSScriptSystem
 {
     UPROPERTY()

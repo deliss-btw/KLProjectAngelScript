@@ -1,4 +1,3 @@
-﻿
 namespace ScriptControlUtils
 {
 bool CheckAndResolveEntityId(const FECSEntityId &inout EntityId, FECSEntity &out OutEntity)
@@ -37,7 +36,7 @@ void DisableScriptControl(const FECSEntityId &inout EntityId, const EScriptContr
             FScriptControlBehaviorEntry local_72;
             if (ScriptControlUtils::GetCurrentEntry(local_12, local_72))
             {
-                ScriptControlUtils::SendBehaviorFinishedEvent(local_4, local_72, ScriptControlUtils::GetCurrentBehaviorType(local_12), EScriptControlResult(2));
+                ScriptControlUtils::SendBehaviorFinishedEvent(local_4, local_72, ScriptControlUtils::GetCurrentBehaviorType(local_12), EScriptControlResult(2), EScriptControlSourceType(SourceType));
             }
             local_12.CurrentBehavior = EScriptControlCurrentBehavior(0);
             local_12.CurrentEntryId = 0;
@@ -75,7 +74,7 @@ void DisableAndClearAll(const FECSEntityId &inout EntityId, const EScriptControl
                 FScriptControlBehaviorEntry local_74;
                 if (ScriptControlUtils::GetCurrentEntry(local_12, local_74))
                 {
-                    ScriptControlUtils::SendBehaviorFinishedEvent(local_4, local_74, ScriptControlUtils::GetCurrentBehaviorType(local_12), EScriptControlResult(2));
+                    ScriptControlUtils::SendBehaviorFinishedEvent(local_4, local_74, ScriptControlUtils::GetCurrentBehaviorType(local_12), EScriptControlResult(2), EScriptControlSourceType(SourceType));
                 }
                 local_12.CurrentBehavior = EScriptControlCurrentBehavior(0);
                 local_12.CurrentEntryId = 0;
@@ -278,7 +277,7 @@ bool GetCurrentEntry(const FC_ScriptControl &inout LC, FScriptControlBehaviorEnt
     {
         return false;
     }
-    const FScriptControlQueueSlot& local_4 = LC[int(LC.ActiveSlotIndex)];
+    const FScriptControlQueueSlot& local_4 = LC.Slots[int(LC.ActiveSlotIndex)];
     if (int(LC.CurrentBehavior) == 1)
     {
         return local_4.GetCurrentState(OutEntry);
@@ -341,15 +340,15 @@ void FinishCurrentBehavior(const FECSEntity &inout Entity, const EScriptControlR
     {
         return;
     }
-    EScriptControlBehaviorType local_68 = ScriptControlUtils::GetCurrentBehaviorType(local_6);
-    EScriptControlSourceType local_69 = local_6.ActiveSourceType;
+    int local_68 = int(ScriptControlUtils::GetCurrentBehaviorType(local_6));
+    int local_69 = local_6.ActiveSourceType;
     ScriptControlUtils::SendBehaviorFinishedEvent(Entity, local_66, EScriptControlBehaviorType(local_68), EScriptControlResult(Result), EScriptControlSourceType(local_69));
     if (!(local_76.HasActiveSlot()))
     {
         return;
     }
     FScriptControlQueueSlot& local_78 = local_76.Slots[int(local_76.ActiveSlotIndex)];
-    if ((int(local_68)) == 0)
+    if ((local_68) == 0)
     {
         bool local_7_3 = local_78.AdvanceStateIndex();
         if (local_7_3)
@@ -376,7 +375,7 @@ void FinishCurrentBehavior(const FECSEntity &inout Entity, const EScriptControlR
 }
 void RefreshPreferBehavior(FC_ScriptControl &inout LC)
 {
-    if (!(LC.bEnabled) || (LC.Num() == 0))
+    if (!(LC.bEnabled) || (LC.Slots.Num() == 0))
     {
         LC.PreferBehavior = EScriptControlPreferBehavior(0);
         LC.PreferEntryId = 0;
@@ -385,9 +384,9 @@ void RefreshPreferBehavior(FC_ScriptControl &inout LC)
     }
     int local_6 = -1;
     int local_7 = 0;
-    for (; local_7 < LC.Num(); ++local_7)
+    for (; local_7 < LC.Slots.Num(); ++local_7)
     {
-        FScriptControlQueueSlot& local_10 = LC[local_7];
+        FScriptControlQueueSlot& local_10 = LC.Slots[local_7];
         if (!(local_10.bHasCurrentAction) && (local_10.ActionQueue.Num() > 0))
         {
             local_10.DequeueAction();
@@ -407,8 +406,8 @@ void RefreshPreferBehavior(FC_ScriptControl &inout LC)
         return;
     }
     LC.ActiveSlotIndex = local_6;
-    LC.ActiveSourceType = LC[local_6].SourceType;
-    FScriptControlQueueSlot& local_10_2 = LC[local_6];
+    LC.ActiveSourceType = LC.Slots[local_6].SourceType;
+    FScriptControlQueueSlot& local_10_2 = LC.Slots[local_6];
     if (local_10_2.HasPendingAction())
     {
         LC.PreferBehavior = EScriptControlPreferBehavior(2);

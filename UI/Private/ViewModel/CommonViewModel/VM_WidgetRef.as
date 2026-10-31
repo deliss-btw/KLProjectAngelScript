@@ -1,4 +1,3 @@
-﻿
 namespace FVM_WidgetRef
 {
     const int ModelId = 0;

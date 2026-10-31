@@ -1,10 +1,8 @@
-﻿
 enum EAttributeThresholdMode
 {
     Absolute,
     PercentOfAttribute,
 }
-
 
 class UBTDecorator_CheckAttribute : UBTDecorator_ECSScriptBase
 {
@@ -20,7 +18,6 @@ class UBTDecorator_CheckAttribute : UBTDecorator_ECSScriptBase
     FGameAttributeRef ReferenceAttribute;
 
     default SetNodeName("Check Attribute");
-
 
     UFUNCTION()
     FString GetStaticDescription_Implementation() const
@@ -69,12 +66,29 @@ class UBTDecorator_CheckAttribute : UBTDecorator_ECSScriptBase
     UFUNCTION()
     bool CalculateRawConditionValue_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
-        bool __r; return __r;
+        Get local_4;
+        const FC_GameAttribute& local_6 = local_4.opCall();
+        if (local_6)
+        {
+            float32 local_12;
+            float32 local_11 = local_6.GetAttributeValue(this.Attribute, ECS::GetContextTime());
+            local_12 = this.Threshold;
+            if (int(this.ThresholdMode) == 1)
+            {
+                float32 local_8 = local_6.GetAttributeValue(this.ReferenceAttribute, ECS::GetContextTime());
+                if (local_8 <= 0.0f)
+                {
+                    return false;
+                }
+                local_12 = local_8 * this.Threshold;
+            }
+            return this.CompareValues(local_11, local_12);
+        }
+        return false;
     }
     bool CompareValues(const float32 Left, const float32 Right) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         bool __r; return __r;
     }
 }

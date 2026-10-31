@@ -1,5 +1,3 @@
-﻿
-
 class UEQC_Self : UEnvQueryContext_ECS_BlueprintBase
 {
     UEQC_Self()

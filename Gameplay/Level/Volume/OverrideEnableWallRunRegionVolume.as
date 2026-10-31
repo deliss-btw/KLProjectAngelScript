@@ -1,5 +1,3 @@
-﻿
-
 class AOverrideEnableWallRunRegionVolume : AECSRegionVolume
 {
     default bAffectMovment = true;

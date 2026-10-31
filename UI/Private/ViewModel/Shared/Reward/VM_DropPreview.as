@@ -1,4 +1,3 @@
-﻿
 namespace FVM_DropPreviewItemMeta
 {
     const int ModelId = 0;
@@ -125,7 +124,6 @@ struct FParsedDropItemData
     UPROPERTY()
     bool bDropIncrease;
 
-
 }
 
 struct FParsedDropItemWeightData
@@ -136,7 +134,6 @@ struct FParsedDropItemWeightData
     int TotalWeight;
     UPROPERTY()
     bool bQuantityVaries;
-
 
 }
 
@@ -203,7 +200,7 @@ struct FDropItemConfigParser
         }
         for (auto& local_110 : local_38)
         {
-            FParsedDropItemData& local_112 = this.FindOrAdd(local_110.GetKey());
+            FParsedDropItemData& local_112 = this.ParsedDropItemDataMap.FindOrAdd(local_110.GetKey());
             bool local_15 = (local_73 >= local_1);
             bool local_115 = bProbability || !(local_15);
             local_113 = local_115 || local_116;
@@ -226,7 +223,7 @@ struct FDropItemConfigParser
         {
             if (local_16.Item)
             {
-                this.ParseSingleDrop(local_16.Item, (local_16.DropRate < 100.0f), local_16.bUseBadWeatherDropRateUpRule);
+                this.ParseSingleDrop(local_16.Item, (local_16.DropRate < 100.0f), (int(local_16.bUseBadWeatherDropRateUpRule) != 0));
             }
         }
         return;
@@ -321,21 +318,21 @@ struct FVM_DropPreview : FEUIViewModel
     void PostConstruct()
     {
         FDropItemConfigParser local_20;
-        bool local_37 = false;
+        int local_37 = 0;
         int local_42 = 0;
-        bool local_43 = false;
+        int local_43 = 0;
         local_20.ParseDropItemConfig(this.GetDropItemConfig());
         for (auto& local_40 : local_20.ParsedDropItemDataMap)
         {
             if (0 > 0)
             {
-                local_43 = false;
-                this.GetModify_BasicDrops().Add(this.CreateDropItemModelContainer(local_40.GetKey(), local_42, local_43, local_37));
+                local_43 = 0;
+                this.GetModify_BasicDrops().Add(this.CreateDropItemModelContainer(local_40.GetKey(), local_42, (local_43 != 0), (local_37 != 0)));
                 continue;
             }
-            if (local_37)
+            if (local_37 != 0)
             {
-                this.GetModify_ExtraDrops().Add(this.CreateDropItemModelContainer(local_40.GetKey(), local_42, true, local_43));
+                this.GetModify_ExtraDrops().Add(this.CreateDropItemModelContainer(local_40.GetKey(), local_42, true, (local_43 != 0)));
                 continue;
             }
         }
@@ -505,7 +502,6 @@ struct __GeneratedProperties_FVM_DropPreview
     bool HasExtraDrops;
     UPROPERTY()
     TEUIModelRef<FVM_DropPreview> Self;
-
 
 }
 

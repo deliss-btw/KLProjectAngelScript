@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CurrentRole
 {
     const int ViewID = 0;
@@ -269,6 +268,7 @@ namespace UWidget_CurrentRole
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CurrentRole;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnOpenChangeRole"));
     return;
 }

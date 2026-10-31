@@ -1,4 +1,3 @@
-﻿
 namespace Attribute
 {
     const FGameAttributeRef HP = FGameAttributeRef();

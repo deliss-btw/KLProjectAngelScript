@@ -1,5 +1,3 @@
-﻿
-
 class US_RemnantSystem : UECSScriptSystem
 {
     US_RemnantSystem()
@@ -49,12 +47,51 @@ class US_RemnantSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_RemoveRemnantWhenUsableCountIsZero(const FECSEntity &inout Entity, const FC_RemnantInfo &inout RemnantInfo, const FCS_FixedTime &inout FixedTime) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        USkillConfig local_22;
+        if (RemnantInfo.GetRemainUsableCount() > 0)
+        {
+            Remove local_8;
+            local_8.opCall();
+            return;
+        }
+        Get local_12;
+        const FC_PlayerController& local_14 = local_12.opCall();
+        if (local_14)
+        {
+            Remove local_8;
+            bool local_19;
+            FECSEntity local_18 = local_14.GetPlayerPawnEntity();
+            local_19 = true;
+            if (local_22 != nullptr)
+            {
+                if (FSkillUtils::GetSkillIndex(local_18, local_22) == INDEX_NONE)
+                {
+                    local_19 = false;
+                }
+                else
+                {
+                    Get local_28;
+                    const FC_SkillBtnDurationEffect& local_30 = local_28.opCall();
+                    if (local_30)
+                    {
+                        if (local_30.Contains(ESkillSlot(9)))
+                        {
+                            local_19 = false;
+                        }
+                    }
+                }
+            }
+            if (local_19)
+            {
+                ::RemnantUtils::UnequipRemnantSkillAndDropItem(local_18, FixedTime.Time);
+                local_8.opCall();
+            }
+        }
+        return;
     }
     UFUNCTION()
     void ClientJob_RemnantSlotChanged(const FCE_RemnantSlotChangedEvent &inout Event) const
     {
-        FCE_CombatHUD local_16;
         bool local_1 = false;
         FECSEntity local_10 = ::FASCommonUtils::GetLocalUniquePlayerEntity();
         if ((FECSEntity(Event.Sender) == local_10))
@@ -74,6 +111,7 @@ class US_RemnantSystem : UECSScriptSystem
         }
         if (::FASCommonUtils::GetLocalPlayerPawnEntity().IsValid())
         {
+            FCE_CombatHUD local_16;
             FFPTime local_22 = FFPTime(-1);
             local_16.CombatHUDReason = ECombatHUDReason(19);
             local_16.bEnabled = true;
@@ -310,11 +348,89 @@ void UnequipRemnantSkillAndDropItem(const FECSEntity &inout SkillPawnEntity, con
 }
 void EquipRemnantSkillForNewPawnEntity(const FECSEntity &inout OldPawnEntity, const FECSEntity &inout NewPawnEntity, const FFPTime &inout Time)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    int local_16 = 0;
+    int local_102 = 0;
+    if (ECS::GetRuntimeInfo().IsClient)
+    {
+        return;
+    }
+    if (!(FASCommonUtils::GetUniquePlayerEntity(NewPawnEntity).IsValid()))
+    {
+        return;
+    }
+    if (!(local_16) || !(local_16.GetRemnantItemConfig()))
+    {
+        return;
+    }
+    TDataObjectPtr<FItemQuickSlotConfig> local_68 = InventoryUtils::GetQuickSlotConfigByName(n"ConsumableItem_TemporaryAbility");
+    USkillConfig local_70 = local_16.GetRemnantItemConfig().opArrow().ItemSkillConfig;
+    FBuffConfigRef local_94 = FBuffConfigRef(local_16.GetRemnantItemConfig().opArrow().ItemBuffConfig);
+    if (local_70 != nullptr)
+    {
+        InventoryUtils::EquipQuickSlotSkill(NewPawnEntity, local_70, local_68.opArrow().InputSlot);
+    }
+    if (local_94.IsValid())
+    {
+        FBuffUtils::AddBuff(NewPawnEntity, local_94, Time, NewPawnEntity, false, -1.0f, 1, false);
+    }
+    if (local_102 && (local_70 != nullptr) && OldPawnEntity.IsValid())
+    {
+        int local_43 = FSkillUtils::GetSkillIndex(OldPawnEntity, local_70);
+        int local_103 = INDEX_NONE;
+        if (local_43 != local_103)
+        {
+            float32 local_104 = 0.0f;
+            float32 local_96 = float32((FSkillUtils::GetSkillCDRemainTime(OldPawnEntity, local_43).ToSeconds()));
+            float32 local_105 = FSkillUtils::GetSkillCDDuration(OldPawnEntity, local_43);
+            if (local_105 > 0.0f)
+            {
+                local_104 = local_96 / local_105;
+            }
+            if (local_104 > 0.0f && (local_104 <= 1.0f))
+            {
+                local_103 = FSkillUtils::GetSkillIndex(NewPawnEntity, local_70);
+                FSkillUtils::SetSkillCD(NewPawnEntity, local_103, Time, 1.0f - local_104);
+            }
+        }
+    }
+    FFPTime local_108 = FFPTime(-1);
+    SendEvent local_116;
+    local_116.opCall(local_108);
+    return;
 }
 bool CheckCanChangeRemnantSkill(const FECSEntity &inout PlayerEntity, const FECSEntity &inout PawnEntity)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    bool __r; return __r;
+    int local_8 = 0;
+    USkillConfig local_10;
+    if (!(PlayerEntity))
+    {
+        return false;
+    }
+    if (!(local_8))
+    {
+        return true;
+    }
+    if (local_10 != nullptr)
+    {
+        int local_12 = FSkillUtils::GetSkillIndex(PawnEntity, local_10);
+        if (local_12 == INDEX_NONE)
+        {
+            return false;
+        }
+        if (float32(FSkillUtils::GetSkillCDRemainTime(PawnEntity, local_12).ToSeconds()) > 0.0f && (local_8.GetRemainUsableCount() > 0))
+        {
+            return false;
+        }
+        Get local_26;
+        const FC_SkillBtnDurationEffect& local_28 = local_26.opCall();
+        if (local_28)
+        {
+            if (local_28.Contains(ESkillSlot(9)))
+            {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 }

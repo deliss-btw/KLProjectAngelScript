@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TeamInfo_Helpers
 {
 UFUNCTION()

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonComponentSlider
 {
     const int ModelId = 0;
@@ -22,7 +21,6 @@ struct FVM_CommonComponentSliderConfig
     float32 MidValue;
     UPROPERTY()
     int Precision;
-
 
 }
 

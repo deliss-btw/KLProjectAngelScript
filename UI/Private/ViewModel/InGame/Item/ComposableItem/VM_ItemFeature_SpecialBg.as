@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ItemFeature_SpecialBg
 {
     const int ModelId = 0;

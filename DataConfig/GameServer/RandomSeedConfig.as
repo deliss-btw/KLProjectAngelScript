@@ -1,4 +1,3 @@
-﻿
 enum ERandomFactorType
 {
     None,
@@ -10,14 +9,12 @@ enum ERandomFactorType
     CommissionEntryRule,
 }
 
-
 struct FSpawnAreaRandomFactor
 {
     UPROPERTY()
     TDataObjectPtr<FWorldAreaConfig> Config;
     UPROPERTY()
     uint Weight;
-
 
 }
 
@@ -31,7 +28,6 @@ struct FSpawnAreaPoolConfig : FDataObject
     UPROPERTY()
     TArray<FSpawnAreaRandomFactor> TargetRandomPool;
 
-
 }
 
 struct FWeatherRandomFactor
@@ -41,7 +37,6 @@ struct FWeatherRandomFactor
     UPROPERTY()
     uint Weight;
 
-
 }
 
 struct FWeatherTemplateRandomFactor
@@ -50,7 +45,6 @@ struct FWeatherTemplateRandomFactor
     TDataObjectPtr<FWeatherGenerateTemplate> Config;
     UPROPERTY()
     uint Weight;
-
 
 }
 
@@ -63,7 +57,6 @@ struct FWeatherAreaTemplateFactorConfig : FDataObject
     FDataObjectPtr m_AreaConfig;
     UPROPERTY()
     TArray<FWeatherTemplateRandomFactor> WeatherTemplateTargetRandomPool;
-
 
     const TDataObjectPtr<FWorldAreaConfig> GetAreaConfig() const property
     {
@@ -90,7 +83,6 @@ struct FCommissionWeatherPoolConfig : FDataObject
     UPROPERTY()
     TArray<FDataObjectPtr> m_WeatherAreaTemplateFactors;
 
-
     const TArray<TDataObjectPtr<FWeatherAreaTemplateFactorConfig>> GetWeatherAreaTemplateFactors() const property
     {
         const TArray<TDataObjectPtr<FWeatherAreaTemplateFactorConfig>> __r;
@@ -111,7 +103,6 @@ struct FIntrusionPolicyRandomFactor
     UPROPERTY()
     uint Weight;
 
-
 }
 
 struct FIntrusionPolicyPoolConfig : FDataObject
@@ -124,7 +115,6 @@ struct FIntrusionPolicyPoolConfig : FDataObject
     UPROPERTY()
     TArray<FIntrusionPolicyRandomFactor> TargetRandomPool;
 
-
 }
 
 struct FCommissionSubTargetRandomFactor
@@ -133,7 +123,6 @@ struct FCommissionSubTargetRandomFactor
     TDataObjectPtr<FObjectiveConfig> Config;
     UPROPERTY()
     uint Weight;
-
 
 }
 
@@ -147,7 +136,6 @@ struct FCommissionSubTargetPoolConfig : FDataObject
     UPROPERTY()
     TArray<FCommissionSubTargetRandomFactor> TargetRandomPool;
 
-
 }
 
 struct FCommissionTimeRandomFactor
@@ -156,7 +144,6 @@ struct FCommissionTimeRandomFactor
     TDataObjectPtr<FCommissionTimeConfig> Config;
     UPROPERTY()
     uint Weight;
-
 
 }
 
@@ -170,7 +157,6 @@ struct FCommissionTimePoolConfig : FDataObject
     UPROPERTY()
     TArray<FCommissionTimeRandomFactor> TargetRandomPool;
 
-
 }
 
 struct FCommissionEntryRuleRandomFactor
@@ -179,7 +165,6 @@ struct FCommissionEntryRuleRandomFactor
     TDataObjectPtr<FCommissionEntryRuleConfig> Config;
     UPROPERTY()
     uint Weight;
-
 
 }
 
@@ -193,7 +178,6 @@ struct FCommissionEntryRulePoolConfig : FDataObject
     UPROPERTY()
     TArray<FCommissionEntryRuleRandomFactor> TargetRandomPool;
 
-
 }
 
 struct FRandomFactorConfig
@@ -202,7 +186,6 @@ struct FRandomFactorConfig
     ERandomFactorType RandomFactorType;
     UPROPERTY()
     TDataObjectPtr<FDataObject> RandomFactor;
-
 
     UScriptStruct GetRandomFactorType() const
     {
@@ -252,7 +235,6 @@ struct FRandomPolicyConfig : FDataObject
     UPROPERTY()
     uint Weight;
 
-
 }
 
 struct FRandomSeedConfig : FDataObject
@@ -264,7 +246,6 @@ struct FRandomSeedConfig : FDataObject
     FText RandomSeedName;
     UPROPERTY()
     TArray<FDataObjectPtr> m_RandomPolicyConfig;
-
 
     const TArray<TDataObjectPtr<FRandomPolicyConfig>> GetRandomPolicyConfig() const property
     {
@@ -285,7 +266,6 @@ struct FRandomFactorBlacklistConfig
     ERandomFactorType RandomFactorType;
     UPROPERTY()
     TDataObjectPtr<FDataObject> RandomFactor;
-
 
     UScriptStruct GetRandomFactorType() const
     {
@@ -343,7 +323,6 @@ struct FRandomPolicyBlacklistSingleConfig : FRandomPolicyBlacklistConfigBase
     UPROPERTY()
     TArray<FRandomFactorBlacklistConfig> RandomFactorBlacklistConfig;
 
-
 }
 
 struct FRandomPolicyBlacklistGroupConfig : FRandomPolicyBlacklistConfigBase
@@ -353,7 +332,6 @@ struct FRandomPolicyBlacklistGroupConfig : FRandomPolicyBlacklistConfigBase
     uint DataId;
     UPROPERTY()
     TArray<FDataObjectPtr> m_BlacklistSingleConfigs;
-
 
     const TArray<TDataObjectPtr<FRandomPolicyBlacklistSingleConfig>> GetBlacklistSingleConfigs() const property
     {
@@ -381,7 +359,6 @@ struct FRandomConstraintConfig : FDataObject
     TArray<FDataObjectPtr> m_RandomFactor;
     UPROPERTY()
     uint MaxTotalRatio;
-
 
     UScriptStruct GetRandomFactorType() const
     {
@@ -440,7 +417,6 @@ struct FRandomConstraintHardConfig : FRandomConstraintConfig
 
     FRandomConstraintHardConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -454,7 +430,6 @@ struct FRandomConstraintExtremeConfig : FRandomConstraintConfig
 
     FRandomConstraintExtremeConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }

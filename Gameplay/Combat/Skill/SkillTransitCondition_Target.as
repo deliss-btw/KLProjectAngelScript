@@ -1,5 +1,3 @@
-﻿
-
 class USkillTransitCondition_SkillTargetEntityNum : USkillTransitComplexCondition
 {
     UPROPERTY()
@@ -7,18 +5,16 @@ class USkillTransitCondition_SkillTargetEntityNum : USkillTransitComplexConditio
     UPROPERTY()
     int MaxTargetNum = 1;
 
-
     UFUNCTION()
     bool Evaluate_Implementation(const FECSEntity &inout Entity, const FC_SkillInstance &inout SkillInstance, const FFPTime &inout ContextTime) const
     {
         const USkillConfig local_14;
-        TArray<FECSEntity> local_22;
         if ((SkillInstance.GetSkillConfig() == nullptr))
         {
             return false;
         }
         TSoftObjectPtr<USkillConfig> local_10 = SkillInstance.GetSkillConfig();
-        local_14.GetSkillName();
+        TArray<FECSEntity> local_22 = ::FTargetSelectUtils::GetSelectTargetEntitiesByRequestType(Entity, ESelectTargetRequestType(1), local_14.GetSkillName());
         if (local_22.Num() >= this.MinTargetNum && (local_22.Num() <= this.MaxTargetNum))
         {
             return true;
@@ -33,7 +29,6 @@ class USkillTransitCondition_SkillTargetPosDistance : USkillTransitComplexCondit
     float32 MinDistance = 0.0f;
     UPROPERTY()
     float32 MaxDistance = 0.0f;
-
 
     UFUNCTION()
     bool Evaluate_Implementation(const FECSEntity &inout Entity, const FC_SkillInstance &inout SkillInstance, const FFPTime &inout ContextTime) const
@@ -71,7 +66,6 @@ class USkillTransitCondition_LockTargetDistance : USkillTransitComplexCondition
     float32 MinDistance = 0.0f;
     UPROPERTY()
     float32 MaxDistance = 0.0f;
-
 
     UFUNCTION()
     bool Evaluate_Implementation(const FECSEntity &inout Entity, const FC_SkillInstance &inout SkillInstance, const FFPTime &inout ContextTime) const

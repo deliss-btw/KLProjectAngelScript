@@ -1,5 +1,3 @@
-﻿
-
 struct FT_TeleportSlotConfig : FECSTrait
 {
     FECSTrait _base_FECSTrait;

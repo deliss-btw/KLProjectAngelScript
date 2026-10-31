@@ -1,4 +1,3 @@
-﻿
 enum ETrackSpeedMode
 {
     Const,
@@ -13,7 +12,6 @@ enum ETrackMovementAxis
     Z,
 }
 
-
 struct FTrackTwoTurnPointCurve
 {
     UPROPERTY()
@@ -24,7 +22,6 @@ struct FTrackTwoTurnPointCurve
     float32 TurnStartTime;
     UPROPERTY()
     float32 TurnEndTime;
-
 
 }
 
@@ -57,7 +54,6 @@ struct FTrackMovementConfigData : FDataObject
     bool bContinueTrackEvenSuccess = false;
     UPROPERTY()
     bool bKeepTransformRotation = false;
-
 
     float32 GetCurrentMoveSpeed(const float32 InTime) const
     {

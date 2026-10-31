@@ -1,4 +1,3 @@
-﻿
 namespace FFactUtils
 {
     const TArray<FString> EngActionNames = TArray<FString>();
@@ -61,7 +60,7 @@ FString DebugGetActionChmNameFromEng(const FString &inout ActionEngName)
         FFactUtils::EngActionNameToChm.Find(ActionEngName, local_6);
         return local_6;
     }
-    FString local_10 = "Could Not Find ActionEngName : ";
+    XError(ELog(0), (FString("Could Not Find ActionEngName : ") + ActionEngName));
     return "";
 }
 }

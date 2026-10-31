@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TalentSkillList
 {
     const int ViewID = 0;
@@ -144,6 +143,7 @@ namespace UWidget_TalentSkillList
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TalentSkillList;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

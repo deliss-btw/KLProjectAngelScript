@@ -1,10 +1,8 @@
-﻿
 enum EGuideRegionStyleType
 {
     Normal,
     NoIcon,
 }
-
 
 struct FGuidePresentationConfig : FDataObject
 {
@@ -17,7 +15,6 @@ struct FGuidePresentationConfig : FDataObject
     FLinearColor GuideColor;
     UPROPERTY()
     EGuideRegionStyleType RegionStyleType;
-
 
     FSoftBrush GetGuideIcon() const
     {

@@ -1,4 +1,3 @@
-﻿
 namespace ProjectileTimelineActionColor
 {
     const FLinearColor Default = FLinearColor();
@@ -7,9 +6,6 @@ namespace ProjectileTimelineActionColor
     const FLinearColor Hit = FLinearColor();
     const FLinearColor Effect = FLinearColor();
     const FLinearColor Misc = FLinearColor();
-
-// NOTE: class defaults are not authored in this module: UProjectileTimelineAction_ProjectileHealth (default scalar field UProjectileTimelineAction.bGlobalAction has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
 
 }
 class UProjectileTimelineAction_TrunToState : UProjectileTimelineInstantAction

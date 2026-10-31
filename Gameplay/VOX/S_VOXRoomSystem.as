@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_VOX_InitLogLevel = FConsoleVariable();
 
 class US_VOXRoomSystem : UECSScriptSystem

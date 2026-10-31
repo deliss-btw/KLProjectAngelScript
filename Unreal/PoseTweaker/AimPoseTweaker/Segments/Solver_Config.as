@@ -1,4 +1,3 @@
-﻿
 enum EAimPoseYawOutOfRangeMode
 {
     HysteresisClamp,
@@ -14,7 +13,6 @@ enum EAimPoseSolverMode
     HermiteCurve,
     AdditiveHermiteCurve,
 }
-
 
 struct FSCurveShapeConfig
 {
@@ -36,7 +34,6 @@ struct FSCurveShapeConfig
     FRuntimeFloatCurve LateralOffsetByYawCurve = FRuntimeCurveUtils::CreateConst(0.0f);
     UPROPERTY()
     FRuntimeFloatCurve TangentPitchByYawCurve = FRuntimeCurveUtils::CreateConst(0.0f);
-
 
 }
 
@@ -85,7 +82,6 @@ struct FHermiteCurveConfig
     UPROPERTY()
     FSCurveShapeConfig SCurveShape;
 
-
 }
 
 struct FAdditiveHermiteCurveConfig
@@ -121,7 +117,6 @@ struct FAdditiveHermiteCurveConfig
     UPROPERTY()
     FRuntimeFloatCurve PitchToP1VerticalCurve = FRuntimeCurveUtils::CreateConst(0.0f);
 
-
 }
 
 struct FAimPoseBoneWeight
@@ -130,7 +125,6 @@ struct FAimPoseBoneWeight
     FName BoneName;
     UPROPERTY()
     float32 RatioWeight = 1.0f;
-
 
 }
 
@@ -193,7 +187,6 @@ struct FAimPoseSegmentConfig
     UPROPERTY()
     bool bEnableDebugDraw = false;
 
-
 }
 
 struct FAimPoseSegmentOverride
@@ -246,11 +239,79 @@ struct FAimPoseSegmentOverride
 
     FAimPoseSegmentOverride()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags32 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bOverrideEnabled = false;
+        this.m_bEnabled = true;
+        this.m_bOverrideClamp = false;
+        this.m_SegmentPitchMin = -15.0f;
+        this.m_SegmentPitchMax = 15.0f;
+        this.m_SegmentYawMin = -15.0f;
+        this.m_SegmentYawMax = 15.0f;
+        this.m_bOverrideYawClampMode = false;
+        this.m_YawOutOfRangeMode = EAimPoseYawOutOfRangeMode(0);
+        this.m_HysteresisThreshold = 150.0f;
+        this.m_NeutralYaw = 0.0f;
+        this.m_ReturnThreshold = 30.0f;
+        this.m_RecoverThreshold = 15.0f;
+        this.m_bOverrideDamp = false;
+        this.m_bEnableDamp = true;
+        this.m_SpringStrength = 200.0f;
+        this.m_SpringDamping = 0.2f;
+        this.m_bOverrideAnimLocalTarget = false;
+        this.m_AnimLocalTarget = FVector(70.0, 0.0, 100.0);
+        this.m_bOverrideWeight = false;
+        this.m_Weight = 0.0f;
+        return;
     }
     FAimPoseSegmentOverride(const FAimPoseSegmentOverride &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags32 local_5;
+        this.__DirtyFlags = local_5;
+        this.m_bOverrideEnabled = false;
+        this.m_bEnabled = true;
+        this.m_bOverrideClamp = false;
+        this.m_SegmentPitchMin = -15.0f;
+        this.m_SegmentPitchMax = 15.0f;
+        this.m_SegmentYawMin = -15.0f;
+        this.m_SegmentYawMax = 15.0f;
+        this.m_bOverrideYawClampMode = false;
+        this.m_YawOutOfRangeMode = EAimPoseYawOutOfRangeMode(0);
+        this.m_HysteresisThreshold = 150.0f;
+        this.m_NeutralYaw = 0.0f;
+        this.m_ReturnThreshold = 30.0f;
+        this.m_RecoverThreshold = 15.0f;
+        this.m_bOverrideDamp = false;
+        this.m_bEnableDamp = true;
+        this.m_SpringStrength = 200.0f;
+        this.m_SpringDamping = 0.2f;
+        this.m_bOverrideAnimLocalTarget = false;
+        this.m_AnimLocalTarget = FVector(70.0, 0.0, 100.0);
+        this.m_bOverrideWeight = false;
+        this.m_Weight = 0.0f;
+        this.m_SegmentName = Other.m_SegmentName;
+        this.m_bOverrideEnabled = Other.m_bOverrideEnabled;
+        this.m_bEnabled = Other.m_bEnabled;
+        this.m_bOverrideClamp = Other.m_bOverrideClamp;
+        this.m_SegmentPitchMin = Other.m_SegmentPitchMin;
+        this.m_SegmentPitchMax = Other.m_SegmentPitchMax;
+        this.m_SegmentYawMin = Other.m_SegmentYawMin;
+        this.m_SegmentYawMax = Other.m_SegmentYawMax;
+        this.m_bOverrideYawClampMode = Other.m_bOverrideYawClampMode;
+        this.m_YawOutOfRangeMode = Other.m_YawOutOfRangeMode;
+        this.m_HysteresisThreshold = Other.m_HysteresisThreshold;
+        this.m_NeutralYaw = Other.m_NeutralYaw;
+        this.m_ReturnThreshold = Other.m_ReturnThreshold;
+        this.m_RecoverThreshold = Other.m_RecoverThreshold;
+        this.m_bOverrideDamp = Other.m_bOverrideDamp;
+        this.m_bEnableDamp = Other.m_bEnableDamp;
+        this.m_SpringStrength = Other.m_SpringStrength;
+        this.m_SpringDamping = Other.m_SpringDamping;
+        this.m_bOverrideAnimLocalTarget = Other.m_bOverrideAnimLocalTarget;
+        this.m_AnimLocalTarget = Other.m_AnimLocalTarget;
+        this.m_bOverrideWeight = Other.m_bOverrideWeight;
+        this.m_Weight = Other.m_Weight;
+        return;
     }
     FAimPoseSegmentOverride opAssign(const FAimPoseSegmentOverride &inout Other)
     {

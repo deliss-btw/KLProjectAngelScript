@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_SkillInfo_Mon_Controlable
 {
     const int ModelId = 0;
@@ -47,12 +46,12 @@ struct FVMS_SkillInfo_Mon_Controlable : FEUIViewModelSingleton
     }
     void PostConstruct()
     {
-        this.SetVM_SkillQButton(FEUIModelRef());
+        this.SetVM_SkillQButton(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
         Get local_6;
         local_6.opCall().SetSkillProgressType(ESkillProgressType(0));
-        this.SetVM_SkillEButton(FEUIModelRef());
+        this.SetVM_SkillEButton(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
         local_6.opCall().SetSkillProgressType(ESkillProgressType(0));
-        this.SetVM_UltraSkillButton(FEUIModelRef());
+        this.SetVM_UltraSkillButton(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
         local_6.opCall().SetSkillProgressType(ESkillProgressType(2));
         local_6.opCall().SetSkillButtonType(ESkillButtonType(2));
         return;

@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_PVP_TDM_HUD
 {
     const int ModelId = 0;
@@ -28,7 +27,6 @@ struct FPVP_TDM_KDAEntry
     int DamageDealt = 0;
     UPROPERTY()
     int DamageTaken = 0;
-
 
 }
 
@@ -310,7 +308,7 @@ struct FVMS_PVP_TDM_HUD : FEUIViewModelSingleton
         }
         if (TeamId == 0)
         {
-            this.SetLocalPlayerTeamDisplayText(FText::FromString("вЂ”"));
+            this.SetLocalPlayerTeamDisplayText(FText::FromString("—"));
             return;
         }
         this.SetLocalPlayerTeamDisplayText(FText::FromString((FString("Team ") + String::Conv_IntToString(TeamId))));
@@ -357,19 +355,19 @@ struct FVMS_PVP_TDM_HUD : FEUIViewModelSingleton
         }
         if (Winner == -1)
         {
-            this.SetMatchEndWinnerAnnouncementText(FText::FromString("е№іе±Ђ!"));
+            this.SetMatchEndWinnerAnnouncementText(FText::FromString("平局!"));
         }
         else
         {
             if (Winner == 1)
             {
-                this.SetMatchEndWinnerAnnouncementText(FText::FromString("Team 1 иЋ·иѓњ!"));
+                this.SetMatchEndWinnerAnnouncementText(FText::FromString("Team 1 获胜!"));
             }
             else
             {
                 if (Winner == 2)
                 {
-                    this.SetMatchEndWinnerAnnouncementText(FText::FromString("Team 2 иЋ·иѓњ!"));
+                    this.SetMatchEndWinnerAnnouncementText(FText::FromString("Team 2 获胜!"));
                 }
                 else
                 {
@@ -465,9 +463,9 @@ struct FVMS_PVP_TDM_HUD : FEUIViewModelSingleton
         }
         if (!(local_46.IsValid()) || (local_68.Num() == 0))
         {
-            this.SetMatchEndMVPPlayerNameText(FText::FromString("вЂ”"));
+            this.SetMatchEndMVPPlayerNameText(FText::FromString("—"));
             this.SetMatchEndMVPKills(0);
-            this.SetMatchEndMVPSummaryText(FText::FromString("MVP: вЂ”"));
+            this.SetMatchEndMVPSummaryText(FText::FromString("MVP: —"));
             return;
         }
         FString local_42_2 = ::FASCommonUtils::GetPlayerName(local_46).ToString();
@@ -486,7 +484,7 @@ struct FVMS_PVP_TDM_HUD : FEUIViewModelSingleton
         }
         this.SetMatchEndMVPPlayerNameText(FText::FromString(local_42_2));
         this.SetMatchEndMVPKills(local_7);
-        FString local_34_2 = (((FString("MVP: ") + local_42_2) + " вЂ” ") + String::Conv_IntToString(local_7));
+        FString local_34_2 = (((FString("MVP: ") + local_42_2) + " — ") + String::Conv_IntToString(local_7));
         local_38 = (local_34_2 + " Kills");
         this.SetMatchEndMVPSummaryText(FText::FromString(local_38));
         return;
@@ -588,11 +586,11 @@ struct FVMS_PVP_TDM_HUD : FEUIViewModelSingleton
             {
                 if (local_158.PlayerIdText.IsEmpty())
                 {
-                    local_176 = "зЋ©е®¶";
+                    local_176 = "玩家";
                 }
                 else
                 {
-                    local_176 = FString().Append("зЋ©е®¶ ").Append(local_158.PlayerIdText);
+                    local_176 = FString().Append("玩家 ").Append(local_158.PlayerIdText);
                 }
                 local_158.PlayerName = local_176;
             }
@@ -765,7 +763,7 @@ struct FVMS_PVP_TDM_HUD : FEUIViewModelSingleton
         this.SetBrawlPrepEndTime(Data.GetPrepEndTime());
         if (this.GetbInBrawlPrepStage())
         {
-            this.SetBrawlPrepStageText(FText::FromString("е‡†е¤‡й¶ж®µ"));
+            this.SetBrawlPrepStageText(FText::FromString("准备阶段"));
         }
         else
         {
@@ -799,21 +797,21 @@ struct FVMS_PVP_TDM_HUD : FEUIViewModelSingleton
         {
         case 0:
         {
-            this.SetRoundStageText(FText::FromString("е‡†е¤‡й¶ж®µ"));
+            this.SetRoundStageText(FText::FromString("准备阶段"));
             this.SetRoundStageEndTime(Data.GetRoundPrepEndTime());
             this.SetbRoundStageHintVisible(true);
             break;
         }
         case 1:
         {
-            this.SetRoundStageText(FText::FromString("ж€ж–—й¶ж®µ"));
+            this.SetRoundStageText(FText::FromString("战斗阶段"));
             this.SetRoundStageEndTime(Data.GetRoundCombatEndTime());
             this.SetbRoundStageHintVisible(false);
             break;
         }
         case 2:
         {
-            this.SetRoundStageText(FText::FromString("з­‰еѕ…дё‹дёЂе›ћеђ€ејЂе§‹"));
+            this.SetRoundStageText(FText::FromString("等待下一回合开始"));
             this.SetRoundStageEndTime(Data.GetRoundIntermissionEndTime());
             this.SetbRoundStageHintVisible(true);
             break;
@@ -830,19 +828,19 @@ struct FVMS_PVP_TDM_HUD : FEUIViewModelSingleton
         this.SetbRoundResultVisible(Data.GetRoundWinnerTeamId() != 0 && !(local_24));
         if (Data.GetRoundWinnerTeamId() == -1)
         {
-            this.SetRoundResultText(FText::FromString("е№іе±Ђ!"));
+            this.SetRoundResultText(FText::FromString("平局!"));
         }
         else
         {
             if (Data.GetRoundWinnerTeamId() == 1)
             {
-                this.SetRoundResultText(FText::FromString("Team 1 иЋ·еѕ—1е€†!"));
+                this.SetRoundResultText(FText::FromString("Team 1 获得1分!"));
             }
             else
             {
                 if (Data.GetRoundWinnerTeamId() == 2)
                 {
-                    this.SetRoundResultText(FText::FromString("Team 2 иЋ·еѕ—1е€†!"));
+                    this.SetRoundResultText(FText::FromString("Team 2 获得1分!"));
                 }
                 else
                 {
@@ -983,7 +981,7 @@ struct FVMS_PVP_TDM_HUD : FEUIViewModelSingleton
     }
     void RefreshBackToCityRemainTimeText()
     {
-        this.SetBackToCityRemainTimeText(FText::FromString(FString().Append(int((FFPTime(this.GetMatchEndAutoHideAt()) - this.GetContext().Time).ToSeconds())).Append("sеђЋиї”е›ћдё»еџЋ")));
+        this.SetBackToCityRemainTimeText(FText::FromString(FString().Append(int((FFPTime(this.GetMatchEndAutoHideAt()) - this.GetContext().Time).ToSeconds())).Append("s后返回主城")));
         return;
     }
     void OnBackToCityPressed()
@@ -2173,7 +2171,13 @@ void __TickMatchHUD(FVMS_PVP_TDM_HUD &inout Model)
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorPVP_TDM_ScoreDataLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPVP_TDM_ScoreDataModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPVP_TDM_RoundDataLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPVP_TDM_RoundDataModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorGameMode_ScoreDataLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorGameMode_ScoreDataModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __UIGetter_Team1Kills(const FVMS_PVP_TDM_HUD &inout Model)
 {

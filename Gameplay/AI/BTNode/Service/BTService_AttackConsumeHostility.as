@@ -1,11 +1,9 @@
-﻿
-
 class UBTService_AttackConsumeHostility : UBTService_ECSScriptBase
 {
     UPROPERTY()
     float32 ConsumeAmount;
 
-    default SetNodeName("ж¶€иЂ—д»‡жЃЁеЂј");
+    default SetNodeName("消耗仇恨值");
 
     UBTService_AttackConsumeHostility()
     {

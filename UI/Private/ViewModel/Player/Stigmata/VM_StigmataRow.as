@@ -1,4 +1,3 @@
-﻿
 namespace FVM_StigmataRow
 {
     const int ModelId = 0;
@@ -24,15 +23,41 @@ struct FVM_StigmataRow : FEUIViewModel
 
     FVM_StigmataRow()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_StigmataLevel = 0;
+        this.m_NextRowLevel = INDEX_NONE;
+        this.m_bHasNextRow = true;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        XError(ELog(17), "Should not construct model'FVM_StigmataRow' by default constructor.");
+        return;
     }
     FVM_StigmataRow(const FVM_StigmataRow &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_StigmataLevel = 0;
+        this.m_NextRowLevel = INDEX_NONE;
+        this.m_bHasNextRow = true;
+        this.m_StigmataLevel = int(Other.m_StigmataLevel);
+        this.m_PlayerLevel = Other.m_PlayerLevel;
+        this.m_LeftItems = Other.m_LeftItems;
+        this.m_RightItems = Other.m_RightItems;
+        this.m_FakeItems = Other.m_FakeItems;
+        this.m_NextRowLevel = int(Other.m_NextRowLevel);
+        this.m_bHasNextRow = Other.m_bHasNextRow;
+        return;
     }
     FVM_StigmataRow(const int InStigmataLevel)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_StigmataLevel = 0;
+        this.m_NextRowLevel = INDEX_NONE;
+        this.m_bHasNextRow = true;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        this.SetStigmataLevel(InStigmataLevel);
+        return;
     }
     FVM_StigmataRow opAssign(const FVM_StigmataRow &inout Other)
     {
@@ -291,7 +316,6 @@ struct __GeneratedProperties_FVM_StigmataRow
     int ReachStatus;
     UPROPERTY()
     TEUIModelRef<FVM_StigmataRow> Self;
-
 
 }
 

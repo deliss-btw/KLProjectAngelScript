@@ -1,10 +1,7 @@
-﻿
-
 struct FESMActionGravityScaleInstanceData
 {
     UPROPERTY()
     float32 OriginGravityScale = 1.0f;
-
 
 }
 
@@ -12,7 +9,6 @@ class UESMAction_GravityScale : UESMBPBaseSpanAction
 {
     UPROPERTY()
     float32 GravityScale = 1.0f;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const

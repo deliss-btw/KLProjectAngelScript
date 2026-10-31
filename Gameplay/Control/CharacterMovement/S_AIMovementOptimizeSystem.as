@@ -1,5 +1,3 @@
-﻿
-
 class US_AIMovementOptimizeSystem : UECSScriptSystem
 {
     UPROPERTY()
@@ -7,11 +5,17 @@ class US_AIMovementOptimizeSystem : UECSScriptSystem
     float32 VisualCastGroundOffsetDistance = 1000.0f;
     float32 VisualTransformBlendDuration = 2.5f;
 
-
     bool FindGround(const FECSEntity &inout Entity, const FC_Collision &inout Collision, const FVector &inout EntityPosition, FHitResult &inout HitResult) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
-        bool __r; return __r;
+        float32 local_1;
+        local_1 = Collision.GetScaledHalfHeight();
+        FVector local_14 = FVector(0.0, 0.0, local_1);
+        FVector local_26 = (EntityPosition + local_14);
+        FVector local_14_2 = (EntityPosition - FVector(0.0, 0.0, (local_1 + this.VisualCastGroundOffsetDistance)));
+        FCollisionQueryParams local_70;
+        local_70.bTraceComplex = false;
+        FCollisionResponseParams local_79;
+        return FPhysicsUtils::LineTraceSingle(Entity, false, EPhysicsTraceTag(34), HitResult, local_26, local_14_2, ECollisionChannel(18), local_70, local_79);
     }
     void MarkColtrollerImportant(const FECSEntity &inout Entity, const bool bImportant) const
     {

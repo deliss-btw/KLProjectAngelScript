@@ -1,4 +1,3 @@
-﻿
 namespace PlayerDataIsOnlineDbg
 {
     const FConsoleVariable CVar_LogIsOnlineWrite = FConsoleVariable();
@@ -151,7 +150,7 @@ struct FMS_PlayerDSData : FEUIModelSingleton
             FM_PlayerDSInfo& local_8 = ::FM_PlayerDSInfo::Create(this.GetContext().Manager, PlayerEntity);
             local_8.SetOwnerPlayer(TEUIModelWeakRef<FM_Player>());
             this.GetModify_PlayerDSInfoMap().Add(PlayerId, TEUIModelRef<FM_PlayerDSInfo>(local_8));
-            int local_5 = 1;
+            bool local_5 = true;
             GetModify_IsOnlineAttr().Set(EPlayerInfoTrust(3), local_5);
         }
         return;
@@ -264,7 +263,7 @@ struct FMS_PlayerData : FEUIModelSingleton
         local_8.GetModify_GenderAttr().Set(EPlayerInfoTrust(2), EGenderType(1));
         int local_1 = OnlinePlayerInfo.GetCurAvatarId();
         GetDataObjectByGSDataId<FAvatarPrefabConfig> local_40;
-        local_40;
+        local_8.GetModify_CurrentAvatarAttr().Set(EPlayerInfoTrust(2), local_40.opImplConv());
         if (::PlayerDataIsOnlineDbg::Enabled())
         {
             ::PlayerDataIsOnlineDbg::Emit(FString().Append("Source=GSData Uid=").Append(OnlinePlayerInfo.GetUid()).Append(" Trust=Reliable IsOnline=").Append(OnlinePlayerInfo.GetIsOnline()));
@@ -272,7 +271,7 @@ struct FMS_PlayerData : FEUIModelSingleton
         local_8.GetModify_IsOnlineAttr().Set(EPlayerInfoTrust(2), OnlinePlayerInfo.GetIsOnline());
         int local_1_2 = OnlinePlayerInfo.GetDivineSkillId();
         GetDataObjectByGSDataId<FDivineSkillConfig> local_90;
-        local_90;
+        local_8.GetModify_DivineSkillAttr().Set(EPlayerInfoTrust(2), local_90.opImplConv());
         if (OnlinePlayerInfo.GetLevel() > 0)
         {
             local_8.GetModify_LevelAttr().Set(EPlayerInfoTrust(2), OnlinePlayerInfo.GetLevel());
@@ -296,19 +295,17 @@ struct FMS_PlayerData : FEUIModelSingleton
         }
         int local_3 = PbPlayerInfo.GetCurAvatarId();
         GetDataObjectByGSDataId<FAvatarPrefabConfig> local_40;
-        local_40;
+        local_10.GetModify_CurrentAvatarAttr().Set(EPlayerInfoTrust(2), local_40.opImplConv());
         if (::PlayerDataIsOnlineDbg::Enabled())
         {
-            PbPlayerInfo.GetNickname();
-            int local_2_3 = 2;
+            int local_2_2 = 2;
             int local_3_2 = PbPlayerInfo.GetUid();
-            FString local_68;
-            ::PlayerDataIsOnlineDbg::Emit(FString().Append("Source=Brief-Pb(unconditional) Uid=").Append(local_3_2).Append(" Trust=").Append(local_2_3).Append(" IsOnline=").Append(PbPlayerInfo.GetIsOnline()).Append(" Nickname=").Append(local_68));
+            ::PlayerDataIsOnlineDbg::Emit(FString().Append("Source=Brief-Pb(unconditional) Uid=").Append(local_3_2).Append(" Trust=").Append(local_2_2).Append(" IsOnline=").Append(PbPlayerInfo.GetIsOnline()).Append(" Nickname=").Append(PbPlayerInfo.GetNickname()));
         }
         local_10.GetModify_IsOnlineAttr().Set(EPlayerInfoTrust(2), PbPlayerInfo.GetIsOnline());
         int local_3_3 = PbPlayerInfo.GetDivineSkillId();
         GetDataObjectByGSDataId<FDivineSkillConfig> local_94;
-        local_94;
+        local_10.GetModify_DivineSkillAttr().Set(EPlayerInfoTrust(2), local_94.opImplConv());
         if (PbPlayerInfo.GetLevel() > 0)
         {
             local_10.GetModify_LevelAttr().Set(EPlayerInfoTrust(2), PbPlayerInfo.GetLevel());
@@ -318,8 +315,38 @@ struct FMS_PlayerData : FEUIModelSingleton
     }
     TEUIModelRef<FM_Player> UpdateOrCreateByBriefInfo(const FPlayerBriefInfo &inout BriefInfo, const EPlayerInfoTrust Trust = EPlayerInfoTrust::Reliable)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
-        TEUIModelRef<FM_Player> __r; return __r;
+        FM_Player& local_8;
+        TEUIModelRef<FM_Player> local_4 = this.GetOrCreatePlayerData(BriefInfo.GetUid());
+        if (BriefInfo.IsNicknameSet())
+        {
+            local_8.GetModify_NickNameAttr().Set(EPlayerInfoTrust(Trust), BriefInfo.GetNickname());
+        }
+        if (BriefInfo.IsCurAvatarIdSet())
+        {
+            int local_1 = BriefInfo.GetCurAvatarId();
+            GetDataObjectByGSDataId<FAvatarPrefabConfig> local_38;
+            local_8.GetModify_CurrentAvatarAttr().Set(EPlayerInfoTrust(Trust), local_38.opImplConv());
+        }
+        if (BriefInfo.IsLevelSet())
+        {
+            local_8.GetModify_LevelAttr().Set(EPlayerInfoTrust(Trust), BriefInfo.GetLevel());
+        }
+        if (BriefInfo.IsOnlineStateSet())
+        {
+            if (::PlayerDataIsOnlineDbg::Enabled())
+            {
+                ::PlayerDataIsOnlineDbg::Emit(FString().Append("Source=Brief Uid=").Append(BriefInfo.GetUid()).Append(" Trust=").Append(Trust).Append(" IsOnline=").Append(BriefInfo.GetbIsOnline()));
+            }
+            local_8.GetModify_IsOnlineAttr().Set(EPlayerInfoTrust(Trust), BriefInfo.GetbIsOnline());
+        }
+        if (BriefInfo.IsDivineSkillIdSet())
+        {
+            int local_1_2 = BriefInfo.GetDivineSkillId();
+            GetDataObjectByGSDataId<FDivineSkillConfig> local_88;
+            local_8.GetModify_DivineSkillAttr().Set(EPlayerInfoTrust(Trust), local_88.opImplConv());
+        }
+        this.UpdateGSInfoCacheFromBrief(BriefInfo);
+        return local_4;
     }
     FPlayerFullInfo GetCachedPlayerInfo(const uint Uid) const
     {
@@ -617,7 +644,9 @@ void __OnPlayerEntitySummaryChanged(FMS_PlayerDSData &inout Model, const FECSEnt
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorPlayerEntitySummaryLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerEntitySummaryModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_PlayerDSInfoMap()
 {
@@ -657,7 +686,9 @@ void __OnLocalPlayerEntityChanged(FMS_PlayerData &inout Model, const FECSEntity 
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    ECSWorld.__MonitorPlayerControllerLifetime(EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    ECSWorld.__MonitorPlayerControllerModification(EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_PlayerDataMap()
 {

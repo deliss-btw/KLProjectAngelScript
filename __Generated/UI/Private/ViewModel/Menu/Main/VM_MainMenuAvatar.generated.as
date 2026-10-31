@@ -1,5 +1,3 @@
-﻿
-
 struct FConfigVM_MainMenuAvatar : FConfigEUIModelBase
 {
     UPROPERTY()
@@ -13,11 +11,10 @@ struct FConfigVM_MainMenuAvatar : FConfigEUIModelBase
 
 struct FSimpleEntryClick : FEUIModelDelegate
 {
-    FEUIModelDelegate _base_FEUIModelDelegate;
+    FEUIModelDelegate _base_FEUIModelDelegate = FEUIModelDelegate("bool", "FEUIModelRef");
 
     FSimpleEntryClick()
     {
-        FEUIModelDelegate local_26 = FEUIModelDelegate("bool", "FEUIModelRef");
         return;
     }
     bool Execute(const FEUIModelRef &inout Arg0) const
@@ -34,22 +31,21 @@ struct FSimpleEntryClick : FEUIModelDelegate
 
 struct FOnHoverEquipSlotChanged : FEUIModelDelegate
 {
-    FEUIModelDelegate _base_FEUIModelDelegate;
+    FEUIModelDelegate _base_FEUIModelDelegate = FEUIModelDelegate("bool", "int32");
 
     FOnHoverEquipSlotChanged()
     {
-        FEUIModelDelegate local_26 = FEUIModelDelegate("bool", "int32");
         return;
     }
     bool Execute(const int Arg0) const
     {
         Z__CastTemplate local_4;
-        return local_4.opCall().Execute();
+        return local_4.opCall().Execute(Arg0);
     }
     bool ExecuteIfBound(const int Arg0, bool &inout OutResult) const
     {
         Z__CastTemplate local_4;
-        return local_4.opCall().ExecuteIfBound(OutResult);
+        return local_4.opCall().ExecuteIfBound(Arg0, OutResult);
     }
 }
 

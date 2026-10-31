@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TalentSkillItem
 {
     const int ViewID = 0;
@@ -26,7 +25,6 @@ class UWidget_TalentSkillItem : UEUIUserWidget
     FGetEUIModelRef SelectableItemDelegate;
     UPROPERTY()
     FGetEUIModelRef SkillIconDelegate;
-
 
     UFUNCTION()
     void PreConstruct_Implementation(const bool IsDesignTime)
@@ -150,6 +148,7 @@ namespace UWidget_TalentSkillItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TalentSkillItem;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSkillBtnBigStateChanged"));
     return;
 }

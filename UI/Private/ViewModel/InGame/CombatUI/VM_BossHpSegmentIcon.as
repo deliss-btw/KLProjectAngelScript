@@ -1,4 +1,3 @@
-﻿
 namespace FVM_BossHpSegmentIcon
 {
     const int ModelId = 0;

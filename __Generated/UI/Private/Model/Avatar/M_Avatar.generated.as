@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_EditAvatarScope_Helpers
 {
 UFUNCTION()

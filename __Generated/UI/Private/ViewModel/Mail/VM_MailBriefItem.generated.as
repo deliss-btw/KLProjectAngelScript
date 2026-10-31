@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_MailBriefItem_Helpers
 {
 UFUNCTION()

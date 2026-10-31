@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_RootMotion : UESMRootMotionAction
 {
     UESMAction_RootMotion()

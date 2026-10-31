@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: UBTDecorator_CheckSpecialToken (default scalar field UBTDecorator.FlowAbortMode has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
-
 class UBTDecorator_CheckSpecialToken : UBTDecorator_ECSScriptBase
 {
     UPROPERTY()
@@ -37,7 +32,29 @@ class UBTDecorator_CheckSpecialToken : UBTDecorator_ECSScriptBase
     UFUNCTION()
     void OnNodeActivation_Implementation(const FAIBehaviorTreeSearchContext &inout SearchContext) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        Modify local_4;
+        FC_AICombatKnowledge& local_6 = local_4.opCall();
+        if (local_6)
+        {
+            local_6.SpecialToken.bIsInUsing = true;
+            if (!(this.StorageTokenSource.SelectedKeyName.IsNone()))
+            {
+                SearchContext.GetBlackboardComponent().SetValueAsEntityId(this.StorageTokenSource.SelectedKeyName, local_6.SpecialTokenSource);
+            }
+            if (this.StorageParams.Num() > 0)
+            {
+                for (auto& local_28 : this.StorageParams)
+                {
+                    FAISpecialCombatTokenConfig local_14;
+                    int local_12 = local_14.GetParamIndex(local_28.Name);
+                    if (local_12 != INDEX_NONE)
+                    {
+                        FAISmart_AnyBlackboardValueCopier::WriteValueToDest(SearchContext.opImplConv(), local_6.ParamValues[local_12], SearchContext.opImplConv(), local_28.TargetValue);
+                    }
+                }
+            }
+        }
+        return;
     }
     UFUNCTION()
     void OnNodeDeactivation_Implementation(const FAIBehaviorTreeSearchContext &inout SearchContext, const EBTNodeResult NodeResult) const

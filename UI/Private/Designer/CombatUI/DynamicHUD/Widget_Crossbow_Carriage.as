@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_Crossbow_Carriage
 {
     const int ViewID = 0;
@@ -15,7 +14,6 @@ class UWidget_Crossbow_Carriage : UEUIUserWidget
     UPROPERTY()
     bool bCrosshairMuted = false;
     FEUIModelWeakRef __LinkSillEnergy;
-
 
     UFUNCTION()
     void OnSmoothedEnergyChanged(const float32 InSmoothedRatio)
@@ -128,6 +126,7 @@ namespace UWidget_Crossbow_Carriage
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_Crossbow_Carriage;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSmoothedEnergyChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnEnergyChanged"));
     return;

@@ -1,4 +1,3 @@
-﻿
 namespace FMS_GameServerStatus
 {
     const int ModelId = 0;

@@ -1,5 +1,3 @@
-﻿
-
 class USPT_Canidae_LookAt : USPT_Canidae_FootIK_Base
 {
     UPROPERTY()

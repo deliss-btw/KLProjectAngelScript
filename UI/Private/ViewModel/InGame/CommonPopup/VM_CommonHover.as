@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonHoverContent
 {
     const int ModelId = 0;
@@ -9,9 +8,6 @@ namespace FVM_CommonHover
 {
     const int ModelId = 0;
     const FEUIModelCallbackSignature CloseHover = FEUIModelCallbackSignature();
-
-// NOTE: class defaults are not authored in this module: FVM_CommonHover (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
 
 }
 struct FVM_CommonHoverContent : FEUIViewModel
@@ -267,8 +263,7 @@ struct FVM_CommonHover : FEUIViewModel
             local_6.SetParentHoverHandle(this.GetParentHoverHandle());
             return;
         }
-        FEUIModelRef local_10;
-        this.GetModify_ContentModels().AddModel(local_10, false);
+        this.GetModify_ContentModels().AddModel(FEUIModelRef(::FVM_CommonHoverContent::Create(this.GetContext().Manager, this.GetHoverHandle(), this.GetParentHoverHandle())), false);
         return;
     }
     bool SupportsChainNavigation() const
@@ -283,8 +278,7 @@ struct FVM_CommonHover : FEUIViewModel
             local_6.RequestEnterByChainNavigation();
             return;
         }
-        FEUIModelRef local_10;
-        this.GetModify_ContentModels().AddModel(local_10, false);
+        this.GetModify_ContentModels().AddModel(FEUIModelRef(::FVM_CommonHoverContent::Create(this.GetContext().Manager, this.GetHoverHandle(), this.GetParentHoverHandle())), false);
         FVM_CommonHoverContent& local_6_2 = FEUIModelContainer::GetModel(this.GetContentModels()).opCall();
         if (local_6_2)
         {
@@ -303,7 +297,18 @@ struct FVM_CommonHover : FEUIViewModel
     }
     void SyncPinnedCloseScope()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        this.UnregisterPinnedCloseScopeOnly();
+        if (!(this.GetbOwnerWidgetBound()) || (int(this.GetOutsideCloseMode()) != 2))
+        {
+            return;
+        }
+        FEUIWidgetRef local_8;
+        if (this.GetParentHoverHandle().IsValid())
+        {
+            local_8 = this.GetParentHoverHandle().WidgetRef;
+        }
+        this.PinnedCloseScopeHandle = FEUICloseScope::RegisterForWidgetWithCloseCommand(this.GetOwnerWidget(), true, false, !(this.GetParentHoverHandle().IsValid()), local_8, this.GetCloseScopeInsideWidget(), FEUIModelDelegateHelper::BindModelDelegate_FSimpleDelegate(this, n"CloseHoverFromCloseScope"), false);
+        return;
     }
     void UnregisterPinnedCloseScopeOnly()
     {

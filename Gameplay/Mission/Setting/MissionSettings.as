@@ -1,5 +1,3 @@
-﻿
-
 class UMissionSettings : UGameplaySettingsBase
 {
     UPROPERTY()

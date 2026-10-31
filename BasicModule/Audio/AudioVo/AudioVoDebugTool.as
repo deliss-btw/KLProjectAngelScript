@@ -1,5 +1,3 @@
-﻿
-
 class UAudioVoDebugTool : UKLConsoleCommandLibrary
 {
     default Category = n"Dev";

@@ -1,4 +1,3 @@
-﻿
 namespace FMS_SystemControl
 {
     const int ModelId = 0;
@@ -10,7 +9,6 @@ struct FWidgetTagSystemControlIndexer
     uint16 Num;
     UPROPERTY()
     uint16 Index;
-
 
 }
 
@@ -315,8 +313,21 @@ struct FMS_SystemControl : FEUIModelSingleton
     }
     bool IsWidgetLocked(const FGameplayTag &inout WidgetTag) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        bool __r; return __r;
+        TConstRawPtr<FWidgetTagSystemControlIndexer> local_4 = this.GetWidgetTagSystemControlIndexer().Find(WidgetTag);
+        if (local_4)
+        {
+            int local_6;
+            int local_7 = local_4.opArrow().Index;
+            local_6 = local_7;
+            for (; local_6 < local_4.opArrow().Num; ++local_6)
+            {
+                if (this.IsSystemDataIdDisabled(this.GetWidgetTagSystemControls()[local_6]))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     void GS_OnSystemControlAllNotify(const FPbSystemControlAllNotify &inout Notify)
     {
@@ -361,7 +372,7 @@ struct FMS_SystemControl : FEUIModelSingleton
     }
     void GS_OnSystemControlOpenNotify(const FPbSystemControlOpenNotify &inout Notify)
     {
-        // body not fully recovered вЂ” stub [unresolved-operand]
+        // body not fully recovered — stub [unresolved-operand]
     }
     void GS_OnSystemControlLimitNotify(const FPbSystemControlLimitNotify &inout Notify)
     {
@@ -406,7 +417,7 @@ struct FMS_SystemControl : FEUIModelSingleton
     }
     void OnLBPEnableSystemControl(const FCE_LBPEnableSystemControl &inout Event)
     {
-        // body not fully recovered вЂ” stub [unresolved-operand]
+        // body not fully recovered — stub [unresolved-operand]
     }
     void HandleOnCreateWidgetLocked(const FMsg_OnCreateWidgetLocked &inout Result)
     {

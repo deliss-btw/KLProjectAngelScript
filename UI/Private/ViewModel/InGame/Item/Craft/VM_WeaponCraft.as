@@ -1,4 +1,3 @@
-﻿
 namespace FVM_WeaponCraftCategory
 {
     const int ModelId = 0;
@@ -233,7 +232,7 @@ struct FVM_WeaponCraft : FEUIViewModel
     void Setup(const TEUIModelRef<FVM_ItemCraft> &inout InItemCraft)
     {
         FVM_ItemCraft& local_10;
-        EWeaponType local_90;
+        int local_85;
         this.SetItemCraft(InItemCraft);
         this.SetCurrentTab(0);
         this.SetCraftDataModel(TEUIModelRef<FMS_Craft>(::FMS_Craft::Get(this.GetContext().Manager)));
@@ -255,10 +254,8 @@ struct FVM_WeaponCraft : FEUIViewModel
         int local_83 = 0;
         for (; local_83 < local_8.Num(); )
         {
-            EWeaponType local_85;
             local_85 = local_8[local_83];
-            ::FASCommonUtils::GetWeaponTypeDisplayName(local_90);
-            this.GetModify_Categories()[local_83] = TEUIModelRef<FVM_WeaponCraftCategory>(::FVM_WeaponCraftCategory::Create(this.GetContext().Manager, local_83, local_90));
+            this.GetModify_Categories()[local_83] = TEUIModelRef<FVM_WeaponCraftCategory>(::FVM_WeaponCraftCategory::Create(this.GetContext().Manager, local_83, EWeaponType(local_85), ::FASCommonUtils::GetWeaponTypeDisplayName(EWeaponType(local_85))));
             FEUIModelWeakRef local_94 = FEUIModelWeakRef(FEUIModelRef(this));
             this.GetModify_Categories()[local_83].opArrow().SetEquipCraft(local_94);
             ++local_83;
@@ -452,7 +449,6 @@ struct __GeneratedProperties_FVM_WeaponCraftCategory
     UPROPERTY()
     TEUIModelRef<FVM_WeaponCraftCategory> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_WeaponCraft
@@ -472,10 +468,9 @@ struct __GeneratedProperties_FVM_WeaponCraft
 
 namespace FVM_WeaponCraftCategory
 {
-FVM_WeaponCraftCategory Create(const UObject ContextObject, const int Index, const EWeaponType WeaponType, const FText &inout DisplayName)
+FVM_WeaponCraftCategory& Create(const UObject ContextObject, const int Index, const EWeaponType WeaponType, const FText &inout DisplayName)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    FVM_WeaponCraftCategory __r; return __r;
+    return FVM_WeaponCraftCategory::CreateByManager(EUIInternal::GetContextManager(ContextObject), Index, EWeaponType(WeaponType), DisplayName);
 }
 FVM_WeaponCraftCategory CreateByManager(const UEUIManagerSubsystem Manager, const int Index, const EWeaponType WeaponType, const FText &inout DisplayName)
 {
@@ -562,7 +557,57 @@ FVM_WeaponCraft CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(true);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "CraftableEquipments";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_CraftableItem>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Categories";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_WeaponCraftCategory>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurrentCraftEquipmentInfo";
+    local_14.TypeName = "TEUIModelRef<FVM_EquipmentInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurrentCraftEquipmentPreview";
+    local_14.TypeName = "FSlateBrush";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_WeaponCraft>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_WeaponCraft;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(6);
+    local_22.AddRefPropertyDirty(0, 0, FVM_ItemCraft::__IndexOf_AllCraftableItems());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("ItemCraft");
+    int local_2_2 = FVM_ItemCraft::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FVM_ItemCraft::__IndexOf_AllCraftableItems(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__RefreshCraftableEquipments";
+    local_40.DirtyFlags.Set(FVM_WeaponCraft::__IndexOf_ItemCraft());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    local_40.DirtyFlags.Set(FVM_WeaponCraft::__IndexOf_CurrentTab());
+    Result.DirtyFunctions.Add(local_40);
+    FEUIModelMsgHandleDefine local_50;
+    local_50.FunctionName = "__ShowCraftResult";
+    local_50.MessageTypeName = "Msg_CraftResult";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

@@ -1,4 +1,3 @@
-﻿
 enum EItemViewModelNumStyle
 {
     Default,
@@ -141,7 +140,7 @@ struct FVM_Item : FEUIViewModel
         FText local_10;
         if (this.GetValidEquipmentModel().IsValid() && GetEquiptingAvatar().IsSet())
         {
-            local_10 = NSLOCTEXT("EquiptingAvatarText", "{0} <Beige20F>иЈ…е¤‡дё­</>");
+            local_10 = NSLOCTEXT("EquiptingAvatarText", "{0} <Beige20F>装备中</>");
             return FText();
         }
         return local_10;
@@ -151,7 +150,7 @@ struct FVM_Item : FEUIViewModel
         FText local_10;
         if (this.GetValidEquipmentModel().IsValid() && GetEquiptingAvatar().IsSet())
         {
-            local_10 = NSLOCTEXT("EquiptingAvatarEquippingText", "{0}иЈ…е¤‡дё­");
+            local_10 = NSLOCTEXT("EquiptingAvatarEquippingText", "{0}装备中");
             return FText();
         }
         return local_10;
@@ -252,7 +251,7 @@ struct FVM_Item : FEUIViewModel
             {
                 int local_2 = ::ItemConfigUtils::GetOwnMax(this.GetItemConfig());
                 int local_3 = ::FMS_PlayerInventory::Get(this.GetContext().Manager).GetTotalItemNum(this.GetItemConfig());
-                local_8 = NSLOCTEXT("ItemPackLimit", "жњЂе¤§жђєеё¦ж•°{0}/{1}");
+                local_8 = NSLOCTEXT("ItemPackLimit", "最大携带数{0}/{1}");
                 return FText::Format(local_8, local_3, local_2);
             }
         }
@@ -284,14 +283,14 @@ struct FVM_Item : FEUIViewModel
     }
     FText GetItemNumRichText() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         FText __r; return __r;
     }
     FText GetItemNumTimesText() const
     {
         FText local_6;
         FText::AsNumber(this.GetNum(), local_6);
-        return FText::Format(INVTEXT("Г—{0}"), local_6);
+        return FText::Format(INVTEXT("×{0}"), local_6);
     }
     FLinearColor GetRarityColor() const
     {
@@ -333,7 +332,7 @@ struct FVM_Item : FEUIViewModel
         {
             return FText();
         }
-        return FText::Format(NSLOCTEXT("ItemOwnNumText", "ж‹Ґжњ‰ {0}"), this.GetItemOwnNum());
+        return FText::Format(NSLOCTEXT("ItemOwnNumText", "拥有 {0}"), this.GetItemOwnNum());
     }
     bool HasBankLimit() const
     {
@@ -592,7 +591,7 @@ struct FVM_ItemIconAdapter : FEUIViewModel
     }
     void SetupFromCommonItem(const TEUIModelRef<FVM_CommonItem> &inout InCommonItem)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     void SetupFromDisplayItem(const TEUIModelRef<FVM_DisplayItem> &inout InDisplayItem)
     {
@@ -832,7 +831,6 @@ struct __GeneratedProperties_FVM_Item
     UPROPERTY()
     TEUIModelRef<FVM_Item> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_ItemIconAdapter
@@ -876,7 +874,187 @@ FVM_Item CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "ItemConfig";
+    local_14.TypeName = "TDataObjectPtr<FItemConfig>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Num";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "OptionalNum";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurEquipItemInfoDetail";
+    local_14.TypeName = "TEUIModelRef<FVM_AvatarEquipmentItemInfoDetail>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsEquiped";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "EquiptingAvatarText";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "EquiptingAvatarTextWithoutColor";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CanShowEquipInfoDetail";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "EquipmentLevelText";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ItemOwnInfoTipsIndex";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CanShowItemInfoTips";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ItemCategory";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ItemIcon";
+    local_14.TypeName = "FSlateBrush";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ItemOwnLimit";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShouldShowNum";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShouldShowOptionalNum";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShouldShowOfMark";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShouldShowRangeMark";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "NumTextColor";
+    local_14.TypeName = "FSlateColor";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ItemNumRichText";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ItemNumTimesText";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "RarityColor";
+    local_14.TypeName = "FLinearColor";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TipRarityImage";
+    local_14.TypeName = "FSlateBrush";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasOwnLimit";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ItemOwnNum";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShouldShowItemOwnNum";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ItemOwnNumText";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasBankLimit";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ItemBankOwnNum";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ItemRarity";
+    local_14.TypeName = "TEUIModelRef<FVM_ItemRarity>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasAtLeastOne";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_Item>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_Item;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(7);
+    local_22.AddRefPropertyDirty(0, 0, FM_ItemData::__IndexOf_Num());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("ItemDataModel");
+    int local_2_2 = FM_ItemData::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FM_ItemData::__IndexOf_Num(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__UpdateNum";
+    local_40.DirtyFlags.Set(FVM_Item::__IndexOf_ItemDataModel());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

@@ -1,4 +1,3 @@
-﻿
 const FMountPrefabConfig DefaultMountConfig = FMountPrefabConfig();
 
 struct FMountPrefabConfig : FBasePrefabConfig
@@ -7,7 +6,6 @@ struct FMountPrefabConfig : FBasePrefabConfig
 
     FMountPrefabConfig()
     {
-        super();
         return;
     }
 }

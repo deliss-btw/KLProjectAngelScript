@@ -1,5 +1,3 @@
-﻿
-
 class US_MovementSystem : UECSScriptSystem
 {
     US_MovementSystem()
@@ -805,7 +803,7 @@ class US_MovementSystem : UECSScriptSystem
     UFUNCTION()
     void Job_TickTrackMovementOverride(const FECSEntity &inout Entity, FC_MovementInfo &inout MovementInfo, const FC_TrackMovementOverride &inout Config, FC_TrackRuntime &inout Track, const FC_Transform &inout Transform, const FCS_FixedTime &inout FixedTime) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     UFUNCTION()
     void Job_TickOrbitMovement(const FECSEntity &inout Entity, FC_MovementInfo &inout MovementInfo, FC_OrbitMovementRuntime &inout Orbit, const FC_Transform &inout Transform, const FCS_FixedTime &inout FixedTime) const
@@ -1329,12 +1327,295 @@ class US_MovementSystem : UECSScriptSystem
     UFUNCTION()
     void Job_EntityHitColliderWithoutRealColliderBeforeTickESM(const FECSEntity &inout Entity, const FC_Transform &inout Transform, FC_EntityHitCollider &inout EntityHitCollider, const FCS_FixedTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_138 = 0;
+        bool local_179;
+        int local_198 = 0;
+        int local_222 = 0;
+        int local_234 = 0;
+        int local_240 = 0;
+        int local_246 = 0;
+        int local_252 = 0;
+        FVector local_6 = Transform.GetPosition();
+        FQuat local_16 = Transform.GetRotation();
+        if (!((local_6 - EntityHitCollider.GetLastPosition()).IsZero()))
+        {
+            bool local_161;
+            FHitResult local_96;
+            FCollisionQueryParams local_134;
+            local_134.bTraceComplex = false;
+            local_134.AddIgnoredEntityId(EntityHitCollider.GetEntity().GetId());
+            local_134.AddIgnoredEntityId(Entity.GetId());
+            if (EntityHitCollider.GetExtraConfig().GetbCollisionCheckIncludeDynamic())
+            {
+                local_138 = 0;
+            }
+            else
+            {
+                local_138 = 1;
+            }
+            for (auto& local_152 : EntityHitCollider.GetExtraConfig().GetAdditionalIgnoreEntityEBBs())
+            {
+                FECSEntity local_160 = Entity.GetBB_Entity(local_152);
+                if (local_160.IsValid())
+                {
+                    local_134.AddIgnoredEntityId(local_160.GetId());
+                }
+            }
+            local_161 = false;
+            if (int(EntityHitCollider.GetExtraConfig().GetPropMovementCollisionCheckMode()) == 1)
+            {
+                if (EntityHitCollider.GetExtraConfig().GetbIncludeOverlapCollisionResponse())
+                {
+                    local_134.bIgnoreTouches = false;
+                    TArray<FHitResult> local_168;
+                    FCollisionResponseParams local_176;
+                    FPhysicsUtils::LineTraceMulti(Entity, true, EPhysicsTraceTag(9), local_168, EntityHitCollider.GetLastPosition(), local_6, EntityHitCollider.GetExtraConfig().GetCollisionChannel(), local_134, local_176);
+                    if (local_168.Num() > 0)
+                    {
+                        local_96 = local_168[0];
+                    }
+                }
+                else
+                {
+                    FCollisionResponseParams local_176;
+                    local_179 = FPhysicsUtils::LineTraceSingle(Entity, true, EPhysicsTraceTag(9), local_96, EntityHitCollider.GetLastPosition(), local_6, EntityHitCollider.GetExtraConfig().GetCollisionChannel(), local_134, local_176);
+                    local_161 = local_179;
+                }
+            }
+            else
+            {
+                if (int(EntityHitCollider.GetExtraConfig().GetPropMovementCollisionCheckMode()) == 0)
+                {
+                    int local_164 = EntityHitCollider.GetExtraConfig().GetObjectTypeMask().GetMask();
+                    FCollisionObjectQueryParams local_181;
+                    local_161 = FPhysicsUtils::LineTraceSingle(Entity, true, EPhysicsTraceTag(9), local_96, EntityHitCollider.GetLastPosition(), local_6, local_181, local_134);
+                }
+            }
+            if (local_161)
+            {
+                this.StopCanonicalPropPredictPathOnAuthoritativeHit(Entity);
+                ::FMovementUtils::ApplyNonPenetrateCorrectionIfNeeded(Entity, EntityHitCollider.GetExtraConfig(), local_96, local_6);
+                if (EntityHitCollider.GetExtraConfig().GetbEndMovementWhenHitScene())
+                {
+                    Modify local_186;
+                    FC_MovementInfo& local_188 = local_186.opCall();
+                    if (local_188)
+                    {
+                        local_188.SetMoveTotalTime(FFPTime(0));
+                    }
+                }
+                int local_164_2 = int(EntityHitCollider.GetExtraConfig().GetHitSceneEventProcessMode());
+                if (local_164_2 <= 1)
+                {
+                    if (local_164_2 != 0)
+                    {
+                        if (local_164_2 != 1)
+                        {
+                        }
+                    }
+                    else
+                    {
+                        bool local_29 = !(local_198);
+                        if (local_29)
+                        {
+                            Remove local_202;
+                            local_202.opCall();
+                            return;
+                        }
+                        FECSEntityId local_215 = FECSEntityId(local_198.GetInstanceEntityId(FSoftClassPath(EntityHitCollider.GetExtraConfig().GetHitSceneAbilityClass().Get())));
+                        if (FECSEntity(local_215).IsValid())
+                        {
+                            FAbilityEffectEventContext& local_228 = FAbilityUtils::CreateAbilityEffectEvent(local_222, EAbilityEffectEvent(0), EntityHitCollider.GetExtraConfig().GetHitSceneEventName(), Time.Time);
+                            FAbilityEffectEventContext::InitializeEventData(local_228);
+                            local_234.SetEntity(Entity);
+                            local_234.SetPosition(local_96.ImpactPoint);
+                        }
+                        if (!(local_240))
+                        {
+                            local_29 = false;
+                        }
+                        else
+                        {
+                            local_29 = local_246;
+                        }
+                        if (!(local_29))
+                        {
+                            local_179 = false;
+                        }
+                        else
+                        {
+                            local_179 = local_252;
+                        }
+                        if (local_179)
+                        {
+                            int local_254 = 0;
+                            for (; local_254 < 8; ++local_254)
+                            {
+                                local_164_2 = 1 << local_254;
+                                local_164_2 = local_164_2 & local_246.GetActivatedIndexMask();
+                                if (local_164_2 != 0 && (local_254 < local_240.PropMovementHitSceneEventFilter.Num()))
+                                {
+                                    const FEventToESMTriggerFilterConfigItem_PropMovementHitSceneEvent& local_260 = local_240.PropMovementHitSceneEventFilter[local_254];
+                                    if (local_260.EvaluateAndTrigger(local_96, Entity))
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return;
+            }
+            EntityHitCollider.SetLastPosition(local_6);
+        }
+        return;
     }
     UFUNCTION()
     void Job_EntityHitColliderWithRealColliderBeforeTickESM(const FECSEntity &inout Entity, const FC_Collision &inout Collision, const FC_Transform &inout Transform, FC_EntityHitCollider &inout EntityHitCollider, const FCS_FixedTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_138 = 0;
+        bool local_183;
+        int local_202 = 0;
+        int local_226 = 0;
+        int local_238 = 0;
+        int local_244 = 0;
+        int local_250 = 0;
+        int local_256 = 0;
+        FVector local_6 = Transform.GetPosition();
+        FQuat local_16 = Transform.GetRotation();
+        if (!((local_6 - EntityHitCollider.GetLastPosition()).IsZero()))
+        {
+            bool local_161;
+            FHitResult local_96;
+            FCollisionQueryParams local_134;
+            local_134.bTraceComplex = false;
+            local_134.AddIgnoredEntityId(EntityHitCollider.GetEntity().GetId());
+            local_134.AddIgnoredEntityId(Entity.GetId());
+            if (EntityHitCollider.GetExtraConfig().GetbCollisionCheckIncludeDynamic())
+            {
+                local_138 = 0;
+            }
+            else
+            {
+                local_138 = 1;
+            }
+            for (auto& local_152 : EntityHitCollider.GetExtraConfig().GetAdditionalIgnoreEntityEBBs())
+            {
+                FECSEntity local_160 = Entity.GetBB_Entity(local_152);
+                if (local_160.IsValid())
+                {
+                    local_134.AddIgnoredEntityId(local_160.GetId());
+                }
+            }
+            local_161 = false;
+            if (int(EntityHitCollider.GetExtraConfig().GetPropMovementCollisionCheckMode()) == 1)
+            {
+                if (EntityHitCollider.GetExtraConfig().GetbIncludeOverlapCollisionResponse())
+                {
+                    local_134.bIgnoreTouches = false;
+                    TArray<FHitResult> local_168;
+                    FCollisionResponseParams local_176;
+                    FPhysicsUtils::SweepMulti(Entity, false, EPhysicsTraceTag(9), local_168, EntityHitCollider.GetLastPosition(), local_6, local_16, EntityHitCollider.GetExtraConfig().GetCollisionChannel(), Collision.GetScaledShape(), local_134, local_176);
+                    if (local_168.Num() > 0)
+                    {
+                        local_96 = local_168[0];
+                    }
+                }
+                else
+                {
+                    FCollisionResponseParams local_176;
+                    local_183 = FPhysicsUtils::SweepSingle(Entity, false, EPhysicsTraceTag(9), local_96, EntityHitCollider.GetLastPosition(), local_6, local_16, EntityHitCollider.GetExtraConfig().GetCollisionChannel(), Collision.GetScaledShape(), local_134, local_176);
+                    local_161 = local_183;
+                }
+            }
+            else
+            {
+                if (int(EntityHitCollider.GetExtraConfig().GetPropMovementCollisionCheckMode()) == 0)
+                {
+                    int local_164 = EntityHitCollider.GetExtraConfig().GetObjectTypeMask().GetMask();
+                    local_161 = FPhysicsUtils::SweepSingle(Entity, false, EPhysicsTraceTag(9), local_96, EntityHitCollider.GetLastPosition(), local_6, local_16, FCollisionObjectQueryParams(), Collision.GetScaledShape(), local_134);
+                }
+            }
+            if (local_161)
+            {
+                this.StopCanonicalPropPredictPathOnAuthoritativeHit(Entity);
+                ::FMovementUtils::ApplyNonPenetrateCorrectionIfNeeded(Entity, EntityHitCollider.GetExtraConfig(), local_96, local_6);
+                if (EntityHitCollider.GetExtraConfig().GetbEndMovementWhenHitScene())
+                {
+                    Modify local_190;
+                    FC_MovementInfo& local_192 = local_190.opCall();
+                    if (local_192)
+                    {
+                        local_192.SetMoveTotalTime(FFPTime(0));
+                    }
+                }
+                int local_164_2 = int(EntityHitCollider.GetExtraConfig().GetHitSceneEventProcessMode());
+                if (local_164_2 <= 1)
+                {
+                    if (local_164_2 != 0)
+                    {
+                        if (local_164_2 != 1)
+                        {
+                        }
+                    }
+                    else
+                    {
+                        bool local_29 = !(local_202);
+                        if (local_29)
+                        {
+                            Remove local_206;
+                            local_206.opCall();
+                            return;
+                        }
+                        FECSEntityId local_219 = FECSEntityId(local_202.GetInstanceEntityId(FSoftClassPath(EntityHitCollider.GetExtraConfig().GetHitSceneAbilityClass().Get())));
+                        if (FECSEntity(local_219).IsValid())
+                        {
+                            FAbilityEffectEventContext& local_232 = FAbilityUtils::CreateAbilityEffectEvent(local_226, EAbilityEffectEvent(0), EntityHitCollider.GetExtraConfig().GetHitSceneEventName(), Time.Time);
+                            FAbilityEffectEventContext::InitializeEventData(local_232);
+                            local_238.SetEntity(Entity);
+                            local_238.SetPosition(local_96.ImpactPoint);
+                        }
+                        if (!(local_244))
+                        {
+                            local_29 = false;
+                        }
+                        else
+                        {
+                            local_29 = local_250;
+                        }
+                        if (!(local_29))
+                        {
+                            local_183 = false;
+                        }
+                        else
+                        {
+                            local_183 = local_256;
+                        }
+                        if (local_183)
+                        {
+                            int local_258 = 0;
+                            for (; local_258 < 8; ++local_258)
+                            {
+                                local_164_2 = 1 << local_258;
+                                local_164_2 = local_164_2 & local_250.GetActivatedIndexMask();
+                                if (local_164_2 != 0 && (local_258 < local_244.PropMovementHitSceneEventFilter.Num()))
+                                {
+                                    const FEventToESMTriggerFilterConfigItem_PropMovementHitSceneEvent& local_264 = local_244.PropMovementHitSceneEventFilter[local_258];
+                                    if (local_264.EvaluateAndTrigger(local_96, Entity))
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return;
+            }
+            EntityHitCollider.SetLastPosition(local_6);
+        }
+        return;
     }
     UFUNCTION()
     void Run_Job_InitMovementInfo_DefaultReg() const

@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PlayerStatusV2
 {
     const int ViewID = 0;
@@ -37,7 +36,6 @@ class UWidget_PlayerStatusV2 : UEUIUserWidget
     bool bLBRevealInitialized = false;
     bool bKeyboardModeApplied = false;
     FEUIModelWeakRef __PlayerStatus;
-
 
     UFUNCTION()
     void OnInitialized_Implementation()
@@ -355,6 +353,7 @@ namespace UWidget_PlayerStatusV2
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PlayerStatusV2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandlePlayerHpBarScaleChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandlePlayerStaminaBarScaleChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandlePlayerPawnIndexChanged"));

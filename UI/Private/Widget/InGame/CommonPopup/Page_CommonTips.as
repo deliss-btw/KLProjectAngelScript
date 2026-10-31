@@ -1,4 +1,3 @@
-﻿
 namespace UPage_CommonTips
 {
     const int ViewID = 0;
@@ -107,6 +106,7 @@ namespace UPage_CommonTips
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UPage_CommonTips;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

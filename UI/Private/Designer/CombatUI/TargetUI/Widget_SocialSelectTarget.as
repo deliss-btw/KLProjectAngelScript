@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_SocialSelectTarget
 {
     const int ViewID = 0;
@@ -53,6 +52,7 @@ namespace UWidget_SocialSelectTarget
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SocialSelectTarget;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

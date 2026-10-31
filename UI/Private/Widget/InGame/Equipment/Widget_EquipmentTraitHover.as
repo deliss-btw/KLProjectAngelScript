@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_EquipmentTraitHoverEntry
 {
     const int ViewID = 0;
@@ -100,6 +99,7 @@ namespace UWidget_EquipmentTraitHoverEntry
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_EquipmentTraitHoverEntry;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -115,6 +115,7 @@ namespace UWidget_EquipmentTraitHover
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_EquipmentTraitHover;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

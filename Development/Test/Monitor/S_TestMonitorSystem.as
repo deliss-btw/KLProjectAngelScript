@@ -1,5 +1,3 @@
-﻿
-
 class US_TestMonitorSystem : UECSScriptSystem
 {
     US_TestMonitorSystem()
@@ -34,8 +32,7 @@ class US_TestMonitorSystem : UECSScriptSystem
         int local_3 = 0;
         if (FixedTime.IsOnInterval(FFPTime(5)))
         {
-            ELog local_12;
-            (FString("TestMonitorSystem ModifySingleton Test0 Modify") + int(local_12));
+            XLog(ELog(0), (FString("TestMonitorSystem ModifySingleton Test0 Modify") + local_3));
             local_3 = local_3 + 1;
             Test0.SetValue(local_3);
         }
@@ -59,22 +56,21 @@ class US_TestMonitorSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_ClientTestMonitor0Modify(const FCS_TestMonitor0 &inout Test0) const
     {
-        ELog local_10;
-        (FString("TestMonitorSystem TestMonitor0 Modify") + int(local_10));
+        XLog(ELog(0), (FString("TestMonitorSystem TestMonitor0 Modify") + 0));
         return;
     }
     UFUNCTION()
     void Monitor_TestMonitor2NotSyncAssign(const FCS_TestMonitor2NotSync &inout Test0) const
     {
-        ELog local_8;
-        (FString("TestMonitorSystem TestMonitor2NotSync ") + local_8);
+        FString local_8 = (FString("TestMonitorSystem TestMonitor2NotSync ") + this.GetECSRuntime().IsServer);
+        XLog(ELog(0), local_8);
         return;
     }
     UFUNCTION()
     void Monitor_ServerTestMonitor2NotSyncAssign(const FCS_TestMonitor2NotSync &inout Test0) const
     {
-        ELog local_8;
-        (FString("TestMonitorSystem TestMonitor2NotSync ") + local_8);
+        FString local_8 = (FString("TestMonitorSystem TestMonitor2NotSync ") + this.GetECSRuntime().IsServer);
+        XLog(ELog(0), local_8);
         return;
     }
     UFUNCTION()
@@ -116,7 +112,7 @@ class US_TestMonitorSystem : UECSScriptSystem
     {
         int local_24 = 0;
         ECS::GetContextJob();
-        if (ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_TestMonitor0, EECSRegType(0), false, true).bIsMonitored)
+        if (int(ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_TestMonitor0, EECSRegType(0), false, true).bIsMonitored) != 0)
         {
             this.Monitor_ClientTestMonitor0Assign(local_24);
         }
@@ -127,7 +123,7 @@ class US_TestMonitorSystem : UECSScriptSystem
     {
         int local_24 = 0;
         ECS::GetContextJob();
-        if (ECSInternal::GetMonitorSingletonOnModify(this.GetECSWorld(), FCS_TestMonitor0, EECSRegType(0), false, true).bIsMonitored)
+        if (int(ECSInternal::GetMonitorSingletonOnModify(this.GetECSWorld(), FCS_TestMonitor0, EECSRegType(0), false, true).bIsMonitored) != 0)
         {
             this.Monitor_ClientTestMonitor0Modify(local_24);
         }
@@ -138,7 +134,7 @@ class US_TestMonitorSystem : UECSScriptSystem
     {
         int local_24 = 0;
         ECS::GetContextJob();
-        if (ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_TestMonitor2NotSync, EECSRegType(0), false, true).bIsMonitored)
+        if (int(ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_TestMonitor2NotSync, EECSRegType(0), false, true).bIsMonitored) != 0)
         {
             this.Monitor_TestMonitor2NotSyncAssign(local_24);
         }
@@ -149,7 +145,7 @@ class US_TestMonitorSystem : UECSScriptSystem
     {
         int local_24 = 0;
         ECS::GetContextJob();
-        if (ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_TestMonitor2NotSync, EECSRegType(0), true, true).bIsMonitored)
+        if (int(ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_TestMonitor2NotSync, EECSRegType(0), true, true).bIsMonitored) != 0)
         {
             this.Monitor_ServerTestMonitor2NotSyncAssign(local_24);
         }

@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_Execute_QTE_Helpers
 {
 UFUNCTION()

@@ -1,5 +1,3 @@
-﻿
-
 struct FIndicesArray
 {
     UPROPERTY()
@@ -20,7 +18,6 @@ struct FEcoCollectablePointBakedDataItem
     UPROPERTY()
     int m_BakedOrderIndex;
 
-
     const TDataObjectPtr<FEcoCollectableCreatureDefinitionRow> GetCreatureDef() const property
     {
         const TDataObjectPtr<FEcoCollectableCreatureDefinitionRow> __r;
@@ -33,7 +30,8 @@ struct FEcoCollectablePointBakedDataItem
     }
     void SetCreatureDef(const TDataObjectPtr<FEcoCollectableCreatureDefinitionRow> &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_CreatureDef = __Value;
+        return;
     }
     int GetBakedOrderIndex() const property
     {
@@ -52,7 +50,6 @@ struct FEcoCollectableBakedData
     int m_BakeDataIndex;
     UPROPERTY()
     TArray<EcoCollectable::FEcoCollectablePointBakedDataItem> m_PointBakedData;
-
 
     int GetBakeDataIndex() const property
     {
@@ -88,7 +85,6 @@ struct FEcoCollectableCreatureAndCountRangeDef
     int MinCount;
     UPROPERTY()
     int MaxCount;
-
 
 }
 

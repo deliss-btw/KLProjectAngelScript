@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ComposableItem_Helpers
 {
 UFUNCTION()

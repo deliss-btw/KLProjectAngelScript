@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_SkillInfo_Mon_Controlable_Helpers
 {
 UFUNCTION()

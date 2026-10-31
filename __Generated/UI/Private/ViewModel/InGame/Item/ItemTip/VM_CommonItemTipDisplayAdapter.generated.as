@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommonItemTipDisplayAdapter_Helpers
 {
 UFUNCTION()

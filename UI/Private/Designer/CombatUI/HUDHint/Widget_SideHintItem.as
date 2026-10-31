@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_SideHintItem
 {
     const int ViewID = 0;
@@ -130,6 +129,7 @@ namespace UWidget_SideHintItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SideHintItem;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleHintTextChanged"));
     return;
 }

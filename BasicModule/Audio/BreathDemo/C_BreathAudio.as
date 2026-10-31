@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_BreathAudioConfig_NS
 {
     const TECSComponentDerivedPtr<FC_BreathAudioConfig> DerivedPtr = TECSComponentDerivedPtr<FC_BreathAudioConfig>();
@@ -13,7 +12,7 @@ namespace __INTENRAL_FC_BreathAudio_NS
 struct FC_BreathAudioConfig : FECSComponent
 {
     UPROPERTY()
-    UBreathAudioSettings Settings;
+    UBreathAudioSettings Settings = nullptr;
 
     FC_BreathAudioConfig()
     {
@@ -28,7 +27,7 @@ struct FC_BreathAudio : FECSComponent
     UPROPERTY()
     TSoftObjectPtr<UAkAudioEvent> CurrentStopAudioEvent;
     UPROPERTY()
-    int CurrentSoundId;
+    int CurrentSoundId = INDEX_NONE;
     UPROPERTY()
     TSoftObjectPtr<UAkAudioEvent> NextBreathAudioEvent;
     UPROPERTY()
@@ -38,22 +37,18 @@ struct FC_BreathAudio : FECSComponent
     UPROPERTY()
     TSoftObjectPtr<UAkAudioEvent> NextReactionStopAudioEvent;
     UPROPERTY()
-    float32 BreathWeight;
+    float32 BreathWeight = 0.0f;
     UPROPERTY()
-    bool bBreathStateSet;
+    bool bBreathStateSet = false;
     UPROPERTY()
-    EBreathAudioState BreathState;
+    EBreathAudioState BreathState = EBreathAudioState(0);
     UPROPERTY()
-    EBreathAudioState PrevBreathState;
+    EBreathAudioState PrevBreathState = EBreathAudioState(0);
     UPROPERTY()
-    bool bIsInCombat;
+    bool bIsInCombat = false;
     UPROPERTY()
     TSoftObjectPtr<UBreathAudioSettings> Settings;
 
-    FC_BreathAudio()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
 }
 
 namespace ECSFunc_FC_BreathAudioConfig
@@ -133,37 +128,37 @@ bool RemoveBreathAudioConfig(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorBreathAudioConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_BreathAudioConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_BreathAudioConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBreathAudioConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_BreathAudioConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_BreathAudioConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBreathAudioConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_BreathAudioConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_BreathAudioConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBreathAudioConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_BreathAudioConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_BreathAudioConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBreathAudioConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_BreathAudioConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_BreathAudioConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorBreathAudioConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_BreathAudioConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_BreathAudioConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBreathAudioConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_BreathAudioConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_BreathAudioConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBreathAudioConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_BreathAudioConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_BreathAudioConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_BreathAudio
@@ -246,36 +241,36 @@ bool RemoveBreathAudio(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorBreathAudioOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_BreathAudio, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_BreathAudio, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBreathAudioOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_BreathAudio, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_BreathAudio, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBreathAudioOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_BreathAudio, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_BreathAudio, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBreathAudioOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_BreathAudio, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_BreathAudio, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorBreathAudioOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_BreathAudio, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_BreathAudio, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorBreathAudioLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_BreathAudio, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_BreathAudio, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBreathAudioActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_BreathAudio, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_BreathAudio, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorBreathAudioModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_BreathAudio, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_BreathAudio, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

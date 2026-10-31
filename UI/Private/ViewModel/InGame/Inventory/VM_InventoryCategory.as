@@ -1,4 +1,3 @@
-﻿
 namespace FVM_InventoryCategory
 {
     const int ModelId = 0;
@@ -304,7 +303,6 @@ struct __GeneratedProperties_FVM_InventoryCategory
     UPROPERTY()
     TEUIModelRef<FVM_InventoryCategory> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_InventoryRootCategory
@@ -313,7 +311,6 @@ struct __GeneratedProperties_FVM_InventoryRootCategory
     bool IsSelected;
     UPROPERTY()
     TEUIModelRef<FVM_InventoryRootCategory> Self;
-
 
 }
 

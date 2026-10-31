@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class AGuidingSplineActor : AActor
 {
@@ -51,7 +49,6 @@ class AGuidingSplineActor : AActor
     default DebugSplineGuideMaterial = Cast<UMaterialInterface>(LoadObject(nullptr, "/Script/Engine.Material'/Game/OriginalRes/Dev/FX/Material/MaterialMaster/Ribbon/DebugSplineGuideMaterial.DebugSplineGuideMaterial'"));
     default DebugShaderMaterial = Cast<UMaterialInterface>(LoadObject(nullptr, "/Script/Engine.MaterialInstanceConstant'/Game/OriginalRes/Dev/FX/Material/MaterialInstance/Ribbon/MI_Ribbon_SplineFX_Guide.MI_Ribbon_SplineFX_Guide'"));
     default DebugShaderMPC = Cast<UMaterialParameterCollection>(LoadObject(nullptr, "/Script/Engine.MaterialParameterCollection'/Game/OriginalRes/Proto/FXLibrary/Common/Spline/MPC_Fingerprint.MPC_Fingerprint'"));
-
 
     UFUNCTION()
     void VFX_GuideSpline_Implementation()
@@ -274,7 +271,7 @@ class AGuidingSplineActor : AActor
     void RebuildSecondMeshLayer(TArray<USplineMeshComponent> &inout SourceSplineMeshComponents)
     {
         USplineMeshComponent local_6;
-        auto local_12;
+        USplineMeshComponent local_12;
         this.ClearSecondMeshLayer();
         if (!(this.bEnableSecondMeshLayer))
         {
@@ -638,7 +635,7 @@ class AGuidingSplineActor : AActor
         {
             return;
         }
-        this.BuildDebugSpline(local_4, true, int(this.DebugShaderDrawLength));
+        this.BuildDebugSpline(local_4, true, this.DebugShaderDrawLength);
         this.VFX_GuideSpline();
         this.ApplyDebugShaderMaterial(local_4);
         return;

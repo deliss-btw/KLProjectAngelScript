@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TalentEditSkillBtn
 {
     const int ModelId = 0;
@@ -97,14 +96,11 @@ struct FVM_TalentEditSkillBtn : FEUIViewModel
     void RebuildSkillDerivedVMs()
     {
         int local_13 = 0;
-        int local_1 = int(this.GetSkillType());
-        this.SetSkillTypeBGVM(TEUIModelRef<FVM_TalentSkillTypeBG>(::FVM_TalentSkillTypeBG::Create(this.GetContext().Manager)));
-        int local_5 = int(this.GetSkillDivisionType());
-        this.SetSkillDivisionTypeVM(TEUIModelRef<FVM_TalentDivisionTypeIcon>(::FVM_TalentDivisionTypeIcon::Create(this.GetContext().Manager)));
+        this.SetSkillTypeBGVM(TEUIModelRef<FVM_TalentSkillTypeBG>(::FVM_TalentSkillTypeBG::Create(this.GetContext().Manager, ESkillType(this.GetSkillType()))));
+        this.SetSkillDivisionTypeVM(TEUIModelRef<FVM_TalentDivisionTypeIcon>(::FVM_TalentDivisionTypeIcon::Create(this.GetContext().Manager, ETalentDivision(this.GetSkillDivisionType()))));
         if (this.GetAvatarConfig())
         {
-            int local_1_2 = int(this.GetSkillType());
-            this.SetRedDotVM(TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(GameplayTags::RedDotSystem_Avatar_ReplaceSkillSlot, ::FMS_Talent::Get(this.GetContext().Manager).MakeSlotRedDotKey(local_13)))));
+            this.SetRedDotVM(TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(GameplayTags::RedDotSystem_Avatar_ReplaceSkillSlot, ::FMS_Talent::Get(this.GetContext().Manager).MakeSlotRedDotKey(local_13, ESkillType(this.GetSkillType()))))));
         }
         return;
     }
@@ -260,8 +256,7 @@ struct FVM_TalentEditSkillBtn : FEUIViewModel
     {
         if (this.GetContext().GetLocalPlayerPawn().IsValid())
         {
-            int local_6 = int(this.GetSkillButtonSlot());
-            return FEUIInputAction(FSkillUtils::GetSkillInputAction(this.GetContext().GetLocalPlayerPawn()));
+            return FEUIInputAction(FSkillUtils::GetSkillInputAction(this.GetContext().GetLocalPlayerPawn(), this.GetSkillButtonSlot()));
         }
         return FEUIInputAction();
     }
@@ -288,30 +283,30 @@ struct FVM_TalentEditSkillBtn : FEUIViewModel
         {
         case 2:
         {
-            return NSLOCTEXT("TalentSkill", "SkillType_Foundation", "еџєзџі");
+            return NSLOCTEXT("TalentSkill", "SkillType_Foundation", "基石");
         }
         case 1:
         {
-            return NSLOCTEXT("TalentSkill", "SkillType_Passive", "иў«еЉЁжЉЂиѓЅ");
+            return NSLOCTEXT("TalentSkill", "SkillType_Passive", "被动技能");
         }
         case 3:
         {
-            return NSLOCTEXT("TalentSkill", "SkillType_NormalAttack", "ж™®йЂљж”»е‡»");
+            return NSLOCTEXT("TalentSkill", "SkillType_NormalAttack", "普通攻击");
         }
         case 4:
         {
-            return NSLOCTEXT("TalentSkill", "SkillType_SpecialAttack", "з‰№ж®Љж”»е‡»");
+            return NSLOCTEXT("TalentSkill", "SkillType_SpecialAttack", "特殊攻击");
         }
         case 5:
         {
-            return NSLOCTEXT("TalentSkill", "SkillType_SimpleSkill", "ж€жЉЂ");
+            return NSLOCTEXT("TalentSkill", "SkillType_SimpleSkill", "战技");
         }
         case 6:
         {
-            return NSLOCTEXT("TalentSkill", "SkillType_UltraSkill", "з»ќжЉЂ");
+            return NSLOCTEXT("TalentSkill", "SkillType_UltraSkill", "绝技");
         }
         }
-        return NSLOCTEXT("TalentSkill", "SkillType_None", "з©є");
+        return NSLOCTEXT("TalentSkill", "SkillType_None", "空");
     }
     int GetIconTypeIndex() const
     {
@@ -490,8 +485,7 @@ struct FVM_TalentEditSkillBtn : FEUIViewModel
     }
     void OnTalentNodeChange()
     {
-        int local_1 = int(this.GetSkillType());
-        this.SetSkillTypeBGVM(TEUIModelRef<FVM_TalentSkillTypeBG>(::FVM_TalentSkillTypeBG::Create(this.GetContext().Manager)));
+        this.SetSkillTypeBGVM(TEUIModelRef<FVM_TalentSkillTypeBG>(::FVM_TalentSkillTypeBG::Create(this.GetContext().Manager, ESkillType(this.GetSkillType()))));
         return;
     }
     void RefreshIsBigButton()
@@ -516,16 +510,12 @@ struct FVM_TalentEditSkillBtn : FEUIViewModel
             return;
         }
         ::FVM_TalentEditPage::GotoPage(this.GetContext().UELocalPlayer, this.GetAvatarConfig());
-        int local_2 = int(this.GetSkillType());
-        int local_3 = int(this.GetSkillButtonSlot());
-        ::FVM_TalentEditPage::UpdateSkillSellectType(this.GetContext().UELocalPlayer);
+        ::FVM_TalentEditPage::UpdateSkillSellectType(this.GetContext().UELocalPlayer, this.GetSkillButtonSlot(), this.GetSkillType());
         return;
     }
     void OnUpdateSkillSellectType()
     {
-        int local_1 = int(this.GetSkillType());
-        int local_2 = int(this.GetSkillButtonSlot());
-        ::FVM_TalentEditPage::UpdateSkillSellectType(this.GetContext().UELocalPlayer);
+        ::FVM_TalentEditPage::UpdateSkillSellectType(this.GetContext().UELocalPlayer, this.GetSkillButtonSlot(), this.GetSkillType());
         return;
     }
     TDataObjectPtr<FAvatarPrefabConfig> GetAvatarConfig() const property
@@ -727,14 +717,13 @@ struct __GeneratedProperties_FVM_TalentEditSkillBtn
     UPROPERTY()
     TEUIModelRef<FVM_TalentEditSkillBtn> Self;
 
-
 }
 
 namespace FVM_TalentEditSkillBtn
 {
 FVM_TalentEditSkillBtn& Create(const UObject ContextObject, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig, const TEUIModelWeakRef<FM_TalentNode> &inout TalentNode, const ESkillSlot SkillButtonSlot)
 {
-    return FVM_TalentEditSkillBtn::CreateByManager(EUIInternal::GetContextManager(ContextObject), AvatarConfig, TalentNode);
+    return FVM_TalentEditSkillBtn::CreateByManager(EUIInternal::GetContextManager(ContextObject), AvatarConfig, TalentNode, ESkillSlot(SkillButtonSlot));
 }
 FVM_TalentEditSkillBtn CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig, const TEUIModelWeakRef<FM_TalentNode> &inout TalentNode, const ESkillSlot SkillButtonSlot)
 {

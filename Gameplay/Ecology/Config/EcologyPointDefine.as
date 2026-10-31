@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FEcologyPointUnitConfig (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FEcologyPointData
 {
     UPROPERTY()
@@ -24,7 +19,6 @@ struct FEcologyPointUnitConfig : FEcologyUnitConfig
 
     FEcologyPointUnitConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -42,7 +36,7 @@ struct FEcologyPointUnitConfig : FEcologyUnitConfig
         FC_WaitingUpdateToVoxelSceneTag local_70;
         Assign local_68;
         local_68.opCall(local_70);
-        if (this.bInitialInactive)
+        if (int(this.bInitialInactive) != 0)
         {
             local_4.SetActive(false, FFPTime(-1));
         }

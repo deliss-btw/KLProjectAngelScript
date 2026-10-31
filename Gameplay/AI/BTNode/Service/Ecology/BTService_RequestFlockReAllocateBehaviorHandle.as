@@ -1,5 +1,3 @@
-﻿
-
 class UBTService_RequestFlockReAllocateBehaviorHandle : UBTService_ECSScriptBase
 {
     default SetNodeName("RequestFlockReAllocateBehaviorHandle");
@@ -14,7 +12,7 @@ class UBTService_RequestFlockReAllocateBehaviorHandle : UBTService_ECSScriptBase
         int local_10 = 0;
         TDataObjectPtr<FEcologyActivityDefinitionRow> local_22;
         FC_FlockMember local_28;
-        int local_40;
+        int local_40 = 0;
         int local_52 = 0;
         int local_58 = 0;
         FECSEntity local_4 = FECSEntity(Context.PawnEntity);

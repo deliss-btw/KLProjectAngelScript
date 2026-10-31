@@ -1,4 +1,3 @@
-﻿
 namespace FVM_HeadsUpDisplay
 {
     const int ModelId = 0;
@@ -280,7 +279,6 @@ struct __GeneratedProperties_FVM_HeadsUpDisplay
     bool ShouldShowHitStunDetach;
     UPROPERTY()
     TEUIModelRef<FVM_HeadsUpDisplay> Self;
-
 
 }
 

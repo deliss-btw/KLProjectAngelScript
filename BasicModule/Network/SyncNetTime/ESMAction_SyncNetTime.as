@@ -1,4 +1,3 @@
-﻿
 enum ESyncNetTimePreset
 {
     Default,
@@ -27,7 +26,6 @@ class UESMAction_SyncNetTime : UESMSyncNetTimeAction
     bool bNoSimpleExitDuration = false;
     UPROPERTY()
     FFPTime SimpleExitTime = 0.6;
-
 
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const

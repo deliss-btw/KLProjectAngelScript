@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_PendingConfirmHint_NS
 {
     const TECSEventDerivedPtr<FCE_PendingConfirmHint> DerivedPtr = TECSEventDerivedPtr<FCE_PendingConfirmHint>();
@@ -30,11 +29,23 @@ struct FPendingConfirmHintData
 
     FPendingConfirmHintData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_MessageId = 0;
+        this.m_Feature = EPendingConfirmFeature(0);
+        FSubDirtyFlags32 local_5;
+        this.__DirtyFlags = local_5;
+        return;
     }
     FPendingConfirmHintData(const FPendingConfirmHintData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_MessageId = 0;
+        this.m_Feature = EPendingConfirmFeature(0);
+        FSubDirtyFlags32 local_5;
+        this.__DirtyFlags = local_5;
+        this.m_MessageId = Other.m_MessageId;
+        this.m_Feature = Other.m_Feature;
+        this.m_SenderPlayerInfo = Other.m_SenderPlayerInfo;
+        this.m_DynamicArguments = Other.m_DynamicArguments;
+        return;
     }
     FPendingConfirmHintData opAssign(const FPendingConfirmHintData &inout Other)
     {
@@ -155,7 +166,6 @@ struct FCE_PendingConfirmResult : FECSEvent
     UPROPERTY()
     EPendingConfirmAction Result;
 
-
 }
 
 struct FCE_PendingTimeoutResult : FECSEvent
@@ -165,7 +175,6 @@ struct FCE_PendingTimeoutResult : FECSEvent
     int64 MessageId;
     UPROPERTY()
     EPendingConfirmAction Result;
-
 
     bool Validate() const
     {

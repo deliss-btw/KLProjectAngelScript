@@ -1,4 +1,3 @@
-﻿
 enum EWorldMapSpotCategory
 {
     Teleporter,
@@ -6,7 +5,6 @@ enum EWorldMapSpotCategory
     NPC,
     Uncategorized,
 }
-
 
 class UWorldMapSettings : UGameplaySettingsBase
 {

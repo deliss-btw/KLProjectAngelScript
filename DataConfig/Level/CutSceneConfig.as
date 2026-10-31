@@ -1,5 +1,3 @@
-﻿
-
 struct FCutSceneEntityInfo
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ struct FCutSceneEntityInfo
     float32 ESMStateTime;
     UPROPERTY()
     FRotator EndCameraRotation;
-
 
 }
 
@@ -28,7 +25,7 @@ struct FCutSceneData : FDataObject
 
     FCutSceneData()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
 }
 

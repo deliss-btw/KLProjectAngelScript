@@ -1,4 +1,3 @@
-﻿
 enum EPresentationSpotDecoractor
 {
     Guide,
@@ -51,8 +50,7 @@ void AddDecoractor(FM_Spot &inout Spot, const EPresentationSpotDecoractor Decora
     if (Spot)
     {
         FBitSet32 local_2;
-        FInstancedStruct local_16;
-        if (local_16.IsValid())
+        if (FInstancedStruct(PresentationDataUtils::GetPresentationData(Spot, EPresentationDataType(8), FSpotViewAdapter(Registry))).IsValid())
         {
             Get local_20;
             local_2 = local_20.opCall();
@@ -60,8 +58,7 @@ void AddDecoractor(FM_Spot &inout Spot, const EPresentationSpotDecoractor Decora
         if (!(local_2.GetBit(int(Decoractor))))
         {
             local_2.SetBit(int(Decoractor), true);
-            EPresentationDataType local_26;
-            FInstancedStruct::Make(local_26);
+            PresentationDataUtils::AddPresentationData(Spot, EPresentationDataType(8), FInstancedStruct::Make(local_2), Registry);
         }
     }
     return;
@@ -70,9 +67,7 @@ void RemoveDecoractor(FM_Spot &inout Spot, const EPresentationSpotDecoractor Dec
 {
     if (Spot)
     {
-        int local_11 = 8;
-        FInstancedStruct local_16;
-        if (local_16.IsValid())
+        if (FInstancedStruct(PresentationDataUtils::GetPresentationData(Spot, EPresentationDataType(8), FSpotViewAdapter(Registry))).IsValid())
         {
             Get local_22;
             FBitSet32 local_17 = local_22.opCall();
@@ -85,9 +80,7 @@ void RemoveDecoractor(FM_Spot &inout Spot, const EPresentationSpotDecoractor Dec
                 }
                 else
                 {
-                    EPresentationDataType local_28;
-                    FInstancedStruct::Make(local_28);
-                    local_11 = 8;
+                    PresentationDataUtils::AddPresentationData(Spot, EPresentationDataType(8), FInstancedStruct::Make(local_17), Registry);
                 }
             }
         }

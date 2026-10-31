@@ -1,4 +1,3 @@
-﻿
 namespace FVM_Execute_QTE
 {
     const int ModelId = 0;

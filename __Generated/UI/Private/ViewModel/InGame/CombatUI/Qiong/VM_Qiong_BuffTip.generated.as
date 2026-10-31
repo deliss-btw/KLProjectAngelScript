@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_Qiong_BuffTip_Helpers
 {
 UFUNCTION()

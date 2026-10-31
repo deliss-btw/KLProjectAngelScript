@@ -1,5 +1,3 @@
-﻿
-
 class US_ScalerResourceSystem : UECSScriptSystem
 {
     US_ScalerResourceSystem()
@@ -736,8 +734,7 @@ class US_ScalerResourceSystem : UECSScriptSystem
             }
             if (!(local_52.opCall()) == !(false))
             {
-                FString local_56 = "Timer job error: 'FC_LocalTag' included by job but not exist on ";
-                FString local_60 = local_32.ToString();
+                XLog(ELog(2), (FString("Timer job error: 'FC_LocalTag' included by job but not exist on ") + local_32.ToString()));
                 local_34 = true;
             }
             if (local_34)
@@ -906,8 +903,7 @@ class US_ScalerResourceSystem : UECSScriptSystem
             }
             if (!(local_52.opCall()) == !(false))
             {
-                FString local_56 = "Timer job error: 'FC_LocalTag' included by job but not exist on ";
-                FString local_60 = local_32.ToString();
+                XLog(ELog(2), (FString("Timer job error: 'FC_LocalTag' included by job but not exist on ") + local_32.ToString()));
                 local_34 = true;
             }
             if (local_34)
@@ -1076,8 +1072,7 @@ class US_ScalerResourceSystem : UECSScriptSystem
             }
             if (!(local_52.opCall()) == !(false))
             {
-                FString local_56 = "Timer job error: 'FC_LocalTag' included by job but not exist on ";
-                FString local_60 = local_32.ToString();
+                XLog(ELog(2), (FString("Timer job error: 'FC_LocalTag' included by job but not exist on ") + local_32.ToString()));
                 local_34 = true;
             }
             if (local_34)

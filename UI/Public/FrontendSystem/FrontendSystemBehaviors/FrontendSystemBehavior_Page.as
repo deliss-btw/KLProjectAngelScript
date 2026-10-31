@@ -1,11 +1,9 @@
-﻿
 enum EFrontendSystemPageGroupType
 {
     System,
     Shared,
     Static,
 }
-
 
 class UFrontendSystemBehavior_OpenPage : UFrontendSystemBehaviorBase
 {
@@ -65,9 +63,8 @@ class UFrontendSystemBehavior_OpenPage : UFrontendSystemBehaviorBase
     }
     void OnExit(const FFrontendSystemContext &inout Context, FInstancedStruct &inout BehaviorInstance) const
     {
-        int local_8 = 0;
         TConstRawPtr<FFrontendSystemBehaviorInstance_OpenPage> local_6 = FInstancedStruct::GetPtr(BehaviorInstance).opCall();
-        FEUIWidget::RemoveWidget(local_8.Page);
+        FEUIWidget::RemoveWidget(0.Page);
         return;
     }
     void TestFunction(const FSoftClassPath &inout Path) const
@@ -84,7 +81,6 @@ struct FFrontendSystemBehaviorInstance_OpenPage : FFrontendSystemBehaviorInstanc
 
     FFrontendSystemBehaviorInstance_OpenPage()
     {
-        super();
         return;
     }
 }

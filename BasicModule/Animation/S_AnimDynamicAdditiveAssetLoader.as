@@ -1,5 +1,3 @@
-﻿
-
 class US_AnimDynamicAdditiveAssetLoader : UECSScriptSystem
 {
     US_AnimDynamicAdditiveAssetLoader()

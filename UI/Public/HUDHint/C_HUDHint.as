@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_HUDShowHideCrosshair_NS
 {
     const TECSComponentDerivedPtr<FC_HUDShowHideCrosshair> DerivedPtr = TECSComponentDerivedPtr<FC_HUDShowHideCrosshair>();
@@ -51,11 +50,35 @@ struct FSideHintData
 
     FSideHintData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_ShowHintTime = 0.0f;
+        FSubDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_HUDHintType = EHUDHintType(0);
+        this.m_bIsShow = true;
+        this.m_TextArgType = ETextArgType_DEPRECATED(0);
+        return;
     }
     FSideHintData(const FSideHintData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_ShowHintTime = 0.0f;
+        FSubDirtyFlags16 local_54;
+        this.__DirtyFlags = local_54;
+        this.m_HUDHintType = EHUDHintType(0);
+        this.m_bIsShow = true;
+        this.m_TextArgType = ETextArgType_DEPRECATED(0);
+        this.m_HUDHintType = Other.m_HUDHintType;
+        this.m_bIsShow = Other.m_bIsShow;
+        this.m_ShowContent = Other.m_ShowContent;
+        this.m_HintTextData = Other.m_HintTextData;
+        this.m_SideHintConfig = Other.m_SideHintConfig;
+        this.m_ShowHintTime = Other.m_ShowHintTime;
+        this.m_SpecifiedShowEntity = Other.m_SpecifiedShowEntity;
+        this.m_CustomEntity_1 = Other.m_CustomEntity_1;
+        this.m_CustomEntity_2 = Other.m_CustomEntity_2;
+        this.m_TextArgType = Other.m_TextArgType;
+        this.m_TextArg0Ptr = Other.m_TextArg0Ptr;
+        this.m_CustomContent_1 = Other.m_CustomContent_1;
+        return;
     }
     FSideHintData opAssign(const FSideHintData &inout Other)
     {
@@ -324,11 +347,20 @@ struct FC_HUDShowHideCrosshair : FECSComponent
 
     FC_HUDShowHideCrosshair()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bIsShow = true;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_HUDShowHideCrosshair(const FC_HUDShowHideCrosshair &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bIsShow = true;
+        this.__InitDirtyFlags();
+        this.m_bIsShow = Other.m_bIsShow;
+        return;
     }
     FC_HUDShowHideCrosshair opAssign(const FC_HUDShowHideCrosshair &inout Other)
     {
@@ -358,7 +390,6 @@ struct FCE_HUDShowCrosshair : FECSEvent
     UPROPERTY()
     bool bIsShow = true;
 
-
 }
 
 struct FCE_HUDBuffAddHintEvent : FECSEvent
@@ -374,7 +405,6 @@ struct FCE_HUDBuffAddHintEvent : FECSEvent
     FECSEntity BuffEntity;
     UPROPERTY()
     bool bMetaBuff = false;
-
 
 }
 
@@ -455,37 +485,37 @@ bool RemoveHUDShowHideCrosshair(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorHUDShowHideCrosshairOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_HUDShowHideCrosshair, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_HUDShowHideCrosshair, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorHUDShowHideCrosshairOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_HUDShowHideCrosshair, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_HUDShowHideCrosshair, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorHUDShowHideCrosshairOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_HUDShowHideCrosshair, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_HUDShowHideCrosshair, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorHUDShowHideCrosshairOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_HUDShowHideCrosshair, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_HUDShowHideCrosshair, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorHUDShowHideCrosshairOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_HUDShowHideCrosshair, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_HUDShowHideCrosshair, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorHUDShowHideCrosshairLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_HUDShowHideCrosshair, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_HUDShowHideCrosshair, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorHUDShowHideCrosshairActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_HUDShowHideCrosshair, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_HUDShowHideCrosshair, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorHUDShowHideCrosshairModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_HUDShowHideCrosshair, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_HUDShowHideCrosshair, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

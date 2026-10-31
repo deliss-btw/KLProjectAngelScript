@@ -1,47 +1,110 @@
-﻿
 namespace __FHitDecalConfigFunctions
 {
 UFUNCTION()
 int __FHitDecalConfig_GetDecalTextureID(const TDataObjectPtr<FHitDecalConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    int __r; return __r;
+
+    if (DataObject == nullptr)
+    {
+        if (!EUIGlobals::GIsDuringPropertyConversion)
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'DecalTextureID' from a null 'FHitDecalConfig' DataObject!");
+        }
+        FHitDecalConfig defaultValue;
+        return defaultValue.DecalTextureID;
+    }
+    return DataObject.Get().DecalTextureID;
 }
 UFUNCTION()
 FVector __FHitDecalConfig_GetSize(const TDataObjectPtr<FHitDecalConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FVector __r; return __r;
+    FVector __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Size' from a null 'FHitDecalConfig' DataObject!");
+        }
+        FHitDecalConfig local_28;
+        return local_28.Size;
+    }
+    return __r;
 }
 UFUNCTION()
 float32 __FHitDecalConfig_GetDuration(const TDataObjectPtr<FHitDecalConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    float32 __r; return __r;
+
+    if (DataObject == nullptr)
+    {
+        if (!EUIGlobals::GIsDuringPropertyConversion)
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Duration' from a null 'FHitDecalConfig' DataObject!");
+        }
+        FHitDecalConfig defaultValue;
+        return defaultValue.Duration;
+    }
+    return DataObject.Get().Duration;
 }
 UFUNCTION()
 float32 __FHitDecalConfig_GetInitOpacity(const TDataObjectPtr<FHitDecalConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    float32 __r; return __r;
+
+    if (DataObject == nullptr)
+    {
+        if (!EUIGlobals::GIsDuringPropertyConversion)
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'InitOpacity' from a null 'FHitDecalConfig' DataObject!");
+        }
+        FHitDecalConfig defaultValue;
+        return defaultValue.InitOpacity;
+    }
+    return DataObject.Get().InitOpacity;
 }
 UFUNCTION()
 bool __FHitDecalConfig_GetbFadeOutByTime(const TDataObjectPtr<FHitDecalConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    bool __r; return __r;
+    bool local_1 = false;
+    if ((DataObject == nullptr))
+    {
+        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
+        if (local_1)
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'bFadeOutByTime' from a null 'FHitDecalConfig' DataObject!");
+        }
+        FHitDecalConfig local_28;
+        return local_28.bFadeOutByTime;
+    }
+    return local_1;
 }
 UFUNCTION()
 float32 __FHitDecalConfig_GetFadeStartTime(const TDataObjectPtr<FHitDecalConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    float32 __r; return __r;
+
+    if (DataObject == nullptr)
+    {
+        if (!EUIGlobals::GIsDuringPropertyConversion)
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'FadeStartTime' from a null 'FHitDecalConfig' DataObject!");
+        }
+        FHitDecalConfig defaultValue;
+        return defaultValue.FadeStartTime;
+    }
+    return DataObject.Get().FadeStartTime;
 }
 UFUNCTION()
 float32 __FHitDecalConfig_GetEmissive(const TDataObjectPtr<FHitDecalConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    float32 __r; return __r;
+
+    if (DataObject == nullptr)
+    {
+        if (!EUIGlobals::GIsDuringPropertyConversion)
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Emissive' from a null 'FHitDecalConfig' DataObject!");
+        }
+        FHitDecalConfig defaultValue;
+        return defaultValue.Emissive;
+    }
+    return DataObject.Get().Emissive;
 }
 UFUNCTION()
 FHitDecalConfig CastToFHitDecalConfig(const TDataObjectPtr<FHitDecalConfig> &inout DataObject)

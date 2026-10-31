@@ -1,5 +1,3 @@
-﻿
-
 class UVOXSettingsSave : UKLSaveGameScriptBase
 {
     UPROPERTY()
@@ -14,7 +12,6 @@ class UVOXSettingsSave : UKLSaveGameScriptBase
     EVOXVoiceMode NonCitySocialMicMode = EVOXVoiceMode(2);
     UPROPERTY()
     EVOXVoiceMode NonCitySocialSpeakerMode = EVOXVoiceMode(1);
-
 
 }
 

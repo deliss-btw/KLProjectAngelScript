@@ -1,9 +1,6 @@
-﻿
-
 class US_SimpleCollisionSystem : UECSScriptSystem
 {
     int MaxSlideIterations = 2;
-
 
     UFUNCTION()
     void Monitor_InitSimpleCollision(const FECSEntity &inout Entity, const FC_SimpleCollisionConfig &inout Config) const
@@ -93,8 +90,20 @@ class US_SimpleCollisionSystem : UECSScriptSystem
     }
     bool DoSweep(const FECSEntity &inout Entity, FC_SimpleCollision &inout SimpleCollision, const FC_SimpleCollisionConfig &inout Config, TArray<FHitResult> &inout OutResults, const FVector &inout Start, const FVector &inout End, const FQuat &inout Rot, const bool bAllowUpdateCache) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
-        bool __r; return __r;
+        FCollisionQueryParams local_38;
+        local_38.bTraceComplex = false;
+        local_38.bReturnFaceIndex = true;
+        local_38.AddIgnoredEntityId(Entity.GetId());
+        FSceneQueryCacheParam local_50;
+        local_50.bSkipUpdateDynamicCache = true;
+        local_50.bPassthroughBlockingHit = true;
+        FVector local_56 = End;
+        if ((Start == End))
+        {
+            FVector local_70 = (FVector(FVector::UpVector) * 0.01);
+            local_56 += local_70;
+        }
+        return SimpleCollision.SweepCache.MoveSweep(Entity, false, EPhysicsTraceTag(3), OutResults, Start, local_56, Rot, Config.Shape.GetAsShape(), Config.Channel, local_38, bAllowUpdateCache, local_50);
     }
     FVector3f ComputeSoftPushOut(const FHitResult &inout Hit, const FC_SimpleCollisionConfig &inout Config, const FFPTime &inout DeltaTime) const
     {

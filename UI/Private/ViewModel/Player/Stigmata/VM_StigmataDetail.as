@@ -1,4 +1,3 @@
-﻿
 namespace FVM_StigmataDetail
 {
     const int ModelId = 0;
@@ -76,9 +75,7 @@ struct FVM_StigmataDetail : FEUIViewModel
         this.SetPlayerLevel(TEUIModelRef<FM_LocalPlayerLevel>(::FM_LocalPlayerLevel::Get(this.GetContext().Manager)));
         this.SetPlayerLevelInfo(TEUIModelRef<FVMS_PlayerLevelInfo>(::FVMS_PlayerLevelInfo::Get(this.GetContext().Manager)));
         this.SetStigmataGifts(TEUIModelRef<FVM_StigmataGifts>(::FVM_StigmataGifts::Create(this.GetContext().Manager)));
-        NSLOCTEXT("StigmataLevelAttributeGainsHint", "и§’и‰Із­‰зє§жЏђеЌ‡гЂЃзїјз—•иѓЅеЉ›и§Јй”ЃиЋ·еЏ–зљ„е±ћжЂ§еЏЇеЇ№е…ЁйѓЁе‡єж€и§’и‰Із”џж•€");
-        NSLOCTEXT("StigmataLevelAttributeGainsHintTitle", "е±ћжЂ§ж”¶з›ЉиЇґжЋ");
-        this.SetLevelAttributeGainsHoverTips(FEUIModelRef());
+        this.SetLevelAttributeGainsHoverTips(FEUIModelRef(::FVM_TitleAndDesc::Create(this.GetContext().Manager, NSLOCTEXT("StigmataLevelAttributeGainsHintTitle", "属性收益说明"), NSLOCTEXT("StigmataLevelAttributeGainsHint", "角色等级提升、翼痕能力解锁获取的属性可对全部出战角色生效"))));
         this.RebuildTree();
         this.RefreshLevelAttributeGains();
         return;
@@ -126,7 +123,56 @@ struct FVM_StigmataDetail : FEUIViewModel
     }
     void RebuildTree()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        const UPlayerInfoSettings local_4;
+        int local_23;
+        int local_43;
+        this.GetModify_TreeRows().Empty(0);
+        GetGameplaySettings<UPlayerInfoSettings> local_6;
+        local_4 = local_6;
+        TArray<int> local_16 = local_4.GetStigmataLevels();
+        int local_1 = this.GetPlayerLevel().opArrow().GetCurrentBreakthroughLevel();
+        int local_17 = INDEX_NONE;
+        if (local_1 != local_17)
+        {
+            local_23 = local_1;
+        }
+        else
+        {
+            local_23 = this.GetPlayerLevel().opArrow().GetMaxLevel();
+        }
+        TArray<int> local_28;
+        int local_29 = INDEX_NONE;
+        auto local_36 = local_16.Iterator();
+        for (; local_36.CanProceed;)
+        {
+            local_43 = local_36.Proceed();
+            if ((local_43 >= 0 && (local_43 <= local_23)))
+            {
+                local_28.Add(local_43);
+                continue;
+            }
+            if ((local_43 > local_23 && ((local_29 == INDEX_NONE))))
+            {
+                local_29 = local_43;
+            }
+        }
+        int local_45 = local_28.Num() - 1;
+        for (; local_45 >= 0; )
+        {
+            this.GetModify_TreeRows().Add(TEUIModelRef<FVM_StigmataRow>(::FVM_StigmataRow::Create(this.GetContext().Manager, local_28[local_45])));
+            --local_45;
+        }
+        local_43 = INDEX_NONE;
+        this.SetbHasNextLockedRow((local_29 != local_43));
+        if (this.GetbHasNextLockedRow())
+        {
+            this.SetNextLockedRow(TEUIModelRef<FVM_StigmataRow>(::FVM_StigmataRow::Create(this.GetContext().Manager, local_29)));
+        }
+        local_45 = this.GetPlayerLevel().opArrow().GetLevelBreakthroughStatus();
+        this.SetbReadyBreakthrough(local_45 == 2 || (local_45 == 3));
+        local_43 = INDEX_NONE;
+        this.SetbHasBreakthroughAvailable((local_1 != local_43));
+        return;
     }
     void RefreshLevelAttributeGains()
     {
@@ -347,7 +393,6 @@ struct __GeneratedProperties_FVM_StigmataDetail
     float32 UnlockPercent;
     UPROPERTY()
     TEUIModelRef<FVM_StigmataDetail> Self;
-
 
 }
 

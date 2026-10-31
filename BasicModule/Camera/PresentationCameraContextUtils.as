@@ -1,4 +1,3 @@
-﻿
 namespace PresentationCameraContextUtils
 {
 void PushFixedCamera(FPresentationCameraParamsContext &inout CameraParamsContext, const FFixedCameraParams &inout FixedCameraParams, const EPresentationCameraLayer Layer, const FName &inout CameraName)
@@ -48,13 +47,13 @@ void PushLayerConduitCamera(FC_PresentationCameraContext &inout PresentationCame
     FCameraPairIndex local_4;
     local_4.SetCameraType(ECameraType(1));
     local_4.SetCameraName(CameraName);
-    PresentationCameraContext.GetModify_CameraLayeredStack()[local_4].Push();
-    PresentationCameraContext.SetbMarkContextChanged(true);
+    PresentationCameraContext.CameraParamsContext.GetModify_CameraLayeredStack()[int(CameraLayer)].Push(local_4);
+    PresentationCameraContext.CameraParamsContext.SetbMarkContextChanged(true);
     return;
 }
 void PopCamera(FPresentationCameraParamsContext &inout CameraParamsContext, const FName &inout CameraName)
 {
-    // body not fully recovered вЂ” stub [unresolved-operand]
+    // body not fully recovered — stub [unresolved-operand]
 }
 void ProcessPendingCameraEventDatas(FPresentationCameraParamsContext &inout CameraParamsContext)
 {

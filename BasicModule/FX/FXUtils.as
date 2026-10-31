@@ -1,4 +1,3 @@
-﻿
 namespace FFXUtils
 {
     const FConsoleVariable CVar_Fx_LoadDebug = FConsoleVariable();

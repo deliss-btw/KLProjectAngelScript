@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TutorialHandbookEntry
 {
     const int ModelId = 0;
@@ -67,9 +66,7 @@ struct FVM_TutorialHandbookEntry : FEUIViewModel
     }
     void OnClicked()
     {
-        EGuideManualTab local_1 = this.GetTab();
-        UEUIManagerSubsystem local_4 = this.GetManager();
-        FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_Tutorial_HandbookDetail, FEUIModelRef());
+        FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_Tutorial_HandbookDetail, FEUIModelRef(::FVM_TutorialHandbookDetail::Create(this.GetManager(), int(this.GetTab()))));
         return;
     }
     int GetTabIndex() const property
@@ -171,7 +168,6 @@ struct FMsg_TutorialHandbookEntryHovered : FEUIMessage
     TEUIModelWeakRef<FVM_TutorialHandbookEntry> HoveredEntry;
     UPROPERTY()
     bool bHovered = false;
-
 
 }
 

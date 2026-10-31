@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_SegmentBarItem_Helpers
 {
 UFUNCTION()

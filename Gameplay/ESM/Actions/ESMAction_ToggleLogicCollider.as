@@ -1,12 +1,9 @@
-﻿
-
 struct FEnableDisableColliderItem
 {
     UPROPERTY()
     FName ColliderName;
     UPROPERTY()
     bool bColliderEnabled = true;
-
 
 }
 
@@ -20,7 +17,6 @@ class UESMAction_ToggleLogicCollider : UESMBPBaseSpanAction
     FName ColliderName;
     UPROPERTY()
     bool bColliderEnabled = true;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const
@@ -105,12 +101,12 @@ class UESMAction_ToggleLogicCollider : UESMBPBaseSpanAction
         }
         if (local_4.IsEmpty() && local_8.IsEmpty())
         {
-            return "жњЄй…ЌзЅ®зў°ж’ћ";
+            return "未配置碰撞";
         }
         FString local_28 = "";
         if (!(local_4.IsEmpty()))
         {
-            local_28 += FString().Append("е…ізў°ж’ћ: ").Append(local_4);
+            local_28 += FString().Append("关碰撞: ").Append(local_4);
         }
         if (!(local_8.IsEmpty()))
         {
@@ -118,7 +114,7 @@ class UESMAction_ToggleLogicCollider : UESMBPBaseSpanAction
             {
                 local_28 += "; ";
             }
-            local_28 += FString().Append("ејЂзў°ж’ћ: ").Append(local_8);
+            local_28 += FString().Append("开碰撞: ").Append(local_8);
         }
         if (local_28.Len() > 40)
         {

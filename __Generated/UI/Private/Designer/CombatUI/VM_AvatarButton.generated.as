@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_AvatarButton_Helpers
 {
 UFUNCTION()

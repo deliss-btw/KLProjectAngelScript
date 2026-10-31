@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Impact_EnableDebugDraw = FConsoleVariable();
 const FConsoleVariable CVar_LandedImpact_EnableDebugDraw = FConsoleVariable();
 const FConsoleVariable CVar_LandedImpact_PrintLogToScreen = FConsoleVariable();
@@ -315,9 +314,7 @@ class US_ImpactFXSystem : UECSScriptSystem
             }
             if (FAsGameAudioUtils::CVar_UseNewAsynLoad.GetBool())
             {
-                FGameAudioUtils::GetCachedAudioWorld();
-                Event.ImpactRotation.Quaternion();
-                FLoadEventCallback local_120 = FLoadEventCallback();
+                FGameAudioUtils::PlayEventAtLocation(local_100.Event, Event.Sender, FLoadEventCallback(), Event.ImpactPosition, Event.ImpactRotation.Quaternion(), FGameAudioUtils::GetCachedAudioWorld(), false, true);
             }
             return;
         }

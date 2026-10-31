@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ItemFeature_EquipMark
 {
     const int ViewID = 0;
@@ -24,11 +23,9 @@ class UWidget_ItemFeature_EquipMark : UEUIUserWidget
     {
         if (this.w_formatTxt_level != nullptr)
         {
-            FString local_18;
             int local_9 = this.EquipMarkFeature.opArrow().GetLimitCount();
             FString local_14 = (FString("") + local_9);
-            FText::FromString(local_18);
-            this.w_formatTxt_level.SetArgument(local_18, "0");
+            this.w_formatTxt_level.SetArgument("0", FText::FromString(local_14));
         }
         return;
     }
@@ -103,6 +100,7 @@ namespace UWidget_ItemFeature_EquipMark
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ItemFeature_EquipMark;
     Result.ObservedModelChangesSubscriberNames.Add(FString("RefreshLimitCount"));
     return;
 }

@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_TeleportPoint_Page
 {
     const int ModelId = 0;
@@ -34,10 +33,10 @@ struct FVMS_TeleportPoint_Page : FEUIViewModelSingleton
     void PostConstruct()
     {
         bool local_21;
-        this.SetTeleportTitle(NSLOCTEXT("TeleportTitle", "дј йЂЃењ°и„‰"));
+        this.SetTeleportTitle(NSLOCTEXT("TeleportTitle", "传送地脉"));
         FUIInteractAbilityGroup local_10 = ::UIInteractAbilityConfig::GetUIInteractAbilityGroup(n"Teleport");
         int local_15 = 0;
-        while (local_15 < 0)
+        for (; local_15 < local_10.GroupItems.Num(); ++local_15)
         {
             FUIItemInteractAbility& local_20 = local_10.GroupItems[local_15];
             if (!(local_20.UnlockSystemControl.IsSet()))
@@ -51,12 +50,9 @@ struct FVMS_TeleportPoint_Page : FEUIViewModelSingleton
             }
             if (local_21)
             {
+                continue;
             }
-            else
-            {
-                this.GetModify_ItemRefs().Add(FEUIModelRef(::FVM_CommonBGItemMenu::Create(this.GetContext().Manager, n"Teleport", local_15, local_20.Signal, local_20.bIsInteractTarget, local_20.bSetVisibility)));
-            }
-            ++local_15;
+            this.GetModify_ItemRefs().Add(FEUIModelRef(::FVM_CommonBGItemMenu::Create(this.GetContext().Manager, n"Teleport", local_15, local_20.Signal, (int(local_20.bIsInteractTarget) != 0), local_20.bSetVisibility)));
         }
         return;
     }

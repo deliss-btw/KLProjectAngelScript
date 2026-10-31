@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ItemQuickSlotSelectListEntry
 {
     const int ViewID = 0;
@@ -433,6 +432,7 @@ namespace UWidget_ItemQuickSlotSelectListEntry
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ItemQuickSlotSelectListEntry;
     Result.ObservedModelChangesSubscriberNames.Add(FString("SetupItem"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("SetupDisplayItem"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("SetupCommonItem"));
@@ -451,6 +451,7 @@ namespace UWidget_ItemQuickSlotSelectList
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ItemQuickSlotSelectList;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

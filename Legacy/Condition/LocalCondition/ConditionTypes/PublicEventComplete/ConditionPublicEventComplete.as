@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FConditionPublicEventCompleteConfig (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
-
 class UConditionPublicEventComplete : ULocalConditionTypeDefineBase
 {
     UConditionPublicEventComplete()
@@ -34,9 +29,10 @@ struct FConditionPublicEventCompleteConfig : FLocalConditionTypeDefineConfigBase
     UPROPERTY()
     TDataObjectPtr<FLevelPublicEventInfoConfig> EventInfoFilter;
 
+    default _base_FLocalConditionTypeDefineConfigBase = UConditionPublicEventComplete;
+
     FConditionPublicEventCompleteConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }

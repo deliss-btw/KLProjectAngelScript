@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_Crossbow_Helpers
 {
 UFUNCTION()

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonComponentFilter
 {
     const int ModelId = 0;
@@ -19,6 +18,7 @@ struct FVM_CommonComponentFilterConfig
     }
     FVM_CommonComponentFilterConfig(const FText &inout _CustomOperationName, const FGameplayTag &inout _SubPageTag)
     {
+        this.CustomOperationName = _CustomOperationName;
         this.SubPageTag = _SubPageTag;
         return;
     }

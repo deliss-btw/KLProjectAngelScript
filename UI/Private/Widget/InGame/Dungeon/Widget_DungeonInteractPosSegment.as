@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_DungeonInteractPosSegment
 {
     const int ViewID = 0;
@@ -37,6 +36,7 @@ namespace UWidget_DungeonInteractPosSegment
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_DungeonInteractPosSegment;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

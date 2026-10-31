@@ -1,4 +1,3 @@
-﻿
 namespace DivineSkillUtils
 {
 TDataObjectPtr<FDivineSkillConfig> GetDivineSkill(const FECSEntity &inout Entity)
@@ -188,25 +187,56 @@ EAvatarIllustrate GetPlayerMainAvatarIllustrate(const FECSEntity &inout PlayerEn
 }
 TDataObjectPtr<FDivineSkillTypeConfig> FindTypeConfigByIllustrate(const EAvatarIllustrate Illustrate)
 {
-    TDataObjectPtr<FDivineSkillTypeConfig> local_28;
     if (int(Illustrate) == 3)
     {
-        return local_28;
+        return TDataObjectPtr<FDivineSkillTypeConfig>();
     }
     TDataObjectIterator<FDivineSkillTypeConfig> local_68;
     for (; local_68; )
     {
         if (local_68.GetDataPtr() && (int(local_68.GetData().TargetIllustrate) == int(Illustrate)))
         {
-            return local_28;
+            return TDataObjectPtr<FDivineSkillTypeConfig>(local_68.GetData());
         }
         local_68.Next();
     }
-    return local_28;
+    return TDataObjectPtr<FDivineSkillTypeConfig>();
 }
 void SaveDivineSkillInfo(const FECSEntity &inout PrevEntity, const FFPTime &inout Time)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    int local_20 = 0;
+    USkillConfig local_24;
+    if (!(PrevEntity) || !(PrevEntity.IsValid()))
+    {
+        return;
+    }
+    Get local_8;
+    if (local_8.opCall())
+    {
+        const FDivineSkillConfig& local_22;
+        if (!(local_20.GetDivineSkillData().GetSkillConfig()))
+        {
+            return;
+        }
+        local_24 = local_22.SkillConfig;
+        if (!((local_24 != nullptr)))
+        {
+            return;
+        }
+        int local_26 = FSkillUtils::GetSkillIndex(PrevEntity, local_22.SkillConfig);
+        if (local_26 == INDEX_NONE)
+        {
+            return;
+        }
+        FFPTime local_30 = FSkillUtils::GetSkillCDRemainTime(PrevEntity, local_26, Time);
+        float32 local_32 = FSkillUtils::GetSkillCDDuration(PrevEntity, local_26);
+        FDivineSkillCDSnapshot local_40;
+        local_40.SetCDEndTime((Time + local_30));
+        local_40.SetSnapshotTime(Time);
+        local_40.SetCDDuration(local_32);
+        local_20.SetCDSnapshot(local_40);
+    }
+    return;
 }
 EDivineSkillType FilterTagToDivineSkillType(const FName &inout FilterTag)
 {

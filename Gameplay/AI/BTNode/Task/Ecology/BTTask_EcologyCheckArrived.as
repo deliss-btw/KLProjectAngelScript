@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_EcologyCheckArrived : UBTTask_ECSScriptBase
 {
     UPROPERTY()
@@ -24,7 +22,7 @@ class UBTTask_EcologyCheckArrived : UBTTask_ECSScriptBase
     EBTNodeResult ExecuteTask_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const
     {
         int local_16 = 0;
-        int local_40;
+        int local_40 = 0;
         FECSEntity local_4 = FECSEntity(Context.PawnEntity);
         UBlackboardComponent local_8 = Context.GetOwnerComponent().GetBlackboardComponent();
         if (!(local_16))

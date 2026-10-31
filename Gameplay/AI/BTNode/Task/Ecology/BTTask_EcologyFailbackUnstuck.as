@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_EcologyDemoRequestDither : UBTTask_ECSScriptBase
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ class UBTTask_EcologyDemoRequestDither : UBTTask_ECSScriptBase
     float32 duration = 1.0f;
 
     default SetNodeName("Ecology Demo Request Dither");
-
 
     UFUNCTION()
     EBTNodeResult ExecuteTask_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const

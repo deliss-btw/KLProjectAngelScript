@@ -1,4 +1,3 @@
-﻿
 namespace FM_CommissionLeaderboardEntry
 {
     const int ModelId = 0;

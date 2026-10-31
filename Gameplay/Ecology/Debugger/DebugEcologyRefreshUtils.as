@@ -1,4 +1,3 @@
-﻿
 namespace FDebugEcologyRefreshUtils
 {
 void ForceRefreshAllSpawner()

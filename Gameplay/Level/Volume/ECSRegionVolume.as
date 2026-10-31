@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: AECSRegionVolume (default scalar field AECSVolumeBase.bServerOnly has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FRegionVolumeUnitConfig : FSceneUnitConfigWithJsonData
 {
     FSceneUnitConfigWithJsonData _base_FSceneUnitConfigWithJsonData;
@@ -10,7 +5,6 @@ struct FRegionVolumeUnitConfig : FSceneUnitConfigWithJsonData
     TDataObjectPtr<FWorldAreaConfig> AreaConfig;
     UPROPERTY()
     bool bAffectWeather = false;
-
 
 }
 
@@ -74,7 +68,6 @@ class AECSRegionVolume : AECSRegionVolumeBase
     FBoxSphereBounds CachedBounds;
     bool bCachedBounds = false;
 
-
     UFUNCTION()
     bool ShouldCreateDynamicEntity_Implementation()
     {
@@ -121,10 +114,10 @@ class AECSRegionVolume : AECSRegionVolumeBase
         if (this.bSafeZone)
         {
             Get local_6;
-            if (local_6.opCall())
+            const FC_PlayerController& local_8 = local_6.opCall();
+            if (local_8)
             {
-                UCombatGlobalSettings local_12 = ::UCombatGlobalSettings::Get();
-                ECS::GetContextTime();
+                FBuffUtils::AddBuff(local_8.GetPlayerPawnEntity(), ::UCombatGlobalSettings::Get().SafeZoneBuff, ECS::GetContextTime(), ENTITY_NULL, false, -1.0f, 1, false);
             }
         }
         return;
@@ -135,10 +128,10 @@ class AECSRegionVolume : AECSRegionVolumeBase
         if (this.bSafeZone)
         {
             Get local_6;
-            if (local_6.opCall())
+            const FC_PlayerController& local_8 = local_6.opCall();
+            if (local_8)
             {
-                UCombatGlobalSettings local_12 = ::UCombatGlobalSettings::Get();
-                ECS::GetContextTime();
+                FBuffUtils::RemoveBuff(local_8.GetPlayerPawnEntity(), ::UCombatGlobalSettings::Get().SafeZoneBuff, ECS::GetContextTime(), EBuffEndType(0));
             }
         }
         return;
@@ -214,7 +207,82 @@ class AECSRegionVolume : AECSRegionVolumeBase
     UFUNCTION()
     void OnEntityEndOverlap_Implementation(const FECSContext &inout Context, const FECSEntity &inout Entity)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        Has local_26;
+        int local_34 = 0;
+        int local_40 = 0;
+        int local_60 = 0;
+        if (Context.Runtime.IsServer)
+        {
+            if (this.bAffectMovment)
+            {
+                Modify local_6;
+                FC_CharacterVaulting& local_8 = local_6.opCall();
+                if (local_8)
+                {
+                    if (this.bOverrideWallRun)
+                    {
+                        local_8.OverrideEnableWallRun(!(this.bEnableWallRun));
+                    }
+                    if (this.bOverrideVaultOver)
+                    {
+                        local_8.OverrideEnableVaultOver(!(this.bEnableVaultOver));
+                    }
+                    if (this.bOverrideUpstair)
+                    {
+                        local_8.OverrideEnableMoveUpstairs(!(this.bEnableUpstair));
+                    }
+                }
+                if (this.bMutePreventEdgeFalling)
+                {
+                    Modify local_12;
+                    FC_CharacterMovement& local_14 = local_12.opCall();
+                    if (local_14)
+                    {
+                        local_14.SetMutePreventEdgeFalling((local_14.GetMutePreventEdgeFalling() - 1));
+                    }
+                }
+            }
+            if (this.bAffectCombat)
+            {
+                Modify local_20;
+                FC_AIKnowledge& local_22 = local_20.opCall();
+                if (local_22)
+                {
+                    local_22.bIsInCombatArea = false;
+                }
+                if (!(local_26.opCall()))
+                {
+                    FFPTime local_32 = FFPTime(-1);
+                    local_34.CombatAreaEntity = this.GetRegionEntity();
+                }
+                else
+                {
+                    FFPTime local_32_2 = FFPTime(-1);
+                    local_40.CombatAreaEntity = this.GetRegionEntity();
+                }
+            }
+            if (this.bSafeZone && !(local_26.opCall()))
+            {
+                FBuffUtils::RemoveBuff(Entity, ::UCombatGlobalSettings::Get().SafeZoneBuff, ECS::GetContextTime(), EBuffEndType(0));
+            }
+            if (this.bAffectMount && !(this.bAllowMount))
+            {
+                Remove local_52;
+                local_52.opCall();
+            }
+            if (this.bRemoveTemporarySkillOnLeave)
+            {
+                int local_15_2 = FSkillUtils::GetSkillIndex(Entity, ESkillSlot(9));
+                if (local_15_2 != INDEX_NONE)
+                {
+                    if (this.RemoveTemporarySkills.Contains(local_60.GetSkillRuntimeInfos()[local_15_2].GetSkillConfig()))
+                    {
+                        FSkillUtils::RemoveSkill(local_60.GetSkillInstanceEntity(local_15_2), Entity, true);
+                    }
+                }
+            }
+        }
+        return;
     }
     int GetWeatherPriority() const
     {

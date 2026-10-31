@@ -1,5 +1,3 @@
-﻿
-
 class US_MountSystem : UECSScriptSystem
 {
     UPROPERTY()
@@ -16,7 +14,6 @@ class US_MountSystem : UECSScriptSystem
     FName ActiveStateName = n"Default";
     UPROPERTY()
     float32 PrivateMountInactiveDelay = 1.0f;
-
 
     UFUNCTION()
     void Init_Implementation()
@@ -893,8 +890,7 @@ class US_MountSystem : UECSScriptSystem
             }
             if (!(local_50.opCall()) == !(false))
             {
-                FString local_54 = "Timer job error: 'FC_LocalTag' included by job but not exist on ";
-                FString local_58 = local_32.ToString();
+                XLog(ELog(2), (FString("Timer job error: 'FC_LocalTag' included by job but not exist on ") + local_32.ToString()));
                 local_34 = true;
             }
             if (local_34)

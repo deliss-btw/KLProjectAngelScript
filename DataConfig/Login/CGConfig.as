@@ -1,5 +1,3 @@
-﻿
-
 struct FCGContextConfig
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ struct FCGContextConfig
     float32 FadeOutDuration = 0.0f;
     UPROPERTY()
     float32 NextButtonShowDelay = 0.0f;
-
 
 }
 

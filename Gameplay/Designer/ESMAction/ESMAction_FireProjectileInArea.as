@@ -1,5 +1,3 @@
-﻿
-
 struct FFireProjectileInAreaInstanceData
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ struct FFireProjectileInAreaInstanceData
     FVector2D LastSobolValue;
     UPROPERTY()
     int JitterSeedCounter;
-
 
 }
 
@@ -51,7 +48,6 @@ class UESMAction_FireProjectileInArea : UESMBPBaseSpanTickAction
     UPROPERTY()
     float32 WarningFXHeightFromGround = 0.0f;
 
-
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const
     {
@@ -84,7 +80,7 @@ class UESMAction_FireProjectileInArea : UESMBPBaseSpanTickAction
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const
     {
-        return FString().Append("еЊєеџџй›Ёеј№: ").Append(this.FireConfig.ProjectilePrefab.GetAssetName()).Append("  R=").Append(this.SpawnAreaRadius).Append("  N=").Append(this.SpawnCountPerBatch).Append("/ж‰№  й—ґйљ”=").Append(this.FireInterval).Append("s");
+        return FString().Append("区域雨弹: ").Append(this.FireConfig.ProjectilePrefab.GetAssetName()).Append("  R=").Append(this.SpawnAreaRadius).Append("  N=").Append(this.SpawnCountPerBatch).Append("/批  间隔=").Append(this.FireInterval).Append("s");
     }
     UFUNCTION()
     bool IsUseAsInstant_Implementation() const

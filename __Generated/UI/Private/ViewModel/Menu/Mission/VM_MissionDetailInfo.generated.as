@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_MissionDetailInfo_Helpers
 {
 UFUNCTION()

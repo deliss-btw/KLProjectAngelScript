@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonBanner
 {
     const int ModelId = 0;
@@ -222,14 +221,13 @@ struct __GeneratedProperties_FVM_CommonBanner
     UPROPERTY()
     TEUIModelRef<FVM_CommonBanner> Self;
 
-
 }
 
 namespace FVM_CommonBanner
 {
 FVM_CommonBanner& Create(const UObject ContextObject, const FText &inout Title, const FText &inout Tips, const FSoftBrush &inout Icon, const bool bEnd, const EBannerBGType BackGroundType)
 {
-    return FVM_CommonBanner::CreateByManager(EUIInternal::GetContextManager(ContextObject), Title, Tips, Icon, bEnd);
+    return FVM_CommonBanner::CreateByManager(EUIInternal::GetContextManager(ContextObject), Title, Tips, Icon, bEnd, EBannerBGType(BackGroundType));
 }
 FVM_CommonBanner CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Title, const FText &inout Tips, const FSoftBrush &inout Icon, const bool bEnd, const EBannerBGType BackGroundType)
 {

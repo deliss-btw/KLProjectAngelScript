@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_AnnularProgressBar
 {
     const int ViewID = 0;
@@ -22,7 +21,6 @@ class UWidget_AnnularProgressBar : UEUIUserWidget
     FEUIModelWeakRef __CurrencyBar;
     UPROPERTY()
     FGetEUIModelRef CurrencyBarDelegate;
-
 
     UFUNCTION()
     void PreConstruct_Implementation(const bool bIsDesignTime)
@@ -101,6 +99,7 @@ namespace UWidget_AnnularProgressBar
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_AnnularProgressBar;
     Result.ObservedModelChangesSubscriberNames.Add(FString("SetProgress"));
     return;
 }

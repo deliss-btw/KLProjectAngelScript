@@ -1,5 +1,3 @@
-﻿
-
 struct FConditionTest1
 {
     UPROPERTY()
@@ -35,7 +33,7 @@ struct FConditionTest2
 struct FConditionTest3
 {
     UPROPERTY()
-    UObject Value;
+    UObject Value = nullptr;
 
     FConditionTest3()
     {
@@ -43,7 +41,6 @@ struct FConditionTest3
     }
     FConditionTest3(const UObject Value_)
     {
-        this.Value = nullptr;
         return;
     }
 }

@@ -1,5 +1,3 @@
-﻿
-
 struct FDefaultDivineSkillConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -9,7 +7,6 @@ struct FDefaultDivineSkillConfig : FDataObject
     EDivineSkillType DivineSkillType;
     UPROPERTY()
     FDataObjectPtr m_DivineSkill;
-
 
     TDataObjectPtr<FDivineSkillConfig> GetDivineSkill() const property
     {

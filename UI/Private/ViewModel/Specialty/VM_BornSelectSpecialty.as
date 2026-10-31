@@ -1,4 +1,3 @@
-﻿
 namespace FVM_BornSelectSpecialty
 {
     const int ModelId = 0;
@@ -556,7 +555,6 @@ struct __GeneratedProperties_FVM_BornSelectSpecialty
     UPROPERTY()
     TEUIModelRef<FVM_BornSelectSpecialty> Self;
 
-
 }
 
 namespace FVM_BornSelectSpecialty
@@ -656,7 +654,9 @@ void __OnPlayerBornStateChanged(FVM_BornSelectSpecialty &inout Model, const FECS
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorPlayerBornStateLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerBornStateModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TEUIModelRef<FVM_AvatarInfo> __UIGetter_AvatarLeft(const FVM_BornSelectSpecialty &inout Model)
 {

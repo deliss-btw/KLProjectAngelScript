@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_AirMovementFloating : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
@@ -68,23 +66,23 @@ class UESMAction_AirMovementFloating : UESMBPBaseSpanTickAction
         bool local_1 = this.IsFloatingHeightParamValid(this.FloatingHeight);
         if ((local_2 && local_1))
         {
-            return FString().Append("з©єдё­ж‚¬жµ®жЁЎејЏ: й«еє¦иЊѓе›ґ [").Append(this.GetFloatingHeightParamStr(this.FloatingHeightMin)).Append("пјЊ").Append(this.GetFloatingHeightParamStr(this.FloatingHeight)).Append("], и°ѓж•ґйЂџеє¦ ").Append(this.GetFloatingHeightParamStr(this.FloatingAdjustSpeed)).Append(" ");
+            return FString().Append("空中悬浮模式: 高度范围 [").Append(this.GetFloatingHeightParamStr(this.FloatingHeightMin)).Append("，").Append(this.GetFloatingHeightParamStr(this.FloatingHeight)).Append("], 调整速度 ").Append(this.GetFloatingHeightParamStr(this.FloatingAdjustSpeed)).Append(" ");
         }
         else
         {
             if (local_2)
             {
-                return FString().Append("з©єдё­ж‚¬жµ®жЁЎејЏ: е›єе®љй«еє¦ ").Append(this.GetFloatingHeightParamStr(this.FloatingHeightMin)).Append(", и°ѓж•ґйЂџеє¦ ").Append(this.GetFloatingHeightParamStr(this.FloatingAdjustSpeed)).Append(" ");
+                return FString().Append("空中悬浮模式: 固定高度 ").Append(this.GetFloatingHeightParamStr(this.FloatingHeightMin)).Append(", 调整速度 ").Append(this.GetFloatingHeightParamStr(this.FloatingAdjustSpeed)).Append(" ");
             }
             else
             {
                 if (local_1)
                 {
-                    return FString().Append("з©єдё­ж‚¬жµ®жЁЎејЏ: е›єе®љй«еє¦ ").Append(this.GetFloatingHeightParamStr(this.FloatingHeight)).Append(", и°ѓж•ґйЂџеє¦ ").Append(this.GetFloatingHeightParamStr(this.FloatingAdjustSpeed)).Append(" ");
+                    return FString().Append("空中悬浮模式: 固定高度 ").Append(this.GetFloatingHeightParamStr(this.FloatingHeight)).Append(", 调整速度 ").Append(this.GetFloatingHeightParamStr(this.FloatingAdjustSpeed)).Append(" ");
                 }
                 else
                 {
-                    return FString().Append("з©єдё­ж‚¬жµ®жЁЎејЏ: й«еє¦йќћжі•, и°ѓж•ґйЂџеє¦ ").Append(this.GetFloatingHeightParamStr(this.FloatingAdjustSpeed));
+                    return FString().Append("空中悬浮模式: 高度非法, 调整速度 ").Append(this.GetFloatingHeightParamStr(this.FloatingAdjustSpeed));
                 }
             }
         }
@@ -96,12 +94,12 @@ class UESMAction_AirMovementFloating : UESMBPBaseSpanTickAction
         {
             if (this.FloatingHeightMin.Value < 0.0f && (this.FloatingHeight.Value < 0.0f))
             {
-                Info.AddDataInvalidComment(EESMDataValidType(2), "ж‚¬жµ®й«еє¦дё‹з•Ње’Њж‚¬жµ®й«еє¦дёЉз•ЊдёЌиѓЅеђЊж—¶е°ЏдєЋ0");
+                Info.AddDataInvalidComment(EESMDataValidType(2), "悬浮高度下界和悬浮高度上界不能同时小于0");
                 return;
             }
             if (this.FloatingHeight.Value > 0.0f && (this.FloatingHeightMin.Value > this.FloatingHeight.Value))
             {
-                Info.AddDataInvalidComment(EESMDataValidType(2), "ж‚¬жµ®й«еє¦дё‹з•ЊдёЌиѓЅе¤§дєЋж‚¬жµ®й«еє¦дёЉз•Њ");
+                Info.AddDataInvalidComment(EESMDataValidType(2), "悬浮高度下界不能大于悬浮高度上界");
             }
         }
         return;
@@ -136,11 +134,35 @@ class UESMAction_SwoopMove : UESMBPBaseSpanTickAction
     UPROPERTY()
     FNameHandle_ESMBBTrigger ExitTrigger;
 
-
     UFUNCTION()
     void Tick_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_2 = 0;
+        int local_8 = 0;
+        int local_14 = 0;
+        FHitResult local_90;
+        FCollisionQueryParams local_128;
+        local_128.bTraceComplex = false;
+        FVector local_156(local_8.GetPosition());
+        float32 local_137 = -this.ExitGroundHeight;
+        FVector local_162 = (local_156 + FVector(0.0, 0.0, local_137));
+        FCollisionResponseParams local_178;
+        bool local_180 = FPhysicsUtils::SweepSingle(Context.GetEntity(), false, EPhysicsTraceTag(11), local_90, local_8.GetPosition(), local_162, FQuat::Identity, FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(5)), FCollisionShape::MakeCapsule(local_2.GetScaledRadius(), local_2.GetScaledHalfHeight()), local_128, local_178);
+        if (local_180)
+        {
+            FESMTriggerUtils::ActivateTrigger(Context.GetEntity(), Context.GetBlackboard().GetTriggerStorage(), this.ExitTrigger.Name, Context.Time.WorldTime, FFPTime(0.1), 0);
+            local_14.SetbFlyFloating(true);
+            local_14.SetFloatingHeight(this.ExitGroundHeight);
+        }
+        FVector local_190 = local_14.GetMovementInput();
+        FVector local_136 = local_190.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector);
+        if (!(local_180))
+        {
+            local_136 = local_8.GetRotation().GetForwardVector().RotateAngleAxis(this.SwoopAngle, local_8.GetRotation().GetRightVector());
+        }
+        FC_CharacterMovementParam local_24;
+        local_14.SetMovementInput((local_136.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector) * FMath::Min(local_190.Size(), local_24.MoveSpeed)));
+        return;
     }
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const

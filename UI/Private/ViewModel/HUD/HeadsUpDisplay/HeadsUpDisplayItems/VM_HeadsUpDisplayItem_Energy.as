@@ -1,4 +1,3 @@
-﻿
 namespace FVM_HeadsUpDisplayItem_Energy
 {
     const int ModelId = 0;

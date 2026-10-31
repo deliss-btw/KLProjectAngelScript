@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_RoleItem_Helpers
 {
 UFUNCTION()

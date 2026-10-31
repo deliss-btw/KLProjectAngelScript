@@ -1,5 +1,3 @@
-﻿
-
 struct FChapterConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -9,7 +7,6 @@ struct FChapterConfig : FDataObject
     FText ChapterTitle;
     UPROPERTY()
     int SortPriority = 0;
-
 
 }
 

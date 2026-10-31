@@ -1,4 +1,3 @@
-﻿
 enum EPassLoadingStatus
 {
     NotStarted,
@@ -60,13 +59,12 @@ struct FPerPassLoadingGroups
     UPROPERTY()
     EPassLoadingStatus Status = EPassLoadingStatus(0);
 
-
     int GetLevelGroupStatusIndex(const FName &inout GroupName) const
     {
         int local_1 = 0;
-        for (; local_1 < this.Num(); ++local_1)
+        for (; local_1 < this.GroupStatus.Num(); ++local_1)
         {
-            if ((FName(this[local_1].GroupName) == GroupName))
+            if ((FName(this.GroupStatus[local_1].GroupName) == GroupName))
             {
                 return local_1;
             }
@@ -171,11 +169,11 @@ struct FCS_InitialLevelLoadingData : FECSSingleton
 struct FC_LevelGroupCheckReadyTime : FECSComponent
 {
     UPROPERTY()
-    FFPTime BeginTime;
+    FFPTime BeginTime = -1;
 
     FC_LevelGroupCheckReadyTime()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        return;
     }
 }
 
@@ -192,7 +190,7 @@ struct FCS_LevelGroupOccupyData : FECSSingleton
     {
         if (!(Rule.IsEmpty()))
         {
-            this.Add(Rule);
+            this.OccupyRules.Add(Rule);
         }
         return;
     }
@@ -206,7 +204,7 @@ struct FCS_LevelGroupOccupyData : FECSSingleton
     }
     void ClearOccupyRules()
     {
-        this.Empty(0);
+        this.OccupyRules.Empty(0);
         return;
     }
     bool IsGroupOccupied(const FLevelGroupConfig &inout GroupConfig) const
@@ -219,7 +217,7 @@ struct FCS_LevelGroupOccupyData : FECSSingleton
         {
             return false;
         }
-        for (auto& local_18 : this)
+        for (auto& local_18 : this.OccupyRules)
         {
             if (!(local_18.IsEmpty()) && local_18.Matches(GroupConfig.GroupTags))
             {
@@ -318,17 +316,17 @@ bool RemoveInitialLevelLoadingData(const FECSWorldPtr &inout World)
 }
 void __MonitorInitialLevelLoadingDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_InitialLevelLoadingData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_InitialLevelLoadingData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorInitialLevelLoadingDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_InitialLevelLoadingData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_InitialLevelLoadingData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorInitialLevelLoadingDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_InitialLevelLoadingData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_InitialLevelLoadingData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_LevelGroupCheckReadyTime
@@ -411,37 +409,37 @@ bool RemoveLevelGroupCheckReadyTime(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorLevelGroupCheckReadyTimeOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_LevelGroupCheckReadyTime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_LevelGroupCheckReadyTime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLevelGroupCheckReadyTimeOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_LevelGroupCheckReadyTime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_LevelGroupCheckReadyTime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLevelGroupCheckReadyTimeOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_LevelGroupCheckReadyTime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_LevelGroupCheckReadyTime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLevelGroupCheckReadyTimeOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_LevelGroupCheckReadyTime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_LevelGroupCheckReadyTime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorLevelGroupCheckReadyTimeOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_LevelGroupCheckReadyTime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_LevelGroupCheckReadyTime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorLevelGroupCheckReadyTimeLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_LevelGroupCheckReadyTime, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_LevelGroupCheckReadyTime, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelGroupCheckReadyTimeActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_LevelGroupCheckReadyTime, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_LevelGroupCheckReadyTime, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelGroupCheckReadyTimeModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_LevelGroupCheckReadyTime, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_LevelGroupCheckReadyTime, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_LevelGroupOccupyData
@@ -532,16 +530,16 @@ bool RemoveLevelGroupOccupyData(const FECSWorldPtr &inout World)
 }
 void __MonitorLevelGroupOccupyDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_LevelGroupOccupyData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_LevelGroupOccupyData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelGroupOccupyDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_LevelGroupOccupyData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_LevelGroupOccupyData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelGroupOccupyDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_LevelGroupOccupyData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_LevelGroupOccupyData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

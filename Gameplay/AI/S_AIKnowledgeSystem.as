@@ -1,21 +1,15 @@
-﻿
-
 class US_AIKnowledgeSystem : UECSScriptSystem
 {
     UPROPERTY()
-    FRuntimeFloatCurve DefaultAlertnessRatioCurveByDistance;
+    FRuntimeFloatCurve DefaultAlertnessRatioCurveByDistance = FRuntimeCurveUtils::CreateLinear(0.0f, 1.0f, 5000.0f, 0.0f);
     UPROPERTY()
-    FRuntimeFloatCurve DefaultAlertnessRatioCurveByAngleOffset;
+    FRuntimeFloatCurve DefaultAlertnessRatioCurveByAngleOffset = FRuntimeCurveUtils::CreateLinear(0.0f, 1.0f, 90.0f, 0.0f);
     UPROPERTY()
     UAIAlertnessConfigDataAsset CommonAIAlertnessConfig;
     UPROPERTY()
-    TMap<EMonsterRank, float32> BeTargetedStressScoreByMonsterRank;
-    float32 UpdateFactionTargetableEntitiesInterval;
+    TMap<EMonsterRank, float32> BeTargetedStressScoreByMonsterRank = {{EMonsterRank(2), 10.0f}, {EMonsterRank(1), 5.0f}, {EMonsterRank(0), 2.0f}, {EMonsterRank(3), 1.0f}};
+    float32 UpdateFactionTargetableEntitiesInterval = 1.0f;
 
-    US_AIKnowledgeSystem()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
     UFUNCTION()
     void Monitor_TryRefreshTargetingWhileTargetEntityRelive(const FECSEntity &inout Entity, const FC_DeathTag &inout DeathTag) const
     {
@@ -39,9 +33,10 @@ class US_AIKnowledgeSystem : UECSScriptSystem
             return;
         }
         Get local_12;
-        if (local_12.opCall())
+        const FC_AIBehaviorConfig& local_8 = local_12.opCall();
+        if (local_8)
         {
-            ECS::GetContextTime();
+            FAIInputUtils::ChangeMoveStance(local_8.DefaultMoveStance, Entity, ECS::GetContextTime(), ECharacterMoveStanceLayer(1));
         }
         return;
     }
@@ -230,7 +225,42 @@ class US_AIKnowledgeSystem : UECSScriptSystem
     UFUNCTION()
     void Job_TickPlayerEngagingTarget(const FCS_FixedTime &inout FixedTime, const FECSEntity &inout Entity, const FC_ControlledByPlayer &inout ControlledByPlayer) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_14 = 0;
+        FECSWorldPtr local_8 = ECS::GetECSWorld();
+        FC_PlayerBeTargeted local_6;
+        local_6.CombatTargets.Empty(0);
+        FTargetEntity local_17 = Entity;
+        FAIAttackTargetInfo local_38;
+        if (local_14.AttackerCountMap.Find(local_17, local_38))
+        {
+            local_6.CombatTargets.Append(local_38.AttackTargetSet);
+        }
+        FAIAttackTargetInfo local_60;
+        if (local_14.BeEngagingedTargetCountMap.Find(local_17, local_60))
+        {
+            local_6.CombatTargets.Append(local_60.AttackTargetSet);
+        }
+        float32 local_61 = 0.0f;
+        for (auto& local_80 : local_6.CombatTargets)
+        {
+            FECSEntity local_88 = local_80.GetEntity();
+            if (local_88.IsValid())
+            {
+                float32 local_91;
+                if (this.BeTargetedStressScoreByMonsterRank.Find(::FASCommonUtils::GetMonsterRank(local_88), local_91))
+                {
+                    local_61 = local_61 + local_91;
+                }
+            }
+        }
+        local_6.BeTargetedStress = local_61;
+        Modify local_96;
+        FC_AIKnowledge& local_98 = local_96.opCall();
+        if (local_98)
+        {
+            local_98.NextKnowledgeUpdateTime = (FFPTime(FixedTime.Time) + FFPTime((::FAIPlayerDistLODSchedule::GetStaggeredInterval(::FAIPlayerDistLODUtils::GetLODLevel(Entity), Entity.GetIdValue()))));
+        }
+        return;
     }
     UFUNCTION()
     void Monitor_UpdateCombatKnowledgeOnGameAttributeInitialized(const FECSEntity &inout Entity, const FC_GameAttributeSnapshot &inout GameAttributeSnapshot) const

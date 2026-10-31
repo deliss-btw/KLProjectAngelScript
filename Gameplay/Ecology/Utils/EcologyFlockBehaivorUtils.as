@@ -1,4 +1,3 @@
-﻿
 enum EActivityInvalidReason
 {
     Valid,
@@ -82,7 +81,7 @@ bool IsActivitySuitableForSlot(const FEcologyActivityDefinitionRow &inout Activi
 }
 EActivityInvalidReason IsActivityIsSuitForCurrentState(const FECSEntity &inout CreatureEntity, const TDataObjectPtr<FEcologyActivityDefinitionRow> &inout ActivityDef)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    // body not fully recovered — stub [argmismatch:argtype]
     EActivityInvalidReason __r; return __r;
 }
 bool NormalizeCreatureActivityData(const FECSEntity &inout CreatureEntity)
@@ -175,11 +174,11 @@ bool ReSetActivity(const FECSEntity &inout CreatureEntity, FC_CreatureEcologySta
         {
             continue;
         }
-        if (!(FEcologyConditionUtils::CheckCreatureCanDoActivity(CreatureEntity, TDataObjectPtr<FEcologyActivityDefinitionRow>(), local_92)))
+        if (!(FEcologyConditionUtils::CheckCreatureCanDoActivity(CreatureEntity, TDataObjectPtr<FEcologyActivityDefinitionRow>(local_126), local_92)))
         {
             continue;
         }
-        local_120 = TDataObjectPtr<FEcologyActivityDefinitionRow>();
+        local_120 = (TDataObjectPtr<FEcologyActivityDefinitionRow>(local_126));
         if (!(local_126.bIsDefaultBehavior))
         {
             break;
@@ -310,10 +309,14 @@ void SyncFlockBehaviorState(const FECSEntity &inout CreatureEntity)
 void UpdateCreatureMoveStanceByBehavior(const FECSEntity &inout CreatureEntity)
 {
     bool local_1 = false;
+    int local_4 = 2;
+    int local_3 = local_4;
     if (local_1)
     {
+        int local_4_2 = 1;
+        local_3 = local_4_2;
     }
-    ECS::GetContextTime();
+    FAIInputUtils::ChangeMoveStance(ECharacterMoveStance(local_3), CreatureEntity, ECS::GetContextTime(), ECharacterMoveStanceLayer(1));
     return;
 }
 void NotifyAllChildActivityInfoChanged(const FECSEntity &inout FlockEntity)
@@ -972,12 +975,13 @@ void ModifyFlockState(const FECSEntity &inout FlockEntity, const EFlockBehaviorS
         return;
     }
     EFlockBehaviorState local_7_2 = local_6.MainState;
+    int local_11 = local_7_2;
     local_6.MainState = NewState;
     FECSWorldPtr local_14 = ECS::GetECSWorld();
     Get local_18;
     local_6.EnterMainStateTime = local_18.opCall().Time;
     FEcologyBehaviorUtils::UpdateFlockPosition(FlockEntity);
-    FEcologyBehaviorUtils::OnFlockStateChanged(FlockEntity, EFlockBehaviorState(local_7_2), EFlockBehaviorState(NewState));
+    FEcologyBehaviorUtils::OnFlockStateChanged(FlockEntity, EFlockBehaviorState(local_11), EFlockBehaviorState(NewState));
     return;
 }
 void AddFlockChangeAreaRequest(const FECSEntity &inout FlockEntity, const FResourceRequestFilterConfig &inout SearchRequest, const FGameplayTag &inout ReasonTag, const FGameplayTag &inout SourceTag, const bool bUseNearestCombatRegionPolicy, const FChangeAreaMessageInfo &inout MessageInfo, const float32 CombatRegionPolicyRadiusLayer1 = 25000.f, const float32 CombatRegionPolicyRadiusLayer2 = 50000.f, const int Priority = 0, const bool bNeedChangeAreaMessage = false, const bool bForceUpdateTargetResource = false)

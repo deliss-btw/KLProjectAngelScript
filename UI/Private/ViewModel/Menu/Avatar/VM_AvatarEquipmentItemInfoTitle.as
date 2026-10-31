@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AvatarEquipmentItemInfoTitle
 {
     const int ModelId = 0;

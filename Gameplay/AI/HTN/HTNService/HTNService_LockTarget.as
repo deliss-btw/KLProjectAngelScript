@@ -1,5 +1,3 @@
-﻿
-
 class UHTNService_LockTarget : UHTNService_AICommandScript
 {
     UPROPERTY()
@@ -11,8 +9,7 @@ class UHTNService_LockTarget : UHTNService_AICommandScript
     UPROPERTY()
     FAICommand_LockTarget AICommand;
 
-    default SetNodeName("й”Ѓе®љз›®ж ‡");
-
+    default SetNodeName("锁定目标");
 
     UFUNCTION()
     void OnInitCommandInstanceData_Implementation(const FAICommandInstanceDataInitContextPtr &inout Context) const

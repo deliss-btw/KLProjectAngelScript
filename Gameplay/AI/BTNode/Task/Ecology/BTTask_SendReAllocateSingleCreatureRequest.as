@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_SendReAllocateSingleCreatureRequest : UBTTask_ECSScriptBase
 {
     UPROPERTY()

@@ -1,10 +1,7 @@
-﻿
-
 class UESMAction_SetBreathAudioState : UESMBPBaseSpanAction
 {
     UPROPERTY()
     EBreathAudioState BreathState = EBreathAudioState(0);
-
 
     UFUNCTION()
     EESMAssetWorkflow GetWorkflow_Implementation() const

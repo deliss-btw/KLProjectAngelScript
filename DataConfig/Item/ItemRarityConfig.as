@@ -1,5 +1,3 @@
-﻿
-
 struct FItemRarityConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -19,7 +17,6 @@ struct FItemRarityConfig : FDataObject
     FSoftBrush PopupBGRarityImage;
     UPROPERTY()
     FText ItemNamePrefix;
-
 
 }
 

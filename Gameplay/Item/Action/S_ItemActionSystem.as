@@ -1,5 +1,3 @@
-﻿
-
 class US_ItemActionSystem : UECSScriptSystem
 {
     US_ItemActionSystem()

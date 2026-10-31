@@ -1,4 +1,3 @@
-﻿
 enum EMenuOperationFunction
 {
     ExitGame,
@@ -19,7 +18,6 @@ struct FMenuOperation
     FText OperationName;
     UPROPERTY()
     EMenuOperationFunction Function;
-
 
 }
 
@@ -80,8 +78,22 @@ class UMenuSettings : UGameplaySettingsBase
     }
     int GetBelongingCategoryIndex(const TDataObjectPtr<FMenuConfig> &inout MenuConfig) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        bool local_11;
+        TConstRawPtr<FMenuSettingsCache> local_6 = FInstancedStruct::GetPtr(this.GetCacheData()).opCall();
+        if (!(local_6))
+        {
+            local_11 = false;
+        }
+        else
+        {
+            int local_9;
+            local_11 = local_6.opArrow().MenuConfigToCategoryIndex.Find(MenuConfig, local_9);
+        }
+        if (local_11)
+        {
+            return int();
+        }
+        return INDEX_NONE;
     }
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonDropdownOption
 {
     const int ModelId = 0;
@@ -73,8 +72,11 @@ struct FVM_CommonDropdownOption : FEUIViewModel
     }
     bool IsSelected() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        bool __r; return __r;
+        if (this.GetDropdown().IsNull() || (this.GetIndex() == INDEX_NONE))
+        {
+            return false;
+        }
+        return (this.GetDropdown().opArrow().GetSelectedIndex() == this.GetIndex());
     }
     int GetIndex() const property
     {
@@ -415,7 +417,6 @@ struct __GeneratedProperties_FVM_CommonDropdownOption
     UPROPERTY()
     TEUIModelRef<FVM_CommonDropdownOption> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_CommonDropdownList
@@ -439,7 +440,6 @@ struct __GeneratedProperties_FVM_CommonDropdownButton
     bool IsArrowRotated;
     UPROPERTY()
     TEUIModelRef<FVM_CommonDropdownButton> Self;
-
 
 }
 
@@ -543,7 +543,47 @@ FVM_CommonDropdownList CreateByManager(const UEUIManagerSubsystem Manager, const
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "Options";
+    local_14.TypeName = "TArray<FEUIModelContainer>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ModelRef";
+    local_14.TypeName = "TEUIModelRef<FVM_CommonDropdownList>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_CommonDropdownList>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_CommonDropdownList;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(2);
+    local_22.AddRefPropertyDirty(0, 0, FVM_CommonDropdown::__IndexOf_OptionDatas());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("Dropdown");
+    int local_2_2 = FVM_CommonDropdown::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FVM_CommonDropdown::__IndexOf_OptionDatas(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnOptionDatasChanged";
+    local_40.DirtyFlags.Set(FVM_CommonDropdownList::__IndexOf_Dropdown());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    FEUIModelMsgHandleDefine local_50;
+    local_50.FunctionName = "__HandleMsgSelected";
+    local_50.MessageTypeName = "Msg_DropdownOptionSelected";
+    local_50.SourcePropertyModelRefs = FBitSet64(-1);
+    Result.MessageHandleFunctions.Add(local_50);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

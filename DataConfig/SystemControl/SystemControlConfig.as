@@ -1,4 +1,3 @@
-﻿
 enum ESystemModule
 {
     Common,
@@ -42,7 +41,6 @@ enum ESystemModule
     HealHerbs,
 }
 
-
 struct FSystemControlConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -82,7 +80,6 @@ struct FSystemControlConfig : FDataObject
     TArray<ELevelType> AllowedScenes;
     UPROPERTY()
     FDataObjectPtr m_RefreshRuleConfig;
-
 
     const TDataObjectPtr<FServerConditionConfigBase> GetCondition() const property
     {

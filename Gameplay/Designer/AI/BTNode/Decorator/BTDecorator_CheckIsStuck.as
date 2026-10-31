@@ -1,5 +1,3 @@
-﻿
-
 struct FBTDecorator_CheckIsStuckMemory
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ struct FBTDecorator_CheckIsStuckMemory
     bool bLastResult;
     UPROPERTY()
     bool bHasLastResult;
-
 
 }
 
@@ -27,8 +24,7 @@ class UBTDecorator_CheckIsStuck : UBTDecorator_ECSScriptBase
 
     default SetbAllowAbortLowerPri(true);
     default SetbAllowAbortChildNodes(true);
-    default SetNodeName("жЈЂжџҐи‡Єиє«жЇеђ¦еЌЎдЅЏ");
-
+    default SetNodeName("检查自身是否卡住");
 
     UFUNCTION()
     UScriptStruct GetNodeMemoryType_Implementation() const

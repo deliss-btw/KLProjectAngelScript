@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CustomWheelMainButton
 {
     const int ViewID = 0;
@@ -45,6 +44,7 @@ namespace UWidget_CustomWheelMainButton
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CustomWheelMainButton;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

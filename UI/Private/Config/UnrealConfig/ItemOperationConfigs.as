@@ -1,5 +1,3 @@
-﻿
-
 class UItemOperationConfig_GainWay : UItemOperationConfigBase
 {
     UPROPERTY()
@@ -23,8 +21,7 @@ class UItemOperationConfig_GainWay : UItemOperationConfigBase
         FItemOperationExpandInfo local_24;
         FItemOperationExpandInfo __r;
         local_24.ContentWidget = this.ExpandWidget;
-        FEUIModelContainer local_38;
-        local_24.ContentModels = local_38;
+        local_24.ContentModels = FEUIModelContainer(::FVM_ItemGainWayList::Create(ItemData.opArrow().GetContext().Manager, ItemData));
         return __r;
     }
 }
@@ -57,9 +54,7 @@ class UItemOperationConfig_NumOperationBase : UItemOperationConfigBase
         FItemOperationExpandInfo local_24;
         FItemOperationExpandInfo __r;
         local_24.ContentWidget = this.ExpandWidget;
-        TEUIModelRef<FVM_CommonRewardList> local_26 = this.GetResultPreview(ItemData);
-        FEUIModelContainer local_40;
-        local_24.ContentModels = local_40;
+        local_24.ContentModels = FEUIModelContainer(::FVM_ItemNumOperation::Create(ItemData.opArrow().GetContext().Manager, ItemData, this, this.GetResultPreview(ItemData)));
         return __r;
     }
     void ExecuteOperation(const TEUIModelRef<FM_ItemData> &inout ItemData, const int ItemNum) const

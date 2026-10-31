@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ChatMain
 {
     const int ViewID = 0;
@@ -330,6 +329,7 @@ namespace UWidget_ChatMain
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ChatMain;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCurrentMessagesUpdated"));
     return;
 }

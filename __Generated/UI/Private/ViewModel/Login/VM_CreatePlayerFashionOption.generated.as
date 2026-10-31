@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CreatePlayerFashionOption_Helpers
 {
 UFUNCTION()

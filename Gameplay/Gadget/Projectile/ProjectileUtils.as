@@ -1,4 +1,3 @@
-﻿
 namespace FProjectileUtils
 {
     const FName StrikeKey_Projectile = n"ProjectileStrikeKey";
@@ -6,7 +5,6 @@ namespace FProjectileUtils
 int SpawnProjectileEvent(const FECSEntity &inout OwnerEntity, const FFPTime &inout SpawnTime, const FFireProjectileConfig &inout FireConfig, const FFPTime &inout LifeTimeOverride = -1)
 {
     const UECSEntityPoolMeta local_20;
-    int local_79;
     int local_164 = 0;
     bool local_1 = !(OwnerEntity.IsValid());
     bool local_2 = !(false);
@@ -64,7 +62,9 @@ int SpawnProjectileEvent(const FECSEntity &inout OwnerEntity, const FFPTime &ino
     bool local_43 = false;
     if (local_21)
     {
-        local_18 = FEntityPoolUtils::TryPopEntityFromPool(EEntityPoolType(EEntityPoolType(0)), OwnerEntity, EEntityType(0), local_38);
+        EEntityType local_44;
+        local_44 = EEntityType(0);
+        local_18 = FEntityPoolUtils::TryPopEntityFromPool(EEntityPoolType(0), OwnerEntity, local_44, local_38);
         if (local_18.IsValid())
         {
             Get local_60;
@@ -96,15 +96,7 @@ int SpawnProjectileEvent(const FECSEntity &inout OwnerEntity, const FFPTime &ino
         if (local_74)
         {
             local_74.ProjectileEntity = local_18;
-            if (local_20 != nullptr)
-            {
-                local_79 = int(local_20.GetEntityPoolType());
-            }
-            else
-            {
-                local_79 = -1;
-            }
-            local_74.PoolType = local_79;
+            local_74.PoolType = local_20 != nullptr ? int(local_20.GetEntityPoolType()) : -1;
             local_74.AttackInfo.HitType = (2 != 0);
             local_74.AttackInfo.AttackData = FireConfig.AttackDataConfig;
             local_74.FireConfig = FFireProjectileData(FireConfig);
@@ -366,8 +358,80 @@ bool CalculateProjectileSpawnTransform(const FECSEntity &inout Sender, const FFP
 }
 FTransform GetProjectileSpawnTransform(const FECSEntity &inout Sender, const FFPTime &inout Time, const FFireProjectileData &inout FireConfig, const bool bForPresentation, bool &inout bOutCancelSpawn)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    FTransform __r; return __r;
+    FTransform local_24;
+    int local_114 = 0;
+    FVector local_30;
+    FQuat4f local_36;
+    FTransform local_60 = FTransform(FTransform::Identity);
+    Get local_64;
+    const FC_TransformHistory& local_66 = local_64.opCall();
+    if (local_66)
+    {
+        FC_Transform local_88;
+        local_66.GetInterpoValue(Time, local_88);
+        local_60 = local_88.ToFTransform();
+    }
+    else
+    {
+        if (local_114)
+        {
+            local_60 = local_114.ToFTransform();
+        }
+        else
+        {
+            if ((int(FireConfig.GetSpawnPositionOffsetType())) != 3)
+            {
+                XError(ELog(48), FString().Append("Projectile spawn position offset type is not WorldSpace but sender '").Append(Sender.GetEntityName()).Append("' don't have Transform or TransformHistory component, Projectile: ").Append(FireConfig.GetProjectilePrefab().ToString()));
+            }
+        }
+    }
+    bool local_67 = FProjectileUtils::CalculateProjectileSpawnTransform(Sender, Time, FireConfig, local_60, local_30, local_36, bForPresentation, bOutCancelSpawn);
+    if (bOutCancelSpawn)
+    {
+        return FTransform::Identity;
+    }
+    if (FireConfig.GetbForShooting() || FireConfig.GetbSpawnWithPredictPath())
+    {
+        FECSEntity local_140 = Sender;
+        Get local_144;
+        const FC_PawnRiddingMount& local_146 = local_144.opCall();
+        if (local_146)
+        {
+            if (!((FECSEntity(local_146.GetMountEntity()) == ENTITY_ID_NULL)) && local_146.IsDriver())
+            {
+                local_140 = local_146.GetMountEntity();
+            }
+        }
+        FRotator local_162 = FCharacterInputUtils::GetViewInputDir(local_140, Time);
+        if (FireConfig.GetbSpawnWithPredictPath())
+        {
+            Get local_166;
+            const FC_ThrowPredictPathData& local_168 = local_166.opCall();
+            if (local_168)
+            {
+                FThrowPredictPathData local_244;
+                if (local_168.ThrowPathDataMap.Find(FThrowTargetInfo(FireConfig.GetProjectileKey(), Sender.GetId()), local_244))
+                {
+                    local_162.Pitch = local_244.PitchMappingCurve.GetFloatValue(float32(local_162.Pitch), float32(local_162.Pitch));
+                }
+            }
+        }
+        FQuat4f local_280 = (FRotator3f(local_162).Quaternion() * FireConfig.GetRotationOffset().Quaternion());
+        if (!(FireConfig.GetbSpawnWithPredictPath()))
+        {
+            FVector local_286 = (FQuat(local_280) * FireConfig.GetPositionOffset());
+            FVector local_320 = (local_60.GetLocation() + (FCharacterInputUtils::GetViewOffset(local_140, Time)));
+            local_30 = FMath::RayPlaneIntersection((local_320 + local_286), FVector(local_280.GetForwardVector()), FPlane(local_60.GetLocation(), FVector(local_280.GetForwardVector())));
+        }
+        bool local_135 = !(false);
+        if (!(local_67) == local_135)
+        {
+            local_36 = local_280;
+        }
+    }
+    local_24.SetLocation(local_30);
+    local_24.SetRotation(FQuat(local_36));
+    return local_24;
 }
 void CreateHitPresentation(const FECSEntity &inout ProjectileEntity, const FECSEntity &inout OwnerEntity, const FProjectileFXConfig &inout HitFX, const FVector &inout Position, const FRotator &inout Rotation, const FName &inout SurfaceName, const FFPTime &inout Time, const bool bPredictable)
 {
@@ -529,8 +593,9 @@ void DestroyProjectile(const FECSEntity &inout Entity, const FC_Owner &inout Pro
         FAbilityEffectEventData_Projectile local_30;
         local_30.SetProjectileEntity(Entity);
         local_30.SetPosition(DestroyPosition);
+        UScriptStruct local_36 = FAbilityEffectEventData_Projectile;
         GetDefaulted local_34;
-        FECSEntity local_18 = local_34.opCall().GetOwnerEntity();
+        FAbilityUtils::TryTriggerAbilityEffectEvent(Entity, local_34.opCall().GetOwnerEntity(), EAbilityEffectEvent(4), Time, local_36, local_30);
     }
     Get local_40;
     const FC_ProjectileActorVisualConfig& local_42 = local_40.opCall();

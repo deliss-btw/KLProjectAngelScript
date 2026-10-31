@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TalentCompTypeIcon
 {
     const int ViewID = 0;
@@ -36,6 +35,7 @@ namespace UWidget_TalentCompTypeIcon
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TalentCompTypeIcon;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

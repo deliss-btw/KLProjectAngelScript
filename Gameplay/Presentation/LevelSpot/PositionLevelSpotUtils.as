@@ -1,4 +1,3 @@
-﻿
 namespace PositionLevelSpotUtils
 {
 FLevelSpotId CreateSpot(const FVector &inout Position, const FLevelSpotData &inout Data, const ELevelSpotDataSource ConfigSource = ELevelSpotDataSource::PositionSpot)
@@ -45,6 +44,6 @@ void RemoveSpot(const FLevelSpotId &inout SpotId)
 }
 void ChangeSpotPosition(const FLevelSpotId &inout SpotId, const FVector &inout Position)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    // body not fully recovered — stub [argmismatch:argtype]
 }
 }

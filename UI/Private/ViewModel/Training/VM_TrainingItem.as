@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TrainingItem
 {
     const int ModelId = 0;

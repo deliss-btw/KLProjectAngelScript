@@ -1,4 +1,3 @@
-﻿
 namespace FMaterialUtils
 {
 void RequestOverrideMaterial(const FECSEntity &inout Entity, const FName &inout RequestName, const TArray<FMeshMaterialInfo> &inout MeshMaterialOverrides)
@@ -11,8 +10,8 @@ void RequestOverrideMaterial(const FECSEntity &inout Entity, const FName &inout 
         {
             FSingleMaterialParamRequestData local_72;
             local_72.SetMeshName(local_26.MeshName);
-            local_72.SetbIsOverlayMaterial(local_40.bIsOverlayMaterial);
-            local_72.SetbUseSlotName(local_40.bUseSlotName);
+            local_72.SetbIsOverlayMaterial((int(local_40.bIsOverlayMaterial) != 0));
+            local_72.SetbUseSlotName((int(local_40.bUseSlotName) != 0));
             local_72.SetMaterialIndex(int(local_40.MaterialIdx));
             local_72.SetMaterialSlotName(local_40.MaterialSlotName);
             local_72.SetOverrideMaterialPath(local_40.MaterialPath);

@@ -1,5 +1,3 @@
-﻿
-
 struct FDisplayItemFashionRuntimeState
 {
     UPROPERTY()
@@ -17,18 +15,17 @@ struct FDisplayItemFashionRuntimeState
     UPROPERTY()
     TEUIModelRef<FVM_RedDot> RedDotVM;
 
-
 }
 
 namespace DisplayItemAdapter_Fashion
 {
 bool TryResolveDisplayIconForBody(const FFashionDisplayIconByBody &inout IconByBody, const EBodyType BodyType, FSoftBrush &inout OutIcon)
 {
-    if (IconByBody.Find(BodyType, OutIcon))
+    if (IconByBody.BodyIcons.Find(BodyType, OutIcon))
     {
         return true;
     }
-    if (!(int(BodyType) == 0) && IconByBody.Find(EBodyType(0), OutIcon))
+    if (!(int(BodyType) == 0) && IconByBody.BodyIcons.Find(EBodyType(0), OutIcon))
     {
         return true;
     }
@@ -92,8 +89,7 @@ TEUIModelRef<FM_DisplayItemData> MakeDisplayData(const UObject ContextObject, co
         local_2.SetItemImageHigh(DisplayItemAdapter_Fashion::ResolveDisplayIcon(FashionConfig, EBodyType(BodyType), EDisplayItemIconType(1)));
         int local_54 = local_53;
         local_2.SetRarityValue(local_54);
-        int local_81 = int(DisplayItemAdapter_Fashion::ConvertFashionRarity(EFashionRarity(local_53)));
-        if (UGlobalItemSettings::Get().GetRarityConfig().IsSet())
+        if (UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(DisplayItemAdapter_Fashion::ConvertFashionRarity(EFashionRarity(local_53)))).IsSet())
         {
         }
         local_2.SetSortPriority(local_54);
@@ -237,8 +233,7 @@ void ApplyRuntimeState(const FVM_DisplayItem &inout DisplayItemVM, const TDataOb
     DisplayItemUtility::SetMask(DisplayItemVM, RuntimeState.bEnableMask, int(RuntimeState.MaskType));
     DisplayItemUtility::SetEquipStateByFlags(DisplayItemVM, RuntimeState.bEquippedOnCurrentTarget, RuntimeState.bEquippedOnOtherTarget);
     DisplayItemUtility::SetCustomSelection(DisplayItemVM, RuntimeState.bSelected);
-    int local_80 = int(DisplayItemAdapter_Fashion::ConvertFashionRarity(EFashionRarity(local_79)));
-    TDataObjectPtr<FItemRarityConfig> local_104 = UGlobalItemSettings::Get().GetRarityConfig();
+    TDataObjectPtr<FItemRarityConfig> local_104 = UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(DisplayItemAdapter_Fashion::ConvertFashionRarity(EFashionRarity(local_79))));
     FSoftBrush local_148;
     if (local_104.IsSet())
     {

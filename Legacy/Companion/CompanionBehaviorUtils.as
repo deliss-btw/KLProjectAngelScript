@@ -1,4 +1,3 @@
-﻿
 namespace FCompanionBehaviorUitls
 {
 UFUNCTION()

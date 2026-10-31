@@ -1,11 +1,9 @@
-﻿
-
 class UBTService_UpdateEcologyChangeAreaData : UBTService_ECSScriptBase
 {
     UPROPERTY()
     FBlackboardKeySelector ForceUpdateTargetResource;
 
-    default SetNodeName("ж›ґж–°ForceResetBehaviorж•°жЌ®е€°й»‘жќїеЂјпјЊз”ЁдєЋж‰“ж–­еЅ“е‰ЌиЎЊдёє");
+    default SetNodeName("更新ForceResetBehavior数据到黑板值，用于打断当前行为");
 
     UBTService_UpdateEcologyChangeAreaData()
     {

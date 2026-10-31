@@ -1,4 +1,3 @@
-﻿
 enum ESkillBtnsCharacterType
 {
     Avatar,
@@ -344,7 +343,17 @@ struct FVMS_SkillBtns : FEUIViewModelSingleton
     }
     void RefreshGamepadRightShoulderPress()
     {
-        if (!(!(this.GetCurSkillBtnConfig())) && this.GetCurSkillBtnConfig().opArrow().bEnableGamepadRightShoulderAnim)
+        int local_2;
+        if (!(this.GetCurSkillBtnConfig()))
+        {
+            local_2 = 0;
+        }
+        else
+        {
+            bool local_1 = this.GetCurSkillBtnConfig().opArrow().bEnableGamepadRightShoulderAnim;
+            local_2 = local_1;
+        }
+        if (local_2 != 0)
         {
             this.SetbGamepadRightShoulderPress(this.GetbGamepadRightShoulderInputPress());
             return;
@@ -400,7 +409,7 @@ struct FVMS_SkillBtns : FEUIViewModelSingleton
         if (local_84)
         {
             this.SetCurSkillBtnConfig(local_84.GetSkillBtnConfig());
-            this.SetSkillBtnsCharacterType(ESkillBtnsCharacterType(ESkillBtnsCharacterType(0)));
+            this.SetSkillBtnsCharacterType(ESkillBtnsCharacterType(0));
             local_81 = false;
         }
         local_70 = local_81 && ::FASCommonUtils::IsAvatarPrefab(this.GetCurPawnEntity());
@@ -408,7 +417,7 @@ struct FVMS_SkillBtns : FEUIViewModelSingleton
         {
             TDataObjectPtr<FAvatarPrefabConfig> local_114 = ::GetAvatarConfig(this.GetCurPawnEntity());
             this.SetCurSkillBtnConfig(GetSkillBtnConfig());
-            this.SetSkillBtnsCharacterType(ESkillBtnsCharacterType(ESkillBtnsCharacterType(0)));
+            this.SetSkillBtnsCharacterType(ESkillBtnsCharacterType(0));
         }
         else
         {
@@ -416,7 +425,7 @@ struct FVMS_SkillBtns : FEUIViewModelSingleton
             {
                 TDataObjectPtr<FMonsterPrefabConfig> local_138 = ::GetMonsterConfig(this.GetCurPawnEntity());
                 this.SetCurSkillBtnConfig(GetSkillBtnConfig());
-                this.SetSkillBtnsCharacterType(ESkillBtnsCharacterType(ESkillBtnsCharacterType(1)));
+                this.SetSkillBtnsCharacterType(ESkillBtnsCharacterType(1));
                 this.SetbIsPVXControlFakeCharacter(this.GetCurPawnEntity().MatchGameplayTag(GameplayTags::CombatState_ControlMonster_PVX));
             }
         }
@@ -648,7 +657,7 @@ struct FVMS_SkillBtns : FEUIViewModelSingleton
         }
         if (local_9_5)
         {
-            if ((int(this.GetSkillBtnsCharacterType())) == 0)
+            if (int(this.GetSkillBtnsCharacterType()) == 0)
             {
                 UExclusiveSkillModelAdapterBase local_194;
                 this.SetExclusiveSkill(local_194.MakeViewModels(this.GetContext()));
@@ -1261,7 +1270,6 @@ struct __GeneratedProperties_FVMS_SkillBtns
     ESlateVisibility SkillBtnsPanelVisibility;
     UPROPERTY()
     TEUIModelRef<FVMS_SkillBtns> Self;
-
 
 }
 

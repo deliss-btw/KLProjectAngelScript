@@ -1,5 +1,3 @@
-﻿
-
 class US_PortalSystem : UECSScriptSystem
 {
     US_PortalSystem()

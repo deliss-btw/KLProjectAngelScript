@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TeammateInfo
 {
     const int ModelId = 0;
@@ -408,7 +407,7 @@ struct FVM_TeammateInfo : FEUIViewModel
                 TEUIModelRef<FM_Player> local_130 = this.GetTeamMember().opArrow().GetPlayer();
                 local_119 = ::VOXUtils::IsPlayerMuted(GetPlayerUid());
             }
-            FText local_142 = local_119 ? NSLOCTEXT("Team", "UnmutePlayer", "еЏ–ж¶€йќ™йџі") : local_108.ButtonText;
+            FText local_142 = local_119 ? NSLOCTEXT("Team", "UnmutePlayer", "取消静音") : local_108.ButtonText;
             TEUIModelRef<FVM_BtnOperationItem> local_112 = TEUIModelRef<FVM_BtnOperationItem>(::FVM_BtnOperationItem::Create(this.GetContext().Manager, local_142, local_108.Icon));
             TEUIModelRef<FVM_BtnOperationItem> local_110;
             GetOnClickGoToCallback().Bind(this, FVM_TeammateInfo::ToggleMute);
@@ -447,9 +446,9 @@ struct FVM_TeammateInfo : FEUIViewModel
         TEUIModelRef<FM_Player> local_6_2 = this.GetTeamMember().opArrow().GetPlayer();
         FString local_42;
         local_42.GetNickName();
-        FText local_54 = FText::Format(NSLOCTEXT("Team", "KickMemberMessage", "жЇеђ¦зЎ®и®¤иЇ·з¦»{0}"), FText::FromString(local_42));
+        FText local_54 = FText::Format(NSLOCTEXT("Team", "KickMemberMessage", "是否确认请离{0}"), FText::FromString(local_42));
         FCommonDialogParam local_88;
-        ::CommonPopup::Dialog_Decision(NSLOCTEXT("Team", "KickMemberTitle", "жЏђз¤є"), local_54, FDialogCallback(local_34), NSLOCTEXT("Team", "KickMemberConfirm", "жЇ"), NSLOCTEXT("Team", "KickMemberCancel", "еђ¦"), local_88);
+        ::CommonPopup::Dialog_Decision(NSLOCTEXT("Team", "KickMemberTitle", "提示"), local_54, FDialogCallback(local_34), NSLOCTEXT("Team", "KickMemberConfirm", "是"), NSLOCTEXT("Team", "KickMemberCancel", "否"), local_88);
         this.CloseHoverMenu();
         return true;
     }
@@ -479,7 +478,7 @@ struct FVM_TeammateInfo : FEUIViewModel
         if (local_6)
         {
             FCommonTipsParam local_20;
-            ::CommonPopup::WeakTips(NSLOCTEXT("Team", "TeamChangedCannotKick", "йџдјЌе·ІеЏ‘з”џеЏеЊ–"), local_20);
+            ::CommonPopup::WeakTips(NSLOCTEXT("Team", "TeamChangedCannotKick", "队伍已发生变化"), local_20);
             return true;
         }
         ::FSocialTeamUtils::ClientSendKickTeammate(this.GetContext().GetLocalPlayer(), local_1);
@@ -498,9 +497,9 @@ struct FVM_TeammateInfo : FEUIViewModel
         TEUIModelRef<FM_Player> local_6_2 = this.GetTeamMember().opArrow().GetPlayer();
         FString local_42;
         local_42.GetNickName();
-        FText local_54 = FText::Format(NSLOCTEXT("Team", "SetCaptainMessage", "жЇеђ¦зЎ®и®¤е°†йџй•їиЅ¬и®©з»™{0}"), FText::FromString(local_42));
+        FText local_54 = FText::Format(NSLOCTEXT("Team", "SetCaptainMessage", "是否确认将队长转让给{0}"), FText::FromString(local_42));
         FCommonDialogParam local_88;
-        ::CommonPopup::Dialog_Decision(NSLOCTEXT("Team", "SetCaptainTitle", "жЏђз¤є"), local_54, FDialogCallback(local_34), NSLOCTEXT("Team", "SetCaptainConfirm", "жЇ"), NSLOCTEXT("Team", "SetCaptainCancel", "еђ¦"), local_88);
+        ::CommonPopup::Dialog_Decision(NSLOCTEXT("Team", "SetCaptainTitle", "提示"), local_54, FDialogCallback(local_34), NSLOCTEXT("Team", "SetCaptainConfirm", "是"), NSLOCTEXT("Team", "SetCaptainCancel", "否"), local_88);
         this.CloseHoverMenu();
         return true;
     }
@@ -530,7 +529,7 @@ struct FVM_TeammateInfo : FEUIViewModel
         if (local_6)
         {
             FCommonTipsParam local_20;
-            ::CommonPopup::WeakTips(NSLOCTEXT("Team", "TeamChangedCannotSetCaptain", "йџдјЌе·ІеЏ‘з”џеЏеЊ–"), local_20);
+            ::CommonPopup::WeakTips(NSLOCTEXT("Team", "TeamChangedCannotSetCaptain", "队伍已发生变化"), local_20);
             return true;
         }
         ::FSocialTeamUtils::ClientSendTransferCaptain(this.GetContext().GetLocalPlayer(), local_1);
@@ -553,7 +552,7 @@ struct FVM_TeammateInfo : FEUIViewModel
             ::VOXUtils::UnmutePlayer(local_6);
             TEUIModelRef<FM_Player> local_4_2 = this.GetTeamMember().opArrow().GetPlayer();
             local_12.GetNickName();
-            ::CommonPopup::WeakTips(FText::Format(NSLOCTEXT("Team", "UnmutedPlayer", "е·ІеЏ–ж¶€йќ™йџі{0}"), FText::FromString(local_12)), local_28);
+            ::CommonPopup::WeakTips(FText::Format(NSLOCTEXT("Team", "UnmutedPlayer", "已取消静音{0}"), FText::FromString(local_12)), local_28);
         }
         else
         {
@@ -562,7 +561,7 @@ struct FVM_TeammateInfo : FEUIViewModel
             ::VOXUtils::MutePlayer(local_6);
             TEUIModelRef<FM_Player> local_4_3 = this.GetTeamMember().opArrow().GetPlayer();
             local_12.GetNickName();
-            ::CommonPopup::WeakTips(FText::Format(NSLOCTEXT("Team", "MutedPlayer", "е·Ійќ™йџі{0}"), FText::FromString(local_12)), local_28);
+            ::CommonPopup::WeakTips(FText::Format(NSLOCTEXT("Team", "MutedPlayer", "已静音{0}"), FText::FromString(local_12)), local_28);
         }
         this.CloseHoverMenu();
         return true;
@@ -1049,7 +1048,6 @@ struct __GeneratedProperties_FVM_TeammateInfo
     UPROPERTY()
     TEUIModelRef<FVM_TeammateInfo> Self;
 
-
 }
 
 namespace FVM_TeammateInfo
@@ -1092,7 +1090,239 @@ FVM_TeammateInfo CreateByManager(const UEUIManagerSubsystem Manager, const TEUIM
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasBeginDestroy(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "PlayerInfo";
+    local_14.TypeName = "TEUIModelRef<FVM_PlayerInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PlayerHpBar";
+    local_14.TypeName = "TEUIModelRef<FVM_PlayerHpBar>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PlayerBuffInfo";
+    local_14.TypeName = "TEUIModelRef<FVM_BuffInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TeammateMessageBubble";
+    local_14.TypeName = "TEUIModelRef<FVM_TeammateMessageBubbleManager>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Index";
+    local_14.TypeName = "TEUIModelRef<FVM_Index>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PlayerBasicItem";
+    local_14.TypeName = "TEUIModelRef<FVM_PlayerBasicItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PlayerBasicItemExtend";
+    local_14.TypeName = "TEUIModelRef<FVM_PlayerBasicItemExtend>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bIsMuted";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bIsSpeaking";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TeamMemberDisplaySequenceNum";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsSelf";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsCaptain";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsSocialTeam";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsCombatTeam";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsTaunting";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsNearDeath";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsDead";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShowSkillHint";
+    local_14.TypeName = "ESlateVisibility";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShowSkillHintIA";
+    local_14.TypeName = "FEUIInputAction";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsDeadOrNearDeath";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsAlive";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsNotDead";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "StatusIndex";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "NearDeathBarPercent";
+    local_14.TypeName = "float32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShouldDisplayPlayerSocialStatus";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IndexText";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_TeammateInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_TeammateInfo;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(18);
+    local_22.AddRefPropertyDirty(0, 0, FM_TeamMember::__IndexOf_MemberIndex());
+    local_22.AddRefPropertyDirty(1, 0, FM_TeamMember::__IndexOf_Player());
+    local_22.AddRefPropertyDirty(2, 6, FM_Player::__IndexOf_LevelAttr());
+    local_22.AddRefPropertyDirty(3, 6, FM_Player::__IndexOf_DivineSkillAttr());
+    local_22.AddRefPropertyDirty(4, 6, FM_Player::__IndexOf_CurrentAvatarAttr());
+    local_22.AddRefPropertyDirty(5, 6, FM_Player::__IndexOf_NickNameAttr());
+    local_22.AddRefPropertyDirty(6, 6, FM_Player::__IndexOf_IsOnlineAttr());
+    local_22.AddRefPropertyDirty(7, 9, FVM_BtnOperationList::__IndexOf_bIsHovering());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("TeamMember");
+    int local_2_2 = FM_TeamMember::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FM_TeamMember::__IndexOf_MemberIndex(), true);
+    local_30.RelatedDirtyMask.SetBit(FM_TeamMember::__IndexOf_Player(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    local_30.PropertyName = FName("Player");
+    int local_24 = FM_Player::ModelId;
+    int local_24_2 = local_22.GetMappingDirtyOffset(6);
+    local_30.RelatedDirtyMask.SetBit(FM_Player::__IndexOf_LevelAttr(), true);
+    local_30.RelatedDirtyMask.SetBit(FM_Player::__IndexOf_DivineSkillAttr(), true);
+    local_30.RelatedDirtyMask.SetBit(FM_Player::__IndexOf_CurrentAvatarAttr(), true);
+    local_30.RelatedDirtyMask.SetBit(FM_Player::__IndexOf_NickNameAttr(), true);
+    local_30.RelatedDirtyMask.SetBit(FM_Player::__IndexOf_IsOnlineAttr(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    local_30.PropertyName = FName("HoverListModel");
+    int local_23 = FVM_BtnOperationList::ModelId;
+    int local_23_2 = local_22.GetMappingDirtyOffset(9);
+    local_30.RelatedDirtyMask.SetBit(FVM_BtnOperationList::__IndexOf_bIsHovering(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelMetaPropertyModelRef local_35;
+    local_35.PropertyName = FName("Player");
+    int local_24_3 = FM_Player::ModelId;
+    Result.FunctionalPropertyModelRefs.Add(local_35);
+    FEUIModelMonitorDefine local_46;
+    local_46.FunctionName = "__OnClientVOXStateChanged";
+    local_46.ComponentType = FCS_ClientVOXState;
+    Result.MonitorFunctions.Add(local_46);
+    Result.TickFunction.FunctionName = "__Tick";
+    FEUIModelMsgHandleDefine local_58;
+    local_58.FunctionName = "__OnTeamPanelShoulderReleased";
+    local_58.MessageTypeName = "Msg_TeamPanelShoulderReleased";
+    local_58.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_58);
+    FEUIModelDirtyDefine local_70;
+    local_70.FunctionName = "__OnHoverListModelHoverStateChanged";
+    local_70.DirtyFlags.Set(FVM_TeammateInfo::__IndexOf_HoverListModel());
+    local_70.DirtyFlags.Set(local_22.GetMappingDirtyIndex(7));
+    Result.DirtyFunctions.Add(local_70);
+    local_70.FunctionName = "__OnTeamMemberIndexChanged";
+    local_70.DirtyFlags.Set(FVM_TeammateInfo::__IndexOf_TeamMember());
+    local_70.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_70);
+    local_70.FunctionName = "__OnTeamMemberPlayerChanged";
+    local_70.DirtyFlags.Set(FVM_TeammateInfo::__IndexOf_TeamMember());
+    local_70.DirtyFlags.Set(local_22.GetMappingDirtyIndex(1));
+    Result.DirtyFunctions.Add(local_70);
+    local_70.FunctionName = "__OnPlayerLevelAttrChanged";
+    local_70.DirtyFlags.Set(FVM_TeammateInfo::__IndexOf_Player());
+    local_70.DirtyFlags.Set(local_22.GetMappingDirtyIndex(2));
+    Result.DirtyFunctions.Add(local_70);
+    local_70.FunctionName = "__OnPlayerDivineSkillAttrChanged";
+    local_70.DirtyFlags.Set(FVM_TeammateInfo::__IndexOf_Player());
+    local_70.DirtyFlags.Set(local_22.GetMappingDirtyIndex(3));
+    Result.DirtyFunctions.Add(local_70);
+    local_70.FunctionName = "__OnPlayerCurrentAvatarAttrChanged";
+    local_70.DirtyFlags.Set(FVM_TeammateInfo::__IndexOf_Player());
+    local_70.DirtyFlags.Set(local_22.GetMappingDirtyIndex(4));
+    Result.DirtyFunctions.Add(local_70);
+    local_70.FunctionName = "__OnPlayerNickNameAttrChanged";
+    local_70.DirtyFlags.Set(FVM_TeammateInfo::__IndexOf_Player());
+    local_70.DirtyFlags.Set(local_22.GetMappingDirtyIndex(5));
+    Result.DirtyFunctions.Add(local_70);
+    local_70.FunctionName = "__OnPlayerIsOnlineAttrChanged";
+    local_70.DirtyFlags.Set(FVM_TeammateInfo::__IndexOf_Player());
+    local_70.DirtyFlags.Set(local_22.GetMappingDirtyIndex(6));
+    Result.DirtyFunctions.Add(local_70);
+    local_58.FunctionName = "__OnLocalPlayerLevelRefresh";
+    local_58.MessageTypeName = "Msg_LocalPlayerLevelRefresh";
+    local_58.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_58);
+    local_58.FunctionName = "__HandlePlayerEntityChanged";
+    local_58.MessageTypeName = "Msg_PlayerEntityChanged";
+    local_58.SourcePropertyModelRefs = FBitSet64(1);
+    Result.MessageHandleFunctions.Add(local_58);
+    local_58.FunctionName = "__HandlePlayerPawnEntityChanged";
+    local_58.MessageTypeName = "Msg_PlayerPawnEntityChanged";
+    local_58.SourcePropertyModelRefs = FBitSet64(1);
+    Result.MessageHandleFunctions.Add(local_58);
+    return;
 }
 UScriptStruct GetModelStruct()
 {
@@ -1171,7 +1401,9 @@ void __HandlePlayerPawnEntityChanged(FVM_TeammateInfo &inout Model, const FMsg_P
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorClientVOXStateLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorClientVOXStateModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TEUIModelRef<FVM_PlayerInfo> __UIGetter_PlayerInfo(const FVM_TeammateInfo &inout Model)
 {

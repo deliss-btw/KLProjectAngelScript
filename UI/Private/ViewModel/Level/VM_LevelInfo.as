@@ -1,4 +1,3 @@
-﻿
 namespace FVM_LevelInfo
 {
     const int ModelId = 0;

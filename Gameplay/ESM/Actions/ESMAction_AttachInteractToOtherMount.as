@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_AttachInteractToOtherMount : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -61,7 +59,8 @@ class UESMAction_AttachInteractToOtherMount : UESMBPBaseSpanAction
         {
             return;
         }
-        ::FMountUtils::EndMountAsPassenger(Context.GetEntity(), Time.WorldTime);
+        const FECSEntity& local_4 = Context.GetEntity();
+        ::FMountUtils::EndMountAsPassenger(local_4, Time.WorldTime);
         return;
     }
 }

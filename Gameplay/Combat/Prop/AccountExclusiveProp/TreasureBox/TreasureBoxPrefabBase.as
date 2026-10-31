@@ -1,5 +1,3 @@
-﻿
-
 class ATreasureBoxPrefabBase : AAccountExclusivePropPrefabBase
 {
     UPROPERTY()

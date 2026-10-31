@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PlayerRename
 {
     const int ViewID = 0;
@@ -19,7 +18,6 @@ class UWidget_PlayerRename : UEUIActivatableWidget
     FGetEUIModelRef PlayerRenameDelegate;
     UPROPERTY()
     FGetEUIModelRef PlayerInfoDelegate;
-
 
     UFUNCTION()
     void OnViewBind_Implementation()
@@ -178,6 +176,7 @@ namespace UWidget_PlayerRename
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PlayerRename;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnShouldClose"));
     return;
 }

@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_SubMeshAnim_NS
 {
     const TECSComponentDerivedPtr<FC_SubMeshAnim> DerivedPtr = TECSComponentDerivedPtr<FC_SubMeshAnim>();
@@ -8,12 +7,11 @@ namespace __INTENRAL_FC_SubMeshAnim_NS
 struct FSubMeshSlotAnim
 {
     UPROPERTY()
-    UAnimSequence Anim;
+    UAnimSequence Anim = nullptr;
     UPROPERTY()
     bool bLoop = false;
     UPROPERTY()
     float32 Seconds = 0.0f;
-
 
 }
 
@@ -122,36 +120,36 @@ bool RemoveSubMeshAnim(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorSubMeshAnimOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_SubMeshAnim, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_SubMeshAnim, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSubMeshAnimOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_SubMeshAnim, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_SubMeshAnim, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSubMeshAnimOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_SubMeshAnim, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_SubMeshAnim, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSubMeshAnimOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_SubMeshAnim, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_SubMeshAnim, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSubMeshAnimOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_SubMeshAnim, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_SubMeshAnim, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorSubMeshAnimLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_SubMeshAnim, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_SubMeshAnim, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSubMeshAnimActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_SubMeshAnim, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_SubMeshAnim, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSubMeshAnimModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_SubMeshAnim, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_SubMeshAnim, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

@@ -1,5 +1,3 @@
-﻿
-
 class US_MissionSystem : UECSScriptSystem
 {
     US_MissionSystem()
@@ -18,7 +16,6 @@ class US_MissionSystem : UECSScriptSystem
         int local_260 = 0;
         int local_268 = 0;
         int local_286;
-        FStatusTransitionInfo local_358;
         EMissionType local_360 = EMissionType(0);
         FECSEntity local_4 = FECSEntity(Event.PlayerEntityId);
         if (!(local_4.IsValid()))
@@ -54,30 +51,24 @@ class US_MissionSystem : UECSScriptSystem
             FMissionDetail& local_274 = local_16.GetModify_ActiveMissionStatus()[local_34.MissionId];
             if (int(local_274.GetMissionStatus()) == 0 && (int(local_34.CurMissionStatus) == 1))
             {
-                XLog(ELog(63), FString().Append("[Mission] Status Transit: ").Append(local_274.GetMissionName()).Append(" ").Append(local_274.GetMissionStatus()).Append(" => ").Append(local_34.CurMissionStatus));
-                EMissionStatus local_275 = local_34.CurMissionStatus;
-                local_274.SetMissionStatus(EMissionStatus(local_275));
-                local_275 = EMissionStatus(1);
-                EMissionStatus local_285 = EMissionStatus(0);
-                local_272.Add(FStatusTransitionInfo(int(local_34.MissionId), 0, EMissionStatus(local_285), EMissionStatus(local_275)));
+                XLog(ELog(63), FString().Append("[Mission] Status Transit: ").Append(local_274.GetMissionName()).Append(" ").Append(int(local_274.GetMissionStatus())).Append(" => ").Append(local_34.CurMissionStatus));
+                local_274.SetMissionStatus(local_34.CurMissionStatus);
+                local_272.Add(FStatusTransitionInfo(int(local_34.MissionId), 0, EMissionStatus(0), EMissionStatus(1)));
             }
             local_286 = GetFirstPhase().IsSet() ? local_40 : 0;
             local_9 = false;
             for (auto& local_302 : local_34.PhaseTransitionInfos)
             {
-                XLog(ELog(63), FString().Append("[Mission] Phase Status Transit: ").Append(local_302.GetMissionPhaseId()).Append(" ").Append(local_302.GetOldStatus()).Append(" => ").Append(local_302.GetNewStatus()));
+                XLog(ELog(63), FString().Append("[Mission] Phase Status Transit: ").Append(local_302.GetMissionPhaseId()).Append(" ").Append(int(local_302.GetOldStatus())).Append(" => ").Append(int(local_302.GetNewStatus())));
                 this.ApplyPhaseStatusTransition(local_4, local_274, local_302);
-                TDataObjectPtr<FMissionPhaseConfig> local_326 = ::MissionUtils::FindMissionPhaseConfig(local_302.GetMissionPhaseId());
-                EMissionStatus local_285_2 = local_302.GetNewStatus();
-                int local_207 = this.TriggerMissionPhaseActions(local_4, local_274.GetMissionConfig(), local_326);
+                int local_285 = int(local_302.GetNewStatus());
+                int local_207 = this.TriggerMissionPhaseActions(local_4, local_274.GetMissionConfig(), ::MissionUtils::FindMissionPhaseConfig(local_302.GetMissionPhaseId()), EMissionStatus(local_285));
                 if (local_286 != 0 && (local_302.GetMissionPhaseId() == local_286) && (int(local_302.GetOldStatus()) == 1) && (int(local_302.GetNewStatus()) > 1))
                 {
                     local_9 = true;
                 }
-                local_285_2 = local_302.GetNewStatus();
-                EMissionStatus local_275_2 = local_302.GetOldStatus();
-                int local_287 = local_302.GetMissionPhaseId();
-                local_40 = int(local_34.MissionId);
+                local_285 = int(local_302.GetNewStatus());
+                FStatusTransitionInfo local_358 = FStatusTransitionInfo(int(local_34.MissionId), local_302.GetMissionPhaseId(), local_302.GetOldStatus(), EMissionStatus(local_285));
                 local_358.SetExecutionEntryId(local_207);
                 local_272.Add(local_358);
             }
@@ -99,18 +90,14 @@ class US_MissionSystem : UECSScriptSystem
             }
             if (int(local_34.CurMissionStatus) > 1)
             {
-                EMissionStatus local_285_3 = local_274.GetMissionStatus();
-                int local_351 = int(local_285_3);
+                int local_351 = int(local_274.GetMissionStatus());
                 local_259 = ::MissionUtils::IsMissionTracking(local_4, local_274.GetMissionConfig());
-                XLog(ELog(63), FString().Append("[Mission] Status Transit: ").Append(local_274.GetMissionName()).Append(" ").Append(local_274.GetMissionStatus()).Append(" => ").Append(::MissionUtils::StopMissionTracking(local_4, local_274.GetMissionConfig())));
-                EMissionStatus local_275_3 = local_34.CurMissionStatus;
-                local_274.SetMissionStatus(EMissionStatus(local_275_3));
+                XLog(ELog(63), FString().Append("[Mission] Status Transit: ").Append(local_274.GetMissionName()).Append(" ").Append(int(local_274.GetMissionStatus())).Append(" => ").Append(::MissionUtils::StopMissionTracking(local_4, local_274.GetMissionConfig())));
+                local_274.SetMissionStatus(local_34.CurMissionStatus);
                 XLog(ELog(63), FString().Append("[Mission] Move MissionDetail ").Append(local_274.GetMissionName()).Append(" to FinishedList."));
                 local_64 = local_274.GetMissionConfig();
                 local_16.GetModify_FinishedMissionStatus().Add(local_64, local_274);
-                local_285_3 = local_34.CurMissionStatus;
-                local_275_3 = EMissionStatus(1);
-                local_272.Add(FStatusTransitionInfo(int(local_34.MissionId), 0, EMissionStatus(local_275_3), EMissionStatus(local_285_3)));
+                local_272.Add(FStatusTransitionInfo(int(local_34.MissionId), 0, EMissionStatus(1), local_34.CurMissionStatus));
                 if (local_351 == 1)
                 {
                     local_20.Add(local_64);
@@ -150,8 +137,8 @@ class US_MissionSystem : UECSScriptSystem
             {
                 continue;
             }
-            EMissionStatus local_123 = this.UpdateMissionObjectiveStatus(local_116, local_117, int(Event.ObjectiveInstanceId), int(Event.ObjectiveId), Event.Status);
-            if ((int(local_123)) != 1)
+            int local_123 = int(this.UpdateMissionObjectiveStatus(local_116, local_117, int(Event.ObjectiveInstanceId), int(Event.ObjectiveId), Event.Status));
+            if (local_123 != 1)
             {
                 ::MissionNetUtils::RequestGSMissionPhaseStatusChange(local_116, local_117, local_119, EMissionStatus(local_123));
             }
@@ -292,7 +279,7 @@ class US_MissionSystem : UECSScriptSystem
                 }
                 if (!(local_104.ActionInstances.IsEmpty()))
                 {
-                    ::MissionExecUtils::RequestStartExecution(local_4, local_104, EMissionActionType(EMissionActionType(1)));
+                    ::MissionExecUtils::RequestStartExecution(local_4, local_104, EMissionActionType(1));
                 }
             }
         }
@@ -348,7 +335,7 @@ class US_MissionSystem : UECSScriptSystem
         }
         if (!(local_18.ActionInstances.IsEmpty()))
         {
-            ::MissionExecUtils::RequestStartExecution(PlayerEntity, local_18, EMissionActionType(EMissionActionType(2)));
+            ::MissionExecUtils::RequestStartExecution(PlayerEntity, local_18, EMissionActionType(2));
         }
         FFPTime local_40 = FFPTime(-1);
         FCE_MissionTriggerEvent local_42;
@@ -399,7 +386,7 @@ class US_MissionSystem : UECSScriptSystem
             return EMissionStatus(0);
         }
         FMissionDetail& local_16 = local_6.GetModify_ActiveMissionStatus()[MissionId];
-        local_16.GetModify_ActiveObjectiveStatusMap()[ObjectiveInstanceId].SetObjectiveStatus();
+        local_16.GetModify_ActiveObjectiveStatusMap()[ObjectiveInstanceId].SetObjectiveStatus(EObjectiveStatus(ObjectiveStatus));
         if (int(ObjectiveStatus) != 1)
         {
             ::ObjectiveUtils::StopObjectiveGuide(ObjectiveInstanceId, PlayerEntity);
@@ -539,8 +526,7 @@ class US_MissionSystem : UECSScriptSystem
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_MissionRequestToggleTrack, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_MissionRequestToggleTrack, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());
@@ -598,8 +584,7 @@ class US_MissionSystem : UECSScriptSystem
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_NotifyServerCGPlayFinished, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_NotifyServerCGPlayFinished, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());

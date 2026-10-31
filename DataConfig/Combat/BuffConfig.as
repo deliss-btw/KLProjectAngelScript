@@ -1,11 +1,9 @@
-﻿
 enum EBuffGoodOrBad
 {
     Good,
     Bad,
     Neutral,
 }
-
 
 struct FBuffPresentationConfig : FDataObject
 {
@@ -40,7 +38,6 @@ struct FBuffPresentationConfig : FDataObject
     FArgText DefaultSmallHintTile;
     UPROPERTY()
     float32 HintLifeTimeOverride;
-
 
 }
 

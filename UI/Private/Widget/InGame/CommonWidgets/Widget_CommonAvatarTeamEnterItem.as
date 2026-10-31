@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommonAvatarTeamEnterItem
 {
     const int ViewID = 0;
@@ -46,6 +45,7 @@ namespace UWidget_CommonAvatarTeamEnterItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonAvatarTeamEnterItem;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_MailDetail_Helpers
 {
 UFUNCTION()

@@ -1,4 +1,3 @@
-﻿
 namespace FEntityMemoryUtils
 {
 UFUNCTION()
@@ -16,10 +15,10 @@ UFUNCTION()
 FString ConstructMemoryPromptFragment(const FECSEntity &inout PawnEntity)
 {
     int local_10 = 0;
-    FString local_4 = "иЎЊеЉЁеЋ†еЏІпјљ\n";
+    FString local_4 = "行动历史：\n";
     if (local_10.EntitySimpleMemoryList.IsEmpty())
     {
-        local_4 += "ж— \n\n";
+        local_4 += "无\n\n";
         return local_4;
     }
     for (auto& local_26 : local_10.EntitySimpleMemoryList)

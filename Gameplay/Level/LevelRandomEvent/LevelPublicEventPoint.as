@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class ALevelPublicEventPoint : ALevelRandomEventPointBase
 {

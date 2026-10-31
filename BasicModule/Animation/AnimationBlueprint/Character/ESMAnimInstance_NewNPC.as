@@ -1,5 +1,3 @@
-﻿
-
 class UESMAnimInstance_NewNPC : UKLAnimInstance
 {
     UPROPERTY()
@@ -102,8 +100,7 @@ class UESMAnimInstance_NewNPC : UKLAnimInstance
                     {
                         EWeaponType local_103;
                         local_103 = this.CharacterWeaponType;
-                        EWeaponType local_104 = local_102.GetCurrentWeaponType();
-                        this.CharacterWeaponType = EWeaponType(local_104);
+                        this.CharacterWeaponType = local_102.GetCurrentWeaponType();
                         this.NeedTransitWeaponType = int(local_103) != int(local_102.GetCurrentWeaponType()) && (int(local_103) != 0);
                     }
                     this.HandleFootPhase(local_72, local_6);
@@ -113,7 +110,7 @@ class UESMAnimInstance_NewNPC : UKLAnimInstance
             {
                 this.UpdataCharacterEntityBBData(local_6);
             }
-            this.UpdateAnimationVariant(EWeaponType(this.CharacterWeaponType), this.NeedTransitWeaponType);
+            this.UpdateAnimationVariant(this.CharacterWeaponType, this.NeedTransitWeaponType);
             this.UpdateStrafeAnimData();
         }
         return;
@@ -222,8 +219,15 @@ class UESMAnimInstance_NewNPC : UKLAnimInstance
     }
     bool IsAngleInRange(const float32 Angle, const float32 MinAngle, const float32 MaxAngle, const float32 Buffer, const bool IncreaseBuffer)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        bool __r; return __r;
+        bool local_4 = this.InRange(Angle, MinAngle + Buffer, MaxAngle - Buffer);
+        bool local_1 = this.InRange(Angle, MinAngle - Buffer, MaxAngle + Buffer);
+        if (IncreaseBuffer)
+        {
+        }
+        else
+        {
+        }
+        return (0 != 0);
     }
     void UpdateStrafeAnimData()
     {

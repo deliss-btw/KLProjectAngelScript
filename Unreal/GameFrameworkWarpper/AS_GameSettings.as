@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class UAS_GameModeSettings : UKLGameModeSettings
 {

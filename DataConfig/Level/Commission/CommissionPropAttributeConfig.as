@@ -1,5 +1,3 @@
-﻿
-
 struct FCommissionPropAttributeConfig : FDataObject
 {
     FDataObject _base_FDataObject;

@@ -1,5 +1,3 @@
-﻿
-
 class UEQT_InNavMesh : UEnvQueryTest_ECS_BlueprintBase
 {
     default SetWorkOnBool(true);

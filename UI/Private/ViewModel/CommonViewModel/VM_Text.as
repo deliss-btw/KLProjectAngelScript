@@ -1,4 +1,3 @@
-﻿
 namespace FVM_Text
 {
     const int ModelId = 0;

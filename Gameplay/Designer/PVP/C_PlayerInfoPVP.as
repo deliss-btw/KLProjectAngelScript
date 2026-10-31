@@ -1,4 +1,3 @@
-﻿
 namespace PVPConstants
 {
     const int MaxTeamCount = 2;
@@ -49,11 +48,27 @@ struct FPVP_PlayerMatchData
 
     FPVP_PlayerMatchData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_TeamID = false;
+        this.m_PlayerInTeamIndex = -1;
+        this.m_bWantsBackToRoom = false;
+        this.m_bIsBot = false;
+        return;
     }
     FPVP_PlayerMatchData(const FPVP_PlayerMatchData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_4;
+        this.__DirtyFlags = local_4;
+        this.m_TeamID = false;
+        this.m_PlayerInTeamIndex = -1;
+        this.m_bWantsBackToRoom = false;
+        this.m_bIsBot = false;
+        this.m_TeamID = (int(Other.m_TeamID) != 0);
+        this.m_PlayerInTeamIndex = int(Other.m_PlayerInTeamIndex);
+        this.m_bWantsBackToRoom = Other.m_bWantsBackToRoom;
+        this.m_bIsBot = Other.m_bIsBot;
+        return;
     }
     FPVP_PlayerMatchData opAssign(const FPVP_PlayerMatchData &inout Other)
     {
@@ -146,11 +161,40 @@ struct FCS_PVP_MatchData : FECSSingleton
 
     FCS_PVP_MatchData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_HostPlayerUID = 0;
+        this.m_MatchRoomID = 0;
+        this.m_TeamPlayerCount0 = 0;
+        this.m_TeamPlayerCount1 = 0;
+        this.m_bHostSayGO = false;
+        this.m_SelectedGameRuleType = EPVPGameRuleType(1);
+        this.m_NextBotUID = 100001;
+        this.__InitDirtyFlags();
+        return;
     }
     FCS_PVP_MatchData(const FCS_PVP_MatchData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_5;
+        this.__DirtyFlags = local_5;
+        this.m_HostPlayerUID = 0;
+        this.m_MatchRoomID = 0;
+        this.m_TeamPlayerCount0 = 0;
+        this.m_TeamPlayerCount1 = 0;
+        this.m_bHostSayGO = false;
+        this.m_SelectedGameRuleType = EPVPGameRuleType(1);
+        this.m_NextBotUID = 100001;
+        this.__InitDirtyFlags();
+        this.m_PlayerMatchDatas = Other.m_PlayerMatchDatas;
+        this.m_HostPlayerUID = int(Other.m_HostPlayerUID);
+        this.m_MatchRoomID = int(Other.m_MatchRoomID);
+        this.m_TeamPlayerCount0 = int(Other.m_TeamPlayerCount0);
+        this.m_TeamPlayerCount1 = int(Other.m_TeamPlayerCount1);
+        this.m_bHostSayGO = Other.m_bHostSayGO;
+        this.m_SelectedGameRuleType = Other.m_SelectedGameRuleType;
+        this.m_NextBotUID = int(Other.m_NextBotUID);
+        this.m_BotPlayerEntities = Other.m_BotPlayerEntities;
+        return;
     }
     FCS_PVP_MatchData opAssign(const FCS_PVP_MatchData &inout Other)
     {
@@ -491,7 +535,6 @@ struct FCE_PVPPlayerSwitchTeam : FECSEvent
     UPROPERTY()
     uint8 NewTeamID;
 
-
     bool Validate() const
     {
         Has local_4;
@@ -504,7 +547,6 @@ struct FCE_PVPPlayerSwitchGameRule : FECSEvent
     FECSEvent _base_FECSEvent;
     UPROPERTY()
     EPVPGameRuleType NewGameRuleType;
-
 
     bool Validate() const
     {
@@ -534,7 +576,6 @@ struct FCE_PVPAddBot : FECSEvent
     UPROPERTY()
     uint8 TeamID;
 
-
     bool Validate() const
     {
         Has local_4;
@@ -547,7 +588,6 @@ struct FCE_PVPRemoveBot : FECSEvent
     FECSEvent _base_FECSEvent;
     UPROPERTY()
     uint8 TeamID;
-
 
     bool Validate() const
     {
@@ -641,17 +681,17 @@ bool RemovePVP_MatchData(const FECSWorldPtr &inout World)
 }
 void __MonitorPVP_MatchDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_PVP_MatchData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_PVP_MatchData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVP_MatchDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_PVP_MatchData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_PVP_MatchData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVP_MatchDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_PVP_MatchData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_PVP_MatchData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

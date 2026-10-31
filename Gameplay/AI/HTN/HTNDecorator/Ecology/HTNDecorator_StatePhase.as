@@ -1,4 +1,3 @@
-﻿
 enum EEcologyPlanerPhase
 {
     Action,
@@ -6,7 +5,6 @@ enum EEcologyPlanerPhase
     TransitionOut,
     StateLoop,
 }
-
 
 class UHTNDecorator_CheckPlanerStateMachinePhase : UHTNDecorator_ECSScriptBase
 {

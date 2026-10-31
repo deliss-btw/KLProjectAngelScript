@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_LoginServer_Helpers
 {
 UFUNCTION()

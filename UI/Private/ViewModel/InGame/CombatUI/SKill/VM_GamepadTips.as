@@ -1,4 +1,3 @@
-﻿
 namespace FVM_GamepadTips
 {
     const int ModelId = 0;

@@ -1,4 +1,3 @@
-﻿
 enum EForgeNodeStateType
 {
     Normal,
@@ -477,11 +476,23 @@ struct FMS_Forge : FEUIModelSingleton
 
     FMS_Forge()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_GlobalShowLevel = INDEX_NONE;
+        this.m_LastSelectedCategoryIndex = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FMS_Forge(const FMS_Forge &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_GlobalShowLevel = INDEX_NONE;
+        this.m_LastSelectedCategoryIndex = INDEX_NONE;
+        this.m_GlobalShowLevel = int(Other.m_GlobalShowLevel);
+        this.m_LastSelectedCategoryIndex = int(Other.m_LastSelectedCategoryIndex);
+        this.m_ForgeNodeMap = Other.m_ForgeNodeMap;
+        this.m_ForgeTreeMap = Other.m_ForgeTreeMap;
+        return;
     }
     FMS_Forge& opAssign(const FMS_Forge &inout Other)
     {
@@ -496,45 +507,13 @@ struct FMS_Forge : FEUIModelSingleton
     }
     void CreateAndAddNode(FM_ForgeTree &inout TreeM, const TArray<FForgeTreeData> &inout BranchArray, const EForgeTreeBranchType BranchType, const EForgeNodeStateType StateType)
     {
-        int local_4 = 0;
-        int local_1 = 0;
-        int local_3 = 0;
-        if (int(BranchType) == 1)
-        {
-            local_1 = 0;
-            local_3 = 0;
-        }
-        else
-        {
-            local_1 = 1;
-            if (!(!(BranchArray.IsValidIndex(0))) && BranchArray[0].NodeConfig)
-            {
-                local_3 = local_4;
-            }
-        }
-        for (; local_1 < BranchArray.Num(); ++local_1)
-        {
-            TDataObjectPtr<FForgeNodeConfig> local_32 = BranchArray[local_1].NodeConfig;
-            if (local_32)
-            {
-                local_4 = TreeM.GetTreeId();
-                FM_ForgeNode& local_58 = ::FM_ForgeNode::Create(this.GetContext().Manager, local_4, local_3);
-                TEUIModelRef<FM_ForgeNode> local_60 = TEUIModelRef<FM_ForgeNode>(local_58);
-                TreeM.GetModify_NodeList().Add(TEUIModelWeakRef<FM_ForgeNode>(local_58));
-                local_3 = local_4;
-                if (local_58.CheckValid() && (int(BranchType) > int(TreeM.GetBranchType())))
-                {
-                    TreeM.SetBranchType(EForgeTreeBranchType(BranchType));
-                }
-            }
-        }
-        return;
+        // body not fully recovered — stub [argmismatch:argint]
     }
     void RefreshNode(const uint NodeId, const EForgeNodeStateType StateType)
     {
         if (this.GetForgeNodeMap().Contains(NodeId))
         {
-            SetStateType();
+            StateType.SetStateType();
         }
         return;
     }
@@ -583,9 +562,10 @@ struct FMS_Forge : FEUIModelSingleton
         {
             FPbForgeNodeDatas local_30 = Notify.GetForgeList_Index(local_8);
             bool local_10 = local_30.GetTreeUnlock();
-            FM_ForgeTree& local_34 = ::FM_ForgeTree::Create(this.GetContext().Manager, local_30.GetTreeId());
-            local_34.UpdateValid(local_10);
             int local_9 = local_30.GetTreeId();
+            FM_ForgeTree& local_34 = ::FM_ForgeTree::Create(this.GetContext().Manager, local_9);
+            local_34.UpdateValid(local_10);
+            local_9 = local_30.GetTreeId();
             GetDataObjectByGSDataId<FForgeTreeConfig> local_82;
             TDataObjectPtr<FForgeTreeConfig> local_58 = local_82.opImplConv();
             if (local_58)
@@ -597,7 +577,9 @@ struct FMS_Forge : FEUIModelSingleton
                 else
                 {
                 }
-                this.GetModify_ForgeTreeMap().Add(local_30.GetTreeId(), TEUIModelRef<FM_ForgeTree>(local_34));
+                TEUIModelRef<FM_ForgeTree> local_136 = TEUIModelRef<FM_ForgeTree>(local_34);
+                int local_137 = local_30.GetTreeId();
+                this.GetModify_ForgeTreeMap().Add(local_137, local_136);
             }
             if (local_10)
             {
@@ -607,7 +589,8 @@ struct FMS_Forge : FEUIModelSingleton
                     {
                         if (local_152.IsValid())
                         {
-                            this.RefreshNode(GetDataId(), EForgeNodeStateType(1));
+                            int local_137_2 = GetDataId();
+                            this.RefreshNode(local_137_2, EForgeNodeStateType(1));
                         }
                     }
                 }
@@ -616,7 +599,8 @@ struct FMS_Forge : FEUIModelSingleton
                     int local_153 = 0;
                     for (; local_153 < local_30.GetUnlockIndexList_Num(); )
                     {
-                        this.RefreshNode(local_30.GetUnlockIndexList_Index(local_153), EForgeNodeStateType(1));
+                        int local_137_3 = local_30.GetUnlockIndexList_Index(local_153);
+                        this.RefreshNode(local_137_3, EForgeNodeStateType(1));
                         ++local_153;
                     }
                 }
@@ -626,7 +610,8 @@ struct FMS_Forge : FEUIModelSingleton
                     {
                         if (local_152.IsValid())
                         {
-                            this.RefreshNode(GetDataId(), EForgeNodeStateType(0));
+                            local_9 = GetDataId();
+                            this.RefreshNode(local_9, EForgeNodeStateType(0));
                         }
                     }
                     continue;
@@ -634,7 +619,8 @@ struct FMS_Forge : FEUIModelSingleton
                 int local_153_2 = 0;
                 for (; local_153_2 < local_30.GetCurrForgeNodeIndexList_Num(); )
                 {
-                    this.RefreshNode(local_30.GetCurrForgeNodeIndexList_Index(local_153_2), EForgeNodeStateType(0));
+                    local_9 = local_30.GetCurrForgeNodeIndexList_Index(local_153_2);
+                    this.RefreshNode(local_9, EForgeNodeStateType(0));
                     ++local_153_2;
                 }
             }
@@ -647,7 +633,8 @@ struct FMS_Forge : FEUIModelSingleton
     {
         int local_1;
         bool local_4;
-        int local_82 = 0;
+        int local_81;
+        int local_82;
         local_1 = Notify.GetForgeShowLv();
         if (this.GetGlobalShowLevel() != local_1)
         {
@@ -656,7 +643,7 @@ struct FMS_Forge : FEUIModelSingleton
                 local_22;
                 if (IsValid())
                 {
-                    EForgeTreeBranchType(1).SetBranchType();
+                    1.SetBranchType();
                 }
             }
             for (auto& local_42 : this.GetForgeNodeMap())
@@ -669,9 +656,9 @@ struct FMS_Forge : FEUIModelSingleton
                     {
                         if (this.GetTree(GetTreeId()).IsValid() && (int(GetBranchType()) > int(GetBranchType())))
                         {
-                            EForgeTreeBranchType local_23_2 = GetBranchType();
+                            int local_23_2 = int(GetBranchType());
                             int local_2 = GetTreeId();
-                            SetBranchType();
+                            local_23_2.SetBranchType();
                         }
                     }
                 }
@@ -687,15 +674,19 @@ struct FMS_Forge : FEUIModelSingleton
             if (local_4)
             {
                 local_82 = 2;
+                local_81 = local_82;
             }
             else
             {
                 local_82 = 3;
+                local_81 = local_82;
             }
-            if (this.GetForgeTreeMap().Contains(local_78.GetTreeId()))
+            int local_57 = local_78.GetTreeId();
+            if (this.GetForgeTreeMap().Contains(local_57))
             {
-                int local_57 = local_78.GetTreeId();
-                if (!(CheckValid()) != (!(local_4)))
+                local_57 = local_78.GetTreeId();
+                bool local_49 = !(local_4);
+                if (!(CheckValid()) != local_49)
                 {
                     local_57 = local_78.GetTreeId();
                     local_4.UpdateValid();
@@ -704,25 +695,26 @@ struct FMS_Forge : FEUIModelSingleton
                     {
                         if (local_96.IsValid())
                         {
-                            this.RefreshNode(GetDataId());
+                            int local_97 = GetDataId();
+                            this.RefreshNode(local_97, EForgeNodeStateType(local_81));
                         }
                     }
                 }
             }
             else
             {
-                FM_ForgeTree& local_100 = ::FM_ForgeTree::Create(this.GetContext().Manager, local_78.GetTreeId());
+                int local_97_2 = local_78.GetTreeId();
+                FM_ForgeTree& local_100 = ::FM_ForgeTree::Create(this.GetContext().Manager, local_97_2);
                 local_100.UpdateValid(local_4);
-                int local_57_2 = local_78.GetTreeId();
+                local_57 = local_78.GetTreeId();
                 GetDataObjectByGSDataId<FForgeTreeConfig> local_148;
                 TDataObjectPtr<FForgeTreeConfig> local_124 = local_148.opImplConv();
                 if (local_124)
                 {
                     local_100.SetConfig();
-                    EForgeTreeBranchType local_47 = EForgeTreeBranchType(1);
-                    EForgeTreeBranchType local_23_3 = EForgeTreeBranchType(2);
-                    EForgeTreeBranchType local_47_2 = EForgeTreeBranchType(3);
-                    this.GetModify_ForgeTreeMap().Add(local_78.GetTreeId(), TEUIModelRef<FM_ForgeTree>(local_100));
+                    TEUIModelRef<FM_ForgeTree> local_198 = TEUIModelRef<FM_ForgeTree>(local_100);
+                    local_97_2 = local_78.GetTreeId();
+                    this.GetModify_ForgeTreeMap().Add(local_97_2, local_198);
                 }
             }
             if (local_4)
@@ -730,14 +722,16 @@ struct FMS_Forge : FEUIModelSingleton
                 int local_199 = 0;
                 for (; local_199 < local_78.GetUnlockIndexList_Num(); )
                 {
-                    this.RefreshNode(local_78.GetUnlockIndexList_Index(local_199), EForgeNodeStateType(1));
+                    local_57 = local_78.GetUnlockIndexList_Index(local_199);
+                    this.RefreshNode(local_57, EForgeNodeStateType(1));
                     ++local_199;
                 }
-                int local_57_3 = 0;
-                for (; local_57_3 < local_78.GetNoneCostNodeIndexList_Num(); )
+                local_57 = 0;
+                for (; local_57 < local_78.GetNoneCostNodeIndexList_Num(); )
                 {
-                    this.RefreshNode(local_78.GetNoneCostNodeIndexList_Index(local_57_3), EForgeNodeStateType(0));
-                    ++local_57_3;
+                    int local_97_3 = local_78.GetNoneCostNodeIndexList_Index(local_57);
+                    this.RefreshNode(local_97_3, EForgeNodeStateType(0));
+                    ++local_57;
                 }
             }
         }
@@ -869,7 +863,6 @@ struct FMsg_ForgeTreeUpdateFinish : FEUIMessage
     UPROPERTY()
     TEUIModelWeakRef<FVM_ForgeWeaponFormulaTree> FormulaTreeVM;
 
-
 }
 
 struct FMsg_ForgeNodeDataUpdate : FEUIMessage
@@ -980,7 +973,7 @@ namespace FM_ForgeNode
 {
 FM_ForgeNode& Create(const UObject ContextObject, const uint TreeId, const uint ParentDataId, const FForgeNodeConfig &inout Config, const EForgeTreeBranchType BranchType, const EForgeNodeStateType StateType)
 {
-    return FM_ForgeNode::CreateByManager(EUIInternal::GetContextManager(ContextObject), TreeId, ParentDataId, Config);
+    return FM_ForgeNode::CreateByManager(EUIInternal::GetContextManager(ContextObject), TreeId, ParentDataId, Config, EForgeTreeBranchType(BranchType), EForgeNodeStateType(StateType));
 }
 FM_ForgeNode CreateByManager(const UEUIManagerSubsystem Manager, const uint TreeId, const uint ParentDataId, const FForgeNodeConfig &inout Config, const EForgeTreeBranchType BranchType, const EForgeNodeStateType StateType)
 {

@@ -1,11 +1,9 @@
-﻿
 enum EStringValidationResult
 {
     Success,
     Fail,
     Pending,
 }
-
 
 struct FStringValidationContext
 {
@@ -32,7 +30,7 @@ class UStringValidatorBase : UObject
         FName local_2 = this.GetFName();
         FText local_6;
         FText::FromName(local_6);
-        Context.ErrorMessage = FText::Format(NSLOCTEXT("Development", "StringValidator_NotImplemented", "ж— ж•€зљ„ж–‡жњ¬йЄЊиЇЃе™Ё {0}"), local_6);
+        Context.ErrorMessage = FText::Format(NSLOCTEXT("Development", "StringValidator_NotImplemented", "无效的文本验证器 {0}"), local_6);
         return EStringValidationResult(1);
     }
     EStringValidationResult TickValidation(FStringValidationContext &inout Context) const

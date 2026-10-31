@@ -1,5 +1,3 @@
-﻿
-
 struct FT_InteractTrait : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -20,7 +18,7 @@ struct FT_InteractTrait : FECSTrait
     UPROPERTY()
     FC_InteractionTargetConfig Config_FC_InteractionTargetConfig;
 
-    default CustomName = FName("дє¤дє’ (FT_InteractTrait)");
+    default CustomName = FName("交互 (FT_InteractTrait)");
 
     FT_InteractTrait()
     {

@@ -1,4 +1,3 @@
-﻿
 namespace FLevelRandomEventConfigs
 {
     const float32 MaxDistSqBetweenEvents = 2500000000f;

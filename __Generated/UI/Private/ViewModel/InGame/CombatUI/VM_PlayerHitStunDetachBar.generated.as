@@ -1,10 +1,7 @@
-﻿
-
 struct FVM_PlayerHitStunDetachBarConfigDefault : FConfigEUIModelDefaultBase
 {
     UPROPERTY()
     float32 PreviewDetachBarChaseSeconds = 0.7f;
-
 
 }
 

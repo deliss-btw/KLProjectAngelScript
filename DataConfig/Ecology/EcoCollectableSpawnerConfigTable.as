@@ -1,5 +1,3 @@
-﻿
-
 struct FEcoCollectableSpawnerConfigDefinitionRow : FDataObject
 {
     FDataObject _base_FDataObject;

@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TalentUpgradeConfirm
 {
     const int ViewID = 0;
@@ -132,6 +131,7 @@ namespace UWidget_TalentUpgradeConfirm
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TalentUpgradeConfirm;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnPendingClose"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCanUpgrade"));
     return;

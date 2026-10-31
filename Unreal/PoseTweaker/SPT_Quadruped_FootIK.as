@@ -1,5 +1,3 @@
-﻿
-
 struct FDetailedFootIKData
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ struct FDetailedFootIKData
     FPT_AdditivePositionDamper Damper;
     UPROPERTY()
     FName DetailFootIKCurveName;
-
 
     float32 GetDetailIKWeight(const USkeletalPoseTweaker PT) const
     {
@@ -57,7 +54,7 @@ struct FLegFollowBodyRotationOverrideBones
     }
     void Init(const USkeletalPoseTweaker PoseTweaker)
     {
-        this.BoneFL.SetBoneName(this);
+        this.BoneFL.SetBoneName(this.BoneName_FL);
         PoseTweaker.InitializeBoneRef(this.BoneFL);
         this.BoneFR.SetBoneName(this.BoneName_FR);
         PoseTweaker.InitializeBoneRef(this.BoneFR);
@@ -161,7 +158,7 @@ class USPT_Quadruped_FootIK_Base : USPT_GroundTraceBase
     UFUNCTION()
     void OnInitialization_Implementation()
     {
-        ::FootIKUtils::CreateGroundPlaneTraceParams(this.GroundTraceParams, this.GroundTracePointNum, int(this.GroundTraceRadiusX), this.GroundTraceRadiusY);
+        ::FootIKUtils::CreateGroundPlaneTraceParams(this.GroundTraceParams, this.GroundTracePointNum, this.GroundTraceRadiusX, this.GroundTraceRadiusY);
         this.HeightProbeRadiusCurve = FRuntimeCurveUtils::CreateAutoTangent(0.0f, 0.0f, 40.0f, 40.0f, 45.0f, 41.0f);
         if (this.Leg_FL_IK.IsValid())
         {
@@ -334,7 +331,7 @@ class USPT_Quadruped_FootIK_Base : USPT_GroundTraceBase
             local_28.SetLocation((local_100_2 - ((local_174 * local_162_8) * 0.5)));
             this.BodyRootBone.SetTransform(local_28);
         }
-        float local_302_3 = this.GetFootIKWeight() * this.BodyHeightTraceLength;
+        float32 local_302_2 = this.GetFootIKWeight() * this.BodyHeightTraceLength;
         FVector local_100_3 = local_174.opNeg();
         if (this.bWantsDebugDraw)
         {
@@ -352,19 +349,19 @@ class USPT_Quadruped_FootIK_Base : USPT_GroundTraceBase
                 this.Leg_FR_IK_3Bone.Initialize();
             }
             this.CurrentBodyForwardDirCS = (this.CurrentRootBoneTM = this.RootBoneRef.GetTransform()).TransformVector(this.CurrentRootBoneTM.TransformVector(this.BodyForwardDirInRootBoneSpace));
-            Super::FootTraceAndAdjust(this.Leg_BL_IK, local_100_3, local_36, local_302_3, this.Leg_BL_DetailedIK);
-            Super::FootTraceAndAdjust(this.Leg_BR_IK, local_100_3, local_40, local_302_3, this.Leg_BR_DetailedIK);
+            Super::FootTraceAndAdjust(this.Leg_BL_IK, local_100_3, local_36, local_302_2, this.Leg_BL_DetailedIK);
+            Super::FootTraceAndAdjust(this.Leg_BR_IK, local_100_3, local_40, local_302_2, this.Leg_BR_DetailedIK);
             if (this.Leg_FL_IK_3Bone.IsReady() && this.Leg_FR_IK_3Bone.IsReady())
             {
-                Super::FootTraceAndAdjust(this.Leg_FL_IK_3Bone, local_100_3, local_42, local_302_3, this.CurrentBodyForwardDirCS, this.Leg_FL_DetailedIK);
-                Super::FootTraceAndAdjust(this.Leg_FR_IK_3Bone, local_100_3, local_44, local_302_3, this.CurrentBodyForwardDirCS, this.Leg_FR_DetailedIK);
+                Super::FootTraceAndAdjust(this.Leg_FL_IK_3Bone, local_100_3, local_42, local_302_2, this.CurrentBodyForwardDirCS, this.Leg_FL_DetailedIK);
+                Super::FootTraceAndAdjust(this.Leg_FR_IK_3Bone, local_100_3, local_44, local_302_2, this.CurrentBodyForwardDirCS, this.Leg_FR_DetailedIK);
             }
             return;
         }
-        Super::FootTraceAndAdjust(this.Leg_BL_IK, local_100_3, local_36, local_302_3, this.Leg_BL_DetailedIK);
-        Super::FootTraceAndAdjust(this.Leg_BR_IK, local_100_3, local_40, local_302_3, this.Leg_BR_DetailedIK);
-        Super::FootTraceAndAdjust(this.Leg_FL_IK, local_100_3, local_42, local_302_3, this.Leg_FL_DetailedIK);
-        Super::FootTraceAndAdjust(this.Leg_FR_IK, local_100_3, local_44, local_302_3, this.Leg_FR_DetailedIK);
+        Super::FootTraceAndAdjust(this.Leg_BL_IK, local_100_3, local_36, local_302_2, this.Leg_BL_DetailedIK);
+        Super::FootTraceAndAdjust(this.Leg_BR_IK, local_100_3, local_40, local_302_2, this.Leg_BR_DetailedIK);
+        Super::FootTraceAndAdjust(this.Leg_FL_IK, local_100_3, local_42, local_302_2, this.Leg_FL_DetailedIK);
+        Super::FootTraceAndAdjust(this.Leg_FR_IK, local_100_3, local_44, local_302_2, this.Leg_FR_DetailedIK);
         return;
     }
 }
@@ -561,7 +558,6 @@ struct FFootLockState
     FQuat CurrentLegExtraRot = FQuat::Identity;
     UPROPERTY()
     float32 SwingElapsed = 0.0f;
-
 
     void Reset()
     {
@@ -869,7 +865,252 @@ class USPT_Mount_JueYang_FootIK_v2 : USPT_Mount_JueYang_FootIK
     }
     void SolveFootIK_v2()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_332 = 0;
+        FQuat local_344;
+        if (!(this.Leg_FL_IK.IsValid()) || !(this.Leg_FR_IK.IsValid()))
+        {
+            return;
+        }
+        float32 local_6 = this.ComputeSpeedBlendAlpha(this.IKBlend_SpeedInput);
+        if (local_6 < 0.0001f)
+        {
+            this.bFootLockHasPrevSlopeDirection = false;
+            this.bFootLockPrevIsDownSlope = false;
+            this.FootLockDisableRemaining = 0.0f;
+            this.FootLockState_FL.Reset();
+            this.FootLockState_FR.Reset();
+            this.FootLockState_BL.Reset();
+            this.FootLockState_BR.Reset();
+            return;
+        }
+        FVector local_12(this.Leg_BL_IK.GetEffectorTM().GetLocation());
+        FVector local_48(this.Leg_BR_IK.GetEffectorTM().GetLocation());
+        FVector local_54(this.Leg_FL_IK.GetEffectorTM().GetLocation());
+        FVector local_60(this.Leg_FR_IK.GetEffectorTM().GetLocation());
+        float local_62 = local_12.Z;
+        float local_66 = local_48.Z;
+        float local_68 = local_54.Z;
+        float local_70 = local_60.Z;
+        FVector local_106 = ((this.Leg_FL_IK.GetFirstBoneTM().GetLocation() + this.Leg_FR_IK.GetFirstBoneTM().GetLocation()) * 0.5);
+        FVector local_112_2 = ((this.Leg_BL_IK.GetFirstBoneTM().GetLocation() + this.Leg_BR_IK.GetFirstBoneTM().GetLocation()) * 0.5);
+        local_106.Z = 0.0;
+        local_112_2.Z = 0.0;
+        FTransform local_144;
+        FTransform local_168;
+        FVector local_174;
+        if (this.bUseLogicGroundTrace)
+        {
+            Super::GroundPlaneHeightAdjust(this.InputPlaneLocation, this.InputPlaneRotation, local_106, local_112_2, this.PelvisAdjustDamper, this.HeightProbeRadiusCurve, local_144, local_168, local_174);
+        }
+        else
+        {
+            if (this.InvAnimComponentTransform.TransformVector(this.InputPlaneRotation.GetAxisZ()).SizeSquared() < 9.99999993922529e-9)
+            {
+                FVector local_76_2 = this.DefaultFloorNormal;
+            }
+            Super::GroundPlaneTraceAndHeightAdjust(this.GroundPlaneTraceResult, FVector::ZeroVector, local_106, local_112_2, this.PelvisAdjustDamper, this.HeightProbeRadiusCurve, this.GroundTraceParams);
+            local_144 = this.GroundPlaneTraceResult.PlaneTransform;
+            local_168 = this.GroundPlaneTraceResult.PlaneTransformInPT;
+            local_174 = this.GroundPlaneTraceResult.HeightAdjust;
+        }
+        this.AddForVisualization();
+        FVector local_76_3 = local_106;
+        FVector local_194 = local_112_2;
+        FVector local_200(local_168.GetRotation().GetAxisZ());
+        float32 local_4_2 = Super::GetForwardAxisRotationAngleRad(local_168);
+        float32 local_5 = float32((local_76_3.Size() * FMath::Tan(local_4_2)));
+        float32 local_210 = float32((local_194.Size() * FMath::Tan(local_4_2)));
+        float32 local_209 = Super::GetFootIKWeight() * this.BodyHeightTraceLength;
+        FVector local_186 = local_200.opNeg();
+        bool local_2 = this.ComputeFootContactByAnimEffector(local_12, local_186, this.IKBlend_RefBL_LegHeight, local_209, this.FootLockState_BL.bWasContact);
+        bool local_219 = this.ComputeFootContactByAnimEffector(local_48, local_186, this.IKBlend_RefBR_LegHeight, local_209, this.FootLockState_BR.bWasContact);
+        float32 local_211_2 = this.IKBlend_RefFL_LegHeight;
+        bool local_220 = this.ComputeFootContactByAnimEffector(local_54, local_186, local_211_2, local_209, this.FootLockState_FL.bWasContact);
+        float32 local_211_3 = this.IKBlend_RefFR_LegHeight;
+        bool local_221 = this.ComputeFootContactByAnimEffector(local_60, local_186, local_211_3, local_209, this.FootLockState_FR.bWasContact);
+        FVector local_228;
+        FVector local_234;
+        float32 local_211_4 = Super::GetFootIKWeight();
+        float local_188_7 = ((this.BodyHeightTraceLength + local_5) * local_211_4);
+        FVector local_218 = FVector(0.0, 0.0, local_188_7);
+        float local_244 = ((this.BodyHeightTraceLength + local_210) * local_211_4);
+        FVector local_242 = FVector(0.0, 0.0, local_244);
+        Super::TraceVirtualGround((local_106 + local_218), (local_106 - local_218), local_106, local_228);
+        Super::TraceVirtualGround((local_112_2 + local_242), (local_112_2 - local_242), local_112_2, local_234);
+        bool local_222 = this.WantDebugDraw();
+        if (local_222)
+        {
+            FTransform local_276 = local_144;
+            local_276.SetLocation((local_276.GetLocation() + (local_276.GetRotation().GetAxisZ() * 0.02)));
+            this.DrawAnimDebugPlaneRuntime(local_276.GetLocation(), local_276.GetRotation().GetAxisZ(), 600.0f, FColor::Cyan, EPTDebugDrawSpace(1), ESceneDepthPriorityGroup(0));
+            this.DrawAnimDebugCircle(local_106, local_228, 15.0f, FColor::Red, 15, true);
+            this.DrawAnimDebugCircle(local_112_2, local_234, 15.0f, FColor::Blue, 15, true);
+        }
+        FVector local_118_2 = this.AnimComponentTransform.TransformVector(this.RootBoneRef.GetRotation().GetAxisY());
+        FVector local_250 = local_118_2.CrossProduct(FVector::UpVector);
+        bool local_251 = !(local_250.IsNearlyZero(9.999999747378752e-5));
+        FQuat local_208 = FQuat::FindBetween(local_250, this.AnimComponentTransform.TransformVector(this.RootBoneRef.GetRotation().GetAxisX()));
+        float local_188_8 = local_208.GetAngle();
+        float local_64_3 = FMath::RadiansToDegrees(local_188_8);
+        float32 local_235_3 = float32(local_64_3);
+        int local_279 = local_118_2.DotProduct(local_208.GetRotationAxis()) < 0.0 ? -1 : 1;
+        float32 local_302 = local_279;
+        bool local_1 = (local_302 > 0.0f);
+        float32 local_301 = this.ComputeSlopeBlendAlpha(local_235_3);
+        float local_188_9 = local_208.GetAngle();
+        float local_64_4 = local_302 * local_188_9;
+        FQuat local_324 = FQuat(this.RootBoneRef.GetRotation().GetAxisY(), local_64_4);
+        int local_325 = 1043878380;
+        int local_326 = 1077936128;
+        bool local_251_2 = false;
+        bool local_327 = local_251_2;
+        if (local_235_3 > 3.0f)
+        {
+            if (!(this.bFootLockHasPrevSlopeDirection))
+            {
+                local_251_2 = false;
+            }
+            else
+            {
+                bool local_304 = !(this.bFootLockPrevIsDownSlope);
+                local_251_2 = !(local_1);
+                local_304 = (local_304 != local_251_2);
+                local_251_2 = local_304;
+            }
+            if (local_251_2)
+            {
+                local_327 = true;
+            }
+            this.bFootLockPrevIsDownSlope = local_1;
+            this.bFootLockHasPrevSlopeDirection = true;
+        }
+        if (local_327)
+        {
+            this.FootLockDisableRemaining = 0.18f;
+            this.ResetFootLockStates();
+        }
+        bool local_251_3 = (this.FootLockDisableRemaining > 0.0f);
+        float32 local_212_2 = this.FootLockDisableRemaining;
+        float32 local_305 = this.CurrentDeltaSeconds;
+        local_212_2 = local_212_2 - local_305;
+        this.FootLockDisableRemaining = FMath::Max(0.0f, local_212_2);
+        if (local_1)
+        {
+        }
+        else
+        {
+        }
+        float32 local_334 = FMath::Clamp(local_305);
+        if (local_1)
+        {
+        }
+        else
+        {
+        }
+        float32 local_330 = FMath::Clamp(local_305);
+        FQuat local_316 = local_332.Inverse();
+        FVector local_350(local_316.GetRotationAxis());
+        float local_244_3 = local_316.GetAngle();
+        float32 local_335 = float32(local_244_3);
+        FQuat local_360 = FQuat(FQuat::Identity);
+        FQuat local_368 = FQuat(FQuat::Identity);
+        if (local_335 > 0.0001f)
+        {
+            float32 local_351 = 1.0f - local_334;
+            local_212_2 = local_6 * local_351;
+            float32 local_369 = 1.0f - local_330;
+            local_351 = local_6 * local_369;
+            local_369 = local_212_2 * local_335;
+            float local_244_4 = local_369;
+            local_360 = local_344;
+            local_369 = local_351 * local_335;
+            float local_244_5 = local_369;
+            local_368 = local_344;
+        }
+        FQuat local_300 = this.UpdateFootLockLegExtraRot(this.FootLockState_FL, local_220, local_360, local_251_3);
+        local_344 = this.UpdateFootLockLegExtraRot(this.FootLockState_FR, local_221, local_360, local_251_3);
+        FQuat local_380 = this.UpdateFootLockLegExtraRot(this.FootLockState_BL, local_2, local_368, local_251_3);
+        FQuat local_388 = this.UpdateFootLockLegExtraRot(this.FootLockState_BR, local_219, local_368, local_251_3);
+        float local_188_10 = local_344.GetAngle();
+        float local_244_6 = FMath::Max(local_300.GetAngle(), local_188_10);
+        float32 local_175 = float32(local_244_6);
+        float local_244_7 = local_388.GetAngle();
+        float local_188_11 = local_380.GetAngle();
+        float32 local_176 = float32((FMath::Max(local_188_11, local_244_7)));
+        float32 local_179_2 = (1.0f - FMath::Cos(float32(local_380.GetAngle()))) * this.IKBlend_RefBL_LegHeight;
+        float32 local_180_2 = (1.0f - FMath::Cos(float32(local_388.GetAngle()))) * this.IKBlend_RefBR_LegHeight;
+        float32 local_177_2 = (1.0f - FMath::Cos(float32(local_300.GetAngle()))) * this.IKBlend_RefFL_LegHeight;
+        float32 local_178_2 = (1.0f - FMath::Cos(float32(local_344.GetAngle()))) * this.IKBlend_RefFR_LegHeight;
+        Super::PostRotationIKRoot(this.Leg_BL_IK, this.LegFollowBodyRotationOverrideBones.BoneBL, local_380);
+        Super::PostRotationIKRoot(this.Leg_BR_IK, this.LegFollowBodyRotationOverrideBones.BoneBR, local_388);
+        Super::PostRotationIKRoot(this.Leg_FL_IK, this.LegFollowBodyRotationOverrideBones.BoneFL, local_300);
+        Super::PostRotationIKRoot(this.Leg_FR_IK, this.LegFollowBodyRotationOverrideBones.BoneFR, local_344);
+        FVector local_350_2(this.Leg_BL_IK.GetEffectorTM().GetLocation());
+        FVector local_410(this.Leg_BR_IK.GetEffectorTM().GetLocation());
+        FVector local_416(this.Leg_FL_IK.GetEffectorTM().GetLocation());
+        FVector local_422(this.Leg_FR_IK.GetEffectorTM().GetLocation());
+        float local_188_12 = local_350_2.Z - local_62;
+        float local_424 = local_410.Z - local_66;
+        float local_426 = local_416.Z - local_68;
+        float local_428 = local_422.Z - local_70;
+        float local_244_8 = (local_188_12 + local_424) / 2.0;
+        FVector local_292 = FVector(((local_350_2.X + local_410.X) / 2.0), 0.0, local_244_8);
+        FVector local_436 = FVector(local_416.X + local_422.X, 0.0, ((local_426 + local_428) / 2.0));
+        FVector local_42 = (local_436 - local_292);
+        FQuat local_404 = FQuat::FindBetween(local_42, FVector(local_42.X, local_42.Y, 0.0));
+        FQuat local_396 = FQuat::Slerp(FQuat::Identity, local_404, local_6);
+        FVector local_452 = local_404.RotateVector(local_292);
+        if (this.bWantsDebugDraw)
+        {
+            float local_244_10 = local_404.RotateVector(local_436).Z;
+            if (!(FMath::IsNearlyEqual(local_452.Z, local_244_10, 0.001)))
+            {
+                this.AddOnScreenDebugMessage(FString().Append("Front anchor and back anchor not aligned"), 999, false, 2.0f);
+            }
+        }
+        FTransform local_276_2 = FTransform(this.BodyRootBone.GetTransform());
+        float32 local_370_2 = -((local_6 * local_301) * this.ExtraRot_Body_MaxAngle);
+        float local_244_11 = FMath::DegreesToRadians(local_370_2);
+        FTransform local_36 = ::FootIKUtils::RotateAroundPoint(local_276_2, this.RootBoneRef.GetLocation(), (FQuat(this.RootBoneRef.GetRotation().GetAxisY(), local_244_11) * local_396));
+        this.BodyRootBone.SetTransform(local_36);
+        float local_64_11 = local_416.Z - local_68;
+        float local_502 = local_422.Z - local_70;
+        FVector local_510 = local_36.GetLocation();
+        float local_504 = local_64_11 + local_502;
+        local_36.SetLocation((local_510 - ((local_200.opMul_r(local_6) * local_504) * 0.5)));
+        this.BodyRootBone.SetTransform(local_36);
+        if (this.bWantsDebugDraw)
+        {
+            FVector local_510_2 = (local_186 * 50.0);
+            this.DrawAnimDebugArrow(FVector(0.0, 0.0, 100.0), (FVector(0.0, 0.0, 100.0) + local_510_2), 20.0f, FColor::Red, 0.0f, true);
+        }
+        if (this.bUse3BoneLegIK)
+        {
+            if (!(this.Leg_FL_IK_3Bone.IsReady()))
+            {
+                this.Leg_FL_IK_3Bone.Initialize();
+            }
+            if (!(this.Leg_FR_IK_3Bone.IsReady()))
+            {
+                this.Leg_FR_IK_3Bone.Initialize();
+            }
+            this.CurrentBodyForwardDirCS = (this.CurrentRootBoneTM = this.RootBoneRef.GetTransform()).TransformVector(this.CurrentRootBoneTM.TransformVector(this.BodyForwardDirInRootBoneSpace));
+            float local_440 = local_179_2;
+            this.FootTraceAndAdjustWithIKBlendAlpha(this.Leg_BL_IK, local_186, local_62 - local_440, local_209, this.Leg_BL_DetailedIK, local_6);
+            local_440 = local_180_2;
+            this.FootTraceAndAdjustWithIKBlendAlpha(this.Leg_BR_IK, local_186, local_66 - local_440, local_209, this.Leg_BR_DetailedIK, local_6);
+            if (this.Leg_FL_IK_3Bone.IsReady() && this.Leg_FR_IK_3Bone.IsReady())
+            {
+                this.FootTraceAndAdjustWithIKBlendAlpha(this.Leg_FL_IK_3Bone, local_186, local_68 - local_177_2, local_209, this.CurrentBodyForwardDirCS, this.Leg_FL_DetailedIK, local_6);
+                this.FootTraceAndAdjustWithIKBlendAlpha(this.Leg_FR_IK_3Bone, local_186, local_70 - local_178_2, local_209, this.CurrentBodyForwardDirCS, this.Leg_FR_DetailedIK, local_6);
+            }
+            return;
+        }
+        this.FootTraceAndAdjustWithIKBlendAlpha(this.Leg_BL_IK, local_186, local_62 - local_179_2, local_209, this.Leg_BL_DetailedIK, local_6);
+        this.FootTraceAndAdjustWithIKBlendAlpha(this.Leg_BR_IK, local_186, local_66 - local_180_2, local_209, this.Leg_BR_DetailedIK, local_6);
+        this.FootTraceAndAdjustWithIKBlendAlpha(this.Leg_FL_IK, local_186, local_68 - local_177_2, local_209, this.Leg_FL_DetailedIK, local_6);
+        this.FootTraceAndAdjustWithIKBlendAlpha(this.Leg_FR_IK, local_186, local_70 - local_178_2, local_209, this.Leg_FR_DetailedIK, local_6);
+        return;
     }
 }
 

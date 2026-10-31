@@ -1,9 +1,6 @@
-﻿
-
 class US_RiderHandIKControl : UECSScriptSystem
 {
     float32 WeightLerpSpeed = 0.15f;
-
 
     UFUNCTION()
     bool IsDisabled_Implementation() const

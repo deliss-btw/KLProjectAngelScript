@@ -1,5 +1,3 @@
-﻿
-
 class UBTDecorator_EcosimAIActivityNeedAccurateRotation : UBTDecorator_ECSScriptBase
 {
     UPROPERTY()

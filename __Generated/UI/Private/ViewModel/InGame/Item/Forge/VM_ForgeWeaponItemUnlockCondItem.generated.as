@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ForgeWeaponItemUnlockCondItem_Helpers
 {
 UFUNCTION()

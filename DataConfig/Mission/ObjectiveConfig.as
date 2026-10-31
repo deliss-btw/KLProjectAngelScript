@@ -1,4 +1,3 @@
-﻿
 enum EObjectiveStatus
 {
     None,
@@ -42,7 +41,6 @@ enum EObjectiveProgressTextOrderType
     Reverse,
 }
 
-
 struct FObjectiveConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -50,7 +48,6 @@ struct FObjectiveConfig : FDataObject
     uint DataId;
     UPROPERTY()
     EObjectiveType ObjectiveType;
-
 
 }
 
@@ -82,7 +79,6 @@ struct FObjectiveSingleConfig : FObjectiveConfig
 
     FObjectiveSingleConfig()
     {
-        super();
         this.bHidden = false;
         this.ProgressTextType = EObjectiveProgressTextType(0);
         this.ProgressUIType = EObjectiveProgressUIType(0);
@@ -127,7 +123,6 @@ struct FObjectiveGroupConfig : FObjectiveConfig
 
     FObjectiveGroupConfig()
     {
-        super();
         this.FinishType = EObjectiveFinishType(0);
         this.__InitDefaults();
         return;

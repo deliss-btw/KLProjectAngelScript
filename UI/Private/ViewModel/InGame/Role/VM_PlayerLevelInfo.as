@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_PlayerLevelInfo
 {
     const int ModelId = 0;
@@ -57,8 +56,8 @@ struct FVMS_PlayerLevelInfo : FEUIViewModelSingleton
             if (local_120.GetConvertResourceType())
             {
             }
-            local_14 = NSLOCTEXT("ExpOverflowTips", "з»ЏйЄЊжєўе‡єиЇґжЋ");
-            local_18 = FText::Format(NSLOCTEXT("ExpOverflowTipsDesc", "иѕѕе€°зЄЃз ґз­‰зє§ж€–жњЌеЉЎе™Ёз­‰зє§дёЉй™ђж—¶пјЊз»ЏйЄЊиЋ·еЏ–иЎ°е‡Џ{0}%пјЊжњЂе¤§з»ЏйЄЊе­е‚ЁдёЉй™ђ{1}\nиѕѕе€°з»ЏйЄЊе­е‚Ёж€–жњЂе¤§з­‰зє§дёЉй™ђж—¶пјЊз»ЏйЄЊиЋ·еЏ–жЊ‰{2}%жЇ”дѕ‹жЉз®—дёє{3}"), local_120.ExpDecRatio, local_120.ExpOverflowLimit, local_120.ExpConvertRatio, local_124);
+            local_14 = NSLOCTEXT("ExpOverflowTips", "经验溢出说明");
+            local_18 = FText::Format(NSLOCTEXT("ExpOverflowTipsDesc", "达到突破等级或服务器等级上限时，经验获取衰减{0}%，最大经验存储上限{1}\n达到经验存储或最大等级上限时，经验获取按{2}%比例折算为{3}"), local_120.ExpDecRatio, local_120.ExpOverflowLimit, local_120.ExpConvertRatio, local_124);
         }
         this.SetTitleHoverTips(TEUIModelRef<FVM_TitleAndDesc>(::FVM_TitleAndDesc::Create(this.GetContext().Manager, local_14, local_18)));
         return;
@@ -89,7 +88,7 @@ struct FVMS_PlayerLevelInfo : FEUIViewModelSingleton
             return local_6;
         }
         this.GetServerLevelCapRemainingTimeText();
-        return FText::Format(NSLOCTEXT("ServerLevelCapCountdown", "з­‰зє§дёЉй™ђеЂ’и®Ўж—¶:{0}"), local_6);
+        return FText::Format(NSLOCTEXT("ServerLevelCapCountdown", "等级上限倒计时:{0}"), local_6);
     }
     int GetCurrentExp() const
     {
@@ -206,13 +205,13 @@ struct FVMS_PlayerLevelInfo : FEUIViewModelSingleton
         int local_2 = this.GetServerLevelCapRemainingSeconds();
         if (local_2 > 86400)
         {
-            return FText::Format(NSLOCTEXT("ServerLevelCapCountdownDays", "{0}е¤©"), FMath::IntegerDivisionTrunc(((local_2 + 86400) - 1), 86400));
+            return FText::Format(NSLOCTEXT("ServerLevelCapCountdownDays", "{0}天"), FMath::IntegerDivisionTrunc(((local_2 + 86400) - 1), 86400));
         }
         if (local_2 > 3600)
         {
-            return FText::Format(NSLOCTEXT("ServerLevelCapCountdownHours", "{0}ж—¶"), FMath::IntegerDivisionTrunc(local_2, 3600));
+            return FText::Format(NSLOCTEXT("ServerLevelCapCountdownHours", "{0}时"), FMath::IntegerDivisionTrunc(local_2, 3600));
         }
-        return FText::Format(NSLOCTEXT("ServerLevelCapCountdownMinutes", "{0}е€†"), (FMath::Max(1, FMath::IntegerDivisionTrunc(((local_2 + 60) - 1), 60))));
+        return FText::Format(NSLOCTEXT("ServerLevelCapCountdownMinutes", "{0}分"), (FMath::Max(1, FMath::IntegerDivisionTrunc(((local_2 + 60) - 1), 60))));
     }
     void GotoStigmataDetail()
     {
@@ -358,7 +357,6 @@ struct __GeneratedProperties_FVMS_PlayerLevelInfo
     int LevelBreakthroughStatusIndex;
     UPROPERTY()
     TEUIModelRef<FVMS_PlayerLevelInfo> Self;
-
 
 }
 

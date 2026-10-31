@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_AvatarUnlockCondition_Helpers
 {
 UFUNCTION()

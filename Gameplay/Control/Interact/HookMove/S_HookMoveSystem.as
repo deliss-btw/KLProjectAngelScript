@@ -1,11 +1,9 @@
-﻿
 const FConsoleVariable CVar_HookMovePowFactor = FConsoleVariable();
 
 class US_HookMoveSystem : UECSScriptSystem
 {
     UPROPERTY()
     float32 TurnSpeedYaw = 720.0f;
-
 
     UFUNCTION()
     void Job_TickRuntimeHookMoveTarget(FC_RuntimeHookMoveTarget &inout RuntimeHookMoveTarget, const FC_Transform &inout Transform, const FC_Collision &inout Collision) const
@@ -354,8 +352,7 @@ class US_HookMoveSystem : UECSScriptSystem
         USplineComponent local_14;
         bool local_15;
         int local_116 = 0;
-        float local_8 = (FFPTime(FixedTime.Time) - SuperHookFlyItem.StartTime).ToSeconds();
-        float32 local_9 = float32(local_8);
+        float32 local_9 = float32(((FFPTime(FixedTime.Time) - SuperHookFlyItem.StartTime).ToSeconds()));
         if (local_14 != nullptr)
         {
             FC_SplineMoveConfig local_22;

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_Cook
 {
     const int ModelId = 0;
@@ -150,7 +149,7 @@ struct FVM_Cook : FEUIViewModel
         {
             if (::CookSettings::Get().CookMainCategoryIcons.Num() > local_18)
             {
-                TEUIModelRef<FVM_Image> local_24 = TEUIModelRef<FVM_Image>(::FVM_Image::Create(this.GetContext().Manager, ::CookSettings::Get().CookMainCategoryIcons[]));
+                TEUIModelRef<FVM_Image> local_24 = TEUIModelRef<FVM_Image>(::FVM_Image::Create(this.GetContext().Manager, ::CookSettings::Get().CookMainCategoryIcons[local_18]));
                 this.GetModify_CategoryImages().Add(local_24);
                 continue;
             }
@@ -352,7 +351,7 @@ struct FVM_Cook : FEUIViewModel
             if (!(local_2.FoodCostReadyToCook()))
             {
                 FCommonTipsParam local_16;
-                ::CommonPopup::Tips(NSLOCTEXT("Cook", "Cook_Tips_NeedFourIngredients", "йЈџжќђжњЄж”ѕж»Ў"), local_16);
+                ::CommonPopup::Tips(NSLOCTEXT("Cook", "Cook_Tips_NeedFourIngredients", "食材未放满"), local_16);
                 return;
             }
         }
@@ -372,7 +371,7 @@ struct FVM_Cook : FEUIViewModel
         if (!(Event.bSuccess))
         {
             FCommonTipsParam local_18;
-            ::CommonPopup::Tips(NSLOCTEXT("Cook", "Cook_CookFailed", "еЃљйҐ­е¤±иґҐ !"), local_18);
+            ::CommonPopup::Tips(NSLOCTEXT("Cook", "Cook_CookFailed", "做饭失败 !"), local_18);
             Remove local_22;
             local_22.opCall();
             this.SetbClosed(true);
@@ -395,16 +394,16 @@ struct FVM_Cook : FEUIViewModel
         if (local_4.opCall() && (int(local_10.opCall().GetCookState()) != 0))
         {
             FCommonTipsParam local_22;
-            ::CommonPopup::Tips(NSLOCTEXT("Cook", "Cook_Tips_CannotExit", "еЂ’и®Ўж—¶дё­ж— жі•йЂЂе‡є"), local_22);
+            ::CommonPopup::Tips(NSLOCTEXT("Cook", "Cook_Tips_CannotExit", "倒计时中无法退出"), local_22);
             return;
         }
         FDialogModelCallback local_48;
         local_48.Bind(this, FVM_Cook::OnComfirmExit);
-        FText local_18 = NSLOCTEXT("Cook", "CookESCCancle", "иї”е›ћ");
-        FText local_52 = NSLOCTEXT("Cook", "CookESCConfirm", "зЎ®и®¤");
+        FText local_18 = NSLOCTEXT("Cook", "CookESCCancle", "返回");
+        FText local_52 = NSLOCTEXT("Cook", "CookESCConfirm", "确认");
         FDialogCallback local_84 = FDialogCallback(local_48);
-        FText local_88 = NSLOCTEXT("Cook", "CookESCMessage", "жЇеђ¦зЎ®и®¤йЂЂе‡єзѓ№йҐЄ?");
-        FText local_92 = NSLOCTEXT("Cook", "CookESCTitle", "жЏђз¤є");
+        FText local_88 = NSLOCTEXT("Cook", "CookESCMessage", "是否确认退出烹饪?");
+        FText local_92 = NSLOCTEXT("Cook", "CookESCTitle", "提示");
         FCommonDialogParam local_94;
         ::CommonPopup::Dialog_Decision(local_92, local_88, local_84, local_52, local_18, local_94);
         return;
@@ -519,7 +518,7 @@ struct FVM_Cook : FEUIViewModel
                 }
             }
         }
-        return FText::Format(NSLOCTEXT("Cook", "Cook_ReadyTextInfo", "з­‰еѕ…е…¶д»–дєєе‡†е¤‡{0}/{1}"), local_1, local_3);
+        return FText::Format(NSLOCTEXT("Cook", "Cook_ReadyTextInfo", "等待其他人准备{0}/{1}"), local_1, local_3);
     }
     TEUIModelRef<FVM_Image> GetCurCategory() const
     {
@@ -1011,7 +1010,6 @@ struct __GeneratedProperties_FVM_Cook
     UPROPERTY()
     TEUIModelRef<FVM_Cook> Self;
 
-
 }
 
 namespace FVM_Cook
@@ -1188,7 +1186,9 @@ void __OnReceivedCookFinisehd(FVM_Cook &inout Model, const FCE_CookFinisehd &ino
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorCookPropLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorCookPropModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TArray<TEUIModelRef<FVM_CookCostItem>> __UIGetter_CurrentDisplayItems(const FVM_Cook &inout Model)
 {

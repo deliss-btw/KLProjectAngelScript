@@ -1,5 +1,3 @@
-﻿
-
 class US_CharacterGroundMovementSystemAS : UECSScriptSystem
 {
     US_CharacterGroundMovementSystemAS()

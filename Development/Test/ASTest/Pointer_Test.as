@@ -1,5 +1,3 @@
-﻿
-
 class UPointerTestClass1 : UObject
 {
     int A;

@@ -1,5 +1,3 @@
-﻿
-
 class UASWaitForESMStateWrapper : UECSAsyncActionBase
 {
     UPROPERTY()

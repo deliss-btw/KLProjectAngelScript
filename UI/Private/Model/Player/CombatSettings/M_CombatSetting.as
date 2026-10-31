@@ -1,4 +1,3 @@
-﻿
 enum ECombatSettingPresetType
 {
     SingleAvatar,
@@ -376,7 +375,6 @@ struct FMsg_SpeicaltyChanged : FEUIMessage
     uint FromSpecialtyID;
     UPROPERTY()
     uint ToSpecialtyID;
-
 
 }
 

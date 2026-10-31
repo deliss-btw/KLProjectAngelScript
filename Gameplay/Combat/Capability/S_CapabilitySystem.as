@@ -1,5 +1,3 @@
-﻿
-
 class US_CapabilitySystem : UECSScriptSystem
 {
     US_CapabilitySystem()
@@ -80,7 +78,7 @@ class US_CapabilitySystem : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_OnCapabilityChanged(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = this.GetECSWorld().__GetMonitorCapabilityOnRemoveView(EECSRegType(0), false, true);
+        FECSMonitorRuntimeView local_56 = this.GetECSWorld().__GetMonitorCapabilityOnRemoveView(EECSRegType(0), (0 != 0), true);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {
@@ -115,7 +113,7 @@ class US_CapabilitySystem : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_OnCapabilityModifierChanged(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = this.GetECSWorld().__GetMonitorCapabilityModifiersOnRemoveView(EECSRegType(0), false, true);
+        FECSMonitorRuntimeView local_56 = this.GetECSWorld().__GetMonitorCapabilityModifiersOnRemoveView(EECSRegType(0), (0 != 0), true);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {

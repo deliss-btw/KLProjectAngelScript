@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonItem
 {
     const int ModelId = 0;

@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommissionObjItem
 {
     const int ViewID = 0;
@@ -22,7 +21,6 @@ class UWidget_CommissionObjItem : UEUIUserWidget
     FEUIModelWeakRef __CommissionObjItem;
     UPROPERTY()
     FGetEUIModelRef CommissionObjItemDelegate;
-
 
     UFUNCTION()
     void OnViewBind_Implementation()
@@ -183,6 +181,7 @@ namespace UWidget_CommissionObjItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionObjItem;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnAnimStateChanged"));
     return;
 }
@@ -199,6 +198,7 @@ namespace UWidget_CommissionObjItemSegment
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionObjItemSegment;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

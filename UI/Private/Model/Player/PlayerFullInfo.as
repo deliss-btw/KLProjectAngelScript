@@ -1,5 +1,3 @@
-﻿
-
 struct FPlayerFullInfo
 {
     FSubDirtyFlags16 __DirtyFlags;
@@ -36,11 +34,58 @@ struct FPlayerFullInfo
 
     FPlayerFullInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_Uid = 0;
+        this.m_bHasNickName = false;
+        this.m_Gender = EGenderType(0);
+        this.m_bHasGender = false;
+        this.m_AvatarConfigId = 0;
+        this.m_bHasAvatar = false;
+        this.m_CurrentWorldId = 0;
+        this.m_bHasCurrentWorld = false;
+        this.m_DivineSkillId = 0;
+        this.m_bHasDivineSkill = false;
+        this.m_Level = 0;
+        this.m_bHasLevel = false;
+        this.m_bIsOnline = false;
+        this.m_bHasIsOnline = false;
+        return;
     }
     FPlayerFullInfo(const FPlayerFullInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags16 local_6;
+        this.__DirtyFlags = local_6;
+        this.m_Uid = 0;
+        this.m_bHasNickName = false;
+        this.m_Gender = EGenderType(0);
+        this.m_bHasGender = false;
+        this.m_AvatarConfigId = 0;
+        this.m_bHasAvatar = false;
+        this.m_CurrentWorldId = 0;
+        this.m_bHasCurrentWorld = false;
+        this.m_DivineSkillId = 0;
+        this.m_bHasDivineSkill = false;
+        this.m_Level = 0;
+        this.m_bHasLevel = false;
+        this.m_bIsOnline = false;
+        this.m_bHasIsOnline = false;
+        this.m_Uid = int(Other.m_Uid);
+        this.m_NickName = Other.m_NickName;
+        this.m_bHasNickName = Other.m_bHasNickName;
+        this.m_Gender = Other.m_Gender;
+        this.m_bHasGender = Other.m_bHasGender;
+        this.m_AvatarConfigId = int(Other.m_AvatarConfigId);
+        this.m_bHasAvatar = Other.m_bHasAvatar;
+        this.m_CurrentWorldId = int(Other.m_CurrentWorldId);
+        this.m_bHasCurrentWorld = Other.m_bHasCurrentWorld;
+        this.m_DivineSkillId = int(Other.m_DivineSkillId);
+        this.m_bHasDivineSkill = Other.m_bHasDivineSkill;
+        this.m_Level = int(Other.m_Level);
+        this.m_bHasLevel = Other.m_bHasLevel;
+        this.m_bIsOnline = Other.m_bIsOnline;
+        this.m_bHasIsOnline = Other.m_bHasIsOnline;
+        return;
     }
     FPlayerFullInfo opAssign(const FPlayerFullInfo &inout Other)
     {

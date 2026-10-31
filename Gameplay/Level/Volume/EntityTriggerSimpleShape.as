@@ -1,5 +1,3 @@
-﻿
-
 struct FSimpleTriggerUnitConfig : FSceneUnitConfigWithJsonData
 {
     FSceneUnitConfigWithJsonData _base_FSceneUnitConfigWithJsonData;
@@ -23,7 +21,6 @@ class AEntityTriggerSimpleShape : AECSTriggerBase
     EESMBlackboardConditionTagQueryType CheckTagCondition = EESMBlackboardConditionTagQueryType(0);
     UPROPERTY()
     FGameplayTagContainer CheckTags;
-
 
     UFUNCTION()
     bool CheckShouldOverlapEntity_Implementation(const FECSContext &inout Context, const FECSEntity &inout Entity) const

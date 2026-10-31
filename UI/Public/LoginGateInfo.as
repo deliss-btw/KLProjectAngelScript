@@ -1,5 +1,3 @@
-﻿
-
 struct FLoginGateInfo
 {
     UPROPERTY()
@@ -32,7 +30,6 @@ struct FLoginGateInfo
     bool bNeedExitClient;
     UPROPERTY()
     FString DownloadExtraInfo;
-
 
 }
 

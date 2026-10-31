@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_PresentationDisplayRule_Helpers
 {
 UFUNCTION()

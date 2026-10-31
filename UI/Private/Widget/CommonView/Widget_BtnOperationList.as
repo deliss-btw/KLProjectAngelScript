@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_BtnOperationList
 {
     const int ViewID = 0;
@@ -15,7 +14,6 @@ class UWidget_BtnOperationList : UEUIActivatableWidget
     FEUIModelWeakRef __ItemList;
     UPROPERTY()
     FGetEUIModelRef ItemListDelegate;
-
 
     UFUNCTION()
     UWidget GetDesiredFocusWidget_Implementation() const
@@ -144,6 +142,7 @@ namespace UWidget_BtnOperationList
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_BtnOperationList;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnBtnListChanged"));
     return;
 }

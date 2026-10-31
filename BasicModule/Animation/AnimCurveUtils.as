@@ -1,4 +1,3 @@
-﻿
 namespace FAsAnimCurveUtils
 {
     const float32 CurveTimeMaxOffset = 0.5f;

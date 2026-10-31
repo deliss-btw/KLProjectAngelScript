@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CameraAutoYaw : UESMBPBaseSpanAction
 {
     UESMAction_CameraAutoYaw()

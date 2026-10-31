@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_MinimapTempMarkDialog_Helpers
 {
 UFUNCTION()

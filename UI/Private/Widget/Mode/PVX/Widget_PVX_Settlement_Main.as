@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PVX_Settlement_Main
 {
     const int ViewID = 0;
@@ -40,7 +39,7 @@ class UWidget_PVX_Settlement_Main : UEUIActivatableWidget
     UFUNCTION()
     void OnCountdownSecondsChanged(const int Seconds)
     {
-        this.AdvancePhaseActionBinding.SetOverrideDisplayText(FText::Format(NSLOCTEXT("PVX", "Settlement_AdvanceBtn", "з»§з»­({0}s)"), Seconds));
+        this.AdvancePhaseActionBinding.SetOverrideDisplayText(FText::Format(NSLOCTEXT("PVX", "Settlement_AdvanceBtn", "继续({0}s)"), Seconds));
         return;
     }
     UFUNCTION()
@@ -214,6 +213,7 @@ namespace UWidget_PVX_Settlement_Main
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PVX_Settlement_Main;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnDynamicWidgetChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCountdownSecondsChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnAllPhasesCompletedChanged"));

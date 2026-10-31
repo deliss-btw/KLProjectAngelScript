@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MinimapIconHelper
 {
     const int ModelId = 0;
@@ -198,7 +197,6 @@ struct __GeneratedProperties_FVM_MinimapIconHelper
     bool IsSimplifiedDisplayMode;
     UPROPERTY()
     TEUIModelRef<FVM_MinimapIconHelper> Self;
-
 
 }
 

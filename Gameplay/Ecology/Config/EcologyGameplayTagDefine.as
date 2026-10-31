@@ -1,4 +1,3 @@
-﻿
 namespace FEcologyGameplayTagDefine
 {
     const FGameplayTag Ecology_ChangeAreaReason = FGameplayTag();

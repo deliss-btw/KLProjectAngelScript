@@ -1,4 +1,3 @@
-﻿
 enum EApplyTargetType
 {
     CharacterOrMount,
@@ -24,7 +23,7 @@ namespace __INTENRAL_FCE_CleanupWeaponDraggingFX_NS
 struct FSimpleSurfaceLineTraceConfig
 {
     UPROPERTY()
-    FName RootBoneName;
+    FName RootBoneName = n"None";
     UPROPERTY()
     FAttachRefName TraceStartBoneOrSocketName;
     UPROPERTY()
@@ -34,13 +33,12 @@ struct FSimpleSurfaceLineTraceConfig
     UPROPERTY()
     FVector TraceDir = FVector::DownVector;
 
-
 }
 
 struct FSurfaceLineTraceConfig
 {
     UPROPERTY()
-    FName RootBoneName;
+    FName RootBoneName = n"None";
     UPROPERTY()
     FAttachRefName TraceStartBoneOrSocketName;
     UPROPERTY()
@@ -67,7 +65,6 @@ struct FSurfaceLineTraceConfig
     FVector FxAdjustLocationOffset = FVector::ZeroVector;
     UPROPERTY()
     FRotator FxAdjustRotationOffset = FRotator::ZeroRotator;
-
 
 }
 
@@ -103,11 +100,52 @@ struct FSurfaceContactInfo
 
     FSurfaceContactInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_ApplyTargetType = EApplyTargetType(0);
+        this.m_CharacterSize = ECharacterBodySize(0);
+        this.m_RootBoneName = n"Rider_Point";
+        this.m_WeaponMeshComponent = n"None";
+        this.m_FxStartLocation = FVector::ZeroVector;
+        this.m_TraceStartOffset = FVector::ZeroVector;
+        this.m_TraceDir = FVector::DownVector;
+        this.m_TraceLength = 200.0f;
+        this.m_bDurational = false;
+        this.m_ImpactRotationType = EImpactRotationType(0);
+        this.m_ImpactEventType = EImpactEventType(0);
+        this.m_bUseEntitySystem = false;
+        return;
     }
     FSurfaceContactInfo(const FSurfaceContactInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags16 local_8;
+        this.__DirtyFlags = local_8;
+        this.m_ApplyTargetType = EApplyTargetType(0);
+        this.m_CharacterSize = ECharacterBodySize(0);
+        this.m_RootBoneName = n"Rider_Point";
+        this.m_WeaponMeshComponent = n"None";
+        this.m_FxStartLocation = FVector::ZeroVector;
+        this.m_TraceStartOffset = FVector::ZeroVector;
+        this.m_TraceDir = FVector::DownVector;
+        this.m_TraceLength = 200.0f;
+        this.m_bDurational = false;
+        this.m_ImpactRotationType = EImpactRotationType(0);
+        this.m_ImpactEventType = EImpactEventType(0);
+        this.m_bUseEntitySystem = false;
+        this.m_ApplyTargetType = Other.m_ApplyTargetType;
+        this.m_CharacterSize = Other.m_CharacterSize;
+        this.m_RootBoneName = Other.m_RootBoneName;
+        this.m_WeaponMeshComponent = Other.m_WeaponMeshComponent;
+        this.m_SocketName = Other.m_SocketName;
+        this.m_FxStartLocation = Other.m_FxStartLocation;
+        this.m_TraceStartOffset = Other.m_TraceStartOffset;
+        this.m_TraceDir = Other.m_TraceDir;
+        this.m_TraceLength = Other.m_TraceLength;
+        this.m_bDurational = Other.m_bDurational;
+        this.m_ImpactRotationType = Other.m_ImpactRotationType;
+        this.m_ImpactEventType = Other.m_ImpactEventType;
+        this.m_bUseEntitySystem = Other.m_bUseEntitySystem;
+        return;
     }
     FSurfaceContactInfo opAssign(const FSurfaceContactInfo &inout Other)
     {
@@ -368,12 +406,11 @@ struct FCE_CleanupWeaponDraggingFX : FECSEvent
 struct FC_SurfaceMaterialCheck : FECSComponent
 {
     UPROPERTY()
-    FName OldSurfaceName;
+    FName OldSurfaceName = NAME_None;
     UPROPERTY()
     FName NewSurfaceName = NAME_None;
     UPROPERTY()
     int NewSurfaceIndex = 0;
-
 
 }
 
@@ -454,37 +491,37 @@ bool RemoveSurfaceMaterialCheck(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorSurfaceMaterialCheckOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_SurfaceMaterialCheck, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_SurfaceMaterialCheck, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSurfaceMaterialCheckOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_SurfaceMaterialCheck, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_SurfaceMaterialCheck, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSurfaceMaterialCheckOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_SurfaceMaterialCheck, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_SurfaceMaterialCheck, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSurfaceMaterialCheckOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_SurfaceMaterialCheck, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_SurfaceMaterialCheck, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSurfaceMaterialCheckOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_SurfaceMaterialCheck, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_SurfaceMaterialCheck, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorSurfaceMaterialCheckLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_SurfaceMaterialCheck, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_SurfaceMaterialCheck, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSurfaceMaterialCheckActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_SurfaceMaterialCheck, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_SurfaceMaterialCheck, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSurfaceMaterialCheckModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_SurfaceMaterialCheck, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_SurfaceMaterialCheck, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

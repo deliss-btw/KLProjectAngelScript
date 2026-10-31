@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_FastEquipPage_Helpers
 {
 UFUNCTION()

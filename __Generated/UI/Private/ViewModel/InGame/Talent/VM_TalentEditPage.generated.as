@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TalentEditPage_Helpers
 {
 UFUNCTION()

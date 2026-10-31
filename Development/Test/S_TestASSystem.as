@@ -1,16 +1,10 @@
-﻿
-
 struct FTestInternalStruct
 {
     UPROPERTY()
-    FFPTime InternalTime;
+    FFPTime InternalTime = 0;
     UPROPERTY()
-    bool bFirstEntity;
+    bool bFirstEntity = false;
 
-    FTestInternalStruct()
-    {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
-    }
 }
 
 class US_TestASSystem : UECSScriptSystem
@@ -24,7 +18,6 @@ class US_TestASSystem : UECSScriptSystem
     bool bTestECSAPIPerformance = false;
     bool bTestMonitorDefer = false;
     bool bTestNotifyEvent = false;
-
 
     UFUNCTION()
     bool IsDisabled_Implementation() const
@@ -69,9 +62,8 @@ class US_TestASSystem : UECSScriptSystem
     UFUNCTION()
     void NonBatchJob() const
     {
-        int local_8 = 0;
         FECSWorldPtr local_2 = this.GetECSWorld();
-        XWarning(ELog(0), FString().Append("Testing Event Client At [").Append(local_8.Time).Append("]}"));
+        XWarning(ELog(0), FString().Append("Testing Event Client At [").Append(0.Time).Append("]}"));
         TECSEventConstIterator<FCE_TestASEvent> local_46 = FECSWorldPtr::ViewEvents(this.GetECSWorld()).opCall(EECSEventFilterMode(0)).Iterator();
         for (; local_46.CanProceed;)
         {
@@ -1176,8 +1168,7 @@ class US_TestASSystem : UECSScriptSystem
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (!(local_60.Validate()) == !(false))
             {
-                FString local_70 = "Validate Failed: FCE_TestNotifyUploadEvent, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_TestNotifyUploadEvent, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());

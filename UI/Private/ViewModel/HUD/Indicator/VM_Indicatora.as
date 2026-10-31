@@ -1,4 +1,3 @@
-﻿
 namespace FVM_Indicator
 {
     const int ModelId = 0;
@@ -207,7 +206,6 @@ struct __GeneratedProperties_FVM_Indicator
     FSoftBrush IndicatorIcon;
     UPROPERTY()
     TEUIModelRef<FVM_Indicator> Self;
-
 
 }
 

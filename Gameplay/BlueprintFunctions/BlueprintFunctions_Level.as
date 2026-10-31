@@ -1,4 +1,3 @@
-﻿
 namespace BlueprintFunctions_Level
 {
 enum EDistanceCompareType
@@ -911,7 +910,7 @@ void Level_StartBlackScreen(const FECSEntity &inout Entity, const float32 BlackT
         local_12.FadeOutTime = FadeOutTime;
         return;
     }
-    XError(ELog(0), "Level_StartBlackScreen и°ѓз”Ёй”™иЇЇ! Entity жЇз©єпјЃпјЃ");
+    XError(ELog(0), "Level_StartBlackScreen 调用错误! Entity 是空！！");
     return;
 }
 UFUNCTION()
@@ -1055,7 +1054,7 @@ void Level_GetRandomTransformByRangeAndAngle(const FTransform &inout AnchorTrans
 UFUNCTION()
 void Level_ChangeMoveStance(const FECSEntity &inout Entity, const ECharacterMoveStance MoveStance)
 {
-    ECS::GetContextTime();
+    FAIInputUtils::ChangeMoveStance(ECharacterMoveStance(MoveStance), Entity, ECS::GetContextTime(), ECharacterMoveStanceLayer(2));
     return;
 }
 UFUNCTION()
@@ -1330,24 +1329,24 @@ void Level_OverrideExitLevel(const bool bCanExitLevel)
 UFUNCTION()
 void Level_AddInventoryItemToPlayerOrEntity(const FECSEntityAdapter &inout PlayerOrEntity, const FItemTableRowRef &inout Item, const int Number = 1)
 {
-    InventoryUtils::AddInventoryItem(PlayerOrEntity.opImplConv(), TDataObjectPtr<FItemConfig>(), Number);
+    InventoryUtils::AddInventoryItem(PlayerOrEntity.opImplConv(), TDataObjectPtr<FItemConfig>(Item), Number);
     return;
 }
 UFUNCTION()
 void Level_RemoveInventoryItemFromPlayerOrEntity(const FECSEntityAdapter &inout PlayerOrEntity, const FItemTableRowRef &inout Item, const int Number = 1)
 {
-    InventoryUtils::RemoveInventoryItem(PlayerOrEntity.opImplConv(), TDataObjectPtr<FItemConfig>(), Number);
+    InventoryUtils::RemoveInventoryItem(PlayerOrEntity.opImplConv(), TDataObjectPtr<FItemConfig>(Item), Number);
     return;
 }
 UFUNCTION()
 bool Level_HasItemInInventory(const FECSEntityAdapter &inout PlayerOrEntity, const FItemTableRowRef &inout Item)
 {
-    return InventoryUtils::HasItemInInventory(PlayerOrEntity.opImplConv(), TDataObjectPtr<FItemConfig>());
+    return InventoryUtils::HasItemInInventory(PlayerOrEntity.opImplConv(), TDataObjectPtr<FItemConfig>(Item));
 }
 UFUNCTION()
 int Level_GetInventoryItemNum(const FECSEntityAdapter &inout PlayerOrEntity, const FItemTableRowRef &inout Item)
 {
-    return InventoryUtils::GetInventoryItemNumber(PlayerOrEntity.opImplConv(), TDataObjectPtr<FItemConfig>());
+    return InventoryUtils::GetInventoryItemNumber(PlayerOrEntity.opImplConv(), TDataObjectPtr<FItemConfig>(Item));
 }
 UFUNCTION()
 void LevelSpawnCollectItem(const TSubclassOf<ACollectionPrefab> &inout Prefab, const FVector &inout Location, const float32 RandomRange, FECSEntity &out PropEntity)
@@ -1479,7 +1478,7 @@ void Level_SoundPlayAudioEventByName(const FECSEntityAdapter &inout Entity, cons
         XWarning(ELog(1), "Level_SoundPlayAudioEventByName: EventName is none");
         return;
     }
-    FECSEntity local_6 = Entity.opImplConv();
+    FAsGameAudioUtils::PlayAudioEventByName(Entity.opImplConv(), EventName, ESfxSourceType(SourceType), bFollow, EGameAudioEmitterPartType(PartType), Socket, LocationOffset, RotationOffset, bLocalSpace, bIsLoop, bLoopEnd);
     return;
 }
 UFUNCTION()
@@ -1530,7 +1529,7 @@ void Level_SetGuidingPathTargetToEntity(const FECSEntityAdapter &inout Target, c
     if (Target.IsValid())
     {
         FECSEntity local_10 = FASCommonUtils::GetUniquePlayerEntity(Player);
-        if (ECS::GetRuntimeInfo().IsServer)
+        if (int(ECS::GetRuntimeInfo().IsServer) != 0)
         {
             FGuidingPathUtils::ServerSetGuidingPathTargetEntity(Target.opImplConv(), local_10, true);
         }
@@ -1631,7 +1630,7 @@ void Level_CancelMarkAndGuidingPathOnEntity(const FECSEntityAdapter &inout Targe
 UFUNCTION()
 void Level_SetHUDIndicatorDefaultShow(const FECSEntityAdapter &inout Entity, const bool bShow)
 {
-    XWarning(ELog(22), "Level_SetHUDIndicatorDefaultShow е·Іеєџејѓдё”дёЌе†Ќз”џж•€пјљHUDIndicatorSystem е·Іиў«еџєдєЋ Spot зљ„ Indicator / HeadsUpDisplay дЅ“зі»еЏ–д»ЈгЂ‚");
+    XWarning(ELog(22), "Level_SetHUDIndicatorDefaultShow 已废弃且不再生效：HUDIndicatorSystem 已被基于 Spot 的 Indicator / HeadsUpDisplay 体系取代。");
     return;
 }
 UFUNCTION()
@@ -1739,13 +1738,13 @@ void Level_SendMessageHintToRegionVolumn(const AECSRegionVolume RegionVolume, co
 UFUNCTION()
 void Level_SetHUDIndicatorShow(const FECSEntityAdapter &inout Entity, const bool bShow)
 {
-    XWarning(ELog(22), "Level_SetHUDIndicatorShow е·Іеєџејѓдё”дёЌе†Ќз”џж•€пјљHUDIndicatorSystem е·Іиў«еџєдєЋ Spot зљ„ Indicator / HeadsUpDisplay дЅ“зі»еЏ–д»ЈгЂ‚");
+    XWarning(ELog(22), "Level_SetHUDIndicatorShow 已废弃且不再生效：HUDIndicatorSystem 已被基于 Spot 的 Indicator / HeadsUpDisplay 体系取代。");
     return;
 }
 UFUNCTION()
 void Level_SetHUDIndicatorConfig(const FECSEntityAdapter &inout Entity, const float32 ZOffset = 0)
 {
-    XWarning(ELog(22), "Level_SetHUDIndicatorConfig е·Іеєџејѓдё”дёЌе†Ќз”џж•€пјљHUDIndicatorSystem е·Іиў«еџєдєЋ Spot зљ„ Indicator / HeadsUpDisplay дЅ“зі»еЏ–д»ЈгЂ‚");
+    XWarning(ELog(22), "Level_SetHUDIndicatorConfig 已废弃且不再生效：HUDIndicatorSystem 已被基于 Spot 的 Indicator / HeadsUpDisplay 体系取代。");
     return;
 }
 UFUNCTION()
@@ -1894,18 +1893,39 @@ void Level_SetVegenfulSpirit(const FECSEntity &inout VegenfulSpiritEntity, const
 UFUNCTION()
 bool Level_LoadSingleUnit(const FLevelUnitReference &inout UnitRef)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    bool __r; return __r;
+    int local_14 = 0;
+    if (!(UnitRef.IsValid()))
+    {
+        return false;
+    }
+    FConfigGUID local_6 = LevelConfig::FindGroupGUIDByUnitGUID(UnitRef.GUID);
+    if (!(local_6.IsValid()))
+    {
+        return false;
+    }
+    FECSWorldPtr local_8 = ECS::GetECSWorld();
+    return local_14.LoadSingleUnit(UnitRef.GUID, local_6);
 }
 UFUNCTION()
 bool Level_UnloadSingleUnit(const FLevelUnitReference &inout UnitRef)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    bool __r; return __r;
+    int local_14 = 0;
+    if (!(UnitRef.IsValid()))
+    {
+        return false;
+    }
+    FConfigGUID local_6 = LevelConfig::FindGroupGUIDByUnitGUID(UnitRef.GUID);
+    if (!(local_6.IsValid()))
+    {
+        return false;
+    }
+    FECSWorldPtr local_8 = ECS::GetECSWorld();
+    return local_14.UnloadSingleUnit(ECS::GetECSWorld(), UnitRef.GUID, local_6);
 }
 UFUNCTION()
 bool Level_IsUnitLoaded(const FLevelUnitReference &inout UnitRef)
 {
+    int local_14 = 0;
     if (!(UnitRef.IsValid()))
     {
         return false;
@@ -1917,7 +1937,7 @@ bool Level_IsUnitLoaded(const FLevelUnitReference &inout UnitRef)
         return false;
     }
     FECSWorldPtr local_4_2 = ECS::GetECSWorld();
-    FECSEntityId local_16;
+    FECSEntityId local_16 = local_14.FindUnitEntityByGUID(UnitRef.GUID);
     return (!((local_16 == ENTITY_ID_NULL)));
 }
 UFUNCTION()

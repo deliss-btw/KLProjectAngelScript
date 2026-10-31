@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_EcosimAIV2RelationDB_NS
 {
     const TECSComponentDerivedPtr<FCS_EcosimAIV2RelationDB> DerivedPtr = TECSComponentDerivedPtr<FCS_EcosimAIV2RelationDB>();
@@ -16,7 +15,6 @@ struct FEcosimAIV2RelationEntry
     UPROPERTY()
     bool bIsPlan = false;
 
-
 }
 
 struct FEcosimAIV2InteractRelationEntry
@@ -31,7 +29,6 @@ struct FEcosimAIV2InteractRelationEntry
     int BehaviorIndex = -1;
     UPROPERTY()
     bool bIsPlan = false;
-
 
 }
 
@@ -61,9 +58,9 @@ struct FCS_EcosimAIV2RelationDB : FECSSingleton
     void AddRelation(const FECSEntity &inout Source, const FECSEntity &inout Target, const EEcosimAIV2EntityRelation Relation, const bool bIsPlan)
     {
         int local_1 = 0;
-        for (; local_1 < this.Num(); ++local_1)
+        for (; local_1 < this.Relations.Num(); ++local_1)
         {
-            FEcosimAIV2RelationEntry& local_6 = this[local_1];
+            FEcosimAIV2RelationEntry& local_6 = this.Relations[local_1];
             if (!(!(((local_6.Source == Source) && (local_6.Target == Target) && (int(local_6.Relation) == int(Relation))))) && (!(local_6.bIsPlan) == !(bIsPlan)))
             {
                 return;
@@ -74,57 +71,57 @@ struct FCS_EcosimAIV2RelationDB : FECSSingleton
         local_24.Target = Target;
         local_24.Relation = Relation;
         local_24.bIsPlan = bIsPlan;
-        this.Add(local_24);
+        this.Relations.Add(local_24);
         return;
     }
     void RemoveRelation(const FECSEntity &inout Source, const FECSEntity &inout Target, const EEcosimAIV2EntityRelation Relation, const bool bIsPlan)
     {
-        int local_4 = this.Num() - 1;
+        int local_4 = this.Relations.Num() - 1;
         for (; local_4 >= 0; --local_4)
         {
-            FEcosimAIV2RelationEntry& local_8 = this[local_4];
+            FEcosimAIV2RelationEntry& local_8 = this.Relations[local_4];
             if (!(!(((local_8.Source == Source) && (local_8.Target == Target) && (int(local_8.Relation) == int(Relation))))) && (!(local_8.bIsPlan) == !(bIsPlan)))
             {
-                this.RemoveAt(local_4);
+                this.Relations.RemoveAt(local_4);
             }
         }
         return;
     }
     void RemoveRelationsBySource(const FECSEntity &inout Source, const EEcosimAIV2EntityRelation Relation, const bool bIsPlan)
     {
-        int local_4 = this.Num() - 1;
+        int local_4 = this.Relations.Num() - 1;
         for (; local_4 >= 0; --local_4)
         {
-            FEcosimAIV2RelationEntry& local_8 = this[local_4];
+            FEcosimAIV2RelationEntry& local_8 = this.Relations[local_4];
             if (!(!(((local_8.Source == Source) && (int(local_8.Relation) == int(Relation))))) && (!(local_8.bIsPlan) == !(bIsPlan)))
             {
-                this.RemoveAt(local_4);
+                this.Relations.RemoveAt(local_4);
             }
         }
         return;
     }
     void RemoveRelationsByTarget(const FECSEntity &inout Target, const EEcosimAIV2EntityRelation Relation, const bool bIsPlan)
     {
-        int local_4 = this.Num() - 1;
+        int local_4 = this.Relations.Num() - 1;
         for (; local_4 >= 0; --local_4)
         {
-            FEcosimAIV2RelationEntry& local_8 = this[local_4];
+            FEcosimAIV2RelationEntry& local_8 = this.Relations[local_4];
             if (!(!(((local_8.Target == Target) && (int(local_8.Relation) == int(Relation))))) && (!(local_8.bIsPlan) == !(bIsPlan)))
             {
-                this.RemoveAt(local_4);
+                this.Relations.RemoveAt(local_4);
             }
         }
         return;
     }
     void RemoveAllRelationsInvolvingEntity(const FECSEntity &inout Entity)
     {
-        int local_4 = this.Num() - 1;
+        int local_4 = this.Relations.Num() - 1;
         for (; local_4 >= 0; --local_4)
         {
-            FEcosimAIV2RelationEntry& local_8 = this[local_4];
+            FEcosimAIV2RelationEntry& local_8 = this.Relations[local_4];
             if (((local_8.Source == Entity) || (local_8.Target == Entity)))
             {
-                this.RemoveAt(local_4);
+                this.Relations.RemoveAt(local_4);
             }
         }
         return;
@@ -133,9 +130,9 @@ struct FCS_EcosimAIV2RelationDB : FECSSingleton
     {
         bool local_11;
         int local_1 = 0;
-        for (; local_1 < this.Num(); ++local_1)
+        for (; local_1 < this.Relations.Num(); ++local_1)
         {
-            const FEcosimAIV2RelationEntry& local_6 = this[local_1];
+            const FEcosimAIV2RelationEntry& local_6 = this.Relations[local_1];
             if (!(((local_6.Source == Source) && (local_6.Target == Target) && (int(local_6.Relation) == int(Relation)))))
             {
                 local_11 = false;
@@ -159,9 +156,9 @@ struct FCS_EcosimAIV2RelationDB : FECSSingleton
         OutTargets = local_4;
         OutTargets.Empty(0);
         int local_6 = 0;
-        for (; local_6 < this.Num(); ++local_6)
+        for (; local_6 < this.Relations.Num(); ++local_6)
         {
-            const FEcosimAIV2RelationEntry& local_10 = this[local_6];
+            const FEcosimAIV2RelationEntry& local_10 = this.Relations[local_6];
             if (!(((local_10.Source == Source) && (int(local_10.Relation) == int(Relation)))))
             {
                 local_17 = false;
@@ -185,9 +182,9 @@ struct FCS_EcosimAIV2RelationDB : FECSSingleton
         OutSources = local_4;
         OutSources.Empty(0);
         int local_6 = 0;
-        for (; local_6 < this.Num(); ++local_6)
+        for (; local_6 < this.Relations.Num(); ++local_6)
         {
-            const FEcosimAIV2RelationEntry& local_10 = this[local_6];
+            const FEcosimAIV2RelationEntry& local_10 = this.Relations[local_6];
             if (!(((local_10.Target == Target) && (int(local_10.Relation) == int(Relation)))))
             {
                 local_17 = false;
@@ -210,9 +207,9 @@ struct FCS_EcosimAIV2RelationDB : FECSSingleton
         OutEntries = local_4;
         OutEntries.Empty(0);
         int local_6 = 0;
-        for (; local_6 < this.Num(); ++local_6)
+        for (; local_6 < this.Relations.Num(); ++local_6)
         {
-            const FEcosimAIV2RelationEntry& local_10 = this[local_6];
+            const FEcosimAIV2RelationEntry& local_10 = this.Relations[local_6];
             if (int(local_10.Relation) != int(Relation))
             {
                 continue;
@@ -236,9 +233,9 @@ struct FCS_EcosimAIV2RelationDB : FECSSingleton
     bool HasMatchingRelation(const FECSEntity &inout Source, const bool bSourceIsVar, const FECSEntity &inout Target, const bool bTargetIsVar, const EEcosimAIV2EntityRelation Relation, const EEcosimAIV2RelationType QueryType, const FECSEntity &inout ExcludeSource) const
     {
         int local_1 = 0;
-        for (; local_1 < this.Num(); ++local_1)
+        for (; local_1 < this.Relations.Num(); ++local_1)
         {
-            const FEcosimAIV2RelationEntry& local_6 = this[local_1];
+            const FEcosimAIV2RelationEntry& local_6 = this.Relations[local_1];
             if (int(local_6.Relation) != int(Relation))
             {
                 continue;
@@ -277,9 +274,9 @@ struct FCS_EcosimAIV2RelationDB : FECSSingleton
             local_10 = RelationPath[local_9];
             TArray<FECSEntity> local_16;
             int local_17 = 0;
-            for (; local_17 < this.Num(); ++local_17)
+            for (; local_17 < this.Relations.Num(); ++local_17)
             {
-                const FEcosimAIV2RelationEntry& local_20 = this[local_17];
+                const FEcosimAIV2RelationEntry& local_20 = this.Relations[local_17];
                 if (int(local_20.Relation) != int(local_10))
                 {
                     continue;
@@ -342,9 +339,9 @@ struct FCS_EcosimAIV2RelationDB : FECSSingleton
             FECSEntity local_16 = local_10[local_11];
             ++local_11;
             int local_17 = 0;
-            for (; local_17 < this.Num(); ++local_17)
+            for (; local_17 < this.Relations.Num(); ++local_17)
             {
-                const FEcosimAIV2RelationEntry& local_20 = this[local_17];
+                const FEcosimAIV2RelationEntry& local_20 = this.Relations[local_17];
                 if (!((local_20.Source == local_16)))
                 {
                     continue;
@@ -551,16 +548,16 @@ bool RemoveEcosimAIV2RelationDB(const FECSWorldPtr &inout World)
 }
 void __MonitorEcosimAIV2RelationDBLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_EcosimAIV2RelationDB, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_EcosimAIV2RelationDB, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2RelationDBActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_EcosimAIV2RelationDB, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_EcosimAIV2RelationDB, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcosimAIV2RelationDBModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_EcosimAIV2RelationDB, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_EcosimAIV2RelationDB, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

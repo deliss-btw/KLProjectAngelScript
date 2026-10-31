@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MinimapIconTooltip
 {
     const int ModelId = 0;
@@ -79,8 +78,12 @@ struct FVM_MinimapIconTooltip : FEUIViewModel
     }
     bool HasMarkDecoractor() const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
-        bool __r; return __r;
+        if (this.GetSpot())
+        {
+            FSpotViewAdapter local_12;
+            return ::HasDecoractor(this.GetSpot().opArrow(), EPresentationSpotDecoractor(1), local_12);
+        }
+        return false;
     }
     FText GetMarkDecoractorText() const
     {
@@ -95,7 +98,7 @@ struct FVM_MinimapIconTooltip : FEUIViewModel
                 if (local_18)
                 {
                     local_28 = FText::FromString(local_18.opArrow().GetNickName());
-                    return FText::Format(NSLOCTEXT("Minimap", "MarkTooltipText", "{0}зљ„ж ‡и®°"), local_28);
+                    return FText::Format(NSLOCTEXT("Minimap", "MarkTooltipText", "{0}的标记"), local_28);
                 }
             }
         }
@@ -383,7 +386,6 @@ struct __GeneratedProperties_FVM_MinimapIconTooltip
     UPROPERTY()
     TEUIModelRef<FVM_MinimapIconTooltip> Self;
 
-
 }
 
 namespace FVM_MinimapIconTooltip
@@ -400,7 +402,82 @@ FVM_MinimapIconTooltip CreateByManager(const UEUIManagerSubsystem Manager, const
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "DropPreview";
+    local_14.TypeName = "TEUIModelRef<FVM_CommonRewardList>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SpotName";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SpotDescription";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasMarkDecoractor";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "MarkDecoractorText";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CanGuideToTarget";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CanTeleportToTarget";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CanMarkTarget";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasRewardPreview";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TextReward";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "RewardPreviewItems";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_CommonRewardItem>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_MinimapIconTooltip>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_MinimapIconTooltip;
+    FEUIModelMetaPropertyModelRef local_19;
+    local_19.PropertyName = FName("Spot");
+    int local_2_2 = FM_Spot::ModelId;
+    Result.FunctionalPropertyModelRefs.Add(local_19);
+    FEUIModelMsgHandleDefine local_32;
+    local_32.FunctionName = "__HandleSpotPresentationDataModified";
+    local_32.MessageTypeName = "Msg_SpotPresentationDataModified";
+    local_32.SourcePropertyModelRefs = FBitSet64(1);
+    Result.MessageHandleFunctions.Add(local_32);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

@@ -1,5 +1,3 @@
-﻿
-
 class UHTNTask_EcosimAIV2_Test : UHTNTask_ECSScriptBase
 {
     UPROPERTY()
@@ -29,7 +27,6 @@ struct FHTNTask_SimpleEntityPublicSpeakInstanceData
 {
     UPROPERTY()
     float32 TimeCount = 0.0f;
-
 
 }
 
@@ -197,7 +194,7 @@ class UHTNTask_EcosimAIV2_InitSelfEntity : UHTNTask_ECSScriptBase
     void CreatePlanSteps_Implementation(const FHTNContext &inout Context) const
     {
         FECSEntity local_4 = FECSEntity(Context.PawnEntity);
-        local_4.GetId();
+        HTNNode::SetWorldStateValueAsEntityId(Context, this.SelfEntityID, local_4.GetId());
         this.SubmitPlanStep(1, "");
         return;
     }
@@ -205,7 +202,7 @@ class UHTNTask_EcosimAIV2_InitSelfEntity : UHTNTask_ECSScriptBase
     void Execute_Implementation(const FHTNContext &inout Context)
     {
         FECSEntity local_4 = FECSEntity(Context.PawnEntity);
-        local_4.GetId();
+        HTNNode::SetWorldStateValueAsEntityId(Context, this.SelfEntityID, local_4.GetId());
         this.FinishExecuteWithContext(Context, true);
         return;
     }
@@ -254,7 +251,6 @@ struct FHTNTask_EcosimAIV2DoInteractToTargetInstanceData
     UPROPERTY()
     FGameplayTagContainer MergedSuccessTags;
 
-
 }
 
 class UHTNTask_EcosimAIV2_DoInteractToTarget : UHTNTask_ECSScriptBase
@@ -275,7 +271,6 @@ class UHTNTask_EcosimAIV2_DoInteractToTarget : UHTNTask_ECSScriptBase
     FGameplayTagContainer SuccessWhenMatchAnyGameplayTags;
     UPROPERTY()
     FAISmart_Float TimeOutTime = 2.0f;
-
 
     UFUNCTION()
     UScriptStruct GetInstanceDataType_Implementation() const
@@ -299,7 +294,136 @@ class UHTNTask_EcosimAIV2_DoInteractToTarget : UHTNTask_ECSScriptBase
     UFUNCTION()
     void Execute_Implementation(const FHTNContext &inout Context)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        UInteractionBehaviorBase local_20;
+        UInteractionBehaviorAction_EcosimAIV2Unchain local_40;
+        UInteractionBehaviorBase local_100;
+        FHTNTask_EcosimAIV2DoInteractToTargetInstanceData local_2;
+        local_2.InteractSourceEntity = FECSEntity(this.InteractSourceEntityID.GetValue(Context.opImplConv()));
+        local_2.InteractTargetEntity = FECSEntity(this.InteractTargetEntityID.GetValue(Context.opImplConv()));
+        local_2.InteractPointIndex = -1;
+        int local_11 = -1;
+        local_2.InteractBehaviorIndex = local_11;
+        if (this.bByIndex)
+        {
+            FAISmartValueContext local_4 = Context.opImplConv();
+            local_2.InteractPointIndex = local_11;
+            FAISmartValueContext local_4_2 = Context.opImplConv();
+            local_2.InteractBehaviorIndex = local_11;
+        }
+        else
+        {
+            bool local_17;
+            if (!(this.InteractBehaviorClass.IsNull()))
+            {
+                FInteractionPointAndBehaviorIndex local_14;
+                local_17 = ::FInteractUtils::GetInteractionPointAndBehaviorIndexByBehaviorClass(local_2.InteractTargetEntity, this.InteractBehaviorClass.Get(), local_14, true);
+                if (local_17)
+                {
+                    local_2.InteractPointIndex = local_14.GetPointIndex();
+                    local_2.InteractBehaviorIndex = local_14.GetBehaviorIndex();
+                }
+            }
+        }
+        if (this.bByIndex)
+        {
+            if (int(local_2.InteractPointIndex) >= 0)
+            {
+                local_20 = ::FInteractUtils::GetInteractionBehaviorCDO(local_2.InteractTargetEntity, int(local_2.InteractPointIndex), int(local_2.InteractBehaviorIndex));
+            }
+        }
+        else
+        {
+            if (!(this.InteractBehaviorClass.IsNull()))
+            {
+                local_20 = this.InteractBehaviorClass.Get().GetDefaultObject();
+            }
+        }
+        if (local_20 != nullptr)
+        {
+            bool local_17;
+            for (auto local_38 : local_20.InteractSuccessActions)
+            {
+                local_40 = Cast<UInteractionBehaviorAction_EcosimAIV2Unchain>(local_38);
+                if (local_40 != nullptr)
+                {
+                    if (!(local_2.InteractSourceEntity.IsValid()))
+                    {
+                        local_17 = false;
+                    }
+                    else
+                    {
+                        Has local_44;
+                        local_17 = local_44.opCall();
+                    }
+                    Has local_48;
+                    local_17 = local_17 && !(local_48.opCall());
+                    if (local_17)
+                    {
+                        TArray<FECSEntity> local_52;
+                        if (::FChainUtils::GetChainChildren(local_2.InteractSourceEntity, local_52))
+                        {
+                            for (auto& local_66 : local_52)
+                            {
+                                if (local_66.IsValid())
+                                {
+                                    ::FChainUtils::UnchainFromParent(local_66);
+                                }
+                            }
+                        }
+                        this.FinishExecuteWithContext(Context, true);
+                        return;
+                    }
+                    break;
+                }
+            }
+        }
+        local_2.bExecutingInteract = false;
+        float32 local_67 = 0.0f;
+        local_2.TimeCount = 0.0f;
+        FAISmartValueContext local_4_3 = Context.opImplConv();
+        local_2.TimeOutTime = local_67;
+        Has local_72;
+        if (!(local_2.InteractSourceEntity.IsValid()) || !(local_2.InteractTargetEntity.IsValid()) || !(local_72.opCall()) || (int(local_2.InteractPointIndex) < 0))
+        {
+            this.FinishExecuteWithContext(Context, false);
+            return;
+        }
+        local_2.MergedSuccessTags = this.SuccessWhenMatchAnyGameplayTags;
+        Get local_76;
+        const FC_EcologyKnowledge& local_78 = local_76.opCall();
+        if (local_78)
+        {
+            FGameplayTagContainer local_90;
+            FC_EcologyKnowledge::GetStruct(local_78).opCall(FEcologyKnowledgeKey(FName("SuccessWhenMatchAnyGameplayTags")), local_90);
+            local_2.MergedSuccessTags.AppendTags(local_90);
+        }
+        if (this.bByIndex)
+        {
+            if (int(local_2.InteractPointIndex) >= 0)
+            {
+                local_100 = ::FInteractUtils::GetInteractionBehaviorCDO(local_2.InteractTargetEntity, int(local_2.InteractPointIndex), int(local_2.InteractBehaviorIndex));
+            }
+        }
+        else
+        {
+            if (!(this.InteractBehaviorClass.IsNull()))
+            {
+                local_100 = this.InteractBehaviorClass.Get().GetDefaultObject();
+            }
+        }
+        if (local_100 != nullptr && !(local_100.NPCSuccessGameplayTags.IsEmpty()))
+        {
+            local_2.MergedSuccessTags.AppendTags(local_100.NPCSuccessGameplayTags);
+        }
+        FInteractionPointAndBehaviorIndex local_14;
+        local_14.SetPointIndex(int(local_2.InteractPointIndex));
+        local_14.SetBehaviorIndex(int(local_2.InteractBehaviorIndex));
+        FFPTime local_106 = FFPTime(-1);
+        FCE_ServerTriggerBeginInteractEvent local_108;
+        local_108.bIsSecondaryInteract = false;
+        local_108.TargetEntity = local_2.InteractTargetEntity;
+        local_108.InteractTargetPointAndBehaviorIndex = local_14;
+        return;
     }
     UFUNCTION()
     void Tick_Implementation(const FHTNContext &inout Context, const float32 DeltaSeconds)
@@ -364,7 +488,6 @@ struct FHTNTask_RideAsPassengerWaitInstanceData
     UPROPERTY()
     float32 AbortTimeCount = 0.0f;
 
-
 }
 
 class UHTNTask_EcosimAIV2_RideAsPassengerWait : UHTNTask_ECSScriptBase
@@ -373,7 +496,6 @@ class UHTNTask_EcosimAIV2_RideAsPassengerWait : UHTNTask_ECSScriptBase
     float32 AbortTimeout = 5.0f;
 
     default SetNodeName("RideAsPassengerWait");
-
 
     UFUNCTION()
     UScriptStruct GetInstanceDataType_Implementation() const
@@ -447,7 +569,6 @@ class UHTNTask_EcosimAIV2_TimeCountByTag : UHTNTask_ECSScriptBase
     float32 TimeOutValue = 2.0f;
 
     default SetNodeName("TimeCountByTag");
-
 
     UFUNCTION()
     void Tick_Implementation(const FHTNContext &inout Context, const float32 DeltaSeconds)
@@ -569,7 +690,6 @@ struct FHTNTask_EcosimAIV2NPCDoInteractToTargetInstanceData : FHTNTask_EcosimAIV
 
     FHTNTask_EcosimAIV2NPCDoInteractToTargetInstanceData()
     {
-        super();
         return;
     }
 }
@@ -721,7 +841,6 @@ class UHTNTask_EcosimAIV2_SendActionEvent : UHTNTask_ECSScriptBase
     EEcosimAIV2ActionEventType ActionEventType;
 
     default SetNodeName("SendActionEvent");
-
 
     UFUNCTION()
     void Execute_Implementation(const FHTNContext &inout Context)

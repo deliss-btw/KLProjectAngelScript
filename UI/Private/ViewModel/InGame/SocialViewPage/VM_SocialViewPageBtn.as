@@ -1,4 +1,3 @@
-﻿
 namespace FVM_SocialViewPageBigBtn
 {
     const int ModelId = 0;
@@ -89,7 +88,7 @@ struct FVM_SocialViewPageBigBtn : FEUIViewModel
         if ((!((local_6 != nullptr))))
         {
             FCommonTipsParam local_14;
-            ::CommonPopup::Tips(NSLOCTEXT("SocialViewPage", "OperatorNotFound", "еЉџиѓЅжљ‚жњЄејЂж”ѕ"), local_14);
+            ::CommonPopup::Tips(NSLOCTEXT("SocialViewPage", "OperatorNotFound", "功能暂未开放"), local_14);
             return;
         }
         local_6.Execute(::FVMS_SocialViewPage::Get(this.GetContext().UELocalPlayer.GetWorld()).BuildOperatorContext(), this.GetButtonConfig());

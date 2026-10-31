@@ -1,10 +1,8 @@
-﻿
 enum EMuteBodyPartDestroyType
 {
     LockOne,
     Full,
 }
-
 
 class UESMAction_MuteBodyPartDestroy : UESMBPBaseSpanAction
 {

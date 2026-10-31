@@ -1,5 +1,3 @@
-﻿
-
 struct FFollowSplineMoveBTTaskInstanceData
 {
     UPROPERTY()
@@ -20,7 +18,6 @@ struct FFollowSplineMoveBTTaskInstanceData
     FVector LastLocation = FVector::ZeroVector;
     UPROPERTY()
     float32 SplineSearchTimer = 0.0f;
-
 
 }
 
@@ -50,7 +47,6 @@ class UBTTask_FollowSplineMove : UBTTask_ECSScriptBase
     bool bDrawDebug = false;
 
     default SetNodeName("FollowSplineMove");
-
 
     UFUNCTION()
     UScriptStruct GetNodeMemoryType_Implementation() const
@@ -224,7 +220,8 @@ class UBTTask_FollowSplineMove : UBTTask_ECSScriptBase
                 local_168 = local_162.GetSpline();
                 if (local_168 != nullptr)
                 {
-                    float32 local_171 = float32((local_80.Distance(local_168.GetLocationAtSplineInputKey(local_168.FindInputKeyClosestToWorldLocation(local_80), ESplineCoordinateSpace(1)))));
+                    float32 local_82 = local_168.FindInputKeyClosestToWorldLocation(local_80);
+                    float32 local_171 = float32((local_80.Distance(local_168.GetLocationAtSplineInputKey(local_82, ESplineCoordinateSpace(1)))));
                     if (local_171 < local_81 && (local_171 <= 10000.0f))
                     {
                         local_81 = local_171;

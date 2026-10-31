@@ -1,5 +1,3 @@
-﻿
-
 struct FSubmitRechargeTierConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -11,7 +9,6 @@ struct FSubmitRechargeTierConfig : FDataObject
     int PriceAmount;
     UPROPERTY()
     FSoftBrush Icon;
-
 
 }
 

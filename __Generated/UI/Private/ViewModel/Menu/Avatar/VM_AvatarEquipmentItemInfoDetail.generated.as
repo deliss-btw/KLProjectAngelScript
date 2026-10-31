@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_AvatarEquipmentItemInfoDetail_Helpers
 {
 UFUNCTION()

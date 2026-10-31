@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ConnectServerMap
 {
     const int ViewID = 0;
@@ -16,6 +15,7 @@ namespace UWidget_ConnectServerMap
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ConnectServerMap;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

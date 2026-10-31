@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TraitSourceInfo_Helpers
 {
 UFUNCTION()

@@ -1,5 +1,3 @@
-﻿
-
 class UGuideSettings : UGameplaySettingsBase
 {
     UPROPERTY()
@@ -20,7 +18,6 @@ class UGuideSettings : UGameplaySettingsBase
     FVector LocationIconOffset = FVector(0.0, 0.0, 180.0);
     UPROPERTY()
     float32 GuidingPathRequestCooldown = 0.2f;
-
 
 }
 

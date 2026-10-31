@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_SocialSelectTarget
 {
     const int ModelId = 0;

@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_CustomNameEventConditionManager_NS
 {
     const TECSComponentDerivedPtr<FCS_CustomNameEventConditionManager> DerivedPtr = TECSComponentDerivedPtr<FCS_CustomNameEventConditionManager>();
@@ -115,16 +114,16 @@ bool RemoveCustomNameEventConditionManager(const FECSWorldPtr &inout World)
 }
 void __MonitorCustomNameEventConditionManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_CustomNameEventConditionManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_CustomNameEventConditionManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCustomNameEventConditionManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_CustomNameEventConditionManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_CustomNameEventConditionManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCustomNameEventConditionManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_CustomNameEventConditionManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_CustomNameEventConditionManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

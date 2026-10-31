@@ -1,4 +1,3 @@
-﻿
 enum ESoundSourceType
 {
     Root,
@@ -27,7 +26,6 @@ struct FSoundSourceConfig
     UPROPERTY()
     FRotator3f RotationOffset;
 
-
 }
 
 class UESMAction_InstantSFX : UESMSFXBaseSpanAction
@@ -40,7 +38,6 @@ class UESMAction_InstantSFX : UESMSFXBaseSpanAction
     bool bSelfOnly = false;
     UPROPERTY()
     bool bOnSpanEntry = false;
-
 
     UFUNCTION()
     EESMAssetWorkflow GetWorkflow_Implementation() const
@@ -61,7 +58,7 @@ class UESMAction_InstantSFX : UESMSFXBaseSpanAction
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const
     {
-        return FString().Append("ж’­ж”ѕйџіж•€: ").Append(this.Event.GetAssetName());
+        return FString().Append("播放音效: ").Append(this.Event.GetAssetName());
     }
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const
@@ -147,7 +144,6 @@ struct FBlendableInstantSFX
     UPROPERTY()
     bool bEntered = false;
 
-
 }
 
 class UESMAction_DurationalSFX : UESMSFXBaseSpanAction
@@ -160,7 +156,6 @@ class UESMAction_DurationalSFX : UESMSFXBaseSpanAction
     FSoundSourceConfig SourceConfig;
     UPROPERTY()
     bool bSelfOnly = false;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const
@@ -180,7 +175,7 @@ class UESMAction_DurationalSFX : UESMSFXBaseSpanAction
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const
     {
-        return FString().Append("ж’­ж”ѕйџіж•€:Enter: ").Append(this.EnterEvent.GetAssetName()).Append(", Exit: ").Append(this.ExitEvent.GetAssetName());
+        return FString().Append("播放音效:Enter: ").Append(this.EnterEvent.GetAssetName()).Append(", Exit: ").Append(this.ExitEvent.GetAssetName());
     }
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const
@@ -397,7 +392,6 @@ class UESMAction_KeepRtpcValue : UESMRtpcBaseSpanAction
     float32 ResetValue = 0.0f;
     UPROPERTY()
     float32 InterpolateTime = 0.1f;
-
 
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const

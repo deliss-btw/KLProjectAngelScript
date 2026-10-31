@@ -1,5 +1,3 @@
-﻿
-
 class AKLPointEditVolume : AVolume
 {
     AKLPointEditVolume()

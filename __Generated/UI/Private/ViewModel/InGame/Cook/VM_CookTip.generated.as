@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CookTip_Helpers
 {
 UFUNCTION()

@@ -1,5 +1,3 @@
-﻿
-
 struct FAnimDynamicAdditiveConfig : FDataObject
 {
     FDataObject _base_FDataObject;

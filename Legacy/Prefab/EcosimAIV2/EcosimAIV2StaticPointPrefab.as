@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class AEcosimAIV2StaticPointPrefab : AKLLevelPrefabBase
 {

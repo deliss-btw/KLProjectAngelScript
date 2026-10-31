@@ -1,5 +1,3 @@
-﻿
-
 struct FT_ArealStrikeEnvSurfaceFXConfig : FECSTrait
 {
     FECSTrait _base_FECSTrait;

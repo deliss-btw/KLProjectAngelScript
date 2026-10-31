@@ -1,4 +1,3 @@
-﻿
 namespace FVM_BuffHoverStackCount
 {
     const int ModelId = 0;
@@ -129,7 +128,6 @@ struct __GeneratedProperties_FVM_BuffHoverStackCount
     bool StackShow;
     UPROPERTY()
     TEUIModelRef<FVM_BuffHoverStackCount> Self;
-
 
 }
 

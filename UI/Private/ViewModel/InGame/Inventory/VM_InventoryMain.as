@@ -1,4 +1,3 @@
-﻿
 namespace FVM_InventoryMainItem
 {
     const int ModelId = 0;
@@ -364,8 +363,7 @@ struct FVM_InventoryMainItem : FEUIViewModel
         FEUIDynamicWidgetData local_30;
         TEUIModelRef<FVM_ComposableItem> local_2_3 = this.GetComposableItem();
         local_6.GetCommonItemVM();
-        FEUIModelContainer local_44;
-        local_30.ModelContainer = local_44;
+        local_30.ModelContainer = FEUIModelContainer(::FVM_ItemFeature_Count::Create(this.GetContext().Manager, local_6));
         TEUIModelRef<FVM_ComposableItem> local_2_4 = this.GetComposableItem();
         if (GetRegistry() != nullptr)
         {
@@ -406,8 +404,7 @@ struct FVM_InventoryMainItem : FEUIViewModel
         FEUIDynamicWidgetData local_30;
         TEUIModelRef<FVM_ComposableItem> local_2_3 = this.GetComposableItem();
         local_6.GetCommonItemVM();
-        FEUIModelContainer local_44;
-        local_30.ModelContainer = local_44;
+        local_30.ModelContainer = FEUIModelContainer(::FVM_ItemFeature_Level::Create(this.GetContext().Manager, local_6));
         TEUIModelRef<FVM_ComposableItem> local_2_4 = this.GetComposableItem();
         if (GetRegistry() != nullptr)
         {
@@ -448,8 +445,7 @@ struct FVM_InventoryMainItem : FEUIViewModel
         FEUIDynamicWidgetData local_30;
         TEUIModelRef<FVM_ComposableItem> local_2_3 = this.GetComposableItem();
         local_6.GetCommonItemVM();
-        FEUIModelContainer local_44;
-        local_30.ModelContainer = local_44;
+        local_30.ModelContainer = FEUIModelContainer(::FVM_ItemFeature_EquipMark::Create(this.GetContext().Manager, local_6));
         TEUIModelRef<FVM_ComposableItem> local_2_4 = this.GetComposableItem();
         if (GetRegistry() != nullptr)
         {
@@ -534,6 +530,7 @@ struct FVM_InventoryMainItem : FEUIViewModel
         ::CommonItemTip::AddAction(local_74, EItemTipActionId(1));
         FSimpleModelEvent local_98;
         local_98.Add(this, FVM_InventoryMainItem::PinAndOpenOperations);
+        ::CommonItemTip::AddAction(local_74, EItemTipActionId(5), local_98);
         this.SetTipHandle(::CommonItemTip::MakeHandle(this.GetContext().Manager, local_74));
         this.SetTipHoverModels(this.GetTipHandle().GetModels());
         return;
@@ -802,11 +799,54 @@ struct FVM_InventoryMain : FEUIViewModel
 
     FVM_InventoryMain()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_ApplyingFilter = nullptr;
+        this.m_SelectedSorter = nullptr;
+        this.m_ApplyingSorter = nullptr;
+        this.m_RootCategoryIndex = 0;
+        this.m_CurrentCategoryIndex = 0;
+        this.m_SelectedItemIndex = INDEX_NONE;
+        this.m_CurrentCategoryLastSortTimestamp = 0;
+        this.m_bIsInventoryQuickSlotUnlocked = false;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVM_InventoryMain(const FVM_InventoryMain &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_ApplyingFilter = nullptr;
+        this.m_SelectedSorter = nullptr;
+        this.m_ApplyingSorter = nullptr;
+        this.m_RootCategoryIndex = 0;
+        this.m_CurrentCategoryIndex = 0;
+        this.m_SelectedItemIndex = INDEX_NONE;
+        this.m_CurrentCategoryLastSortTimestamp = 0;
+        this.m_bIsInventoryQuickSlotUnlocked = false;
+        this.m_RootCategories = Other.m_RootCategories;
+        this.m_RedDots = Other.m_RedDots;
+        this.m_RootCategoryListItems = Other.m_RootCategoryListItems;
+        this.m_SelectedRootCategoryItem = Other.m_SelectedRootCategoryItem;
+        this.m_RootCategorySelectableItems = Other.m_RootCategorySelectableItems;
+        this.m_Categories = Other.m_Categories;
+        this.m_CurrentCategoryItems = Other.m_CurrentCategoryItems;
+        this.m_CurrentDisplayItems = Other.m_CurrentDisplayItems;
+        this.m_SelectedItem = Other.m_SelectedItem;
+        this.m_ItemBarItems = Other.m_ItemBarItems;
+        this.m_FilterLeft = Other.m_FilterLeft;
+        this.m_FilterRight = Other.m_FilterRight;
+        this.m_InventoryQuickSlots = Other.m_InventoryQuickSlots;
+        this.m_RootCategoryIndex = int(Other.m_RootCategoryIndex);
+        this.m_CurrentCategoryIndex = int(Other.m_CurrentCategoryIndex);
+        this.m_SelectedItemIndex = int(Other.m_SelectedItemIndex);
+        this.m_ApplyingFilter = Other.m_ApplyingFilter;
+        this.m_SelectedSorter = Other.m_SelectedSorter;
+        this.m_ApplyingSorter = Other.m_ApplyingSorter;
+        this.m_PlayerInventory = Other.m_PlayerInventory;
+        this.m_CommonHoverManager = Other.m_CommonHoverManager;
+        this.m_CurrentCategoryLastSortTimestamp = Other.m_CurrentCategoryLastSortTimestamp;
+        this.m_bIsInventoryQuickSlotUnlocked = Other.m_bIsInventoryQuickSlotUnlocked;
+        return;
     }
     FVM_InventoryMain opAssign(const FVM_InventoryMain &inout Other)
     {
@@ -852,10 +892,8 @@ struct FVM_InventoryMain : FEUIViewModel
             local_14.SetbIsSelected((local_5 == this.GetRootCategoryIndex()));
             FEUIModelContainer local_28;
             local_28.AddModel(FEUIModelRef(local_12), false);
-            FEUIModelRef local_30 = FEUIModelRef(local_14);
-            local_28.AddModel(local_30, false);
-            UInventorySettings local_8 = this.GetInventorySettings();
-            local_28.AddModel(local_30, false);
+            local_28.AddModel(FEUIModelRef(local_14), false);
+            local_28.AddModel(FEUIModelRef(::FVM_Image::Create(this.GetContext().Manager, this.GetInventorySettings().Categories[local_5].DisplayIcon)), false);
             FVM_CommonTabItem& local_32 = ::FVM_CommonTabItem::Create(this.GetContext().Manager);
             local_32.SetTitleText(this.GetInventorySettings().Categories[local_5].DisplayName);
             local_28.AddModel(FEUIModelRef(local_32), false);
@@ -988,7 +1026,27 @@ struct FVM_InventoryMain : FEUIViewModel
     }
     void SyncSelectedItemTipHoverHandleFromSelectedItem()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (!(this.GetCommonHoverManager().IsValid()))
+        {
+            return;
+        }
+        FVM_InventoryMainItem& local_10 = FEUIModelContainer::GetModel(this.GetSelectedItem()).opCall();
+        if (local_10)
+        {
+            FCommonHoverHandle local_12;
+            if (!(local_12.IsValid()))
+            {
+                return;
+            }
+            TEUIModelRef<FMS_CommonHoverManager> local_2 = this.GetCommonHoverManager();
+            if (GetDisplayingHovers().IndexOfByKey(local_12) == INDEX_NONE)
+            {
+                local_10.UpdatePinnedTipHoverHandle(FCommonHoverHandle::InvalidHandle);
+                this.ClearSelection();
+                return;
+            }
+        }
+        return;
     }
     void SetupQuickSlots(const UWidget HoverLimitationWidget)
     {
@@ -1024,9 +1082,9 @@ struct FVM_InventoryMain : FEUIViewModel
         int local_2 = int(this.ResolveCurrentCategoryTrunk());
         if (::ItemConfigUtils::LimitTrunkMax(EItemTrunk(local_2)))
         {
-            return FText::Format(FText::AsCultureInvariant("{0}/{1}"), this.GetPlayerInventory().opArrow().GetCurrentTrunkSlotNum(EItemTrunk(::ItemConfigUtils::GetTrunkMax(EItemTrunk(local_2)))));
+            return FText::Format(FText::AsCultureInvariant("{0}/{1}"), this.GetPlayerInventory().opArrow().GetCurrentTrunkSlotNum(EItemTrunk(local_2)), ::ItemConfigUtils::GetTrunkMax(EItemTrunk(local_2)));
         }
-        return FText::Format(FText::AsCultureInvariant("{0}/в€ћ"), this.GetPlayerInventory().opArrow().GetCurrentTrunkSlotNum());
+        return FText::Format(FText::AsCultureInvariant("{0}/∞"), this.GetPlayerInventory().opArrow().GetCurrentTrunkSlotNum(EItemTrunk(local_2)));
     }
     bool ShouldShowTrunkSlotNum() const
     {
@@ -1150,20 +1208,15 @@ struct FVM_InventoryMain : FEUIViewModel
     }
     void RefreshCategories()
     {
-        int local_7 = 0;
         this.GetModify_Categories().Empty(0);
-        int local_1 = this.GetRootCategoryIndex();
-        if (this.GetInventorySettings().Categories.IsValidIndex())
+        if (this.GetInventorySettings().Categories.IsValidIndex(this.GetRootCategoryIndex()))
         {
             this.SetCurrentCategoryIndex(0);
             int local_6 = 0;
-            while (local_6 < local_7)
+            for (; local_6 < this.GetInventorySettings().Categories[this.GetRootCategoryIndex()].Categories.Num(); )
             {
-                local_7 = this.GetRootCategoryIndex();
-                this.GetModify_Categories().Add(TEUIModelRef<FVM_InventoryMainCategory>(this.MakeCategory(this.GetInventorySettings().Categories[local_6].Categories[local_6])));
+                this.GetModify_Categories().Add(TEUIModelRef<FVM_InventoryMainCategory>(this.MakeCategory(this.GetInventorySettings().Categories[this.GetRootCategoryIndex()].Categories[local_6], local_6)));
                 ++local_6;
-                local_7 = this.GetRootCategoryIndex();
-                local_7 = this.GetInventorySettings().Categories[].Categories.Num();
             }
         }
         this.RefreshCategorySelection();
@@ -1270,7 +1323,67 @@ struct FVM_InventoryMain : FEUIViewModel
     }
     void InitFilterAndSorter()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        UItemFilterBase local_6;
+        UItemFilterBase local_34;
+        UItemSorterBase local_72;
+        UItemSorterBase local_96;
+        if (this.IsPureDisplayCategory())
+        {
+            this.SetApplyingFilter(nullptr);
+            this.CloseInventoryDropdown(this.GetFilterLeft());
+            this.CloseInventoryDropdown(this.GetFilterRight());
+            return;
+        }
+        if (!(::InventorySaveGame::Get(this.GetPlayerId()).CategoryFilters.Find(this.GetCurrentCategory(), local_6)))
+        {
+            TOptional<FInventoryItemFilterConfig> local_24 = this.GetInventorySettings().GetFilterConfigAt(this.GetCurrentCategory(), 0);
+            if (local_24.IsSet())
+            {
+            }
+            else
+            {
+            }
+            local_6 = local_34;
+        }
+        int local_15 = INDEX_NONE;
+        int local_35 = local_15;
+        TArray<FEUIModelContainer> local_44 = this.MakeFilterDropdownOptions(local_6, local_35);
+        local_34 = this.ResolveFilterByIndex(local_35);
+        this.SetApplyingFilter(local_34);
+        FOnCommonDropdownSelected local_66;
+        local_66.Add(this, FVM_InventoryMain::OnFilterSelected);
+        this.SetFilterLeft(TEUIModelRef<FVM_CommonDropdown>(::FVM_CommonDropdown::Create(this.GetContext().Manager, local_44, FCommonDropdownDefaultOption(local_35), local_66)));
+        FInventoryCategorySortData local_76;
+        bool local_1 = ::InventorySaveGame::Get(this.GetPlayerId()).CategorySortData.Find(this.GetCurrentCategory(), local_76);
+        if (local_1)
+        {
+            local_72 = local_76.LastUsedSorter;
+        }
+        else
+        {
+            TOptional<FInventoryItemSorterConfig> local_86 = this.GetInventorySettings().GetSorterConfigAt(this.GetCurrentCategory(), 0);
+            if (local_86.IsSet())
+            {
+            }
+            else
+            {
+            }
+            local_72 = local_96;
+        }
+        int local_15_2 = INDEX_NONE;
+        int local_97 = local_15_2;
+        TArray<FEUIModelContainer> local_40 = this.MakeSorterDropdownOptions(local_72, local_97);
+        local_96 = this.ResolveSorterByIndex(local_97);
+        this.SetSelectedSorter(local_96);
+        if (local_1 && ((this.GetSelectedSorter() != local_72)))
+        {
+            local_96 = this.GetSelectedSorter();
+            this.SetApplyingSorter(local_96);
+        }
+        FOnCommonDropdownSelected local_126;
+        local_126.Add(this, FVM_InventoryMain::OnSorterSelected);
+        this.SetFilterRight(TEUIModelRef<FVM_CommonDropdown>(::FVM_CommonDropdown::Create(this.GetContext().Manager, local_40, FCommonDropdownDefaultOption(local_97), local_126)));
+        return;
     }
     void CloseInventoryDropdown(const TEUIModelRef<FVM_CommonDropdown> &inout Dropdown)
     {
@@ -1373,7 +1486,7 @@ struct FVM_InventoryMain : FEUIViewModel
     {
         int local_8 = 0;
         FVM_InventoryMainRootCategory __r;
-        FInventoryCategoryConfig& local_4 = this.GetInventorySettings().Categories[];
+        FInventoryCategoryConfig& local_4 = this.GetInventorySettings().Categories[Index];
         TEUIModelWeakRef<FVM_InventoryMain> local_6 = TEUIModelWeakRef<FVM_InventoryMain>(this);
         local_8.SetbSelected((Index == this.GetRootCategoryIndex()));
         return __r;
@@ -1388,8 +1501,37 @@ struct FVM_InventoryMain : FEUIViewModel
     }
     TArray<FEUIModelContainer> MakeFilterDropdownOptions(const UItemFilterBase SelectedFilter, int &inout OutDefaultSelectedIndex) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        TArray<FEUIModelContainer> __r; return __r;
+        int local_5;
+        UItemFilterBase local_24;
+        TArray<FEUIModelContainer> local_4;
+        OutDefaultSelectedIndex = 0;
+        bool local_6 = false;
+        TArray<FInventoryItemFilterConfig> local_16 = this.GetInventorySettings().GetFilterConfigs(this.GetCurrentCategory());
+        int local_21 = 0;
+        for (; local_21 < local_16.Num(); )
+        {
+            local_24 = local_16[local_21].Filter;
+            if (local_24 == SelectedFilter)
+            {
+                OutDefaultSelectedIndex = local_21;
+                local_6 = true;
+            }
+            local_4.Add(FEUIModelContainer(::FVM_Text::Create(this.GetContext().Manager, local_16[local_21].DisplayName)));
+            ++local_21;
+        }
+        if (!(local_6))
+        {
+            if (local_4.IsEmpty())
+            {
+                local_5 = INDEX_NONE;
+            }
+            else
+            {
+                local_5 = 0;
+            }
+            OutDefaultSelectedIndex = local_5;
+        }
+        return local_4;
     }
     UItemFilterBase ResolveFilterByIndex(const int Index) const
     {
@@ -1404,8 +1546,37 @@ struct FVM_InventoryMain : FEUIViewModel
     }
     TArray<FEUIModelContainer> MakeSorterDropdownOptions(const UItemSorterBase InSelectedSorter, int &inout OutDefaultSelectedIndex) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        TArray<FEUIModelContainer> __r; return __r;
+        int local_5;
+        UItemSorterBase local_24;
+        TArray<FEUIModelContainer> local_4;
+        OutDefaultSelectedIndex = 0;
+        bool local_6 = false;
+        TArray<FInventoryItemSorterConfig> local_16 = this.GetInventorySettings().GetSorterConfigs(this.GetCurrentCategory());
+        int local_21 = 0;
+        for (; local_21 < local_16.Num(); )
+        {
+            local_24 = local_16[local_21].Sorter;
+            if (local_24 == InSelectedSorter)
+            {
+                OutDefaultSelectedIndex = local_21;
+                local_6 = true;
+            }
+            local_4.Add(FEUIModelContainer(::FVM_Text::Create(this.GetContext().Manager, local_16[local_21].DisplayName)));
+            ++local_21;
+        }
+        if (!(local_6))
+        {
+            if (local_4.IsEmpty())
+            {
+                local_5 = INDEX_NONE;
+            }
+            else
+            {
+                local_5 = 0;
+            }
+            OutDefaultSelectedIndex = local_5;
+        }
+        return local_4;
     }
     UItemSorterBase ResolveSorterByIndex(const int Index) const
     {
@@ -1921,7 +2092,6 @@ struct __GeneratedProperties_FVM_InventoryMain
     TArray<FEUIDynamicWidgetData> ItemBarEntryDataList;
     UPROPERTY()
     TEUIModelRef<FVM_InventoryMain> Self;
-
 
 }
 

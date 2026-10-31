@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_GetSelfCapsuleRadiusWithOffset : UBTTask_ECSScriptBase
 {
     UPROPERTY()

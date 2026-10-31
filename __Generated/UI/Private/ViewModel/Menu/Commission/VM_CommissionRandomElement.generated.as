@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommissionRandomElement_Helpers
 {
 UFUNCTION()

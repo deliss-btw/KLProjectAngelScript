@@ -1,5 +1,3 @@
-﻿
-
 struct FT_TreasureBox : FECSTrait
 {
     FECSTrait _base_FECSTrait;

@@ -1,5 +1,3 @@
-﻿
-
 class US_HeatmapSystem : UECSScriptSystem
 {
     US_HeatmapSystem()

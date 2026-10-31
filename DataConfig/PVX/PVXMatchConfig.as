@@ -1,4 +1,3 @@
-﻿
 enum EMatchMode
 {
     PVP,
@@ -18,7 +17,6 @@ enum EPVXMenuCategoryType
     CombatPreparation,
     Match,
 }
-
 
 struct FMatchConfig : FDataObject
 {
@@ -51,7 +49,6 @@ struct FMatchConfig : FDataObject
     TArray<FItemParamConfig> ModeRewards;
     UPROPERTY()
     FGameplayTag WidgetTag;
-
 
     TDataObjectPtr<FLevelInfoConfig> GetLevelConfig() const property
     {
@@ -97,7 +94,6 @@ struct FPvxRewardFactor
     UPROPERTY()
     TDataObjectPtr<FRewardConfig> Reward;
 
-
 }
 
 struct FPvxMatchConfig : FMatchConfig
@@ -130,7 +126,6 @@ struct FPvxMatchConfig : FMatchConfig
 
     FPvxMatchConfig()
     {
-        super();
         this.MinTeamMemberNum = 0;
         this.MaxTeamMemberNum = 0;
         this.PlayerNum = 0;
@@ -150,7 +145,6 @@ struct FPvpMatchConfig : FMatchConfig
 
     FPvpMatchConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }

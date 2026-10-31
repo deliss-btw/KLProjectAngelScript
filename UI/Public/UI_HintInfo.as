@@ -1,5 +1,3 @@
-﻿
-
 struct FUI_HintInfo
 {
     UPROPERTY()

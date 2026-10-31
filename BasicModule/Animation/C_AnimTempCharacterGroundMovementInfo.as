@@ -1,4 +1,3 @@
-﻿
 enum ERotationMode
 {
     Navi,
@@ -73,11 +72,80 @@ struct FC_CharacterGroundMovementInfo : FECSComponent
 
     FC_CharacterGroundMovementInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags32 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_PivotSpeedMin = 200.0f;
+        this.m_PivotSpeedMax = 550.0f;
+        this.m_PivotAngleAtMinSpeed = 70.0f;
+        this.m_PivotAngleAtMaxSpeed = 60.0f;
+        this.m_OrientationWarpingFullAngle = 15.0f;
+        this.m_OrientationWarpingZeroAngle = 45.0f;
+        this.m_OrientationWarpingIncreaseSpeed = 5.0f;
+        this.m_OrientationWarpingDecreaseSpeed = 8.0f;
+        this.m_bIsMoving = false;
+        this.m_bIsPivoting = false;
+        this.m_Velocity = FVector::ZeroVector;
+        this.m_LastNonZeroVelocity = FVector::ZeroVector;
+        this.m_Acceleration = FVector::ZeroVector;
+        this.m_MoveSpeed = 0.0f;
+        this.m_MoveDeltaRotationYaw = 0.0f;
+        this.m_TransformForwardVector = FVector::ForwardVector;
+        this.m_OrientationWarpingAlpha = 0.0f;
+        this.m_MoveDirection = EMoveDirection(0);
+        this.m_RotationMode = ERotationMode(0);
+        this.m_SteeringOffsetYaw = 0.0f;
+        this.m_SteeringProceduralTargetTime = 0.2f;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_CharacterGroundMovementInfo(const FC_CharacterGroundMovementInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags32 local_5;
+        this.__DirtyFlags = local_5;
+        this.m_PivotSpeedMin = 200.0f;
+        this.m_PivotSpeedMax = 550.0f;
+        this.m_PivotAngleAtMinSpeed = 70.0f;
+        this.m_PivotAngleAtMaxSpeed = 60.0f;
+        this.m_OrientationWarpingFullAngle = 15.0f;
+        this.m_OrientationWarpingZeroAngle = 45.0f;
+        this.m_OrientationWarpingIncreaseSpeed = 5.0f;
+        this.m_OrientationWarpingDecreaseSpeed = 8.0f;
+        this.m_bIsMoving = false;
+        this.m_bIsPivoting = false;
+        this.m_Velocity = FVector::ZeroVector;
+        this.m_LastNonZeroVelocity = FVector::ZeroVector;
+        this.m_Acceleration = FVector::ZeroVector;
+        this.m_MoveSpeed = 0.0f;
+        this.m_MoveDeltaRotationYaw = 0.0f;
+        this.m_TransformForwardVector = FVector::ForwardVector;
+        this.m_OrientationWarpingAlpha = 0.0f;
+        this.m_MoveDirection = EMoveDirection(0);
+        this.m_RotationMode = ERotationMode(0);
+        this.m_SteeringOffsetYaw = 0.0f;
+        this.m_SteeringProceduralTargetTime = 0.2f;
+        this.__InitDirtyFlags();
+        this.m_PivotSpeedMin = Other.m_PivotSpeedMin;
+        this.m_PivotSpeedMax = Other.m_PivotSpeedMax;
+        this.m_PivotAngleAtMinSpeed = Other.m_PivotAngleAtMinSpeed;
+        this.m_PivotAngleAtMaxSpeed = Other.m_PivotAngleAtMaxSpeed;
+        this.m_OrientationWarpingFullAngle = Other.m_OrientationWarpingFullAngle;
+        this.m_OrientationWarpingZeroAngle = Other.m_OrientationWarpingZeroAngle;
+        this.m_OrientationWarpingIncreaseSpeed = Other.m_OrientationWarpingIncreaseSpeed;
+        this.m_OrientationWarpingDecreaseSpeed = Other.m_OrientationWarpingDecreaseSpeed;
+        this.m_bIsMoving = Other.m_bIsMoving;
+        this.m_bIsPivoting = Other.m_bIsPivoting;
+        this.m_Velocity = Other.m_Velocity;
+        this.m_LastNonZeroVelocity = Other.m_LastNonZeroVelocity;
+        this.m_Acceleration = Other.m_Acceleration;
+        this.m_MoveSpeed = Other.m_MoveSpeed;
+        this.m_MoveDeltaRotationYaw = Other.m_MoveDeltaRotationYaw;
+        this.m_TransformForwardVector = Other.m_TransformForwardVector;
+        this.m_OrientationWarpingAlpha = Other.m_OrientationWarpingAlpha;
+        this.m_MoveDirection = Other.m_MoveDirection;
+        this.m_RotationMode = Other.m_RotationMode;
+        this.m_SteeringOffsetYaw = Other.m_SteeringOffsetYaw;
+        this.m_SteeringProceduralTargetTime = Other.m_SteeringProceduralTargetTime;
+        return;
     }
     FC_CharacterGroundMovementInfo opAssign(const FC_CharacterGroundMovementInfo &inout Other)
     {
@@ -539,37 +607,37 @@ bool RemoveCharacterGroundMovementInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCharacterGroundMovementInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CharacterGroundMovementInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CharacterGroundMovementInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCharacterGroundMovementInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CharacterGroundMovementInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CharacterGroundMovementInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCharacterGroundMovementInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CharacterGroundMovementInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CharacterGroundMovementInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCharacterGroundMovementInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CharacterGroundMovementInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CharacterGroundMovementInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCharacterGroundMovementInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CharacterGroundMovementInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CharacterGroundMovementInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCharacterGroundMovementInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CharacterGroundMovementInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CharacterGroundMovementInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCharacterGroundMovementInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CharacterGroundMovementInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CharacterGroundMovementInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCharacterGroundMovementInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CharacterGroundMovementInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CharacterGroundMovementInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace EntityBB

@@ -1,5 +1,3 @@
-﻿
-
 class UWidget_DamageNumber : UASUserWidget
 {
     UPROPERTY()
@@ -48,7 +46,6 @@ class UWidget_DamageNumber : UASUserWidget
     float32 CurrentTime = 0.0f;
     UPROPERTY()
     FVector2D RandomOffset;
-
 
     UFUNCTION()
     void Construct_Implementation()

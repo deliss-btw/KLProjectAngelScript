@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_Match_HintComp
 {
     const int ViewID = 0;
@@ -14,7 +13,6 @@ class UWidget_Match_HintComp : UEUIUserWidget
     FEUIActionBinding JumpActionBinding;
     UPROPERTY()
     FGetEUIModelRef Match_HintCompDelegate;
-
 
     UFUNCTION()
     void Construct_Implementation()
@@ -64,6 +62,7 @@ namespace UWidget_Match_HintComp
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_Match_HintComp;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

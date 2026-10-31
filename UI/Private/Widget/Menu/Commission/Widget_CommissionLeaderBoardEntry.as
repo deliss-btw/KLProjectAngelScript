@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommissionLeaderBoardEntry
 {
     const int ViewID = 0;
@@ -32,8 +31,7 @@ class UWidget_CommissionLeaderBoardEntry : UEUIUserWidget
     UFUNCTION()
     void GotoLeaderboard()
     {
-        TDataObjectPtr<FCommissionConfig> local_24 = this.CommissionInfo.opArrow().GetCommissionConfig();
-        FEUIWidget::AddWidget(this.GetOwningLocalPlayer(), GameplayTags::UI_Type_CommissionLeaderBoard, FEUIModelRef());
+        FEUIWidget::AddWidget(this.GetOwningLocalPlayer(), GameplayTags::UI_Type_CommissionLeaderBoard, FEUIModelRef(::FVM_CommissionLeaderboard::Create(this, this.CommissionInfo.opArrow().GetCommissionConfig())));
         return;
     }
     UFUNCTION()
@@ -126,6 +124,7 @@ namespace UWidget_CommissionLeaderBoardEntry
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionLeaderBoardEntry;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCommissionInfoChanged"));
     return;
 }

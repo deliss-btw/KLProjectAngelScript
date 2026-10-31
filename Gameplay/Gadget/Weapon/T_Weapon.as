@@ -1,5 +1,3 @@
-﻿
-
 struct FT_Weapon : FECSTrait
 {
     FECSTrait _base_FECSTrait;

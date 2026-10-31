@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_AvatarPop
 {
     const int ViewID = 0;
@@ -142,6 +141,7 @@ namespace UWidget_AvatarPop
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_AvatarPop;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

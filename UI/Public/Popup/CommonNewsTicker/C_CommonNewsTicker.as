@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_CommonNewsTickerManager_NS
 {
     const TECSComponentDerivedPtr<FCS_CommonNewsTickerManager> DerivedPtr = TECSComponentDerivedPtr<FCS_CommonNewsTickerManager>();
@@ -14,7 +13,6 @@ struct FCommonNewsTickerInfo
     UPROPERTY()
     int Priority = 0;
 
-
 }
 
 struct FCS_CommonNewsTickerManager : FECSSingleton
@@ -24,14 +22,10 @@ struct FCS_CommonNewsTickerManager : FECSSingleton
     UPROPERTY()
     FEUIWidgetRef DisplayingTicker;
     UPROPERTY()
-    int DisplayingTickerPopupId;
+    int DisplayingTickerPopupId = INDEX_NONE;
     UPROPERTY()
     float32 DisplayingTickerRepeatCount;
 
-    FCS_CommonNewsTickerManager()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
 }
 
 namespace ECSFunc_FCS_CommonNewsTickerManager
@@ -122,16 +116,16 @@ bool RemoveCommonNewsTickerManager(const FECSWorldPtr &inout World)
 }
 void __MonitorCommonNewsTickerManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_CommonNewsTickerManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_CommonNewsTickerManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommonNewsTickerManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_CommonNewsTickerManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_CommonNewsTickerManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommonNewsTickerManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_CommonNewsTickerManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_CommonNewsTickerManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

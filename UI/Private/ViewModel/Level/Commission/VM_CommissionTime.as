@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_CommissionTime
 {
     const int ModelId = 0;
@@ -129,7 +128,8 @@ struct FVMS_CommissionTime : FEUIViewModelSingleton
         {
             return;
         }
-        this.GetModify_RemainCounterDown().SetRemainedTimeWithPrecision(FFPTime(FMath::Max((FFPTime(this.GetCommissionEndTime()) - this.GetContext().Time).ToSeconds(), 0.0)), EMWCounterDownPrecision(0));
+        float local_12 = FMath::Max((FFPTime(this.GetCommissionEndTime()) - this.GetContext().Time).ToSeconds(), 0.0);
+        this.GetModify_RemainCounterDown().SetRemainedTimeWithPrecision(FFPTime(local_12), EMWCounterDownPrecision(0));
         return;
     }
     void RefreshTimeProgress()
@@ -145,7 +145,7 @@ struct FVMS_CommissionTime : FEUIViewModelSingleton
     {
         this.GetCommissionName();
         FText local_8;
-        return FText::Format(NSLOCTEXT("CommissionTime", "CommissionProgressingText", "<Yellow20>{0}</>иї›иЎЊдё­"), local_8);
+        return FText::Format(NSLOCTEXT("CommissionTime", "CommissionProgressingText", "<Yellow20>{0}</>进行中"), local_8);
     }
     TDataObjectPtr<FCommissionConfig> GetCommissionConfig() const
     {
@@ -228,7 +228,7 @@ struct FVMS_CommissionTime : FEUIViewModelSingleton
     FEUIModelContainer MakeHoverModels()
     {
         FEUIModelContainer local_14;
-        local_14.AddModel(FEUIModelRef(), false);
+        local_14.AddModel(FEUIModelRef(::FVM_CommissionTimeHover::Create(this.GetContext().Manager)), false);
         return local_14;
     }
     const FFPTime GetCommissionEndTime() const property
@@ -429,7 +429,8 @@ struct FVM_CommissionTimeHover : FEUIViewModel
         {
             return;
         }
-        this.GetModify_RemainCounterDown().SetRemainedTimeWithPrecision(FFPTime(FMath::Max((FFPTime(this.GetCommissionEndTime()) - this.GetContext().Time).ToSeconds(), 0.0)), EMWCounterDownPrecision(0));
+        float local_12 = FMath::Max((FFPTime(this.GetCommissionEndTime()) - this.GetContext().Time).ToSeconds(), 0.0);
+        this.GetModify_RemainCounterDown().SetRemainedTimeWithPrecision(FFPTime(local_12), EMWCounterDownPrecision(0));
         return;
     }
     FText GetCommissionName() const
@@ -788,7 +789,6 @@ struct __GeneratedProperties_FVMS_CommissionTime
     UPROPERTY()
     TEUIModelRef<FVMS_CommissionTime> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_CommissionTimeHover
@@ -957,7 +957,11 @@ void __MonitorPVXScoreData(FVMS_CommissionTime &inout Model, const FECSEntity &i
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorCommissionInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorCommissionInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorGameMode_ScoreDataLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorGameMode_ScoreDataModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TEUIModelRef<FVM_CommonAnnularProgressBar> __UIGetter_IconProgressBar(const FVMS_CommissionTime &inout Model)
 {

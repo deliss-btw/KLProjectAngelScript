@@ -1,5 +1,3 @@
-﻿
-
 struct FT_Faction : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -10,7 +8,7 @@ struct FT_Faction : FECSTrait
     UPROPERTY()
     FC_Faction Config_FC_Faction;
 
-    default CustomName = FName("йµиђҐ (FT_Faction)");
+    default CustomName = FName("阵营 (FT_Faction)");
 
     FT_Faction()
     {

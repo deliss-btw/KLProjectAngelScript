@@ -1,10 +1,7 @@
-﻿
-
 struct FESMDisableAllColliderInstanceData
 {
     UPROPERTY()
     bool bHasSetActorEnableCollision = false;
-
 
 }
 
@@ -16,7 +13,6 @@ class UESMAction_DisableAllCollider : UESMBPBaseSpanAction
     bool bIgnoreMovementCollider = true;
     UPROPERTY()
     bool bIgnoreLogicCollider = true;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetViewInstanceDataInfo_Implementation() const
@@ -47,7 +43,7 @@ class UESMAction_DisableAllCollider : UESMBPBaseSpanAction
             if (local_6)
             {
                 local_6.SetCollisionEnable(false);
-                this.ModifyViewInstanceData(Context).bHasSetActorEnableCollision = true;
+                this.ModifyViewInstanceData(Context).bHasSetActorEnableCollision = (1 != 0);
             }
         }
         return;
@@ -81,10 +77,10 @@ class UESMAction_DisableAllCollider : UESMBPBaseSpanAction
             if (local_6)
             {
                 FESMDisableAllColliderInstanceData& local_12 = this.ModifyViewInstanceData(Context);
-                if (local_12.bHasSetActorEnableCollision)
+                if (int(local_12.bHasSetActorEnableCollision) != 0)
                 {
                     local_6.SetCollisionEnable(true);
-                    local_12.bHasSetActorEnableCollision = false;
+                    local_12.bHasSetActorEnableCollision = (0 != 0);
                 }
             }
         }

@@ -1,4 +1,3 @@
-﻿
 namespace FEcologyMisc
 {
     const FConsoleVariable CVar_EcosimAI_Enable = FConsoleVariable();

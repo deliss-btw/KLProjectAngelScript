@@ -1,4 +1,3 @@
-﻿
 const FConsoleCommand CCmd_DebugOverallHide = FConsoleCommand();
 const FConsoleVariable CVar_DebugOverallHideVar = FConsoleVariable();
 

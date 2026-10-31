@@ -1,11 +1,9 @@
-﻿
 enum ELandingState
 {
     None,
     Landed,
     InTheAir,
 }
-
 
 struct FTrajectoryDiscreteSample
 {
@@ -20,20 +18,21 @@ struct FTrajectoryDiscreteSample
 
     FTrajectoryDiscreteSample()
     {
-        this.Curvature = 0.0;
         return;
     }
     FTrajectoryDiscreteSample(const float LocX, const float LocY, const float LocZ)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.Loc = FVector(LocX, LocY, LocZ);
+        return;
     }
     FTrajectoryDiscreteSample(const FVector &inout _Loc)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.Loc = _Loc;
+        return;
     }
     FTrajectoryDiscreteSample(const FVector &inout _Loc, const FVector &inout _AxisX, const FVector &inout _AxisY)
     {
-        this.Curvature = 0.0;
+        this.Loc = _Loc;
         this.AxisX = _AxisX;
         this.AxisY = _AxisY;
         return;
@@ -51,18 +50,17 @@ struct FSimpleCircleTrajectory
     UPROPERTY()
     TArray<FTrajectoryDiscreteSample> mGeneratedHistoryPoints;
 
-    FSimpleCircleTrajectory()
-    {
-        this.Radius = 0.0;
-        return;
-    }
     FSimpleCircleTrajectory(const FVector &inout C, const float R)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.Center = C;
+        this.Radius = R;
+        return;
     }
     void Update(const FVector &inout C, const float R)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.Center = C;
+        this.Radius = R;
+        return;
     }
     void DebugDraw(const USkeletalPoseTweaker PT, const FTransform &inout RootXform, const float HalfArcLen, const bool bDrawFrontHalf, const FColor &inout Color, const bool bEnable)
     {
@@ -75,14 +73,13 @@ struct FSimpleCircleTrajectory
         float local_32 = HalfArcLen / this.Radius;
         FVector local_38(FVector::UpVector);
         int local_39 = 10;
-        FVector local_14 = (local_8 - this);
+        FVector local_14 = (local_8 - this.Center);
         FQuat local_28 = FQuat(FVector::UpVector, local_32 / 10.0);
         FVector local_62 = local_14;
         FVector local_68 = local_8;
-        FVector local_80(this);
-        FVector local_86 = (local_80 + local_28.RotateVector(local_62));
-        FVector local_80_2 = (local_86 - local_68);
-        bool local_1 = !(FMath::IsNearlyZero(local_80_2.DotProduct(local_20), 9.99999993922529e-9));
+        FVector local_86 = (this.Center + local_28.RotateVector(local_62));
+        FVector local_80 = (local_86 - local_68);
+        bool local_1 = !(FMath::IsNearlyZero(local_80.DotProduct(local_20), 9.99999993922529e-9));
         if (((bDrawFrontHalf && ((((local_86 - local_68)).DotProduct(local_20) < 0.0)))) || (!(bDrawFrontHalf) && ((local_86 - local_68).DotProduct(local_20) > 0.0)))
         {
             float local_30 = -local_32 / 10.0;
@@ -92,16 +89,16 @@ struct FSimpleCircleTrajectory
         for (; local_91 < 10; )
         {
             local_62 = local_28.RotateVector(local_62);
-            FVector local_80_3 = (FVector(this) + local_62);
-            PT.DrawAnimDebugLine(local_68, local_80_3, Color, EPTDebugDrawSpace(0), 0.0f, true);
-            local_68 = local_80_3;
+            FVector local_80_2 = (this.Center + local_62);
+            PT.DrawAnimDebugLine(local_68, local_80_2, Color, EPTDebugDrawSpace(0), 0.0f, true);
+            local_68 = local_80_2;
             ++local_91;
         }
         return;
     }
     FVector ProjectToTrajectory(const FVector &inout Pt)
     {
-        return (((Pt - this).GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector) * this.Radius) + this);
+        return (((Pt - this.Center).GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector) * this.Radius) + this.Center);
     }
     FVector ProjectToTrajectory_Complex(const FTransform &inout RootTM, const FVector &inout Pt, const TArray<FTrajectoryDiscreteSample> &inout RearTraj, const TArray<FTrajectoryDiscreteSample> &inout FrontTraj, const USkeletalPoseTweaker PoseTweaker)
     {
@@ -184,7 +181,7 @@ struct FSimpleCircleTrajectory
             float local_20;
             local_20 = -1.0;
         }
-        bool local_51 = (RootTM.GetRotation().GetAxisY().DotProduct((FVector(this) - RootTM.GetLocation())) >= 0.0);
+        bool local_51 = (RootTM.GetRotation().GetAxisY().DotProduct((this.Center - RootTM.GetLocation())) >= 0.0);
         if (local_51)
         {
             float local_20;
@@ -201,7 +198,7 @@ struct FSimpleCircleTrajectory
         {
             FQuat local_68 = FQuat(FVector::UpVector, (local_18_2 * local_22) * local_59);
             FTrajectoryDiscreteSample local_88;
-            local_88.Loc = (FVector(this) + (local_68.RotateVector((local_10 - this))));
+            local_88.Loc = (this.Center + (local_68.RotateVector((local_10 - this.Center))));
             local_88.AxisX = local_68.RotateVector(RootTM.GetRotation().GetAxisX());
             local_88.AxisY = local_68.RotateVector(RootTM.GetRotation().GetAxisY());
             int local_60 = local_51 ? 1 : -1;
@@ -334,13 +331,12 @@ struct FTrajectoryFootIKLeg
     UPROPERTY()
     FTransform LandingTM_RootSpace;
 
-
     void Reset(const FTransform &inout RootTM)
     {
         this.LastLandingState = ELandingState(0);
-        this.RuntimeTarget = this.GetEffectorTM();
+        this.RuntimeTarget = this.IKSolver.GetEffectorTM();
         this.InitialDiff = FTransform::Identity;
-        this.LandingTM_RootSpace = this.GetEffectorTM().GetRelativeTransform(RootTM);
+        this.LandingTM_RootSpace = this.IKSolver.GetEffectorTM().GetRelativeTransform(RootTM);
         return;
     }
 }
@@ -355,7 +351,6 @@ struct FSpineLeanAnchor
     float FootOffsetLeft = 0.0;
     UPROPERTY()
     float FootOffsetRight = 0.0;
-
 
 }
 
@@ -593,14 +588,10 @@ struct FHistoryTrajectoryHelper
 struct FBoneStatePrivate
 {
     UPROPERTY()
-    int BoneIndex;
+    int BoneIndex = INDEX_NONE;
     UPROPERTY()
     FTransform Transform;
 
-    FBoneStatePrivate()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
 }
 
 struct FTrajectoryBlendConfig
@@ -675,7 +666,6 @@ class USPT_TrajectoryBlend_Template : USkeletalPoseTweaker
     float32 ElapsedSeconds = 0.0f;
     FVector TrajectoryCenterOffset = FVector(0.0, 0.0, 0.0);
 
-
     UFUNCTION()
     void OnInitialization_Implementation()
     {
@@ -699,12 +689,10 @@ class USPT_TrajectoryBlend_Template : USkeletalPoseTweaker
                 local_8.Reset(this.RuntimeRootTM);
             }
         }
-        float local_14 = FMath::Abs(this.SimpleTrajectoryRadius);
-        FVector local_30 = (this.RuntimeRootTM.GetLocation() + (this.RuntimeRootTM.GetRotation().GetAxisY() * this.SimpleTrajectoryRadius));
+        FSimpleCircleTrajectory local_58 = FSimpleCircleTrajectory((this.RuntimeRootTM.GetLocation() + (this.RuntimeRootTM.GetRotation().GetAxisY() * this.SimpleTrajectoryRadius)), FMath::Abs(this.SimpleTrajectoryRadius));
         float local_14_2 = FMath::Abs(this.SimpleTrajectoryRadius);
         FVector local_36_2 = this.RuntimeRootTM.GetLocation();
-        FVector local_30_2 = (this.RuntimeRootTM.GetRotation().GetAxisY() * this.SimpleTrajectoryRadius);
-        FVector local_42_2 = (local_36_2 + local_30_2);
+        FSimpleCircleTrajectory local_58_2 = FSimpleCircleTrajectory((local_36_2 + (this.RuntimeRootTM.GetRotation().GetAxisY() * this.SimpleTrajectoryRadius)), local_14_2);
         this.TrajectoryCenterOffset = FVector(0.0, 0.0, 0.0);
         this.ElapsedSeconds = 0.0f;
         this.bNeedsReInitBoneChainState = true;
@@ -791,12 +779,12 @@ class USPT_TrajectoryBlend_Template : USkeletalPoseTweaker
             this.DrawAnimTrajectory(this.RuntimeRootTM);
         }
         int64 local_226 = 4626322717216342016;
-        int64 local_228 = 4652007308841189376;
+        float local_228 = 1000.0;
         float local_230 = 1000.0;
         this.GetMinTrajectoryLength(this.HeadBone.GetLocation(), this.TailEndBone.GetLocation(), this.LegIKs, 20.0, local_228, local_230);
-        this.FrontTrajectory.DebugDraw(this, this.RuntimeRootTM, 1000.0, true, FColor::Yellow, this.bEnableDebugDraw);
+        this.FrontTrajectory.DebugDraw(this, this.RuntimeRootTM, local_228, true, FColor::Yellow, this.bEnableDebugDraw);
         this.RearTrajectory.DebugDraw(this, this.RuntimeRootTM, local_230, false, FColor::Cyan, this.bEnableDebugDraw);
-        const TArray<FTrajectoryDiscreteSample>& local_232 = this.FrontTrajectory.GetDiscretizedPositions_Circle(this.RuntimeRootTM, true, 1000.0, 20);
+        const TArray<FTrajectoryDiscreteSample>& local_232 = this.FrontTrajectory.GetDiscretizedPositions_Circle(this.RuntimeRootTM, true, local_228, 20);
         const TArray<FTrajectoryDiscreteSample>& local_236 = this.GetHistoryTrajectoryPoints(local_230);
         if (this.bEnableDebugDraw)
         {
@@ -871,7 +859,7 @@ class USPT_TrajectoryBlend_Template : USkeletalPoseTweaker
     void ComputeLeanAnchors()
     {
         int local_46;
-        int local_48;
+        float local_48;
         this.SpineLeanAnchors.Empty(0);
         this.TailLeanAnchors.Empty(0);
         TMap<int, int> local_22;
@@ -910,12 +898,12 @@ class USPT_TrajectoryBlend_Template : USkeletalPoseTweaker
             {
                 continue;
             }
-            float local_80 = local_40.IKSolver.GetEffectorTM().GetLocation().Y;
-            local_48 = int(local_80);
-            int local_24 = this.SpineLeanAnchors.IndexOfByPredicate(__Lambda_Unreal_PoseTweaker_SPT_TrajectoryBlend_666(local_46));
+            local_48 = local_40.IKSolver.GetEffectorTM().GetLocation().Y;
+            __Lambda_Unreal_PoseTweaker_SPT_TrajectoryBlend_666 local_84;
+            int local_24 = this.SpineLeanAnchors.IndexOfByPredicate(local_84);
             if (local_24 >= 0)
             {
-                local_80 = 0.0;
+                float local_80 = 0.0;
                 if (local_48 > local_80)
                 {
                     local_80 = this.SpineLeanAnchors[local_24].FootOffsetRight;
@@ -986,12 +974,12 @@ class USPT_TrajectoryBlend_Template : USkeletalPoseTweaker
     }
     const TArray<FTrajectoryDiscreteSample>& GetHistoryTrajectoryPoints(const float RearTrajMinLength)
     {
-        bool local_1 = false;
+        int local_1;
         if (this.IsInPreviewScene())
         {
             const TArray<FTrajectoryDiscreteSample>& local_4 = this.FrontTrajectory.GetDiscretizedPositions_Circle(this.RuntimeRootTM, false, 400.0, 50);
             local_1 = this.bEnableDebugDraw;
-            if (local_1)
+            if (local_1 != 0)
             {
                 this.DrawAnimDebugPointEx(local_4.Last(0).Loc, FColor::Red, 5.0f);
             }
@@ -1015,12 +1003,13 @@ class USPT_TrajectoryBlend_Template : USkeletalPoseTweaker
                 }
                 this.ClampMovesCurvature(this.MinFutureTrajectoryRadius, local_70);
                 const TArray<FTrajectoryDiscreteSample>& local_4_2 = this.HistoryTrajectoryHelper.GenerateFromMoves(this.RuntimeRootTM, local_70);
-                this.HistoryTrajectoryHelper.DebugDraw(this, this.bEnableDebugDraw);
+                local_1 = this.bEnableDebugDraw;
+                this.HistoryTrajectoryHelper.DebugDraw(this, (local_1 != 0));
             }
             else
             {
-                local_1 = false;
-                return this.RearTrajectory.GetDiscretizedPositions_Circle(this.RuntimeRootTM, local_1, RearTrajMinLength, 20);
+                local_1 = 0;
+                return this.RearTrajectory.GetDiscretizedPositions_Circle(this.RuntimeRootTM, (local_1 != 0), RearTrajMinLength, 20);
             }
         }
         return local_1;
@@ -1347,7 +1336,7 @@ class USPT_TrajectoryBlend_Template : USkeletalPoseTweaker
     }
     void CalcFootPlantingTarget(FTrajectoryFootIKLeg &inout Leg, const FTransform &inout RootTM, const FTransform &inout TrajectoryFittedTarget, const FTransform &inout ActualRMDelta)
     {
-        int local_1 = 0;
+        float32 local_1 = 0.0f;
         float32 local_3 = 1.0f;
         bool local_5 = this.GetCurveValue(Leg.AlphaCurveName, local_1);
         bool local_4 = this.GetCurveValue(Leg.LandedCurveName, local_3);
@@ -1378,7 +1367,7 @@ class USPT_TrajectoryBlend_Template : USkeletalPoseTweaker
             {
                 Leg.InitialDiff = (Leg.RuntimeTarget * Leg.IKSolver.GetEffectorTM().Inverse());
             }
-            Leg.RuntimeTarget.Blend(Leg.IKSolver.GetEffectorTM(), TrajectoryFittedTarget);
+            Leg.RuntimeTarget.Blend(Leg.IKSolver.GetEffectorTM(), TrajectoryFittedTarget, local_1);
             FTransform local_108;
             local_108.Blend(Leg.InitialDiff, FTransform::Identity, local_1);
             Leg.RuntimeTarget = (local_108 * Leg.RuntimeTarget);

@@ -1,4 +1,3 @@
-﻿
 namespace FMS_TrainingModel
 {
     const int ModelId = 0;
@@ -16,7 +15,6 @@ struct FMsg_TrainingItemClicked : FEUIMessage
 {
     UPROPERTY()
     uint TrainingId = 0;
-
 
 }
 

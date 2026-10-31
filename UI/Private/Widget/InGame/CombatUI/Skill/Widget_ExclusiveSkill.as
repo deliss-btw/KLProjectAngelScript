@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_GramherExclusiveSkill
 {
     const int ViewID = 0;
@@ -856,6 +855,7 @@ namespace UWidget_GramherExclusiveSkill
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_GramherExclusiveSkill;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -871,6 +871,7 @@ namespace UWidget_SwordExclusiveSkill
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SwordExclusiveSkill;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCustomSkillEnergyRatioChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnbMarkAChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnbMarkBChanged"));
@@ -893,6 +894,7 @@ namespace UWidget_WizardExclusiveSkill
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_WizardExclusiveSkill;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnMagicUseCountChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCastProgressChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnChargeLevelChanged"));
@@ -912,6 +914,7 @@ namespace UWidget_ShuijingExclusiveSkill
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ShuijingExclusiveSkill;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnChargeStateChanged"));
     return;
 }
@@ -928,6 +931,7 @@ namespace UWidget_QiongExclusiveSkill
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_QiongExclusiveSkill;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -943,6 +947,7 @@ namespace UWidget_FakeCharacterProgress
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_FakeCharacterProgress;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

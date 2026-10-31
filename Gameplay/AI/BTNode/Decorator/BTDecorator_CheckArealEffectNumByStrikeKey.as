@@ -1,5 +1,3 @@
-﻿
-
 class UBTDecorator_CheckArealEffectNumByStrikeKey : UBTDecorator_ECSScriptBase
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ class UBTDecorator_CheckArealEffectNumByStrikeKey : UBTDecorator_ECSScriptBase
     EArithmeticKeyOperation ComparisonType = EArithmeticKeyOperation(5);
 
     default SetNodeName("Check ArealEffect Num By StrikeKey");
-
 
     UFUNCTION()
     bool CalculateRawConditionValue_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const

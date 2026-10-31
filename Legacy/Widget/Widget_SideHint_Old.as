@@ -1,5 +1,3 @@
-﻿
-
 class UWidget_SideHint_Old : UASUserWidget
 {
     UPROPERTY()
@@ -9,7 +7,6 @@ class UWidget_SideHint_Old : UASUserWidget
     UWidget_SideHintList UI_SideHintList;
     float32 HintTimer = 0.0f;
     float32 DefaultHintTime = 5.0f;
-
 
     UFUNCTION()
     void Construct_Implementation()
@@ -79,16 +76,16 @@ class UWidget_SideHint_Old : UASUserWidget
                         }
                     }
                     local_54 = "Default";
-                    FString local_60 = ((FString("й‡‡й›†ж€ђеЉџпјљ") + "<") + local_54);
+                    FString local_60 = ((FString("采集成功：") + "<") + local_54);
                     FString local_64_2 = (local_60 + ">");
                     FString local_60_2 = (local_64_2 + local_26.opArrow().DisplayName);
                     this.HintContent = (local_60_2 + "</>");
                 }
                 else
                 {
-                    this.HintContent = "й‡‡й›†ж€ђеЉџпјЃ";
+                    this.HintContent = "采集成功！";
                 }
-                FString local_64_3 = (FString("иЋ·еѕ—") + Content);
+                FString local_64_3 = (FString("获得") + Content);
                 FString local_60_3 = (local_64_3 + " * ");
                 this.HintContent = (local_60_3 + ShowCount);
             }

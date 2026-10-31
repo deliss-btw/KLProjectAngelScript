@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_Setting
 {
     const int ModelId = 0;
@@ -36,9 +35,7 @@ struct FVMS_Setting : FEUIViewModelSingleton
     }
     void ShowInfoContent(const FName &inout HintName)
     {
-        ::UCombatGlobalSettings::Get().AllHintInfoData[HintName].InfoImage.LoadBrush();
-        FName local_48;
-        UObject local_50 = local_48.ResourceObject;
+        UObject local_50 = ::UCombatGlobalSettings::Get().AllHintInfoData[HintName].InfoImage.LoadBrush().ResourceObject;
         this.SetShowImage(Cast<UTexture2D>(local_50));
         this.SetShowText(::UCombatGlobalSettings::Get().AllHintInfoData[HintName].InfoContent);
         return;

@@ -1,5 +1,3 @@
-﻿
-
 struct FESMAddBuffInstanceData
 {
     UPROPERTY()
@@ -26,7 +24,6 @@ class UESMAction_AddBuff : UESMBPBaseSpanAction
     UPROPERTY()
     FNameHandle_EntityBBVarEntity TargetEntityBBVar;
 
-
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const
     {
@@ -51,7 +48,7 @@ class UESMAction_AddBuff : UESMBPBaseSpanAction
             {
                 local_10 = NAME_None;
             }
-            return FString().Append("Keep Buffпј€дїќжЊЃBuffпј‰: ").Append(local_10);
+            return FString().Append("Keep Buff（保持Buff）: ").Append(local_10);
         }
         FName local_8;
         if (this.BuffConfig.IsValid())
@@ -62,26 +59,16 @@ class UESMAction_AddBuff : UESMBPBaseSpanAction
         {
             local_8 = NAME_None;
         }
-        return FString().Append("Add Buffпј€ж·»еЉ Buffпј‰: ").Append(local_8);
+        return FString().Append("Add Buff（添加Buff）: ").Append(local_8);
     }
     UFUNCTION()
     bool GetDisableInstanceData_Implementation() const
     {
-        bool local_31;
         if (this.bRemoveOnExit == false)
         {
             return true;
         }
-        if (!(this.BuffConfig.IsValid()) == !(false))
-        {
-            local_31 = true;
-        }
-        else
-        {
-            TDataObjectPtr<FBuffConfig> local_30;
-            local_31 = int(this.TargetType) == 0 && (local_30.opArrow().GetMaxBuffInstanceCount() <= 1);
-        }
-        if (local_31)
+        if (!(this.BuffConfig.IsValid()) == !(false) || (int(this.TargetType) == 0 && (TDataObjectPtr<FBuffConfig>(this.BuffConfig).opArrow().GetMaxBuffInstanceCount() <= 1)))
         {
             return true;
         }
@@ -95,8 +82,8 @@ class UESMAction_AddBuff : UESMBPBaseSpanAction
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        bool local_2 = !(false);
-        if (!(this.BuffConfig.IsValid()) == local_2)
+        bool local_1 = this.BuffConfig.IsValid();
+        if (local_1 == false)
         {
             return;
         }
@@ -141,11 +128,11 @@ class UESMAction_AddBuff : UESMBPBaseSpanAction
                 }
             }
         }
-        FECSEntity local_30 = FBuffUtils::AddBuff(local_6, this.BuffConfig, Time.WorldTime, Context.GetEntity(), (local_6 == Context.GetEntity()), this.OverrideDuration, 1, false);
+        bool local_1_2 = (local_6 == Context.GetEntity());
+        FECSEntity local_30 = FBuffUtils::AddBuff(local_6, this.BuffConfig, Time.WorldTime, Context.GetEntity(), local_1_2, this.OverrideDuration, 1, false);
         if (this.bRemoveOnExit)
         {
-            TDataObjectPtr<FBuffConfig> local_62;
-            if (int(this.TargetType) != 0 || (local_62.opArrow().GetMaxBuffInstanceCount() > 1))
+            if (int(this.TargetType) != 0 || (TDataObjectPtr<FBuffConfig>(this.BuffConfig).opArrow().GetMaxBuffInstanceCount() > 1))
             {
                 FESMAddBuffInstanceData& local_64 = this.ModifyInstanceData(Context);
                 local_64.BuffOwnerEntity = local_6;
@@ -167,8 +154,7 @@ class UESMAction_AddBuff : UESMBPBaseSpanAction
         }
         if (this.bRemoveOnExit)
         {
-            TDataObjectPtr<FBuffConfig> local_30;
-            if (int(this.TargetType) == 0 && (local_30.opArrow().GetMaxBuffInstanceCount() <= 1))
+            if (int(this.TargetType) == 0 && (TDataObjectPtr<FBuffConfig>(this.BuffConfig).opArrow().GetMaxBuffInstanceCount() <= 1))
             {
                 if (Time.IsEnd())
                 {
@@ -178,10 +164,10 @@ class UESMAction_AddBuff : UESMBPBaseSpanAction
                 {
                     local_31 = 1;
                 }
-                FBuffUtils::RemoveBuff(Context.GetEntity(), this.BuffConfig, Time.WorldTime);
+                FBuffUtils::RemoveBuff(Context.GetEntity(), this.BuffConfig, Time.WorldTime, EBuffEndType(local_31));
                 return;
             }
-            if (local_30.opArrow().GetMaxBuffInstanceCount() > 1)
+            if (TDataObjectPtr<FBuffConfig>(this.BuffConfig).opArrow().GetMaxBuffInstanceCount() > 1)
             {
                 if (Time.IsEnd())
                 {
@@ -241,7 +227,6 @@ class UESMAction_RemoveBuff : UESMBPBaseSpanAction
     bool ToLockTarget = false;
     UPROPERTY()
     bool RemoveBuffOnExit = false;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const

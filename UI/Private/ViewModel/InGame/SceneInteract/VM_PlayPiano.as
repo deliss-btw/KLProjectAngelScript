@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PlayPiano
 {
     const int ModelId = 0;

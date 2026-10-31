@@ -1,4 +1,3 @@
-﻿
 namespace CommissionUtils
 {
     const FConsoleVariable CVar_Commission_DebugEnableNewTierRule = FConsoleVariable();
@@ -60,9 +59,9 @@ void SetFinishCommissionTierAndScore(FCS_CommissionFinish &inout CommissionFinis
         XError(ELog(22), FString().Append("SetFinishCommissionTierAndScore can not found CurrentCommissionConfig"));
         return;
     }
-    ECommissionType local_56 = local_26.opArrow().CommissionType;
+    int local_56 = local_26.opArrow().CommissionType;
     FCommissionFinishScoreRule local_72;
-    switch (int(local_56))
+    switch (local_56)
     {
     case 1:
     {
@@ -302,13 +301,14 @@ TDataObjectPtr<FCommissionTypeConfig> GetCommissionTypeConfig(const ECommissionT
     TDataObjectIterator<FCommissionTypeConfig> local_16;
     for (; local_16; )
     {
-        if (int(local_16.GetData().CommissionType) == int(CommissionType))
+        const FCommissionTypeConfig& local_20 = local_16.GetData();
+        if (int(local_20.CommissionType) == int(CommissionType))
         {
-            return TDataObjectPtr<FCommissionTypeConfig>();
+            return TDataObjectPtr<FCommissionTypeConfig>(local_20);
         }
         local_16.Next();
     }
-    return local_48;
+    return TDataObjectPtr<FCommissionTypeConfig>();
 }
 ESystemModule GetSystemModuleByCommissionType(const ECommissionType CommissionType)
 {
@@ -342,11 +342,12 @@ ESystemModule GetSystemModuleByCommissionType(const ECommissionType CommissionTy
 }
 bool IsCommissionTypeUnlocked(const ECommissionType CommissionType, const bool bShowTips = false)
 {
-    if ((int(CommissionUtils::GetSystemModuleByCommissionType(ECommissionType(CommissionType)))) == 0)
+    int local_2 = int(CommissionUtils::GetSystemModuleByCommissionType(ECommissionType(CommissionType)));
+    if (local_2 == 0)
     {
         return false;
     }
-    return FMS_SystemControl::Get(FASCommonUtils::GetLocalPlayerController()).IsSystemUnlock(bShowTips);
+    return FMS_SystemControl::Get(FASCommonUtils::GetLocalPlayerController()).IsSystemUnlock(ESystemModule(local_2), bShowTips);
 }
 void ServerSetCurrentCommission(const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig)
 {
@@ -966,15 +967,16 @@ void ServerInitCommissionByDSGlobalInfoForPIEOnly(const TDataObjectPtr<FCommissi
 }
 void HandlePendingSubTargetOnCommissionFinish(const FCS_CommissionFinish &inout CommissionFinish, FCS_CommissionSubTarget &inout CommissionSubTarget)
 {
-    ECommissionSubTargetStatus local_4 = ECommissionSubTargetStatus(0);
     int local_7 = 0;
     Modify local_218;
     CommissionUtils::SetObjectiveGuideEnabledToAllPlayers(CommissionSubTarget.GetObjectiveInstanceId(), false, EGuideStyleType(3));
-    if ((int(CommissionSubTarget.GetStatus())) != 0)
+    int local_4 = int(CommissionSubTarget.GetStatus());
+    if (local_4 != 0)
     {
         return;
     }
-    if ((local_7) == 0)
+    int local_6 = local_7;
+    if (local_6 == 0)
     {
         FObjectiveInstance local_208;
         bool local_61;
@@ -995,14 +997,14 @@ void HandlePendingSubTargetOnCommissionFinish(const FCS_CommissionFinish &inout 
         }
         if (local_61)
         {
-            local_4 = ECommissionSubTargetStatus(2);
+            local_4 = 2;
         }
         else
         {
-            local_4 = ECommissionSubTargetStatus(1);
+            local_4 = 1;
         }
         FECSWorldPtr local_214 = ECS::GetECSWorld();
-        local_218.opCall().SetSubTargetStatus();
+        local_218.opCall().SetSubTargetStatus(ECommissionSubTargetStatus(local_4));
         return;
     }
     FECSWorldPtr local_214_2 = ECS::GetECSWorld();
@@ -1082,12 +1084,12 @@ TArray<FCommissionRating> GetCommissionRatingRule(const ECommissionType Commissi
 }
 FText GetCommissionScore2TierTextAndIndex(const ECommissionType CommissionType, const int Score, int &inout BestRatingImageIndex)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     FText __r; return __r;
 }
 ECommissionFinishScoreTier GetCommissionScore2TierLevel(const ECommissionType CommissionType, const int Score)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     ECommissionFinishScoreTier __r; return __r;
 }
 void ResetRaceCommissionTimer(const FFPTime &inout StartTime = FFPTime(-1))

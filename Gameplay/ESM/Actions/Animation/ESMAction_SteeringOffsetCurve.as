@@ -1,12 +1,9 @@
-﻿
-
 class UESMAction_SteeringOffsetCurve : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
     UCurveFloat SteeringOffsetCurve;
     UPROPERTY()
     float32 AngleOffset = 0.0f;
-
 
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const
@@ -15,7 +12,7 @@ class UESMAction_SteeringOffsetCurve : UESMBPBaseSpanTickAction
         {
             return this.SteeringOffsetCurve.GetName();
         }
-        return "(жњЄй…ЌзЅ®ж›Ізєї)";
+        return "(未配置曲线)";
     }
     UFUNCTION()
     bool IsNotifyTypeAllowed_Implementation(const EESMNotifyType InType) const

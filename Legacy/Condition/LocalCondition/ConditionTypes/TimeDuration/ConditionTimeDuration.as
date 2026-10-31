@@ -1,12 +1,6 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FConditionTimeDurationConfig (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
-
 class UConditionTimeDuration : ULocalConditionTypeDefineBase
 {
     int EventNameParamIndex = 1;
-
 
     void OnConditionRegistered(const FLocalConditionInstance &inout ConditionInstance) const
     {
@@ -54,9 +48,10 @@ struct FConditionTimeDurationConfig : FLocalConditionTypeDefineConfigBase
 {
     FLocalConditionTypeDefineConfigBase _base_FLocalConditionTypeDefineConfigBase;
 
+    default _base_FLocalConditionTypeDefineConfigBase = UConditionTimeDuration;
+
     FConditionTimeDurationConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }

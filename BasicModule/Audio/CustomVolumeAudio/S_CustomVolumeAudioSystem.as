@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_CustomVolumeAudioSystem_EnableDebugDraw = FConsoleVariable();
 const FConsoleVariable CVar_CustomVolumeAudioSystem_EnableDebugHUD = FConsoleVariable();
 

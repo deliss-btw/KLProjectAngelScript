@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FTestStructDefault1 (temporary `local_2` did not fold: B = local_2;).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FTestStructDefault1
 {
     UPROPERTY()
@@ -35,6 +30,7 @@ struct FTestStructDefault2
     }
     FTestStructDefault2(const FString &inout InA, const FString &inout InB)
     {
+        this.A = InA;
         this.B = InB;
         this.__InitDefaults();
         return;

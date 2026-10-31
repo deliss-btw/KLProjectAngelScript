@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_ClearKeepSprint : UESMBPBaseSpanAction
 {
     UESMAction_ClearKeepSprint()

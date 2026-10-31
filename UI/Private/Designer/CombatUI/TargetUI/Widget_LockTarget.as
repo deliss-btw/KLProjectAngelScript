@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_LockTarget
 {
     const int ViewID = 0;
@@ -12,7 +11,6 @@ class UWidget_LockTarget : UEUIUserWidget
     UImage Image_LockTargetPoint;
     UPROPERTY()
     ESlateVisibility Visibility_LockTargetPoint = ESlateVisibility(2);
-
 
     UFUNCTION()
     void Construct_Implementation()
@@ -104,6 +102,7 @@ namespace UWidget_LockTarget
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_LockTarget;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

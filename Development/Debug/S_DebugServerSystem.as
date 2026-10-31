@@ -1,5 +1,3 @@
-﻿
-
 class US_DebugServerSystem : UECSScriptSystem
 {
     US_DebugServerSystem()
@@ -20,8 +18,8 @@ class US_DebugServerSystem : UECSScriptSystem
         }
         if (int(Time.LatestFrame) > int(Time.EarliestFrame))
         {
-            FDebugMessageUtils::SendError(ELog(3), n"DS ГЁВїВЅГҐВёВ§ГЇВјВЃГЇВјВЃГЇВјВЃ");
-            XWarning(ELog(3), "DS иїЅеё§пјЃпјЃпјЃ");
+            FDebugMessageUtils::SendError(ELog(3), n"DS è¿½å¸§ï¼ï¼ï¼");
+            XWarning(ELog(3), "DS 追帧！！！");
         }
         return;
     }

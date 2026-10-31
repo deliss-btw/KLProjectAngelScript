@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_SplineMoveSpeedCurve : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
@@ -14,7 +12,6 @@ class UESMAction_SplineMoveSpeedCurve : UESMBPBaseSpanTickAction
     float32 MaxSpeed = 10000.0f;
     UPROPERTY()
     FRuntimeFloatCurve SpeedPctCurve = FRuntimeCurveUtils::CreateLinear(0.0f, 1.0f, 1.0f, 1.0f);
-
 
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const

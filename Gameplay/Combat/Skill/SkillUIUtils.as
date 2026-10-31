@@ -1,4 +1,3 @@
-﻿
 enum ESkillUnusableReason
 {
     None,
@@ -8,11 +7,10 @@ enum ESkillUnusableReason
     ConditionNotSatisfied,
 }
 
-
 struct FSkillCastHintData
 {
     UPROPERTY()
-    USkillConfig SkillConfig;
+    USkillConfig SkillConfig = nullptr;
     UPROPERTY()
     UESMInputTriggerAsset InputTrigger = nullptr;
     UPROPERTY()
@@ -42,8 +40,33 @@ bool IsConsumeItemEnough(const FECSEntity &inout Entity, const USkillConfig Skil
 }
 ESkillUnusableReason GetSkillUnusableReason(const FECSEntity &inout Entity, const USkillConfig SkillConfig)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    ESkillUnusableReason __r; return __r;
+    int local_2 = FSkillUtils::GetSkillIndex(Entity, SkillConfig);
+    if (local_2 != INDEX_NONE)
+    {
+        bool local_4;
+        const FC_SkillInstance& local_6 = FSkillUtils::GetSkillInstance(Entity, local_2, local_4);
+        FFPTime local_8 = FFPTime(ECS::GetContextTime());
+        if (local_6.GetCDRemainTime(local_8).opCmp(0.0) > 0)
+        {
+            return ESkillUnusableReason(1);
+        }
+        if (!(FSkillUtils::IsConsumeAttributeEnough(Entity, local_6, local_8)))
+        {
+            return ESkillUnusableReason(2);
+        }
+        if (local_6.GetConsumeConfig().ConsumeItemRow.IsValid())
+        {
+            if (InventoryUtils::GetInventoryItemNumber(Entity, TDataObjectPtr<FItemConfig>(local_6.GetConsumeConfig().ConsumeItemRow)) < int(local_6.GetConsumeConfig().ConsumeItemNumber))
+            {
+                return ESkillUnusableReason(3);
+            }
+        }
+        if (!(Entity) || !(local_6.GetUseConditionConfig().UsableValidation.Evaluate(Entity)))
+        {
+            return ESkillUnusableReason(4);
+        }
+    }
+    return ESkillUnusableReason(0);
 }
 FECSEntity GetPawnEntityByAvatarConfig(const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
 {

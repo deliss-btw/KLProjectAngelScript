@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CombatSettingPresetSelector
 {
     const int ModelId = 0;
@@ -41,10 +40,8 @@ struct FVM_CombatSettingPresetSelector : FEUIViewModel
         this.SetCombatSettingData(TEUIModelRef<FMS_CombatSettingData>(::FMS_CombatSettingData::Get(this.GetContext().Manager)));
         this.GetCombatSettingData().opArrow().ResetEditingPresetType();
         TArray<FEUIModelContainer> local_6;
-        NSLOCTEXT("SingleAvatar", "еЌ•дєєжЁЎејЏ");
-        local_6.Add(FEUIModelContainer());
-        NSLOCTEXT("DoubleAvatar", "еЏЊдєєжЁЎејЏ");
-        local_6.Add(FEUIModelContainer());
+        local_6.Add(FEUIModelContainer(::FVM_Text::Create(this.GetContext().Manager, NSLOCTEXT("SingleAvatar", "单人模式"))));
+        local_6.Add(FEUIModelContainer(::FVM_Text::Create(this.GetContext().Manager, NSLOCTEXT("DoubleAvatar", "双人模式"))));
         FOnCommonDropdownSelected local_48;
         local_48.Add(this, FVM_CombatSettingPresetSelector::OnPresetSelected);
         this.SetPresetDropdown(TEUIModelRef<FVM_CommonDropdown>(::FVM_CommonDropdown::Create(this.GetContext().Manager, local_6, FCommonDropdownDefaultOption(int(this.GetCombatSettingData().opArrow().GetEditingPresetType())), local_48)));
@@ -52,7 +49,7 @@ struct FVM_CombatSettingPresetSelector : FEUIViewModel
     }
     void OnPresetSelected(const int Index)
     {
-        this.GetCombatSettingData().opArrow().SetEditingPresetType();
+        this.GetCombatSettingData().opArrow().SetEditingPresetType(ECombatSettingPresetType(Index));
         return;
     }
     TEUIModelRef<FVM_CommonDropdown> GetPresetDropdown() const property

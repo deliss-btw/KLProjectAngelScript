@@ -1,4 +1,3 @@
-﻿
 enum EFollowSplineState
 {
     Wait,
@@ -6,7 +5,6 @@ enum EFollowSplineState
     NaviagetingSpline,
     Finish,
 }
-
 
 struct FESMCharacterFollowSplineInstanceData
 {
@@ -25,7 +23,6 @@ struct FESMCharacterFollowSplineInstanceData
     UPROPERTY()
     FVector LastLocation = FVector::ZeroVector;
 
-
 }
 
 class UESMAction_CharacterFollowSpline : UESMBPBaseSpanTickAction
@@ -40,7 +37,6 @@ class UESMAction_CharacterFollowSpline : UESMBPBaseSpanTickAction
     float32 FindBestPointAngleWeight = 0.5f;
     UPROPERTY()
     float32 EnterFirstPointDistance = 200.0f;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const

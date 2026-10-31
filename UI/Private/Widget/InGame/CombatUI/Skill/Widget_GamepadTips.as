@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_GamepadTips
 {
     const int ViewID = 0;
@@ -24,7 +23,18 @@ class UWidget_GamepadTips : UEUIUserWidget
     UFUNCTION()
     void OnGamepadLeftShoulderPressChanged(const bool bGamepadLeftShoulderPress, const bool bHasGuidingTarget)
     {
-        if ((this.Anim_LB_Pressed == nullptr || ((this.Anim_LB_Released == nullptr))))
+        int local_3;
+        bool local_4;
+        if (this.Anim_LB_Pressed == nullptr)
+        {
+            local_3 = 1;
+        }
+        else
+        {
+            local_4 = (this.Anim_LB_Released == nullptr);
+            local_3 = local_4;
+        }
+        if (local_3 != 0)
         {
             return;
         }
@@ -113,6 +123,7 @@ namespace UWidget_GamepadTips
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_GamepadTips;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnGamepadLeftShoulderPressChanged"));
     return;
 }

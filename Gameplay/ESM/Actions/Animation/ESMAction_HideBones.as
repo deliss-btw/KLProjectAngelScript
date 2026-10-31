@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_HideBones : UESMBPBaseSpanTickAction
 {
     UPROPERTY()

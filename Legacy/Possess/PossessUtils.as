@@ -1,4 +1,3 @@
-﻿
 namespace FPossessUtils
 {
 UFUNCTION()
@@ -6,6 +5,7 @@ void PossessPropEntity(const FECSEntity &inout PawnEntity, const FECSEntity &ino
 {
     bool local_1;
     int local_12 = 0;
+    int local_50 = 0;
     if (!(ECS::GetRuntimeInfo().IsServer))
     {
         return;
@@ -33,8 +33,7 @@ void PossessPropEntity(const FECSEntity &inout PawnEntity, const FECSEntity &ino
             if (local_42.bEnableAttach)
             {
                 FECSWorldPtr local_44 = ECS::GetECSWorld();
-                local_1 = false;
-                local_42.AttachConfig.GetSocketName();
+                FAttachmentUtils::EntityAttachToParent(PawnEntity, PropEntity, local_50.Time, local_42.AttachConfig.GetSocketName(), false, local_42.AttachConfig.GetLocationOffset(), local_42.AttachConfig.GetRotationOffset(), 0.0f, 0.0f, 0, FVector::ZeroVector, 0.0f, false);
                 Assign local_60;
                 local_60.opCall(FC_CharacterAimVisualOverrideBlockedTag());
                 local_12.SetbEnableAttach(true);

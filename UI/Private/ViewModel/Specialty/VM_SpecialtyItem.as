@@ -1,4 +1,3 @@
-﻿
 namespace FVM_SpecialtyItem
 {
     const int ModelId = 0;
@@ -11,7 +10,6 @@ struct FMsg_SpecialtyItemSelected : FEUIMessage
 {
     UPROPERTY()
     uint AvatarId;
-
 
 }
 
@@ -828,7 +826,6 @@ struct __GeneratedProperties_FVM_SpecialtyItem
     UPROPERTY()
     TEUIModelRef<FVM_SpecialtyItem> Self;
 
-
 }
 
 namespace FVM_SpecialtyItem
@@ -980,7 +977,9 @@ void __OnPlayerSpecialtyChanged(FVM_SpecialtyItem &inout Model, const FECSEntity
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorDSPlayerInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorDSPlayerInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 bool __UIGetter_bSelected(const FVM_SpecialtyItem &inout Model)
 {

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_GramherSkillResourceItem
 {
     const int ModelId = 0;
@@ -751,7 +750,6 @@ struct __GeneratedProperties_FVM_GramherSkillResourceItem
     UPROPERTY()
     TEUIModelRef<FVM_GramherSkillResourceItem> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_GramherSkillResource
@@ -770,7 +768,6 @@ struct __GeneratedProperties_FVM_GramherSkillResource
     ESlateVisibility ClawAttackDecreaseVisibility;
     UPROPERTY()
     TEUIModelRef<FVM_GramherSkillResource> Self;
-
 
 }
 

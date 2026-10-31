@@ -1,11 +1,9 @@
-﻿
-
 class UBTDecorator_Random : UBTDecorator_ECSScriptBase
 {
     UPROPERTY()
     FAISmart_Float Probability = 1.0f;
 
-    default SetNodeName("йљЏжњєж¦‚зЋ‡");
+    default SetNodeName("随机概率");
 
     UBTDecorator_Random()
     {

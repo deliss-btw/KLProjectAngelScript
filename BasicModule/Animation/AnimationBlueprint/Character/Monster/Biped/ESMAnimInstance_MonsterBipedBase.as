@@ -1,5 +1,3 @@
-﻿
-
 class UESMAnimInstance_MonsterBipedBase : UESMAnimInstance_MonsterBase
 {
     UPROPERTY()

@@ -1,5 +1,3 @@
-﻿
-
 struct FMailSettingsConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -11,7 +9,6 @@ struct FMailSettingsConfig : FDataObject
     int DefaultExpireDays;
     UPROPERTY()
     FDataObjectPtr m_ItemExceedLimitMail;
-
 
     const TDataObjectPtr<FMailConfig> GetItemExceedLimitMail() const property
     {

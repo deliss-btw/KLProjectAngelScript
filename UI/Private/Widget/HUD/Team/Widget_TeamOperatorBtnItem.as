@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TeamOperatorBtnItem
 {
     const int ViewID = 0;
@@ -225,6 +224,7 @@ namespace UWidget_TeamOperatorBtnItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TeamOperatorBtnItem;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnButtonTypeChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnButtonStateVersionChanged"));
     return;

@@ -1,11 +1,9 @@
-﻿
 enum EDungeonType
 {
     None,
     Social,
     Challenge,
 }
-
 
 struct FDungeonConfig : FDataObject
 {
@@ -24,7 +22,6 @@ struct FDungeonConfig : FDataObject
     FText DungeonDesc;
     UPROPERTY()
     FDataObjectPtr m_TempRewardView;
-
 
     TDataObjectPtr<FLevelInfoConfig> GetLevelConfig() const property
     {

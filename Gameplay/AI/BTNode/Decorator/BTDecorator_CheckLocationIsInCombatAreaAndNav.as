@@ -1,11 +1,9 @@
-﻿
 enum ECheckNavReachableType
 {
     Any,
     Ground,
     Air,
 }
-
 
 class UBTDecorator_CheckLocationIsInCombatAreaAndNav : UBTDecorator_ECSScriptBase
 {
@@ -27,7 +25,6 @@ class UBTDecorator_CheckLocationIsInCombatAreaAndNav : UBTDecorator_ECSScriptBas
     default SetbAllowAbortLowerPri(true);
     default SetbAllowAbortChildNodes(true);
     default SetNodeName("Check Location Is In Combat Area and Nav");
-
 
     UFUNCTION()
     bool CalculateRawConditionValue_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonRewardItem
 {
     const int ModelId = 0;
@@ -452,7 +451,7 @@ struct FVM_CommonRewardList : FEUIViewModel
         for (; local_2 < this.GetMultipliedItemDatas().Num(); )
         {
             FEUIModelContainer local_18;
-            local_18.AddModel(FEUIModelRef(), false);
+            local_18.AddModel(FEUIModelRef(::FVM_Item::Create(this.GetContext().Manager, this.GetMultipliedItemDatas()[local_2])), false);
             FVM_CommonRewardItem& local_22 = ::FVM_CommonRewardItem::Create(this.GetContext().Manager, local_18, this.GetbDisplayRequestNum());
             if (local_2 < this.GetEntryTagTexts().Num())
             {
@@ -779,7 +778,6 @@ struct __GeneratedProperties_FVM_CommonRewardList
     TEUIModelRef<FVM_CommonRewardItem> FirstReward;
     UPROPERTY()
     TEUIModelRef<FVM_CommonRewardList> Self;
-
 
 }
 

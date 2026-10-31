@@ -1,4 +1,3 @@
-﻿
 enum ESkillProgressType
 {
     SkillCoolDown,

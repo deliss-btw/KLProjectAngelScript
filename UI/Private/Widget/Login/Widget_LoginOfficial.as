@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_LoginOfficial
 {
     const int ViewID = 0;
@@ -26,7 +25,6 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
     bool bLoginStepTimeoutActive = false;
     float32 LoginStepTimeoutRemaining = 0.0f;
     FEUIModelWeakRef __LoginVM;
-
 
     UFUNCTION()
     void Construct_Implementation()
@@ -132,6 +130,7 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
     UFUNCTION()
     void OnContinueGameRequested(const int ContinueGameRequestSeq)
     {
+        int local_8;
         if (ContinueGameRequestSeq == 0)
         {
             return;
@@ -142,13 +141,13 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
             XError(ELog(78), "OnContinueGame: SDK login not successful, cannot proceed");
             return;
         }
-        int local_1 = GetSelectRegionIndex();
-        if (!(GetRegionInfos().IsValidIndex()))
+        local_8 = GetSelectRegionIndex();
+        if (!(GetRegionInfos().IsValidIndex(local_8)))
         {
             XError(ELog(78), "OnContinueGame: region index invalid");
             return;
         }
-        if (!(TEUIModelRef<FVM_RegionInfo>(GetRegionInfos()[]).IsValid()))
+        if (!(TEUIModelRef<FVM_RegionInfo>(GetRegionInfos()[local_8]).IsValid()))
         {
             XError(ELog(78), "OnContinueGame: RegionInfo invalid");
             return;
@@ -288,7 +287,6 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
     UFUNCTION()
     void OnPlayerLoginRsp(const FProtoWrapper &in ProtoWrapper)
     {
-        ULocalPlayer local_22;
         XLog(ELog(78), "OnPlayerLoginRsp");
         FPbPlayerLoginRsp local_10 = FPbPlayerLoginRsp::FromWrapper(ProtoWrapper);
         if (!(local_10.IsValid()))
@@ -312,7 +310,7 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
             FMsg_LoginNextPhase local_26;
             this.ClosePage(false);
             ::FMS_Login::Get(this.GetOwningLocalPlayer()).SetCanCreatePlayer(true);
-            local_22 = this.GetOwningLocalPlayer();
+            FEUIModelRef local_32 = FEUIModelRef(::FMS_Login::Get(this.GetOwningLocalPlayer()));
             FEUIMessageBus::Publish(EUIMessageBus);
             local_26.NextPhase = ELoginShowPhase(2);
         }
@@ -321,7 +319,7 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
             FMsg_LoginNextPhase local_26;
             if (local_10.GetPlayerPhase() == 2)
             {
-                local_22 = this.GetOwningLocalPlayer();
+                FEUIModelRef local_32_2 = FEUIModelRef(::FMS_Login::Get(this.GetOwningLocalPlayer()));
                 FEUIMessageBus::Publish(EUIMessageBus);
                 local_26.NextPhase = ELoginShowPhase(5);
             }
@@ -556,20 +554,21 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
     }
     void ConnectToGateServer()
     {
+        int local_10;
         if (!(GetbIsSDKLoginSucc()))
         {
             XError(ELog(78), "ConnectToGateServer: SDK login failed");
             this.HandleLoginFailed(0, this.GetLoginErrorTip(ELoginErrorTipType(1)));
             return;
         }
-        int local_9 = GetSelectRegionIndex();
-        if (!(GetRegionInfos().IsValidIndex()))
+        local_10 = GetSelectRegionIndex();
+        if (!(GetRegionInfos().IsValidIndex(local_10)))
         {
             XError(ELog(78), "ConnectToGateServer: SelectRegionIndex is invalid");
             this.HandleLoginFailed(0, this.GetLoginErrorTip(ELoginErrorTipType(1)));
             return;
         }
-        if (!(TEUIModelRef<FVM_RegionInfo>(GetRegionInfos()[]).IsValid()))
+        if (!(TEUIModelRef<FVM_RegionInfo>(GetRegionInfos()[local_10]).IsValid()))
         {
             XError(ELog(78), "ConnectToGateServer: RegionInfo is invalid");
             this.HandleLoginFailed(0, this.GetLoginErrorTip(ELoginErrorTipType(1)));
@@ -599,7 +598,7 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
     UFUNCTION()
     void OnDownloadProgress(const uint64 DownloadedSize, const uint64 TotalSize)
     {
-        TotalSize.HandleDownloadProgress();
+        DownloadedSize.HandleDownloadProgress(TotalSize);
         return;
     }
     UFUNCTION()
@@ -616,8 +615,8 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
         }
         if (!(bSuccess))
         {
-            bSuccess.HandleDownloadCompleted();
-            ::CommonPopup_Internal::OpenTips(NSLOCTEXT("Login", "DownloadFailedTips", "иµ„жєђж›ґж–°е¤±иґҐгЂ‚"), local_38, ECommonTipsType(0), FEUIModelContainer(), local_8);
+            bSuccess.HandleDownloadCompleted((Code != 0));
+            ::CommonPopup_Internal::OpenTips(NSLOCTEXT("Login", "DownloadFailedTips", "资源更新失败。"), local_38, ECommonTipsType(0), FEUIModelContainer(), local_8);
             return;
         }
         if (!(local_54.TryGetDownloadInfo()))
@@ -627,11 +626,11 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
         }
         if ((local_54.bNeedExitClient || local_54.bNeedRestartClient))
         {
-            FText local_16 = NSLOCTEXT("Login", "DownloadTitle", "иµ„жєђж›ґж–°");
+            FText local_16 = NSLOCTEXT("Login", "DownloadTitle", "资源更新");
             FDialogDynamicCallback local_60;
             FCommonDialogParam local_62;
             local_62.bIsForbidIgnored = true;
-            FText local_20 = NSLOCTEXT("HotPatch", "ExitClientMessage", "жёёж€Џз‰€жњ¬е·Іж›ґж–°пјЊиЇ·йЂЂе‡єжёёж€ЏеђЋй‡Ќж–°еђЇеЉЁе®ўж€·з«ЇгЂ‚");
+            FText local_20 = NSLOCTEXT("HotPatch", "ExitClientMessage", "游戏版本已更新，请退出游戏后重新启动客户端。");
             local_60.BindUFunction(this, n"OnClientExitGameConfirmed");
             UCommonPopupSettings local_72 = ::CommonPopupSettings::Get();
             FEUIInputAction local_78;
@@ -644,14 +643,14 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
             }
             return;
         }
-        ::CommonPopup_Internal::OpenTips(NSLOCTEXT("Login", "DownloadCompletedTips", "иµ„жєђж›ґж–°е®Њж€ђгЂ‚"), local_38, ECommonTipsType(0), FEUIModelContainer(), local_8);
-        bSuccess.HandleDownloadCompleted();
+        ::CommonPopup_Internal::OpenTips(NSLOCTEXT("Login", "DownloadCompletedTips", "资源更新完成。"), local_38, ECommonTipsType(0), FEUIModelContainer(), local_8);
+        bSuccess.HandleDownloadCompleted((Code != 0));
         return;
     }
     UFUNCTION()
     void OnDownloadManifestCompleted(const bool bSuccess, const int Code)
     {
-        bSuccess.HandleDownloadManifestCompleted();
+        bSuccess.HandleDownloadManifestCompleted((Code != 0));
         return;
     }
     UFUNCTION()
@@ -845,6 +844,7 @@ namespace UWidget_LoginOfficial
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_LoginOfficial;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnLoginStateChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnStartLoginSDKRequested"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnContinueGameRequested"));

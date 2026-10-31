@@ -1,5 +1,3 @@
-﻿
-
 struct FT_CompanionBehavior : FECSTrait
 {
     FECSTrait _base_FECSTrait;

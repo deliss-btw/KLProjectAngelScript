@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_LocalConditionGroupManager_NS
 {
     const TECSComponentDerivedPtr<FCS_LocalConditionGroupManager> DerivedPtr = TECSComponentDerivedPtr<FCS_LocalConditionGroupManager>();
@@ -14,7 +13,6 @@ struct FLocalConditionGroupInstanceData
     UPROPERTY()
     bool bCachedReached;
 
-
 }
 
 struct FCS_LocalConditionGroupManager : FECSSingleton
@@ -26,14 +24,13 @@ struct FCS_LocalConditionGroupManager : FECSSingleton
     UPROPERTY()
     int NextConditionGroupInstanceId;
 
-
     int AddConditionGroupInstance(const TDataObjectPtr<FConditionGroupConfig> &inout ConditionGroupConfig, const TArray<int> &inout InnerConditionInstanceIds)
     {
         FLocalConditionGroupInstanceData local_30;
         local_30.ConditionGroupConfig = ConditionGroupConfig;
         local_30.InnerConditionInstanceIds = InnerConditionInstanceIds;
         int local_55 = this.NextConditionGroupInstanceId;
-        this.Add(local_55, local_30);
+        this.ConditionGroupInstanceData.Add(local_55, local_30);
         for (auto local_70 : InnerConditionInstanceIds)
         {
             this.ConditionInstanceIdToGroupInstanceId.Add(local_70, local_55);
@@ -47,9 +44,9 @@ struct FCS_LocalConditionGroupManager : FECSSingleton
     }
     void RemoveConditionGroupInstance(const int ConditionGroupInstanceId)
     {
-        if (this.Contains(ConditionGroupInstanceId))
+        if (this.ConditionGroupInstanceData.Contains(ConditionGroupInstanceId))
         {
-            auto local_10 = this[ConditionGroupInstanceId].InnerConditionInstanceIds.Iterator();
+            auto local_10 = this.ConditionGroupInstanceData[ConditionGroupInstanceId].InnerConditionInstanceIds.Iterator();
             for (; local_10.CanProceed;)
             {
                 int local_18 = local_10.Proceed();
@@ -147,16 +144,16 @@ bool RemoveLocalConditionGroupManager(const FECSWorldPtr &inout World)
 }
 void __MonitorLocalConditionGroupManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_LocalConditionGroupManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_LocalConditionGroupManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLocalConditionGroupManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_LocalConditionGroupManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_LocalConditionGroupManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLocalConditionGroupManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_LocalConditionGroupManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_LocalConditionGroupManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

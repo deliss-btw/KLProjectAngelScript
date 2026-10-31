@@ -1,5 +1,3 @@
-﻿
-
 class US_FXSystemAS : UECSScriptSystem
 {
     US_FXSystemAS()

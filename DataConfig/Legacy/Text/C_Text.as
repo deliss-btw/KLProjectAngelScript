@@ -1,10 +1,8 @@
-﻿
 enum ETextArgType_DEPRECATED
 {
     Default,
     Attribute,
 }
-
 
 struct FAttributeTextData : FDataObject
 {

@@ -1,4 +1,3 @@
-﻿
 enum ECheatContentType
 {
     Undamageble,
@@ -57,11 +56,50 @@ struct FC_CheatComponent : FECSComponent
 
     FC_CheatComponent()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bUndamageble = false;
+        this.m_bStateEndure = false;
+        this.m_bMaxCombatEnergy = false;
+        this.m_bSkillNoCD = false;
+        this.m_bStaminaNoCost = false;
+        this.m_bHasNoCDBuff = false;
+        this.m_FinalDamageRatio = 1.0f;
+        this.m_PostureAttackRatio = 1.0f;
+        this.m_BodyPartDamageRatio = 1.0f;
+        this.m_AbnormalStateRatio = 1.0f;
+        this.m_bNotCostItem = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_CheatComponent(const FC_CheatComponent &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_bUndamageble = false;
+        this.m_bStateEndure = false;
+        this.m_bMaxCombatEnergy = false;
+        this.m_bSkillNoCD = false;
+        this.m_bStaminaNoCost = false;
+        this.m_bHasNoCDBuff = false;
+        this.m_FinalDamageRatio = 1.0f;
+        this.m_PostureAttackRatio = 1.0f;
+        this.m_BodyPartDamageRatio = 1.0f;
+        this.m_AbnormalStateRatio = 1.0f;
+        this.m_bNotCostItem = false;
+        this.__InitDirtyFlags();
+        this.m_bUndamageble = Other.m_bUndamageble;
+        this.m_bStateEndure = Other.m_bStateEndure;
+        this.m_bMaxCombatEnergy = Other.m_bMaxCombatEnergy;
+        this.m_bSkillNoCD = Other.m_bSkillNoCD;
+        this.m_bStaminaNoCost = Other.m_bStaminaNoCost;
+        this.m_bHasNoCDBuff = Other.m_bHasNoCDBuff;
+        this.m_FinalDamageRatio = Other.m_FinalDamageRatio;
+        this.m_PostureAttackRatio = Other.m_PostureAttackRatio;
+        this.m_BodyPartDamageRatio = Other.m_BodyPartDamageRatio;
+        this.m_AbnormalStateRatio = Other.m_AbnormalStateRatio;
+        this.m_bNotCostItem = Other.m_bNotCostItem;
+        return;
     }
     FC_CheatComponent opAssign(const FC_CheatComponent &inout Other)
     {
@@ -243,11 +281,20 @@ struct FCS_CheatManager : FECSSingleton
 
     FCS_CheatManager()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bUndamageble = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FCS_CheatManager(const FCS_CheatManager &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bUndamageble = false;
+        this.__InitDirtyFlags();
+        this.m_bUndamageble = Other.m_bUndamageble;
+        return;
     }
     FCS_CheatManager opAssign(const FCS_CheatManager &inout Other)
     {
@@ -577,23 +624,56 @@ void SyncCheatPlayerContent(const ECheatContentType CheatType, const FECSEntity 
 }
 void CMD_Player_Undamageble(const TArray<FString> &inout Arguments)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    FECSEntity local_4 = FASCommonUtils::GetLocalPlayerPawnEntity();
+    if (Arguments.Num() == 0 || (FString(Arguments[0]) == "1") || (Arguments[0].ToLower() == "true"))
+    {
+        FCheatUtils::SyncCheatPlayerContent(ECheatContentType(0), local_4, 1.0f);
+    }
+    else
+    {
+        FCheatUtils::SyncCheatPlayerContent(ECheatContentType(0), local_4, 0.0f);
+    }
+    return;
 }
 void CMD_Player_StateEndure(const TArray<FString> &inout Arguments)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    FECSEntity local_4 = FASCommonUtils::GetLocalPlayerPawnEntity();
+    if (Arguments.Num() == 0 || (FString(Arguments[0]) == "1") || (Arguments[0].ToLower() == "true"))
+    {
+        FCheatUtils::SyncCheatPlayerContent(ECheatContentType(1), local_4, 1.0f);
+    }
+    else
+    {
+        FCheatUtils::SyncCheatPlayerContent(ECheatContentType(1), local_4, 0.0f);
+    }
+    return;
 }
 void CMD_Player_FinalDamageRatio(const TArray<FString> &inout Arguments)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    FECSEntity local_4 = FASCommonUtils::GetLocalPlayerPawnEntity();
+    if (Arguments.Num() == 1 && Arguments[0].IsNumeric())
+    {
+        FCheatUtils::SyncCheatPlayerContent(ECheatContentType(4), local_4, float32(String::Conv_StringToDouble(Arguments[0])));
+    }
+    return;
 }
 void CMD_Player_PostureAttackRatio(const TArray<FString> &inout Arguments)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    FECSEntity local_4 = FASCommonUtils::GetLocalPlayerPawnEntity();
+    if (Arguments.Num() == 1 && Arguments[0].IsNumeric())
+    {
+        FCheatUtils::SyncCheatPlayerContent(ECheatContentType(5), local_4, float32(String::Conv_StringToDouble(Arguments[0])));
+    }
+    return;
 }
 void CMD_Player_BodyPartDamageRatio(const TArray<FString> &inout Arguments)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    FECSEntity local_4 = FASCommonUtils::GetLocalPlayerPawnEntity();
+    if (Arguments.Num() == 1 && Arguments[0].IsNumeric())
+    {
+        FCheatUtils::SyncCheatPlayerContent(ECheatContentType(6), local_4, float32(String::Conv_StringToDouble(Arguments[0])));
+    }
+    return;
 }
 namespace ECSFunc_FC_CheatComponent
 {
@@ -672,37 +752,37 @@ bool RemoveCheatComponent(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCheatComponentOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CheatComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CheatComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCheatComponentOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CheatComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CheatComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCheatComponentOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CheatComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CheatComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCheatComponentOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CheatComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CheatComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCheatComponentOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CheatComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CheatComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCheatComponentLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CheatComponent, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CheatComponent, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCheatComponentActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CheatComponent, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CheatComponent, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCheatComponentModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CheatComponent, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CheatComponent, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_CheatManager
@@ -790,17 +870,17 @@ bool RemoveCheatManager(const FECSWorldPtr &inout World)
 }
 void __MonitorCheatManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_CheatManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_CheatManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCheatManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_CheatManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_CheatManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCheatManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_CheatManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_CheatManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

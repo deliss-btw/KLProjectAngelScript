@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_AnimUseLeanParams : UESMBPBaseSpanAction
 {
     UESMAction_AnimUseLeanParams()

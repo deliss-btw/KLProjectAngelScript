@@ -1,4 +1,3 @@
-﻿
 namespace BlueprintFunctions_Ability
 {
 FFPTime GetWorldTime(const FECSEntity &inout ContextEntity)
@@ -42,7 +41,7 @@ void AddAttackIgnoreTargetCondition(const FECSEntityAdapter &inout Entity, const
     }
     if (AttackData)
     {
-        TDataObjectPtr<FAttackIgnoreTargetCondition> local_70;
+        TDataObjectPtr<FAttackIgnoreTargetCondition> local_70 = TDataObjectPtr<FAttackIgnoreTargetCondition>(UDataObjectManager::GetDataObjectPtr(Conditon));
         local_22.GetModify_ConditionByAttackData().Add(AttackData, local_70);
     }
     return;
@@ -254,7 +253,7 @@ void OverrideTrackMovement(const FECSEntityAdapter &inout Entity, FTrackMovement
         }
         return;
     }
-    local_22.SetDataPtr(TDataObjectPtr<FTrackMovementConfigData>());
+    local_22.SetDataPtr(TDataObjectPtr<FTrackMovementConfigData>(UDataObjectManager::GetDataObjectPtr(Data)));
     local_76.SetMoveBeginTime(BlueprintFunctions_Ability::GetWorldTime(Entity.opImplConv()));
     GetDefaulted local_86;
     local_76.SetInitRotation(local_86.opCall().ToFTransform().GetRotation());
@@ -512,7 +511,7 @@ void ModifyBaseDamage(const FAbilityHitEventData &inout EventData, const EBaseDa
         {
             if (local_14.DamageDatas.IsValidIndex(int(EventData.DamageIndex)))
             {
-                FDamageUtils::ModifyBaseDamage(local_14.DamageDatas[int(EventData.DamageIndex)].BaseDamage, Value);
+                FDamageUtils::ModifyBaseDamage(local_14.DamageDatas[int(EventData.DamageIndex)].BaseDamage, EBaseDamagePartType(BaseDamagePart), EDamageValueModifyType(ModifyType), Value);
             }
         }
     }
@@ -663,12 +662,97 @@ void ModifyDamageAttribute(const FAbilityHitEventData &inout EventData, const TS
 UFUNCTION()
 void GetCalculatedDamage(const FAbilityDamageCalculatedEventData &inout EventData, FDamageFinalValues &out FinalValues, FAttackData &out AttackData, FECSEntity &out FinalDamageSource, FECSEntity &out DirectDamageCauser, FECSEntity &out DamageTarget)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    FDamageFinalValues local_8;
+    int local_868 = 0;
+    FinalValues = local_8;
+    FinalDamageSource = FECSEntity();
+    DirectDamageCauser = FECSEntity();
+    DamageTarget = FECSEntity();
+    if (UEASAbility::GetContextAbility() != nullptr)
+    {
+        if (local_868 && local_868.Datas.IsValidIndex(int(EventData.DamageIndex)))
+        {
+            const FDamageApplyData& local_872 = local_868.Datas[int(EventData.DamageIndex)];
+            FinalValues = local_872.FinalValues;
+            if (local_872.AttackData)
+            {
+            }
+            FinalDamageSource = local_872.FinalDamageSource;
+            DirectDamageCauser = local_872.DirectDamageCauser;
+            DamageTarget = EventData.DamageTarget;
+        }
+    }
+    return;
 }
 UFUNCTION()
 void ModifyCalculatedDamageValue(const FAbilityDamageCalculatedEventData &inout EventData, const EDamageFinalValueType ValueType, const EDamageValueModifyType ModifyType, const float32 Value)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    int local_12 = 0;
+    if (UEASAbility::GetContextAbility() != nullptr && ECS::IsAuthorityOrPrediction(EventData.DamageTarget))
+    {
+        if (local_12 && local_12.Datas.IsValidIndex(int(EventData.DamageIndex)))
+        {
+            float32 local_17;
+            FDamageApplyData& local_16 = local_12.Datas[int(EventData.DamageIndex)];
+            local_17 = 0.0f;
+            switch (int(ValueType))
+            {
+            case 0:
+            {
+                local_17 = local_16.FinalValues.HPDamage;
+                break;
+            }
+            case 1:
+            {
+                local_17 = local_16.FinalValues.PostureDamage;
+                break;
+            }
+            case 2:
+            {
+                local_17 = local_16.FinalValues.AbnormalStateAccumulation;
+                break;
+            }
+            }
+            float32 local_20 = local_17;
+            if (int(ModifyType) == 0)
+            {
+                local_20 = local_20 + Value;
+            }
+            else
+            {
+                if (int(ModifyType) == 2)
+                {
+                    local_20 = local_20 * Value;
+                }
+                else
+                {
+                    if (int(ModifyType) == 1)
+                    {
+                        local_20 = Value;
+                    }
+                }
+            }
+            switch (int(ValueType))
+            {
+            case 0:
+            {
+                local_16.FinalValues.HPDamage = local_20;
+                return;
+            }
+            case 1:
+            {
+                local_16.FinalValues.PostureDamage = local_20;
+                return;
+            }
+            case 2:
+            {
+                local_16.FinalValues.AbnormalStateAccumulation = local_20;
+                return;
+            }
+            }
+        }
+    }
+    return;
 }
 UFUNCTION()
 bool IsDamageHasAnyTag(const FAbilityHitEventData &inout EventData, const FGameplayTagContainer &inout Tags)
@@ -781,7 +865,7 @@ void ReplaceSkill(const FECSEntityAdapter &inout Entity, const USkillConfig Skil
     {
         return;
     }
-    FSkillUtils::CreateSkillEntityAndAddSkill(UEASAbility::GetContextECSWorld(), Entity.opImplConv(), SkillConfig, bReplaceInSameSlot, false, true);
+    FSkillUtils::CreateSkillEntityAndAddSkill(UEASAbility::GetContextECSWorld(), Entity.opImplConv(), SkillConfig, ESkillSlot(Slot), bReplaceInSameSlot, false, 1);
     return;
 }
 UFUNCTION()
@@ -795,7 +879,7 @@ FECSEntity AddSkill(const FECSEntityAdapter &inout Entity, const USkillConfig Sk
     {
         return ENTITY_NULL;
     }
-    return FSkillUtils::CreateSkillEntityAndAddSkill(UEASAbility::GetContextECSWorld(), Entity.opImplConv(), SkillConfig, bReplaceInSameSlot, false, true);
+    return FSkillUtils::CreateSkillEntityAndAddSkill(UEASAbility::GetContextECSWorld(), Entity.opImplConv(), SkillConfig, ESkillSlot(Slot), bReplaceInSameSlot, false, 1);
 }
 UFUNCTION()
 void RemoveSkill(const FECSEntityAdapter &inout Entity, const FECSEntity &inout SkillEntity)
@@ -1096,7 +1180,7 @@ FVector GetSkillTargetPosition(bool &out bHasTargetPosition)
 UFUNCTION()
 void CreateInherentShield(const FECSEntityAdapter &inout ShieldOwnerEntity, const FName &inout ShieldName, const FShieldBaseData &inout Data, const float32 ShieldMaxHP, const float32 ShieldInitHP, const bool bInitActive, const float32 AutoDeactivateDuration = -1, const float32 AutoDestroyDuration = -1)
 {
-    if (ECS::GetRuntimeInfo().IsClient)
+    if (int(ECS::GetRuntimeInfo().IsClient) != 0)
     {
         return;
     }

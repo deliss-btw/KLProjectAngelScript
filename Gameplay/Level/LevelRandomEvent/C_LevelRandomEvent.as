@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_LevelRandomEventData_NS
 {
     const TECSComponentDerivedPtr<FCS_LevelRandomEventData> DerivedPtr = TECSComponentDerivedPtr<FCS_LevelRandomEventData>();
@@ -8,7 +7,7 @@ namespace __INTENRAL_FCS_LevelRandomEventData_NS
 struct FRuntimeEventPointData
 {
     UPROPERTY()
-    ALevelRandomEventPoint RandomEventPoint;
+    ALevelRandomEventPoint RandomEventPoint = nullptr;
     UPROPERTY()
     int SelectedLBPIndex = -1;
     UPROPERTY()
@@ -19,7 +18,6 @@ struct FRuntimeEventPointData
     TArray<TDataObjectPtr<FLevelEventInfoConfigBase>> EventInfoConfigs;
     UPROPERTY()
     float32 DistToNearestResource = -1.0f;
-
 
 }
 
@@ -35,7 +33,6 @@ struct FCS_LevelRandomEventData : FECSSingleton
     int CurrentEventCount;
     UPROPERTY()
     TMap<ELevelRandomEventType, int> EventTypeCountMap;
-
 
 }
 
@@ -142,16 +139,16 @@ bool RemoveLevelRandomEventData(const FECSWorldPtr &inout World)
 }
 void __MonitorLevelRandomEventDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_LevelRandomEventData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_LevelRandomEventData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelRandomEventDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_LevelRandomEventData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_LevelRandomEventData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelRandomEventDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_LevelRandomEventData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_LevelRandomEventData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

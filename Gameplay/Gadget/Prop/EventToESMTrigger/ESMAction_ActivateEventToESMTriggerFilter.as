@@ -1,15 +1,9 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: UESMAction_ActivateBeginOverlapEventToESMTriggerFilter (default scalar field UESMAction.NetTriggerMode has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
-
 class UESMAction_ActivateBeginOverlapEventToESMTriggerFilter : UESMBPBaseSpanAction
 {
     UPROPERTY()
     bool bAllActivated = true;
     UPROPERTY()
     TArray<int> SpecificIndices;
-
 
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
@@ -61,7 +55,6 @@ class UESMAction_ActivateCustomInteractEventToESMTriggerFilter : UESMBPBaseSpanA
     UPROPERTY()
     TArray<int> SpecificIndices;
 
-
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
@@ -111,7 +104,6 @@ class UESMAction_ActivateOnTakeDamageEventToESMTriggerFilter : UESMBPBaseSpanAct
     bool bAllActivated = true;
     UPROPERTY()
     TArray<int> SpecificIndices;
-
 
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
@@ -163,7 +155,6 @@ class UESMAction_ActivateOnBeingHitEventToESMTriggerFilter : UESMBPBaseSpanActio
     UPROPERTY()
     TArray<int> SpecificIndices;
 
-
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
@@ -213,7 +204,6 @@ class UESMAction_ActivatePropEcologyEventToESMTriggerFilter : UESMBPBaseSpanActi
     bool bAllActivated = true;
     UPROPERTY()
     TArray<int> SpecificIndices;
-
 
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
@@ -265,7 +255,6 @@ class UESMAction_ActivateGlobalLevelEventToESMTriggerFilter : UESMBPBaseSpanActi
     UPROPERTY()
     TArray<int> SpecificIndices;
 
-
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
@@ -316,7 +305,6 @@ class UESMAction_ActivatePropMovementHitSceneEventToESMTriggerFilter : UESMBPBas
     UPROPERTY()
     TArray<int> SpecificIndices;
 
-
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
@@ -366,7 +354,6 @@ class UESMAction_ActivateDeathEventToESMTriggerFilter : UESMBPBaseSpanAction
     bool bAllActivated = true;
     UPROPERTY()
     TArray<int> SpecificIndices;
-
 
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
@@ -420,7 +407,6 @@ class UESMAction_ActivateMovementEndEventToESMTriggerFilter : UESMBPBaseSpanActi
     UPROPERTY()
     TArray<int> SpecificIndices;
 
-
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
@@ -472,7 +458,6 @@ class UESMAction_ActivateGameAttributeChangedEventToESMTriggerFilter : UESMBPBas
     bool bAllActivated = true;
     UPROPERTY()
     TArray<int> SpecificIndices;
-
 
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const

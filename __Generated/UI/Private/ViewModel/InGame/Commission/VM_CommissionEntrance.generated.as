@@ -1,10 +1,7 @@
-﻿
-
 struct FConfigVM_CommissionEntrance : FConfigEUIModelBase
 {
     UPROPERTY()
     float32 LockedOpacity = 0.5f;
-
 
 }
 

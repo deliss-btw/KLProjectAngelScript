@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_EcosimAICollectEngagingTarget : UESMBPBaseInstantAction
 {
     UESMAction_EcosimAICollectEngagingTarget()

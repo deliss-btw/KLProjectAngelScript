@@ -1,4 +1,3 @@
-﻿
 enum EAvatarPanelMode
 {
     PVX,
@@ -231,11 +230,59 @@ struct FVM_PVX_MainAvatar : FEUIViewModel
 
     FVM_PVX_MainAvatar()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_SelectCountdownSeconds = 0;
+        this.m_SelectedAvatarIndex = INDEX_NONE;
+        this.m_bReady = false;
+        this.m_FilterByIllustrate = EAvatarIllustrate(3);
+        this.m_bMonsterCampus = false;
+        this.m_ConfirmedAvatarId = 0;
+        this.m_bConfirmButtonEnabled = false;
+        this.m_bStartCount = false;
+        this.m_LocalPlayerUid = 0;
+        this.m_bPrepareFinish = false;
+        this.m_AvatarPanelMode = EAvatarPanelMode(0);
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVM_PVX_MainAvatar(const FVM_PVX_MainAvatar &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_SelectCountdownSeconds = 0;
+        this.m_SelectedAvatarIndex = INDEX_NONE;
+        this.m_bReady = false;
+        this.m_FilterByIllustrate = EAvatarIllustrate(3);
+        this.m_bMonsterCampus = false;
+        this.m_ConfirmedAvatarId = 0;
+        this.m_bConfirmButtonEnabled = false;
+        this.m_bStartCount = false;
+        this.m_LocalPlayerUid = 0;
+        this.m_bPrepareFinish = false;
+        this.m_AvatarPanelMode = EAvatarPanelMode(0);
+        this.m_SelectedAvatarIndex = int(Other.m_SelectedAvatarIndex);
+        this.m_bReady = Other.m_bReady;
+        this.m_IllustrateTypes = Other.m_IllustrateTypes;
+        this.m_FilterByIllustrate = Other.m_FilterByIllustrate;
+        this.m_PlayerOwnedAvatarInfo = Other.m_PlayerOwnedAvatarInfo;
+        this.m_bMonsterCampus = Other.m_bMonsterCampus;
+        this.m_FilteredAvatars = Other.m_FilteredAvatars;
+        this.m_SelectedAvatar = Other.m_SelectedAvatar;
+        this.m_AvatarDetailInfo = Other.m_AvatarDetailInfo;
+        this.m_ConfirmedAvatarId = int(Other.m_ConfirmedAvatarId);
+        this.m_bConfirmButtonEnabled = Other.m_bConfirmButtonEnabled;
+        this.m_Showcase = Other.m_Showcase;
+        this.m_bStartCount = Other.m_bStartCount;
+        this.m_SelectCountdown = Other.m_SelectCountdown;
+        this.m_SelectCountdownSeconds = int(Other.m_SelectCountdownSeconds);
+        this.m_LocalPlayerUid = int(Other.m_LocalPlayerUid);
+        this.m_TeamPlayersAvatar = Other.m_TeamPlayersAvatar;
+        this.m_TeamMemberPrepareItems = Other.m_TeamMemberPrepareItems;
+        this.m_TeamPlayerMonitors = Other.m_TeamPlayerMonitors;
+        this.m_MyFakeTeam = Other.m_MyFakeTeam;
+        this.m_bPrepareFinish = Other.m_bPrepareFinish;
+        this.m_AvatarPanelMode = Other.m_AvatarPanelMode;
+        return;
     }
     FVM_PVX_MainAvatar opAssign(const FVM_PVX_MainAvatar &inout Other)
     {
@@ -303,13 +350,10 @@ struct FVM_PVX_MainAvatar : FEUIViewModel
         GetGameplaySettings<UUtilitySettings> local_4;
         local_2 = local_4;
         FEUIModelContainer local_20;
-        UEUIManagerSubsystem local_22 = this.GetManager();
-        FEUIModelRef local_26;
-        local_20.AddModel(local_26, false);
+        local_20.AddModel(FEUIModelRef(::FVM_Image::Create(this.GetManager(), local_2.CommonCategoryAllIcon)), false);
         FVM_CommonTabItem& local_28 = ::FVM_CommonTabItem::Create(this.GetManager());
-        local_28.SetTitleText(NSLOCTEXT("PVX_MainAvatar", "IllustrateAll", "е…ЁйѓЁ"));
-        local_26 = FEUIModelRef(local_28);
-        local_20.AddModel(local_26, false);
+        local_28.SetTitleText(NSLOCTEXT("PVX_MainAvatar", "IllustrateAll", "全部"));
+        local_20.AddModel(FEUIModelRef(local_28), false);
         this.GetModify_IllustrateTypes().Add(local_20);
         GetGameplaySettings<UAvatarBuildSettings> local_38;
         local_36 = local_38;
@@ -320,15 +364,13 @@ struct FVM_PVX_MainAvatar : FEUIViewModel
             {
                 FEUIModelContainer local_56;
                 FAvatarIllustrateInfo local_192;
-                if (local_36.AvatarIllustrateInfos.Find(local_192, local_41))
+                if (local_36.AvatarIllustrateInfos.Find(EAvatarIllustrate(local_41), local_192))
                 {
-                    UEUIManagerSubsystem local_22_2 = this.GetManager();
-                    local_56.AddModel(local_26, false);
+                    local_56.AddModel(FEUIModelRef(::FVM_Image::Create(this.GetManager(), local_192.Icon)), false);
                 }
                 else
                 {
-                    UEUIManagerSubsystem local_22_3 = this.GetManager();
-                    local_56.AddModel(local_26, false);
+                    local_56.AddModel(FEUIModelRef(::FVM_Image::Create(this.GetManager(), local_2.CommonCategoryAllIcon)), false);
                 }
                 FVM_CommonTabItem& local_196 = ::FVM_CommonTabItem::Create(this.GetManager());
                 local_196.SetTitleText(local_192.DisplayName);
@@ -452,15 +494,67 @@ struct FVM_PVX_MainAvatar : FEUIViewModel
     }
     void OnSelectIllustrateFilter(const int IllustrateFilterItemIndex)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_2 = IllustrateFilterItemIndex - 1;
+        if (local_2 == INDEX_NONE)
+        {
+            this.SetFilterByIllustrate(EAvatarIllustrate(3));
+            return;
+        }
+        this.SetFilterByIllustrate(EAvatarIllustrate(local_2));
+        return;
     }
     void OnSelectAvatar(const int AvatarIndex)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (AvatarIndex != INDEX_NONE)
+        {
+            this.SetSelectedAvatarIndex(AvatarIndex);
+        }
+        return;
     }
     void RefreshFilteredAvatarList()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        FVM_AvatarInfo& local_24;
+        bool local_28;
+        if (this.GetbMonsterCampus())
+        {
+            return;
+        }
+        if (!(this.GetPlayerOwnedAvatarInfo().IsValid()))
+        {
+            this.SetPlayerOwnedAvatarInfo(TEUIModelRef<FVMS_PlayerOwnedAvatarInfo>(::FVMS_PlayerOwnedAvatarInfo::Get(this.GetManager())));
+        }
+        this.GetModify_FilteredAvatars().Reset(0);
+        TEUIModelRef<FVMS_PlayerOwnedAvatarInfo> local_4 = this.GetPlayerOwnedAvatarInfo();
+        for (auto& local_22 : GetUnLockAvatarList())
+        {
+            if (local_24)
+            {
+                if (!(local_24.GetAvatarConfig()))
+                {
+                    local_28 = false;
+                }
+                else
+                {
+                    EAvatarIllustrate local_26;
+                    local_28 = int(local_26) == int(this.GetFilterByIllustrate()) || (int(this.GetFilterByIllustrate()) == 3);
+                }
+                if (local_28)
+                {
+                    FEUIModelContainer local_44;
+                    local_44.AddModel(local_22.opImplConv(), false);
+                    FVM_AvatarInfoExtend& local_48 = ::FVM_AvatarInfoExtend::Create(this.GetContext().Manager);
+                    local_48.SetbShowDisplayState(false);
+                    local_44.AddModel(FEUIModelRef(local_48), false);
+                    this.GetModify_FilteredAvatars().Add(local_44);
+                }
+            }
+        }
+        if (this.GetFilteredAvatars().Num() > 0)
+        {
+            int local_7 = this.GetFilteredAvatars().IndexOfByKey(this.GetSelectedAvatar());
+            this.SetSelectedAvatarIndex((local_7 == INDEX_NONE ? 0 : local_7));
+        }
+        return;
     }
     void OnAvatarSelectConfirm()
     {
@@ -596,7 +690,7 @@ struct FVM_PVX_MainAvatar : FEUIViewModel
                         this.GetMyFakeTeam().opArrow().GetModify_TeamCommonData().Members.Add(TEUIModelRef<FM_TeamMember>(local_148));
                         TEUIModelRef<FVM_TeammateInfo> local_152 = TEUIModelRef<FVM_TeammateInfo>(::FVM_TeammateInfo::Create(this.GetContext().Manager, (TEUIModelRef<FM_TeamMember>(local_148))));
                         FEUIModelContainer local_168;
-                        local_168.AddModel(FEUIModelRef(), false);
+                        local_168.AddModel(FEUIModelRef(::FVM_TeamMemberPrepareItem::Create(this.GetContext().Manager, local_152)), false);
                         FVM_PlayerBasicItemExtend& local_170 = ::FVM_PlayerBasicItemExtend::Create(this.GetContext().Manager);
                         local_170.SetbShowLevelText(false);
                         local_168.AddModel(FEUIModelRef(local_170), false);
@@ -1200,7 +1294,6 @@ struct __GeneratedProperties_FVM_PVX_MainAvatar
     UPROPERTY()
     TEUIModelRef<FVM_PVX_MainAvatar> Self;
 
-
 }
 
 namespace FVM_PVX_PlayerMonitor
@@ -1266,7 +1359,13 @@ void __OnPVXRuntimeChanged(FVM_PVX_PlayerMonitor &inout Model, const FECSEntity 
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorPlayerStatesLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerStatesModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerInfoPVXLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerInfoPVXModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPVXPlayerRuntimeLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPVXPlayerRuntimeModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TEUIModelRef<FVM_PVX_PlayerMonitor> __UIGetter_Self(const FVM_PVX_PlayerMonitor &inout Model)
 {
@@ -1311,7 +1410,115 @@ FVM_PVX_MainAvatar CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "IllustrateTypes";
+    local_14.TypeName = "TArray<FEUIModelContainer>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bMonsterCampus";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "FilteredAvatars";
+    local_14.TypeName = "TArray<FEUIModelContainer>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectedAvatar";
+    local_14.TypeName = "FEUIModelContainer";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AvatarDetailInfo";
+    local_14.TypeName = "TEUIModelRef<FVM_AvatarDetailInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bConfirmButtonEnabled";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectCountdownSeconds";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TeamMemberPrepareItems";
+    local_14.TypeName = "TArray<FEUIModelContainer>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PrepareCountdownPercentage";
+    local_14.TypeName = "float32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShowTeamMemberList";
+    local_14.TypeName = "ESlateVisibility";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShowAlreadyConfirmedText";
+    local_14.TypeName = "ESlateVisibility";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectedAvatarInfo";
+    local_14.TypeName = "TEUIModelRef<FVM_AvatarInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_PVX_MainAvatar>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_PVX_MainAvatar;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(22);
+    local_22.AddRefPropertyDirty(0, 0, FVMS_PlayerOwnedAvatarInfo::__IndexOf_UnLockAvatarList());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("PlayerOwnedAvatarInfo");
+    int local_2_2 = FVMS_PlayerOwnedAvatarInfo::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FVMS_PlayerOwnedAvatarInfo::__IndexOf_UnLockAvatarList(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelWatcherProperty local_35;
+    local_35.PropertyName = FName("SelectCountdown");
+    int local_24 = FVM_PVX_MainAvatar::__IndexOf_SelectCountdown();
+    Result.WatcherProperties.Add(local_35);
+    FEUIModelEffectDefine local_40;
+    local_40.FunctionName = "RefreshSelectCountdownSeconds";
+    Result.EffectFunctions.Add(local_40);
+    FEUIModelDirtyDefine local_48;
+    local_48.FunctionName = "__OnSelectedAvatarIndexChanged";
+    local_48.DirtyFlags.Set(FVM_PVX_MainAvatar::__IndexOf_SelectedAvatarIndex());
+    local_48.DirtyFlags.Set(FVM_PVX_MainAvatar::__IndexOf_FilteredAvatars());
+    Result.DirtyFunctions.Add(local_48);
+    local_48.FunctionName = "__RefreshFilteredAvatarList";
+    local_48.DirtyFlags.Set(FVM_PVX_MainAvatar::__IndexOf_PlayerOwnedAvatarInfo());
+    local_48.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    local_48.DirtyFlags.Set(FVM_PVX_MainAvatar::__IndexOf_FilterByIllustrate());
+    Result.DirtyFunctions.Add(local_48);
+    FEUIModelMonitorDefine local_58;
+    local_58.FunctionName = "__OnPVXMatchDataChanged";
+    local_58.ComponentType = FCS_PVX_MatchData;
+    Result.MonitorFunctions.Add(local_58);
+    local_58.FunctionName = "__OnUniversalMatchDataChanged";
+    local_58.ComponentType = FCS_GameMode_MatchData;
+    Result.MonitorFunctions.Add(local_58);
+    FEUIModelEventDefine local_66;
+    local_66.FunctionName = "__OnPVXStartGameTrigger";
+    local_66.EventType = FCE_PVXStartGameEvent;
+    Result.EventFunctions.Add(local_66);
+    return;
 }
 UScriptStruct GetModelStruct()
 {
@@ -1346,7 +1553,11 @@ void __OnPVXStartGameTrigger(FVM_PVX_MainAvatar &inout Model, const FCE_PVXStart
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorPVX_MatchDataLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPVX_MatchDataModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorGameMode_MatchDataLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorGameMode_MatchDataModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TArray<FEUIModelContainer> __UIGetter_IllustrateTypes(const FVM_PVX_MainAvatar &inout Model)
 {

@@ -1,5 +1,3 @@
-﻿
-
 class UBTDecorator_CheckCreatureInAnyState : UBTDecorator_ECSScriptBase
 {
     UPROPERTY()

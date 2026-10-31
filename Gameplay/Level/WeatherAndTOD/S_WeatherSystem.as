@@ -1,10 +1,8 @@
-﻿
 const FConsoleVariable CVar_DisableWeatherSystem = FConsoleVariable();
 
 class US_WeatherSystem : UECSScriptSystem
 {
     float32 UpdateRegionWeatherInterval = 0.2f;
-
 
     UFUNCTION()
     bool IsDisabled_Implementation() const
@@ -82,7 +80,60 @@ class US_WeatherSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_OnRegionActive(const FECSEntity &inout Entity, const FC_Region &inout Region) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_8 = 0;
+        AECSRegionVolume local_166;
+        int local_226 = 0;
+        FECSWorldPtr local_2 = Entity.GetWorld();
+        if (!(local_8))
+        {
+            return;
+        }
+        TDataObjectPtr<FWeatherGenerateTemplate> local_34 = TDataObjectPtr<FWeatherGenerateTemplate>(nullptr);
+        TDataObjectPtr<FWorldAreaConfig> local_106 = TDataObjectPtr<FWorldAreaConfig>(nullptr);
+        if (Region.GetbIsGlobalRegion())
+        {
+            local_34 = local_8.GlobalWeatherTemplate;
+            local_106 = local_8.GlobalWeatherAreaConfig;
+        }
+        else
+        {
+            Get local_158;
+            if (local_158.opCall())
+            {
+                AActor local_162;
+                local_166 = (Cast<AECSRegionVolume>(local_162));
+                if ((local_166 == nullptr || !(local_166.bAffectWeather)))
+                {
+                    return;
+                }
+                local_34 = local_166.WeatherTemplate;
+                local_106 = local_166.AreaConfig;
+            }
+            else
+            {
+                return;
+            }
+        }
+        ModifyOrAdd local_172;
+        local_172.opCall().SetWorldAreaConfig(local_106);
+        if (local_106.IsSet())
+        {
+            FWeatherInitOverrideEntry local_220;
+            if (local_8.AreaOverrides.Find(local_106, local_220))
+            {
+                local_226.StartWeatherConfig = local_220.StartWeatherConfig;
+                local_226.WeatherTemplate = local_220.WeatherTemplate;
+                FString local_254 = ((FString("Monitor_OnRegionActive: applied commission override, Region:") + Entity) + " StartWeather:");
+                FString local_258_2 = (local_254 + local_220.StartWeatherConfig.GetDataName());
+                FString local_254_2 = (local_258_2 + " Template:");
+                ::FWeatherUtils::DebugWeatherLog((local_254_2 + local_220.WeatherTemplate.GetDataName()));
+            }
+        }
+        ::FWeatherUtils::InitWeatherForRegion(Entity, local_34);
+        FString local_258_3 = (FString("Monitor_OnRegionActive: initialized weather, Region:") + Entity);
+        FString local_254_3 = (local_258_3 + " bIsGlobal:");
+        ::FWeatherUtils::DebugWeatherLog((local_254_3 + Region.GetbIsGlobalRegion()));
+        return;
     }
     UFUNCTION()
     void ServerJob_UpdateRegionWeather(const FECSEntity &inout Entity, FC_RegionWeatherData &inout RegionWeatherData, const FCS_FixedTime &inout FixedTime) const

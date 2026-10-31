@@ -1,5 +1,3 @@
-﻿
-
 class UEQG_LevelGroupPoint : UEnvQueryGenerator_ECS_BlueprintBase
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ class UEQG_LevelGroupPoint : UEnvQueryGenerator_ECS_BlueprintBase
     FKLGameplayTagQuery DomainTagQuery;
 
     default GeneratedItemType = UEnvQueryItemType_Point;
-
 
     UFUNCTION()
     void DoItemGenerationFromEntities_Implementation(const TArray<FECSEntityId> &inout ContextEntities) const

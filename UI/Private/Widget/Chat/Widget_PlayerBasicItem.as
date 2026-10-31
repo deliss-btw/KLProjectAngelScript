@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PlayerBasicItem
 {
     const int ViewID = 0;
@@ -17,7 +16,6 @@ class UWidget_PlayerBasicItem : UEUIUserWidget
     FGetEUIModelRef PlayerBasicItemDelegate;
     UPROPERTY()
     FGetEUIModelRef PlayerBasicItemExtendDelegate;
-
 
     UFUNCTION()
     void OnPlayerBasicItemClicked()
@@ -68,6 +66,7 @@ namespace UWidget_PlayerBasicItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PlayerBasicItem;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ChatUnReadTips_Helpers
 {
 UFUNCTION()

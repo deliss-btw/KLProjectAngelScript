@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_EntityDialogPanel_Helpers
 {
 UFUNCTION()

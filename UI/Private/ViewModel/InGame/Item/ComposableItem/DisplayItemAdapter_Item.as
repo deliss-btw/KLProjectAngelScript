@@ -1,4 +1,3 @@
-﻿
 namespace DisplayItemAdapter_Item
 {
 TEUIModelRef<FM_DisplayItemData> MakeDisplayData(const UObject ContextObject, const TEUIModelRef<FM_ItemData> &inout ItemDataModel)

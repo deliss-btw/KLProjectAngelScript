@@ -1,5 +1,3 @@
-﻿
-
 class AKLGameModeSP : AECSGameModeSPBase
 {
     AKLGameModeSP()

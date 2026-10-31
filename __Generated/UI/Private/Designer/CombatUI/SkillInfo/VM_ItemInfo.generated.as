@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_ItemInfo_Helpers
 {
 UFUNCTION()

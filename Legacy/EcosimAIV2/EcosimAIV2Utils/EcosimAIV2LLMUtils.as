@@ -1,4 +1,3 @@
-﻿
 namespace FEcosimAIV2Utils
 {
 bool GetPromptFromRelativePath(const FString &inout RelativePath, FString &inout PromptData)
@@ -38,7 +37,7 @@ UEcosimAIV2LLMGISubsystem GetEcosimAIV2LLMGISystem(const UWorld World)
 }
 void DebugChatWithLLM(const FString &inout Prompt)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
 }
 void EntityPublicSpeakBySimpleLLM(const FString &inout PromptFileName, const FString &inout AdditionalContext, const FECSEntity &inout Entity)
 {

@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_SetStrafeTransitionTime : UESMBPBaseInstantAction
 {
     UESMAction_SetStrafeTransitionTime()

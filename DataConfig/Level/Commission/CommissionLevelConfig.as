@@ -1,5 +1,3 @@
-﻿
-
 struct FCommissionLevelAttackConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -9,7 +7,6 @@ struct FCommissionLevelAttackConfig : FDataObject
     float32 Attack = 0.0f;
     UPROPERTY()
     float32 PostureAttack = 0.0f;
-
 
 }
 

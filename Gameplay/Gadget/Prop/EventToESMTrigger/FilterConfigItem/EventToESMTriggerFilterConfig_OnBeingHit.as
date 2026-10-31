@@ -1,11 +1,9 @@
-﻿
 enum EOnBeingHitFilterType
 {
     Attacker,
     Receiver,
     AttackerAndReceiver,
 }
-
 
 struct FEventToESMTriggerFilterConfigItem_OnBeingHit : FEventToESMTriggerFilterConfigItemBase
 {
@@ -20,7 +18,6 @@ struct FEventToESMTriggerFilterConfigItem_OnBeingHit : FEventToESMTriggerFilterC
     bool bFilterAttackType = false;
     UPROPERTY()
     int AttackTypesToFilter = 0;
-
 
     bool ShouldEvaluateAttacker() const
     {

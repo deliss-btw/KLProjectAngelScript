@@ -1,5 +1,3 @@
-﻿
-
 class UESMAnimInstance_AvatarBase : UESMAnimInstance_Base
 {
     UPROPERTY()
@@ -28,7 +26,6 @@ class UESMAnimInstance_AvatarBase : UESMAnimInstance_Base
     float32 SlopeAdaptBlendInSpeed = 5.0f;
     UPROPERTY()
     float32 SlopeAdaptBlendOutSpeed = 5.0f;
-
 
     UFUNCTION()
     void BlueprintInitializeAnimation_Implementation()

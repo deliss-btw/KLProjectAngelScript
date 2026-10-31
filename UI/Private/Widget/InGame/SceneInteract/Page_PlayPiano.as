@@ -1,4 +1,3 @@
-﻿
 namespace UPage_PlayPiano
 {
     const int ViewID = 0;
@@ -124,6 +123,7 @@ namespace UPage_PlayPiano
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UPage_PlayPiano;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

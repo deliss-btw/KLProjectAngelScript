@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_DisableCharacterOutliner : UESMBPBaseSpanAction
 {
     UESMAction_DisableCharacterOutliner()

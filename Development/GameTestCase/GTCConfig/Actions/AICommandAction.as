@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FGTCAICommandAction (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FGTCAICommandInstancePreview
 {
     UPROPERTY()
@@ -27,7 +22,6 @@ struct FGTCAICommandInstancePreview
     FString InstanceText;
     UPROPERTY()
     FString InstanceDataJson;
-
 
 }
 

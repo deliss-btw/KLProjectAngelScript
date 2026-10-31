@@ -1,4 +1,3 @@
-﻿
 namespace FVM_NavigationBar
 {
     const int ModelId = 0;
@@ -137,9 +136,6 @@ struct FVM_NavigationBar : FEUIViewModel
             }
             this.PendingRightResidentIcons.Add(TEUIModelRef<FVM_NavigationBarIcon>(::FVM_NavigationBarIcon::Create(this.GetContext().Manager, local_82)));
         }
-        __Lambda_UI_Private_ViewModel_HUD_NavigationBar_VM_NavigationBar_108(local_44);
-        __Lambda_UI_Private_ViewModel_HUD_NavigationBar_VM_NavigationBar_111(local_28, local_34);
-        __Lambda_UI_Private_ViewModel_HUD_NavigationBar_VM_NavigationBar_112(local_28, local_34);
         this.CommitNavigationBarIconsIfChanged(this.PendingNavigationBarIcons);
         this.CommitLeftResidentIconsIfChanged(this.PendingLeftResidentIcons);
         this.CommitRightResidentIconsIfChanged(this.PendingRightResidentIcons);
@@ -399,7 +395,8 @@ struct __Lambda_UI_Private_ViewModel_HUD_NavigationBar_VM_NavigationBar_108
     }
     __Lambda_UI_Private_ViewModel_HUD_NavigationBar_VM_NavigationBar_108(const FVector &inout _InPlayerPosition)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.__PlayerPosition = _InPlayerPosition;
+        return;
     }
     FVector GetPlayerPosition() property
     {
@@ -425,6 +422,7 @@ struct __Lambda_UI_Private_ViewModel_HUD_NavigationBar_VM_NavigationBar_111
     }
     __Lambda_UI_Private_ViewModel_HUD_NavigationBar_VM_NavigationBar_111(const FVector &inout _InViewPosition, const FRotator &inout _InViewRotation)
     {
+        this.__ViewPosition = _InViewPosition;
         this.__ViewRotation = _InViewRotation;
         return;
     }
@@ -457,6 +455,7 @@ struct __Lambda_UI_Private_ViewModel_HUD_NavigationBar_VM_NavigationBar_112
     }
     __Lambda_UI_Private_ViewModel_HUD_NavigationBar_VM_NavigationBar_112(const FVector &inout _InViewPosition, const FRotator &inout _InViewRotation)
     {
+        this.__ViewPosition = _InViewPosition;
         this.__ViewRotation = _InViewRotation;
         return;
     }
@@ -482,7 +481,6 @@ struct __GeneratedProperties_FVM_NavigationBar
     bool ShouldDisplay;
     UPROPERTY()
     TEUIModelRef<FVM_NavigationBar> Self;
-
 
 }
 

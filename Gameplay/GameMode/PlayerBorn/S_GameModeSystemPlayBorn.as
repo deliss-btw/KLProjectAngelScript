@@ -1,4 +1,3 @@
-﻿
 const float32 PlayerBornInitCameraHeightOffset = 180f;
 const float32 PlayerBornInitCameraLengthOffset = 400f;
 
@@ -22,7 +21,57 @@ class US_ASGameModeSystemPlayerBorn : US_ECSScriptGameModeSystemBase
     UFUNCTION()
     void ServerJob_TickPrepare() const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_136 = 0;
+        int local_150 = 0;
+        int local_158 = 0;
+        int local_178 = 0;
+        int local_252 = 0;
+        int local_264 = 0;
+        if (::FLevelDataLayerUtils::IsWaitingForStreaming(this.GetWorld(), false))
+        {
+            return;
+        }
+        if (!(::FGameModeUtils::IsInitialLoadingComplete()))
+        {
+            return;
+        }
+        FECSWorldPtr local_6 = this.GetECSWorld();
+        Has local_10;
+        if (!(local_10.opCall()))
+        {
+            ::FGameModeUtils::InitTeamSpawner(this.GetECSWorld());
+        }
+        ::FGameModeUtils::HandleClientJoin();
+        FECSRuntimeView local_48 = this.GetECSWorld().GetRuntimeView(EECSRuntimeViewType(2));
+        Include local_52;
+        local_52.opCall();
+        Exclude(local_48).opCall();
+        Exclude(local_48).opCall();
+        FECSRuntimeViewIterator local_94 = local_48.Iterator();
+        for (; local_94.CanProceed;)
+        {
+            local_94.Proceed();
+            local_136.SetTeam(uint8(1));
+            local_150.SetbReady(false);
+            local_158.SetbBorn(false);
+            FVector local_164(FVector::ZeroVector);
+            FQuat local_172 = FQuat(FQuat::Identity);
+            FECSWorldPtr local_6_2 = this.GetECSWorld();
+            TDataObjectPtr<FLevelInfoConfig> local_226 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+            if (!(this.GetSpawnTransformByRule(uint8(local_136.GetTeam()), local_178, local_226, local_164, local_172)))
+            {
+                XWarning(ELog(33), FString().Append("ServerJob_TickPrepare: cannot find spawn location for player ").Append(local_136.GetPlayerId()));
+            }
+            local_252.SetLocation(local_164);
+            local_252.SetRotation(local_172.Rotator());
+            FVector local_270 = local_164;
+            FVector local_284 = (FVector(FVector::ForwardVector) * 400.0);
+            local_270 -= local_172.RotateVector(local_284);
+            local_270.Z += 180.0;
+            local_264.Location = local_270;
+            local_264.Rotation = local_172.Rotator();
+        }
+        return;
     }
     UFUNCTION()
     void ServerJob_HandlePlayerChangeSpecialty(const FCE_ClientChangeSpecialty &inout Event) const
@@ -244,7 +293,7 @@ class US_ASGameModeSystemPlayerBorn : US_ECSScriptGameModeSystemBase
         Position = FVector::ZeroVector;
         Rotation = FQuat::Identity;
         ESpawnPointSelectionRule local_2 = ESpawnPointSelectionRule(0);
-        ESpawnPointSelectionRule local_1 = local_2;
+        int local_1 = local_2;
         if (LevelInfoConfig.IsSet())
         {
             local_1 = local_2;
@@ -280,8 +329,7 @@ class US_ASGameModeSystemPlayerBorn : US_ECSScriptGameModeSystemBase
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_ClientChangeSpecialty, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_ClientChangeSpecialty, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());

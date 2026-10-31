@@ -1,5 +1,3 @@
-﻿
-
 struct FAnimAimPoseConfig : FDataObject
 {
     FDataObject _base_FDataObject;

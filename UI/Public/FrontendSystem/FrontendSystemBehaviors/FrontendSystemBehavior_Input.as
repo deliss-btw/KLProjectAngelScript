@@ -1,5 +1,3 @@
-﻿
-
 class UFrontendSystemBehavior_ApplyIMC : UFrontendSystemBehaviorBase
 {
     UPROPERTY()
@@ -19,11 +17,11 @@ class UFrontendSystemBehavior_ApplyIMC : UFrontendSystemBehaviorBase
             return;
         }
         FECSWorldPtr local_10 = ECS::GetECSWorld();
-        int local_44 = local_16.InputContextRefNums.FindOrAdd(TDataObjectPtr<FEnhancedInputContextConfig>(), 0);
+        int local_44 = local_16.InputContextRefNums.FindOrAdd(TDataObjectPtr<FEnhancedInputContextConfig>(this.InputContext), 0);
         ++local_44;
         if (int(local_44) == 1)
         {
-            ::EnhancedInputUtils::AddInputContext(Context.PlayerEntity, TDataObjectPtr<FEnhancedInputContextConfig>());
+            ::EnhancedInputUtils::AddInputContext(Context.PlayerEntity, TDataObjectPtr<FEnhancedInputContextConfig>(this.InputContext));
         }
         return;
     }
@@ -35,11 +33,11 @@ class UFrontendSystemBehavior_ApplyIMC : UFrontendSystemBehaviorBase
             return;
         }
         FECSWorldPtr local_4 = ECS::GetECSWorld();
-        int local_38 = local_10.InputContextRefNums.FindOrAdd(TDataObjectPtr<FEnhancedInputContextConfig>(), 0);
+        int local_38 = local_10.InputContextRefNums.FindOrAdd(TDataObjectPtr<FEnhancedInputContextConfig>(this.InputContext), 0);
         --local_38;
         if (int(local_38) <= 0)
         {
-            ::EnhancedInputUtils::RemoveInputContext(Context.PlayerEntity, TDataObjectPtr<FEnhancedInputContextConfig>());
+            ::EnhancedInputUtils::RemoveInputContext(Context.PlayerEntity, TDataObjectPtr<FEnhancedInputContextConfig>(this.InputContext));
         }
         return;
     }

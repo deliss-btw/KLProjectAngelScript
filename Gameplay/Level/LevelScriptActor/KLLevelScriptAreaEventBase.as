@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class AKLLevelScriptAreaEventBase : AKLLevelScriptBaseActor
 {
@@ -24,7 +22,6 @@ class AKLLevelScriptAreaEventBase : AKLLevelScriptBaseActor
     FLevelTimerCallback AreaEventTimer;
 
     default bEnableOnLevelMonsterDeadEvent = true;
-
 
     UFUNCTION()
     void OnInitLevelScriptEntity_Implementation()
@@ -516,7 +513,16 @@ class AKLLevelScriptAreaEventBase : AKLLevelScriptBaseActor
     UFUNCTION()
     void TurnOnMinimapIcon()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        if (this.PresentationRuleConfig)
+        {
+            ::EntityLevelSpotUtils::AddSpotData(this.LevelScriptEntity, ELevelSpotDataSource(4), FLevelSpotData(this.EventInfo.opArrow().GetPresentationConfig(), this.PresentationRuleConfig));
+            return;
+        }
+        if (this.IconSettings)
+        {
+            ::EntityLevelSpotUtils::AddSpotData(this.LevelScriptEntity, ELevelSpotDataSource(4), ::FLevelSpotData::CreateMinimapIcon(this.EventInfo.opArrow().GetPresentationConfig(), this.IconSettings));
+        }
+        return;
     }
     UFUNCTION()
     void TurnOffMinimapIcon()
@@ -527,13 +533,13 @@ class AKLLevelScriptAreaEventBase : AKLLevelScriptBaseActor
     UFUNCTION()
     void TurnOnIndicator()
     {
-        XWarning(ELog(22), "TurnOnIndicator е·Іеєџејѓдё”дёЌе†Ќз”џж•€пјљHUDIndicatorSystem е·Іиў«еџєдєЋ Spot зљ„ Indicator / HeadsUpDisplay дЅ“зі»еЏ–д»ЈгЂ‚");
+        XWarning(ELog(22), "TurnOnIndicator 已废弃且不再生效：HUDIndicatorSystem 已被基于 Spot 的 Indicator / HeadsUpDisplay 体系取代。");
         return;
     }
     UFUNCTION()
     void TurnOffIndicator()
     {
-        XWarning(ELog(22), "TurnOffIndicator е·Іеєџејѓдё”дёЌе†Ќз”џж•€пјљHUDIndicatorSystem е·Іиў«еџєдєЋ Spot зљ„ Indicator / HeadsUpDisplay дЅ“зі»еЏ–д»ЈгЂ‚");
+        XWarning(ELog(22), "TurnOffIndicator 已废弃且不再生效：HUDIndicatorSystem 已被基于 Spot 的 Indicator / HeadsUpDisplay 体系取代。");
         return;
     }
     UFUNCTION()

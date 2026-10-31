@@ -1,4 +1,3 @@
-﻿
 namespace FM_ShopCategory
 {
     const int ModelId = 0;

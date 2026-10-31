@@ -1,5 +1,3 @@
-﻿
-
 struct FVirtualJoystickConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -13,7 +11,6 @@ struct FVirtualJoystickConfig : FDataObject
     FKey XAxis;
     UPROPERTY()
     FKey YAxis;
-
 
 }
 

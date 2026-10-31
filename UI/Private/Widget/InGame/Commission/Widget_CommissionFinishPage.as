@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommissionFinishPage
 {
     const int ViewID = 0;
@@ -46,7 +45,7 @@ class UWidget_CommissionFinishPage : UEUIActivatableWidget
     UFUNCTION()
     void OnSkipCountdownChanged(const int Seconds)
     {
-        this.SkipWaitActionBinding.SetOverrideDisplayText(FText::Format(NSLOCTEXT("CommissionFinish", "SkipWaitBtn", "з»§з»­пј€{0}sпј‰"), Seconds));
+        this.SkipWaitActionBinding.SetOverrideDisplayText(FText::Format(NSLOCTEXT("CommissionFinish", "SkipWaitBtn", "继续（{0}s）"), Seconds));
         return;
     }
     UFUNCTION()
@@ -269,6 +268,7 @@ namespace UWidget_CommissionFinishPage
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionFinishPage;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnPendingCloseChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnbMarkAChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSkipCountdownChanged"));
@@ -288,6 +288,7 @@ namespace UWidget_CommissionFinishWidget
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionFinishWidget;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

@@ -1,4 +1,3 @@
-﻿
 namespace FCombatStateUtils
 {
 float32 GetDataTrackCombatDuration(const FCombatSession &inout CombatSession, const FFPTime &inout EndTime)
@@ -174,7 +173,44 @@ void EnterBossCombatSession(const FECSEntity &inout PawnEntity, const FECSEntity
 }
 void ExitBossCombatSession(const FECSEntity &inout PawnEntity, const FECSEntity &inout BossEntity, FC_CombatState &inout CombatState, const ECombatSessionEndReason EndReason)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    int local_12 = 0;
+    int local_22 = 0;
+    if (CombatState)
+    {
+        if (CombatState.BossCombatSessions.Contains(BossEntity.GetId()))
+        {
+            bool local_13;
+            FECSEntityId local_2 = BossEntity.GetId();
+            FECSWorldPtr local_6 = ECS::GetECSWorld();
+            local_13 = true;
+            if ((int(FLevelUtils::GetCurrentLevelType())) == 1)
+            {
+                local_13 = false;
+            }
+            Has local_26;
+            if (!(local_22) || !(local_26.opCall()))
+            {
+                local_13 = false;
+            }
+            if (local_13)
+            {
+                FBossCombatSessionInfo local_4;
+                FPbPlayerLogDsBossCombatEnd local_38;
+                FPbPlayerLogDsCombatCommon local_48 = local_38.GetCommon();
+                FCombatStateUtils::GetDataTrackPbCombatCommonData(PawnEntity, local_48);
+                local_38.SetBossCombatSessionId(int(local_4._base_FCombatSession));
+                local_38.SetBossId(int(local_4.BossId));
+                local_38.SetBossInstanceId(int(local_4.BossInstanceId));
+                local_38.SetEndStatus(int(EndReason));
+                local_38.SetCombatDuration(FCombatStateUtils::GetDataTrackCombatDuration(local_4, local_12.Time));
+                local_38.SetEngagementDuration(FCombatStateUtils::GetDataTrackEngagementDuration(local_4, local_12.Time));
+                local_38.SetUncontrollableDuration((local_4.UncontrollableDuration * 1000.0f));
+                ServerDataTrackerHelper::InternalLogProtoMessage(local_22.GetPlayerEntity(), PawnEntity, 102504, local_38.ToWrapper(), FProtoWrapper());
+            }
+            FECSEntityId local_2_2 = BossEntity.GetId();
+        }
+    }
+    return;
 }
 void GetDataTrackPbCombatCommonData(const FECSEntity &inout PawnEntity, FPbPlayerLogDsCombatCommon &inout CombatCommon)
 {

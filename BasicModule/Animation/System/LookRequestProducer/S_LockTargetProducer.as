@@ -1,5 +1,3 @@
-﻿
-
 class US_LookRequestLockTargetProducerSystemAS : UECSScriptSystem
 {
     US_LookRequestLockTargetProducerSystemAS()

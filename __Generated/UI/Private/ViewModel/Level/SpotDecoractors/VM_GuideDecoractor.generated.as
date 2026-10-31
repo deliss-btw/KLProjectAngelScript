@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_GuideDecoractor_Helpers
 {
 UFUNCTION()

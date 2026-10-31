@@ -1,4 +1,3 @@
-﻿
 const FName StrikeKey_Projectile = n"ProjectileStrikeKey";
 const FConsoleVariable CVar_CombatPresentation_EnableOtherPlayerProjectileHitFx = FConsoleVariable();
 
@@ -424,8 +423,9 @@ class US_ProjectileSystemAS : UECSScriptSystem
             FAbilityEffectEventData_Projectile local_44;
             local_44.SetProjectileEntity(local_4);
             local_44.SetPosition(Event.Position);
+            UScriptStruct local_50 = FAbilityEffectEventData_Projectile;
             GetDefaulted local_48;
-            FECSEntity local_54 = local_48.opCall().GetOwnerEntity();
+            ::FAbilityUtils::TryTriggerAbilityEffectEvent(local_4, local_48.opCall().GetOwnerEntity(), EAbilityEffectEvent(1), Event.Time, local_50, local_44);
         }
         Get local_58;
         const FC_ProjectileActorVisualConfig& local_60 = local_58.opCall();
@@ -515,7 +515,38 @@ class US_ProjectileSystemAS : UECSScriptSystem
     UFUNCTION()
     void ClientJob_SpawnProjectileVisualTransform(const FCE_CharacterFireProjectile &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_72 = 0;
+        if (Event.FireConfig.GetbForShooting())
+        {
+            if (!(Event.ProjectileEntity.IsValid()) || !(Event.ProjectileEntity.IsActive()))
+            {
+                return;
+            }
+            else
+            {
+                FVector local_8;
+                FQuat4f local_12;
+                Get local_40;
+                FTransform local_64 = local_40.opCall().ToFTransform();
+                bool local_2 = false;
+                if (::FProjectileUtils::CalculateProjectileSpawnTransform(Event.Sender, Event.Time, Event.FireConfig, local_64, local_8, local_12, true, local_2))
+                {
+                    return;
+                }
+                else
+                {
+                    if (local_72)
+                    {
+                        FC_VisualTransformOffset local_78;
+                        FVector local_84 = (local_8 - local_72.GetSpawnPosition());
+                        local_78.PositionOffset = FVector3f(local_84);
+                        local_78.RotationOffset = FQuat4f::Identity;
+                        return;
+                    }
+                }
+            }
+        }
+        return;
     }
     UFUNCTION()
     void ClientJob_RecoverProjectileVisualTransformOffset(const FECSEntity &inout Entity, const FC_LifeTime &inout LifeTime, const FC_ProjectileVisualOffsetCacheData &inout CacheData) const
@@ -666,8 +697,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
         local_120.OverrideAnimSocket = HitBoxData.OverrideAnimSocket;
         local_120.PhysicalMaterial = HitBoxData.HitMaterial;
         local_120.StrikeData.StrikeDirection = StrikeDirection;
-        TDataObjectPtr<FAttackData> local_146;
-        local_120.AttackData = local_146;
+        local_120.AttackData = TDataObjectPtr<FAttackData>(AttackData);
         return (::FCombatUtils::MakeHitEvent(OwnerEntity, OwnerEntity, HitEntity, Time, local_120));
     }
     UFUNCTION()
@@ -683,7 +713,6 @@ class US_ProjectileSystemAS : UECSScriptSystem
         const UUtilitySettings local_170;
         bool local_175;
         int local_177;
-        FHitTestCheckResult local_236;
         bool local_237;
         bool local_240;
         GetDefaulted local_260;
@@ -713,8 +742,9 @@ class US_ProjectileSystemAS : UECSScriptSystem
             XError(ELog(0), FString().Append("No AttackData for projectile ").Append(Entity.GetEntityName()));
             local_59 = false;
         }
+        int local_68 = EAttackType(0);
         FName local_71(NAME_None);
-        int local_73 = int(HitConfig.HitableRelation);
+        int local_72 = int(HitConfig.HitableRelation);
         if (!(local_59))
         {
             local_3 = false;
@@ -725,8 +755,9 @@ class US_ProjectileSystemAS : UECSScriptSystem
         }
         if (local_3)
         {
+            local_68 = local_76.AttackType;
             local_71 = local_76.AttackTag;
-            int local_73_2 = int(local_76.AffectFactionRelation);
+            local_72 = int(local_76.AffectFactionRelation);
         }
         bool local_77 = true;
         local_78 = false;
@@ -754,7 +785,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
             FVector local_140 = FVector(local_128.ToOrientationRotator().GetUpVector());
             local_102 = local_140.RotateAngleAxis(HitConfig.CustomStrikeDirectionAngle, local_128);
         }
-        float32 local_148 = 1.0f;
+        float local_148 = 1.0f;
         if (local_90)
         {
             FVector local_108_2 = (FVector(Transform.GetPosition()) - ProjectileInfo.GetSpawnPosition());
@@ -762,8 +793,8 @@ class US_ProjectileSystemAS : UECSScriptSystem
             FECSEntity local_154 = ProjectileOwner.GetOwnerEntity();
             if (local_160 && local_160.HasAttribute(Attribute::ProjectileAttenuationRangeScale) && local_160.HasAttribute(Attribute::ProjectileAttenuationValueScale))
             {
-                float32 local_161 = local_147;
-                float32 local_149 = local_160.GetAttributeValue(Attribute::ProjectileAttenuationRangeScale, FixedTime.Time);
+                float local_161 = local_147;
+                int local_149 = local_160.GetAttributeValue(Attribute::ProjectileAttenuationRangeScale, FixedTime.Time);
                 float32 local_162 = local_160.GetAttributeValue(Attribute::ProjectileAttenuationValueScale, FixedTime.Time);
                 if (local_149 > 0.0f)
                 {
@@ -771,11 +802,11 @@ class US_ProjectileSystemAS : UECSScriptSystem
                 }
                 else
                 {
-                    float32 local_165 = local_161;
+                    float32 local_165 = int(local_161);
                     local_90.AttenuationCurve.GetTimeRange(local_164, local_165);
                     local_161 = local_165;
                 }
-                local_148 = ((local_90.AttenuationCurve.GetFloatValue(local_161, 0.0f) - 1.0f) * local_162) + 1.0f;
+                local_148 = (((local_90.AttenuationCurve.GetFloatValue(local_161, 0.0f)) - 1.0f) * local_162) + 1.0f;
             }
             else
             {
@@ -806,7 +837,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
                     continue;
                 }
             }
-            FECSEntity local_154_2 = ProjectileOwner.GetOwnerEntity();
+            FHitTestCheckResult local_236 = ::FCombatUtils::CheckHitTestResult(ProjectileOwner.GetOwnerEntity(), local_34, EAttackType(local_68), local_71, uint8(local_72), local_222, ProjectileInfo.GetHitTestProtectData());
             local_237 = false;
             if (int(local_236.CheckResult) == 11)
             {
@@ -814,17 +845,15 @@ class US_ProjectileSystemAS : UECSScriptSystem
                 local_240 = true;
                 if (local_34)
                 {
-                    EDestructibleClassLevel local_255;
                     FCE_DestructibleHitEvent local_246;
                     FECSEntity local_232 = ProjectileOwner.GetOwnerEntity();
                     local_246.Receiver = local_222.HitEntity;
                     local_246.ImpactType = EImpactType(local_76.ImpactType);
                     local_246.ImpactStrength = EImpactStrength(local_76.ImpactStrengthValue);
                     local_246.ForceDirection = local_102;
-                    local_246.DestructibleDamageLevel = EDestructibleClassLevel(local_76.GetDestructibleClassLevelFromDamage(ProjectileOwner.GetOwnerEntity()));
+                    local_246.DestructibleDamageLevel = local_76.GetDestructibleClassLevelFromDamage(ProjectileOwner.GetOwnerEntity());
                     GetDefaulted local_254;
-                    local_255 = local_254.opCall().DestructibleClass;
-                    if (int(local_246.DestructibleDamageLevel) >= int(local_255))
+                    if (int(local_246.DestructibleDamageLevel) >= int(EDestructibleClassLevel(local_254.opCall().DestructibleClass)))
                     {
                         local_240 = false;
                     }
@@ -873,7 +902,8 @@ class US_ProjectileSystemAS : UECSScriptSystem
                         {
                             continue;
                         }
-                        float32 local_167_2 = local_148 * local_184.GetPenetratedAttenuationRatio();
+                        float local_166_2 = local_184.GetPenetratedAttenuationRatio();
+                        float local_167_2 = local_148 * local_166_2;
                         local_285 = false;
                         const FHitBoxData& local_288 = local_222.TryGetHitBoxData(local_285);
                         bool local_283 = ProjectileInfo.GetbPredictable();
@@ -900,7 +930,8 @@ class US_ProjectileSystemAS : UECSScriptSystem
                                         if (local_283_2)
                                         {
                                             local_269 = true;
-                                            local_164 = local_84.AttenuationBonusWhenHitWeakness;
+                                            float local_161_2 = local_84.AttenuationBonusWhenHitWeakness;
+                                            local_164 = int(local_161_2);
                                         }
                                     }
                                 }
@@ -963,17 +994,17 @@ class US_ProjectileSystemAS : UECSScriptSystem
                                     int local_320 = 1;
                                     for (; local_320 <= local_314; ++local_320)
                                     {
-                                        local_167_2 = local_148 * local_184.GetPenetratedAttenuationRatio();
+                                        local_166_2 = local_184.GetPenetratedAttenuationRatio();
+                                        local_167_2 = local_148 * local_166_2;
                                         FVector local_332(local_222.HitPoint);
                                         FVector local_96 = (local_140_2 * local_84.PenetrationHitCheckDeltaDistance);
                                         FVector local_108_3 = (local_96 * local_320);
                                         local_96 = (local_332 + local_108_3);
-                                        local_108_3 = (local_96 + (local_140_2 * local_84.PenetrationHitCheckDeltaDistance));
+                                        local_108_3 = (local_96 + (local_140_2 * int(local_84.PenetrationHitCheckDeltaDistance)));
                                         FCollisionQueryParams local_376;
                                         local_376.bTraceComplex = false;
-                                        int local_378 = int(FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(2)));
-                                        local_4_2 = true;
-                                        FECSEntity local_154_3 = ProjectileOwner.GetOwnerEntity();
+                                        FCollisionResponseParams local_386;
+                                        FPhysicsUtils::LineTraceMulti(ProjectileOwner.GetOwnerEntity(), true, EPhysicsTraceTag(10), local_318, local_96, local_108_3, FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(2)), local_376, local_386);
                                         for (auto& local_402 : local_318)
                                         {
                                             if (int(local_402.ECSEntityId) != local_222.HitEntity.GetIdValue())
@@ -992,7 +1023,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
                                                 if (ProjectileInfo.GetAttackInfoAfterPenetration().AttackData.IsValid())
                                                 {
                                                     local_4_2 = false;
-                                                    float32 local_161_2 = local_167_2 * local_164;
+                                                    float local_161_3 = local_167_2 * local_164;
                                                     local_408 = local_319;
                                                     local_408 = local_408 * local_84.TimeDelayPerPenetrationHit.ToSeconds();
                                                     FFPTime local_308_3 = FFPTime(local_408);
@@ -1008,7 +1039,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
                                                 }
                                                 else
                                                 {
-                                                    float32 local_166 = local_167_2 * local_164;
+                                                    local_166_2 = local_167_2 * local_164;
                                                     local_408 = local_319;
                                                     local_408 = local_408 * local_84.TimeDelayPerPenetrationHit.ToSeconds();
                                                     FFPTime local_308_4 = (FFPTime(local_408) + local_222.HitTime);
@@ -1085,7 +1116,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
                         local_406 = local_222.TryGetHitBoxData(local_270);
                         bool local_4_3 = ProjectileInfo.GetbPredictable();
                         FECSEntity local_232_4 = ProjectileOwner.GetOwnerEntity();
-                        float32 local_149_2 = local_148;
+                        int local_149_2 = int(local_148);
                         bool local_4_4 = this.GetECSRuntime().IsServer;
                         if (local_4_4)
                         {
@@ -1191,7 +1222,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
                         local_574.SetPosition(Transform.GetPosition());
                         local_574.HitEntity = local_222.HitEntity;
                         local_574.HitPoint = local_222.HitPoint;
-                        FECSEntity local_232_5 = local_578.opCall().GetOwnerEntity();
+                        ::FAbilityUtils::TryTriggerAbilityEffectEvent(Entity, local_578.opCall().GetOwnerEntity(), EAbilityEffectEvent(2), local_222.HitTime, FAbilityEffectEventData_ProjectileHit, local_574);
                     }
                     const FC_ProjectileTimelineEventTriggerConfig& local_586 = local_584.opCall();
                     if (local_586)
@@ -1255,11 +1286,11 @@ class US_ProjectileSystemAS : UECSScriptSystem
                                 if (local_606)
                                 {
                                     FC_VisualTransformOffset local_628;
-                                    float32 local_161_3 = local_606.OverrideLifeTime;
-                                    if (local_161_3 > 0.0f)
+                                    float local_161_4 = local_606.OverrideLifeTime;
+                                    if (local_161_4 > 0.0f)
                                     {
                                         FFPTime local_310_5 = FFPTime(local_222.HitTime);
-                                        FFPTime local_308_10 = FFPTime(local_606.OverrideLifeTime);
+                                        FFPTime local_308_10 = FFPTime(int(local_606.OverrideLifeTime));
                                         LifeTime.SetCustomEndTime((local_310_5 + local_308_10));
                                     }
                                     local_550.opCall(FC_ProjectileHitTestDisableTag());
@@ -1272,7 +1303,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
                                     local_618.opCall();
                                     Remove local_622;
                                     local_622.opCall();
-                                    local_161_3 = 1.0f;
+                                    local_161_4 = 1.0f;
                                     local_628.PositionOffset = FVector3f(local_222.HitPoint);
                                     local_628.RotationOffset = FQuat4f(Transform.GetRotation());
                                     local_628.bUseOffsetAsTransformDirectly = true;
@@ -1289,7 +1320,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
                             local_574.SetPosition(Transform.GetPosition());
                             local_574.HitEntity = ENTITY_NULL;
                             local_574.HitPoint = local_222.HitPoint;
-                            FECSEntity local_154_4 = local_578.opCall().GetOwnerEntity();
+                            ::FAbilityUtils::TryTriggerAbilityEffectEvent(Entity, local_578.opCall().GetOwnerEntity(), EAbilityEffectEvent(3), local_222.HitTime, FAbilityEffectEventData_ProjectileHit, local_574);
                         }
                         const FC_ProjectileTimelineEventTriggerConfig& local_586_2 = local_584.opCall();
                         if (local_586_2)
@@ -1313,9 +1344,8 @@ class US_ProjectileSystemAS : UECSScriptSystem
                             FSimpleDestructibleBreakResult local_674;
                             int local_248_2 = int(local_76.ImpactStrengthValue);
                             int local_247_2 = int(local_76.ImpactType);
-                            EDestructibleClassLevel local_249_2 = local_76.GetDestructibleClassLevelFromDamage(ProjectileOwner.GetOwnerEntity());
-                            int local_2 = int(local_222.HitItemIndex);
-                            FECSEntity local_154_5 = ProjectileOwner.GetOwnerEntity();
+                            UPrimitiveComponent local_676;
+                            ::SimpleDestructibleUtils::ServerTryBreakFromHitResult(ProjectileOwner.GetOwnerEntity(), local_676, int(local_222.HitItemIndex), local_76.GetDestructibleClassLevelFromDamage(ProjectileOwner.GetOwnerEntity()), true, EImpactType(local_247_2), EImpactStrength(local_248_2), local_102, local_674);
                             local_269 = local_674.bIsSimpleDestructible && !(local_674.bWasAlreadyDestroyed);
                             if (local_269 && local_240)
                             {
@@ -1698,58 +1728,79 @@ class US_ProjectileSystemAS : UECSScriptSystem
     UFUNCTION()
     void Job_DoFXSurroundMaterialCheck(const FC_ViewEntityTransform &inout Transform, FC_SurroundingMaterialCheckRuntime &inout Runtime, const FC_InterpoTime &inout InterpoTime) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        if (InterpoTime.Time.opCmp((Runtime.LastCheckTime + Runtime.CheckInterval)) < 0)
+        {
+            return;
+        }
+        FHitResult local_72;
+        FCollisionObjectQueryParams local_74;
+        local_74.AddObjectTypesToQuery(ECollisionChannel(0));
+        FCollisionQueryParams local_114;
+        local_114.bReturnPhysicalMaterial = true;
+        FVector local_128 = (Transform.Transform.GetLocation() + Runtime.TraceLine);
+        FVector local_122 = Transform.Transform.GetLocation();
+        bool local_6 = FPhysicsUtils::LineTraceSingle(this.GetWorld(), EPhysicsTraceTag(28), local_72, local_122, local_128, local_74, local_114);
+        if (local_6)
+        {
+            FName local_136 = ::FSceneInteractUtils::GetPhysicalMaterialNameFromHitResult(local_72);
+            EPhysicalSurface local_137 = FGamePhysicsUtils::GetPhysicalSurfaceType(local_136);
+            if ((!((Runtime.NewSurfaceName == local_136))))
+            {
+                Runtime.OldSurfaceName = Runtime.NewSurfaceName;
+                Runtime.NewSurfaceName = local_136;
+                Runtime.NewSurfaceIndex = int(local_137);
+                Runtime.bSurfaceUpdate = true;
+            }
+        }
+        Runtime.LastCheckTime = float32(InterpoTime.Time.ToSeconds());
+        return;
     }
     UFUNCTION()
     void Job_SpawnFXByMoveTrail(const FECSEntity &inout Entity, const FC_FXByMoveTrail &inout FXByMoveTrail, const FC_LifeTime &inout LifeTime, const FC_ProjectileInfo &inout ProjectileInfo, const FC_Transform &inout Transform, const FC_Owner &inout ProjectileOwner, const FCS_FixedTime &inout FixedTime) const
     {
         int local_6 = 0;
-        int local_8 = FXByMoveTrail.Configs.Num();
-        if (local_6.SpawnedIndex.Num() == local_8)
+        if (local_6.SpawnedIndex.Num() == FXByMoveTrail.Configs.Num())
         {
             return;
         }
         int local_10 = 0;
-        while (local_10 < local_8)
+        for (; local_10 < FXByMoveTrail.Configs.Num(); ++local_10)
         {
             const FFXByMoveTrailConfig& local_12 = FXByMoveTrail.Configs[local_10];
             if ((FFPTime(FixedTime.Time) - LifeTime.GetSpawnTime()).opCmp(local_12.SpawnFXDelayTime) < 0)
             {
+                continue;
             }
-            else
+            if (!(local_6.SpawnedIndex.Contains(local_10)))
             {
-                if (!(local_6.SpawnedIndex.Contains(local_10)))
+                FFXConfig local_132 = local_12.FXConfig;
+                local_132.SetbUseWorldOriginAsBaseTransformSource(true);
+                local_132.SetLocationOffsetSpace(EFXOffsetSpace(2));
+                local_132.SetRotationOffsetSpace(EFXOffsetSpace(2));
+                local_132.SetbDetach(true);
+                local_132.SetLocationOffset(((FVector(Transform.GetPosition()) + ProjectileInfo.GetSpawnPosition()) * 0.5));
+                local_132.SetRotationOffset(ProjectileInfo.GetSpawnRotation().Rotator());
+                FECSEntity local_168 = ECSFX::PlayFXDurational(ProjectileOwner.GetOwnerEntity(), local_132, (FFPTime(LifeTime.GetSpawnTime()) + local_12.SpawnFXDelayTime), 1.0f, false);
+                if (local_168 && !(local_12.FXLengthParamName.IsNone()))
                 {
-                    FFXConfig local_132 = local_12.FXConfig;
-                    local_132.SetbUseWorldOriginAsBaseTransformSource(true);
-                    local_132.SetLocationOffsetSpace(EFXOffsetSpace(2));
-                    local_132.SetRotationOffsetSpace(EFXOffsetSpace(2));
-                    local_132.SetbDetach(true);
-                    local_132.SetLocationOffset(((FVector(Transform.GetPosition()) + ProjectileInfo.GetSpawnPosition()) * 0.5));
-                    local_132.SetRotationOffset(ProjectileInfo.GetSpawnRotation().Rotator());
-                    FECSEntity local_168 = ECSFX::PlayFXDurational(ProjectileOwner.GetOwnerEntity(), local_132, (FFPTime(LifeTime.GetSpawnTime()) + local_12.SpawnFXDelayTime), 1.0f, false);
-                    if (local_168 && !(local_12.FXLengthParamName.IsNone()))
-                    {
-                        ECSFX::SetFXParameterFloat(local_168, local_12.FXLengthParamName, float32(((FVector(ProjectileInfo.GetSpawnPosition()) - Transform.GetPosition()).Size() / local_12.FXLengthDesiredDistance)));
-                    }
-                    FFXByMoveTrailRuntimeData local_180;
-                    local_180.Entity = local_168;
-                    FName local_182;
-                    if (local_12.bUpdateLengthByTime)
-                    {
-                        local_182 = local_12.FXLengthParamName;
-                    }
-                    else
-                    {
-                        local_182 = NAME_None;
-                    }
-                    local_180.FXLengthParamName = local_182;
-                    local_180.FXLengthDesiredDistance = local_12.FXLengthDesiredDistance;
-                    local_6.Datas.Add(local_180);
-                    local_6.SpawnedIndex.Add(local_10);
+                    ECSFX::SetFXParameterFloat(local_168, local_12.FXLengthParamName, float32(((FVector(ProjectileInfo.GetSpawnPosition()) - Transform.GetPosition()).Size() / local_12.FXLengthDesiredDistance)));
                 }
+                FFXByMoveTrailRuntimeData local_180;
+                local_180.Entity = local_168;
+                FName local_182;
+                if (local_12.bUpdateLengthByTime)
+                {
+                    local_182 = local_12.FXLengthParamName;
+                }
+                else
+                {
+                    local_182 = NAME_None;
+                }
+                local_180.FXLengthParamName = local_182;
+                local_180.FXLengthDesiredDistance = local_12.FXLengthDesiredDistance;
+                local_6.Datas.Add(local_180);
+                local_6.SpawnedIndex.Add(local_10);
             }
-            ++local_10;
         }
         return;
     }
@@ -1757,7 +1808,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
     void Job_UpdateFXByMoveTrail(const FECSEntity &inout Entity, FC_FXByMoveTrailRuntimeData &inout FXByMoveTrailRuntimeData, const FC_ProjectileInfo &inout ProjectileInfo, const FC_Transform &inout Transform) const
     {
         int local_1 = 0;
-        while (local_1 < 0)
+        for (; local_1 < FXByMoveTrailRuntimeData.Datas.Num(); ++local_1)
         {
             FFXByMoveTrailRuntimeData& local_6 = FXByMoveTrailRuntimeData.Datas[local_1];
             FECSEntity local_10 = FECSEntity(local_6.Entity);
@@ -1767,13 +1818,10 @@ class US_ProjectileSystemAS : UECSScriptSystem
                 {
                     ECSFX::SetFXParameterFloat(local_10, local_6.FXLengthParamName, float32(((FVector(ProjectileInfo.GetSpawnPosition()) - Transform.GetPosition()).Size() / local_6.FXLengthDesiredDistance)));
                 }
+                continue;
             }
-            else
-            {
-                FXByMoveTrailRuntimeData.Datas.RemoveAtSwap(local_1);
-                --local_1;
-            }
-            ++local_1;
+            FXByMoveTrailRuntimeData.Datas.RemoveAtSwap(local_1);
+            --local_1;
         }
         if (FXByMoveTrailRuntimeData.Datas.IsEmpty())
         {
@@ -1802,7 +1850,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
         FFPTime local_20 = FProjectileTimeUtils::GetProjectileTime(LifeTime, local_24.opCall(), InterpoTime.Time);
         int local_29 = 0;
         FFXOverrideParam local_274;
-        while (local_29 < 0)
+        for (; local_29 < ProjectileFXConfig.LifeTimeFX.Num(); ++local_29)
         {
             const FProjectileFXLifeTimeConfig& local_32 = ProjectileFXConfig.LifeTimeFX[local_29];
             FProjectileFXLifeTimeRuntimeData& local_34 = local_16.FXActorDatas[local_29];
@@ -1921,7 +1969,6 @@ class US_ProjectileSystemAS : UECSScriptSystem
                 }
                 ECSFX::SetFXUpdateTime(local_34.FXEntity, (local_20 - local_32.SpawnTime));
             }
-            ++local_29;
         }
         return;
     }

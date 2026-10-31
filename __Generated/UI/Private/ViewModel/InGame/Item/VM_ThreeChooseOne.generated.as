@@ -1,10 +1,7 @@
-﻿
-
 struct FConfigVM_ThreeChooseOne : FConfigEUIModelBase
 {
     UPROPERTY()
     float32 AutoClosePageDistance = 700.0f;
-
 
 }
 

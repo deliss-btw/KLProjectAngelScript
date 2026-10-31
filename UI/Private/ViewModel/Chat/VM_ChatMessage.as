@@ -1,4 +1,3 @@
-﻿
 enum EChatMessageShowType
 {
     Other,
@@ -93,7 +92,7 @@ struct FVM_ChatMessage : FEUIViewModel
     }
     void PostConstruct()
     {
-        EChatMessageShowType local_43;
+        int local_43;
         int local_94;
         TEUIModelRef<FM_ChatMessage> local_20 = this.GetMessage();
         FPlayerBriefInfo local_18 = FPlayerBriefInfo(GetSenderBrief());
@@ -135,8 +134,7 @@ struct FVM_ChatMessage : FEUIViewModel
         TEUIModelRef<FM_ChatMessage> local_34_3 = this.GetMessage();
         if (GetbIsVirtualSystemMessage())
         {
-            local_43 = EChatMessageShowType(2);
-            this.SetShowMessageType(EChatMessageShowType(local_43));
+            this.SetShowMessageType(EChatMessageShowType(2));
             this.SetContextTypeIndex(0);
         }
         else
@@ -144,8 +142,7 @@ struct FVM_ChatMessage : FEUIViewModel
             TEUIModelRef<FM_ChatMessage> local_20_6 = this.GetMessage();
             if (GetSenderType() == 1)
             {
-                local_43 = EChatMessageShowType(3);
-                this.SetShowMessageType(EChatMessageShowType(local_43));
+                this.SetShowMessageType(EChatMessageShowType(3));
                 this.SetContextTypeIndex(1);
                 TEUIModelRef<FM_ChatMessage> local_20_7 = this.GetMessage();
                 bool local_23 = !(GetbIsNpcDialogue());
@@ -158,11 +155,11 @@ struct FVM_ChatMessage : FEUIViewModel
                     {
                         if (local_23)
                         {
-                            local_43 = EChatMessageShowType(2);
+                            local_43 = 2;
                         }
                         else
                         {
-                            local_43 = EChatMessageShowType(3);
+                            local_43 = 3;
                         }
                         this.SetShowMessageType(EChatMessageShowType(local_43));
                     }
@@ -175,11 +172,11 @@ struct FVM_ChatMessage : FEUIViewModel
                 {
                     if (this.GetbIsPlayerSelf())
                     {
-                        local_94 = EChatMessageShowType(1);
+                        local_94 = 1;
                     }
                     else
                     {
-                        local_94 = EChatMessageShowType(0);
+                        local_94 = 0;
                     }
                     this.SetShowMessageType(EChatMessageShowType(local_94));
                 }
@@ -187,11 +184,11 @@ struct FVM_ChatMessage : FEUIViewModel
                 {
                     if (this.GetbIsPlayerSelf())
                     {
-                        local_94 = EChatMessageShowType(1);
+                        local_94 = 1;
                     }
                     else
                     {
-                        local_94 = EChatMessageShowType(0);
+                        local_94 = 0;
                     }
                     this.SetShowMessageType(EChatMessageShowType(local_94));
                 }
@@ -427,7 +424,6 @@ struct __GeneratedProperties_FVM_ChatMessage
     int ShotTypeIndex;
     UPROPERTY()
     TEUIModelRef<FVM_ChatMessage> Self;
-
 
 }
 

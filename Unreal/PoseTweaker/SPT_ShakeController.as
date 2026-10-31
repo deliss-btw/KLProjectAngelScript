@@ -1,11 +1,9 @@
-﻿
 enum EShakeSimulationState
 {
     None,
     Running,
     Idle,
 }
-
 
 struct FShakeBoneCurveSetting
 {
@@ -15,7 +13,6 @@ struct FShakeBoneCurveSetting
     float32 TimeScale = 1.0f;
     UPROPERTY()
     float32 StrengthScale = 1.0f;
-
 
 }
 
@@ -32,7 +29,6 @@ struct FShakeBoneSetting
     UPROPERTY()
     FShakeBoneCurveSetting CurveSetting;
 
-
 }
 
 struct FShakeBoneChainSetting
@@ -44,47 +40,38 @@ struct FShakeBoneChainSetting
     UPROPERTY()
     TArray<FShakeBoneSetting> ShakeBones;
 
-
 }
 
 struct FShakeBoneRuntimeState
 {
     UPROPERTY()
-    bool bEverStarted;
+    bool bEverStarted = false;
     UPROPERTY()
-    float32 ElapsedSecondsSinceCurveRun;
+    float32 ElapsedSecondsSinceCurveRun = 0.0f;
     UPROPERTY()
-    float32 LastAppliedCurveValue;
+    float32 LastAppliedCurveValue = 0.0f;
     UPROPERTY()
-    float32 RemainingCurveValue;
+    float32 RemainingCurveValue = 0.0f;
     UPROPERTY()
-    float32 TwistSign;
+    float32 TwistSign = 1.0f;
     UPROPERTY()
-    int IndexIntoSettingArray;
+    int IndexIntoSettingArray = INDEX_NONE;
     UPROPERTY()
-    float32 FinalCurveTimeScale;
+    float32 FinalCurveTimeScale = 1.0f;
     UPROPERTY()
-    float32 FinalCurveStrengthScale;
+    float32 FinalCurveStrengthScale = 1.0f;
 
-    FShakeBoneRuntimeState()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
 }
 
 struct FShakeBoneChainRuntimeState
 {
     UPROPERTY()
-    bool bLastInputRunTrigger;
+    bool bLastInputRunTrigger = false;
     UPROPERTY()
-    int BoneChainSettingIndex;
+    int BoneChainSettingIndex = INDEX_NONE;
     UPROPERTY()
     TMap<FName, FShakeBoneRuntimeState> BoneStates;
 
-    FShakeBoneChainRuntimeState()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
 }
 
 struct FShakeInputStates
@@ -99,7 +86,6 @@ struct FShakeInputStates
     FVector ExternalDriveOrigin = FVector::ZeroVector;
     UPROPERTY()
     FVector ExternalDriveDirection = FVector::ZeroVector;
-
 
 }
 
@@ -117,7 +103,6 @@ class USPT_ShakeControllerBase : USkeletalPoseTweaker
     UPROPERTY()
     TMap<FName, FShakeInputStates> DebugInputState;
     int DebugTriggerUpdateCounter = 2147483647;
-
 
     UFUNCTION()
     void OnInitialization_Implementation()

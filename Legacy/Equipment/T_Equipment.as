@@ -1,5 +1,3 @@
-﻿
-
 struct FT_EquipmentHolder : FECSTrait
 {
     FECSTrait _base_FECSTrait;

@@ -1,12 +1,9 @@
-﻿
-
 struct FCombatIndexedScore
 {
     UPROPERTY()
     int Index;
     UPROPERTY()
     float32 Score;
-
 
     int opCmp(const FCombatIndexedScore &inout Other) const
     {
@@ -32,7 +29,6 @@ class US_CombatZoneSystem : UECSScriptSystem
     float CombatZoneRadiusSQ = 25000000.0;
     UPROPERTY()
     float CombatZoneMergeRadiusSQ = 16000000.0;
-
 
     UFUNCTION()
     void Job_InitCombatZone() const
@@ -83,8 +79,7 @@ class US_CombatZoneSystem : UECSScriptSystem
                         local_38 = this.CreateZone(local_58);
                         Manager.CombatZones.Add(local_38);
                     }
-                    int local_97 = int(local_46.GetFactionId());
-                    FECSEntity local_96 = FECSEntity(local_84.opCall().FindCombatGroup());
+                    FECSEntity local_96 = FECSEntity(local_84.opCall().FindCombatGroup(EFaction(local_46.GetFactionId())));
                     if ((local_96 == ENTITY_NULL))
                     {
                         local_96 = this.CreateZoneCombatGroup(local_38, local_46.GetFactionId());
@@ -157,7 +152,7 @@ class US_CombatZoneSystem : UECSScriptSystem
     void Job_DispatchSpecialToken(const FCE_AISpecialCombatTokenGenerate &inout SpecialTokenGen, const FCS_FixedTime &inout FixedTime) const
     {
         int local_6 = 0;
-        int local_16;
+        int local_16 = 0;
         bool local_27;
         int local_158 = 0;
         int local_178 = 0;
@@ -240,7 +235,8 @@ class US_CombatZoneSystem : UECSScriptSystem
                         FCombatIndexedScore& local_170 = local_168[local_151_2];
                         local_170.Index = local_151_2;
                         float32 local_171 = 0.0f;
-                        if (::FAITargetingUtils::GetCurrentAttackTarget(local_140[local_151_2]).IsValid())
+                        FECSEntity local_98_3 = local_140[local_151_2];
+                        if (::FAITargetingUtils::GetCurrentAttackTarget(local_98_3).IsValid())
                         {
                             Get local_176;
                             const FC_Transform& local_180 = local_176.opCall();
@@ -301,27 +297,24 @@ class US_CombatZoneSystem : UECSScriptSystem
     void Job_MergeCombatZone(FCS_CombatZoneManager &inout Manager) const
     {
         FC_CombatZone local_22;
-        int local_23 = 0;
         FC_CombatZone local_40;
         int local_68;
         for (auto local_16 : Manager.CombatZones)
         {
-            local_23 = int(local_22.ZoneEntitiesNum);
-            if (local_23 > 0)
+            if (int(local_22.ZoneEntitiesNum) > 0)
             {
                 FVector2D local_28 = local_22.ZoneEntitiesCenter;
                 local_22.ZoneCenter = (local_28 / int(local_22.ZoneEntitiesNum));
                 local_22.ZoneEntitiesCenter = local_28;
-                local_23 = 0;
-                local_22.ZoneEntitiesNum = local_23;
+                local_22.ZoneEntitiesNum = 0;
             }
         }
         bool local_35 = false;
         int local_36 = 0;
-        while (local_36 < local_23)
+        for (; local_36 < Manager.CombatZones.Num(); ++local_36)
         {
             int local_38 = local_36 + 1;
-            while (local_38 < 0)
+            for (; local_38 < Manager.CombatZones.Num(); ++local_38)
             {
                 if (local_22.ZoneCenter.DistSquared(local_40.ZoneCenter) < this.CombatZoneMergeRadiusSQ)
                 {
@@ -338,9 +331,7 @@ class US_CombatZoneSystem : UECSScriptSystem
                         }
                     }
                 }
-                ++local_38;
             }
-            ++local_36;
         }
         if (local_35)
         {

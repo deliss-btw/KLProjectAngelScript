@@ -1,5 +1,3 @@
-﻿
-
 struct FT_MovementConfig : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -27,7 +25,6 @@ struct FT_MovementConfig : FECSTrait
     FECSInternalTraitCompDefinition FC_CurveMovementConfig_Defination = FECSInternalTraitCompDefinition::CreateNoCheck(FC_CurveMovementConfig, NAME_None);
     UPROPERTY()
     bool bHas_FC_CurveMovementConfig = false;
-
 
 }
 

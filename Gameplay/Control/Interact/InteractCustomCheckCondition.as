@@ -1,4 +1,3 @@
-﻿
 enum EItemNumberComparison
 {
     GreaterThan,
@@ -16,7 +15,6 @@ enum EInteractEntityTypeCheck
     Monster,
 }
 
-
 UCLASS(Abstract)
 class UInteractCustomCheckConditionBase : UObject
 {
@@ -24,7 +22,6 @@ class UInteractCustomCheckConditionBase : UObject
     bool bShowCheckFailContent = false;
     UPROPERTY()
     TDataObjectPtr<FKLTextData> CheckFailContentTextData;
-
 
     bool CheckCondition(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPoint &inout InteractionPoint, const bool bIsCheckingDuringInteracting) const
     {
@@ -41,10 +38,9 @@ class UInteractCustomCheckCondition_CheckInventoryItemNumber : UInteractCustomCh
     UPROPERTY()
     int ItemNumber = 0;
 
-
     bool CheckCondition(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPoint &inout InteractionPoint, const bool bIsCheckingDuringInteracting) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         bool __r; return __r;
     }
 }
@@ -267,7 +263,6 @@ class UInteractCustomCheckCondition_BlackboardConditionAndArray : UInteractCusto
     UPROPERTY()
     bool bCheckSourceEntity = true;
 
-
     bool CheckCondition(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPoint &inout InteractionPoint, const bool bIsCheckingDuringInteracting) const
     {
         if (!(bIsCheckingDuringInteracting))
@@ -352,7 +347,6 @@ class UInteractCustomCheckCondition_CheckMainPlayer : UInteractCustomCheckCondit
     UPROPERTY()
     bool bWantMainPlayer = true;
 
-
     bool CheckCondition(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPoint &inout InteractionPoint, const bool bIsCheckingDuringInteracting) const
     {
         FECSEntity local_6;
@@ -385,7 +379,6 @@ class UInteractCustomCheckCondition_CheckFaction : UInteractCustomCheckCondition
 {
     UPROPERTY()
     uint8 EnableFactionRelation = (7 != 0);
-
 
     bool CheckCondition(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPoint &inout InteractionPoint, const bool bIsCheckingDuringInteracting) const
     {
@@ -464,7 +457,6 @@ class UInteractCustomCheckCondition_CheckSocialTeam : UInteractCustomCheckCondit
     bool bCheckInteractSource = false;
     UPROPERTY()
     bool bCheckValidSocialTeam = false;
-
 
     bool CheckCondition(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPoint &inout InteractionPoint, const bool bIsCheckingDuringInteracting) const
     {
@@ -899,7 +891,6 @@ class UInteractCustomCheckCondition_CheckEntityType : UInteractCustomCheckCondit
     uint8 AllowedEntityTypes = (7 != 0);
     UPROPERTY()
     bool bInvertResult = false;
-
 
     bool CheckCondition(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPoint &inout InteractionPoint, const bool bIsCheckingDuringInteracting) const
     {

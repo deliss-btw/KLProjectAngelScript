@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_LinkSkillEnergyCrossbow
 {
     const int ViewID = 0;
@@ -102,6 +101,7 @@ namespace UWidget_LinkSkillEnergyCrossbow
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_LinkSkillEnergyCrossbow;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSmoothedEnergyChanged"));
     return;
 }

@@ -1,5 +1,3 @@
-﻿
-
 struct FCerealWorldTimeStampTestAS
 {
     FSubDirtyFlags16 __DirtyFlags;
@@ -24,11 +22,30 @@ struct FCerealWorldTimeStampTestAS
 
     FCerealWorldTimeStampTestAS()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_FrameAsTimeStamp = 0;
+        this.m_FrameAsPlainInt = 0;
+        FSubDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_RegularInt = 0;
+        return;
     }
     FCerealWorldTimeStampTestAS(const FCerealWorldTimeStampTestAS &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_FrameAsTimeStamp = 0;
+        this.m_FrameAsPlainInt = 0;
+        FSubDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_RegularInt = 0;
+        this.m_TimeWorld = Other.m_TimeWorld;
+        this.m_TimeLocal = Other.m_TimeLocal;
+        this.m_FrameAsTimeStamp = int(Other.m_FrameAsTimeStamp);
+        this.m_FrameAsPlainInt = int(Other.m_FrameAsPlainInt);
+        this.m_RegularInt = int(Other.m_RegularInt);
+        this.m_FrameArray = Other.m_FrameArray;
+        this.m_EndFrameArray = Other.m_EndFrameArray;
+        this.m_FrameSet = Other.m_FrameSet;
+        this.m_FrameToTime = Other.m_FrameToTime;
+        return;
     }
     FCerealWorldTimeStampTestAS opAssign(const FCerealWorldTimeStampTestAS &inout Other)
     {
@@ -235,7 +252,6 @@ struct FCerealWorldTimeStampMissingMarkTestAS
     UPROPERTY()
     TArray<FFPTime> TimesUnmarked;
 
-
 }
 
 void Test_CerealWorldTimeStampASUnitTest(FUnitTest &inout UnitTest)
@@ -247,7 +263,7 @@ void Test_CerealWorldTimeStampASUnitTest(FUnitTest &inout UnitTest)
     int local_1_3 = FSerializationUtils::GetCerealWorldTimeStampFlag(FCerealWorldTimeStampTestAS, n"FrameAsTimeStamp");
     UnitTest.AssertEquals(1, local_1_3, "FrameAsTimeStamp should be WorldTimeStamp");
     int local_1_4 = FSerializationUtils::GetCerealWorldTimeStampFlag(FCerealWorldTimeStampTestAS, n"FrameAsPlainInt");
-    UnitTest.AssertEquals(-1, local_1_4, "name contains 'Frame' but NotWorldTimeStamp should win вЂ” old name heuristic regression");
+    UnitTest.AssertEquals(-1, local_1_4, "name contains 'Frame' but NotWorldTimeStamp should win — old name heuristic regression");
     int local_1_5 = FSerializationUtils::GetCerealWorldTimeStampFlag(FCerealWorldTimeStampTestAS, n"RegularInt");
     UnitTest.AssertEquals(0, local_1_5, "RegularInt should be unmarked");
     int local_1_6 = FSerializationUtils::GetCerealWorldTimeStampFlag(FCerealWorldTimeStampTestAS, n"FrameArray");

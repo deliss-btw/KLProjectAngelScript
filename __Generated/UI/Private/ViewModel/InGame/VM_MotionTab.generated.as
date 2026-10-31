@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_MotionTab_Helpers
 {
 UFUNCTION()

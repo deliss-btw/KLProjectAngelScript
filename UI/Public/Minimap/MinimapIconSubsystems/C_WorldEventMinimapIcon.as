@@ -1,4 +1,3 @@
-﻿
 enum EWorldEventStatus
 {
     Unbegun,
@@ -34,11 +33,16 @@ struct FWorldEventMinimapIconData
 
     FWorldEventMinimapIconData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_EventStatus = EWorldEventStatus(0);
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        return;
     }
     FWorldEventMinimapIconData(const FWorldEventMinimapIconData &inout Other)
     {
         this.m_EventStatus = EWorldEventStatus(0);
+        FSubDirtyFlags8 local_27;
+        this.__DirtyFlags = local_27;
         this.m_StartTime = Other.m_StartTime;
         this.m_WaitDuration = Other.m_WaitDuration;
         this.m_ActiveTime = Other.m_ActiveTime;
@@ -208,11 +212,15 @@ struct FCS_WorldEventMinimapIconManager : FECSSingleton
 
     FCS_WorldEventMinimapIconManager()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FCS_WorldEventMinimapIconManager(const FCS_WorldEventMinimapIconManager &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_AllWorldEvents = Other.m_AllWorldEvents;
         return;
@@ -377,17 +385,17 @@ bool RemoveWorldEventMinimapIconManager(const FECSWorldPtr &inout World)
 }
 void __MonitorWorldEventMinimapIconManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_WorldEventMinimapIconManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_WorldEventMinimapIconManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorWorldEventMinimapIconManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_WorldEventMinimapIconManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_WorldEventMinimapIconManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorWorldEventMinimapIconManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_WorldEventMinimapIconManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_WorldEventMinimapIconManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

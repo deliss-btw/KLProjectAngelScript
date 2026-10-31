@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommissionDetail
 {
     const int ModelId = 0;
@@ -101,7 +100,7 @@ struct FVM_CommissionDetail : FEUIViewModel
         }
         XWarning(ELog(62), FString().Append("Failed to find commission target entity"));
         FCommonTipsParam local_56;
-        ::CommonPopup::WeakTips(NSLOCTEXT("Guide", "FailedToFindCommissionTargetEntity", "жњЄиѓЅж‰ѕе€°з›®ж ‡пјЊж— жі•жџҐзњ‹"), local_56);
+        ::CommonPopup::WeakTips(NSLOCTEXT("Guide", "FailedToFindCommissionTargetEntity", "未能找到目标，无法查看"), local_56);
         return;
     }
     TDataObjectPtr<FCommissionConfig> GetCommissionConfig() const property

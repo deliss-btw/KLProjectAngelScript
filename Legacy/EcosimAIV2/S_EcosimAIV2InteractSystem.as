@@ -1,5 +1,3 @@
-﻿
-
 class US_EcosimAIV2InteractSystem : UECSScriptSystem
 {
     US_EcosimAIV2InteractSystem()

@@ -1,4 +1,3 @@
-﻿
 namespace FMS_Login
 {
     const int ModelId = 0;
@@ -20,14 +19,12 @@ struct FMsg_LoginNextPhase : FEUIMessage
     UPROPERTY()
     ELoginShowPhase NextPhase;
 
-
 }
 
 struct FMsg_CreatePlayerFailed : FEUIMessage
 {
     UPROPERTY()
     int Retcode = 0;
-
 
 }
 

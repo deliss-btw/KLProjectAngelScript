@@ -1,5 +1,3 @@
-﻿
-
 class UESMTransitCompleteCallback_CombatHint : UESMTransitCompleteCallback
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ class UESMTransitCompleteCallback_CombatHint : UESMTransitCompleteCallback
     FGameAttributeRef Attribute;
     UPROPERTY()
     FESMBBVar_Numeric AttributeThreshold = 0.0f;
-
 
     UFUNCTION()
     void OnTransitComplete_Implementation(const FESMContext &inout Context, const FESMTransitResult &inout TransitResult) const

@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_LongNeckIKControl : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ class UESMAction_LongNeckIKControl : UESMBPBaseSpanTickAction
     float32 TangentIntensityLerpSpeed = 0.5f;
     UPROPERTY()
     bool EnableNeckTwist = false;
-
 
     UFUNCTION()
     EESMAssetWorkflow GetWorkflow_Implementation() const

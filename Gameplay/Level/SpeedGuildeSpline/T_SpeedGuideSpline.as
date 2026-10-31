@@ -1,5 +1,3 @@
-﻿
-
 struct FT_SpeedGuideSplineFXParam : FECSTrait
 {
     FECSTrait _base_FECSTrait;

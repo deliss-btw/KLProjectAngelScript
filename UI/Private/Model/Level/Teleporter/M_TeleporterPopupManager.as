@@ -1,4 +1,3 @@
-﻿
 namespace FMS_TeleporterPopupManager
 {
     const int ModelId = 0;
@@ -15,7 +14,8 @@ struct FTeleporterPopupData
     }
     FTeleporterPopupData(const TDataObjectPtr<FTeleporterConfig> &inout InTeleporterConfig)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.TeleporterConfig = InTeleporterConfig;
+        return;
     }
 }
 
@@ -31,11 +31,20 @@ struct FMS_TeleporterPopupManager : FEUIModelSingleton
 
     FMS_TeleporterPopupManager()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_DisplayingPopupId = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FMS_TeleporterPopupManager(const FMS_TeleporterPopupManager &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_DisplayingPopupId = INDEX_NONE;
+        this.m_DisplayingWidget = Other.m_DisplayingWidget;
+        this.m_DisplayingPopupId = int(Other.m_DisplayingPopupId);
+        this.m_PendingTeleporterActivePopups = Other.m_PendingTeleporterActivePopups;
+        return;
     }
     FMS_TeleporterPopupManager& opAssign(const FMS_TeleporterPopupManager &inout Other)
     {
@@ -45,15 +54,61 @@ struct FMS_TeleporterPopupManager : FEUIModelSingleton
     }
     void HandleTeleporterActivated(const FMsg_TeleporterActivated &inout Msg)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_2 = ::CommonPopupUtils::TryEnqueuePopup(GameplayTags::UI_Type_Commonpupop_Banner_TeleporterActive, -2000000000);
+        if (local_2 != INDEX_NONE)
+        {
+            this.GetModify_PendingTeleporterActivePopups().Add(local_2, Msg.TeleporterConfig);
+        }
+        return;
     }
     void HandleCommonPopup(const FCE_NotifyCommonPopupManagerChanged &inout Event)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        FEUIWidgetRef local_96;
+        if (Event.AffectedPopupTypes.Contains(GameplayTags::UI_Type_Commonpupop_Banner_TeleporterActive))
+        {
+            for (auto local_15 : Event.NewDisplayingPopupIds)
+            {
+                TDataObjectPtr<FTeleporterConfig> local_40;
+                if (this.GetModify_PendingTeleporterActivePopups().RemoveAndCopyValue(local_15, local_40))
+                {
+                    int local_41 = INDEX_NONE;
+                    if (this.GetDisplayingPopupId() != local_41)
+                    {
+                        this.NodifyDisplayingWidgetRemoved();
+                    }
+                    this.SetDisplayingPopupId(local_15);
+                    FTeleporterPopupData local_66 = FTeleporterPopupData(local_40);
+                    Make local_80;
+                    local_96 = FEUIWidget::AddWidgetWithModelContainer(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_Commonpupop_Banner_TeleporterActive, local_80.opImplConv());
+                    this.SetDisplayingWidget(local_96);
+                }
+            }
+            for (auto local_15 : Event.RemovedPopupIds)
+            {
+                if (this.GetDisplayingPopupId() == local_15)
+                {
+                    if (this.GetDisplayingWidget())
+                    {
+                        FEUIWidget::RemoveWidget(this.GetDisplayingWidget());
+                    }
+                    this.SetDisplayingPopupId(INDEX_NONE);
+                    this.SetDisplayingWidget(local_96);
+                }
+            }
+        }
+        return;
     }
     void OnTick()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (!(this.GetContext().World.IsValid()))
+        {
+            return;
+        }
+        if (this.GetDisplayingPopupId() != INDEX_NONE && !(this.GetDisplayingWidget().IsValid()))
+        {
+            this.NodifyDisplayingWidgetRemoved();
+        }
+        return;
     }
     void NodifyDisplayingWidgetRemoved()
     {

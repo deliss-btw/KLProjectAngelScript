@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CharacterVaulting : UESMBPBaseSpanAction
 {
     UESMAction_CharacterVaulting()

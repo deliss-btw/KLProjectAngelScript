@@ -1,4 +1,3 @@
-﻿
 namespace FLevelPublicEventUtils
 {
 bool IsLBPInCooldown(const FCS_LevelPublicEventData &inout LevelPublicEventData, const TSoftClassPtr<AKLLevelScriptPublicEvent> &inout LBPClass)
@@ -64,7 +63,7 @@ bool CollectHighestPriorityCandidates(const FCS_LevelPublicEventData &inout Leve
     bool local_3 = false;
     for (auto local_17 : AvailableEventPointIndexes)
     {
-        const FRuntimePublicEventPointData& local_20 = LevelPublicEventData[local_17];
+        const FRuntimePublicEventPointData& local_20 = LevelPublicEventData.RandomPublicEventPointData[local_17];
         int local_21 = 0;
         for (; local_21 < local_20.LBPs.Num(); ++local_21)
         {
@@ -109,6 +108,7 @@ bool CollectHighestPriorityCandidates(const FCS_LevelPublicEventData &inout Leve
 }
 TArray<int> ReGenerateAvailablePublicEventPointIndexes(const FCS_LevelPublicEventData &inout LevelPublicEventData)
 {
+    bool local_44;
     TArray<TDataObjectPtr<FLevelEventInfoConfigBase>> local_4;
     auto local_10 = LevelPublicEventData.SelectedEventPointIndexes.Iterator();
     for (; local_10.CanProceed;)
@@ -125,48 +125,40 @@ TArray<int> ReGenerateAvailablePublicEventPointIndexes(const FCS_LevelPublicEven
     }
     TArray<int> local_42;
     int local_18 = 0;
-    while (local_18 < 0)
+    for (; local_18 < LevelPublicEventData.RandomPublicEventPointData.Num(); ++local_18)
     {
         const FRuntimePublicEventPointData& local_22_2 = LevelPublicEventData.RandomPublicEventPointData[local_18];
         if (local_22_2.LBPs.Num() <= 0)
         {
+            continue;
         }
-        else
+        if (int(local_22_2.SelectedLBPIndex) >= 0)
         {
-            if (int(local_22_2.SelectedLBPIndex) >= 0)
+            continue;
+        }
+        local_44 = false;
+        for (auto& local_58 : local_22_2.LBPs)
+        {
+            if ((local_58 == nullptr))
             {
+                continue;
             }
-            else
+            if (FLevelPublicEventUtils::IsLBPInCooldown(LevelPublicEventData, local_58))
             {
-                bool local_44;
-                local_44 = false;
-                for (auto& local_58 : local_22_2.LBPs)
-                {
-                    if ((local_58 == nullptr))
-                    {
-                        continue;
-                    }
-                    if (FLevelPublicEventUtils::IsLBPInCooldown(LevelPublicEventData, local_58))
-                    {
-                        continue;
-                    }
-                    TConstRawPtr<FRuntimePublicEventLBPData> local_38 = LevelPublicEventData.RuntimePublicEventLBPDatas.Find(local_58);
-                    if (!(local_38) || !(local_38.opArrow().EventInfoConfig) || !(local_4.Contains(local_38.opArrow().EventInfoConfig)))
-                    {
-                        local_44 = true;
-                        break;
-                    }
-                }
-                if (!(local_44))
-                {
-                }
-                else
-                {
-                    local_42.Add(local_18);
-                }
+                continue;
+            }
+            TConstRawPtr<FRuntimePublicEventLBPData> local_38 = LevelPublicEventData.RuntimePublicEventLBPDatas.Find(local_58);
+            if (!(local_38) || !(local_38.opArrow().EventInfoConfig) || !(local_4.Contains(local_38.opArrow().EventInfoConfig)))
+            {
+                local_44 = true;
+                break;
             }
         }
-        ++local_18;
+        if (!(local_44))
+        {
+            continue;
+        }
+        local_42.Add(local_18);
     }
     return local_42;
 }

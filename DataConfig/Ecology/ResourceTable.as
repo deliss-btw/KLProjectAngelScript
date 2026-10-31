@@ -1,5 +1,3 @@
-﻿
-
 struct FEcologyResourceDefinitionRow : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -13,7 +11,6 @@ struct FEcologyResourceDefinitionRow : FDataObject
     FGameplayTagContainer GameplayTags;
     UPROPERTY()
     TSubclassOf<AActor> Preview;
-
 
     FString GetDesc() const
     {

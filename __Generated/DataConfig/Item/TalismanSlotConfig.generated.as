@@ -1,11 +1,18 @@
-﻿
 namespace __FTalismanSlotConfigFunctions
 {
 UFUNCTION()
 TArray<TDataObjectPtr<FServerConditionConfigBase>> __FTalismanSlotConfig_GetUnlockCondition(const TDataObjectPtr<FTalismanSlotConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TArray<TDataObjectPtr<FServerConditionConfigBase>> __r; return __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'UnlockCondition' from a null 'FTalismanSlotConfig' DataObject!");
+        }
+        FTalismanSlotConfig local_20;
+        return local_20.GetUnlockCondition();
+    }
+    return GetUnlockCondition();
 }
 UFUNCTION()
 FTalismanSlotConfig CastToFTalismanSlotConfig(const TDataObjectPtr<FTalismanSlotConfig> &inout DataObject)

@@ -1,5 +1,3 @@
-﻿
-
 namespace DSTest
 {
 struct FDSTestSpawnLocAndRot
@@ -15,6 +13,7 @@ struct FDSTestSpawnLocAndRot
     }
     FDSTestSpawnLocAndRot(const FVector &inout InLocation, const FRotator &inout InRotation)
     {
+        this.Location = InLocation;
         this.Rotation = InRotation;
         return;
     }
@@ -31,7 +30,8 @@ struct FDSTestSpawnerInfo
     }
     FDSTestSpawnerInfo(const TArray<DSTest::FDSTestSpawnLocAndRot> &inout InSpawnLocAndRot)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.SpawnLocAndRots = InSpawnLocAndRot;
+        return;
     }
 }
 
@@ -151,7 +151,7 @@ class US_ASGameModeSystemDSTest : US_ECSScriptGameModeSystemBase
             int local_156 = local_160.Num() - 1;
             const DSTest::FDSTestSpawnLocAndRot& local_166 = local_160[FMath::RandRange(0, local_156)];
             TDataObjectPtr<FLevelInfoConfig> local_214 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
-            local_166.Rotation.Quaternion();
+            ::FGameModeUtils::SpwanAvatarAt(local_140, local_146, local_166.Location, local_166.Rotation.Quaternion(), local_214, false);
             FC_PlayerStates local_234;
             Assign local_228;
             local_228.opCall(local_234);

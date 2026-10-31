@@ -1,4 +1,3 @@
-﻿
 enum ETestEnum16
 {
     A = 12345,

@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_FastEquipPage
 {
     const int ViewID = 0;
@@ -131,6 +130,7 @@ namespace UWidget_FastEquipPage
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_FastEquipPage;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -146,6 +146,7 @@ namespace UWidget_FastEquipPageEntry
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_FastEquipPageEntry;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

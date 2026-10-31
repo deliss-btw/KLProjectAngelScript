@@ -1,5 +1,3 @@
-﻿
-
 class UHTNService_UpdateFloatDivideResult : UHTNService_ECSScriptBase
 {
     UPROPERTY()

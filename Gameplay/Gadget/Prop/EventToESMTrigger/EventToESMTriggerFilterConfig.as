@@ -1,5 +1,3 @@
-﻿
-
 struct FEventToESMTriggerFilterConfigItemBase
 {
     UPROPERTY()
@@ -14,7 +12,6 @@ struct FEventToESMTriggerFilterConfigItemBase
     bool bSuccessClearAllTriggers = false;
     UPROPERTY()
     TArray<FNameHandle_ESMBBTrigger> SuccessClearTriggerNames;
-
 
 }
 

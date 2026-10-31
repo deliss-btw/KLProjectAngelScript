@@ -1,4 +1,3 @@
-﻿
 namespace FVM_EscapeButton
 {
     const int ModelId = 0;
@@ -70,7 +69,6 @@ struct __GeneratedProperties_FVM_EscapeButton
     bool ShouldDisplay;
     UPROPERTY()
     TEUIModelRef<FVM_EscapeButton> Self;
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace FEcosimAIV2Utils
 {
 void DebugEntityRunHTNWithFile(const FECSEntity &inout Entity)

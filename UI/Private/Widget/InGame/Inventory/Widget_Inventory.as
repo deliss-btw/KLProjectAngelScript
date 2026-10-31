@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_Inventory
 {
     const int ViewID = 0;
@@ -271,6 +270,7 @@ namespace UWidget_Inventory
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_Inventory;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectListOpenChanged"));
     return;
 }

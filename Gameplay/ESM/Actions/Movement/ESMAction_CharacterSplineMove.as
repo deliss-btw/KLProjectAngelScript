@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CharacterSplineMove : UESMBPBaseSpanAction
 {
     UESMAction_CharacterSplineMove()

@@ -1,12 +1,9 @@
-﻿
-
 struct FESMThrowPredictBlendTimeInstanceData
 {
     UPROPERTY()
     bool bExitPhaseInitialized = false;
     UPROPERTY()
     int TargetPlayerIndex = -1;
-
 
 }
 
@@ -18,7 +15,6 @@ class UESMAction_ThrowPredictBlendTime : UESMBPBaseSpanTickAction
     float32 BlendInDuration = 1.0f;
     UPROPERTY()
     float32 BlendOutDuration = 1.0f;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const

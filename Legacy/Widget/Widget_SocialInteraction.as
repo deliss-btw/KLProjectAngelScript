@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_SocialInteraction
 {
     const int ViewID = 0;
@@ -19,6 +18,7 @@ namespace UWidget_SocialInteraction
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SocialInteraction;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

@@ -1,5 +1,3 @@
-﻿
-
 class US_ObjectiveSystem : UECSScriptSystem
 {
     US_ObjectiveSystem()
@@ -56,24 +54,7 @@ class US_ObjectiveSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_HandleConditionCurrentValueUpdate(const FCE_ConditionCurrentValueUpdate &inout Event, FCS_ObjectiveManager &inout ObjectiveManager) const
     {
-        XLog(ELog(65), FString().Append("Condition Current Value Update: ").Append(Event.ConditionInstance.GetLocalConditionInstanceID()));
-        int local_5 = ::ConditionUtils::GetCurrentValue(Event.ConditionInstance);
-        for (auto& local_28 : ObjectiveManager.ActiveObjectives)
-        {
-            local_28;
-            FConditionInstanceHandle local_54;
-            if (local_54.opCmp(Event.ConditionInstance) == 0)
-            {
-                FString local_4 = FString();
-                ::ObjectiveUtils::SendProgressUpdatedEvent(true, (local_5 != 0));
-            }
-            if (local_54.opCmp(Event.ConditionInstance) == 0)
-            {
-                FString local_4_2 = FString();
-                ::ObjectiveUtils::SendProgressUpdatedEvent(false, (local_5 != 0));
-            }
-        }
-        return;
+        // body not fully recovered — stub [argmismatch:argint]
     }
     UFUNCTION()
     void ServerJob_HandleConditionReachStateUpdate(const FCE_ConditionReachStateUpdate &inout Event, FCS_ObjectiveManager &inout ObjectiveManager) const
@@ -131,7 +112,7 @@ class US_ObjectiveSystem : UECSScriptSystem
     }
     void SendStatusChangeEvent(FCS_ObjectiveManager &inout ObjectiveManager, FObjectiveInstance &inout ObjectiveInstance) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argint]
+        // body not fully recovered — stub [argmismatch:argint]
     }
     EObjectiveStatus CalculateObjectiveGroupStatus(const FCS_ObjectiveManager &inout ObjectiveManager, const FObjectiveInstance &inout ObjectiveInfo) const
     {

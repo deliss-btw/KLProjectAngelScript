@@ -1,4 +1,3 @@
-﻿
 enum ECraftType
 {
     Equip,
@@ -7,7 +6,6 @@ enum ECraftType
     MaterialShop,
     MaxCount,
 }
-
 
 struct FCraftConfig : FDataObject
 {
@@ -28,7 +26,6 @@ struct FCraftConfig : FDataObject
     FDataObjectPtr m_UnlockCond;
     UPROPERTY()
     FText Note;
-
 
     bool ContainsCost(const TDataObjectPtr<FItemConfig> &inout Item) const
     {

@@ -1,12 +1,9 @@
-﻿
-
 struct FSimpleModelEvent : FEUIModelEvent
 {
-    FEUIModelEvent _base_FEUIModelEvent;
+    FEUIModelEvent _base_FEUIModelEvent = FEUIModelEvent("", "");
 
     FSimpleModelEvent()
     {
-        FEUIModelEvent local_22 = FEUIModelEvent("", "");
         return;
     }
     void Broadcast() const

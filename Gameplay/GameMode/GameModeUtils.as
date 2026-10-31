@@ -1,4 +1,3 @@
-﻿
 namespace FGameModeUtils
 {
     const FConsoleVariable CVar_GameMode_UseUniversalSystem = FConsoleVariable();
@@ -281,8 +280,117 @@ void SpawnAvatarsForPlayer(const FECSEntity &inout PlayerProxy, FC_PlayerControl
 }
 bool GetSpawnLocationForPlayer(const FECSEntity &inout PlayerProxy, FC_PlayerController &inout PlayerController, const FCS_PlayerSpawnerIndex &inout SpawnerIndex, const TDataObjectPtr<FLevelInfoConfig> &inout LevelInfoConfig, FVector &inout Position, FQuat &inout Rotation, bool &inout bSpawnFromTeleportKey)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    bool __r; return __r;
+    APlayerStartPIE local_4;
+    bool local_111 = false;
+    AECSWorldSettingsBase local_114;
+    bool local_1 = false;
+    bSpawnFromTeleportKey = false;
+    if (local_4 != nullptr)
+    {
+        Position = local_4.GetActorLocation();
+        Rotation = FRotator(0.0, local_4.GetActorRotation().Yaw, 0.0).Quaternion();
+        local_1 = true;
+    }
+    Get local_40;
+    const FC_CutSceneRequestSpawnPoint& local_42 = local_40.opCall();
+    if (local_42)
+    {
+        Position = local_42.Location;
+        Rotation = local_42.Rotation.Quaternion();
+        local_1 = true;
+    }
+    if (!(local_1))
+    {
+        int local_67;
+        FPbDsPlayerInfo local_66 = UGameDSConnectionSubsystem::Get().GetPlayerInfo(PlayerController.GetPlayerId());
+        if (local_66.IsValid() && (local_66.GetAssemblerUid() > 0))
+        {
+            local_67 = local_66.GetAssemblerUid();
+            FECSEntity local_78 = FECSEntity(UGameDSConnectionSubsystem::Get().GetPlayerEntityIdByUid(local_67));
+            if (FASCommonUtils::GetPlayerPawnOrMountEntity(local_78, true).IsValid())
+            {
+                Get local_86;
+                const FC_Transform& local_88 = local_86.opCall();
+                if (local_88)
+                {
+                    FECSEntity local_82 = TeleporterUtils::FindNearestActiveTeleporter(PlayerProxy, local_88.GetPosition());
+                    if (local_82.IsValid())
+                    {
+                        FVector local_98;
+                        FRotator local_104;
+                        if (TeleporterUtils::GetTeleportLocationAndRotation(local_82, PlayerController.GetPlayerPawnEntity(), local_98, local_104))
+                        {
+                            Position = local_98;
+                            Rotation = local_104.Quaternion();
+                            local_1 = true;
+                        }
+                    }
+                }
+            }
+            if (!(local_1))
+            {
+                XWarning(ELog(33), FString().Append("GetSpawnLocationForPlayer assemble travel failed to resolve teleporter for player ").Append(PlayerController.GetPlayerId()).Append(" assembler ").Append(local_67));
+            }
+        }
+    }
+    if (!(local_1) && ((LevelInfoConfig.IsSet() && GetGameRuleConfig().IsSet()) && local_111))
+    {
+        int local_67;
+        local_67 = 0;
+        local_114 = (Cast<AAS_ECSWorldSettings>(ECS::GetUEWorld().GetWorldSettings()));
+        if (local_114 != nullptr)
+        {
+            local_67 = int(local_114.LevelKey);
+        }
+        FPbDsPlayerInfo local_52 = UGameDSConnectionSubsystem::Get().GetPlayerInfo(PlayerController.GetPlayerId());
+        if (local_52.IsValid() && (local_52.GetUid() > 0))
+        {
+            if (local_52.GetDsMiscInfo().GetTeleportKey() > 0)
+            {
+                int local_68 = local_52.GetDsMiscInfo().GetTeleportKey();
+                FVector local_98;
+                FRotator local_104;
+                FECSWorldPtr local_230 = ECS::GetECSWorld();
+                TDataObjectPtr<FTeleporterConfig> local_204;
+                GetDefaulted local_234;
+                FECSEntity local_92 = local_234.opCall().GetTeleporter(local_204);
+                if (local_92.IsValid())
+                {
+                    local_1 = TeleporterUtils::GetTeleportLocationAndRotation(local_92, PlayerController.GetPlayerPawnEntity(), local_98, local_104);
+                    if (local_1)
+                    {
+                        Position = local_98;
+                        Rotation = local_104.Quaternion();
+                        bSpawnFromTeleportKey = true;
+                    }
+                }
+            }
+            local_111 = !(local_1);
+            if ((local_111 && local_52.GetDsMiscInfo().GetPlayerMapInfo().IsValid()) && local_52.GetDsMiscInfo().GetPlayerMapInfo().IsValid())
+            {
+                FPbPlayerMapInfo local_244 = local_52.GetDsMiscInfo().GetPlayerMapInfo();
+                local_111 = (local_67 > 0 && (local_244.GetWorldLevelKey() == local_67)) && (local_244.GetWorldLocationX() != 0);
+                if ((local_111 && (local_244.GetWorldLocationY() != 0)) && (local_244.GetWorldLocationZ() != 0))
+                {
+                    Position = FVector(local_244.GetWorldLocationX(), local_244.GetWorldLocationY(), local_244.GetWorldLocationZ());
+                    Rotation = FRotator(0.0, local_244.GetWorldDirection(), 0.0).Quaternion();
+                    local_1 = true;
+                }
+            }
+        }
+    }
+    if (!(local_1))
+    {
+        int local_256;
+        ESpawnPointSelectionRule local_257 = ESpawnPointSelectionRule(0);
+        local_256 = local_257;
+        if (LevelInfoConfig.IsSet())
+        {
+            local_256 = local_257;
+        }
+        local_1 = FGameModeUtils::GetSpawnLocationForPlayerBySpawnPointRule(PlayerProxy, uint8(PlayerController.GetTeam()), SpawnerIndex, ESpawnPointSelectionRule(local_256), Position, Rotation);
+    }
+    return local_1;
 }
 FECSEntity CreateAvatarEntity(const FECSEntity &inout PlayerProxy, FC_PlayerController &inout PlayerController, const FVector &inout Position, const FQuat &inout Rotation, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig, const TSubclassOf<AECSPrefab> &inout CharacterPrototypeOverride, const FName &inout EntityName, const bool bActive, const bool bAddToAllPlayerPawnEntities = true)
 {

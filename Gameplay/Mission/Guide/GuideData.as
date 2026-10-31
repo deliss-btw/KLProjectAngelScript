@@ -1,12 +1,7 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FGuideNpcData (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FGuideDataBase
 {
     UPROPERTY()
-    TSubclassOf<UGuideBehavior> GuideBehavior;
+    TSubclassOf<UGuideBehavior> GuideBehavior = UGuideBehavior;
     UPROPERTY()
     TDataObjectPtr<FGuidePresentationConfig> OverridePresentation;
 
@@ -24,9 +19,10 @@ struct FGuideNpcData : FGuideDataBase
     UPROPERTY()
     TSoftClassPtr<AKLLevelScriptActor> OwnerLevelGroup;
 
+    default _base_FGuideDataBase = UGuideNpcBehavior;
+
     FGuideNpcData()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -38,9 +34,10 @@ struct FGuidePrefabData : FGuideDataBase
     UPROPERTY()
     TDataObjectPtr<FBasePrefabConfig> Target;
 
+    default _base_FGuideDataBase = UGuidePrefabBehavior;
+
     FGuidePrefabData()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -56,9 +53,10 @@ struct FGuideRegionData : FGuideDataBase
     UPROPERTY()
     bool bShowGuideFX;
 
+    default _base_FGuideDataBase = UGuideRegionBehavior;
+
     FGuideRegionData()
     {
-        super();
         this.Radius = 0.0f;
         this.bShowGuideFX = false;
         this.__InitDefaults();
@@ -88,9 +86,10 @@ struct FGuideMonsterData : FGuideDataBase
     UPROPERTY()
     TSoftClassPtr<AKLLevelScriptActor> OwnerLevelGroup;
 
+    default _base_FGuideDataBase = UGuideMonsterBehavior;
+
     FGuideMonsterData()
     {
-        super();
         this.bMarkAll = false;
         this.__InitDefaults();
         return;

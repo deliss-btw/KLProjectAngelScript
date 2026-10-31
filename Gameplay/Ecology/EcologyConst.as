@@ -1,4 +1,3 @@
-﻿
 namespace FEcologyConst
 {
     const int MaxCountPerUnit = 2;

@@ -1,5 +1,3 @@
-﻿
-
 struct FForgeTreeLevelConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -9,7 +7,6 @@ struct FForgeTreeLevelConfig : FDataObject
     int ForgeLv;
     UPROPERTY()
     TArray<FDataObjectPtr> m_ShowCondition;
-
 
     const TArray<TDataObjectPtr<FConditionConfig>> GetShowCondition() const property
     {

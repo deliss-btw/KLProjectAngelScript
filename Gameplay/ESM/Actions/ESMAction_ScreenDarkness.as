@@ -1,5 +1,3 @@
-﻿
-
 struct FESMScreenDarknessInstanceData
 {
     UPROPERTY()
@@ -69,8 +67,7 @@ class UESMAction_ScreenDarkness : UESMBPBaseSpanTickAction
                 FName local_24 = local_12.GetComponentNameByClass(UStaticMeshComponent);
                 if (!(local_24.IsNone()))
                 {
-                    FESMScreenDarknessInstanceData& local_26 = this.ModifyViewInstanceData(Context);
-                    local_2.DarknessPlaneEntity.ModifyActorComponent(local_24).CastToMeshComponent();
+                    this.ModifyViewInstanceData(Context).DarknessPlaneMesh = local_2.DarknessPlaneEntity.ModifyActorComponent(local_24).CastToMeshComponent();
                 }
             }
         }

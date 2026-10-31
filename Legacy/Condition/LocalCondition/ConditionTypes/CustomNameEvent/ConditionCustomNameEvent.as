@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FConditionCustomNameEventConfig (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
-
 class UConditionCustomNameEvent : ULocalConditionTypeDefineBase
 {
     UConditionCustomNameEvent()
@@ -12,7 +7,9 @@ class UConditionCustomNameEvent : ULocalConditionTypeDefineBase
     }
     void OnConditionRegistered(const FLocalConditionInstance &inout ConditionInstance) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FECSWorldPtr local_2 = ECS::GetECSWorld();
+        0.MonitoredEvents.FindOrAdd(this.GetEventName(GetConditionConfig())).ConditionInstances.Add(ConditionInstance.GetHandle());
+        return;
     }
     void OnConditionUnregistered(const FLocalConditionInstance &inout ConditionInstance) const
     {
@@ -51,9 +48,10 @@ struct FConditionCustomNameEventConfig : FLocalConditionTypeDefineConfigBase
     UPROPERTY()
     FName EventName;
 
+    default _base_FLocalConditionTypeDefineConfigBase = UConditionCustomNameEvent;
+
     FConditionCustomNameEventConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }

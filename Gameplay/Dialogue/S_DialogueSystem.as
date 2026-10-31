@@ -1,5 +1,3 @@
-﻿
-
 class US_DialogueSystem : UECSScriptSystem
 {
     US_DialogueSystem()
@@ -106,7 +104,6 @@ class US_DialogueSystem : UECSScriptSystem
     void ServerJob_HandleNotifyStartAmbientDialogue(const FCE_NotifyStartAmbientDialogue &inout Event) const
     {
         int local_12 = 0;
-        FName local_20;
         int local_73 = 0;
         const UDialogueSettings local_106;
         float local_118;
@@ -114,6 +111,7 @@ class US_DialogueSystem : UECSScriptSystem
         bool local_5 = local_4.opCall();
         if (local_5)
         {
+            FName local_20;
             local_20 = local_12.GetDialogueContext().GetDialogueName();
             XError(ELog(64), FString().Append("[Dialogue] Start ambient dialogue failed, ").Append(Event.DialogueEntity.GetEntityName()).Append(" is already playing: ").Append(local_20));
             return;
@@ -121,6 +119,7 @@ class US_DialogueSystem : UECSScriptSystem
         FName local_23;
         if (Event.DialogueConfig.IsSet())
         {
+            FName local_20;
             local_20.GetDataName();
             local_23 = local_20;
         }
@@ -155,10 +154,7 @@ class US_DialogueSystem : UECSScriptSystem
         local_12.SetTriggerPlayer(Event.TriggerPlayer);
         local_12.SetDialogueContext(local_72);
         local_12.SetBroadcastScope(Event.BroadcastScope);
-        local_73 = int(local_72.GetDialogueType());
-        local_20 = local_72.GetDialogueName();
-        FDialogueSection local_306;
-        local_12.SetSection(local_306);
+        local_12.SetSection(FDialogueSection(local_72.GetDialogueName(), EDialogueType(local_72.GetDialogueType()), Event.DialogueEntity));
         FC_DialogueNextSectionTag local_312;
         Assign local_310;
         local_310.opCall(local_312);
@@ -167,7 +163,15 @@ class US_DialogueSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_HandleOnDialogueInteraction(const FCE_OnDialogueInteraction &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        XLog(ELog(64), FString().Append("[Dialogue] Handle On Dialogue Interaction: ").Append(Event.PlayerEntity.GetEntityName()).Append(" -> ").Append(Event.InteractTarget.GetEntityName()));
+        TDataObjectPtr<FDialogueConfig> local_34 = this.FindBestDialogue(Event);
+        if (!(local_34))
+        {
+            XLog(ELog(64), FString().Append("[Dialogue] No dialogue found"));
+            return;
+        }
+        this.StartSimpleDialogue(Event.PlayerEntity, Event.InteractTarget, local_34, true);
+        return;
     }
     void StartSimpleDialogue(const FECSEntity &inout PlayerEntity, const FECSEntity &inout InteractTarget, const TDataObjectPtr<FDialogueConfig> &inout DialogueConfig, const bool bAddAttachableDialogues) const
     {

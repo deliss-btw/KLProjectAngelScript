@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_TeleportPoint_Page_Helpers
 {
 UFUNCTION()

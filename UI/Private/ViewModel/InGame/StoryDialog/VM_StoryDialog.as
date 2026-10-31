@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_StoryDialog
 {
     const int ModelId = 0;
@@ -21,11 +20,21 @@ struct FVMS_StoryDialog : FEUIViewModelSingleton
 
     FVMS_StoryDialog()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_CurrentSectionIndex = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVMS_StoryDialog(const FVMS_StoryDialog &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_CurrentSectionIndex = INDEX_NONE;
+        this.m_CurrentSectionIndex = int(Other.m_CurrentSectionIndex);
+        this.m_CurrentSpeaker = Other.m_CurrentSpeaker;
+        this.m_CurrentContent = Other.m_CurrentContent;
+        this.m_CurrentOptions = Other.m_CurrentOptions;
+        return;
     }
     FVMS_StoryDialog& opAssign(const FVMS_StoryDialog &inout Other)
     {
@@ -51,7 +60,23 @@ struct FVMS_StoryDialog : FEUIViewModelSingleton
     }
     void NextSection()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (!(this.HasNextSection()))
+        {
+            return;
+        }
+        if (this.IsAtEnd() && !(this.IsEndWithOption()))
+        {
+            FFPTime local_12 = FFPTime(-1);
+            FECSEntity local_6 = this.GetContext().GetLocalPlayer();
+            FCE_StoryDialogSelect local_16;
+            local_16.SelectedIndex = INDEX_NONE;
+        }
+        this.SetCurrentSectionIndex((this.GetCurrentSectionIndex() + 1));
+        FFPTime local_12_2 = FFPTime(-1);
+        FECSEntity local_6_2 = this.GetContext().GetLocalPlayer();
+        FCE_EcosimAIV2ClientDialogueSelectEvent local_24;
+        local_24.CurrentSectionIndex = this.GetCurrentSectionIndex();
+        return;
     }
     bool HasNextSection() const
     {
@@ -73,7 +98,7 @@ struct FVMS_StoryDialog : FEUIViewModelSingleton
         {
             local_16.Add(this.GetParticipantName(local_30));
         }
-        this.SetCurrentSpeaker(FText::FromString(FString::Join(local_16, "гЂЃ")));
+        this.SetCurrentSpeaker(FText::FromString(FString::Join(local_16, "、")));
         this.SetCurrentContent(FText::FromString(local_10.GetContent().GetStringData()));
         this.GetModify_CurrentOptions().Empty(0);
         int local_35 = 0;
@@ -258,7 +283,6 @@ struct __GeneratedProperties_FVMS_StoryDialog
     bool HasNextSection;
     UPROPERTY()
     TEUIModelRef<FVMS_StoryDialog> Self;
-
 
 }
 

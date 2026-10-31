@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonConsume
 {
     const int ModelId = 0;
@@ -206,7 +205,6 @@ struct __GeneratedProperties_FVM_CommonConsume
     TArray<TEUIModelRef<FVM_CommonRewardItem>> RewardItems;
     UPROPERTY()
     TEUIModelRef<FVM_CommonConsume> Self;
-
 
 }
 

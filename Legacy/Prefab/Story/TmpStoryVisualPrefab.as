@@ -1,5 +1,3 @@
-﻿
-
 class ATmpStoryVisualPrefab : AKLLevelPrefabBase
 {
     default SetEntityType(EEntityType(9));

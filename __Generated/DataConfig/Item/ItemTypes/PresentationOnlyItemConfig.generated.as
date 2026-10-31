@@ -1,4 +1,3 @@
-﻿
 namespace __FPresentationOnlyItemConfigFunctions
 {
 UFUNCTION()
@@ -13,26 +12,61 @@ namespace __FRemnantItemConfigFunctions
 UFUNCTION()
 USkillConfig __FRemnantItemConfig_GetItemSkillConfig(const TDataObjectPtr<FRemnantItemConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    return nullptr;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'ItemSkillConfig' from a null 'FRemnantItemConfig' DataObject!");
+        }
+        FRemnantItemConfig local_236;
+        return local_236.ItemSkillConfig;
+    }
+    USkillConfig local_238;
+    return local_238;
 }
 UFUNCTION()
 FBuffConfigRef __FRemnantItemConfig_GetItemBuffConfig(const TDataObjectPtr<FRemnantItemConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FBuffConfigRef __r; return __r;
+    FBuffConfigRef __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'ItemBuffConfig' from a null 'FRemnantItemConfig' DataObject!");
+        }
+        FRemnantItemConfig local_236;
+        return local_236.ItemBuffConfig;
+    }
+    return __r;
 }
 UFUNCTION()
 int __FRemnantItemConfig_GetUsableCount(const TDataObjectPtr<FRemnantItemConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    int __r; return __r;
+
+    if (DataObject == nullptr)
+    {
+        if (!EUIGlobals::GIsDuringPropertyConversion)
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'UsableCount' from a null 'FRemnantItemConfig' DataObject!");
+        }
+        FRemnantItemConfig defaultValue;
+        return defaultValue.UsableCount;
+    }
+    return DataObject.Get().UsableCount;
 }
 UFUNCTION()
 TDataObjectPtr<FMessageHintConfig_LargeHint> __FRemnantItemConfig_GetHint(const TDataObjectPtr<FRemnantItemConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    TDataObjectPtr<FMessageHintConfig_LargeHint> __r; return __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Hint' from a null 'FRemnantItemConfig' DataObject!");
+        }
+        FRemnantItemConfig local_236;
+        return local_236.GetHint();
+    }
+    return GetHint();
 }
 UFUNCTION()
 FRemnantItemConfig CastToFRemnantItemConfig(const TDataObjectPtr<FRemnantItemConfig> &inout DataObject)

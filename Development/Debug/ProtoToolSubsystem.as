@@ -1,5 +1,3 @@
-﻿
-
 struct FProtoRecord
 {
     UPROPERTY()
@@ -15,7 +13,6 @@ struct FProtoRecord
     UPROPERTY()
     FString ProtoJsonString;
 
-
 }
 
 class UProtoToolSubsystem : UEngineSubsystem
@@ -25,7 +22,6 @@ class UProtoToolSubsystem : UEngineSubsystem
     TArray<FProtoRecord> ProtoRecordArray;
     bool bBlockOpen = false;
     TSet<int> CmdIdBlockList;
-
 
 }
 

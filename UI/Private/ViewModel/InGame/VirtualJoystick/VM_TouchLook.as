@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TouchLook
 {
     const int ModelId = 0;
@@ -25,11 +24,27 @@ struct FVM_TouchLook : FEUIViewModel
 
     FVM_TouchLook()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_LookDelta = FVector2D(0.0, 0.0);
+        this.m_ActiveTouchIndex = INDEX_NONE;
+        this.m_LookSensitivity = 1.5f;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVM_TouchLook(const FVM_TouchLook &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_LookDelta = FVector2D(0.0, 0.0);
+        this.m_ActiveTouchIndex = INDEX_NONE;
+        this.m_LookSensitivity = 1.5f;
+        this.m_LookDelta = Other.m_LookDelta;
+        this.m_ActiveTouchIndex = int(Other.m_ActiveTouchIndex);
+        this.m_LastTouchPos = Other.m_LastTouchPos;
+        this.m_XAxis = Other.m_XAxis;
+        this.m_YAxis = Other.m_YAxis;
+        this.m_LookSensitivity = Other.m_LookSensitivity;
+        return;
     }
     FVM_TouchLook opAssign(const FVM_TouchLook &inout Other)
     {
@@ -51,7 +66,13 @@ struct FVM_TouchLook : FEUIViewModel
     }
     void HandleTouchStarted(const FVector2D &inout ScreenPos, const int FingerIndex)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (this.GetActiveTouchIndex() != INDEX_NONE)
+        {
+            return;
+        }
+        this.SetActiveTouchIndex(FingerIndex);
+        this.SetLastTouchPos(ScreenPos);
+        return;
     }
     void HandleTouchMoved(const FVector2D &inout ScreenPos, const int FingerIndex)
     {

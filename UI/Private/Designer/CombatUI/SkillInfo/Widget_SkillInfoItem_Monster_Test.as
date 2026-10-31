@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_SkillInfoItem_Monster_Test
 {
     const int ViewID = 0;
@@ -36,6 +35,7 @@ namespace UWidget_SkillInfoItem_Monster_Test
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SkillInfoItem_Monster_Test;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

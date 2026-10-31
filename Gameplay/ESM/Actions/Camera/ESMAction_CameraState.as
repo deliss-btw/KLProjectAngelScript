@@ -1,10 +1,7 @@
-﻿
-
 struct FESMCameraStateInstanceData
 {
     UPROPERTY()
     bool bConditionActive = false;
-
 
 }
 
@@ -16,7 +13,6 @@ class UESMAction_CameraState : UESMBPBaseSpanTickAction
     bool bAlignActionTime = false;
     UPROPERTY()
     FESMBlackboardConditionAndArray ActiveCondition;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const
@@ -134,7 +130,7 @@ class UESMAction_CameraState : UESMBPBaseSpanTickAction
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const
     {
-        return FString().Append("дї®ж”№з›ёжњєзЉ¶жЂЃ: ").Append(this.StateKey.GetDataName());
+        return FString().Append("修改相机状态: ").Append(this.StateKey.GetDataName());
     }
     FESMCameraStateInstanceData GetInstanceData(const FESMContext &inout Context) const
     {

@@ -1,5 +1,3 @@
-﻿
-
 class US_CharacterControlSystemAS : UECSScriptSystem
 {
     US_CharacterControlSystemAS()

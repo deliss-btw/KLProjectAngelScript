@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_MiniHpBarV2Panel
 {
     const int ModelId = 0;
@@ -11,7 +10,6 @@ struct FMsg_ChangeMiniHpBarActive : FEUIMessage
     UPROPERTY()
     bool bBarActive;
 
-
 }
 
 struct FMiniHpBarEntityHideState
@@ -20,7 +18,6 @@ struct FMiniHpBarEntityHideState
     float HideTime = -1.0;
     UPROPERTY()
     bool bBarActive = true;
-
 
 }
 
@@ -634,7 +631,6 @@ struct __GeneratedProperties_FVMS_MiniHpBarV2Panel
     UPROPERTY()
     TEUIModelRef<FVMS_MiniHpBarV2Panel> Self;
 
-
 }
 
 namespace MiniHpBarV2Helper
@@ -733,7 +729,11 @@ void __OnHandleHitEvent(FVMS_MiniHpBarV2Panel &inout Model, const FCE_HitEvent &
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    ECSWorld.__MonitorLockTargetLifetime(EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    ECSWorld.__MonitorLockTargetModification(EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorViewportSelectTargetLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorViewportSelectTargetModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TArray<FECSEntity> __UIGetter_Entities(const FVMS_MiniHpBarV2Panel &inout Model)
 {

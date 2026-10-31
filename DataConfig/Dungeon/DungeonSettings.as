@@ -1,5 +1,3 @@
-﻿
-
 struct FDungeonSettingsCache
 {
     UPROPERTY()

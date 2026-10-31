@@ -1,4 +1,3 @@
-﻿
 namespace FVM_BtnOperationList
 {
     const int ModelId = 0;

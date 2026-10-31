@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FConditionEntityDeathConfig (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
-
 class UConditionEntityDeath : ULocalConditionTypeDefineBase
 {
     UPROPERTY()
@@ -77,9 +72,10 @@ struct FConditionEntityDeathConfig : FLocalConditionTypeDefineConfigBase
     UPROPERTY()
     TSoftClassPtr<AKLLevelScriptBaseActor> DataLayerLevelClass;
 
+    default _base_FLocalConditionTypeDefineConfigBase = UConditionEntityDeath;
+
     FConditionEntityDeathConfig()
     {
-        super();
         this.PlayerFilter = ELocalConditionPlayerFilter(0);
         this.__InitDefaults();
         return;

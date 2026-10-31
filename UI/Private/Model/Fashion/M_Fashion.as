@@ -1,4 +1,3 @@
-﻿
 namespace FMS_FashionModel
 {
     const int ModelId = 0;
@@ -22,7 +21,6 @@ struct FMsg_FashionMountChanged : FEUIMessage
     UPROPERTY()
     uint MountDecoID;
 
-
 }
 
 struct FFashionDecoPoint
@@ -37,7 +35,6 @@ struct FFashionDecoPoint
     FVector AttachRotation;
     UPROPERTY()
     float32 AttachScale = 1.0f;
-
 
     void ApplyFromProto(const FPbDecoPointInfo &inout DecoInfo)
     {
@@ -85,7 +82,6 @@ struct FAvatarFashion
     uint BathrobeTopID;
     UPROPERTY()
     uint BathrobeBottomID;
-
 
     void ApplyFromProto(const FPbAvatarFashionInfo &inout FashionInfo)
     {
@@ -928,7 +924,7 @@ struct FMS_FashionModel : FEUIModelSingleton
         if (local_10)
         {
             FCommonTipsParam local_36;
-            ::CommonPopup::Tips(NSLOCTEXT("Fashion", "Fashion_ChangeMountWhileRidingApplyNextSummon", "еќђйЄ‘зЉ¶жЂЃдё­пјЊдё‹ж¬ЎеЏ¬е”¤еќђйЄ‘ж—¶з”џж•€"), local_36);
+            ::CommonPopup::Tips(NSLOCTEXT("Fashion", "Fashion_ChangeMountWhileRidingApplyNextSummon", "坐骑状态中，下次召唤坐骑时生效"), local_36);
         }
         XLog(ELog(79), FString().Append("[M_Fashion] ChangeMountRsp success, wait authoritative fashion snapshot MountId=").Append(Rsp.GetMountId()).Append(" MountDecoId=").Append(Rsp.GetMountDecoId()));
         return;

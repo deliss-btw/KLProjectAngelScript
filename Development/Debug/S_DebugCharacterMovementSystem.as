@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Charactermovenet_Debug = FConsoleVariable();
 const FConsoleVariable CVar_Charactermovenet_DebugCache = FConsoleVariable();
 const FConsoleVariable CVar_Charactermovenet_DebugTraceTime = FConsoleVariable();
@@ -17,11 +16,12 @@ struct FDebugMovementStatLine
     }
     FString GetInfo() const property
     {
-        return this;
+        return this.m_Info;
     }
     void SetInfo(const FString &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Info = __Value;
+        return;
     }
     const FLinearColor GetColor() const property
     {
@@ -60,11 +60,28 @@ struct FDebugMovementCollisionInfo
 
     FDebugMovementCollisionInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_bValid = false;
+        this.m_CapsuleHalfHeight = 0.0f;
+        this.m_CapsuleRadius = 0.0f;
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        return;
     }
     FDebugMovementCollisionInfo(const FDebugMovementCollisionInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_bValid = false;
+        this.m_CapsuleHalfHeight = 0.0f;
+        this.m_CapsuleRadius = 0.0f;
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_bValid = Other.m_bValid;
+        this.m_CollisionPosition = Other.m_CollisionPosition;
+        this.m_CollisionRotation = Other.m_CollisionRotation;
+        this.m_CapsuleHalfHeight = Other.m_CapsuleHalfHeight;
+        this.m_CapsuleRadius = Other.m_CapsuleRadius;
+        this.m_FloorColor = Other.m_FloorColor;
+        this.m_FloorPosition = Other.m_FloorPosition;
+        return;
     }
     FDebugMovementCollisionInfo opAssign(const FDebugMovementCollisionInfo &inout Other)
     {
@@ -244,7 +261,6 @@ struct FDebugMovementStatInfo
     TArray<FDebugMovementStatLine> PrintLines;
     UPROPERTY()
     FDebugMovementCollisionInfo ShapeInfo;
-
 
 }
 
@@ -466,7 +482,7 @@ class US_DebugEntityMovementSystem : UECSScriptSystem
             StatInfo.MaxSpeedVertical = 0.0f;
             StatInfo.MinSpeedVertical = 3.4028235e38f;
             int local_35 = 0;
-            while (local_35 < 0)
+            for (; local_35 < StatInfo.SpeedBuff.Num(); ++local_35)
             {
                 local_36 = StatInfo.SpeedBuff[local_35];
                 if (local_36 < StatInfo.MinSpeed)
@@ -495,7 +511,6 @@ class US_DebugEntityMovementSystem : UECSScriptSystem
                 {
                     StatInfo.MaxSpeedVertical = local_38;
                 }
-                ++local_35;
             }
             StatInfo.SpeedBuff.Empty();
             StatInfo.SpeedHorizontalBuff.Empty();
@@ -530,14 +545,15 @@ class US_DebugEntityMovementSystem : UECSScriptSystem
     }
     void UpdateStateShapeInfo(FDebugMovementStatInfo &inout StatInfo, const FC_Transform &inout Transform, const FC_CharacterMovement &inout CharacterMovement, const FC_CharacterMovementNew &inout CharacterMovementNew, const FC_Collision &inout Collision) const
     {
+        float32 local_165;
         FKMCContext local_148;
         FVector local_154 = CharacterMovement.GetPosition();
         FQuat local_164 = CharacterMovement.GetRotation();
-        float32 local_166 = CharacterMovementNew.GetStepUpHeight();
-        Collision.GetScaledShape();
+        local_165 = CharacterMovementNew.GetStepUpHeight();
+        local_148.SetTransformAndShape(ECharacterMovementCollisionType(0), local_154, local_164, Collision.GetScaledShape(), local_165);
         FVector local_178 = local_148.State.GetCollisionPosition();
         FQuat local_192 = local_148.State.GetCollisionRotation();
-        float32 local_166_2 = float32(local_148.GetActualShape().GetExtent().Z);
+        float32 local_166 = float32(local_148.GetActualShape().GetExtent().Z);
         float32 local_201 = FKinematicMoveCollisionUtils::GetShapeRadiusAsCapsule(local_148.GetActualShape());
         FColor local_206;
         if (CharacterMovement.GetFloorInfo().bHasFloor)
@@ -557,7 +573,7 @@ class US_DebugEntityMovementSystem : UECSScriptSystem
         StatInfo.ShapeInfo.SetbValid(true);
         StatInfo.ShapeInfo.SetCollisionPosition(local_178);
         StatInfo.ShapeInfo.SetCollisionRotation(local_192);
-        StatInfo.ShapeInfo.SetCapsuleHalfHeight(local_166_2);
+        StatInfo.ShapeInfo.SetCapsuleHalfHeight(local_166);
         StatInfo.ShapeInfo.SetCapsuleRadius(local_201);
         StatInfo.ShapeInfo.SetFloorColor(local_206);
         StatInfo.ShapeInfo.SetFloorPosition(CharacterMovement.GetFloorInfo().FloorImpactPoint);

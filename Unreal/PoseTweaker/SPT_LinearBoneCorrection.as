@@ -1,12 +1,9 @@
-﻿
-
 struct FDriverBone
 {
     UPROPERTY()
     FPT_BoneRef Bone;
     UPROPERTY()
     EAxis ForwardAxis = EAxis(1);
-
 
     FVector GetForwardAxis() const
     {
@@ -34,7 +31,6 @@ struct FFollowerBone
     UPROPERTY()
     float32 MaxLengthScale = 2.0f;
 
-
 }
 
 struct FLinearBoneCorrectionDebugSetting
@@ -45,7 +41,6 @@ struct FLinearBoneCorrectionDebugSetting
     EAxis RotationAxis = EAxis(3);
     UPROPERTY()
     float32 AngleDegree = 0.0f;
-
 
     FQuat GetRotation()
     {
@@ -94,7 +89,6 @@ class USPT_LinearBoneCorrection : USkeletalPoseTweaker
     UPROPERTY()
     FLinearBoneCorrectionDebugSetting DebugSetting;
     FLinearBoneCorrectionBindPoseInfo BindPoseInfo;
-
 
     UFUNCTION()
     void OnInitialization_Implementation()
@@ -212,10 +206,9 @@ struct FLinearBoneCorrectionConfig
     UPROPERTY()
     FLinearBoneCorrectionBindPoseInfo BindPoseInfo;
 
-
     void OnInitialization(const USkeletalPoseTweaker PT)
     {
-        if (!(this.Bone.HasValidSetup()))
+        if (!(this.DriverBone.Bone.HasValidSetup()))
         {
             return;
         }
@@ -226,8 +219,8 @@ struct FLinearBoneCorrectionConfig
                 return;
             }
         }
-        this.BindPoseInfo.DriverRotationInverse = PT.GetBoneTransformLocal(this.Bone.GetBoneIndex()).GetRotation().Inverse();
-        FVector local_72 = this.GetForwardAxis();
+        this.BindPoseInfo.DriverRotationInverse = PT.GetBoneTransformLocal(this.DriverBone.Bone.GetBoneIndex()).GetRotation().Inverse();
+        FVector local_72 = this.DriverBone.GetForwardAxis();
         for (auto& local_16 : this.Followers)
         {
             FVector local_78(PT.GetBoneTransformLocal(local_16.Bone.GetBoneIndex()).GetLocation());
@@ -255,7 +248,7 @@ struct FLinearBoneCorrectionConfig
             PT.DrawAnimDebugTransform(local_12.GetTransform(), 10.0f, true);
         }
         float32 local_97 = this.BindPoseInfo.FollowerDistanceToDriverAxis[FollowerIndex];
-        FVector local_180 = this.GetForwardAxis();
+        FVector local_180 = this.DriverBone.GetForwardAxis();
         FTransform local_168 = PT.GetBoneTransformLocal(local_12.GetBoneIndex());
         FVector local_186(local_168.GetLocation());
         float32 local_109 = float32(((local_186 - (local_180 * local_186.DotProduct(local_180))).Size()));
@@ -273,9 +266,9 @@ struct FLinearBoneCorrectionConfig
         {
             return;
         }
-        FTransform local_28 = FTransform(this.Bone.GetTransform());
+        FTransform local_28 = FTransform(this.DriverBone.Bone.GetTransform());
         local_28.SetRotation((local_28.GetRotation() * this.DebugSetting.GetRotation()));
-        this.Bone.SetTransform(local_28);
+        this.DriverBone.Bone.SetTransform(local_28);
         if (this.bWantDebug)
         {
             PT.DrawAnimDebugTransform(local_28, 12.0f, true);

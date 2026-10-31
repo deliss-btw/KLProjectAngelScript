@@ -1,5 +1,3 @@
-﻿
-
 class UHTNTask_Print : UHTNTask_ECSScriptBase
 {
     UPROPERTY()
@@ -67,14 +65,14 @@ class UHTNTask_PrintVector : UHTNTask_ECSScriptBase
     UFUNCTION()
     void CreatePlanSteps_Implementation(const FHTNContext &inout Context) const
     {
-        FString local_16 = FString();
+        XLog(ELog(0), FString().Append(" Planing PrintVector ").Append(this.VectorKey.SelectedKeyName).Append(" : ").Append(HTNNode::GetWorldStateValueAsVector(Context, this.VectorKey)));
         this.SubmitPlanStep(1, "");
         return;
     }
     UFUNCTION()
     void Execute_Implementation(const FHTNContext &inout Context)
     {
-        FString local_16 = FString();
+        XLog(ELog(0), FString().Append("Execution PrintVector ").Append(this.VectorKey.SelectedKeyName).Append(" : ").Append(HTNNode::GetWorldStateValueAsVector(Context, this.VectorKey)));
         this.FinishExecuteWithContext(Context, true);
         return;
     }

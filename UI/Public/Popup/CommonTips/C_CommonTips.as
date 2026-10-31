@@ -1,4 +1,3 @@
-﻿
 enum ECommonTipsType
 {
     Normal,
@@ -23,7 +22,6 @@ struct FPendingCommonTipsInfo
     UPROPERTY()
     FEUIModelContainer TypeSpecificModels;
 
-
 }
 
 struct FDisplayingCommonTipsInfo
@@ -31,7 +29,7 @@ struct FDisplayingCommonTipsInfo
     UPROPERTY()
     FEUIWidgetRef ViewRef;
     UPROPERTY()
-    int PopupId;
+    int PopupId = INDEX_NONE;
     UPROPERTY()
     FText Content;
     UPROPERTY()
@@ -39,10 +37,6 @@ struct FDisplayingCommonTipsInfo
     UPROPERTY()
     float32 Lifetime;
 
-    FDisplayingCommonTipsInfo()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
 }
 
 struct FCommonTipsParam
@@ -53,7 +47,6 @@ struct FCommonTipsParam
     bool bAllowSameContent;
     UPROPERTY()
     int Priority = -2000000000;
-
 
 }
 
@@ -158,16 +151,16 @@ bool RemoveCommonTipsManager(const FECSWorldPtr &inout World)
 }
 void __MonitorCommonTipsManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_CommonTipsManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_CommonTipsManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommonTipsManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_CommonTipsManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_CommonTipsManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommonTipsManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_CommonTipsManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_CommonTipsManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

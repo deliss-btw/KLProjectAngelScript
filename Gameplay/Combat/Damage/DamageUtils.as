@@ -1,4 +1,3 @@
-﻿
 enum EHitStateInterruptBehaviourType
 {
     Return,
@@ -462,7 +461,8 @@ bool FilterPropEnvBreakableDamage(const FECSEntity &inout Target, const FECSEnti
     {
         return false;
     }
-    FDamageUtils::DirectDamagePropEnvBreakable(Target, FinalDamageSource, local_12, Time, GetEnvBreakDamageValue(), FinalDamageSource.GetDestructibleClassLevelFromDamage());
+    float32 local_16 = GetEnvBreakDamageValue();
+    FDamageUtils::DirectDamagePropEnvBreakable(Target, FinalDamageSource, local_12, Time, local_16, FinalDamageSource.GetDestructibleClassLevelFromDamage());
     return true;
 }
 void DirectDamagePropEnvBreakable(const FECSEntity &inout Target, const FECSEntity &inout FinalDamageSource, const FC_PropEnvBreakableConfig &inout EnvBreakableConfig, const FFPTime &inout Time, const float32 EnvBreakDamage, const EDestructibleClassLevel DestructibleDamageLevel)
@@ -703,8 +703,10 @@ void AddHitDamageToProjectile(const FECSEntity &inout DamageCaster, const FECSEn
         local_104.BeHitEntity = TargetEntity;
         local_104.CauserEntity = DamageCaster;
         local_104.HitPoint = HitPoint;
+        local_104.AttackData = AttackData;
+        UScriptStruct local_110 = FAbilityEffectEventData_BeHit;
         GetDefaulted local_108;
-        FECSEntity local_114 = local_108.opCall().GetOwnerEntity();
+        FAbilityUtils::TryTriggerAbilityEffectEvent(TargetEntity, local_108.opCall().GetOwnerEntity(), EAbilityEffectEvent(5), HitTime, local_110, local_104);
     }
     Get local_118;
     const FC_BeHitPresentationConfig& local_120 = local_118.opCall();
@@ -751,10 +753,8 @@ void AddDirectDamage(const FECSEntity &inout FinalDamageSource, const FECSEntity
 void AddDirectDamageByAttackData(const FECSEntity &inout FinalDamageSource, const FECSEntity &inout AttackerAttributeProvider, const FECSEntity &inout Target, const FAttackData &inout AttackData, const FFPTime &inout Time)
 {
     FAttackInfo local_26;
-    FDataObjectPtr local_50;
-    local_26.AttackData = local_50;
-    bool local_52 = FDamageUtils::IsDamageToAvatar(Target);
-    FCapabilityInstanceId local_53 = FCapabilityInstanceId();
+    local_26.AttackData = UDataObjectManager::GetDataObjectPtr(AttackData);
+    FDamageUtils::AddDirectDamage(FinalDamageSource, AttackerAttributeProvider, Target, local_26, AttackData.DamageType, FDamageUtils::CalcAttackBaseDamageValue(AttackerAttributeProvider, AttackData, Time, FDamageUtils::IsDamageToAvatar(Target), FCapabilityInstanceId()), 1.0f, AttackData.AbnormalState, Time);
     return;
 }
 void AddExecutionDamage(const FECSEntity &inout FinalDamageSource, const FECSEntity &inout AttackerAttributeProvider, const FECSEntity &inout Target, const FAttackData &inout AttackData, const float32 DamageRatio, const FVector &inout HitPosition, const FFPTime &inout Time)
@@ -784,8 +784,7 @@ void AddExecutionDamage(const FECSEntity &inout FinalDamageSource, const FECSEnt
         local_1028.FinalDamageSource = FinalDamageSource;
         local_1028.DirectDamageSource = FinalDamageSource;
         local_1028.AttackerAttributeProvider = AttackerAttributeProvider;
-        TDataObjectPtr<FAttackData> local_1054;
-        local_1028.AttackData = local_1054;
+        local_1028.AttackData = TDataObjectPtr<FAttackData>(AttackData);
         local_1028.DamageType = AttackData.DamageType;
         local_1028.AttackFromPosition = HitPosition;
         local_1028.Position = HitPosition;
@@ -851,8 +850,7 @@ FHitStateInterruptBehaviour GetHitStateInterruptBehaviour(const FECSEntity &inou
     }
     if (HitReactionComp)
     {
-        int local_7 = int(FAbnormalStateUtils::GetTargetAbnormalWeakness(Entity));
-        return FDamageUtils::InternalGetHitStateInterruptBehaviour(Entity, HitReactionComp.GetCurrentHitState());
+        return FDamageUtils::InternalGetHitStateInterruptBehaviour(Entity, HitReactionComp.GetCurrentHitState(), EHitReactionState(WillHitState), EAbnormalState(WillHitAbnormalState), FAbnormalStateUtils::GetTargetAbnormalWeakness(Entity));
     }
     return FHitStateInterruptBehaviour(EHitStateInterruptBehaviourType(2), false);
 }
@@ -1070,7 +1068,7 @@ FHitLevelESMTransitInfo PostProcessESMTransitHitStateName(const FName &inout InH
     const FC_HitReaction& local_20 = local_18.opCall();
     if (local_20)
     {
-        if (!(local_20.GetHitBreakResistance().CanBreak()))
+        if (!(local_20.GetHitBreakResistance().CanBreak(EHitBreakLevel(BreakLevel))))
         {
             return FHitLevelESMTransitInfo(NAME_None);
         }

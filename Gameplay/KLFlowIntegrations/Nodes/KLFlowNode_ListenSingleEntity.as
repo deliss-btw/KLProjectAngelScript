@@ -1,4 +1,3 @@
-﻿
 namespace ListenSingleEntityPins
 {
     const FName Activate = n"Activate";
@@ -8,9 +7,6 @@ namespace ListenSingleEntityPins
     const FName OnEntityDie = n"OnEntityDie";
     const FName OnEntityDestroy = n"OnEntityDestroy";
 
-// NOTE: class defaults are not authored in this module: FKLFlowNode_ListenSingleEntity (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
-
 }
 struct FKLFlowEvent_EntityLifecycle : FKLFlowEvent_Base
 {
@@ -18,7 +14,6 @@ struct FKLFlowEvent_EntityLifecycle : FKLFlowEvent_Base
     int _Padding = 0;
     UPROPERTY()
     FKLFlowECSEntityId TargetEntityId;
-
 
 }
 
@@ -32,7 +27,6 @@ struct FKLFlowNodeMemory_ListenSingleEntity
     int HandleDestroy = 0;
     UPROPERTY()
     bool bIsActive = false;
-
 
 }
 
@@ -63,7 +57,7 @@ struct FKLFlowNode_ListenSingleEntity : FKLFlowNode
     }
     void OnBuild_Implementation()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     void OnInit_Implementation()
     {

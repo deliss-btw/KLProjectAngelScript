@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommissionInfo
 {
     const int ModelId = 0;
@@ -72,17 +71,13 @@ struct FVM_CommissionInfo : FEUIViewModel
         TDataObjectPtr<FDropItemConfigBase> local_48 = this.GetCommissionConfig().opArrow().GetCommissionReward();
         if (local_48)
         {
-            FEUIModelRef local_80;
-            ::FCommonRewardListBuilder::BuildFromDropConfig(local_48);
-            this.SetCommissionRewardList(local_80);
+            this.SetCommissionRewardList(FEUIModelRef(::FVM_CommonRewardList::Create(this.GetContext().Manager, ::FCommonRewardListBuilder::BuildFromDropConfig(local_48))));
         }
         TDataObjectPtr<FCommissionConfig> local_24_2 = this.GetCommissionConfig();
         TDataObjectPtr<FRewardConfig> local_104 = local_24_2.opArrow().GetSpecialRewardConfig();
         if (local_104)
         {
-            FEUIModelRef local_80;
-            ::FCommonRewardListBuilder::BuildFromRewardConfig(local_104);
-            this.SetCommissionFirstTimeRewardList(local_80);
+            this.SetCommissionFirstTimeRewardList(FEUIModelRef(::FVM_CommonRewardList::Create(this.GetContext().Manager, ::FCommonRewardListBuilder::BuildFromRewardConfig(local_104))));
         }
         this.SetCommissionMonsterInfo(TEUIModelRef<FVM_CommissionMonsterInfo>(::FVM_CommissionMonsterInfo::Create(this.GetContext().Manager, this.GetCommissionModel())));
         this.SetCommissionRewardInfo(TEUIModelRef<FVM_CommissionRewardInfo>(::FVM_CommissionRewardInfo::Create(this.GetContext().Manager, this.GetCommissionModel())));
@@ -133,7 +128,7 @@ struct FVM_CommissionInfo : FEUIViewModel
     }
     FText GetDeathLimitText() const
     {
-        return FText::Format(NSLOCTEXT("DeathLimitText", "< {0}ж¬Ў"), this.GetCommissionConfig().opArrow().MaxDeathCount);
+        return FText::Format(NSLOCTEXT("DeathLimitText", "< {0}次"), this.GetCommissionConfig().opArrow().MaxDeathCount);
     }
     bool HasDeathLimit() const
     {
@@ -144,7 +139,7 @@ struct FVM_CommissionInfo : FEUIViewModel
         FNumberFormattingOptions local_6 = FNumberFormattingOptions();
         FText local_38;
         FText::AsNumber(local_38, (this.GetCommissionConfig().opArrow().CommissionTimeLimit / 60.0f));
-        return FText::Format(NSLOCTEXT("TimeLimitText", "< {0}е€†й’џ"), local_38);
+        return FText::Format(NSLOCTEXT("TimeLimitText", "< {0}分钟"), local_38);
     }
     bool HasTimeLimit() const
     {
@@ -161,19 +156,19 @@ struct FVM_CommissionInfo : FEUIViewModel
             local_79 = local_78;
             if (local_79 == 2)
             {
-                return NSLOCTEXT("RaceMultiPlayerNumLimitText", "1~4дєє");
+                return NSLOCTEXT("RaceMultiPlayerNumLimitText", "1~4人");
             }
             if (local_78 == 1)
             {
-                return NSLOCTEXT("RaceSinglePlayerNumLimitText", "1дєє");
+                return NSLOCTEXT("RaceSinglePlayerNumLimitText", "1人");
             }
         }
         if (this.GetCommissionMatchConfig().IsSet() && (local_79 > 1))
         {
-            NSLOCTEXT("PlayerNumLimitText", "1~{0}дєє");
+            NSLOCTEXT("PlayerNumLimitText", "1~{0}人");
             return FText();
         }
-        return NSLOCTEXT("PlayerNumLimitMinText", "1дєє");
+        return NSLOCTEXT("PlayerNumLimitMinText", "1人");
     }
     FText GetCommissionTargetObjectiveOrAimDesc() const
     {
@@ -196,7 +191,7 @@ struct FVM_CommissionInfo : FEUIViewModel
         {
             return FText();
         }
-        return FText::Format(NSLOCTEXT("CommissionSubTargetText", "[еЏЇйЂ‰] {0}"), local_56);
+        return FText::Format(NSLOCTEXT("CommissionSubTargetText", "[可选] {0}"), local_56);
     }
     int GetFinishCount() const
     {
@@ -253,7 +248,7 @@ struct FVM_CommissionInfo : FEUIViewModel
     }
     FText GetCommissionTimeLimit() const
     {
-        return FText::Format(NSLOCTEXT("Commission", "CommissionTimeLimit", "й™ђж—¶{0}е€†й’џ"), (this.GetCommissionConfig().opArrow().CommissionTimeLimit / 60.0f));
+        return FText::Format(NSLOCTEXT("Commission", "CommissionTimeLimit", "限时{0}分钟"), (this.GetCommissionConfig().opArrow().CommissionTimeLimit / 60.0f));
     }
     bool CommissionHasTimeLimit() const
     {
@@ -328,9 +323,9 @@ struct FVM_CommissionInfo : FEUIViewModel
         local_3 = ::FM_LocalPlayerLevel::Get(this.GetContext().Manager).GetLevel();
         if (local_2 > local_3)
         {
-            return FText::Format(NSLOCTEXT("RecommendedLevelTextWithCurrent", "зїјз—•з­‰зє§е»єи®® {0} / еЅ“е‰Ќ {1}"), local_2, local_3);
+            return FText::Format(NSLOCTEXT("RecommendedLevelTextWithCurrent", "翼痕等级建议 {0} / 当前 {1}"), local_2, local_3);
         }
-        return FText::Format(NSLOCTEXT("RecommendedLevelText", "<Beige16>зїјз—•з­‰зє§е»єи®® {0}</>"), local_2);
+        return FText::Format(NSLOCTEXT("RecommendedLevelText", "<Beige16>翼痕等级建议 {0}</>"), local_2);
     }
     ERaceMode GetRaceMode() const
     {
@@ -365,7 +360,7 @@ struct FVM_CommissionInfo : FEUIViewModel
         {
             return ::CommissionUtils::GetRaceCommissionTimeText(this.GetCommissionModel().opArrow().GetBestCostTimeSec());
         }
-        return NSLOCTEXT("NoTimeRecord", "жљ‚жњЄйЂље…і");
+        return NSLOCTEXT("NoTimeRecord", "暂未通关");
     }
     ECommissionTier GetBestAchievedTier() const
     {
@@ -373,11 +368,12 @@ struct FVM_CommissionInfo : FEUIViewModel
     }
     TEUIModelRef<FVM_CommissionTier> GetBestAchievedTierVM() const
     {
-        if ((int(this.GetBestAchievedTier())) == 0)
+        int local_1 = int(this.GetBestAchievedTier());
+        if (local_1 == 0)
         {
             return TEUIModelRef<FVM_CommissionTier>();
         }
-        TEUIModelRef<FM_CommissionTier> local_12 = TEUIModelRef<FM_CommissionTier>(::FM_CommissionTier::Create(this.GetContext().Manager, this.GetCommissionModel()));
+        TEUIModelRef<FM_CommissionTier> local_12 = TEUIModelRef<FM_CommissionTier>(::FM_CommissionTier::Create(this.GetContext().Manager, this.GetCommissionModel(), ECommissionTier(local_1)));
         return TEUIModelRef<FVM_CommissionTier>(::FVM_CommissionTier::Create(this.GetContext().Manager, local_12));
     }
     TDataObjectPtr<FCommissionTierConfig> GetBestAchievedTierConfig() const
@@ -403,7 +399,7 @@ struct FVM_CommissionInfo : FEUIViewModel
             return false;
         }
         FCommonDialogParam local_16;
-        ::CommonPopup::Dialog_Decision(NSLOCTEXT("CommissionInfo", "LowLevelWarningTitle", "жЏђз¤є"), FText::Format(NSLOCTEXT("CommissionInfo", "LowLevelWarningContent", "еЅ“е‰ЌеҐ‘зє¦е»єи®®зїјз—•з­‰зє§дёє{0}пјЊеЅ“е‰Ќ<Yellow20>жњЄиѕѕе€°е»єи®®зїјз—•з­‰зє§</>пјЊ\nеҐ‘зє¦йЈЋй™©иѕѓй«пјЊжЇеђ¦з»§з»­пјџ"), local_2), OnConfirm, FText(), FText(), local_16);
+        ::CommonPopup::Dialog_Decision(NSLOCTEXT("CommissionInfo", "LowLevelWarningTitle", "提示"), FText::Format(NSLOCTEXT("CommissionInfo", "LowLevelWarningContent", "当前契约建议翼痕等级为{0}，当前<Yellow20>未达到建议翼痕等级</>，\n契约风险较高，是否继续？"), local_2), OnConfirm, FText(), FText(), local_16);
         return true;
     }
     void StartCommission()
@@ -688,7 +684,6 @@ struct __GeneratedProperties_FVM_CommissionInfo
     TArray<TEUIModelRef<FVM_CommissionTier>> CommissionTiers;
     UPROPERTY()
     TEUIModelRef<FVM_CommissionInfo> Self;
-
 
 }
 

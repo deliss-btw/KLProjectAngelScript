@@ -1,10 +1,6 @@
-﻿
 namespace FVM_CloseScope
 {
     const int ModelId = 0;
-
-// NOTE: class defaults are not authored in this module: FVM_CloseScope (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
 
 }
 struct FMsg_CloseScopeCloseRequested : FEUIMessage

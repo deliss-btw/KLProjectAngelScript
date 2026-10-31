@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MailBriefItem
 {
     const int ModelId = 0;
@@ -186,7 +185,6 @@ struct __GeneratedProperties_FVM_MailBriefItem
     uint MailId;
     UPROPERTY()
     TEUIModelRef<FVM_MailBriefItem> Self;
-
 
 }
 

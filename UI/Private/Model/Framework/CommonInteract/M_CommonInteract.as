@@ -1,4 +1,3 @@
-﻿
 namespace FMS_CommonInteractManager
 {
     const int ModelId = 0;
@@ -40,8 +39,7 @@ struct FMS_CommonInteractManager : FEUIModelSingleton
                 ::FInteractUtils::GetCurrentInteractPlayerNumInfoForUI(local_12, local_2, local_3);
                 GetGameplaySettings<UDungeonSettings> local_16;
                 local_14 = local_16;
-                FEUIModelRef local_20;
-                this.SetWaitInteractOthersPageHandle(FEUIWidget::AddWidgetByClass(this.GetContext().UELocalPlayer, local_14.DungeonInteractWaitWidgetClass, local_20));
+                this.SetWaitInteractOthersPageHandle(FEUIWidget::AddWidgetByClass(this.GetContext().UELocalPlayer, local_14.DungeonInteractWaitWidgetClass, FEUIModelRef(::FVM_DungeonEnterInteract::Create(this.GetContext().Manager, local_3, local_2))));
             }
             return;
         }
@@ -109,7 +107,9 @@ void __Monitor_OnPlayerWaitReborn(FMS_CommonInteractManager &inout Model, const 
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorLevelEntryInteractPresentationTagLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorLevelEntryInteractPresentationTagModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_WaitInteractOthersPageHandle()
 {

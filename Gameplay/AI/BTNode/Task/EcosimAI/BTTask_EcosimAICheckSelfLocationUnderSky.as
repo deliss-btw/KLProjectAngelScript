@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_EcosimAICheckLocationUnderSky : UBTTask_ECSScriptBase
 {
     UPROPERTY()

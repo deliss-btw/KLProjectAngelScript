@@ -1,5 +1,3 @@
-﻿
-
 class US_EventToESMTriggerSystem : UECSScriptSystem
 {
     US_EventToESMTriggerSystem()

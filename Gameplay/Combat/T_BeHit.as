@@ -1,5 +1,3 @@
-﻿
-
 struct FT_BeHitPresentation : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -8,7 +6,7 @@ struct FT_BeHitPresentation : FECSTrait
     UPROPERTY()
     FC_BeHitPresentationConfig Config_FC_BeHitPresentationConfig;
 
-    default CustomName = FName("еЏ—е‡»иЎЁзЋ° (FT_BeHitPresentation)");
+    default CustomName = FName("受击表现 (FT_BeHitPresentation)");
 
     FT_BeHitPresentation()
     {
@@ -26,7 +24,7 @@ struct FT_AttackerHitPresentation : FECSTrait
     UPROPERTY()
     FC_AttackerHitPresentationConfig Config_FC_AttackerHitPresentationConfig;
 
-    default CustomName = FName("дЅњдёєж”»е‡»иЂ…иЎЁзЋ° (AttackerHitPresentation)");
+    default CustomName = FName("作为攻击者表现 (AttackerHitPresentation)");
 
     FT_AttackerHitPresentation()
     {

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MotionTab
 {
     const int ModelId = 0;

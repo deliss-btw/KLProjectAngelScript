@@ -1,5 +1,3 @@
-﻿
-
 class US_MissionExecutionSystem : UECSScriptSystem
 {
     US_MissionExecutionSystem()
@@ -9,7 +7,7 @@ class US_MissionExecutionSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_TickMissionExecution(const FECSEntity &inout Entity, FC_MissionExecution &inout MissionExecution) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     UFUNCTION()
     void ClientJob_TickMissionExecution(const FECSEntity &inout Entity, FC_MissionClientExecution &inout MissionClientExecution) const

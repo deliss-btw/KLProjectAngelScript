@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_PlayPiano_Helpers
 {
 UFUNCTION()

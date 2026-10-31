@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Debug_CookAutoFinish = FConsoleVariable();
 
 struct FCookConsumeCallback
@@ -19,7 +18,7 @@ struct FCookConsumeCallback
         int local_14 = 0;
         XLog(ELog(46), FString().Append("[Cook] ConsumeCallback Result=").Append(Result).Append(", PlayerPawn=").Append(this.PlayerPawnEntity));
         Has local_10;
-        if (!(this.IsValid()) || !(local_10.opCall()))
+        if (!(this.CookPropEntity.IsValid()) || !(local_10.opCall()))
         {
             XLog(ELog(46), FString().Append("[Cook] CookPropEntity invalid, PlayerPawn=").Append(this.PlayerPawnEntity));
             return;
@@ -28,13 +27,13 @@ struct FCookConsumeCallback
         {
             XLog(ELog(46), FString().Append("[Cook] GS Resource Request Failed, PlayerPawn=").Append(this.PlayerPawnEntity));
             local_14.SetConfirmedFailCount((local_14.GetConfirmedFailCount() + 1));
-            this.CheckAndFinalizeCook(this, local_14);
+            this.CheckAndFinalizeCook(this.CookPropEntity, local_14);
             return;
         }
         bIsConfirmed = true;
         XLog(ELog(46), FString().Append("[Cook] GS Resource Confirmed, PlayerPawn=").Append(this.PlayerPawnEntity));
         local_14.SetConfirmedSuccessCount((local_14.GetConfirmedSuccessCount() + 1));
-        this.CheckAndFinalizeCook(this, local_14);
+        this.CheckAndFinalizeCook(this.CookPropEntity, local_14);
         return;
     }
     void CheckAndFinalizeCook(const FECSEntity &inout InCookPropEntity, FC_CookProp &inout CookProp)
@@ -312,8 +311,7 @@ class US_CookSystem : UECSScriptSystem
             XError(ELog(46), "[ServerJob_HandlePopCostFood]: Event.CookPropEntity not valid");
             return;
         }
-        int local_16 = int(local_10.GetCookState());
-        if (local_16 == 2)
+        if ((int(local_10.GetCookState())) == 2)
         {
             XLog(ELog(46), "[ServerJob_HandlePopCostFood]: Cannot pop food while cooking!");
             return;
@@ -337,7 +335,7 @@ class US_CookSystem : UECSScriptSystem
                         break;
                     }
                     int local_45 = 0;
-                    while (local_45 < local_16)
+                    for (; local_45 < local_10.GetCookPlayerDatas()[local_39].GetCookCostItems().Num(); ++local_45)
                     {
                         if (0 == 0)
                         {
@@ -346,7 +344,6 @@ class US_CookSystem : UECSScriptSystem
                             local_10.GetModify_CookPlayerDatas()[local_39].GetModify_CookCostItems().RemoveAt(local_45);
                             break;
                         }
-                        ++local_45;
                     }
                     local_10.GetModify_CookPlayerDatas()[local_39].SetbPlayerReady(false);
                 }
@@ -422,10 +419,7 @@ class US_CookSystem : UECSScriptSystem
             local_126.SetLocationOffsetSpace(EFXOffsetSpace(2));
             local_126.SetRotationOffset(FRotator::ZeroRotator);
             local_126.SetOverrideParams(TArray<FFXOverrideParam>());
-            FECSEntity local_172 = FECSEntity();
-            ECS::GetContextTime();
-            FECSEntity local_180;
-            local_182.StartCookFX = local_180;
+            local_182.StartCookFX = ECSFX::PlayFXDurationalEx(Event.Sender, local_126, ECS::GetContextTime(), 1.0f, false, FECSEntity(), EAttachFXStopMethod(0), false);
             return;
         }
         if (local_182.StartCookFX.IsValid())
@@ -439,7 +433,7 @@ class US_CookSystem : UECSScriptSystem
     void ClientJob_HandleAutoReadyTip(const FCE_CookAutoReadyTip &inout Event) const
     {
         FCommonTipsParam local_8;
-        ::CommonPopup::Tips(NSLOCTEXT("Cook", "Cook_Tips_AutoReady", "йЈџжќђе·Іж»ЎпјЊејЂе§‹и‡ЄеЉЁе‡†е¤‡еЂ’и®Ўж—¶"), local_8);
+        ::CommonPopup::Tips(NSLOCTEXT("Cook", "Cook_Tips_AutoReady", "食材已满，开始自动准备倒计时"), local_8);
         return;
     }
     UFUNCTION()
@@ -553,7 +547,7 @@ class US_CookSystem : UECSScriptSystem
         if ((local_180 == 0 && local_22.IsEmpty()) || CVar_Debug_CookAutoFinish.GetBool())
         {
             FCookConsumeCallback local_204;
-            local_10.SetCookState(ECookState(ECookState(2)));
+            local_10.SetCookState(ECookState(2));
             this.SetCookParticipantsTeleportBan(local_10, true);
             this.EnableCookPropInteraction(Event.CookPropEntity, false, false);
             local_10.SetConfirmedSuccessCount(100);
@@ -562,7 +556,7 @@ class US_CookSystem : UECSScriptSystem
             local_204.CheckAndFinalizeCook(Event.CookPropEntity, local_10);
             return;
         }
-        local_10.SetCookState(ECookState(ECookState(2)));
+        local_10.SetCookState(ECookState(2));
         this.SetCookParticipantsTeleportBan(local_10, true);
         this.EnableCookPropInteraction(Event.CookPropEntity, false, false);
         local_10.SetPendingConfirmCount(local_180);
@@ -654,13 +648,13 @@ class US_CookSystem : UECSScriptSystem
             if (local_14)
             {
                 int local_40 = 0;
-                while (local_40 < 0)
+                Get local_44;
+                for (; local_40 < local_44.opCall().MaxCookerCount; ++local_40)
                 {
                     if (local_2.GetCookPlayerDatas()[local_40].GetPlayerEntity().IsValid())
                     {
                         ::FInteractUtils::SetEntityInteractTargetEnabled(Event.CookPropEntity, false, local_40);
                     }
-                    ++local_40;
                 }
             }
             FECSWorldPtr local_52 = Event.CookPropEntity.GetWorld();
@@ -1274,7 +1268,6 @@ struct FCookFoodProdectData
     bool bUsed = false;
     UPROPERTY()
     TDataObjectPtr<FItemConfig> CookCostItem;
-
 
 }
 

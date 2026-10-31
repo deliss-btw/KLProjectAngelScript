@@ -1,5 +1,3 @@
-﻿
-
 struct FPVXBossEvolveSettings
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ struct FPVXBossEvolveSettings
     FBuffConfigRef EvolveReadyBuff;
     UPROPERTY()
     TDataObjectPtr<FMessageHintConfig> EvolveReadyHint;
-
 
 }
 
@@ -25,7 +22,6 @@ struct FUpgradeMonsterData
     UPROPERTY()
     FSpawnFakeCharacterExtractData ExtraData;
 
-
 }
 
 struct FLevelProgressData
@@ -36,7 +32,6 @@ struct FLevelProgressData
     TDataObjectPtr<FMessageHintConfig> MessageHintConfig;
     UPROPERTY()
     FName CustomName;
-
 
 }
 
@@ -50,7 +45,6 @@ struct FTime_ExpMultiplier_Data
     TDataObjectPtr<FMessageHintConfig> MessageHintConfig;
     UPROPERTY()
     FBuffConfigRef BuffConfig;
-
 
 }
 
@@ -105,7 +99,6 @@ class UAS_GameModeSettingsPVX : UAS_GameModeSettings
     TArray<FPVX_SettlementPhaseConfig> SettlementPhaseConfigs;
     UPROPERTY()
     TArray<FPVX_SettlementFactionPhases> SettlementFactionPhases;
-
 
 }
 

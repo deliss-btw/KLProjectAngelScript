@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommonComponentFilter
 {
     const int ViewID = 0;
@@ -57,6 +56,7 @@ namespace UWidget_CommonComponentFilter
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonComponentFilter;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

@@ -1,4 +1,3 @@
-﻿
 enum ECommonSideHintListType
 {
     SmallHint,
@@ -65,7 +64,7 @@ struct FVM_CommonSideHintList : FEUIViewModel
     }
     void PostLoad()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     void OnAddSideHint(const FMsg_DisplayCommonSideHint &inout Msg)
     {
@@ -106,7 +105,7 @@ struct FVM_CommonSideHintList : FEUIViewModel
     }
     void RegisterSideHintManager(const TEUIModelRef<FM_CommonSideHintManager> &inout InSideHintManager)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     ECommonSideHintListType GetSideHintListType() const property
     {
@@ -483,7 +482,33 @@ FVM_CommonSideHintList CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostLoad(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(true);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "SideHints";
+    local_14.TypeName = "TArray<FEUIDynamicWidgetData>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_CommonSideHintList>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_CommonSideHintList;
+    FEUIModelMetaPropertyModelRef local_19;
+    local_19.PropertyName = FName("SideHintManager");
+    int local_2_2 = FM_CommonSideHintManager::ModelId;
+    Result.FunctionalPropertyModelRefs.Add(local_19);
+    FEUIModelMsgHandleDefine local_32;
+    local_32.FunctionName = "__OnAddSideHint";
+    local_32.MessageTypeName = "Msg_DisplayCommonSideHint";
+    local_32.SourcePropertyModelRefs = FBitSet64(1);
+    Result.MessageHandleFunctions.Add(local_32);
+    Result.TickFunction.FunctionName = "__Tick";
+    return;
 }
 UScriptStruct GetModelStruct()
 {

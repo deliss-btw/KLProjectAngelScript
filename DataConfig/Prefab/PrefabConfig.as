@@ -1,4 +1,3 @@
-﻿
 enum EPrefabType
 {
     Invalid,
@@ -31,7 +30,6 @@ struct FBasePrefabConfig : FDataObject
     EPrefabSize Size = EPrefabSize(0);
     UPROPERTY()
     TSoftClassPtr<UEUIUserWidget> UI_CustomSkillInfo;
-
 
 }
 

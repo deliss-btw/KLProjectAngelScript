@@ -1,5 +1,3 @@
-﻿
-
 class USPT_HumanSlopeAdaptation : USkeletalPoseTweaker
 {
     UPROPERTY()
@@ -85,7 +83,6 @@ class USPT_HumanSlopeAdaptation : USkeletalPoseTweaker
     FVector CachedFootRHit = FVector::ZeroVector;
     FVector CachedHandLHit = FVector::ZeroVector;
     FVector CachedHandRHit = FVector::ZeroVector;
-
 
     UFUNCTION()
     void OnInitialization_Implementation()

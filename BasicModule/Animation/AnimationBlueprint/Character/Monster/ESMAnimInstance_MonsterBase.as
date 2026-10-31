@@ -1,5 +1,3 @@
-﻿
-
 class UESMAnimInstance_MonsterBase : UESMAnimInstance_Base
 {
     UPROPERTY()
@@ -24,7 +22,6 @@ class UESMAnimInstance_MonsterBase : UESMAnimInstance_Base
     float32 RiderSwayPhysicsControlAlpha = 0.0f;
     UPROPERTY()
     float32 RiderSwayAlphaInterpSpeed = 6.0f;
-
 
     void UpdataCharacterEntityBBData(const FFPTime &inout LocalTime)
     {
@@ -81,7 +78,40 @@ class UESMAnimInstance_MonsterBase : UESMAnimInstance_Base
     }
     void HandleHitShake(const FC_AnimBeHitShake &inout AnimBeHitShake)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Super::HandleHitShake(AnimBeHitShake);
+        this.ShakeDynamicParam.DynamicShakeStrengthScale = AnimBeHitShake.DynamicShakeStrengthScale;
+        this.ShakeDynamicParam.DynamicShakeTimeScale = AnimBeHitShake.DynamicShakeTimeScale;
+        this.ShakeDynamicParam.PauseStartPercent = AnimBeHitShake.BeHitShakePauseStartPercent;
+        this.ShakeDynamicParam.PauseDuration = AnimBeHitShake.BeHitShakePauseDuration;
+        this.ShakeDynamicParam.AttackerTransform = AnimBeHitShake.AttackerTransform;
+        this.ShakeDynamicParam.AttackerForwardVector = AnimBeHitShake.AttackerForwardVector;
+        this.ShakeDynamicParam.AttackDirectionVector = AnimBeHitShake.AttackDirectionVector;
+        if (AnimBeHitShake.BeHitShakeBoneName.IsNone())
+        {
+            return;
+        }
+        int local_5 = ::FPhysicsShakeUtils::ResolveChainIndex(this.ShakeBoneChainConfigs, AnimBeHitShake.BeHitShakeBoneName, AnimBeHitShake.BeHitShakeBodyType);
+        USkeletalMeshComponent local_8 = this.GetOwningComponent();
+        if (local_8 == nullptr || (local_5 < 0) || (local_5 >= this.ShakeBoneChainConfigs.Num()))
+        {
+            return;
+        }
+        FVector local_18 = AnimBeHitShake.AttackDirectionVector;
+        FVector local_30 = AnimBeHitShake.AttackerTransform.GetLocation();
+        FFPTime local_34 = this.GetContextSampleTime();
+        ::FPhysicsShakeUtils::ComputeDirectionAndTrigger(this.Entity, local_8, local_34, local_5, this.ShakeBoneChainConfigs, this.ShakeControlSetting, this.ShakeDynamicParam, local_18, local_30, AnimBeHitShake.BeHitShakeBoneName);
+        int local_35 = 0;
+        for (; local_35 < this.ShakeBoneChainConfigs[local_5].CompanionChainNames.Num(); ++local_35)
+        {
+            int local_36 = ::FPhysicsShakeUtils::FindChainIndexByChainName(this.ShakeBoneChainConfigs, this.ShakeBoneChainConfigs[local_5].CompanionChainNames[local_35]);
+            if (local_36 < 0 || (local_36 == local_5))
+            {
+                continue;
+            }
+            ::FPhysicsShakeUtils::ComputeDirectionAndTrigger(this.Entity, local_8, local_34, local_36, this.ShakeBoneChainConfigs, this.ShakeControlSetting, this.ShakeDynamicParam, local_18, local_30, NAME_None);
+            this.ShakeBoneChainConfigs[local_36].TriggeringChainIdx = local_5;
+        }
+        return;
     }
     UFUNCTION()
     void EntitySync_SyncHistory_Implementation(const FFPTime &inout SampleTime)

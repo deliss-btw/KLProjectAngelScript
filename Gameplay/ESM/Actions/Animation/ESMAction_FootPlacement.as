@@ -1,10 +1,7 @@
-﻿
-
 class UESMAction_FootPlacement : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
     float32 Weight = 1.0f;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const

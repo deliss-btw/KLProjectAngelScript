@@ -1,5 +1,3 @@
-﻿
-
 struct FGodraySetting
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ struct FGodraySetting
     float32 FadeInDistance = 0.0f;
     UPROPERTY()
     float32 FadeInOffset = 0.0f;
-
 
 }
 
@@ -50,12 +47,21 @@ class ASceneVolumeLight : AActor
     }
     void ApplyGodraySetting()
     {
-        this.MeshComp.SetCustomPrimitiveDataFloat(0, int(this.GodraySetting.GodrayColor.R));
-        this.MeshComp.SetCustomPrimitiveDataFloat(1, int(this.GodraySetting.GodrayColor.G));
-        this.MeshComp.SetCustomPrimitiveDataFloat(2, int(this.GodraySetting.GodrayColor.B));
-        this.MeshComp.SetCustomPrimitiveDataFloat(3, (this.GodraySetting.bFollowEnvironmentSystem ? 1065353216 : 0));
-        this.MeshComp.SetCustomPrimitiveDataFloat(4, int(this.GodraySetting.FadeInDistance));
-        this.MeshComp.SetCustomPrimitiveDataFloat(5, int(this.GodraySetting.FadeInOffset));
+        this.MeshComp.SetCustomPrimitiveDataFloat(0, this.GodraySetting.GodrayColor.R);
+        this.MeshComp.SetCustomPrimitiveDataFloat(1, this.GodraySetting.GodrayColor.G);
+        float32 local_1_3 = this.GodraySetting.GodrayColor.B;
+        this.MeshComp.SetCustomPrimitiveDataFloat(2, local_1_3);
+        if (this.GodraySetting.bFollowEnvironmentSystem)
+        {
+            local_1_3 = 1.0f;
+        }
+        else
+        {
+            local_1_3 = 0.0f;
+        }
+        this.MeshComp.SetCustomPrimitiveDataFloat(3, local_1_3);
+        this.MeshComp.SetCustomPrimitiveDataFloat(4, this.GodraySetting.FadeInDistance);
+        this.MeshComp.SetCustomPrimitiveDataFloat(5, this.GodraySetting.FadeInOffset);
         return;
     }
 }

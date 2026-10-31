@@ -1,5 +1,3 @@
-﻿
-
 class US_LookRequestFlowerWhipToxicSystemAS : UECSScriptSystem
 {
     US_LookRequestFlowerWhipToxicSystemAS()

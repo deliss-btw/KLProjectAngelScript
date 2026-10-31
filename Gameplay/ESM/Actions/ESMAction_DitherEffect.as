@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_DitherEffect : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ class UESMAction_DitherEffect : UESMBPBaseSpanAction
     bool bUseBBEntityAsDitherTarget = false;
     UPROPERTY()
     FNameHandle_EntityBBVarEntity TargetEntityBBVar;
-
 
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const

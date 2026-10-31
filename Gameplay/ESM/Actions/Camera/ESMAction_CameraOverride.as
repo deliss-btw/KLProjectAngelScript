@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CameraLookAtTarget : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -14,7 +12,6 @@ class UESMAction_CameraLookAtTarget : UESMBPBaseSpanAction
     FDataObjectPtr LookAtConfig;
     UPROPERTY()
     FDataObjectPtr CameraState;
-
 
     UFUNCTION()
     EESMActionType GetActionType_Implementation() const

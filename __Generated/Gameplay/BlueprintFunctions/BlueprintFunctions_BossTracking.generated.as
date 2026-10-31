@@ -1,5 +1,3 @@
-﻿
-
 class UASBossTrackingWaitForDiscoveredWrapper : UECSAsyncActionBase
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ class UASBossTrackingWaitForDiscoveredWrapper : UECSAsyncActionBase
     float32 CheckInterval = 0.5f;
     UPROPERTY()
     FECSAsyncActionDelegate_Entity OnDiscovered;
-
 
     UFUNCTION()
     UScriptStruct GetAsyncActionClass_Implementation() const
@@ -34,7 +31,6 @@ class UASBossTrackingWaitForChangeAreaWrapper : UECSAsyncActionBase
     UPROPERTY()
     FECSAsyncActionDelegate OnChangeAreaFinished;
 
-
     UFUNCTION()
     UScriptStruct GetAsyncActionClass_Implementation() const
     {
@@ -50,7 +46,6 @@ class UASBossTrackingWaitForBossSpawnedWrapper : UECSAsyncActionBase
     float32 CheckInterval = 0.5f;
     UPROPERTY()
     FECSAsyncActionDelegate OnBossSpawned;
-
 
     UFUNCTION()
     UScriptStruct GetAsyncActionClass_Implementation() const

@@ -1,4 +1,3 @@
-﻿
 namespace ECSWorldLifetimePage
 {
 FEUIWidgetRef Open(const FGameplayTag &inout PageTag, const FEUIModelContainer &inout Models = FEUIModelContainer())

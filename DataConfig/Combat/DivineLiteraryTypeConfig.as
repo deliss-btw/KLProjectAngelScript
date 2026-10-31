@@ -1,5 +1,3 @@
-﻿
-
 struct FDivineLiteraryTypeConfig : FDataObject
 {
     FDataObject _base_FDataObject;

@@ -1,4 +1,3 @@
-﻿
 namespace CommonPopupUtils
 {
     const int CommonPopupPriorityUnset = -2000000000;
@@ -17,8 +16,100 @@ bool EnsureECSWorldReady(const FString &inout ApiName, const bool bWarnIfInvalid
 }
 int TryEnqueuePopup(const FGameplayTag &inout PopupType, const int Priority = CommonPopupPriorityUnset)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    int __r; return __r;
+    int local_12 = 0;
+    int local_35;
+    if (!(CommonPopupUtils::EnsureECSWorldReady("TryEnqueuePopup", true)))
+    {
+        return INDEX_NONE;
+    }
+    FECSWorldPtr local_6 = ECS::GetECSWorld();
+    local_12.EnsureInitialized();
+    int local_3 = CommonPopupUtils::ResolveEffectivePriority(PopupType, Priority);
+    TArray<ECommonPopupQueueType> local_18;
+    local_12.GetQueueTypesForTag(PopupType, local_18);
+    TArray<ECommonPopupQueueType> local_22;
+    auto local_28 = local_18.Iterator();
+    for (; local_28.CanProceed;)
+    {
+        local_35 = int(local_28.Proceed());
+        if (local_12.QueuedPopups.Contains(ECommonPopupQueueType(local_35)))
+        {
+            local_22.AddUnique(ECommonPopupQueueType(local_35));
+        }
+    }
+    if (local_22.IsEmpty() && local_12.QueuedPopups.Contains(ECommonPopupQueueType(0)))
+    {
+        local_22.Add(ECommonPopupQueueType(0));
+    }
+    if (local_22.IsEmpty())
+    {
+        return INDEX_NONE;
+    }
+    TMap<int, FCommonPopupInfo> local_56;
+    auto local_34 = local_22.Iterator();
+    for (; local_34.CanProceed;)
+    {
+        FCommonPopupQueueRuleList& local_58 = local_12.QueuedPopups[ECommonPopupQueueType(local_34.Proceed())];
+        if (local_58.DisplayingPopup.IsValid())
+        {
+            ECommonPopupOccupyRule local_59 = CommonPopupUtils::GetOccupyRule(local_58.DisplayingPopup.PopupType, PopupType);
+            if (int(local_59) == 2)
+            {
+                return INDEX_NONE;
+            }
+            if (int(local_59) == 1)
+            {
+                local_56.Add(local_58.DisplayingPopup.PopupId, local_58.DisplayingPopup);
+            }
+        }
+        for (auto& local_76 : local_58.QueuedPopups)
+        {
+            ECommonPopupOccupyRule local_60 = CommonPopupUtils::GetOccupyRule(local_76.PopupType, PopupType);
+            if (int(local_60) == 2)
+            {
+                return INDEX_NONE;
+            }
+            if (int(local_60) == 1)
+            {
+                local_56.Add(local_76.PopupId, local_76);
+            }
+        }
+    }
+    TArray<ECommonPopupQueueType> local_80;
+    TArray<FCommonPopupInfo> local_84;
+    for (auto& local_102 : local_56)
+    {
+        CommonPopupDisplayingUtils_Internal::RemovePopupFromAllQueues(local_12, local_102.GetKey(), local_80);
+        local_84.Add();
+    }
+    if (!(local_84.IsEmpty()))
+    {
+        int local_36 = int(local_22[0]);
+        CommonPopupDisplayingUtils_Internal::SaveManagerRecord(false, ECommonPopupQueueType(local_36), local_84);
+    }
+    int local_36_2 = int(local_22[0]);
+    int local_61 = local_12.GeneratePopupId(ECommonPopupQueueType(local_36_2));
+    FCommonPopupInfo local_108 = FCommonPopupInfo(local_61, PopupType, local_3);
+    auto local_28_2 = local_22.Iterator();
+    for (; local_28_2.CanProceed;)
+    {
+        local_35 = int(local_28_2.Proceed());
+        FCommonPopupQueueRuleList& local_58_2 = local_12.QueuedPopups[ECommonPopupQueueType(local_35)];
+        local_58_2.QueuedPopups.Add(local_108);
+        if (local_35 != 9 && !(local_58_2.DisplayingPopup.IsValid()) && !(local_12.CollectStartTime.Contains(ECommonPopupQueueType(local_35))))
+        {
+            local_12.CollectStartTime.Add(ECommonPopupQueueType(local_35), ECS::GetContextTime());
+        }
+        local_80.AddUnique(ECommonPopupQueueType(local_35));
+    }
+    XLog(ELog(22), FString().Append("[CommonPopup] Enqueue PopupId=").Append(local_61).Append(" Type=").Append(PopupType.ToString()).Append(" Priority=").Append(local_3).Append(" Queues=[").Append(CommonPopupUtils::FormatQueueTypeList(local_22)).Append("]"));
+    auto local_34_2 = local_80.Iterator();
+    for (; local_34_2.CanProceed;)
+    {
+        local_35 = int(local_34_2.Proceed());
+        CommonPopupDisplayingUtils_Internal::TryPromoteQueue(local_12, ECommonPopupQueueType(local_35));
+    }
+    return local_61;
 }
 FString FormatQueueTypeList(const TArray<ECommonPopupQueueType> &inout QueueTypes)
 {
@@ -106,7 +197,7 @@ void CheckStuckDisplayingPopups(FCS_CommonPopupManager &inout Manager, const flo
             Manager.DisplayingStartTime.Add(local_47, local_4);
             continue;
         }
-        float local_53 = float32(((local_4 - Manager.DisplayingStartTime[local_47]).ToSeconds()));
+        float32 local_53 = float32(((local_4 - Manager.DisplayingStartTime[local_47]).ToSeconds()));
         if (local_53 < StuckSeconds)
         {
             continue;
@@ -155,8 +246,18 @@ bool HasMatchingPopupType(const TSet<FGameplayTag> &inout AffectedTypes, const F
 }
 ECommonPopupOccupyRule GetOccupyRule(const FGameplayTag &inout PreviousPopupType, const FGameplayTag &inout InPopupType)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    ECommonPopupOccupyRule __r; return __r;
+    UCommonPopupSettings local_4 = CommonPopupSettings::Get();
+    FCommonPopupOccupyRuleConfig local_28;
+    if (local_4.OccupyRules.Find(InPopupType, local_28))
+    {
+        ECommonPopupOccupyRule local_30;
+        if (local_28.BehaviorToPreviousPopup.Find(PreviousPopupType, local_30))
+        {
+            return local_30;
+        }
+        return local_28.DefaultOccupyRule;
+    }
+    return local_4.DefaultOccupyRule;
 }
 int ResolveEffectivePriority(const FGameplayTag &inout PopupType, const int Priority)
 {
@@ -200,6 +301,7 @@ void SaveManagerRecord(const bool bDisplayingPopupChanged, const ECommonPopupQue
         }
         FCommonPopupQueueRuleList local_22;
         local_22.QueuedPopups = RemovedPopups;
+        local_10.RemovedPopups.Add(QueueType, local_22);
     }
     return;
 }
@@ -244,7 +346,7 @@ void RemovePopupFromAllQueues(FCS_CommonPopupManager &inout Manager, const int P
                     {
                         if (Manager.CollectStartTime.Contains(local_25))
                         {
-                            ECS::GetContextTime();
+                            Manager.CollectStartTime[local_25] = ECS::GetContextTime();
                         }
                     }
                     OutAffectedQueues.AddUnique(local_25);
@@ -270,8 +372,42 @@ void RemovePopupFromAllQueues(FCS_CommonPopupManager &inout Manager, const int P
 }
 bool CanPromoteWaitingFront(FCS_CommonPopupManager &inout Manager, const int PopupId)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    bool __r; return __r;
+    int local_23;
+    TArray<ECommonPopupQueueType> local_4;
+    Manager.QueuedPopups.GetKeys(local_4);
+    bool local_5 = false;
+    for (auto local_19 : local_4)
+    {
+        FCommonPopupQueueRuleList& local_22 = Manager.QueuedPopups[local_19];
+        local_23 = INDEX_NONE;
+        int local_25 = 0;
+        for (; local_25 < local_22.QueuedPopups.Num(); ++local_25)
+        {
+            if (local_22.QueuedPopups[local_25].PopupId == PopupId)
+            {
+                local_23 = local_25;
+                break;
+            }
+        }
+        if (local_23 == INDEX_NONE)
+        {
+            continue;
+        }
+        local_5 = true;
+        if (local_22.DisplayingPopup.IsValid())
+        {
+            return false;
+        }
+        if (local_23 != 0)
+        {
+            return false;
+        }
+        if (Manager.CollectStartTime.Contains(local_19))
+        {
+            return false;
+        }
+    }
+    return local_5;
 }
 void TryPromoteQueue(FCS_CommonPopupManager &inout Manager, const ECommonPopupQueueType QueueType)
 {
@@ -295,7 +431,7 @@ void TryPromoteQueue(FCS_CommonPopupManager &inout Manager, const ECommonPopupQu
     Manager.QueuedPopups.GetKeys(local_18);
     for (auto local_31 : local_18)
     {
-        FCommonPopupQueueRuleList& local_34 = Manager.QueuedPopups[local_31];
+        FCommonPopupQueueRuleList& local_34 = Manager.QueuedPopups[ECommonPopupQueueType(local_31)];
         int local_35 = 0;
         for (; local_35 < local_34.QueuedPopups.Num(); ++local_35)
         {

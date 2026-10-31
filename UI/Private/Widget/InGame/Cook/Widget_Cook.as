@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_Cook
 {
     const int ViewID = 0;
@@ -176,6 +175,7 @@ namespace UWidget_Cook
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_Cook;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCookClosed"));
     return;
 }

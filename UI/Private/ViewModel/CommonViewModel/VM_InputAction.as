@@ -1,4 +1,3 @@
-﻿
 namespace FVM_InputAction
 {
     const int ModelId = 0;
@@ -313,7 +312,7 @@ struct FVM_InputActionList : FEUIViewModel
         for (auto& local_16 : InputActionList.InputActionListConstructParamItems)
         {
             FVM_InputAction& local_18 = ::FVM_InputAction::Create(this.GetContext().Manager, local_16.InputAction, local_16.OnInputActionExecute);
-            local_18.SetbOverrideActionName(local_16.bOverrideActionName);
+            local_18.SetbOverrideActionName((int(local_16.bOverrideActionName) != 0));
             local_18.SetActionNameOverride(local_16.ActionNameOverride);
             local_18.SetInputActionListIndex(this.GetInputActions().Num());
             local_18.SetInputActionListCallback(InputActionListCallback);
@@ -352,7 +351,6 @@ struct __GeneratedProperties_FVM_InputAction
     bool ShouldBypassExecuteEvent;
     UPROPERTY()
     TEUIModelRef<FVM_InputAction> Self;
-
 
 }
 

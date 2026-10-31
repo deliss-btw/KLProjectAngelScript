@@ -1,5 +1,3 @@
-﻿
-
 class US_LookRequestSlopeProducerSystemAS : UECSScriptSystem
 {
     US_LookRequestSlopeProducerSystemAS()

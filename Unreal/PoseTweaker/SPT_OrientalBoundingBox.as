@@ -1,5 +1,3 @@
-﻿
-
 struct FOrientalBoundingBoxBoneConfig
 {
     UPROPERTY()
@@ -21,7 +19,6 @@ struct FOrientalBoundingBoxConfig
     FPT_SocketRef ExportSocket;
     UPROPERTY()
     bool bWantDebugDraw = false;
-
 
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 struct FAIGenEnvData
 {
     FAIGenEnvData()

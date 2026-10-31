@@ -1,5 +1,3 @@
-﻿
-
 class UBTDecorator_SkillCooldown : UBTDecorator_ECSScriptBase
 {
     UPROPERTY()

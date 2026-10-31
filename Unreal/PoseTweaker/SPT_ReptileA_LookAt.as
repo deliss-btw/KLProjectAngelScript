@@ -1,5 +1,3 @@
-﻿
-
 class USPT_ReptileA_LookAt : USPT_ReptileA_FootIK_Base
 {
     UPROPERTY()

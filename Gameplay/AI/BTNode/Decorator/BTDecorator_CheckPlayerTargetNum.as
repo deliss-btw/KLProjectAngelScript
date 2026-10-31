@@ -1,5 +1,3 @@
-﻿
-
 class UBTDecorator_CheckPlayerTargetNum : UBTDecorator_ECSScriptBase
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ class UBTDecorator_CheckPlayerTargetNum : UBTDecorator_ECSScriptBase
     EArithmeticKeyOperation ComparisonType = EArithmeticKeyOperation(4);
 
     default SetNodeName("Check Player Target Num");
-
 
     UFUNCTION()
     FString GetStaticDescription_Implementation() const

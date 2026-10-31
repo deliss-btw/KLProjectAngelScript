@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_AbnormalInfo
 {
     const int ModelId = 0;
@@ -52,7 +51,21 @@ struct FVMS_AbnormalInfo : FEUIViewModelSingleton
     }
     void InitializeAbnormalInfos()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.GetModify_AllAbnormalInfos().Reset(0);
+        FAbnormalStateConfig local_402;
+        int local_404 = 1;
+        int local_403 = local_404;
+        for (; local_403 < 11; ++local_403)
+        {
+            bool local_406 = ::UCombatGlobalSettings::Get().AbnormalData.AbnormalStateGlobalConfig.Find(EAbnormalState(local_403), local_402);
+            if (!(local_406) || !(local_402.AccumulationAttribute.IsValid()) || !(local_402.AccumulationAttributeMax.IsValid()))
+            {
+                continue;
+            }
+            TEUIModelRef<FVM_AbnormalIcon> local_414 = TEUIModelRef<FVM_AbnormalIcon>(::FVM_AbnormalIcon::Create(this.GetContext().Manager, EAbnormalState(local_403), (TEUIModelWeakRef<FVMS_AbnormalInfo>(this))));
+            this.GetModify_AllAbnormalInfos().Add(local_414);
+        }
+        return;
     }
     void RefreshAbnormalModels()
     {
@@ -150,7 +163,6 @@ struct __GeneratedProperties_FVMS_AbnormalInfo
     ESlateVisibility DebugNewAbnormalVisibility;
     UPROPERTY()
     TEUIModelRef<FVMS_AbnormalInfo> Self;
-
 
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 class UBTService_EcosimAIFollowTarget : UBTService_ECSScriptBase
 {
     UPROPERTY()

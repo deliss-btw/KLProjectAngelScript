@@ -1,4 +1,3 @@
-﻿
 namespace FMS_ChatRuntimeData
 {
     const int ModelId = 0;
@@ -9,7 +8,6 @@ struct FMsg_ChatMainTabSelected : FEUIMessage
     UPROPERTY()
     EChatMainTab SelectTab;
 
-
 }
 
 struct FMsg_ChatChannelTabSelected : FEUIMessage
@@ -18,7 +16,6 @@ struct FMsg_ChatChannelTabSelected : FEUIMessage
     EChatChannelParentType ParentType;
     UPROPERTY()
     int SelectChannelID = 0;
-
 
 }
 

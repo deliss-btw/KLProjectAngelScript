@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_CommonBottomActionList_Helpers
 {
 UFUNCTION()

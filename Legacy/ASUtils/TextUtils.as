@@ -1,4 +1,3 @@
-﻿
 namespace FTextUtils
 {
 FText GetFormatText(const FText &inout FormatText, const ETextArgType_DEPRECATED ETextArgType, const FDataObjectPtr &inout TextArg0Ptr)
@@ -25,7 +24,33 @@ FText GetFormatText(const FText &inout FormatText, const ETextArgType_DEPRECATED
 }
 FString ReplaceBracedText(const FString &inout Input, const TMap<FString, FString> &inout Replacements)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FString __r; return __r;
+    FString local_4 = Input;
+    int local_5 = 0;
+    while (true)
+    {
+        int local_6 = local_4.Find("{", ESearchCase(1), ESearchDir(0), local_5);
+        if (local_6 == INDEX_NONE)
+        {
+            break;
+        }
+        int local_8 = local_4.Find("}", ESearchCase(1), ESearchDir(0), local_6);
+        if (local_8 == INDEX_NONE)
+        {
+            break;
+        }
+        FString local_22 = local_4.Mid(local_6 + 1, ((local_8 - local_6) - 1));
+        FString local_26;
+        if (Replacements.Contains(local_22))
+        {
+            local_26 = Replacements[local_22];
+        }
+        else
+        {
+            local_26 = "";
+        }
+        local_4 = ((local_4.Left(local_6) + local_26) + local_4.Mid(local_8 + 1, 2147483647));
+        local_5 = local_6 + local_26.Len();
+    }
+    return local_4;
 }
 }

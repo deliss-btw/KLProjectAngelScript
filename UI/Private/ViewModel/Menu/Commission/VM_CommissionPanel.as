@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommissionPanel
 {
     const FConsoleVariable CVar_CommissionPanel_EnableDsAllocatingDisplay = FConsoleVariable();
@@ -64,15 +63,69 @@ struct FVM_CommissionPanel : FEUIViewModel
 
     FVM_CommissionPanel()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_DefaultCommissionType = ECommissionType(0);
+        this.m_InitialSelectedCommissionId = 0;
+        this.m_CommissionType = ECommissionType(0);
+        this.m_SelectedCommissionTypeIndex = INDEX_NONE;
+        this.m_RecruitCountdownSeconds = 0;
+        this.m_bRecruitSendDisabled = true;
+        this.m_bSelectedCommissionCanMatch = false;
+        this.m_bSelectedCommissionMatching = false;
+        this.m_bGlobalMatching = false;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        XError(ELog(17), "Should not construct model'FVM_CommissionPanel' by default constructor.");
+        return;
     }
     FVM_CommissionPanel(const FVM_CommissionPanel &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_DefaultCommissionType = ECommissionType(0);
+        this.m_InitialSelectedCommissionId = 0;
+        this.m_CommissionType = ECommissionType(0);
+        this.m_SelectedCommissionTypeIndex = INDEX_NONE;
+        this.m_RecruitCountdownSeconds = 0;
+        this.m_bRecruitSendDisabled = true;
+        this.m_bSelectedCommissionCanMatch = false;
+        this.m_bSelectedCommissionMatching = false;
+        this.m_bGlobalMatching = false;
+        this.m_DefaultCommissionType = Other.m_DefaultCommissionType;
+        this.m_InitialSelectedCommissionId = int(Other.m_InitialSelectedCommissionId);
+        this.m_CommissionTypes = Other.m_CommissionTypes;
+        this.m_CommissionType = Other.m_CommissionType;
+        this.m_SelectedCommissionTypeIndex = int(Other.m_SelectedCommissionTypeIndex);
+        this.m_CommissionList = Other.m_CommissionList;
+        this.m_SelectedCommission = Other.m_SelectedCommission;
+        this.m_IndexToCommissionType = Other.m_IndexToCommissionType;
+        this.m_CommissionTypeToIndex = Other.m_CommissionTypeToIndex;
+        this.m_RecruitCooldown = Other.m_RecruitCooldown;
+        this.m_RecruitCountdownSeconds = int(Other.m_RecruitCountdownSeconds);
+        this.m_bRecruitSendDisabled = Other.m_bRecruitSendDisabled;
+        this.m_bSelectedCommissionCanMatch = Other.m_bSelectedCommissionCanMatch;
+        this.m_bSelectedCommissionMatching = Other.m_bSelectedCommissionMatching;
+        this.m_bGlobalMatching = Other.m_bGlobalMatching;
+        this.m_MatchHint = Other.m_MatchHint;
+        return;
     }
     FVM_CommissionPanel(const ECommissionType InDefaultCommissionType, const uint InInitialSelectedCommissionId)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_DefaultCommissionType = ECommissionType(0);
+        this.m_InitialSelectedCommissionId = 0;
+        this.m_CommissionType = ECommissionType(0);
+        this.m_SelectedCommissionTypeIndex = INDEX_NONE;
+        this.m_RecruitCountdownSeconds = 0;
+        this.m_bRecruitSendDisabled = true;
+        this.m_bSelectedCommissionCanMatch = false;
+        this.m_bSelectedCommissionMatching = false;
+        this.m_bGlobalMatching = false;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        this.SetDefaultCommissionType(ECommissionType(InDefaultCommissionType));
+        this.SetInitialSelectedCommissionId(InInitialSelectedCommissionId);
+        return;
     }
     FVM_CommissionPanel& opAssign(const FVM_CommissionPanel &inout Other)
     {
@@ -100,13 +153,11 @@ struct FVM_CommissionPanel : FEUIViewModel
         int local_5 = 1;
         for (; local_5 < 6; ++local_5)
         {
-            ECommissionType local_9 = local_5;
-            if (local_2.HiddenCommissionTypes.Contains(local_9))
+            if (local_2.HiddenCommissionTypes.Contains(ECommissionType(local_5)))
             {
                 continue;
             }
-            local_9 = local_5;
-            TDataObjectPtr<FCommissionTypeConfig> local_34 = ::CommissionUtils::GetCommissionTypeConfig(ECommissionType(local_9));
+            TDataObjectPtr<FCommissionTypeConfig> local_34 = ::CommissionUtils::GetCommissionTypeConfig(ECommissionType(local_5));
             if (!(local_34))
             {
                 continue;
@@ -116,15 +167,12 @@ struct FVM_CommissionPanel : FEUIViewModel
                 continue;
             }
             this.GetModify_CommissionTypes().Add(TEUIModelRef<FVM_Text>(::FVM_Text::Create(this.GetContext().Manager, local_34.opArrow().CommissionTypeName)));
-            local_9 = local_5;
-            this.GetModify_IndexToCommissionType().Add(local_9);
-            local_9 = local_5;
-            this.GetModify_CommissionTypeToIndex().Add(local_9, (this.GetModify_IndexToCommissionType().Num() - 1));
+            this.GetModify_IndexToCommissionType().Add(ECommissionType(local_5));
+            this.GetModify_CommissionTypeToIndex().Add(ECommissionType(local_5), (this.GetModify_IndexToCommissionType().Num() - 1));
         }
-        if ((int(this.GetDefaultCommissionType())) != 0)
+        if (int(this.GetDefaultCommissionType()) != 0)
         {
-            ECommissionType local_9_2 = this.GetDefaultCommissionType();
-            this.SetCommissionType(ECommissionType(local_9_2));
+            this.SetCommissionType(this.GetDefaultCommissionType());
         }
         this.RefreshRecruitCooldownFromData();
         this.SetMatchHint(TEUIModelRef<FVM_Match_HintComp>(::FVM_Match_HintComp::Create(this.GetContext().Manager)));
@@ -134,7 +182,7 @@ struct FVM_CommissionPanel : FEUIViewModel
     {
         if (this.GetIndexToCommissionType().IsValidIndex(Index))
         {
-            this.SetCommissionType(ECommissionType(this.GetIndexToCommissionType()[Index]));
+            this.SetCommissionType(this.GetIndexToCommissionType()[Index]);
         }
         return;
     }
@@ -146,7 +194,7 @@ struct FVM_CommissionPanel : FEUIViewModel
     TArray<TEUIModelRef<FVM_CommissionInfo>> CreateCommissionList(const ECommissionType InCommissionType)
     {
         TArray<TEUIModelRef<FVM_CommissionInfo>> local_4;
-        TArray<TEUIModelRef<FM_Commission>> local_12 = ::FMS_CommissionData::Get(this.GetContext().Manager).GetCommissionListByType();
+        TArray<TEUIModelRef<FM_Commission>> local_12 = ::FMS_CommissionData::Get(this.GetContext().Manager).GetCommissionListByType(ECommissionType(InCommissionType));
         for (auto& local_30 : local_12)
         {
             local_4.Add(TEUIModelRef<FVM_CommissionInfo>(::FVM_CommissionInfo::Create(this.GetContext().Manager, local_30)));
@@ -155,7 +203,20 @@ struct FVM_CommissionPanel : FEUIViewModel
     }
     void OnSelectedCommissionTypeChanged()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_3;
+        if (this.GetCommissionTypeToIndex().Contains(ECommissionType(this.GetCommissionType())))
+        {
+            local_3 = this.GetCommissionTypeToIndex()[ECommissionType(this.GetCommissionType())];
+        }
+        else
+        {
+            int local_4 = INDEX_NONE;
+            local_3 = local_4;
+        }
+        this.SetSelectedCommissionTypeIndex(local_3);
+        this.SetCommissionList(this.CreateCommissionList(this.GetCommissionType()));
+        this.SelectDefaultCommissionInList();
+        return;
     }
     void OnCommissionListUpdated(const FMsg_CommissionListUpdated &inout Msg)
     {
@@ -376,8 +437,8 @@ struct FVM_CommissionPanel : FEUIViewModel
     }
     bool ShouldShowCommissionTypeBar() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        bool __r; return __r;
+        int local_2 = INDEX_NONE;
+        return (this.GetSelectedCommissionTypeIndex() != local_2);
     }
     void SelectDefaultCommissionInList()
     {
@@ -709,14 +770,13 @@ struct __GeneratedProperties_FVM_CommissionPanel
     UPROPERTY()
     TEUIModelRef<FVM_CommissionPanel> Self;
 
-
 }
 
 namespace FVM_CommissionPanel
 {
 FVM_CommissionPanel& Create(const UObject ContextObject, const ECommissionType DefaultCommissionType, const uint InitialSelectedCommissionId)
 {
-    return FVM_CommissionPanel::CreateByManager(EUIInternal::GetContextManager(ContextObject), ECommissionType(InitialSelectedCommissionId));
+    return FVM_CommissionPanel::CreateByManager(EUIInternal::GetContextManager(ContextObject), ECommissionType(DefaultCommissionType), InitialSelectedCommissionId);
 }
 FVM_CommissionPanel CreateByManager(const UEUIManagerSubsystem Manager, const ECommissionType DefaultCommissionType, const uint InitialSelectedCommissionId)
 {

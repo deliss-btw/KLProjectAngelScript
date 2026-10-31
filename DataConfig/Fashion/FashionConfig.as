@@ -1,4 +1,3 @@
-﻿
 enum EFashionRarity
 {
     RarityD,
@@ -76,7 +75,6 @@ enum EMountSeatType
     Double,
 }
 
-
 struct FFashionDisplayIconByBody
 {
     UPROPERTY()
@@ -124,7 +122,6 @@ struct FFashionConfig : FDataObject
     UPROPERTY()
     TMap<EDisplayItemIconType, FFashionDisplayIconByBody> DisplayIcons;
 
-
     const TDataObjectPtr<FServerConditionConfigBase> GetUnlockCondition() const property
     {
         const TDataObjectPtr<FServerConditionConfigBase> __r;
@@ -169,7 +166,6 @@ struct FClothFashionConfig : FFashionConfig
     UPROPERTY()
     EFashionSurfaceType SurfaceMaterialType = EFashionSurfaceType(0);
 
-
 }
 
 struct FFloat3
@@ -180,7 +176,6 @@ struct FFloat3
     float32 Y = 0.0f;
     UPROPERTY()
     float32 Z = 0.0f;
-
 
 }
 
@@ -197,7 +192,6 @@ struct FDecoFashionConfig : FFashionConfig
     float32 DefaultAttachScale = 1.0f;
     UPROPERTY()
     bool bAllowedWithBathrobe = false;
-
 
     const TDataObjectPtr<FAttachPointConfig> GetAttachPoint() const property
     {
@@ -221,7 +215,6 @@ struct FMountFashionConfig : FFashionConfig
     TSoftClassPtr<ACharacterPrefab> MountPrefab;
     UPROPERTY()
     TSoftClassPtr<AActor> ShowcaseActor;
-
 
 }
 

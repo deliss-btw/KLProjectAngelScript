@@ -1,5 +1,3 @@
-﻿
-
 class UCompensator_RotationRestore : UAimPoseCompensator
 {
     TArray<FPT_BoneRef> AuxBones;

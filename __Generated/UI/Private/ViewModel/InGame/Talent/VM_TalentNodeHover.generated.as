@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TalentNodeHover_Helpers
 {
 UFUNCTION()

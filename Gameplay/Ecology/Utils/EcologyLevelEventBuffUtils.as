@@ -1,4 +1,3 @@
-﻿
 namespace FEcologyLevelEventBuffUtils
 {
 AKLLevelScriptAreaEventBase GetLevelEventActorFromLevelUnitGroup(const FECSEntity &inout Entity)

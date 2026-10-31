@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_SocialSelectTarget_Helpers
 {
 UFUNCTION()

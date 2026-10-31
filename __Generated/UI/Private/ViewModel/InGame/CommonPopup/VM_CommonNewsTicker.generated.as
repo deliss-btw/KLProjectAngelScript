@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommonNewsTicker_Helpers
 {
 UFUNCTION()

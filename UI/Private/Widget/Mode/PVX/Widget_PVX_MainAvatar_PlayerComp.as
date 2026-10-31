@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PVX_MainAvatar_PlayerComp
 {
     const int ViewID = 0;
@@ -41,6 +40,7 @@ namespace UWidget_PVX_MainAvatar_PlayerComp
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PVX_MainAvatar_PlayerComp;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

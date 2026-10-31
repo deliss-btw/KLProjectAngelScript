@@ -1,4 +1,3 @@
-﻿
 namespace FM_CombatTeam
 {
     const int ModelId = 0;
@@ -282,7 +281,9 @@ void __DS_OnTeamInfoChanged(FM_CombatTeam &inout Model, const FECSEntity &inout 
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorTeamInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorTeamInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_TeamEntity()
 {

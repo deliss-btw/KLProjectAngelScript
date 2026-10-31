@@ -1,12 +1,9 @@
-﻿
-
 struct FGTCImportRangeInfo
 {
     UPROPERTY()
     float32 StartTimeOffset;
     UPROPERTY()
     float32 EndTimeOffset;
-
 
 }
 
@@ -68,7 +65,6 @@ struct FGTCAICommandInstanceJson
     UPROPERTY()
     FString InstanceText;
 
-
 }
 
 struct FGTCAICommandSnapshotJson
@@ -79,7 +75,6 @@ struct FGTCAICommandSnapshotJson
     int NextInstanceId;
     UPROPERTY()
     TArray<FGTCAICommandInstanceJson> InstanceList;
-
 
 }
 
@@ -128,7 +123,6 @@ struct FGTCCheckpointFrame
     UPROPERTY()
     float32 SpeedScale = 1.0f;
 
-
 }
 
 struct FGTCSourceData
@@ -173,7 +167,6 @@ struct FGTCSourceData
     TArray<FGTCCheckpointFrame> AutoCheckpointFrames;
     UPROPERTY()
     TArray<FDetailedData> DetailedDataLists;
-
 
     TArray<FName> GetRecordDataFolderOptions()
     {
@@ -265,12 +258,100 @@ struct FGTCSourceData
     }
     FString TryResolveMonsterPrefabPath(const FName &inout MonsterName)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        FString __r; return __r;
+        FString local_8 = MonsterName.ToString();
+        int local_13 = local_8.Find("Prefab_Monster_", ESearchCase(1), ESearchDir(0), -1);
+        if (local_13 == INDEX_NONE)
+        {
+            return "";
+        }
+        int local_9 = local_8.Find("_C", ESearchCase(0), ESearchDir(0), local_13);
+        FString local_28 = local_9 != INDEX_NONE ? local_8.Mid(local_13, local_9 - local_13) : local_8.Mid(local_13, 2147483647);
+        return ((((FString("/Game/MoleRes/Dev/Prefab/Monster/") + local_28) + ".") + local_28) + "_C");
     }
     void PopulateMonsterDataConfigFromInitTransform(const FString &inout SourceFullPath)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        FString local_4 = SourceFullPath;
+        if (local_4.Contains("_client_input_raw_data.json", ESearchCase(1), ESearchDir(0)))
+        {
+            local_4 = local_4.Replace("_client_input_raw_data.json", "_init_transform_info.json", ESearchCase(1));
+        }
+        else
+        {
+            if (local_4.Contains("_raw_client_data.json", ESearchCase(1), ESearchDir(0)))
+            {
+                local_4 = local_4.Replace("_raw_client_data.json", "_init_transform_info.json", ESearchCase(1));
+            }
+            else
+            {
+                if (local_4.Contains("_Monster_AI_Server.json", ESearchCase(1), ESearchDir(0)))
+                {
+                    local_4 = local_4.Replace("_Monster_AI_Server.json", "_init_transform_info.json", ESearchCase(1));
+                }
+                else
+                {
+                    return;
+                }
+            }
+        }
+        if (!(FPaths::FileExists(local_4)))
+        {
+            return;
+        }
+        FString local_16;
+        if (!(FFileHelper::LoadFileToString(local_16, local_4, FFileHelper::EHashOptions(0), 0)))
+        {
+            return;
+        }
+        this.MonsterDataConfigEntries.Empty(0);
+        int local_20 = 0;
+        int local_21 = 0;
+        while (local_21 < local_16.Len())
+        {
+            FString local_12 = local_16.Mid(local_21, 1);
+            if ((local_12 == "{"))
+            {
+                ++local_20;
+            }
+            else
+            {
+                if ((local_12 == "}"))
+                {
+                    --local_20;
+                }
+                else
+                {
+                    if (local_20 == 1 && (local_12 == "\""))
+                    {
+                        int local_29 = local_16.Find("\"", ESearchCase(0), ESearchDir(0), local_21 + 1);
+                        if (local_29 == INDEX_NONE)
+                        {
+                            break;
+                        }
+                        FString local_26 = local_16.Mid(local_21 + 1, ((local_29 - local_21) - 1));
+                        int local_28 = local_29 + 1;
+                        while (local_28 < local_16.Len() && (local_16.Mid(local_28, 1) == " "))
+                        {
+                            ++local_28;
+                        }
+                        if (local_28 < local_16.Len() && (local_16.Mid(local_28, 1) == ":"))
+                        {
+                            if (!((local_26 == "PawnPlayer")))
+                            {
+                                FGTCMonsterDataConfig local_40;
+                                FName local_42;
+                                local_40.TargetUniqueName = local_42;
+                                local_42 = FName(local_26);
+                                local_40.MonsterName = local_42;
+                                this.MonsterDataConfigEntries.Add(local_40);
+                            }
+                        }
+                        local_21 = local_29;
+                    }
+                }
+            }
+            ++local_21;
+        }
+        return;
     }
     void ImportMonsterAICommands()
     {
@@ -289,7 +370,138 @@ struct FGTCSourceData
     }
     void ImportCaseConfig()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_30;
+        this.EnsurePawnPlayerEntityAndSampler();
+        if (this.SelectedRecordDataFolder.IsNone())
+        {
+            XError(ELog(40), FString().Append("请先在「原始数据选择」中选择 RecordData 下的 Case 目录"));
+            return;
+        }
+        FString local_12 = FPaths::CombinePaths(FPaths::CombinePaths(FPaths::ProjectContentDir(), "MoleRes/Test/TestCase/RecordData"), this.SelectedRecordDataFolder.ToString());
+        if (!(FPaths::DirectoryExists(local_12)))
+        {
+            XError(ELog(40), FString().Append("目录不存在: ").Append(local_12));
+            return;
+        }
+        FString local_20 = (this.SelectedRecordDataFolder.ToString() + "_client_input_raw_data.json");
+        FString local_6 = FPaths::CombinePaths(local_12, local_20);
+        if (!(FPaths::FileExists(local_6)))
+        {
+            XError(ELog(40), FString().Append("目录下未找到 ").Append(local_20).Append(" 文件: ").Append(local_12));
+            return;
+        }
+        if (int(this.InputImportMode) == 0)
+        {
+            this.ImportPlayerPawnActionFromPath(local_6);
+        }
+        else
+        {
+            FString local_28 = (this.SelectedRecordDataFolder.ToString() + "_Server_fixed_input_data.json");
+            FString local_24 = FPaths::CombinePaths(local_12, local_28);
+            FString local_40 = (this.SelectedRecordDataFolder.ToString() + "_Client_fixed_input_data.json");
+            FString local_36 = FPaths::CombinePaths(local_12, local_40);
+            if (!(FPaths::FileExists(local_24)))
+            {
+                XError(ELog(40), FString().Append("FixedInput file not found: ").Append(local_28));
+                return;
+            }
+            if (!(FPaths::FileExists(local_36)))
+            {
+                XError(ELog(40), FString().Append("FixedInput file not found: ").Append(local_40));
+                return;
+            }
+            this.ImportFixedInputData(local_24, local_36, local_6);
+        }
+        FString local_48 = (this.SelectedRecordDataFolder.ToString() + "_sampler_camera_data.json");
+        FString local_36_2 = FPaths::CombinePaths(local_12, local_48);
+        if (FPaths::FileExists(local_36_2))
+        {
+            this.ImportCameraData(local_36_2, local_6);
+        }
+        FString local_44 = (this.SelectedRecordDataFolder.ToString() + "_sampler_server_data.json");
+        FString local_40_2 = FPaths::CombinePaths(local_12, local_44);
+        if (FPaths::FileExists(local_40_2))
+        {
+            FString local_52;
+            if (FFileHelper::LoadFileToString(local_52, local_40_2, FFileHelper::EHashOptions(0), 0))
+            {
+                FJsonObject local_58;
+                if (local_58.LoadFromString(local_52))
+                {
+                    FString local_62;
+                    int local_63 = 0;
+                    int local_64 = 0;
+                    while (local_64 < local_52.Len())
+                    {
+                        FString local_24_2 = local_52.Mid(local_64, 1);
+                        if ((local_24_2 == "\""))
+                        {
+                            local_30 = 1;
+                            int local_31 = local_64 + local_30;
+                            local_30 = local_52.Find("\"", ESearchCase(0), ESearchDir(0), local_31);
+                            local_31 = INDEX_NONE;
+                            while (local_30 != local_31 && (local_52.Mid((local_30 - 1), 1) == "\\"))
+                            {
+                                local_30 = local_52.Find("\"", ESearchCase(0), ESearchDir(0), local_30 + 1);
+                            }
+                            if (local_30 != INDEX_NONE)
+                            {
+                                if (local_63 == 1)
+                                {
+                                    FString local_28_2 = local_52.Mid(local_64 + 1, (local_30 - local_64) - 1);
+                                    if (local_28_2.StartsWith("Pawn_", ESearchCase(1)))
+                                    {
+                                        local_62 = local_28_2;
+                                        break;
+                                    }
+                                }
+                                local_64 = local_30;
+                            }
+                        }
+                        else
+                        {
+                            if ((local_24_2 == "{") || (local_24_2 == "["))
+                            {
+                                ++local_63;
+                            }
+                            else
+                            {
+                                if ((local_24_2 == "}") || (local_24_2 == "]"))
+                                {
+                                    --local_63;
+                                }
+                            }
+                        }
+                        ++local_64;
+                    }
+                    FJsonArray local_82;
+                    if (!(local_62.IsEmpty()) && local_58.TryGetArrayField(local_62, local_82) && (local_82.Num() > 0))
+                    {
+                        FJsonValue local_90 = local_82.GetValueAt(0);
+                        FJsonObject local_94;
+                        if (local_90.TryGetObject(local_94))
+                        {
+                            FGTCStateRecord local_120;
+                            if (FJsonObjectConverter::JsonObjectStringToUStruct(local_94.SaveToString(false), local_120, 0, 0) && (local_120.EsmStateRecords.Num() > 0))
+                            {
+                                FName local_124 = this.GetPlayerPawnUniqueName();
+                                local_30 = 0;
+                                for (; local_30 < this.EntityConfigs.Num(); ++local_30)
+                                {
+                                    if ((FName(this.EntityConfigs[local_30].UniqueName) == local_124))
+                                    {
+                                        this.EntityConfigs[local_30].InitState = FName(local_120.EsmStateRecords[0].StateName);
+                                        this.EntityConfigs[local_30].InitStateTime = int(local_120.EsmStateRecords[0].StateTime);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return;
     }
     void ResetConfig()
     {
@@ -324,9 +536,7 @@ struct FGTCSourceData
             FGTCEntityConfig local_84;
             local_84.UniqueName = local_2;
             local_84.bUsePlayerPawn = true;
-            FSoftClassPath local_92 = FSoftClassPath(local_8);
-            TSoftClassPtr<AECSPrefab> local_102;
-            local_84.PrefabToSpawn = local_102;
+            local_84.PrefabToSpawn = TSoftClassPtr<AECSPrefab>(FSoftClassPath(local_8));
             this.EntityConfigs.Add(local_84);
         }
         this.EnsureSamplerConfigsByEntityConfigs();
@@ -334,10 +544,130 @@ struct FGTCSourceData
     }
     void ImportPlayerPawnActionFromPath(const FString &inout InputFullPath)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        float32 local_60;
+        float32 local_131;
+        float32 local_133;
+        this.PlayerPawnUniqueName = this.GetPlayerPawnUniqueName();
+        if (this.PlayerPawnUniqueName.IsNone())
+        {
+            XError(ELog(40), FString().Append("PlayerPawnUniqueName is none, please set bUsePlayerPawn=true for at least one entity in EntityConfigs"));
+            return;
+        }
+        this.ApplyInitTransform(InputFullPath, "PawnPlayer", this.PlayerPawnUniqueName);
+        this.PopulateMonsterDataConfigFromInitTransform(InputFullPath);
+        FString local_8 = InputFullPath.Replace("_client_input_raw_data.json", "_client_input_std_data.json", ESearchCase(1));
+        if ((local_8 == InputFullPath))
+        {
+            FString local_14 = FString();
+            XError(ELog(40), local_14.Append("Failed to generate OutputPath. Input file must end with '_client_input_raw_data.json': ").Append(InputFullPath));
+            return;
+        }
+        FString local_24 = FPaths::CombinePaths(FPaths::ProjectContentDir(), "MoleRes/Test/TestCase/RecordData");
+        FString local_14_2 = FPaths::CombinePaths(local_24, "GTCRecordDataConverter.py");
+        FString local_32 = FString().Append("py \"").Append(local_14_2).Append("\" \"").Append(InputFullPath).Append("\" \"").Append(local_8).Append("\"");
+        System::ExecuteConsoleCommand(__GetWorldContext(), local_32, nullptr);
+        FString local_38;
+        if (!(FFileHelper::LoadFileToString(local_38, local_8, FFileHelper::EHashOptions(0), 0)))
+        {
+            XLog(ELog(40), FString().Append("Failed to load file: ").Append(local_8));
+            return;
+        }
+        bool local_41 = false;
+        int local_45 = local_38.Find("[", ESearchCase(1), ESearchDir(0), -1);
+        int local_42 = local_38.Find("{", ESearchCase(1), ESearchDir(0), -1);
+        if (local_45 != INDEX_NONE)
+        {
+            if (local_42 == INDEX_NONE || (local_45 < local_42))
+            {
+                local_41 = true;
+            }
+        }
+        FGTCImportActionDocument local_52;
+        bool local_53 = false;
+        if (local_41)
+        {
+            FString local_28 = ((FString("{\"Items\": ") + local_38) + "}");
+            local_53 = FJsonObjectConverter::JsonObjectStringToUStruct(local_28, local_52, 0, 0);
+        }
+        else
+        {
+            local_53 = FJsonObjectConverter::JsonObjectStringToUStruct(local_38, local_52, 0, 0);
+        }
+        if (!(local_53) || (local_52.Items.Num() == 0))
+        {
+            XLog(ELog(40), FString().Append("Failed to parse JSON content from: ").Append(local_8));
+            return;
+        }
+        this.ActionConfigs.Empty(0);
+        float32 local_59 = 0.0f;
+        for (auto& local_74 : local_52.Items)
+        {
+            TArray<FString> local_78;
+            local_74.Actions.GetKeys(local_78);
+            local_60 = local_74.RangeInfo.EndTimeOffset;
+            if (local_60 > local_59)
+            {
+                local_59 = local_74.RangeInfo.EndTimeOffset;
+            }
+            for (auto& local_92 : local_78)
+            {
+                if (local_92.StartsWith("CharacterMove", ESearchCase(1)) && !((local_92 == "CharacterMove")))
+                {
+                    continue;
+                }
+                FGTCInputAction local_110;
+                local_110.StartTime = FFPTime(local_74.RangeInfo.StartTimeOffset);
+                local_60 = local_74.RangeInfo.EndTimeOffset;
+                local_110.EndTime = FFPTime(local_60);
+                local_110.bIsLocalInput = true;
+                local_110.TargetUniqueName = this.PlayerPawnUniqueName;
+                FSimulatedInput local_126;
+                local_126.Name = FName(local_92);
+                TArray<float32> local_130 = local_74.Actions[local_92].Values;
+                if (local_130.Num() > 0)
+                {
+                    local_60 = local_130[0];
+                }
+                else
+                {
+                    local_60 = 0.0f;
+                }
+                if (local_130.Num() > 1)
+                {
+                    local_131 = local_130[1];
+                }
+                else
+                {
+                    local_131 = 0.0f;
+                }
+                if (local_130.Num() > 2)
+                {
+                    local_133 = local_130[2];
+                }
+                else
+                {
+                    local_133 = 0.0f;
+                }
+                local_126.Value = FVector(local_60, local_131, local_133);
+                local_110.InputGroup.Add(local_126);
+                this.ActionConfigs.Add(FInstancedStruct::Make(local_110));
+            }
+        }
+        this.CaseDuration = local_59 + 5.0f;
+        this.EnsureSamplerConfigsByEntityConfigs();
+        int local_149 = 0;
+        for (; local_149 < this.SamplerConfigs.Num(); ++local_149)
+        {
+            if (!((FInstancedStruct::GetMutablePtr(this.SamplerConfigs[local_149]).opCall() == nullptr)))
+            {
+                FFPTime local_114 = FFPTime(this.CaseDuration);
+            }
+        }
+        return;
     }
     bool ParseFixedInputJson(const FString &inout FilePath, TArray<FInstancedStruct> &inout OutActions, float32 &inout OutMaxTime, const bool bExtractCheckpoints = false)
     {
+        bool local_103;
         FString local_4;
         if (!(FFileHelper::LoadFileToString(local_4, FilePath, FFileHelper::EHashOptions(0), 0)))
         {
@@ -374,158 +704,150 @@ struct FGTCSourceData
             this.CheckpointFrames.Empty(0);
         }
         int local_54 = 0;
-        while (local_54 < 0)
+        for (; local_54 < local_30.Num(); ++local_54)
         {
             FJsonValue local_40 = local_30.GetValueAt(local_54);
             if (!(local_40.TryGetObject(local_48)))
             {
+                continue;
             }
-            else
+            float local_50_2 = 0.0;
+            local_48.TryGetNumberField("FrameTime", local_50_2);
+            float32 local_35_2 = float32(local_50_2);
+            float32 local_55 = local_35_2 - local_34;
+            ++local_53;
+            FJsonArray local_60;
+            if (!(local_48.TryGetArrayField("InputDatas", local_60)))
             {
-                float local_50_2 = 0.0;
-                local_48.TryGetNumberField("FrameTime", local_50_2);
-                float32 local_35_2 = float32(local_50_2);
-                float32 local_55 = local_35_2 - local_34;
-                ++local_53;
-                FJsonArray local_60;
-                if (!(local_48.TryGetArrayField("InputDatas", local_60)))
+                continue;
+            }
+            TArray<FSimulatedInput> local_64;
+            FGTCCheckpointFrame local_102;
+            local_103 = false;
+            int local_104 = 0;
+            for (; local_104 < local_60.Num(); ++local_104)
+            {
+                FJsonValue local_44_2 = local_60.GetValueAt(local_104);
+                FJsonObject local_114;
+                if (!(local_44_2.TryGetObject(local_114)))
                 {
+                    continue;
                 }
-                else
+                FString local_118;
+                if (!(local_114.TryGetStringField("Name", local_118)))
                 {
-                    bool local_103;
-                    TArray<FSimulatedInput> local_64;
-                    FGTCCheckpointFrame local_102;
-                    local_103 = false;
-                    int local_104 = 0;
-                    for (; local_104 < local_60.Num(); ++local_104)
+                    continue;
+                }
+                if (local_118.StartsWith("CharacterMove", ESearchCase(1)) && !((local_118 == "CharacterMove")))
+                {
+                    continue;
+                }
+                float local_122 = 0.0;
+                local_114.TryGetNumberField("Time", local_122);
+                FJsonArray local_126;
+                float32 local_127 = 0.0f;
+                float32 local_128 = 0.0f;
+                float32 local_129 = 0.0f;
+                if (local_114.TryGetArrayField("Value", local_126))
+                {
+                    float local_132 = 0.0;
+                    if (local_126.Num() > 0)
                     {
-                        FJsonValue local_44_2 = local_60.GetValueAt(local_104);
-                        FJsonObject local_114;
-                        if (!(local_44_2.TryGetObject(local_114)))
-                        {
-                            continue;
-                        }
-                        FString local_118;
-                        if (!(local_114.TryGetStringField("Name", local_118)))
-                        {
-                            continue;
-                        }
-                        if (local_118.StartsWith("CharacterMove", ESearchCase(1)) && !((local_118 == "CharacterMove")))
-                        {
-                            continue;
-                        }
-                        float local_122 = 0.0;
-                        local_114.TryGetNumberField("Time", local_122);
-                        FJsonArray local_126;
-                        float32 local_127 = 0.0f;
-                        float32 local_128 = 0.0f;
-                        float32 local_129 = 0.0f;
-                        if (local_114.TryGetArrayField("Value", local_126))
-                        {
-                            float local_132 = 0.0;
-                            if (local_126.Num() > 0)
-                            {
-                                local_126.GetValueAt(0).TryGetNumber(local_132);
-                                local_127 = float32(local_132);
-                            }
-                            if (local_126.Num() > 1)
-                            {
-                                local_126.GetValueAt(1).TryGetNumber(local_132);
-                                local_128 = float32(local_132);
-                            }
-                            if (local_126.Num() > 2)
-                            {
-                                local_126.GetValueAt(2).TryGetNumber(local_132);
-                                local_129 = float32(local_132);
-                            }
-                        }
-                        if (bExtractCheckpoints && local_118.StartsWith("__GTC_CP_", ESearchCase(1)))
-                        {
-                            if ((local_118 == "__GTC_CP_POS__"))
-                            {
-                                local_102.Position = FVector(local_127, local_128, local_129);
-                                local_103 = true;
-                            }
-                            else
-                            {
-                                if ((local_118 == "__GTC_CP_ROT__"))
-                                {
-                                    local_102.Rotation = FRotator(local_127, local_128, local_129);
-                                }
-                                else
-                                {
-                                    if ((local_118 == "__GTC_CP_VEL__"))
-                                    {
-                                        local_102.Velocity = FVector(local_127, local_128, local_129);
-                                    }
-                                    else
-                                    {
-                                        if ((local_118 == "__GTC_CP_ANGVEL__"))
-                                        {
-                                            local_102.AngularVelocity = FRotator(local_127, local_128, local_129);
-                                        }
-                                        else
-                                        {
-                                            if ((local_118 == "__GTC_CP_DESROT__"))
-                                            {
-                                                local_102.DesiredRotation = FRotator(local_127, local_128, local_129);
-                                            }
-                                            else
-                                            {
-                                                if ((local_118 == "__GTC_CP_MOVCTRL__"))
-                                                {
-                                                    local_102.RelativeYaw = local_127;
-                                                    local_102.SpeedScale = local_128;
-                                                }
-                                                else
-                                                {
-                                                    if (local_118.StartsWith("__GTC_CP_ESM_", ESearchCase(1)))
-                                                    {
-                                                        local_102.ESMStates.Add(FVector(local_127, local_128, local_129));
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            continue;
-                        }
-                        if (local_118.StartsWith("__GTC_ESM_", ESearchCase(1)) || local_118.StartsWith("__GTC_CP_", ESearchCase(1)))
-                        {
-                            continue;
-                        }
-                        FSimulatedInput local_160;
-                        local_160.Name = FName(local_118);
-                        local_160.Value = FVector(local_127, local_128, local_129);
-                        local_160.TimeOffset = (float32(local_122) - local_35_2);
-                        local_64.Add(local_160);
+                        local_126.GetValueAt(0).TryGetNumber(local_132);
+                        local_127 = float32(local_132);
                     }
-                    if (bExtractCheckpoints && local_103)
+                    if (local_126.Num() > 1)
                     {
-                        local_102.FrameTime = FFPTime(local_55);
-                        this.CheckpointFrames.Add(local_102);
+                        local_126.GetValueAt(1).TryGetNumber(local_132);
+                        local_128 = float32(local_132);
                     }
-                    if (local_64.Num() == 0)
+                    if (local_126.Num() > 2)
                     {
+                        local_126.GetValueAt(2).TryGetNumber(local_132);
+                        local_129 = float32(local_132);
+                    }
+                }
+                if (bExtractCheckpoints && local_118.StartsWith("__GTC_CP_", ESearchCase(1)))
+                {
+                    if ((local_118 == "__GTC_CP_POS__"))
+                    {
+                        local_102.Position = FVector(local_127, local_128, local_129);
+                        local_103 = true;
                     }
                     else
                     {
-                        FGTCFixedInputAction local_180;
-                        local_180.InputGroup = local_64;
-                        local_180.StartTime = FFPTime(local_55);
-                        local_180.EndTime = FFPTime(local_55);
-                        local_180.TargetUniqueName = this.PlayerPawnUniqueName;
-                        OutActions.Add(FInstancedStruct::Make(local_180));
-                        if (local_55 > OutMaxTime)
+                        if ((local_118 == "__GTC_CP_ROT__"))
                         {
-                            OutMaxTime = local_55;
+                            local_102.Rotation = FRotator(local_127, local_128, local_129);
+                        }
+                        else
+                        {
+                            if ((local_118 == "__GTC_CP_VEL__"))
+                            {
+                                local_102.Velocity = FVector(local_127, local_128, local_129);
+                            }
+                            else
+                            {
+                                if ((local_118 == "__GTC_CP_ANGVEL__"))
+                                {
+                                    local_102.AngularVelocity = FRotator(local_127, local_128, local_129);
+                                }
+                                else
+                                {
+                                    if ((local_118 == "__GTC_CP_DESROT__"))
+                                    {
+                                        local_102.DesiredRotation = FRotator(local_127, local_128, local_129);
+                                    }
+                                    else
+                                    {
+                                        if ((local_118 == "__GTC_CP_MOVCTRL__"))
+                                        {
+                                            local_102.RelativeYaw = local_127;
+                                            local_102.SpeedScale = local_128;
+                                        }
+                                        else
+                                        {
+                                            if (local_118.StartsWith("__GTC_CP_ESM_", ESearchCase(1)))
+                                            {
+                                                local_102.ESMStates.Add(FVector(local_127, local_128, local_129));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
+                    continue;
                 }
+                if (local_118.StartsWith("__GTC_ESM_", ESearchCase(1)) || local_118.StartsWith("__GTC_CP_", ESearchCase(1)))
+                {
+                    continue;
+                }
+                FSimulatedInput local_160;
+                local_160.Name = FName(local_118);
+                local_160.Value = FVector(local_127, local_128, local_129);
+                local_160.TimeOffset = (float32(local_122) - local_35_2);
+                local_64.Add(local_160);
             }
-            ++local_54;
+            if (bExtractCheckpoints && local_103)
+            {
+                local_102.FrameTime = FFPTime(local_55);
+                this.CheckpointFrames.Add(local_102);
+            }
+            if (local_64.Num() == 0)
+            {
+                continue;
+            }
+            FGTCFixedInputAction local_180;
+            local_180.InputGroup = local_64;
+            local_180.StartTime = FFPTime(local_55);
+            local_180.EndTime = FFPTime(local_55);
+            local_180.TargetUniqueName = this.PlayerPawnUniqueName;
+            OutActions.Add(FInstancedStruct::Make(local_180));
+            if (local_55 > OutMaxTime)
+            {
+                OutMaxTime = local_55;
+            }
         }
         return true;
     }
@@ -563,7 +885,247 @@ struct FGTCSourceData
     }
     void ImportCameraData(const FString &inout CameraDataPath, const FString &inout RawDataPath)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        bool local_77;
+        TArray<float32> local_4;
+        TArray<bool> local_8;
+        FString local_36;
+        if (FPaths::FileExists(RawDataPath))
+        {
+            FString local_14;
+            if (FFileHelper::LoadFileToString(local_14, RawDataPath, FFileHelper::EHashOptions(0), 0))
+            {
+                FJsonObject local_20;
+                if (local_20.LoadFromString(local_14))
+                {
+                    TArray<FString> local_24;
+                    int local_25 = 0;
+                    int local_27 = 0;
+                    while (local_27 < local_14.Len())
+                    {
+                        local_36 = local_14.Mid(local_27, 1);
+                        if ((local_36 == "{") || (local_36 == "["))
+                        {
+                            ++local_25;
+                        }
+                        else
+                        {
+                            if ((local_36 == "}") || (local_36 == "]"))
+                            {
+                                --local_25;
+                            }
+                            else
+                            {
+                                if (local_25 == 1 && (local_36 == "\""))
+                                {
+                                    int local_41 = local_14.Find("\"", ESearchCase(0), ESearchDir(0), local_27 + 1);
+                                    if (local_41 != INDEX_NONE)
+                                    {
+                                        local_24.Add(local_14.Mid(local_27 + 1, ((local_41 - local_27) - 1)));
+                                        local_27 = local_41;
+                                    }
+                                }
+                            }
+                        }
+                        ++local_27;
+                    }
+                    for (auto& local_56 : local_24)
+                    {
+                        FJsonArray local_60;
+                        if (!(local_20.TryGetArrayField(local_56, local_60)))
+                        {
+                            continue;
+                        }
+                        int local_41_2 = 0;
+                        for (; local_41_2 < local_60.Num(); ++local_41_2)
+                        {
+                            FJsonValue local_68 = local_60.GetValueAt(local_41_2);
+                            FJsonObject local_72;
+                            if (!(local_68.TryGetObject(local_72)))
+                            {
+                                continue;
+                            }
+                            float local_74 = 0.0;
+                            if (local_72.HasField("TimeOffset"))
+                            {
+                                local_72.TryGetNumberField("TimeOffset", local_74);
+                            }
+                            local_77 = true;
+                            local_72.TryGetBoolField("ForceUpdateView", local_77);
+                            local_4.Add(float32(local_74));
+                            local_8.Add(local_77);
+                        }
+                    }
+                    int local_41_3 = 0;
+                    for (; local_41_3 < (local_4.Num() - 1); ++local_41_3)
+                    {
+                        int local_26_2 = local_41_3 + 1;
+                        for (; local_26_2 < local_4.Num(); ++local_26_2)
+                        {
+                            float32 local_78 = local_4[local_26_2];
+                            float32 local_81 = local_4[local_41_3];
+                            if (local_78 < local_81)
+                            {
+                                local_81 = local_4[local_41_3];
+                                local_4[local_41_3] = local_4[local_26_2];
+                                local_4[local_26_2] = local_81;
+                                local_77 = local_8[local_41_3];
+                                local_8[local_41_3] = local_8[local_26_2];
+                                local_8[local_26_2] = local_77;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (!(FFileHelper::LoadFileToString(local_36, CameraDataPath, FFileHelper::EHashOptions(0), 0)))
+        {
+            return;
+        }
+        FString local_32 = ((FString("{\"Items\": ") + local_36) + "}");
+        FJsonObject local_20;
+        if (!(local_20.LoadFromString(local_32)))
+        {
+            return;
+        }
+        FJsonArray local_60;
+        if (!(local_20.TryGetArrayField("Items", local_60)) || (local_60.Num() == 0))
+        {
+            return;
+        }
+        int64 local_88 = 0;
+        int local_25_2 = 0;
+        for (; local_25_2 < local_60.Num(); ++local_25_2)
+        {
+            FJsonValue local_64 = local_60.GetValueAt(local_25_2);
+            FJsonObject local_72;
+            if (!(local_64.TryGetObject(local_72)))
+            {
+                continue;
+            }
+            FVector local_100;
+            FJsonObject local_94;
+            if (!(local_72.TryGetObjectField("TimeStamp", local_94)))
+            {
+                continue;
+            }
+            float local_74_2 = 0.0;
+            local_94.TryGetNumberField("TimeTicks", local_74_2);
+            if (local_25_2 == 0 || (int64(local_74_2) < local_88))
+            {
+                local_88 = int64(local_74_2);
+            }
+        }
+        int local_26_3 = 0;
+        for (; local_26_3 < local_60.Num(); ++local_26_3)
+        {
+            FJsonValue local_68_2 = local_60.GetValueAt(local_26_3);
+            FJsonObject local_72;
+            if (!(local_68_2.TryGetObject(local_72)))
+            {
+                continue;
+            }
+            FJsonObject local_94;
+            if (local_72.TryGetObjectField("CamPosition", local_94))
+            {
+                float local_74_3 = 0.0;
+                float local_102 = 0.0;
+                float local_104 = 0.0;
+                local_94.TryGetNumberField("X", local_74_3);
+                local_94.TryGetNumberField("Y", local_102);
+                local_94.TryGetNumberField("Z", local_104);
+                local_100 = FVector(local_74_3, local_102, local_104);
+            }
+            FRotator local_116;
+            FJsonObject local_120;
+            if (local_72.TryGetObjectField("CamRotation", local_120))
+            {
+                float local_74_4 = 0.0;
+                float local_102_2 = 0.0;
+                float local_104_2 = 0.0;
+                local_120.TryGetNumberField("X", local_74_4);
+                local_120.TryGetNumberField("Y", local_102_2);
+                local_120.TryGetNumberField("Z", local_104_2);
+                local_116 = FRotator(local_74_4, local_102_2, local_104_2);
+            }
+            FGTCCameraInitTransformConfig local_138;
+            local_138.Position = local_100;
+            local_138.Rotation = local_116;
+            FGTCInitConfig local_204;
+            local_204.CameraInitTransform = local_138;
+            this.InitConfigs.Add(local_204);
+            break;
+        }
+        this.CameraViewConfigs.Empty(0);
+        local_25_2 = 0;
+        local_26_3 = 0;
+        for (; local_26_3 < local_60.Num(); ++local_26_3)
+        {
+            FJsonValue local_64_2 = local_60.GetValueAt(local_26_3);
+            FJsonObject local_72;
+            if (!(local_64_2.TryGetObject(local_72)))
+            {
+                continue;
+            }
+            float local_74_5 = 0.0;
+            FJsonObject local_94;
+            if (local_72.TryGetObjectField("TimeStamp", local_94))
+            {
+                local_94.TryGetNumberField("TimeTicks", local_74_5);
+            }
+            float32 local_81_2 = (int64(local_74_5) - local_88) / 10000000.0f;
+            if (local_4.Num() > 0)
+            {
+                while (local_25_2 < (local_4.Num() - 1) && (local_4[(local_25_2 + 1)] <= local_81_2))
+                {
+                    ++local_25_2;
+                }
+                if (local_25_2 < local_8.Num() && !(local_8[local_25_2]))
+                {
+                    continue;
+                }
+            }
+            FVector local_100;
+            FJsonObject local_120;
+            if (local_72.TryGetObjectField("CamPosition", local_120))
+            {
+                float local_104_3 = 0.0;
+                float local_102_3 = 0.0;
+                float local_206 = 0.0;
+                local_120.TryGetNumberField("X", local_104_3);
+                local_120.TryGetNumberField("Y", local_102_3);
+                local_120.TryGetNumberField("Z", local_206);
+                local_100 = FVector(local_104_3, local_102_3, local_206);
+            }
+            FRotator local_116;
+            FJsonObject local_210;
+            if (local_72.TryGetObjectField("CamRotation", local_210))
+            {
+                float local_102_4 = 0.0;
+                float local_206_2 = 0.0;
+                float local_104_4 = 0.0;
+                local_210.TryGetNumberField("X", local_102_4);
+                local_210.TryGetNumberField("Y", local_206_2);
+                local_210.TryGetNumberField("Z", local_104_4);
+                local_116 = FRotator(local_102_4, local_206_2, local_104_4);
+            }
+            float local_104_5 = 75.0;
+            local_72.TryGetNumberField("CamFov", local_104_5);
+            if (this.CameraViewConfigs.Num() > 0)
+            {
+                FGTCCameraViewConfig& local_212 = this.CameraViewConfigs.Last(0);
+                if (local_212.Position.Equals(local_100, 9.999999747378752e-5) && local_212.Rotation.Equals(local_116, 9.999999747378752e-5) && FMath::IsNearlyEqual(local_212.FOV, float32(local_104_5), 1e-8f))
+                {
+                    continue;
+                }
+            }
+            FGTCCameraViewConfig local_230;
+            local_230.Time = local_81_2;
+            local_230.Position = local_100;
+            local_230.Rotation = local_116;
+            local_230.FOV = float32(local_104_5);
+            this.CameraViewConfigs.Add(local_230);
+        }
+        return;
     }
     void EnsureSamplerConfigsByEntityConfigs()
     {
@@ -655,40 +1217,37 @@ struct FGTCSourceData
             return;
         }
         int local_6 = 0;
-        while (local_6 < 0)
+        for (; local_6 < local_4.Num(); ++local_6)
         {
             FJsonValue local_16 = local_4.GetValueAt(local_6);
             FJsonObject local_20;
             if (!(local_16.TryGetObject(local_20)))
             {
+                continue;
             }
-            else
+            FSimulatedInput local_30;
+            FString local_34;
+            if (local_20.TryGetStringField("Name", local_34))
             {
-                FSimulatedInput local_30;
-                FString local_34;
-                if (local_20.TryGetStringField("Name", local_34))
-                {
-                    local_30.Name = FName(local_34);
-                }
-                FJsonObject local_40;
-                if (local_20.TryGetObjectField("Value", local_40))
-                {
-                    float local_42 = 0.0;
-                    float local_46 = 0.0;
-                    float local_48 = 0.0;
-                    local_40.TryGetNumberField("X", local_42);
-                    local_40.TryGetNumberField("Y", local_46);
-                    local_40.TryGetNumberField("Z", local_48);
-                    local_30.Value = FVector(local_42, local_46, local_48);
-                }
-                float local_48_2 = 0.0;
-                if (local_20.HasField("TimeOffset") && local_20.TryGetNumberField("TimeOffset", local_48_2))
-                {
-                    local_30.TimeOffset = float32(local_48_2);
-                }
-                OutGroup.Add(local_30);
+                local_30.Name = FName(local_34);
             }
-            ++local_6;
+            FJsonObject local_40;
+            if (local_20.TryGetObjectField("Value", local_40))
+            {
+                float local_42 = 0.0;
+                float local_46 = 0.0;
+                float local_48 = 0.0;
+                local_40.TryGetNumberField("X", local_42);
+                local_40.TryGetNumberField("Y", local_46);
+                local_40.TryGetNumberField("Z", local_48);
+                local_30.Value = FVector(local_42, local_46, local_48);
+            }
+            float local_48_2 = 0.0;
+            if (local_20.HasField("TimeOffset") && local_20.TryGetNumberField("TimeOffset", local_48_2))
+            {
+                local_30.TimeOffset = float32(local_48_2);
+            }
+            OutGroup.Add(local_30);
         }
         return;
     }
@@ -953,7 +1512,6 @@ struct FGTCTestCaseConfig
     UPROPERTY()
     TArray<FName> NoReuseEntityNames;
 
-
     void LoadGTCSourceData(FGTCSourceData &inout SourceData) const
     {
         SourceData.LoadFromJsonFile(this.GTCJsonAssetPath);
@@ -969,7 +1527,6 @@ struct FGTCTestCaseInputConfig
     bool bEnableLatency = false;
     UPROPERTY()
     TArray<int> BaseLatency;
-
 
 }
 

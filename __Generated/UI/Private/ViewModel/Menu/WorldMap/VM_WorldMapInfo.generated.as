@@ -1,12 +1,9 @@
-﻿
-
 struct FConfigVM_WorldMapInfo : FConfigEUIModelBase
 {
     UPROPERTY()
     bool bIsModeEntrance = false;
     UPROPERTY()
     TDataObjectPtr<FMapConfig> MapConfig;
-
 
 }
 

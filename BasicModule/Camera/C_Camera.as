@@ -1,4 +1,3 @@
-﻿
 enum ECameraAdditionalInputModifierCategory
 {
     Level0,
@@ -47,11 +46,26 @@ struct FC_CameraAdditionalInput : FECSComponent
 
     FC_CameraAdditionalInput()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_ModifierCategory = ECameraAdditionalInputModifierCategory(0);
+        this.m_ModifierIndex = -1;
+        this.m_DesiredModifierIndex = -1;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_CameraAdditionalInput(const FC_CameraAdditionalInput &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_ModifierCategory = ECameraAdditionalInputModifierCategory(0);
+        this.m_ModifierIndex = -1;
+        this.m_DesiredModifierIndex = -1;
+        this.__InitDirtyFlags();
+        this.m_ModifierCategory = Other.m_ModifierCategory;
+        this.m_ModifierIndex = int(Other.m_ModifierIndex);
+        this.m_DesiredModifierIndex = int(Other.m_DesiredModifierIndex);
+        return;
     }
     FC_CameraAdditionalInput opAssign(const FC_CameraAdditionalInput &inout Other)
     {
@@ -114,12 +128,16 @@ struct FC_CameraShakeIDCache : FECSComponent
     FC_CameraShakeIDCache()
     {
         this.m_IDCache = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FC_CameraShakeIDCache(const FC_CameraShakeIDCache &inout Other)
     {
         this.m_IDCache = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_IDCache = int(Other.m_IDCache);
         return;
@@ -178,7 +196,6 @@ struct FCE_SetAdditionalInputModifierIndexNotify : FECSEvent
     UPROPERTY()
     int DesiredIndex;
 
-
     bool Validate() const
     {
         return true;
@@ -189,7 +206,6 @@ struct FCS_CameraAdditionalInputCVarState : FECSSingleton
 {
     UPROPERTY()
     int LastSentModifierIndex = 0;
-
 
 }
 
@@ -270,37 +286,37 @@ bool RemoveCameraAdditionalInput(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCameraAdditionalInputOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CameraAdditionalInput, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CameraAdditionalInput, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraAdditionalInputOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CameraAdditionalInput, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CameraAdditionalInput, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraAdditionalInputOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CameraAdditionalInput, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CameraAdditionalInput, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraAdditionalInputOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CameraAdditionalInput, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CameraAdditionalInput, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraAdditionalInputOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CameraAdditionalInput, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CameraAdditionalInput, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCameraAdditionalInputLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CameraAdditionalInput, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CameraAdditionalInput, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraAdditionalInputActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CameraAdditionalInput, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CameraAdditionalInput, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraAdditionalInputModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CameraAdditionalInput, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CameraAdditionalInput, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_CameraShakeIDCache
@@ -380,37 +396,37 @@ bool RemoveCameraShakeIDCache(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCameraShakeIDCacheOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CameraShakeIDCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CameraShakeIDCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraShakeIDCacheOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CameraShakeIDCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CameraShakeIDCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraShakeIDCacheOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CameraShakeIDCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CameraShakeIDCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraShakeIDCacheOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CameraShakeIDCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CameraShakeIDCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraShakeIDCacheOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CameraShakeIDCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CameraShakeIDCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCameraShakeIDCacheLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CameraShakeIDCache, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CameraShakeIDCache, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraShakeIDCacheActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CameraShakeIDCache, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CameraShakeIDCache, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraShakeIDCacheModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CameraShakeIDCache, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CameraShakeIDCache, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_CameraAdditionalInputCVarState
@@ -498,17 +514,17 @@ bool RemoveCameraAdditionalInputCVarState(const FECSWorldPtr &inout World)
 }
 void __MonitorCameraAdditionalInputCVarStateLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_CameraAdditionalInputCVarState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_CameraAdditionalInputCVarState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraAdditionalInputCVarStateActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_CameraAdditionalInputCVarState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_CameraAdditionalInputCVarState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraAdditionalInputCVarStateModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_CameraAdditionalInputCVarState, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_CameraAdditionalInputCVarState, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

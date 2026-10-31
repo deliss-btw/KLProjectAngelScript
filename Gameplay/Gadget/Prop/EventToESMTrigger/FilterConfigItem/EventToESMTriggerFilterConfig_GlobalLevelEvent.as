@@ -1,5 +1,3 @@
-﻿
-
 struct FEventToESMTriggerFilterConfigItem_GlobalLevelEvent : FEventToESMTriggerFilterConfigItemBase
 {
     FEventToESMTriggerFilterConfigItemBase _base_FEventToESMTriggerFilterConfigItemBase;
@@ -10,7 +8,6 @@ struct FEventToESMTriggerFilterConfigItem_GlobalLevelEvent : FEventToESMTriggerF
 
     FEventToESMTriggerFilterConfigItem_GlobalLevelEvent()
     {
-        super();
         return;
     }
     bool EvaluateAndTrigger(const FCE_CustomLevelEvent &inout Event, const FECSEntity &inout Entity) const

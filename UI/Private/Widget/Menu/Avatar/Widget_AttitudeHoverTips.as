@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_AttitudeHoverTips
 {
     const int ViewID = 0;
@@ -37,9 +36,7 @@ class UWidget_AttitudeHoverTips : UEUIUserWidget
             {
                 if (UICommonUtil::CVar_UI_UseAttributePresentation.GetBool())
                 {
-                    local_4.opArrow().DamagePresentation.GetDisplayName();
-                    FString local_10;
-                    this.PowerNameText.SetArgument(local_10, "0");
+                    this.PowerNameText.SetArgument("0", local_4.opArrow().DamagePresentation.GetDisplayName());
                     return;
                 }
                 this.PowerNameText.SetArgument("0", local_4.opArrow().DamageName);
@@ -149,6 +146,7 @@ namespace UWidget_AttitudeHoverTips
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_AttitudeHoverTips;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnAvatarConfigChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnIllustrateChanged"));
     return;

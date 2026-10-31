@@ -1,4 +1,3 @@
-﻿
 enum EFriendContextStateIndex
 {
     NoFriend,
@@ -152,7 +151,7 @@ struct FVM_ChatFriendPanel : FEUIViewModel
             return;
         }
         FCommonTipsParam local_12;
-        ::CommonPopup::Tips(NSLOCTEXT("Friend", "SendAddFriendSuccess", "еҐЅеЏ‹з”іиЇ·е·ІеЏ‘йЂЃ"), local_12);
+        ::CommonPopup::Tips(NSLOCTEXT("Friend", "SendAddFriendSuccess", "好友申请已发送"), local_12);
         return;
     }
     FText GetFriendSystemOpenTips()
@@ -203,12 +202,11 @@ struct FVM_ChatFriendPanel : FEUIViewModel
     }
     void SyncTabVisualFromRuntime()
     {
-        this.SetSelectedFriendTab(EChatFriendTab(this.GetChatRuntimeData().opArrow().GetSelectFriendTab()));
+        this.SetSelectedFriendTab(this.GetChatRuntimeData().opArrow().GetSelectFriendTab());
         int local_4 = 0;
         for (; local_4 < this.GetFriendTabs().Num(); )
         {
-            EChatFriendTab local_3_2 = this.GetFriendTabs()[local_4].opArrow().GetTabChannelID();
-            this.GetFriendTabs()[local_4].opArrow().SetSelectedVisualState((int(local_3_2) == int(this.GetSelectedFriendTab())));
+            this.GetFriendTabs()[local_4].opArrow().SetSelectedVisualState((this.GetFriendTabs()[local_4].opArrow().GetTabChannelID() == int(this.GetSelectedFriendTab())));
             ++local_4;
         }
         return;
@@ -535,7 +533,74 @@ FVM_ChatFriendPanel CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "SearchFriendItemList";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_FriendItem>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_ChatFriendPanel>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_ChatFriendPanel;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(11);
+    local_22.AddRefPropertyDirty(0, 0, FMS_FriendDataModel::__IndexOf_ApplyList());
+    local_22.AddRefPropertyDirty(1, 0, FMS_FriendDataModel::__IndexOf_SearchResults());
+    local_22.AddRefPropertyDirty(2, 0, FMS_FriendDataModel::__IndexOf_FriendList());
+    local_22.AddRefPropertyDirty(3, 0, FMS_FriendDataModel::__IndexOf_bIsInit());
+    local_22.AddRefPropertyDirty(4, 1, FMS_ChatRuntimeData::__IndexOf_SelectFriendTab());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("FriendDataModel");
+    int local_2_2 = FMS_FriendDataModel::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FMS_FriendDataModel::__IndexOf_ApplyList(), true);
+    local_30.RelatedDirtyMask.SetBit(FMS_FriendDataModel::__IndexOf_SearchResults(), true);
+    local_30.RelatedDirtyMask.SetBit(FMS_FriendDataModel::__IndexOf_FriendList(), true);
+    local_30.RelatedDirtyMask.SetBit(FMS_FriendDataModel::__IndexOf_bIsInit(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    local_30.PropertyName = FName("ChatRuntimeData");
+    int local_23 = FMS_ChatRuntimeData::ModelId;
+    int local_23_2 = local_22.GetMappingDirtyOffset(1);
+    local_30.RelatedDirtyMask.SetBit(FMS_ChatRuntimeData::__IndexOf_SelectFriendTab(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnInitPanelData";
+    local_40.DirtyFlags.Set(FVM_ChatFriendPanel::__IndexOf_FriendDataModel());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(3));
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__RefreshChannelTab";
+    local_40.DirtyFlags.Set(FVM_ChatFriendPanel::__IndexOf_ChatRuntimeData());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(4));
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnSearchFriendResultUpdated";
+    local_40.DirtyFlags.Set(FVM_ChatFriendPanel::__IndexOf_FriendDataModel());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(1));
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnUpdateFriendList";
+    local_40.DirtyFlags.Set(FVM_ChatFriendPanel::__IndexOf_FriendDataModel());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(2));
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnUpdateApplyList";
+    local_40.DirtyFlags.Set(FVM_ChatFriendPanel::__IndexOf_FriendDataModel());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    FEUIModelMsgHandleDefine local_50;
+    local_50.FunctionName = "__OnFriendDataUpdated";
+    local_50.MessageTypeName = "Msg_FriendDataUpdated";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    local_50.FunctionName = "__HandleAddFriendRequest";
+    local_50.MessageTypeName = "Msg_AddFriendRsp";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

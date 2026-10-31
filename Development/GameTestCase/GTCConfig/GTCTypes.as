@@ -1,10 +1,8 @@
-﻿
 enum EGTCInputImportMode
 {
     InputAction,
     FixedInput,
 }
-
 
 UCLASS(Abstract)
 class UGTCAction : UObject
@@ -84,7 +82,6 @@ struct FGTCCameraStateConfig
     UPROPERTY()
     TArray<FString> ActiveShakeIdentifiers;
 
-
 }
 
 struct FGTCInitConfig
@@ -95,7 +92,6 @@ struct FGTCInitConfig
     FGTCCameraStateConfig CameraState;
     UPROPERTY()
     bool bHasCameraState = false;
-
 
 }
 
@@ -110,7 +106,6 @@ struct FGTCCameraViewConfig
     UPROPERTY()
     float32 FOV = 75.0f;
 
-
 }
 
 struct FGTCESMLayerState
@@ -123,7 +118,6 @@ struct FGTCESMLayerState
     float32 StateTime = 0.0f;
     UPROPERTY()
     float32 PlaySpeed = 1.0f;
-
 
 }
 
@@ -159,7 +153,6 @@ struct FGTCEntityConfig
     int RandomSeed = 0;
     UPROPERTY()
     int64 RandomInitTimeTicks = 0;
-
 
 }
 

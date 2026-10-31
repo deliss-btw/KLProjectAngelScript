@@ -1,5 +1,3 @@
-﻿
-
 class US_PropSystem : UECSScriptSystem
 {
     US_PropSystem()
@@ -34,7 +32,7 @@ class US_PropSystem : UECSScriptSystem
                     }
                 }
             }
-            if (this.GetECSRuntime().IsServer)
+            if (int(this.GetECSRuntime().IsServer) != 0)
             {
                 ::FLifeCycleUtils::EntityDeath(Entity, Entity.GetId(), FixedTime.Time, true, true, false, true, EDeathReason(0));
             }

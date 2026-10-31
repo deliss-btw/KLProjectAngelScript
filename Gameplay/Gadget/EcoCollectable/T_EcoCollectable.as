@@ -1,5 +1,3 @@
-﻿
-
 struct FT_EcoCollectableConfig : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -37,7 +35,6 @@ struct FT_EcoCollectableConfig : FECSTrait
     bool bHas_FC_PropAddBuffConfig = false;
     UPROPERTY()
     FC_PropAddBuffConfig Config_FC_PropAddBuffConfig;
-
 
     FString CheckNamesExistence(const TArray<FName> &inout ValidNames, const TArray<FName> &inout NamesToCheck) const
     {
@@ -144,7 +141,7 @@ struct FT_EcoCollectableConfig : FECSTrait
     }
     FString ValidateConfig(const AECSPrefab Prefab) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         FString __r; return __r;
     }
 }

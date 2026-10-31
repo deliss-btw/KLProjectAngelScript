@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_AnimParamRandomFootstep_NS
 {
     const TECSComponentDerivedPtr<FC_AnimParamRandomFootstep> DerivedPtr = TECSComponentDerivedPtr<FC_AnimParamRandomFootstep>();
@@ -16,7 +15,6 @@ struct FC_AnimParamRandomFootstep : FECSComponent
     UPROPERTY()
     float32 RemainingTime = 0.0f;
 
-
 }
 
 class UESMAction_AnimRandomFootstep : UESMBPBaseSpanTickAction
@@ -25,7 +23,6 @@ class UESMAction_AnimRandomFootstep : UESMBPBaseSpanTickAction
     bool bUseSpanAsInterval = true;
     UPROPERTY()
     float32 Interval = 3.0f;
-
 
     UFUNCTION()
     EESMActionType GetActionType_Implementation() const
@@ -171,36 +168,36 @@ bool RemoveAnimParamRandomFootstep(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAnimParamRandomFootstepOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimParamRandomFootstep, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimParamRandomFootstep, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimParamRandomFootstepOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimParamRandomFootstep, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimParamRandomFootstep, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimParamRandomFootstepOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimParamRandomFootstep, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimParamRandomFootstep, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimParamRandomFootstepOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimParamRandomFootstep, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimParamRandomFootstep, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimParamRandomFootstepOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimParamRandomFootstep, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimParamRandomFootstep, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAnimParamRandomFootstepLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AnimParamRandomFootstep, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AnimParamRandomFootstep, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimParamRandomFootstepActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AnimParamRandomFootstep, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AnimParamRandomFootstep, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimParamRandomFootstepModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AnimParamRandomFootstep, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AnimParamRandomFootstep, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

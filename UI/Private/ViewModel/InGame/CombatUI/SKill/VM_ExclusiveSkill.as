@@ -1,4 +1,3 @@
-﻿
 namespace FVM_GramherExclusiveSkill
 {
     const int ModelId = 0;
@@ -2330,7 +2329,7 @@ class USwordExclusiveSkillModelAdapter : UExclusiveSkillModelAdapterBase
     }
     FEUIModelRef MakeViewModels(const FEUIModelContext &inout Context) const
     {
-        return FEUIModelRef();
+        return FEUIModelRef(::FVM_SwordSkillResource::Create(Context.Manager));
     }
 }
 
@@ -2343,7 +2342,7 @@ class UWizardExclusiveSkillModelAdapter : UExclusiveSkillModelAdapterBase
     }
     FEUIModelRef MakeViewModels(const FEUIModelContext &inout Context) const
     {
-        return FEUIModelRef();
+        return FEUIModelRef(::FVM_WizardSkillResource::Create(Context.Manager));
     }
 }
 
@@ -2356,7 +2355,7 @@ class UGramherExclusiveSkillModelAdapter : UExclusiveSkillModelAdapterBase
     }
     FEUIModelRef MakeViewModels(const FEUIModelContext &inout Context) const
     {
-        return FEUIModelRef();
+        return FEUIModelRef(::FVM_GramherSkillResource::Create(Context.Manager));
     }
 }
 
@@ -2369,7 +2368,7 @@ class UShuijingExclusiveSkillModelAdapter : UExclusiveSkillModelAdapterBase
     }
     FEUIModelRef MakeViewModels(const FEUIModelContext &inout Context) const
     {
-        return FEUIModelRef();
+        return FEUIModelRef(::FVM_SuiXiSkillResource::Create(Context.Manager));
     }
 }
 
@@ -2382,7 +2381,7 @@ class UQiongExclusiveSkillModelAdapter : UExclusiveSkillModelAdapterBase
     }
     FEUIModelRef MakeViewModels(const FEUIModelContext &inout Context) const
     {
-        return FEUIModelRef();
+        return FEUIModelRef(::FVM_QiongSkillResource::Create(Context.Manager));
     }
 }
 
@@ -2396,7 +2395,6 @@ struct __GeneratedProperties_FVM_GramherExclusiveSkill
     FLinearColor F2ProgressColor;
     UPROPERTY()
     TEUIModelRef<FVM_GramherExclusiveSkill> Self;
-
 
 }
 
@@ -2414,7 +2412,6 @@ struct __GeneratedProperties_FVM_SwordExclusiveSkill
     float32 ProgressRatio5;
     UPROPERTY()
     TEUIModelRef<FVM_SwordExclusiveSkill> Self;
-
 
 }
 
@@ -2437,7 +2434,6 @@ struct __GeneratedProperties_FVM_WizardExclusiveSkill
     UPROPERTY()
     TEUIModelRef<FVM_WizardExclusiveSkill> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_ShuijingExclusiveSkill
@@ -2448,7 +2444,6 @@ struct __GeneratedProperties_FVM_ShuijingExclusiveSkill
     ESlateVisibility VMShowArrow;
     UPROPERTY()
     TEUIModelRef<FVM_ShuijingExclusiveSkill> Self;
-
 
 }
 
@@ -2499,7 +2494,6 @@ struct __GeneratedProperties_FVM_QiongExclusiveSkill
     UPROPERTY()
     TEUIModelRef<FVM_QiongExclusiveSkill> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_FakeCharacterProgress
@@ -2508,7 +2502,6 @@ struct __GeneratedProperties_FVM_FakeCharacterProgress
     float32 FakeCharacterEnergyProgress;
     UPROPERTY()
     TEUIModelRef<FVM_FakeCharacterProgress> Self;
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PlayerReborn
 {
     const int ModelId = 0;
@@ -141,11 +140,11 @@ struct FVM_PlayerReborn : FEUIViewModel
                     }
                 }
             }
-            this.SetKilledInfo(FText::Format(NSLOCTEXT("PlayerReborn", "PlayerRebornKilledBy", "дЅ иў«<Red26F>{0}</>е‡»иґҐдє†"), local_18));
+            this.SetKilledInfo(FText::Format(NSLOCTEXT("PlayerReborn", "PlayerRebornKilledBy", "你被<Red26F>{0}</>击败了"), local_18));
         }
         else
         {
-            this.SetKilledInfo(NSLOCTEXT("PlayerReborn", "PlayerRebornKilledBy_Unknown", "дЅ иў«жњЄзџҐж•Њдєєе‡»иґҐдє†"));
+            this.SetKilledInfo(NSLOCTEXT("PlayerReborn", "PlayerRebornKilledBy_Unknown", "你被未知敌人击败了"));
         }
         this.SetTotalWaitTime(this.GetEndWaitTime());
         this.SetRescuedProgressModel(TEUIModelRef<FVM_RevivalTimeProgressBar>(::FVM_RevivalTimeProgressBar::Create(this.GetContext().Manager)));
@@ -235,7 +234,7 @@ struct FVM_PlayerReborn : FEUIViewModel
             else
             {
                 FCommonTipsParam local_26;
-                ::CommonPopup::Tips(NSLOCTEXT("PlayerReborn", "Reborn_NeedWait", "е¤„дєЋеЂ’и®Ўж—¶дё­ж— жі•е¤Ќжґ»"), local_26);
+                ::CommonPopup::Tips(NSLOCTEXT("PlayerReborn", "Reborn_NeedWait", "处于倒计时中无法复活"), local_26);
             }
         }
         return;
@@ -252,7 +251,7 @@ struct FVM_PlayerReborn : FEUIViewModel
             else
             {
                 FCommonTipsParam local_26;
-                ::CommonPopup::Tips(NSLOCTEXT("PlayerReborn", "Reborn_NeedWait", "е¤„дєЋеЂ’и®Ўж—¶дё­ж— жі•е¤Ќжґ»"), local_26);
+                ::CommonPopup::Tips(NSLOCTEXT("PlayerReborn", "Reborn_NeedWait", "处于倒计时中无法复活"), local_26);
             }
         }
         return;
@@ -270,7 +269,7 @@ struct FVM_PlayerReborn : FEUIViewModel
             return;
         }
         FCommonTipsParam local_26;
-        ::CommonPopup::Tips(NSLOCTEXT("PlayerReborn", "Reborn_NeedWait", "е¤„дєЋеЂ’и®Ўж—¶дё­ж— жі•е¤Ќжґ»"), local_26);
+        ::CommonPopup::Tips(NSLOCTEXT("PlayerReborn", "Reborn_NeedWait", "处于倒计时中无法复活"), local_26);
         return;
     }
     void RebornInOtherRevive()
@@ -285,7 +284,7 @@ struct FVM_PlayerReborn : FEUIViewModel
             else
             {
                 FCommonTipsParam local_26;
-                ::CommonPopup::Tips(NSLOCTEXT("PlayerReborn", "Reborn_NeedWait", "е¤„дєЋеЂ’и®Ўж—¶дё­ж— жі•е¤Ќжґ»"), local_26);
+                ::CommonPopup::Tips(NSLOCTEXT("PlayerReborn", "Reborn_NeedWait", "处于倒计时中无法复活"), local_26);
             }
         }
         return;
@@ -547,14 +546,13 @@ struct __GeneratedProperties_FVM_PlayerReborn
     UPROPERTY()
     TEUIModelRef<FVM_PlayerReborn> Self;
 
-
 }
 
 namespace FVM_PlayerReborn
 {
 FVM_PlayerReborn& Create(const UObject ContextObject, const FFPTime &inout EndWaitTime, const TArray<EReviveType> &inout AvailableReviveTypes, const FECSEntityId &inout KilledByEntity, const EDeathReason DeathReason)
 {
-    return FVM_PlayerReborn::CreateByManager(EUIInternal::GetContextManager(ContextObject), EndWaitTime, AvailableReviveTypes, KilledByEntity);
+    return FVM_PlayerReborn::CreateByManager(EUIInternal::GetContextManager(ContextObject), EndWaitTime, AvailableReviveTypes, KilledByEntity, EDeathReason(DeathReason));
 }
 FVM_PlayerReborn CreateByManager(const UEUIManagerSubsystem Manager, const FFPTime &inout EndWaitTime, const TArray<EReviveType> &inout AvailableReviveTypes, const FECSEntityId &inout KilledByEntity, const EDeathReason DeathReason)
 {

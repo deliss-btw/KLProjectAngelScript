@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_QAStatPrefabs = FConsoleVariable();
 
 struct FPrefabStatNum
@@ -7,7 +6,6 @@ struct FPrefabStatNum
     int Num;
     UPROPERTY()
     int ActiveNum;
-
 
     void Increase(const bool bActive)
     {
@@ -43,12 +41,12 @@ struct FPrefabStatInfomation
         PrintToScreen(FString().Append("MountNum: ").Append(this.MountNum.ActiveNum).Append("/").Append(this.MountNum.Num), 0.0f, FLinearColor::LucBlue);
         PrintToScreen(FString().Append("AvatarNum: ").Append(this.AvatarNum.ActiveNum).Append("/").Append(this.AvatarNum.Num), 0.0f, FLinearColor::LucBlue);
         PrintToScreen(FString().Append("MonsterNum: ").Append(this.MonsterNum.ActiveNum).Append("/").Append(this.MonsterNum.Num), 0.0f, FLinearColor::LucBlue);
-        PrintToScreen(FString().Append("PropNum: ").Append(this.ActiveNum).Append("/").Append(this.Num), 0.0f, FLinearColor::LucBlue);
+        PrintToScreen(FString().Append("PropNum: ").Append(this.PropNum.ActiveNum).Append("/").Append(this.PropNum.Num), 0.0f, FLinearColor::LucBlue);
         return;
     }
     void LogAsInfomation()
     {
-        FString local_4_2 = ((((FString(FString().Append("PropNum: ").Append(this.ActiveNum).Append("/").Append(this.Num).Append("\n")) + FString().Append("MonsterNum: ").Append(this.MonsterNum.ActiveNum).Append("/").Append(this.MonsterNum.Num).Append("\n")) + FString().Append("AvatarNum: ").Append(this.AvatarNum.ActiveNum).Append("/").Append(this.AvatarNum.Num).Append("\n")) + FString().Append("MountNum: ").Append(this.MountNum.ActiveNum).Append("/").Append(this.MountNum.Num).Append("\n")) + FString().Append("InvalidNum: ").Append(this.InvalidNum.ActiveNum).Append("/").Append(this.InvalidNum.Num).Append("\n"));
+        FString local_4_2 = ((((FString(FString().Append("PropNum: ").Append(this.PropNum.ActiveNum).Append("/").Append(this.PropNum.Num).Append("\n")) + FString().Append("MonsterNum: ").Append(this.MonsterNum.ActiveNum).Append("/").Append(this.MonsterNum.Num).Append("\n")) + FString().Append("AvatarNum: ").Append(this.AvatarNum.ActiveNum).Append("/").Append(this.AvatarNum.Num).Append("\n")) + FString().Append("MountNum: ").Append(this.MountNum.ActiveNum).Append("/").Append(this.MountNum.Num).Append("\n")) + FString().Append("InvalidNum: ").Append(this.InvalidNum.ActiveNum).Append("/").Append(this.InvalidNum.Num).Append("\n"));
         XLog(ELog(45), local_4_2);
         return;
     }

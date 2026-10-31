@@ -1,5 +1,3 @@
-﻿
-
 struct FT_AutoTrackTurret : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -8,7 +6,7 @@ struct FT_AutoTrackTurret : FECSTrait
     UPROPERTY()
     FC_AutoTrackTurretConfig Config_FC_AutoTrackTurretConfig;
 
-    default CustomName = FName("и‡ЄеЉЁиїЅиёЄз‚®еЏ°й…ЌзЅ® (FT_AutoTrackTurret)");
+    default CustomName = FName("自动追踪炮台配置 (FT_AutoTrackTurret)");
 
     FT_AutoTrackTurret()
     {

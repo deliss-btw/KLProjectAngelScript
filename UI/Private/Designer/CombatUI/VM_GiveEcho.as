@@ -1,4 +1,3 @@
-﻿
 namespace FVM_GiveEcho
 {
     const int ModelId = 0;
@@ -177,7 +176,6 @@ struct __GeneratedProperties_FVM_GiveEcho
     FText ErrorMessage;
     UPROPERTY()
     TEUIModelRef<FVM_GiveEcho> Self;
-
 
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_ExternalTransitControl : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -92,7 +90,7 @@ class UESMAction_ExternalTransitControl : UESMBPBaseSpanAction
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const
     {
-        FString local_4 = "жЋ§е€¶ESMе¤–йѓЁи·іиЅ¬";
+        FString local_4 = "控制ESM外部跳转";
         if ((!((FName(this.TargetEntityBBVar.Name) == NAME_None))))
         {
             FString local_20;

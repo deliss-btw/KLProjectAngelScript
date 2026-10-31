@@ -1,4 +1,3 @@
-﻿
 enum EBannerBGType
 {
     Normal,
@@ -40,7 +39,6 @@ struct FCommonBannerInfo
     UPROPERTY()
     int Priority = 0;
 
-
 }
 
 struct FCS_CommonBannerManager : FECSSingleton
@@ -50,14 +48,10 @@ struct FCS_CommonBannerManager : FECSSingleton
     UPROPERTY()
     FEUIWidgetRef DisplayingBanner;
     UPROPERTY()
-    int DisplayingBannerPopupId;
+    int DisplayingBannerPopupId = INDEX_NONE;
     UPROPERTY()
     float32 DisplayingBannerLifetime;
 
-    FCS_CommonBannerManager()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
 }
 
 namespace ECSFunc_FCS_CommonBannerManager
@@ -148,16 +142,16 @@ bool RemoveCommonBannerManager(const FECSWorldPtr &inout World)
 }
 void __MonitorCommonBannerManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_CommonBannerManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_CommonBannerManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommonBannerManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_CommonBannerManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_CommonBannerManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCommonBannerManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_CommonBannerManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_CommonBannerManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

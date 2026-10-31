@@ -1,5 +1,3 @@
-﻿
-
 struct FAutoRiggingBone
 {
     UPROPERTY()
@@ -19,10 +17,9 @@ struct FAutoRiggingBone
     UPROPERTY()
     FVector InfluenceBoneOirentAxis;
 
-
     void Init()
     {
-        FTransform local_24 = FTransform(this.GetRefPoseTransform());
+        FTransform local_24 = FTransform(this.MainBoneRef.GetRefPoseTransform());
         FVector local_60 = local_24.TransformVector(this.MainBoneOrientAxis);
         FTransform local_84 = FTransform(this.InfluenceBoneRef.GetRefPoseTransform());
         FVector local_54 = local_84.TransformVector(this.InfluenceBoneOirentAxis);
@@ -35,7 +32,7 @@ struct FAutoRiggingBone
     }
     void UpdateDrivenBone(const USkeletalPoseTweaker poseTweaker)
     {
-        FTransform local_24 = FTransform(this.GetTransform());
+        FTransform local_24 = FTransform(this.MainBoneRef.GetTransform());
         FVector local_60 = local_24.TransformVector(this.MainBoneOrientAxis);
         FTransform local_84 = FTransform(this.InfluenceBoneRef.GetTransform());
         FVector local_54 = local_84.TransformVector(this.InfluenceBoneOirentAxis);
@@ -193,7 +190,6 @@ struct FBoneDrivenInfo
     UPROPERTY()
     FTransform EvaluatedPose;
 
-
     bool AddDrivenKey(const float32 driverValue, const FTransform &inout keyPose)
     {
         int local_1 = 1008981770;
@@ -232,11 +228,11 @@ struct FBoneDrivenInfo
     {
         if (this.KeyDriverValues.Num() == 0)
         {
-            this.EvaluatedPose = this.GetTransform();
+            this.EvaluatedPose = this.DrivenBone.GetTransform();
         }
         else
         {
-            FTransform local_28 = this.GetTransform();
+            FTransform local_28 = this.DrivenBone.GetTransform();
             if (driverVal < this.KeyDriverValues[0])
             {
                 this.EvaluatedPose = (FTransform(this.KeyPoses[0]) * local_28);
@@ -254,7 +250,7 @@ struct FBoneDrivenInfo
                     {
                         if ((driverVal >= this.KeyDriverValues[local_81] && (driverVal <= this.KeyDriverValues[local_81 + 1])))
                         {
-                            float local_86 = (driverVal - this.KeyDriverValues[local_81]) / (float32(this.KeyDriverValues[local_81 + 1]) - this.KeyDriverValues[local_81]);
+                            float32 local_86 = (driverVal - this.KeyDriverValues[local_81]) / (float32(this.KeyDriverValues[local_81 + 1]) - this.KeyDriverValues[local_81]);
                             FTransform local_112;
                             local_112.Blend(this.KeyPoses[local_81], this.KeyPoses[local_81 + 1], local_86);
                             this.EvaluatedPose = (local_112 * local_28);
@@ -263,7 +259,7 @@ struct FBoneDrivenInfo
                 }
             }
         }
-        this.SetTransform(this.EvaluatedPose);
+        this.DrivenBone.SetTransform(this.EvaluatedPose);
         return;
     }
 }
@@ -285,7 +281,7 @@ struct FBoneDriverInfo
     }
     void Update(const USkeletalPoseTweaker poseTweaker)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
 }
 
@@ -314,11 +310,10 @@ struct FSkinInfluencer
     UPROPERTY()
     float32 RotationGain = 1.0f;
 
-
     void ComputeRelTransforms()
     {
         FTransform local_48 = this.DrivenBone.GetRefPoseTransform();
-        FTransform local_24 = this.GetRefPoseTransform();
+        FTransform local_24 = this.BoneA.GetRefPoseTransform();
         FTransform local_72 = this.BoneB.GetRefPoseTransform();
         this.RelTransformA = local_48.GetRelativeTransform(local_24);
         this.RelTransformB = local_48.GetRelativeTransform(local_72);
@@ -336,14 +331,14 @@ struct FSkinInfluencer
     }
     void Update(const USkeletalPoseTweaker poseTweaker)
     {
-        FTransform local_48 = this.GetTransform();
+        FTransform local_48 = this.BoneA.GetTransform();
         if (this.RemoveTwistA)
         {
-            FTransform local_76 = FTransform(this.GetLocalRelativeTransform());
+            FTransform local_76 = FTransform(this.BoneA.GetLocalRelativeTransform());
             FRotator local_82 = local_76.Rotator();
             local_82.Roll = 0.0;
             local_76.SetRotation(local_82.Quaternion());
-            local_48 = ((local_76 * this.GetRefPoseTransformLocal()) * this.GetParentTransformCS());
+            local_48 = ((local_76 * this.BoneA.GetRefPoseTransformLocal()) * this.BoneA.GetParentTransformCS());
         }
         FTransform local_124_2 = this.BoneB.GetTransform();
         if (this.RemoveTwistB)
@@ -459,7 +454,8 @@ class USPT_BoneDriverBase : USkeletalPoseTweaker
                 local_38 = local_36.PhysicsAsset;
                 if (local_38 != nullptr)
                 {
-                    this.TempBodyPoseMap.FindOrAdd(local_36.ConfigName).SamplePose(local_36.PhysicsAsset, local_36.BodyProfile);
+                    FKLBodyBonePose& local_40 = this.TempBodyPoseMap.FindOrAdd(local_36.ConfigName);
+                    local_40.SamplePose(local_36.PhysicsAsset, local_36.BodyProfile);
                 }
                 for (auto& local_54 : local_36.SpherePushers)
                 {
@@ -477,7 +473,8 @@ class USPT_BoneDriverBase : USkeletalPoseTweaker
                 {
                     if (this.TempBodyPoseMap.Contains(local_68.BodyConfigName))
                     {
-                        local_68.Update(this.CurrentDeltaSeconds, local_82, this.TempBodyPoseMap.FindOrAdd(local_68.BodyConfigName));
+                        FKLBodyBonePose& local_40_3 = this.TempBodyPoseMap.FindOrAdd(local_68.BodyConfigName);
+                        local_68.Update(this.CurrentDeltaSeconds, local_82, local_40_3);
                     }
                     break;
                 }

@@ -1,5 +1,3 @@
-﻿
-
 class USolver_AdditiveHermiteCurve : UAimPoseSegmentSolver
 {
     float32 RootTangentIntensity = 300.0f;
@@ -14,7 +12,6 @@ class USolver_AdditiveHermiteCurve : UAimPoseSegmentSolver
     bool bNeckLengthCached = false;
     TArray<float> NeckLengthRatios;
     FVector4f _Padding;
-
 
     void ResetToConfigDefaults()
     {

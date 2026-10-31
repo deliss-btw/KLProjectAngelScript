@@ -1,5 +1,3 @@
-﻿
-
 struct FCharacterDefaultFashionConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -21,7 +19,6 @@ struct FCharacterDefaultFashionConfig : FDataObject
     FDataObjectPtr m_InitBathrobeTop;
     UPROPERTY()
     FDataObjectPtr m_InitBathrobeBottom;
-
 
     TDataObjectPtr<FAvatarPrefabConfig> GetAvatar() const property
     {

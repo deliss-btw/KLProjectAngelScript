@@ -1,5 +1,3 @@
-﻿
-
 class UHTNDecorator_CheckBlackboardGameplaytag : UHTNDecorator_ECSScriptBase
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ class UHTNDecorator_CheckBlackboardGameplaytag : UHTNDecorator_ECSScriptBase
     bool bCheckIsEqual = true;
 
     default SetNodeName("CheckBlackboardGameplaytag");
-
 
     UFUNCTION()
     bool PerformConditionCheck_Implementation(const FHTNContext &inout Context, const EHTNDecoratorConditionCheckType CheckType) const

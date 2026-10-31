@@ -1,4 +1,3 @@
-﻿
 enum ECommissionBadgeConfigType
 {
     Fight,
@@ -13,7 +12,6 @@ enum ECommissionPlayerStateCountType
     RankFirst,
     RankSecond,
 }
-
 
 struct FCommissionBadgeConfig : FDataObject
 {
@@ -37,7 +35,6 @@ struct FCommissionBadgeConfig : FDataObject
     UPROPERTY()
     int Score;
 
-
 }
 
 struct FCommissionBadgeRewardResurlt
@@ -54,13 +51,20 @@ struct FCommissionBadgeRewardResurlt
 
     FCommissionBadgeRewardResurlt()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_bPercent = false;
+        this.m_Value = 0;
+        this.m_Percent = 0.0f;
+        FSubDirtyFlags8 local_4;
+        this.__DirtyFlags = local_4;
+        return;
     }
     FCommissionBadgeRewardResurlt(const FCommissionBadgeRewardResurlt &inout Other)
     {
         this.m_bPercent = false;
         this.m_Value = 0;
         this.m_Percent = 0.0f;
+        FSubDirtyFlags8 local_28;
+        this.__DirtyFlags = local_28;
         this.m_Config = Other.m_Config;
         this.m_bPercent = Other.m_bPercent;
         this.m_Value = int(Other.m_Value);

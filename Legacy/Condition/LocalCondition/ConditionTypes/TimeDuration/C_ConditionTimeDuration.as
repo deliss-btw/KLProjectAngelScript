@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_TimeDurationConditionManager_NS
 {
     const TECSComponentDerivedPtr<FCS_TimeDurationConditionManager> DerivedPtr = TECSComponentDerivedPtr<FCS_TimeDurationConditionManager>();
@@ -104,16 +103,16 @@ bool RemoveTimeDurationConditionManager(const FECSWorldPtr &inout World)
 }
 void __MonitorTimeDurationConditionManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_TimeDurationConditionManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_TimeDurationConditionManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTimeDurationConditionManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_TimeDurationConditionManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_TimeDurationConditionManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTimeDurationConditionManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_TimeDurationConditionManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_TimeDurationConditionManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

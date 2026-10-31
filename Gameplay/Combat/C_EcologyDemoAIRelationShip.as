@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_EcologyDemoAIRelationShipTeamMember_NS
 {
     const TECSComponentDerivedPtr<FC_EcologyDemoAIRelationShipTeamMember> DerivedPtr = TECSComponentDerivedPtr<FC_EcologyDemoAIRelationShipTeamMember>();
@@ -15,7 +14,6 @@ struct FC_EcologyDemoAIRelationShipTeamMember : FECSComponent
     UPROPERTY()
     int TeamID = -1;
 
-
 }
 
 struct FEcologyDemoAIRelationShipTeamDetail
@@ -27,7 +25,6 @@ struct FEcologyDemoAIRelationShipTeamDetail
     UPROPERTY()
     FTargetEntity TeamLeader;
 
-
 }
 
 struct FCS_EcologyDemoAIRelationShipTeam : FECSSingleton
@@ -36,7 +33,6 @@ struct FCS_EcologyDemoAIRelationShipTeam : FECSSingleton
     TMap<int, FEcologyDemoAIRelationShipTeamDetail> RelationShipTeamDetailMap;
     UPROPERTY()
     int NextTeamID = 0;
-
 
 }
 
@@ -117,37 +113,37 @@ bool RemoveEcologyDemoAIRelationShipTeamMember(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcologyDemoAIRelationShipTeamMemberOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyDemoAIRelationShipTeamMember, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyDemoAIRelationShipTeamMember, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyDemoAIRelationShipTeamMemberOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyDemoAIRelationShipTeamMember, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyDemoAIRelationShipTeamMember, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyDemoAIRelationShipTeamMemberOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyDemoAIRelationShipTeamMember, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyDemoAIRelationShipTeamMember, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyDemoAIRelationShipTeamMemberOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyDemoAIRelationShipTeamMember, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyDemoAIRelationShipTeamMember, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyDemoAIRelationShipTeamMemberOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyDemoAIRelationShipTeamMember, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyDemoAIRelationShipTeamMember, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcologyDemoAIRelationShipTeamMemberLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcologyDemoAIRelationShipTeamMember, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcologyDemoAIRelationShipTeamMember, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyDemoAIRelationShipTeamMemberActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcologyDemoAIRelationShipTeamMember, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcologyDemoAIRelationShipTeamMember, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyDemoAIRelationShipTeamMemberModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcologyDemoAIRelationShipTeamMember, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcologyDemoAIRelationShipTeamMember, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_EcologyDemoAIRelationShipTeam
@@ -238,16 +234,16 @@ bool RemoveEcologyDemoAIRelationShipTeam(const FECSWorldPtr &inout World)
 }
 void __MonitorEcologyDemoAIRelationShipTeamLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_EcologyDemoAIRelationShipTeam, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_EcologyDemoAIRelationShipTeam, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyDemoAIRelationShipTeamActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_EcologyDemoAIRelationShipTeam, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_EcologyDemoAIRelationShipTeam, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyDemoAIRelationShipTeamModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_EcologyDemoAIRelationShipTeam, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_EcologyDemoAIRelationShipTeam, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

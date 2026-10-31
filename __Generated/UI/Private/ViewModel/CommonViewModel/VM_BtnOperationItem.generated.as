@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_BtnOperationItem_Helpers
 {
 UFUNCTION()

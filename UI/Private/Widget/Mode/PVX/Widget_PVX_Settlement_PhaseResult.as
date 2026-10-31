@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PVX_Settlement_PhaseResult
 {
     const int ViewID = 0;
@@ -36,6 +35,7 @@ namespace UWidget_PVX_Settlement_PhaseResult
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PVX_Settlement_PhaseResult;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

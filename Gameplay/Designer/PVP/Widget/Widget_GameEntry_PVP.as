@@ -1,5 +1,3 @@
-﻿
-
 class UWidget_GameEntry_PVP : ULobbyWidget
 {
     UWidget_GameEntry_PVP()

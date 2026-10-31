@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_QualitySelector_Helpers
 {
 UFUNCTION()

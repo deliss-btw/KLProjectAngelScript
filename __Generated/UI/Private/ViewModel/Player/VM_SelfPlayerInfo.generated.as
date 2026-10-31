@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_SelfPlayerInfo_Helpers
 {
 UFUNCTION()

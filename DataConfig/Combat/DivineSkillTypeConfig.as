@@ -1,5 +1,3 @@
-﻿
-
 struct FDivineSkillTypeConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -13,7 +11,6 @@ struct FDivineSkillTypeConfig : FDataObject
     EAvatarIllustrate TargetIllustrate;
     UPROPERTY()
     FString RichTextImageName;
-
 
 }
 

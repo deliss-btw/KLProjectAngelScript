@@ -1,5 +1,3 @@
-﻿
-
 struct FCommonItemConfig : FInventoryItemConfig
 {
     FInventoryItemConfig _base_FInventoryItemConfig;
@@ -12,7 +10,6 @@ struct FCommonItemConfig : FInventoryItemConfig
 
     FCommonItemConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }

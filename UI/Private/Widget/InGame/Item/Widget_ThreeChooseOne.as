@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ThreeChooseOne
 {
     const int ViewID = 0;
@@ -99,6 +98,7 @@ namespace UWidget_ThreeChooseOne
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ThreeChooseOne;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnHandleClose"));
     return;
 }

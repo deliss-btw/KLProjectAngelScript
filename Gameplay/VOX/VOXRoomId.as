@@ -1,5 +1,3 @@
-﻿
-
 struct FVOXRoomIdInfo
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ struct FVOXRoomIdInfo
     int TeamIndex = -1;
     UPROPERTY()
     bool bValid = false;
-
 
 }
 

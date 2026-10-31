@@ -1,10 +1,7 @@
-﻿
-
 struct FESMAction_SkillStageInstanceData
 {
     UPROPERTY()
     int PrevStage = 0;
-
 
 }
 
@@ -16,7 +13,6 @@ class UESMAction_SkillStage : UESMBPBaseSpanAction
     int TargetStage = 0;
     UPROPERTY()
     bool bTurnBacktoPrevStageOnExit = false;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const
@@ -67,8 +63,7 @@ class UESMAction_SkillStage : UESMBPBaseSpanAction
         }
         if (this.bTurnBacktoPrevStageOnExit)
         {
-            FESMAction_SkillStageInstanceData& local_16 = this.ModifyInstanceData(Context);
-            local_16.PrevStage = local_12.GetSkillRuntimeInfos()[local_14].GetStage();
+            this.ModifyInstanceData(Context).PrevStage = local_12.GetSkillRuntimeInfos()[local_14].GetStage();
         }
         FSkillUtils::SkillTurnToStage(local_6, local_14, this.TargetStage, Time.WorldTime);
         return;

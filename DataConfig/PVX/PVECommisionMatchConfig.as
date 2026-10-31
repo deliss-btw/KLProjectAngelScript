@@ -1,5 +1,3 @@
-﻿
-
 struct FPveCommissionMatchConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -21,7 +19,6 @@ struct FPveCommissionMatchConfig : FDataObject
     int StopMatchingTimeoutSec;
     UPROPERTY()
     FDataObjectPtr m_SystemControlCfg;
-
 
     const TDataObjectPtr<FSystemControlConfig> GetSystemControlCfg() const property
     {

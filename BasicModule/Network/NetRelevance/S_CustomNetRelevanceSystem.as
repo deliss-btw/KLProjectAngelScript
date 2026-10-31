@@ -1,5 +1,3 @@
-﻿
-
 class US_CustomNetRelevanceSystem : UECSScriptSystem
 {
     US_CustomNetRelevanceSystem()

@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_SuiXiSkillResource_Helpers
 {
 UFUNCTION()

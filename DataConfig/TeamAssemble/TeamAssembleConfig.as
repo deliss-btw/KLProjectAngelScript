@@ -1,5 +1,3 @@
-﻿
-
 struct FTeamAssembleConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -23,7 +21,6 @@ struct FTeamAssembleConfig : FDataObject
     int OverflowThreshold;
     UPROPERTY()
     int MaxPlayerOpTimeout;
-
 
 }
 

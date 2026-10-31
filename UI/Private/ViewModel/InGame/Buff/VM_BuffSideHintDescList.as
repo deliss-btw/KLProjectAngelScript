@@ -1,4 +1,3 @@
-﻿
 namespace FVM_BuffSideHintDesc
 {
     const int ModelId = 0;
@@ -19,6 +18,7 @@ struct FBuffHintDescParamItem
 
     FBuffHintDescParamItem(const FSoftBrush &inout InIcon, const FText &inout InDesc, const bool bInAdditional = false)
     {
+        this.Icon = InIcon;
         this.Desc = InDesc;
         this.bAdditional = bInAdditional;
         return;
@@ -44,7 +44,6 @@ struct FBuffHintDescParamItemListParam : FCommonLargeSideHintData
 
     FBuffHintDescParamItemListParam()
     {
-        super();
         return;
     }
 }
@@ -176,7 +175,7 @@ struct FVM_BuffSideHintDescList : FEUIViewModel
         this.SetbHasAdditionDesc(false);
         for (auto& local_18 : DescList.BuffHintDescParamItem)
         {
-            if (local_18.bAdditional)
+            if (int(local_18.bAdditional) != 0)
             {
                 this.SetAdditionBuffIcon(local_18.Icon);
                 this.SetAdditionBuffDesc(local_18.Desc);

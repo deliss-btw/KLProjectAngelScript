@@ -1,4 +1,3 @@
-﻿
 enum EConditionConfigType
 {
     Invalid,
@@ -20,13 +19,11 @@ enum ECondCmpType
     MaxCount,
 }
 
-
 struct FConditionConfigBase : FDataObject
 {
     FDataObject _base_FDataObject;
     UPROPERTY()
     EConditionConfigType ConfigType;
-
 
 }
 
@@ -40,7 +37,6 @@ struct FServerConditionConfigBase : FConditionConfigBase
 
     FServerConditionConfigBase()
     {
-        super();
         this.__InitDefaults();
         return;
     }

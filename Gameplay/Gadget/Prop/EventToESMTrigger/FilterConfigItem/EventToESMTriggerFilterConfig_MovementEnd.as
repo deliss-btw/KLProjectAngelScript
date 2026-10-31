@@ -1,5 +1,3 @@
-﻿
-
 struct FEventToESMTriggerFilterConfigItem_MovementEnd : FEventToESMTriggerFilterConfigItemBase
 {
     FEventToESMTriggerFilterConfigItemBase _base_FEventToESMTriggerFilterConfigItemBase;
@@ -9,7 +7,6 @@ struct FEventToESMTriggerFilterConfigItem_MovementEnd : FEventToESMTriggerFilter
     bool bUseSignalName = true;
     UPROPERTY()
     FName SignalName;
-
 
     bool EvaluateAndTrigger(const FName &inout InSignalName, const FECSEntity &inout Entity) const
     {

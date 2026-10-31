@@ -1,5 +1,3 @@
-﻿
-
 struct FSphereSurfaceDeformer
 {
     UPROPERTY()
@@ -16,7 +14,6 @@ struct FSphereSurfaceDeformer
     TArray<FVector> InfluencePoints;
     UPROPERTY()
     float InfluenceArcAngle = 50.0;
-
 
     void Reset()
     {
@@ -69,7 +66,7 @@ struct FSphereSurfaceDeformer
         for (auto& local_22 : this.ResultPoints)
         {
             local_28 = local_22.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector);
-            local_28 = this.TransformPosition((local_28 * this.Radius));
+            local_28 = this.Transform.TransformPosition((local_28 * this.Radius));
             PoseTweaker.DrawAnimDebugPoint(local_28);
         }
         FVector local_40;
@@ -118,22 +115,22 @@ struct FSphereSurfaceDeformer
             }
             else
             {
-                PoseTweaker.DrawAnimDebugLine(this.TransformPosition(local_28), this.TransformPosition(local_46), FColor::Purple, EPTDebugDrawSpace(0), 0.0f, true);
+                PoseTweaker.DrawAnimDebugLine(this.Transform.TransformPosition(local_28), this.Transform.TransformPosition(local_46), FColor::Purple, EPTDebugDrawSpace(0), 0.0f, true);
             }
             if (local_47 == 29)
             {
-                PoseTweaker.DrawAnimDebugLine(this.TransformPosition(local_28), this.TransformPosition(local_40), FColor::Purple, EPTDebugDrawSpace(0), 0.0f, true);
+                PoseTweaker.DrawAnimDebugLine(this.Transform.TransformPosition(local_28), this.Transform.TransformPosition(local_40), FColor::Purple, EPTDebugDrawSpace(0), 0.0f, true);
             }
             local_46 = local_28;
             ++local_47;
         }
-        PoseTweaker.DrawAnimDebugTransform(this, 2.0f, true);
+        PoseTweaker.DrawAnimDebugTransform(this.Transform, 2.0f, true);
         return;
     }
     bool ComputeRayHitOnSphere(const FVector &inout rayOrgCS, const FVector &inout rayDirCS, FVector &inout hitPt)
     {
-        FVector local_12 = this.InverseTransformPosition(rayOrgCS);
-        FVector local_6 = (this.InverseTransformPosition((rayOrgCS + rayDirCS)) - local_12);
+        FVector local_12 = this.Transform.InverseTransformPosition(rayOrgCS);
+        FVector local_6 = (this.Transform.InverseTransformPosition((rayOrgCS + rayDirCS)) - local_12);
         local_6.Normalize(9.99999993922529e-9);
         FVector local_18 = (local_12 - (local_6 * local_12.DotProduct(local_6)));
         float local_30 = local_18.SizeSquared();
@@ -147,7 +144,7 @@ struct FSphereSurfaceDeformer
     void DrawPointOnSphere(const USkeletalPoseTweaker PoseTweaker, const FVector &inout localPt)
     {
         FVector local_20 = (localPt.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector) * this.Radius);
-        PoseTweaker.DrawAnimDebugPointEx(this.TransformPosition(local_20), FColor::Red, 4.0f);
+        PoseTweaker.DrawAnimDebugPointEx(this.Transform.TransformPosition(local_20), FColor::Red, 4.0f);
         return;
     }
     void DrawLineOnSphere(const USkeletalPoseTweaker PoseTweaker, const FVector &inout pt0, const FVector &inout pt1, const int segments = 10)
@@ -173,7 +170,7 @@ struct FSphereSurfaceDeformer
             local_90.Z = (local_20_2.Z * local_92);
             if (local_59 != 0)
             {
-                PoseTweaker.DrawAnimDebugLine(this.TransformPosition((local_58 * this.Radius)), this.TransformPosition((local_90 * this.Radius)), FColor::Purple, EPTDebugDrawSpace(0), 0.0f, true);
+                PoseTweaker.DrawAnimDebugLine(this.Transform.TransformPosition((local_58 * this.Radius)), this.Transform.TransformPosition((local_90 * this.Radius)), FColor::Purple, EPTDebugDrawSpace(0), 0.0f, true);
             }
             local_58 = local_90;
             ++local_59;
@@ -219,7 +216,6 @@ class USPT_TestSkirtRigging : USkeletalPoseTweaker
     bool DebugDraw = false;
     FSphereSurfaceDeformer sphereDeformer;
 
-
     UFUNCTION()
     void OnInitialization_Implementation()
     {
@@ -228,7 +224,104 @@ class USPT_TestSkirtRigging : USkeletalPoseTweaker
     UFUNCTION()
     void EvaluatePose_Implementation()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        bool local_65;
+        int local_225;
+        float local_230;
+        FTransform local_52 = this.GetBoneTransformCS(this.Root);
+        local_52.SetLocation(FVector(0.0, 0.0, 0.0));
+        this.SetBoneTransformCS(this.Root, local_52);
+        if (!(this.IsValidBoneRef(this.SkirtRootBone)) || (this.SkirtRingBones.Num() < 3))
+        {
+            return;
+        }
+        FTransform local_92 = FTransform(this.SkirtRootBone.GetTransform());
+        this.sphereDeformer.Transform = (this.SD_Offset * local_92);
+        this.sphereDeformer.Transform.SetScale3D(FVector(1.0, this.SD_YScale, 1.0));
+        this.sphereDeformer.Latitude = this.SD_Latitude;
+        this.sphereDeformer.Radius = this.SD_Radius;
+        this.sphereDeformer.Reset();
+        for (auto& local_130 : this.InfluenceBones)
+        {
+            FTransform local_156 = FTransform(local_130.boneRef.GetTransform());
+            FVector local_162;
+            local_65 = this.sphereDeformer.ComputeRayHitOnSphere(local_156.GetLocation(), local_156.TransformVector(local_130.ProbeVector), local_162);
+            if (local_65)
+            {
+                if (this.DebugDraw)
+                {
+                    this.DrawAnimDebugLine(local_156.GetLocation(), (local_156.GetLocation() + (local_156.TransformVector(local_130.ProbeVector) * this.sphereDeformer.Radius)), FColor::Purple, EPTDebugDrawSpace(0), 0.0f, true);
+                    this.sphereDeformer.DrawPointOnSphere(this, local_162);
+                }
+                this.sphereDeformer.InfluencePoints.Add(local_162);
+            }
+        }
+        if (this.DebugDraw)
+        {
+            this.sphereDeformer.DrawDeformer(this);
+        }
+        TArray<FVector> local_180;
+        TArray<FTransform> local_184;
+        local_180.SetNum(this.SkirtRingBones.Num());
+        local_184.SetNum(this.SkirtRingBones.Num());
+        int local_185 = 0;
+        for (; local_185 < this.SkirtRingBones.Num(); ++local_185)
+        {
+            FTransform& local_188 = local_184[local_185];
+            FTransform& local_188_2 = this.SkirtRingBones[local_185].GetTransform();
+            FVector local_162;
+            local_65 = this.sphereDeformer.ComputeRayHitOnSphere(local_188_2.GetLocation(), local_188_2.GetRotation().GetAxisX(), local_162);
+            if (local_65)
+            {
+                local_180[local_185] = this.sphereDeformer.Transform.TransformPosition(this.sphereDeformer.ComputeDeformPoint(local_162));
+                continue;
+            }
+            FVector local_58 = local_188_2.GetLocation();
+            FVector local_168_2 = local_188_2.GetRotation().GetAxisX();
+            local_180[local_185] = (local_58 + (local_168_2 * this.sphereDeformer.Radius));
+        }
+        TArray<FQuat> local_206;
+        TArray<FQuat> local_210;
+        this.ComputeSkirtRingBoneTransforms(local_184, local_180, local_206, local_210);
+        int local_185_2 = 0;
+        for (; local_185_2 < this.SkirtRingBones.Num(); ++local_185_2)
+        {
+            float local_212 = FMath::RadiansToDegrees(local_206[local_185_2].GetAngle()) - 40.0;
+            float local_60 = local_212 / 50.0;
+            float local_216 = this.SkirtRotationSegments;
+            local_60 = FMath::Lerp(local_216, 1.0, FMath::Clamp(local_60, 0.0, 1.0));
+            int local_25 = int(local_60);
+            float local_218 = 1.0;
+            float local_214 = local_218 / local_60;
+            float local_224 = 1.0;
+            local_225 = this.SkirtRingBones[local_185_2].GetBoneIndex();
+            int local_226 = 0;
+            for (; local_226 < (local_25 + 1); )
+            {
+                if (local_225 == -1)
+                {
+                    break;
+                }
+                if (local_226 == local_25)
+                {
+                }
+                else
+                {
+                }
+                local_230 = local_218;
+                FQuat local_196 = FQuat::Slerp(FQuat::Identity, local_206[local_185_2], local_230);
+                FQuat local_240 = FQuat::Slerp(FQuat::Identity, local_210[local_185_2], local_230);
+                local_224 = local_224 - local_214;
+                FTransform local_24 = this.GetBoneTransformCS(local_225);
+                FQuat local_264 = (local_196 * local_24.GetRotation());
+                FQuat local_248 = (local_264 * local_240);
+                FTransform local_288 = local_24;
+                local_288.SetRotation(local_248);
+                this.SetBoneTransformCS(local_225, local_288);
+                local_225 = this.GetFirstChild(local_225);
+                ++local_226;
+            }
+        }
+        return;
     }
     void ComputeSkirtRingBoneTransforms(const TArray<FTransform> &inout prevTMs, const TArray<FVector> &inout newXOrientPts, TArray<FQuat> &inout newOrieintR, TArray<FQuat> &inout newTwistR)
     {

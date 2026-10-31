@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CreatePlayer
 {
     const int ModelId = 0;
@@ -117,11 +116,120 @@ struct FVM_CreatePlayer : FEUIViewModel
 
     FVM_CreatePlayer()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_ShowcaseUniqueID = 0;
+        this.m_LoginSettings = nullptr;
+        this.m_TipsLocalPlayer = nullptr;
+        this.m_MaskOpacity = 1.0f;
+        this.m_MaskElapsed = 0.0f;
+        this.m_bMaskActive = false;
+        this.m_ShowcaseConfigIndex = INDEX_NONE;
+        this.m_bShowcaseLoaded = false;
+        this.m_bPhaseLightActorsReady = false;
+        this.m_ActivePhaseIndex = 0;
+        this.m_PhaseOrderCursor = 0;
+        this.m_CreatePlayerPhase = ECreatePlayerPhase(0);
+        this.m_bConfirmLocked = false;
+        this.m_bCreateRequestInFlight = false;
+        this.m_CreateRequestElapsed = 0.0f;
+        this.m_bIsMaleForbid = false;
+        this.m_bIsMaleSelected = false;
+        this.m_bIsFamaleSelected = false;
+        this.m_bGenderSelected = false;
+        this.m_CreatePlayerGender = EGenderType(1);
+        this.m_bHasNameValidatorConfig = false;
+        this.m_SelectedFaceID = 0;
+        this.m_SelectedHairID = 0;
+        this.m_SelectedUpperID = 0;
+        this.m_SelectedLowerID = 0;
+        this.m_SelectedSuitID = 0;
+        this.m_SelectedFaceItemIndex = INDEX_NONE;
+        this.m_SelectedFashionSlotTypeIndex = 0;
+        this.m_SelectedFashionItemIndex = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVM_CreatePlayer(const FVM_CreatePlayer &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_ShowcaseUniqueID = 0;
+        this.m_LoginSettings = nullptr;
+        this.m_TipsLocalPlayer = nullptr;
+        this.m_MaskOpacity = 1.0f;
+        this.m_MaskElapsed = 0.0f;
+        this.m_bMaskActive = false;
+        this.m_ShowcaseConfigIndex = INDEX_NONE;
+        this.m_bShowcaseLoaded = false;
+        this.m_bPhaseLightActorsReady = false;
+        this.m_ActivePhaseIndex = 0;
+        this.m_PhaseOrderCursor = 0;
+        this.m_CreatePlayerPhase = ECreatePlayerPhase(0);
+        this.m_bConfirmLocked = false;
+        this.m_bCreateRequestInFlight = false;
+        this.m_CreateRequestElapsed = 0.0f;
+        this.m_bIsMaleForbid = false;
+        this.m_bIsMaleSelected = false;
+        this.m_bIsFamaleSelected = false;
+        this.m_bGenderSelected = false;
+        this.m_CreatePlayerGender = EGenderType(1);
+        this.m_bHasNameValidatorConfig = false;
+        this.m_SelectedFaceID = 0;
+        this.m_SelectedHairID = 0;
+        this.m_SelectedUpperID = 0;
+        this.m_SelectedLowerID = 0;
+        this.m_SelectedSuitID = 0;
+        this.m_SelectedFaceItemIndex = INDEX_NONE;
+        this.m_SelectedFashionSlotTypeIndex = 0;
+        this.m_SelectedFashionItemIndex = INDEX_NONE;
+        this.m_Configs = Other.m_Configs;
+        this.m_MaskOpacity = Other.m_MaskOpacity;
+        this.m_MaskElapsed = Other.m_MaskElapsed;
+        this.m_bMaskActive = Other.m_bMaskActive;
+        this.m_ShowcaseConfigIndex = int(Other.m_ShowcaseConfigIndex);
+        this.m_ShowcaseUniqueID = int(Other.m_ShowcaseUniqueID);
+        this.m_bShowcaseLoaded = Other.m_bShowcaseLoaded;
+        this.m_CachedLightActors = Other.m_CachedLightActors;
+        this.m_CachedLightActorTags = Other.m_CachedLightActorTags;
+        this.m_bPhaseLightActorsReady = Other.m_bPhaseLightActorsReady;
+        this.m_CurrentTitle = Other.m_CurrentTitle;
+        this.m_ActivePhaseIndex = int(Other.m_ActivePhaseIndex);
+        this.m_ActivePhaseOrder = Other.m_ActivePhaseOrder;
+        this.m_PhaseOrderCursor = int(Other.m_PhaseOrderCursor);
+        this.m_CreatePlayerPhase = Other.m_CreatePlayerPhase;
+        this.m_bConfirmLocked = Other.m_bConfirmLocked;
+        this.m_bCreateRequestInFlight = Other.m_bCreateRequestInFlight;
+        this.m_CreateRequestElapsed = Other.m_CreateRequestElapsed;
+        this.m_LoginSettings = Other.m_LoginSettings;
+        this.m_TipsLocalPlayer = Other.m_TipsLocalPlayer;
+        this.m_bIsMaleForbid = Other.m_bIsMaleForbid;
+        this.m_MaleForbidTip = Other.m_MaleForbidTip;
+        this.m_bIsMaleSelected = Other.m_bIsMaleSelected;
+        this.m_bIsFamaleSelected = Other.m_bIsFamaleSelected;
+        this.m_bGenderSelected = Other.m_bGenderSelected;
+        this.m_CreatePlayerGender = Other.m_CreatePlayerGender;
+        this.m_InputNickname = Other.m_InputNickname;
+        this.m_bHasNameValidatorConfig = Other.m_bHasNameValidatorConfig;
+        this.m_LastNicknameValidationTipsDedupeKey = Other.m_LastNicknameValidationTipsDedupeKey;
+        this.m_SelectedFaceID = int(Other.m_SelectedFaceID);
+        this.m_SelectedHairID = int(Other.m_SelectedHairID);
+        this.m_SelectedUpperID = int(Other.m_SelectedUpperID);
+        this.m_SelectedLowerID = int(Other.m_SelectedLowerID);
+        this.m_SelectedSuitID = int(Other.m_SelectedSuitID);
+        this.m_FaceItems = Other.m_FaceItems;
+        this.m_SelectedFaceItem = Other.m_SelectedFaceItem;
+        this.m_SelectedFaceItemIndex = int(Other.m_SelectedFaceItemIndex);
+        this.m_AllAvailableFashions = Other.m_AllAvailableFashions;
+        this.m_AllFashionItems = Other.m_AllFashionItems;
+        this.m_AvailableFashionSlotTypes = Other.m_AvailableFashionSlotTypes;
+        this.m_FashionSlotTabs = Other.m_FashionSlotTabs;
+        this.m_SelectedFashionSlotTab = Other.m_SelectedFashionSlotTab;
+        this.m_SelectedFashionSlotTypeIndex = int(Other.m_SelectedFashionSlotTypeIndex);
+        this.m_FilteredFashions = Other.m_FilteredFashions;
+        this.m_FilteredFashionItems = Other.m_FilteredFashionItems;
+        this.m_SelectedFashionItem = Other.m_SelectedFashionItem;
+        this.m_SelectedFashionItemIndex = int(Other.m_SelectedFashionItemIndex);
+        return;
     }
     FVM_CreatePlayer opAssign(const FVM_CreatePlayer &inout Other)
     {
@@ -308,8 +416,18 @@ struct FVM_CreatePlayer : FEUIViewModel
     }
     void InitMask()
     {
+        int local_3;
         this.SetMaskElapsed(0.0f);
-        if (this.GetCreatePlayerConfig().MaskTime <= 0.0f && (this.GetCreatePlayerConfig().MaskFadeOutTime <= 0.0f))
+        if (this.GetCreatePlayerConfig().MaskTime > 0.0f)
+        {
+            local_3 = 0;
+        }
+        else
+        {
+            bool local_4 = (this.GetCreatePlayerConfig().MaskFadeOutTime <= 0.0f);
+            local_3 = local_4;
+        }
+        if (local_3 != 0)
         {
             this.SetMaskOpacity(0.0f);
             this.SetbMaskActive(false);
@@ -483,12 +601,12 @@ struct FVM_CreatePlayer : FEUIViewModel
             return;
         }
         EFashionSlotType local_4 = this.GetAvailableFashionSlotTypes()[this.GetSelectedFashionSlotTypeIndex()];
-        EFashionSlotType local_3 = local_4;
+        int local_3 = local_4;
         int local_5 = 0;
         for (; local_5 < this.GetAllAvailableFashions().Num(); ++local_5)
         {
             const TDataObjectPtr<FFashionConfig>& local_8 = this.GetAllAvailableFashions()[local_5];
-            if (!(local_8.IsSet()) || (int(local_4) != int(local_3)))
+            if (!(local_8.IsSet()) || (int(local_4) != local_3))
             {
                 continue;
             }
@@ -868,8 +986,8 @@ struct FVM_CreatePlayer : FEUIViewModel
     }
     void GotoPhaseAtCursor()
     {
-        ECreatePlayerPhase local_2 = this.GetCurrentCreatePlayerPhase();
-        if (int(local_2) != 3)
+        int local_2 = int(this.GetCurrentCreatePlayerPhase());
+        if (local_2 != 3)
         {
             if (this.HasValidatorConfig())
             {
@@ -1185,14 +1303,15 @@ struct FVM_CreatePlayer : FEUIViewModel
     void RestoreDefaultSelections()
     {
         this.SetCreatePlayerGender(this.GetCreatePlayerConfig().DefaultGender);
-        this.SetbGenderSelected(this.GetCreatePlayerConfig().bForbidMaleSelect);
+        int local_2 = this.GetCreatePlayerConfig().bForbidMaleSelect;
+        this.SetbGenderSelected((local_2 != 0));
         this.SetSelectedFaceItemIndex(this.ResolveDefaultFaceIndex());
         this.SetSelectedFaceID(this.GetFaceDataIdAtIndex(this.GetSelectedFaceItemIndex()));
         this.ApplyDefaultFashionSelection();
         this.SetSelectedFashionSlotTypeIndex(0);
         if (this.GetAvailableFashionSlotTypes().IsValidIndex(this.GetSelectedFashionSlotTypeIndex()))
         {
-            this.SetSelectedFashionItemIndex(this.GetSelectedFashionItemIndex(EFashionSlotType(this.GetAvailableFashionSlotTypes()[this.GetSelectedFashionSlotTypeIndex()])));
+            this.SetSelectedFashionItemIndex(this.GetSelectedFashionItemIndex(this.GetAvailableFashionSlotTypes()[this.GetSelectedFashionSlotTypeIndex()]));
             return;
         }
         this.SetSelectedFashionItemIndex(0);
@@ -1267,8 +1386,16 @@ struct FVM_CreatePlayer : FEUIViewModel
     }
     int ResolveDefaultFaceIndex() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        int local_2 = this.GetFaceDataIdAtIndex(this.GetCreatePlayerConfig().DefaultFaceIndex);
+        if (local_2 != 0)
+        {
+            return this.GetCreatePlayerConfig().DefaultFaceIndex;
+        }
+        if (this.GetCreatePlayerConfig().GetAvailableFace().Num() > 0)
+        {
+            return 0;
+        }
+        return INDEX_NONE;
     }
     uint GetFaceDataIdAtIndex(const int Index) const
     {
@@ -1329,7 +1456,7 @@ struct FVM_CreatePlayer : FEUIViewModel
     }
     void BuildAvailableFashions()
     {
-        EFashionSlotType local_21;
+        int local_21;
         this.GetModify_AllAvailableFashions().Reset(0);
         this.GetModify_AllFashionItems().Reset(0);
         this.AppendAvailableFashions(this.GetCreatePlayerConfig().GetAvailableHair());
@@ -1356,9 +1483,10 @@ struct FVM_CreatePlayer : FEUIViewModel
             FEUIModelContainer local_44;
             FEUIModelRef local_46 = FEUIModelRef(local_24);
             local_44.AddModel(local_46, false);
-            FSoftBrush local_92 = ::FashionSettings::GetSlotIcon(EFashionSlotType(local_21));
+            local_46 = FEUIModelRef(::FVM_Image::Create(this.GetContext().Manager, ::FashionSettings::GetSlotIcon(EFashionSlotType(local_21))));
             local_44.AddModel(local_46, false);
-            local_44.AddModel(FEUIModelRef(local_26), false);
+            local_46 = FEUIModelRef(local_26);
+            local_44.AddModel(local_46, false);
             this.GetModify_FashionSlotTabs().Add(local_44);
             ++local_19;
         }
@@ -1386,7 +1514,7 @@ struct FVM_CreatePlayer : FEUIViewModel
     {
         int local_35 = 0;
         int local_36 = 0;
-        int local_2 = int(this.GetCreatePlayerBodyType());
+        EBodyType local_2 = this.GetCreatePlayerBodyType();
         for (auto& local_18 : FashionList)
         {
             if (!(local_18.IsSet()))
@@ -1398,7 +1526,7 @@ struct FVM_CreatePlayer : FEUIViewModel
             local_26.bUnlocked = true;
             local_26.bEnableMask = false;
             local_26.MaskType = 0;
-            TEUIModelRef<FVM_DisplayItem> local_32 = ::DisplayItemAdapter_Fashion::CreateDisplayItem(this.GetContext().Manager, local_18, local_26, EItemDisplayScenario(7));
+            TEUIModelRef<FVM_DisplayItem> local_32 = ::DisplayItemAdapter_Fashion::CreateDisplayItem(this.GetContext().Manager, local_18, local_26, EItemDisplayScenario(7), local_2);
             FVM_CreatePlayerFashionOption& local_34 = ::FVM_CreatePlayerFashionOption::Create(this.GetContext().Manager);
             local_34.Setup(this, ECreatePlayerFashionItemType(1), EFashionSlotType(local_36), local_35, INDEX_NONE);
             FVM_SelectableItem& local_40 = ::FVM_SelectableItem::Create(this.GetContext().Manager);
@@ -1468,8 +1596,20 @@ struct FVM_CreatePlayer : FEUIViewModel
     }
     int GetSelectedFashionItemIndex(const EFashionSlotType SlotType) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        int local_2 = this.GetSelectedIdForSlot(EFashionSlotType(SlotType));
+        if (local_2 == 0)
+        {
+            return INDEX_NONE;
+        }
+        int local_5 = 0;
+        for (; local_5 < this.GetFilteredFashions().Num(); ++local_5)
+        {
+            if (this.GetFilteredFashions()[local_5].IsSet() && (0 == local_2))
+            {
+                return local_5;
+            }
+        }
+        return INDEX_NONE;
     }
     uint GetSelectedIdForSlot(const EFashionSlotType SlotType) const
     {
@@ -2632,7 +2772,6 @@ struct __GeneratedProperties_FVM_CreatePlayer
     EFashionSlotType SelectedFashionSlotType;
     UPROPERTY()
     TEUIModelRef<FVM_CreatePlayer> Self;
-
 
 }
 

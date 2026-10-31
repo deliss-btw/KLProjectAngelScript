@@ -1,10 +1,8 @@
-﻿
 enum EEcosimAIV2PredicateNominal
 {
     None,
     Mount,
 }
-
 
 class UEcosimAIV2UnitAsset : UObject
 {
@@ -28,6 +26,7 @@ struct FEcosimAIV2GroupRelation
 
     FEcosimAIV2GroupRelation(const FName &inout InSubject, const FName &inout InPossessor, const EEcosimAIV2PredicateNominal InPredicateNominal)
     {
+        this.Subject = InSubject;
         this.Possessor = InPossessor;
         this.PredicateNominal = InPredicateNominal;
         return;
@@ -50,7 +49,7 @@ class UEcosimAIV2GroupAsset : UObject
 struct FEcosimAIV2TeamElemment
 {
     UPROPERTY()
-    UEcosimAIV2GroupAsset GroupInfo;
+    UEcosimAIV2GroupAsset GroupInfo = nullptr;
     UPROPERTY()
     int Num;
     UPROPERTY()
@@ -58,15 +57,8 @@ struct FEcosimAIV2TeamElemment
     UPROPERTY()
     FRotator RotationOffset;
 
-    FEcosimAIV2TeamElemment()
-    {
-        this.Num = 0;
-        return;
-    }
     FEcosimAIV2TeamElemment(const UEcosimAIV2GroupAsset InGroupInfo, const int InNum, const FVector &inout InLocationOffset, const FRotator &inout InRotationOffset)
     {
-        this.GroupInfo = nullptr;
-        this.Num = 0;
         this.Num = InNum;
         this.LocationOffset = InLocationOffset;
         this.RotationOffset = InRotationOffset;
@@ -116,7 +108,7 @@ UEcosimAIV2TeamGlobalAsset GetTeamGlobalAsset() property
 }
 void __Init_TeamGlobalAsset(const UEcosimAIV2TeamGlobalAsset TeamGlobalAsset)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
 }
 UEcosimAIV2UnitAsset GetUnit_BusinessOwner() property
 {
@@ -220,7 +212,7 @@ UEcosimAIV2GroupAsset GetGroup_HumanBusinessOwner() property
 }
 void __Init_Group_HumanBusinessOwner(const UEcosimAIV2GroupAsset Group_HumanBusinessOwner)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
 }
 UEcosimAIV2GroupAsset GetGroup_HumanHorngGuard() property
 {
@@ -240,7 +232,7 @@ UEcosimAIV2GroupAsset GetGroup_HumanHorngGuard() property
 }
 void __Init_Group_HumanHorngGuard(const UEcosimAIV2GroupAsset Group_HumanHorngGuard)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
 }
 UEcosimAIV2GroupAsset GetGroup_Coach() property
 {
@@ -260,7 +252,7 @@ UEcosimAIV2GroupAsset GetGroup_Coach() property
 }
 void __Init_Group_Coach(const UEcosimAIV2GroupAsset Group_Coach)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
 }
 UEcosimAIV2GroupAsset GetGroup_Mount() property
 {
@@ -280,7 +272,7 @@ UEcosimAIV2GroupAsset GetGroup_Mount() property
 }
 void __Init_Group_Mount(const UEcosimAIV2GroupAsset Group_Mount)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
 }
 UEcosimAIV2TeamAsset GetTeam_Trade() property
 {
@@ -300,6 +292,6 @@ UEcosimAIV2TeamAsset GetTeam_Trade() property
 }
 void __Init_Team_Trade(const UEcosimAIV2TeamAsset Team_Trade)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
 }
 }

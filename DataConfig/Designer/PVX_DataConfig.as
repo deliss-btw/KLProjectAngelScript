@@ -1,5 +1,3 @@
-﻿
-
 struct FPVX_PlayerData
 {
     FSubDirtyFlags32 __DirtyFlags;
@@ -42,11 +40,63 @@ struct FPVX_PlayerData
 
     FPVX_PlayerData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Level = 0;
+        this.m_LastEvolveLevel_Boss = 0;
+        this.m_Exp = 0;
+        this.m_Score = 0;
+        FSubDirtyFlags32 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_bInLevelProtect = false;
+        this.m_TeamId = -1;
+        this.m_PlayerInTeamIndex = INDEX_NONE;
+        this.m_PlayerUID = 0;
+        this.m_PlayerAvatarID = 0;
+        this.m_PlayerDivineSkillID = 0;
+        this.m_Kills = 0;
+        this.m_Deaths = 0;
+        this.m_Assists = 0;
+        this.m_CurrencyAmount = 0;
+        this.m_FinalState = EPVXPlayerFinalState(0);
+        return;
     }
     FPVX_PlayerData(const FPVX_PlayerData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Level = 0;
+        this.m_LastEvolveLevel_Boss = 0;
+        this.m_Exp = 0;
+        this.m_Score = 0;
+        FSubDirtyFlags32 local_6;
+        this.__DirtyFlags = local_6;
+        this.m_bInLevelProtect = false;
+        this.m_TeamId = -1;
+        this.m_PlayerInTeamIndex = INDEX_NONE;
+        this.m_PlayerUID = 0;
+        this.m_PlayerAvatarID = 0;
+        this.m_PlayerDivineSkillID = 0;
+        this.m_Kills = 0;
+        this.m_Deaths = 0;
+        this.m_Assists = 0;
+        this.m_CurrencyAmount = 0;
+        this.m_FinalState = EPVXPlayerFinalState(0);
+        this.m_Level = int(Other.m_Level);
+        this.m_LastEvolveLevel_Boss = int(Other.m_LastEvolveLevel_Boss);
+        this.m_Exp = int(Other.m_Exp);
+        this.m_Score = int(Other.m_Score);
+        this.m_bInLevelProtect = Other.m_bInLevelProtect;
+        this.m_TeamId = int(Other.m_TeamId);
+        this.m_PlayerInTeamIndex = int(Other.m_PlayerInTeamIndex);
+        this.m_PlayerName = Other.m_PlayerName;
+        this.m_PlayerUID = int(Other.m_PlayerUID);
+        this.m_PlayerAvatarID = int(Other.m_PlayerAvatarID);
+        this.m_PlayerDivineSkillID = int(Other.m_PlayerDivineSkillID);
+        this.m_Kills = int(Other.m_Kills);
+        this.m_Deaths = int(Other.m_Deaths);
+        this.m_Assists = int(Other.m_Assists);
+        this.m_CurrencyAmount = int(Other.m_CurrencyAmount);
+        this.m_LastOverrideAttributeData = Other.m_LastOverrideAttributeData;
+        this.m_PendingSettlementEvents = Other.m_PendingSettlementEvents;
+        this.m_FinalState = Other.m_FinalState;
+        return;
     }
     FPVX_PlayerData opAssign(const FPVX_PlayerData &inout Other)
     {
@@ -349,7 +399,6 @@ struct FPVX_LevelExpConfig : FDataObject
     UPROPERTY()
     int Exp;
 
-
 }
 
 struct FPVX_MonsterKillExpConfig : FDataObject
@@ -363,7 +412,6 @@ struct FPVX_MonsterKillExpConfig : FDataObject
     int Coin = 20;
     UPROPERTY()
     bool UseExpMul = true;
-
 
     TDataObjectPtr<FBasePrefabConfig> GetMonsterConfig() const property
     {

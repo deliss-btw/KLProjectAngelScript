@@ -1,4 +1,3 @@
-﻿
 namespace FM_PresentationData_Mark
 {
     const int ModelId = 0;
@@ -17,6 +16,7 @@ struct FPlayerMarkData
     }
     FPlayerMarkData(const TDataObjectPtr<FMarkConfig> &inout InMarkConfig, const FFPTime &inout InMarkTime)
     {
+        this.MarkConfig = InMarkConfig;
         this.MarkTime = InMarkTime;
         return;
     }
@@ -201,9 +201,7 @@ TEUIModelRef<FM_PresentationData_Mark> AddMarkData(FM_Spot &inout Spot, const bo
 {
     int local_6 = 0;
     TEUIModelWeakRef<FM_Spot> local_4 = TEUIModelWeakRef<FM_Spot>(Spot);
-    FEUIModelRef local_8 = FEUIModelRef(local_6);
-    EPresentationDataType local_12;
-    FInstancedStruct::Make(local_12);
+    PresentationDataUtils::AddPresentationData(Spot, EPresentationDataType(6), FInstancedStruct::Make(FEUIModelRef(local_6)), Registry);
     return TEUIModelRef<FM_PresentationData_Mark>(local_6);
 }
 void RemoveMarkData(FM_Spot &inout Spot, const TEUIModelRef<FM_SpotRegistry> &inout Registry = FEUIModelRef())

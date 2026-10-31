@@ -1,5 +1,3 @@
-﻿
-
 class AKLLevelScriptTutorialCombatBoss : AKLLevelScriptTutorialActor
 {
     UPROPERTY()
@@ -83,7 +81,6 @@ class AKLLevelScriptTutorialCombatBoss : AKLLevelScriptTutorialActor
     bool bBreakItemSlotsSnapshotted = false;
     int LastStep = 11;
     TArray<FName> StepConfigKeys;
-
 
     UFUNCTION()
     void OnTutorialStep_Implementation(const int InStepIndex)
@@ -283,12 +280,12 @@ class AKLLevelScriptTutorialCombatBoss : AKLLevelScriptTutorialActor
     }
     FTutorialInfo GetStepInfo(const int Step)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         FTutorialInfo __r; return __r;
     }
     void InitAllStepInfos()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     void RegisterAllEvents()
     {
@@ -547,7 +544,7 @@ class AKLLevelScriptTutorialCombatBoss : AKLLevelScriptTutorialActor
             {
                 continue;
             }
-            UESMBaseState local_36 = local_32.GetBaseState(local_26.Player.GetSMRuntime()[].GetStateIndex());
+            UESMBaseState local_36 = local_32.GetBaseState(local_26.Player.GetSMRuntime()[local_27].GetStateIndex());
             if (local_36 != nullptr && this.BreakDefenseESMStateNames.Contains(local_36.GetDataName()))
             {
                 UECSLevelTimerFunctions::ECSLevelClearTimer(this, this.BreakDefenseCheckTimer);
@@ -606,7 +603,27 @@ class AKLLevelScriptTutorialCombatBoss : AKLLevelScriptTutorialActor
     UFUNCTION()
     void OnItemEvent(const FCE_ConsumeCombatItemEvent &inout Event)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        bool local_3 = this.CurrentStep == 8 && this.ArmorBreakerConfig.IsSet();
+        if (!(local_3))
+        {
+            local_3 = false;
+        }
+        else
+        {
+            FDataObjectPtr local_76;
+            local_76;
+            local_3 = (Event.CombatItemConfig == local_76);
+        }
+        if (local_3)
+        {
+            CastTo local_80;
+            TDataObjectPtr<FItemConfig> local_104 = local_80.opCall();
+            if (local_104.IsSet())
+            {
+                ::InventoryUtils::AddInventoryItem(this.PlayerPawnEntity, local_104, 1);
+            }
+        }
+        return;
     }
     void OnTutorialFinished()
     {
@@ -659,7 +676,40 @@ class AKLLevelScriptTutorialCombatBoss : AKLLevelScriptTutorialActor
     }
     void RestoreBreakDefenseItemSlots()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        if (!(this.bBreakItemSlotsSnapshotted))
+        {
+            return;
+        }
+        this.bBreakItemSlotsSnapshotted = false;
+        if (this.ArmorBreakerConfig.IsSet())
+        {
+            CastTo local_6;
+            TDataObjectPtr<FItemConfig> local_30 = local_6.opCall();
+            if (local_30.IsSet())
+            {
+                ::InventoryUtils::RemoveInventoryItem(this.PlayerPawnEntity, local_30, 1);
+            }
+        }
+        if (!(this.PlayerEntity.IsValid()))
+        {
+            return;
+        }
+        FECSEntity local_64 = ::FASCommonUtils::GetUniquePlayerEntity(this.PlayerEntity);
+        if (!(local_64.IsValid()))
+        {
+            return;
+        }
+        TDataObjectPtr<FItemQuickSlotConfig> local_88 = ::InventoryUtils::GetQuickSlotConfigByName(n"ConsumableItem_Attack_1");
+        TDataObjectPtr<FItemQuickSlotConfig> local_112 = ::InventoryUtils::GetQuickSlotConfigByName(n"ConsumableItem_Attack_2");
+        if ((!((local_88 == nullptr))))
+        {
+            ::InventoryUtils::ForceSetQuickSlotItem_Internal(local_64, local_88, this.SavedCombatSlot1Item);
+        }
+        if ((!((local_112 == nullptr))))
+        {
+            ::InventoryUtils::ForceSetQuickSlotItem_Internal(local_64, local_112, this.SavedCombatSlot2Item);
+        }
+        return;
     }
     void ShowMonster(const FECSEntity &inout Monster)
     {

@@ -1,4 +1,3 @@
-﻿
 enum EOpenTimeRuleType
 {
     Daily,
@@ -6,7 +5,6 @@ enum EOpenTimeRuleType
     Monthly,
     Yearly,
 }
-
 
 struct FOpenTimeRange : FDataObject
 {
@@ -23,7 +21,6 @@ struct FOpenTimeRange : FDataObject
     int DurationSeconds;
     UPROPERTY()
     bool bUseUtc0 = false;
-
 
 }
 

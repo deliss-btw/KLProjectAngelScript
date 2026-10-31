@@ -1,4 +1,3 @@
-﻿
 namespace FMS_Unstuck
 {
     const int ModelId = 0;
@@ -40,7 +39,7 @@ struct FMS_Unstuck : FEUIModelSingleton
             FText local_30;
             FNumberFormattingOptions local_24 = FNumberFormattingOptions();
             FText::AsNumber(local_30, local_8.ToSeconds());
-            FText::Format(NSLOCTEXT("Unstuck", "UnstuckCooldown", "и„±з¦»еЌЎж­»еЉџиѓЅе†·еЌґдё­пјЊиЇ·{0}з§’еђЋзЁЌеђЋе†ЌиЇ•"), local_30);
+            FText::Format(NSLOCTEXT("Unstuck", "UnstuckCooldown", "脱离卡死功能冷却中，请{0}秒后稍后再试"), local_30);
             return;
         }
         FFPTime local_12 = FFPTime(-1);

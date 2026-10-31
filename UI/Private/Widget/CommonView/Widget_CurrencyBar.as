@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CurrencyBar
 {
     const int ViewID = 0;
@@ -39,6 +38,7 @@ namespace UWidget_CurrencyBar
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CurrencyBar;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

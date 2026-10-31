@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_SCtrlFinishWithResult : UBTTask_ECSScriptBase
 {
     UPROPERTY()

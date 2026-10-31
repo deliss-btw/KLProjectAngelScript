@@ -1,12 +1,9 @@
-﻿
-
 struct FVMS_PlayerStatusV2ConfigDefault : FConfigEUIModelDefaultBase
 {
     UPROPERTY()
     float32 MaxPlayerStaminaBarScale = 2.0f;
     UPROPERTY()
     float32 MaxPlayerHpBarScale = 2.0f;
-
 
 }
 

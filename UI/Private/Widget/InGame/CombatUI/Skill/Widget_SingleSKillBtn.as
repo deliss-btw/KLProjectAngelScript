@@ -1,4 +1,3 @@
-﻿
 enum ENormalSkillBtnAnimState
 {
     PressIdle,
@@ -101,7 +100,6 @@ class UWidget_NormalSkillBtn : UEUIUserWidget
     FGetEUIModelRef SkillBtnDelegate;
     UPROPERTY()
     FGetEUIModelRef ConfigEntryDelegate;
-
 
     UFUNCTION()
     void Destruct_Implementation()
@@ -718,6 +716,7 @@ namespace UWidget_SingleSkillBtn
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SingleSkillBtn;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -733,6 +732,7 @@ namespace UWidget_NormalSkillBtn
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_NormalSkillBtn;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSkillBtnInputActionChange"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSkillReleaseFree"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSkillReleasePersistent"));
@@ -753,6 +753,7 @@ namespace UWidget_UltraSkillBtn
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_UltraSkillBtn;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -768,6 +769,7 @@ namespace UWidget_SpecialSkillBtn
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SpecialSkillBtn;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -783,6 +785,7 @@ namespace UWidget_CommonSkillBtn
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonSkillBtn;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -798,6 +801,7 @@ namespace UWidget_TSkillBtn
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TSkillBtn;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -813,6 +817,7 @@ namespace UWidget_SkillBtnSpecialCountItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SkillBtnSpecialCountItem;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -828,6 +833,7 @@ namespace UWidget_SkillBtnSpecialCounts
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SkillBtnSpecialCounts;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

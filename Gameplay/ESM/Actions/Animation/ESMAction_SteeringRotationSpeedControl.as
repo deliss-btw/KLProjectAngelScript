@@ -1,12 +1,9 @@
-﻿
-
 class UESMAction_SteeringRotationSpeedControl : UESMBPBaseSpanAction
 {
     UPROPERTY()
     float32 EnterProceduralTargetTime = 0.2f;
     UPROPERTY()
     float32 ExitProceduralTargetTime = 0.2f;
-
 
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const
@@ -18,11 +15,11 @@ class UESMAction_SteeringRotationSpeedControl : UESMBPBaseSpanAction
     {
         if (this.EnterProceduralTargetTime <= 0.0f)
         {
-            Info.AddDataInvalidComment(EESMDataValidType(2), "EnterProceduralTargetTime еї…йЎ»е¤§дєЋ 0");
+            Info.AddDataInvalidComment(EESMDataValidType(2), "EnterProceduralTargetTime 必须大于 0");
         }
         if (this.ExitProceduralTargetTime <= 0.0f)
         {
-            Info.AddDataInvalidComment(EESMDataValidType(2), "ExitProceduralTargetTime еї…йЎ»е¤§дєЋ 0");
+            Info.AddDataInvalidComment(EESMDataValidType(2), "ExitProceduralTargetTime 必须大于 0");
         }
         return;
     }

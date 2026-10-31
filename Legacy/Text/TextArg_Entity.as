@@ -1,4 +1,3 @@
-﻿
 enum ETextArgEntityProperty
 {
     Name,
@@ -14,7 +13,6 @@ enum ETextArgParser_EntityRelationType
     Neutral,
 }
 
-
 struct FTextArgConfig_Entity : FTextArgConfig
 {
     FTextArgConfig _base_FTextArgConfig;
@@ -22,7 +20,6 @@ struct FTextArgConfig_Entity : FTextArgConfig
     ETextArgEntityProperty Property;
     UPROPERTY()
     TMap<ETextArgParser_EntityRelationType, FText> FormatByRelation;
-
 
 }
 
@@ -40,7 +37,7 @@ class UTextArgParser_Entity : UBlueprintTextArgParser
     UFUNCTION()
     bool ParseArgValue_Implementation(const FDataObjectPtr &inout Config, const FTextArgument &inout Arg, FText &inout OutResult) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         bool __r; return __r;
     }
 }

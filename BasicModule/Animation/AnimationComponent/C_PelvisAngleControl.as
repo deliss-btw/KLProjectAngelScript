@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_PelvisAngleControl_NS
 {
     const TECSComponentDerivedPtr<FC_PelvisAngleControl> DerivedPtr = TECSComponentDerivedPtr<FC_PelvisAngleControl>();
@@ -17,11 +16,20 @@ struct FC_PelvisAngleControl : FECSComponent
 
     FC_PelvisAngleControl()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Yaw = 0.0f;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_PelvisAngleControl(const FC_PelvisAngleControl &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_Yaw = 0.0f;
+        this.__InitDirtyFlags();
+        this.m_Yaw = Other.m_Yaw;
+        return;
     }
     FC_PelvisAngleControl opAssign(const FC_PelvisAngleControl &inout Other)
     {
@@ -48,7 +56,6 @@ struct FC_PelvisAngleControl : FECSComponent
 class UESMAction_PelvisAngleControl : UESMBPBaseSpanTickAction
 {
     float32 BasePelvisAngle = 0.0f;
-
 
     UFUNCTION()
     void Tick_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
@@ -148,37 +155,37 @@ bool RemovePelvisAngleControl(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPelvisAngleControlOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PelvisAngleControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PelvisAngleControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPelvisAngleControlOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PelvisAngleControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PelvisAngleControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPelvisAngleControlOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PelvisAngleControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PelvisAngleControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPelvisAngleControlOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PelvisAngleControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PelvisAngleControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPelvisAngleControlOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PelvisAngleControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PelvisAngleControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPelvisAngleControlLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PelvisAngleControl, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PelvisAngleControl, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPelvisAngleControlActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PelvisAngleControl, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PelvisAngleControl, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPelvisAngleControlModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PelvisAngleControl, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PelvisAngleControl, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

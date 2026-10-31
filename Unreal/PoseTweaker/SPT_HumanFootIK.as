@@ -1,5 +1,3 @@
-﻿
-
 struct FAnimGroundRefInfo
 {
     UPROPERTY()
@@ -11,18 +9,42 @@ struct FAnimGroundRefInfo
     UPROPERTY()
     float32 UpInterpSpeed = 90.0f;
 
-
     void UpdateGroundRef(const FPT_BoneRef &inout AttachBone, const FName &inout AttribName, const float32 DeltaTime, const bool bForceIgnoreAnim = false)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FVector local_6;
+        FVector local_12;
+        bool local_13 = false;
+        FTransform local_64 = AttachBone.GetAnimAttributeTransform(AttribName, local_13);
+        if (!(bForceIgnoreAnim) && local_13)
+        {
+            FVector local_70;
+            local_6 = local_64.GetLocation();
+            local_70 = local_64.GetRotation().GetAxisZ();
+            local_12 = local_70;
+        }
+        else
+        {
+            FVector local_70;
+            local_6 = local_70;
+            local_12 = FVector(0.0, 0.0, 1.0);
+        }
+        this.Location = local_6;
+        if (!(this.bInitialized) || (DeltaTime <= 0.0f))
+        {
+            this.Up = local_12;
+            this.bInitialized = true;
+            return;
+        }
+        this.Up = FMath::VInterpNormalRotationTo(this.Up, local_12, DeltaTime, this.UpInterpSpeed);
+        return;
     }
     FVector GetHeightVectorAlongUpDir(const FVector &inout InLocation) const
     {
-        return (InLocation - this).ProjectOnTo(this.Up);
+        return (InLocation - this.Location).ProjectOnTo(this.Up);
     }
     float32 GetHeightAlongUpDir(const FVector &inout InLocation) const
     {
-        return float32(((InLocation - this).DotProduct(this.Up)));
+        return float32(((InLocation - this.Location).DotProduct(this.Up)));
     }
 }
 
@@ -115,7 +137,7 @@ class USPT_HumanFootIK_Base : USPT_GroundTraceBase
         {
             return;
         }
-        ::FootIKUtils::CreateGroundPlaneTraceParams(this.GroundTraceParams, this.GroundTracePointNum, int(this.GroundTraceRadiusX), this.GroundTraceRadiusY);
+        ::FootIKUtils::CreateGroundPlaneTraceParams(this.GroundTraceParams, this.GroundTracePointNum, this.GroundTraceRadiusX, this.GroundTraceRadiusY);
         this.HeightProbeRadiusCurve = FRuntimeCurveUtils::CreateAutoTangent(0.0f, 0.0f, 15.0f, 15.0f, 18.0f, 16.0f);
         this.LegRestLength_L = this.GetBoneChainLength(this.LegRoot_L.GetBoneName(), this.LegEnd_L.GetBoneName());
         this.LegRestLength_R = this.GetBoneChainLength(this.LegRoot_R.GetBoneName(), this.LegEnd_R.GetBoneName());
@@ -125,7 +147,68 @@ class USPT_HumanFootIK_Base : USPT_GroundTraceBase
     UFUNCTION()
     void EvaluatePose_Implementation()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (!(this.RootBoneRef.HasValidSetup()))
+        {
+            return;
+        }
+        if (this.bDebugInfo)
+        {
+            if (this.LastUpdateFrame != 65535)
+            {
+                this.AddOnScreenDebugMessage(FString().Append("last_update_frame=").Append(this.LastUpdateFrame).Append(", curr_frame=").Append(GFrameNumber), 1002, false, 2.0f);
+            }
+            this.LastUpdateFrame = GFrameNumber;
+        }
+        this.AnimGroundRef.UpdateGroundRef(this.RootBoneRef, this.GroundRefAttributeName, this.CurrentDeltaSeconds, false);
+        if (this.bDebugInfo)
+        {
+            this.DrawAnimDebugLine(this.AnimGroundRef.Location, (this.AnimGroundRef.Up * 100.0), FColor::Yellow, EPTDebugDrawSpace(0), 0.0f, true);
+        }
+        this.GroundTraceParams.TraceDirection = FVector3f(this.AnimGroundRef.Up).opNeg();
+        Super::GroundPlaneTraceAndHeightAdjust(this.GroundPlaneTraceResult, FVector::ZeroVector, this.LegL_IK.GetEffectorTM().GetLocation(), this.LegR_IK.GetEffectorTM().GetLocation(), this.PelvisAdjustDamper, this.HeightProbeRadiusCurve, this.GroundTraceParams);
+        FTransform local_104 = FTransform(this.Bn_M_Root.GetTransform());
+        local_104.SetLocation((local_104.GetLocation() + this.GroundPlaneTraceResult.HeightAdjust));
+        if (this.bDebugInfo)
+        {
+            for (auto& local_118 : this.GroundPlaneTraceResult.GroundHitPoints)
+            {
+                this.DrawAnimDebugSphere(FVector(local_118), 2.0f, 8, FColor::Yellow, EPTDebugDrawSpace(1), ESceneDepthPriorityGroup(0));
+            }
+        }
+        FTransform local_144 = FTransform(this.LegL_IK.GetEffectorTM());
+        FTransform local_168 = FTransform(this.LegR_IK.GetEffectorTM());
+        this.AddForVisualization();
+        local_104.SetLocation((local_104.GetLocation() + (this.AnimGroundRef.Up * this.FootHeightOffset)));
+        this.Bn_M_Root.SetTransform(local_104);
+        FPlane local_184 = FPlane(this.GroundPlaneTraceResult.PlaneTransformInPT.GetLocation(), this.GroundPlaneTraceResult.PlaneTransformInPT.GetRotation().GetAxisZ());
+        FVector local_24 = this.AnimGroundRef.GetHeightVectorAlongUpDir(local_144.GetLocation());
+        FVector local_16_2 = (this.AnimGroundRef.Up * this.FootHeightOffset);
+        FVector local_174_2 = (local_24 + local_16_2);
+        FVector local_200 = this.AnimGroundRef.GetHeightVectorAlongUpDir(local_168.GetLocation());
+        FVector local_24_2 = (this.AnimGroundRef.Up * this.FootHeightOffset);
+        FVector local_16_3 = (local_200 + local_24_2);
+        this.LegL_IK.CachePose();
+        this.LegR_IK.CachePose();
+        int local_207 = 1065353216;
+        FTransform local_232;
+        FTransform local_256;
+        USkeletalPoseTweaker local_194;
+        this.LegL_IK.AdjustEffectorHeight(local_194, local_144, local_184, this.AnimGroundRef, this.AnimComponentTransform, this.CurrentDeltaSeconds, local_174_2, this.GroundTraceParams, 1.0f, local_232, this.EffectorDebugDraw);
+        this.LegR_IK.AdjustEffectorHeight(local_194, local_168, local_184, this.AnimGroundRef, this.AnimComponentTransform, this.CurrentDeltaSeconds, local_16_3, this.GroundTraceParams, 1.0f, local_256, this.EffectorDebugDraw);
+        this.SmoothedEstimatedSpeed = FMath::FInterpConstantTo(this.SmoothedEstimatedSpeed, this.EstimatedSpeed, this.CurrentDeltaSeconds, this.MaxLocomotionAcc);
+        if (this.SmoothedEstimatedSpeed < this.PelvisOffsetStartVelocity)
+        {
+            FVector local_206 = this.CalculatePelvisOffsetOnSlope();
+            local_104.SetTranslation((local_104.GetLocation() + (local_206 * (FMath::Clamp((1.0f - (this.SmoothedEstimatedSpeed / this.PelvisOffsetStartVelocity)), 0.0, 1.0)))));
+            this.Bn_M_Root.SetTransform(local_104);
+        }
+        this.LegL_IK.ApplyCachedPose();
+        this.LegR_IK.ApplyCachedPose();
+        local_232.Blend(local_144, local_232, FMath::Clamp(this.LegL_IK_Weight, 0.0, 1.0));
+        local_256.Blend(local_168, local_256, FMath::Clamp(this.LegR_IK_Weight, 0.0, 1.0));
+        this.LegL_IK.Solve(local_232);
+        this.LegR_IK.Solve(local_256);
+        return;
     }
     float GetBoneChainLength(const FName &inout StartBoneName, const FName &inout EndBoneName)
     {

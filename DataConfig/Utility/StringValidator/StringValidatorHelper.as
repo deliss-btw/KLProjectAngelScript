@@ -1,9 +1,7 @@
-﻿
-
 struct FStringValidationHelper
 {
     UPROPERTY()
-    UStringValidatorConfig Config;
+    UStringValidatorConfig Config = nullptr;
     UPROPERTY()
     FString StringToValidate;
     UPROPERTY()
@@ -13,19 +11,10 @@ struct FStringValidationHelper
     UPROPERTY()
     bool bValidationStarted;
     UPROPERTY()
-    EStringValidationResult CachedValidationResult;
+    EStringValidationResult CachedValidationResult = EStringValidationResult(2);
 
-    FStringValidationHelper()
-    {
-        this.bValidationStarted = false;
-        this.CachedValidationResult = EStringValidationResult(2);
-        return;
-    }
     FStringValidationHelper(const UStringValidatorConfig InConfig, const FString &inout InStringToValidate)
     {
-        this.Config = nullptr;
-        this.bValidationStarted = false;
-        this.CachedValidationResult = EStringValidationResult(2);
         this.StringToValidate = InStringToValidate;
         return;
     }
@@ -47,7 +36,42 @@ struct FStringValidationHelper
     }
     void StartValidation()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        this.StopValidation();
+        if (!((this.Config != nullptr)))
+        {
+            return;
+        }
+        this.bValidationStarted = true;
+        bool local_4 = false;
+        for (auto local_18 : this.Config.Validators)
+        {
+            FStringValidationContext local_26;
+            EStringValidationResult local_27 = local_18.ValidateString(this.StringToValidate, local_26);
+            this.ValidatorContexts.Add(local_26);
+            this.ValidationResults.Add(local_27);
+            switch (int(local_27))
+            {
+            case 0:
+            {
+                break;
+            }
+            case 1:
+            {
+                this.CachedValidationResult = EStringValidationResult(1);
+                return;
+            }
+            case 2:
+            {
+                local_4 = true;
+                break;
+            }
+            }
+        }
+        if (!(local_4))
+        {
+            this.CachedValidationResult = EStringValidationResult(0);
+        }
+        return;
     }
     void TickValidation()
     {

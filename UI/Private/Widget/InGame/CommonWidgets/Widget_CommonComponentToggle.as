@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommonComponentToggle
 {
     const int ViewID = 0;
@@ -22,20 +21,9 @@ class UWidget_CommonComponentToggle : UEUIUserWidget
     UFUNCTION()
     void OnMouseLeave_Implementation(const FPointerEvent &inout MouseEvent)
     {
-        if (GetRightArrowEnabled())
-        {
-        }
-        else
-        {
-        }
-        SetRightArrowHoverState();
-        if (GetLeftArrowEnabled())
-        {
-        }
-        else
-        {
-        }
-        SetLeftArrowHoverState();
+        int local_2 = GetRightArrowEnabled() ? 0 : 2;
+        local_2.SetRightArrowHoverState();
+        (GetLeftArrowEnabled() ? 0 : 2).SetLeftArrowHoverState();
         0.SetBtnHoverState();
         return;
     }
@@ -55,8 +43,7 @@ class UWidget_CommonComponentToggle : UEUIUserWidget
             for (; local_9 < GetOptionTexts().Num(); )
             {
                 FEUIDynamicWidgetData local_34;
-                FEUIModelContainer local_48;
-                local_34.ModelContainer = local_48;
+                local_34.ModelContainer = FEUIModelContainer(::FVM_SegmentBarItem::Create(this, GetOptionTexts()[local_9], (1 != 0)));
                 local_8.Add(local_34);
                 ++local_9;
             }
@@ -185,6 +172,7 @@ namespace UWidget_CommonComponentToggle
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonComponentToggle;
     Result.ObservedModelChangesSubscriberNames.Add(FString("GenerateEntryDataList"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedIndexChanged"));
     return;

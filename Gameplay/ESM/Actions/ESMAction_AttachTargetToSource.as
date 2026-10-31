@@ -1,11 +1,9 @@
-﻿
 enum EAttachTargetType
 {
     InteractTarget,
     LockTarget,
     ESMBB,
 }
-
 
 struct FESMAttachTargetToSourceInstanceData
 {
@@ -15,7 +13,6 @@ struct FESMAttachTargetToSourceInstanceData
     FNetPlayerMask OriginalTargetPredictMask;
     UPROPERTY()
     bool bShouldRestoreTargetPredictMask = false;
-
 
 }
 
@@ -61,7 +58,6 @@ class UESMAction_AttachTargetToSource : UESMBPBaseSpanAction
     TDataObjectPtr<FAttackData> DetachAttackDataConfig;
     UPROPERTY()
     float32 DetachBlendDuration = 0.0f;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const
@@ -177,42 +173,43 @@ class UESMAction_AttachTargetToSource : UESMBPBaseSpanAction
             {
                 local_162 = this.AttachLogicLocationOffsetIfSocketNone;
             }
-            ::FAttachmentUtils::EntityAttachToParent(local_14, local_2, Time.WorldTime, this.SocketName, this.bAttachOffsetBaseOnRootTransform, local_72, local_78, int(this.AttachBlendDuration), 0.0f, 0, local_162, this.DetachBlendDuration, local_79 && this.bRestoreAlignedStaticSocketOnDetach);
+            ::FAttachmentUtils::EntityAttachToParent(local_14, local_2, Time.WorldTime, this.SocketName, this.bAttachOffsetBaseOnRootTransform, local_72, local_78, this.AttachBlendDuration, 0.0f, 0, local_162, this.DetachBlendDuration, local_79 && this.bRestoreAlignedStaticSocketOnDetach);
         }
         return;
     }
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
+        int local_9;
         const FECSEntity& local_2 = Context.GetEntity();
         FESMAttachTargetToSourceInstanceData& local_4 = this.ModifyInstanceData(Context);
         FECSEntity local_8 = FECSEntity(local_4.TargetEntity);
         if (local_8.IsValid())
         {
-            bool local_9;
             if (this.bUseDetachOffset)
             {
                 ::FAttachmentUtils::EntityDetach(local_8, Time.WorldTime, this.DetachLocationOffset, this.DetachRotationOffset, this.bUseRootRotationOffset, uint8(this.ZeroOutRotationAxisWhenDetach), false);
             }
             else
             {
-                ::FAttachmentUtils::EntityDetachWithoutOffset(local_8, Time.WorldTime, this.bUseRootRotationOffset, uint8(this.ZeroOutRotationAxisWhenDetach));
+                local_9 = this.bUseRootRotationOffset;
+                ::FAttachmentUtils::EntityDetachWithoutOffset(local_8, Time.WorldTime, (local_9 != 0), uint8(this.ZeroOutRotationAxisWhenDetach));
             }
             if (this.DetachAttackDataConfig)
             {
                 TDataObjectPtr<FHitDecalConfig> local_36;
                 ::BlueprintFunctions_Common::DamageTarget(FECSEntityAdapter(local_2), local_8, this.DetachAttackDataConfig, EDamageToTargetDirection(0), FAreaStrikeShape(), local_36);
             }
-            local_9 = ECS::GetRuntimeInfo().IsServer;
-            if (!(local_9))
+            local_9 = int(ECS::GetRuntimeInfo().IsServer);
+            if (local_9 == 0)
             {
-                local_9 = false;
+                local_9 = 0;
             }
             else
             {
                 local_9 = local_4.bShouldRestoreTargetPredictMask;
             }
-            if (local_9)
+            if (local_9 != 0)
             {
                 FECSNetUtils::SetNetPredict(local_8, local_4.OriginalTargetPredictMask);
                 local_4.bShouldRestoreTargetPredictMask = false;

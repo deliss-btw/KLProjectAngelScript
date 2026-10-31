@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MinimapIconDecorator
 {
     const int ModelId = 0;
@@ -399,8 +398,8 @@ struct FVM_MinimapIconHoverProvider : FEUIViewModel
         FText local_80 = FText();
         FText local_84 = FText();
         FDialogCallback local_66 = FDialogCallback(local_34);
-        FText local_70 = NSLOCTEXT("MinimapIconDecorator", "TeleportToPublicEventConfirm", "жЇеђ¦зЎ®и®¤дј йЂЃи‡іиЇҐдЅЌзЅ®пјџ");
-        FText local_74 = NSLOCTEXT("MinimapIconDecorator", "TeleportToPublicEventConfirmTitle", "жЏђз¤є");
+        FText local_70 = NSLOCTEXT("MinimapIconDecorator", "TeleportToPublicEventConfirm", "是否确认传送至该位置？");
+        FText local_74 = NSLOCTEXT("MinimapIconDecorator", "TeleportToPublicEventConfirmTitle", "提示");
         FCommonDialogParam local_76;
         ::CommonPopup::Dialog_Decision(local_74, local_70, local_66, local_84, local_80, local_76);
         return;
@@ -606,7 +605,7 @@ namespace FVM_MinimapIconDecorator
 {
 FVM_MinimapIconDecorator& Create(const UObject ContextObject, const EMinimapIconDecoratorType DecoratorType)
 {
-    return FVM_MinimapIconDecorator::CreateByManager(EUIInternal::GetContextManager(ContextObject));
+    return FVM_MinimapIconDecorator::CreateByManager(EUIInternal::GetContextManager(ContextObject), EMinimapIconDecoratorType(DecoratorType));
 }
 FVM_MinimapIconDecorator CreateByManager(const UEUIManagerSubsystem Manager, const EMinimapIconDecoratorType DecoratorType)
 {

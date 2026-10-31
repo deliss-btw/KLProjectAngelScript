@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PlayerHpBar
 {
     const int ViewID = 0;
@@ -20,11 +19,20 @@ class UWidget_PlayerHpBar : UEUIUserWidget
     UPROPERTY()
     FGetEUIModelRef PlayerHpBarDelegate;
 
-
     UFUNCTION()
     void HandleHpRatioReduceCounterChanged(const int HpRatioReduceCounter)
     {
-        if ((this.bDisableHpReduceAnimOnFirstShown && (HpRatioReduceCounter == 0)))
+        int local_3 = this.bDisableHpReduceAnimOnFirstShown;
+        if (local_3 == 0)
+        {
+            local_3 = 0;
+        }
+        else
+        {
+            bool local_2 = (HpRatioReduceCounter == 0);
+            local_3 = local_2;
+        }
+        if (local_3 != 0)
         {
             return;
         }
@@ -97,6 +105,7 @@ namespace UWidget_PlayerHpBar
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PlayerHpBar;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleHpRatioReduceCounterChanged"));
     return;
 }

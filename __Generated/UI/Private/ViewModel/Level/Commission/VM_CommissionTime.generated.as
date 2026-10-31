@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_CommissionTime_Helpers
 {
 UFUNCTION()

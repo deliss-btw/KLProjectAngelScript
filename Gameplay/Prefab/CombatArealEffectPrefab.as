@@ -1,5 +1,3 @@
-﻿
-
 class ACombatArealEffectPrefab : AKLLevelPrefabBase
 {
     UPROPERTY()

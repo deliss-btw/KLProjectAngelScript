@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_BuffIcon
 {
     const int ViewID = 0;
@@ -135,6 +134,7 @@ namespace UWidget_BuffIcon
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_BuffIcon;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnStateChanged"));
     return;
 }

@@ -1,4 +1,3 @@
-﻿
 enum EAttackFXConfigType
 {
     ImpactFX,
@@ -196,7 +195,6 @@ enum EEcologyPostureDamageRatioType
     Custom,
 }
 
-
 struct FAttackRecoverEnergyValue
 {
     FSubDirtyFlags8 __DirtyFlags;
@@ -215,11 +213,33 @@ struct FAttackRecoverEnergyValue
 
     FAttackRecoverEnergyValue()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_HitRecoverCustomSkillEnergy = 0.0f;
+        this.m_HitRecoverCustomSkillEnergy_2 = 0.0f;
+        this.m_HitRecoverCustomSkillEnergy_3 = 0.0f;
+        this.m_HitRecoverCustomSkillEnergy_4 = 0.0f;
+        this.m_HitRecoverSwitchPlayerEnergy = 0.0f;
+        this.m_HitRecoverUltraSkillEnergy = 0.0f;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        return;
     }
     FAttackRecoverEnergyValue(const FAttackRecoverEnergyValue &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_HitRecoverCustomSkillEnergy = 0.0f;
+        this.m_HitRecoverCustomSkillEnergy_2 = 0.0f;
+        this.m_HitRecoverCustomSkillEnergy_3 = 0.0f;
+        this.m_HitRecoverCustomSkillEnergy_4 = 0.0f;
+        this.m_HitRecoverSwitchPlayerEnergy = 0.0f;
+        this.m_HitRecoverUltraSkillEnergy = 0.0f;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_HitRecoverCustomSkillEnergy = Other.m_HitRecoverCustomSkillEnergy;
+        this.m_HitRecoverCustomSkillEnergy_2 = Other.m_HitRecoverCustomSkillEnergy_2;
+        this.m_HitRecoverCustomSkillEnergy_3 = Other.m_HitRecoverCustomSkillEnergy_3;
+        this.m_HitRecoverCustomSkillEnergy_4 = Other.m_HitRecoverCustomSkillEnergy_4;
+        this.m_HitRecoverSwitchPlayerEnergy = Other.m_HitRecoverSwitchPlayerEnergy;
+        this.m_HitRecoverUltraSkillEnergy = Other.m_HitRecoverUltraSkillEnergy;
+        return;
     }
     FAttackRecoverEnergyValue opAssign(const FAttackRecoverEnergyValue &inout Other)
     {
@@ -356,7 +376,6 @@ struct FComboHitDamageReduction : FDataObject
     float32 MinDamageRatio;
     UPROPERTY()
     float32 Duration = 0.5f;
-
 
 }
 
@@ -533,7 +552,6 @@ struct FAttackData : FDataObject
     bool bOverridePrefabDestructDamageLevel = false;
     UPROPERTY()
     EDestructibleClassLevel CustomDestructibleDamageLevel = EDestructibleClassLevel(0);
-
 
     float32 GetHitImpulseX() const
     {

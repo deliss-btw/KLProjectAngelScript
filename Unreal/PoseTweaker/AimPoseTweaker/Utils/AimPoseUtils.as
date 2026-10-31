@@ -1,5 +1,3 @@
-﻿
-
 struct FAimPoseVectorSpring
 {
     UPROPERTY()
@@ -15,35 +13,35 @@ struct FAimPoseVectorSpring
     }
     void SetParams(const float32 Stiffness, const float32 Damping)
     {
-        this.Stiffness = Stiffness;
+        this.X.Stiffness = Stiffness;
         this.Y.Stiffness = Stiffness;
         this.Z.Stiffness = Stiffness;
-        this.Damping = Damping;
+        this.X.Damping = Damping;
         this.Y.Damping = Damping;
         this.Z.Damping = Damping;
         return;
     }
     void Init(const FVector &inout Position, const FVector &inout Velocity = FVector::ZeroVector)
     {
-        this.Init(int(Position.X), Velocity.X);
-        this.Y.Init(int(Position.Y), Velocity.Y);
-        this.Z.Init(int(Position.Z), Velocity.Z);
+        this.X.Init(Position.X, Velocity.X);
+        this.Y.Init(Position.Y, Velocity.Y);
+        this.Z.Init(Position.Z, Velocity.Z);
         return;
     }
     void Update(const float32 DeltaTime, const FVector &inout Target)
     {
-        this.Update(DeltaTime, Target.X);
+        this.X.Update(DeltaTime, Target.X);
         this.Y.Update(DeltaTime, Target.Y);
         this.Z.Update(DeltaTime, Target.Z);
         return;
     }
     FVector GetPosition() const
     {
-        return FVector(this.GetPosition(), this.Y.GetPosition(), this.Z.GetPosition());
+        return FVector(this.X.GetPosition(), this.Y.GetPosition(), this.Z.GetPosition());
     }
     FVector GetVelocity() const
     {
-        return FVector(this.GetVelocity(), this.Y.GetVelocity(), this.Z.GetVelocity());
+        return FVector(this.X.GetVelocity(), this.Y.GetVelocity(), this.Z.GetVelocity());
     }
 }
 

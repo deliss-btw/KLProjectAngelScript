@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommissionTeamerItem
 {
     const int ModelId = 0;
@@ -15,7 +14,6 @@ struct FCommissionTeamerItemData
     int TeamIndex;
     UPROPERTY()
     uint PlayerID;
-
 
 }
 
@@ -410,7 +408,6 @@ struct __GeneratedProperties_FVM_CommissionTeamerItem
     UPROPERTY()
     TEUIModelRef<FVM_CommissionTeamerItem> Self;
 
-
 }
 
 namespace FVM_CommissionTeamerItem
@@ -521,7 +518,9 @@ void __OnLikeTeamer(FVM_CommissionTeamerItem &inout Model, const FECSEntity &ino
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorCommissionFinishLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorCommissionFinishModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 bool __UIGetter_bHasTeam(const FVM_CommissionTeamerItem &inout Model)
 {

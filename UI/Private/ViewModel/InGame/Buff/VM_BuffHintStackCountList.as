@@ -1,4 +1,3 @@
-﻿
 namespace FVM_BuffHintStackCountList
 {
     const int ModelId = 0;

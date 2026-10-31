@@ -1,4 +1,3 @@
-﻿
 enum EProjectileSpawnPositionType
 {
     Center,
@@ -75,7 +74,6 @@ enum EProjectileFireResourceType
     ConsumeEnergy,
     AccumulateHeat,
 }
-
 
 struct FFireProjectileConfig
 {
@@ -194,15 +192,96 @@ struct FFireProjectileData
 
     FFireProjectileData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags32 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bLocalPrediction = false;
+        this.m_bInterpoBlendWithOwner = false;
+        this.m_bForShooting = false;
+        this.m_bAimAtLockTarget = false;
+        this.m_AimAtLockTargetOffset = FVector::ZeroVector;
+        this.m_AimAtEntityBBOffset = FVector::ZeroVector;
+        this.m_MinRotateLimitAnimAtLockTarget = FVector(-180.0, -180.0, -180.0);
+        this.m_MaxRotateLimitAnimAtLockTarget = FVector(180.0, 180.0, 180.0);
+        this.m_bOverrideAimAtPosition = false;
+        this.m_OverrideAimAtPosition = FVector::ZeroVector;
+        this.m_SpawnPositionOffsetType = EProjectileSpawnPositionOffsetType(0);
+        this.m_SpawnRotationType = EProjectileSpawnRotationType(0);
+        this.m_bSpawnWithPredictPath = false;
+        return;
     }
     FFireProjectileData(const FFireProjectileData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags32 local_5;
+        this.__DirtyFlags = local_5;
+        this.m_bLocalPrediction = false;
+        this.m_bInterpoBlendWithOwner = false;
+        this.m_bForShooting = false;
+        this.m_bAimAtLockTarget = false;
+        this.m_AimAtLockTargetOffset = FVector::ZeroVector;
+        this.m_AimAtEntityBBOffset = FVector::ZeroVector;
+        this.m_MinRotateLimitAnimAtLockTarget = FVector(-180.0, -180.0, -180.0);
+        this.m_MaxRotateLimitAnimAtLockTarget = FVector(180.0, 180.0, 180.0);
+        this.m_bOverrideAimAtPosition = false;
+        this.m_OverrideAimAtPosition = FVector::ZeroVector;
+        this.m_SpawnPositionOffsetType = EProjectileSpawnPositionOffsetType(0);
+        this.m_SpawnRotationType = EProjectileSpawnRotationType(0);
+        this.m_bSpawnWithPredictPath = false;
+        this.m_ProjectilePrefab = Other.m_ProjectilePrefab;
+        this.m_bLocalPrediction = Other.m_bLocalPrediction;
+        this.m_bInterpoBlendWithOwner = Other.m_bInterpoBlendWithOwner;
+        this.m_bForShooting = Other.m_bForShooting;
+        this.m_bAimAtLockTarget = Other.m_bAimAtLockTarget;
+        this.m_AimAtLockTargetOffset = Other.m_AimAtLockTargetOffset;
+        this.m_AimAtEntityBBOffset = Other.m_AimAtEntityBBOffset;
+        this.m_MinRotateLimitAnimAtLockTarget = Other.m_MinRotateLimitAnimAtLockTarget;
+        this.m_MaxRotateLimitAnimAtLockTarget = Other.m_MaxRotateLimitAnimAtLockTarget;
+        this.m_bOverrideAimAtPosition = Other.m_bOverrideAimAtPosition;
+        this.m_OverrideAimAtPosition = Other.m_OverrideAimAtPosition;
+        this.m_SpawnOnGroundConfig = Other.m_SpawnOnGroundConfig;
+        this.m_PositionAttachRefName = Other.m_PositionAttachRefName;
+        this.m_SpawnPositionOffsetType = Other.m_SpawnPositionOffsetType;
+        this.m_PositionOffset = Other.m_PositionOffset;
+        this.m_SpawnRotationType = Other.m_SpawnRotationType;
+        this.m_RotationOffset = Other.m_RotationOffset;
+        this.m_bSpawnWithPredictPath = Other.m_bSpawnWithPredictPath;
+        this.m_ProjectileKey = Other.m_ProjectileKey;
+        return;
     }
     FFireProjectileData(const FFireProjectileConfig &inout Config)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags32 local_5;
+        this.__DirtyFlags = local_5;
+        this.m_bLocalPrediction = false;
+        this.m_bInterpoBlendWithOwner = false;
+        this.m_bForShooting = false;
+        this.m_bAimAtLockTarget = false;
+        this.m_AimAtLockTargetOffset = FVector::ZeroVector;
+        this.m_AimAtEntityBBOffset = FVector::ZeroVector;
+        this.m_MinRotateLimitAnimAtLockTarget = FVector(-180.0, -180.0, -180.0);
+        this.m_MaxRotateLimitAnimAtLockTarget = FVector(180.0, 180.0, 180.0);
+        this.m_bOverrideAimAtPosition = false;
+        this.m_OverrideAimAtPosition = FVector::ZeroVector;
+        this.m_SpawnPositionOffsetType = EProjectileSpawnPositionOffsetType(0);
+        this.m_SpawnRotationType = EProjectileSpawnRotationType(0);
+        this.m_bSpawnWithPredictPath = false;
+        this.SetProjectilePrefab(Config.ProjectilePrefab);
+        this.SetbLocalPrediction(Config.bLocalPrediction);
+        this.SetbInterpoBlendWithOwner(Config.bInterpoBlendWithOwner);
+        this.SetbForShooting(Config.bForShooting);
+        this.SetbAimAtLockTarget(Config.bAimAtLockTarget);
+        this.SetAimAtLockTargetOffset(Config.AimAtLockTargetOffset);
+        this.SetAimAtEntityBBOffset(Config.AimAtEntityBBOffset);
+        this.SetMinRotateLimitAnimAtLockTarget(Config.MinRotateLimitAnimAtLockTarget);
+        this.SetMaxRotateLimitAnimAtLockTarget(Config.MaxRotateLimitAnimAtLockTarget);
+        this.SetSpawnOnGroundConfig(Config.SpawnOnGroundConfig);
+        this.SetPositionAttachRefName(Config.PositionAttachRefName);
+        this.SetSpawnPositionOffsetType(Config.SpawnPositionOffsetType);
+        this.SetPositionOffset(Config.PositionOffset);
+        this.SetSpawnRotationType(Config.SpawnRotationType);
+        this.SetRotationOffset(Config.RotationOffset);
+        this.SetbSpawnWithPredictPath(Config.bSpawnWithPredictPath);
+        this.SetProjectileKey(Config.ProjectileKey);
+        return;
     }
     FFireProjectileData opAssign(const FFireProjectileData &inout Other)
     {
@@ -581,7 +660,6 @@ struct FProjectileFireModeConfig
     int FireNumPerInterval = 1;
     UPROPERTY()
     FRotator3f RotationOffsetPerFire = FRotator3f::ZeroRotator;
-
 
 }
 

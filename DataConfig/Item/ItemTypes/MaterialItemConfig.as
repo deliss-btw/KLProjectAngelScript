@@ -1,5 +1,3 @@
-﻿
-
 struct FMaterialItemConfig : FInventoryItemConfig
 {
     FInventoryItemConfig _base_FInventoryItemConfig;
@@ -8,7 +6,6 @@ struct FMaterialItemConfig : FInventoryItemConfig
 
     FMaterialItemConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -23,7 +20,6 @@ struct FCraftItemMaterialConfig : FMaterialItemConfig
 
     FCraftItemMaterialConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -38,7 +34,6 @@ struct FEquipmentMaterialConfig : FMaterialItemConfig
 
     FEquipmentMaterialConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -65,7 +60,6 @@ struct FCookMaterialConfig : FMaterialItemConfig
 
     FCookMaterialConfig()
     {
-        super();
         this.EnergyAbundance = 0;
         this.__InitDefaults();
         return;
@@ -83,7 +77,6 @@ struct FTestThreeChooseOneItemConfig : FMaterialItemConfig
 
     FTestThreeChooseOneItemConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }

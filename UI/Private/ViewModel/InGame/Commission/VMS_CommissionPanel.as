@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_CommissionPanel
 {
     const int ModelId = 0;

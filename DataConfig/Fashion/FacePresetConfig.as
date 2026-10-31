@@ -1,5 +1,3 @@
-﻿
-
 struct FFacePresetConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -17,7 +15,6 @@ struct FFacePresetConfig : FDataObject
     TSoftObjectPtr<UMaterialInterface> FemaleBodyMaterial;
     UPROPERTY()
     TMap<EDisplayItemIconType, FFashionDisplayIconByBody> DisplayIcons;
-
 
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 class UEQC_EngagingBehaviorTarget : UEnvQueryContext_ECS_BlueprintBase
 {
     UEQC_EngagingBehaviorTarget()

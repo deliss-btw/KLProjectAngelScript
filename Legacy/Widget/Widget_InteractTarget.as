@@ -1,5 +1,3 @@
-﻿
-
 class UWidget_InteractTarget : UASUserWidget
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ class UWidget_InteractTarget : UASUserWidget
     UEUIButton w_btn_touch_trigger;
     EInteractMode CachedInteractMode = EInteractMode(0);
     bool bTouchBound = false;
-
 
     UFUNCTION()
     void SetInputActionType(const EInteractMode InActionType)

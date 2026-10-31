@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_OverrideVelocity : UESMBPBaseInstantAction
 {
     UPROPERTY()
@@ -24,7 +22,6 @@ class UESMAction_OverrideVelocity : UESMBPBaseInstantAction
     FESMBBVar_Float ZValue = 1.0f;
     UPROPERTY()
     bool bDeferred = false;
-
 
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const

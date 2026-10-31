@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: AHeadsUpDisplay3DActor (default scalar field UWidgetComponent.bReceiveHardwareInput has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
-
 class AHeadsUpDisplay3DActor : AActor
 {
     UPROPERTY()
@@ -11,12 +6,23 @@ class AHeadsUpDisplay3DActor : AActor
     UEUIWidgetComponent WidgetComp;
     float32 DrawScale = 4.0f;
 
-
     UFUNCTION()
     void Tick_Implementation(const float32 DeltaSeconds)
     {
+        int local_9;
+        APlayerCameraManager local_12;
         APlayerController local_2 = Gameplay::GetPlayerController(__GetWorldContext(), 0);
-        if ((local_2 == nullptr || ((local_2.PlayerCameraManager == nullptr))))
+        if (local_2 == nullptr)
+        {
+            local_9 = 1;
+        }
+        else
+        {
+            local_12 = local_2.PlayerCameraManager;
+            bool local_13 = (local_12 == nullptr);
+            local_9 = local_13;
+        }
+        if (local_9 != 0)
         {
             return;
         }

@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Debug_EnableFootCurve = FConsoleVariable();
 
 struct FAnimationFootStepCurve
@@ -44,6 +43,7 @@ struct FAnimCurveSimple
     }
     FAnimCurveSimple(const FName &inout Name, const FName &inout Socket, TArray<float32> &inout Keys, const TArray<float32> &inout Values)
     {
+        this.CurveName = Name;
         this.SocketName = Socket;
         this.CurveKeys = Keys;
         this.CurveValues = Values;
@@ -59,7 +59,6 @@ struct FAnimSequenceSampleConfig
     float32 AssetLength;
     UPROPERTY()
     TArray<FAnimCurveSimple> CurveInfo;
-
 
     void Reset()
     {
@@ -84,7 +83,6 @@ struct FBlendSpaceSampleConfig
     float32 AssetLength;
     UPROPERTY()
     TArray<FAnimCurveSimple> CurveInfo;
-
 
 }
 
@@ -111,7 +109,6 @@ struct FFootLineTraceConfig
     UPROPERTY()
     bool bManualUpdate = false;
 
-
     void CopyFromTemplate(const FFootLineTraceTemplateConfig &inout Template)
     {
         this.TraceLengthForSurfaceDetection = Template.TraceLengthForSurfaceDetection;
@@ -136,7 +133,6 @@ struct FFootStepTimeConfig
     UPROPERTY()
     EESMAnimStateType AnimStateType;
 
-
 }
 
 struct FFootLineTraceTemplateConfig
@@ -155,7 +151,6 @@ struct FFootLineTraceTemplateConfig
     float32 VFXDelay = 0.0f;
     UPROPERTY()
     float32 SFXDelay = 0.0f;
-
 
 }
 
@@ -176,7 +171,6 @@ struct FESMFootStepAutoInstanceData
     TMap<FName, bool> CanTriggerFootStepEvent;
     UPROPERTY()
     float LastTriggerEventTime = -1.0;
-
 
 }
 
@@ -235,7 +229,6 @@ class UESMAction_FootStepAuto : UESMBPBaseSpanTickAction
     float PreviewLastTriggerEventTime = -1.0;
     UPROPERTY()
     EPrefabType PreivewEntityPrefabType = EPrefabType(0);
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetViewInstanceDataInfo_Implementation() const

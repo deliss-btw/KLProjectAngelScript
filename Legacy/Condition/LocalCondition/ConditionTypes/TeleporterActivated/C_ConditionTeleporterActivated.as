@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_TeleporterActivatedConditionManager_NS
 {
     const TECSComponentDerivedPtr<FCS_TeleporterActivatedConditionManager> DerivedPtr = TECSComponentDerivedPtr<FCS_TeleporterActivatedConditionManager>();
@@ -104,16 +103,16 @@ bool RemoveTeleporterActivatedConditionManager(const FECSWorldPtr &inout World)
 }
 void __MonitorTeleporterActivatedConditionManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_TeleporterActivatedConditionManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_TeleporterActivatedConditionManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeleporterActivatedConditionManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_TeleporterActivatedConditionManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_TeleporterActivatedConditionManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeleporterActivatedConditionManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_TeleporterActivatedConditionManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_TeleporterActivatedConditionManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

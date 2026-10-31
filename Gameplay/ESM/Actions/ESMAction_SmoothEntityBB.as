@@ -1,10 +1,8 @@
-﻿
 enum EESMAction_SmoothEntityBBType
 {
     Linear,
     Degree,
 }
-
 
 class UESMAction_SmoothEntityBB : UESMBPBaseSpanTickAction
 {
@@ -18,7 +16,6 @@ class UESMAction_SmoothEntityBB : UESMBPBaseSpanTickAction
     float32 SmoothLerpSpeed = 0.5f;
     UPROPERTY()
     EESMAction_SmoothEntityBBType SmoothType;
-
 
     UFUNCTION()
     void Tick_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const

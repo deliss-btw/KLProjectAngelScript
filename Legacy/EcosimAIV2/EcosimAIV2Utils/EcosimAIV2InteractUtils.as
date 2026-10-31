@@ -1,4 +1,3 @@
-﻿
 namespace FEcosimAIV2Utils
 {
 bool IsEntityInteractingWithTarget(const FECSEntity &inout Entity, const bool bIsTargetEntityIDVar, const FECSEntity &inout TargetEntity, const bool bByIndex, const TSoftClassPtr<UInteractionBehaviorBase> &inout InteractBehaviorClass, const int InteractPointIndexValue, const int InteractBehaviorIndexValue)

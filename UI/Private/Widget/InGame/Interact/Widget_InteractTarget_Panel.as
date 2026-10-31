@@ -1,10 +1,6 @@
-﻿
 namespace UWidget_InteractTarget_Panel
 {
     const int ViewID = 0;
-
-// NOTE: class defaults are not authored in this module: UWidget_InteractTarget_Panel (default scalar field UEUIActivatableWidget.bAutoActivate has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
 
 }
 class UWidget_InteractTarget_Panel : UEUIActivatableWidget
@@ -91,7 +87,7 @@ class UWidget_InteractTarget_Panel : UEUIActivatableWidget
     }
     UUserWidget CreateInteractTargetWidget(const UClass WidgetClass, const APlayerController PlayerController)
     {
-        if ((WidgetClass == nullptr || (PlayerController == nullptr)))
+        if (WidgetClass == nullptr || (PlayerController == nullptr))
         {
             return nullptr;
         }
@@ -132,13 +128,11 @@ class UWidget_InteractTarget_Panel : UEUIActivatableWidget
         FVector local_16;
         FVector2D local_20;
         FString local_24;
-        bool local_10 = false;
-        FString local_25 = local_10;
+        bool local_25 = false;
         FSoftBrush local_72;
         FVector local_78;
         FVector2D local_82;
-        bool local_10_2 = false;
-        FVector2D local_83 = local_10_2;
+        bool local_83 = false;
         FECSEntity local_88;
         local_9 = ::FInteractUtils::GetCurrentInteractTargetInfoForUI(LocalPlayerPawnEntity, EInteractMode(InteractMode), local_16, local_20, local_24, local_25, local_72, local_78, local_82, local_83, local_88);
         if (local_8 == nullptr)
@@ -168,8 +162,8 @@ class UWidget_InteractTarget_Panel : UEUIActivatableWidget
                 local_90.SetInputActionType(EInteractMode(InteractMode));
             }
             this.SetWidgetPosition(local_8, local_90, local_16);
-            bool local_10_3 = !(local_72.GetResourceObject().IsNull());
-            if ((local_10_3 && !(!(local_24.IsEmpty())) && !(local_83)))
+            bool local_10 = !(local_72.GetResourceObject().IsNull());
+            if ((local_10 && !(!(local_24.IsEmpty())) && !(local_83)))
             {
                 local_90.SetVisibility(ESlateVisibility(1));
             }
@@ -178,7 +172,7 @@ class UWidget_InteractTarget_Panel : UEUIActivatableWidget
                 local_90.AS_Text_InteractType.SetText(FText::FromString(local_24));
                 local_90.AS_Text_InteractType.SetRenderTranslation(local_20);
                 FLinearColor local_126;
-                if (local_25 != 0)
+                if (local_25)
                 {
                     local_126 = FLinearColor(1.0f, 0.5f, 0.5f, 1.0f);
                 }
@@ -191,7 +185,7 @@ class UWidget_InteractTarget_Panel : UEUIActivatableWidget
                 local_90.SetVisibility(ESlateVisibility(4));
             }
             local_90.AS_InteractActionSwitch.SetRenderTranslation(local_20);
-            if (local_10_3)
+            if (local_10)
             {
                 UWidget_InteractTargetIcon local_134;
                 local_134 = local_94;
@@ -290,6 +284,7 @@ namespace UWidget_InteractTarget_Panel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_InteractTarget_Panel;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

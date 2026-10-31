@@ -1,5 +1,3 @@
-﻿
-
 struct FT_CameraAffector : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -10,7 +8,6 @@ struct FT_CameraAffector : FECSTrait
     UPROPERTY()
     FC_CameraAffector Config_FC_CameraAffector;
 
-
     FString ValidateConfig(const AECSPrefab Prefab) const
     {
         if (this.bHas_FC_CameraAffector)
@@ -20,13 +17,13 @@ struct FT_CameraAffector : FECSTrait
             {
                 FString local_8 = Prefab.GetPathName(nullptr);
                 FString local_12 = FString();
-                return local_12.Append("Prefab [").Append(local_8).Append("] ValidateConfig Fail: CameraAffector RadisuжІЎжњ‰жЊ‰йЂ’еўћжЋ’е€—пјЃ");
+                return local_12.Append("Prefab [").Append(local_8).Append("] ValidateConfig Fail: CameraAffector Radisu没有按递增排列！");
             }
             if (!(local_4.ValidDataRow()))
             {
                 FString local_12_2 = Prefab.GetPathName(nullptr);
                 FString local_8_2 = FString();
-                return local_8_2.Append("Prefab [").Append(local_12_2).Append("] ValidateConfig Fail: CameraAffector Configдё­жњ‰ж— ж•€зљ„DataRowпјЃ");
+                return local_8_2.Append("Prefab [").Append(local_12_2).Append("] ValidateConfig Fail: CameraAffector Config中有无效的DataRow！");
             }
         }
         return "";

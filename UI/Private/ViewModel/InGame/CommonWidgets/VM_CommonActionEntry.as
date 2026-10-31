@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonActionEntry
 {
     const int ModelId = 0;
@@ -370,7 +369,6 @@ struct __GeneratedProperties_FVM_CommonActionEntry
     float32 ContentOpacity;
     UPROPERTY()
     TEUIModelRef<FVM_CommonActionEntry> Self;
-
 
 }
 

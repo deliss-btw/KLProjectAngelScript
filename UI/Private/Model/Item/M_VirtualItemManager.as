@@ -1,4 +1,3 @@
-﻿
 namespace FMS_VirtualItemManager
 {
     const int ModelId = 0;
@@ -56,16 +55,11 @@ struct FMS_VirtualItemManager : FEUIModelSingleton
     }
     void GS_OnPlayerCoinNotify(const FPbPlayerCoinNotify &inout Notify)
     {
-        int local_3 = Notify.GetCoin();
-        this.UpdateVirtualItemFromNotify(this.GetSettings().CoinConfig);
-        int local_3_2 = Notify.GetVoucher();
-        this.UpdateVirtualItemFromNotify(this.GetSettings().VoucherConfig);
-        int local_3_3 = Notify.GetSouls();
-        this.UpdateVirtualItemFromNotify(this.GetSettings().SoulsConfig);
-        int local_3_4 = Notify.GetPoints();
-        this.UpdateVirtualItemFromNotify(this.GetSettings().PointsConfig);
-        int local_3_5 = Notify.GetBattleToken();
-        this.UpdateVirtualItemFromNotify(this.GetSettings().BattleTokenConfig);
+        this.UpdateVirtualItemFromNotify(this.GetSettings().CoinConfig, Notify.GetCoin());
+        this.UpdateVirtualItemFromNotify(this.GetSettings().VoucherConfig, Notify.GetVoucher());
+        this.UpdateVirtualItemFromNotify(this.GetSettings().SoulsConfig, Notify.GetSouls());
+        this.UpdateVirtualItemFromNotify(this.GetSettings().PointsConfig, Notify.GetPoints());
+        this.UpdateVirtualItemFromNotify(this.GetSettings().BattleTokenConfig, Notify.GetBattleToken());
         if (this.GetbCoinInitialized())
         {
             FEUIModelRef local_12 = this.GetPlayerInventory().opImplConv();

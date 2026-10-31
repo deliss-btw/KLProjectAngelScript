@@ -1,4 +1,3 @@
-﻿
 namespace FVM_EquipHoverTips
 {
     const int ModelId = 0;

@@ -1,5 +1,3 @@
-﻿
-
 struct FT_HUDIndicator : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -8,7 +6,7 @@ struct FT_HUDIndicator : FECSTrait
     UPROPERTY()
     FC_IndicatorConfig Config_FC_IndicatorConfig;
 
-    default CustomName = FName("HUDжЊ‡з¤є (FT_HUDIndicator)");
+    default CustomName = FName("HUD指示 (FT_HUDIndicator)");
 
     FT_HUDIndicator()
     {

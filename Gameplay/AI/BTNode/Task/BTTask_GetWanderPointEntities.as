@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_GetWanderPointEntities : UBTTask_ECSScriptBase
 {
     UPROPERTY()

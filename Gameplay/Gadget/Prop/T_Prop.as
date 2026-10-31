@@ -1,5 +1,3 @@
-﻿
-
 struct FT_Prop : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -148,7 +146,7 @@ struct FT_Prop : FECSTrait
         {
             if (!(this.Config_FC_PropEnvBreakableConfig.CheckValidSorted()))
             {
-                return FString().Append("Prefab [").Append(Prefab.GetPathName(nullptr)).Append("] ValidateConfig Fail: PropEnvBreakableConfig BreakPhasesжІЎжњ‰й™ЌеєЏжЋ’е€—");
+                return FString().Append("Prefab [").Append(Prefab.GetPathName(nullptr)).Append("] ValidateConfig Fail: PropEnvBreakableConfig BreakPhases没有降序排列");
             }
         }
         return "";

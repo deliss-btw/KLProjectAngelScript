@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ChatCommonAvatar
 {
     const int ModelId = 0;

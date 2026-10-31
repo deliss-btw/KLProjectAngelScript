@@ -1,5 +1,3 @@
-﻿
-
 class US_OculusSystem : UECSScriptSystem
 {
     US_OculusSystem()

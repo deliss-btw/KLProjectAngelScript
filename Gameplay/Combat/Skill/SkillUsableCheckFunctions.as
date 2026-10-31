@@ -1,5 +1,3 @@
-﻿
-
 class USkillUsableCheckFunctions_Default : USkillUsableCheckFunctions
 {
     USkillUsableCheckFunctions_Default()

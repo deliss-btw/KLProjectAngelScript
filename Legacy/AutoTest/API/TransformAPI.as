@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::API::TransformAPI
 {
 FVector GetLocation(const uint EntityId)

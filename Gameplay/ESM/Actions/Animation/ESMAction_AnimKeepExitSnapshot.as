@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_AnimKeepExitSnapshot : UESMBPBaseSpanAction
 {
     UESMAction_AnimKeepExitSnapshot()

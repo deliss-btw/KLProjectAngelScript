@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_AccountExclusiveCollectionPrefabPresentationConfig_NS
 {
     const TECSComponentDerivedPtr<FC_AccountExclusiveCollectionPrefabPresentationConfig> DerivedPtr = TECSComponentDerivedPtr<FC_AccountExclusiveCollectionPrefabPresentationConfig>();
@@ -63,7 +62,6 @@ struct FCE_AccountExclusiveCollectionPrefabCollected_DataTracker : FECSEvent
     FECSEntity InteractSourceEntity;
     UPROPERTY()
     uint DataId;
-
 
 }
 
@@ -147,37 +145,37 @@ bool RemoveAccountExclusiveCollectionPrefabPresentationConfig(const FECSEntity &
 }
 FECSMonitorRuntimeView __GetMonitorAccountExclusiveCollectionPrefabPresentationConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AccountExclusiveCollectionPrefabPresentationConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AccountExclusiveCollectionPrefabPresentationConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAccountExclusiveCollectionPrefabPresentationConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AccountExclusiveCollectionPrefabPresentationConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AccountExclusiveCollectionPrefabPresentationConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAccountExclusiveCollectionPrefabPresentationConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AccountExclusiveCollectionPrefabPresentationConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AccountExclusiveCollectionPrefabPresentationConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAccountExclusiveCollectionPrefabPresentationConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AccountExclusiveCollectionPrefabPresentationConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AccountExclusiveCollectionPrefabPresentationConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAccountExclusiveCollectionPrefabPresentationConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AccountExclusiveCollectionPrefabPresentationConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AccountExclusiveCollectionPrefabPresentationConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAccountExclusiveCollectionPrefabPresentationConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AccountExclusiveCollectionPrefabPresentationConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AccountExclusiveCollectionPrefabPresentationConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAccountExclusiveCollectionPrefabPresentationConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AccountExclusiveCollectionPrefabPresentationConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AccountExclusiveCollectionPrefabPresentationConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAccountExclusiveCollectionPrefabPresentationConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AccountExclusiveCollectionPrefabPresentationConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AccountExclusiveCollectionPrefabPresentationConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AccountExclusiveCollectionPrefabPresentationCache
@@ -260,36 +258,36 @@ bool RemoveAccountExclusiveCollectionPrefabPresentationCache(const FECSEntity &i
 }
 FECSMonitorRuntimeView __GetMonitorAccountExclusiveCollectionPrefabPresentationCacheOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AccountExclusiveCollectionPrefabPresentationCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AccountExclusiveCollectionPrefabPresentationCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAccountExclusiveCollectionPrefabPresentationCacheOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AccountExclusiveCollectionPrefabPresentationCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AccountExclusiveCollectionPrefabPresentationCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAccountExclusiveCollectionPrefabPresentationCacheOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AccountExclusiveCollectionPrefabPresentationCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AccountExclusiveCollectionPrefabPresentationCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAccountExclusiveCollectionPrefabPresentationCacheOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AccountExclusiveCollectionPrefabPresentationCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AccountExclusiveCollectionPrefabPresentationCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAccountExclusiveCollectionPrefabPresentationCacheOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AccountExclusiveCollectionPrefabPresentationCache, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AccountExclusiveCollectionPrefabPresentationCache, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAccountExclusiveCollectionPrefabPresentationCacheLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AccountExclusiveCollectionPrefabPresentationCache, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AccountExclusiveCollectionPrefabPresentationCache, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAccountExclusiveCollectionPrefabPresentationCacheActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AccountExclusiveCollectionPrefabPresentationCache, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AccountExclusiveCollectionPrefabPresentationCache, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAccountExclusiveCollectionPrefabPresentationCacheModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AccountExclusiveCollectionPrefabPresentationCache, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AccountExclusiveCollectionPrefabPresentationCache, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

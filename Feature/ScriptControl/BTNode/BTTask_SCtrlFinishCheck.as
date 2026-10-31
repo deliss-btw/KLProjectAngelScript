@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_SCtrlFinishCheck : UBTTask_ECSScriptBase
 {
     UPROPERTY()
@@ -66,7 +64,7 @@ class UBTTask_SCtrlFinishCheck : UBTTask_ECSScriptBase
         {
             return EBTNodeResult(1);
         }
-        EScriptControlBehaviorName local_17 = local_12.CurrentActionBehavior;
+        int local_17 = local_12.CurrentActionBehavior;
         bool local_16 = this.CheckCurrentBehaviorFinished(Entity, EScriptControlBehaviorName(local_17), true);
         if (local_16)
         {

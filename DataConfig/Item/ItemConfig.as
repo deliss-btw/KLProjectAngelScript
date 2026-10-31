@@ -1,4 +1,3 @@
-﻿
 enum EItemRarity
 {
     RarityD,
@@ -35,7 +34,6 @@ enum EDSDropType
     ShareDrop,
     Personal,
 }
-
 
 struct FItemGainWayConfig
 {
@@ -93,7 +91,6 @@ struct FItemConfig : FDataObject
     TArray<FItemGainWayConfig> GainWays;
     UPROPERTY()
     FDataObjectPtr m_ItemShortageTips;
-
 
     int GetBankMax() const
     {
@@ -157,12 +154,11 @@ struct FItemParamConfig
     UPROPERTY()
     uint Count;
 
-
 }
 
 TDataObjectPtr<FItemConfig> GetData(const FItemTableRowRef &inout RowRef)
 {
-    return TDataObjectPtr<FItemConfig>();
+    return TDataObjectPtr<FItemConfig>(RowRef);
 }
 namespace ItemConfigLibrary
 {

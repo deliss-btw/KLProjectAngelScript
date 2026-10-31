@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_EcosimAITryKickRiderOff : UBTTask_ECSScriptBase
 {
     default SetNodeName("EcosimAITryKickRiderOff");

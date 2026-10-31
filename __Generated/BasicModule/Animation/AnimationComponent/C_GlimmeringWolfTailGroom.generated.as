@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_GlimmeringWolfTailGroomHistory_NS
 {
     const TECSComponentDerivedPtr<FC_GlimmeringWolfTailGroomHistory> DerivedPtr = TECSComponentDerivedPtr<FC_GlimmeringWolfTailGroomHistory>();
@@ -38,7 +37,7 @@ struct FC_GlimmeringWolfTailGroomHistory : FECSComponent
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_GlimmeringWolfTailGroom &inout OutValue) const
     {
-        return this.GetInterpoValue(WorldTime, OutValue);
+        return this.History.GetInterpoValue(WorldTime, OutValue);
     }
 }
 
@@ -122,36 +121,36 @@ bool RemoveGlimmeringWolfTailGroomHistory(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorGlimmeringWolfTailGroomHistoryOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_GlimmeringWolfTailGroomHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_GlimmeringWolfTailGroomHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorGlimmeringWolfTailGroomHistoryOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_GlimmeringWolfTailGroomHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_GlimmeringWolfTailGroomHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorGlimmeringWolfTailGroomHistoryOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_GlimmeringWolfTailGroomHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_GlimmeringWolfTailGroomHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorGlimmeringWolfTailGroomHistoryOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_GlimmeringWolfTailGroomHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_GlimmeringWolfTailGroomHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorGlimmeringWolfTailGroomHistoryOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_GlimmeringWolfTailGroomHistory, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_GlimmeringWolfTailGroomHistory, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorGlimmeringWolfTailGroomHistoryLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_GlimmeringWolfTailGroomHistory, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_GlimmeringWolfTailGroomHistory, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGlimmeringWolfTailGroomHistoryActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_GlimmeringWolfTailGroomHistory, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_GlimmeringWolfTailGroomHistory, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGlimmeringWolfTailGroomHistoryModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_GlimmeringWolfTailGroomHistory, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_GlimmeringWolfTailGroomHistory, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

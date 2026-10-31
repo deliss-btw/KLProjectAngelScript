@@ -1,4 +1,3 @@
-﻿
 enum EHeadsUpDisplayType
 {
     WorldSpace,
@@ -11,7 +10,6 @@ enum EHeadsUpDisplayRelationType
     Teammate,
     Enemy,
 }
-
 
 struct FHeadsUpDisplayConfig : FDataObject
 {
@@ -36,7 +34,6 @@ struct FHeadsUpDisplayConfig : FDataObject
     FGameAttributeRef EnergyDisplayRuleAttribute;
     UPROPERTY()
     FGameAttributeRef EnergyDisplayRuleAttributeMax;
-
 
 }
 

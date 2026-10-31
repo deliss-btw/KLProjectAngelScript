@@ -1,5 +1,3 @@
-﻿
-
 class APresentationOnlyPrefab : AKLLevelPrefabBase
 {
     UPROPERTY()

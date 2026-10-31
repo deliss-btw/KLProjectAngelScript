@@ -1,5 +1,3 @@
-﻿
-
 class UHTNService_EcosimAIV2_Test : UHTNService_ECSScriptBase
 {
     UHTNService_EcosimAIV2_Test()
@@ -34,7 +32,6 @@ class UHTNService_EcosimAIV2_RequestTeamMove : UHTNService_ECSScriptBase
     bool bRequestWhileExecutionStart = false;
     UPROPERTY()
     bool bQuitWhileExecutionFinish = false;
-
 
     UFUNCTION()
     void ExecutionStart_Implementation(const FHTNContext &inout Context)
@@ -136,8 +133,7 @@ class UHTNService_EcosimAIV2_LevelControlLookatTarget : UHTNService_ECSScriptBas
             local_14 = this.LookatTargetLocation.GetValue(Context.opImplConv());
         }
         FVector local_30 = (local_14 - FVector(local_24.opCall().GetPosition()));
-        FECSEntity local_48;
-        FAIInputUtils::SimulateViewInput(local_48, Context.PawnEntity);
+        FAIInputUtils::SimulateViewInput(Context.PawnEntity, FRotator::MakeFromX(local_30));
         return;
     }
     UFUNCTION()
@@ -164,8 +160,7 @@ class UHTNService_EcosimAIV2_LevelControlLookatTarget : UHTNService_ECSScriptBas
             local_14 = this.LookatTargetLocation.GetValue(Context.opImplConv());
         }
         FVector local_30 = (local_14 - FVector(local_24.opCall().GetPosition()));
-        FECSEntity local_48;
-        FAIInputUtils::SimulateViewInput(local_48, Context.PawnEntity);
+        FAIInputUtils::SimulateViewInput(Context.PawnEntity, FRotator::MakeFromX(local_30));
         return;
     }
     UFUNCTION()
@@ -190,7 +185,6 @@ class UHTNService_EcosimAIV2_PlanRelationWithTarget : UHTNService_ECSScriptBase
     FAISmart_EntityId InteractSourceEntityID;
     UPROPERTY()
     FAISmart_EntityId InteractTargetEntityID;
-
 
     UFUNCTION()
     void OnPlanExecutionStarted_Implementation(const FHTNContext &inout Context)
@@ -307,7 +301,7 @@ class UHTNService_EcosimAIV2_PlanRelationWithTarget : UHTNService_ECSScriptBase
             OutRelation = local_18.NPCPostInteractRelation;
             if (int(OutRelation) == 0)
             {
-                OutTarget.GetId();
+                FECSEntityId local_33 = OutTarget.GetId();
                 OutSource.GetId();
                 XError(ELog(30), FString().Append("[PlanRelationWithTarget] Behavior ").Append(local_18.GetClass().GetName()).Append(" NPCPostInteractRelation is None, must be configured for plan execution. Source=").Append(local_3).Append(local_3).Append(" Target="));
             }
@@ -370,7 +364,6 @@ struct FHTNService_GetTargetEntityInteractTransformInstanceData
 {
     UPROPERTY()
     int InteractPointIndex = -1;
-
 
 }
 
@@ -600,7 +593,7 @@ class UHTNService_EcosimAIV2_SetHUDIndicatorConfig : UHTNService_ECSScriptBase
     UFUNCTION()
     void ExecutionStart_Implementation(const FHTNContext &inout Context)
     {
-        XWarning(ELog(22), "UHTNService_EcosimAIV2_SetHUDIndicatorConfig е·Іеєџејѓдё”дёЌе†Ќз”џж•€пјљHUDIndicatorSystem е·Іиў«еџєдєЋ Spot зљ„ Indicator / HeadsUpDisplay дЅ“зі»еЏ–д»ЈгЂ‚");
+        XWarning(ELog(22), "UHTNService_EcosimAIV2_SetHUDIndicatorConfig 已废弃且不再生效：HUDIndicatorSystem 已被基于 Spot 的 Indicator / HeadsUpDisplay 体系取代。");
         return;
     }
     UFUNCTION()
@@ -616,7 +609,6 @@ class UHTNService_EcosimAIV3_UpdateMountSeatInfo : UHTNService_ECSScriptBase
     FBlackboardKeySelector VehicleEntityID;
     UPROPERTY()
     bool ReservedDriverSeat = false;
-
 
     UFUNCTION()
     void OnPlanExecutionStarted_Implementation(const FHTNContext &inout Context)
@@ -776,7 +768,7 @@ class UHTNService_EcosimAIV2_ResolveTeamLeader : UHTNService_ECSScriptBase
         }
         local_20.ResolveLeader();
         HTNNode::SetWorldStateValueAsBool(Context, this.bIsTeamLeader, (local_20.LeaderEntity == local_4));
-        local_20.LeaderEntity.GetId();
+        HTNNode::SetWorldStateValueAsEntityId(Context, this.TeamLeaderEntityID, local_20.LeaderEntity.GetId());
         return;
     }
     UFUNCTION()
@@ -798,7 +790,7 @@ class UHTNService_EcosimAIV2_ResolveTeamLeader : UHTNService_ECSScriptBase
             return;
         }
         HTNNode::SetWorldStateValueAsBool(Context, this.bIsTeamLeader, (local_20.LeaderEntity == local_4));
-        local_20.LeaderEntity.GetId();
+        HTNNode::SetWorldStateValueAsEntityId(Context, this.TeamLeaderEntityID, local_20.LeaderEntity.GetId());
         return;
     }
 }
@@ -836,7 +828,7 @@ class UHTNService_EcosimAIV2_CopySmartValueToBlackboard : UHTNService_ECSScriptB
     }
     void DoCopy(const FHTNContext &inout Context)
     {
-        int local_1 = 0;
+        float32 local_1 = 0.0f;
         GetValue local_6;
         if (local_6.opCall(Context.opImplConv(), local_1))
         {

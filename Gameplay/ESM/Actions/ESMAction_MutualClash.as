@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_MutualClash : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ class UESMAction_MutualClash : UESMBPBaseSpanAction
     EMutualClashDamageType MutualClashDamageType;
     UPROPERTY()
     FString HitState = "HitMutualClash";
-
 
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const

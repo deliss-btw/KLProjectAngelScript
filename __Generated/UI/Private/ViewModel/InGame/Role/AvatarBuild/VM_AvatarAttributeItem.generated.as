@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_AvatarAttributeItem_Helpers
 {
 UFUNCTION()

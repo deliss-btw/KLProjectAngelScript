@@ -1,5 +1,3 @@
-﻿
-
 class UASAbilityTest : UAbilityASWritableBase
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ class UASAbilityTest : UAbilityASWritableBase
     int Runtime_Int = 0;
     UPROPERTY()
     float32 Runtime_Float = 0.0f;
-
 
     UFUNCTION()
     void RegisterListenerFunctions_Implementation()

@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_MailPanel
 {
     const int ViewID = 0;
@@ -40,7 +39,6 @@ class UWidget_MailPanel : UEUIActivatableWidget
     FGetEUIModelRef MailPanelDelegate;
     UPROPERTY()
     FGetEUIModelRef SelectedMailDetailDelegate;
-
 
     UFUNCTION()
     void OnInitialized_Implementation()
@@ -97,8 +95,7 @@ class UWidget_MailPanel : UEUIActivatableWidget
         TEUIModelRef<FVM_MailBriefItem> local_8 = TEUIModelRef<FVM_MailBriefItem>(FEUIModelContainer::GetModel(Item).opCall());
         if (local_8)
         {
-            int local_10 = GetMailId();
-            this.MailPanel.opArrow().SelectMail();
+            this.MailPanel.opArrow().SelectMail(GetMailId());
         }
         return;
     }
@@ -111,8 +108,7 @@ class UWidget_MailPanel : UEUIActivatableWidget
             TEUIModelRef<FVM_MailBriefItem> local_10 = TEUIModelRef<FVM_MailBriefItem>(FEUIModelContainer::GetModel(Item).opCall());
             if (local_10)
             {
-                int local_11 = GetMailId();
-                this.MailPanel.opArrow().SelectMail();
+                this.MailPanel.opArrow().SelectMail(GetMailId());
             }
         }
         return;
@@ -130,7 +126,30 @@ class UWidget_MailPanel : UEUIActivatableWidget
     UFUNCTION()
     void OnSelectedMailIndexChanged(const int Index)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_5;
+        int local_6;
+        this.bIsUpdatingView = true;
+        if (Index != INDEX_NONE)
+        {
+            this.w_list_email.SetSelectedIndex(Index);
+        }
+        this.bIsUpdatingView = false;
+        if (this.UI_Email_Comp_Content != nullptr)
+        {
+            if (Index != INDEX_NONE)
+            {
+                local_6 = 4;
+                local_5 = local_6;
+            }
+            else
+            {
+                local_6 = 1;
+                local_5 = local_6;
+            }
+            this.UI_Email_Comp_Content.SetVisibility(ESlateVisibility(local_5));
+        }
+        this.RefreshActionBindingVisibility();
+        return;
     }
     UFUNCTION()
     void OnMailDetailVMChanged(const TEUIModelRef<FVM_MailDetail> &inout InMailDetail)
@@ -177,7 +196,43 @@ class UWidget_MailPanel : UEUIActivatableWidget
     UFUNCTION()
     void OnViewDetailsPressed()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        bool local_4;
+        UWidget local_6;
+        if (!(this.MailPanel) || (this.MailPanel.opArrow().GetSelectedMailIndex() == INDEX_NONE))
+        {
+            return;
+        }
+        if (this.UI_Email_Comp_Content != nullptr)
+        {
+            UEUITextBlock local_10 = this.UI_Email_Comp_Content.GetContentTextBlock();
+            UEUICommonListView local_14 = this.UI_Email_Comp_Content.GetRewardListView();
+            if (local_10 != nullptr && (local_10.GetHyperlinkCount() > 0))
+            {
+                local_6 = local_10;
+            }
+            else
+            {
+                if (local_14 == nullptr)
+                {
+                    local_4 = false;
+                }
+                else
+                {
+                    local_4 = this.MailPanel.opArrow().GetMailDetailVM();
+                }
+                local_4 = local_4 && this.MailPanel.opArrow().GetMailDetailVM().opArrow().GetHasReward();
+                if (local_4)
+                {
+                    local_6 = local_14;
+                }
+            }
+        }
+        if (local_6 != nullptr)
+        {
+            this.RuleSetUserFocus(local_6);
+        }
+        this.RefreshActionBindingVisibility();
+        return;
     }
     UFUNCTION()
     void OnOpenLinkPressed()
@@ -270,11 +325,11 @@ class UWidget_MailPanel : UEUIActivatableWidget
         {
             FDialogDynamicCallback local_10;
             local_10.BindUFunction(this, n"OnConfirmDeleteMail");
-            FText local_16 = NSLOCTEXT("Mail", "DialogCancel", "иї”е›ћ");
-            FText local_20 = NSLOCTEXT("Mail", "DialogConfirm", "зЎ®и®¤");
+            FText local_16 = NSLOCTEXT("Mail", "DialogCancel", "返回");
+            FText local_20 = NSLOCTEXT("Mail", "DialogConfirm", "确认");
             FDialogCallback local_52 = FDialogCallback(local_10);
-            FText local_56 = NSLOCTEXT("Mail", "DeleteMailWithAttachment", "иЇҐй‚®д»¶еђ«жњ‰й™„д»¶жњЄйў†еЏ–пјЊжЇеђ¦е€ й™¤пјџ");
-            FText local_60 = NSLOCTEXT("Mail", "DeleteMailTitle", "жЏђз¤є");
+            FText local_56 = NSLOCTEXT("Mail", "DeleteMailWithAttachment", "该邮件含有附件未领取，是否删除？");
+            FText local_60 = NSLOCTEXT("Mail", "DeleteMailTitle", "提示");
             FCommonDialogParam local_62;
             ::CommonPopup::Dialog_Decision(local_60, local_56, local_52, local_20, local_16, local_62);
             return;
@@ -305,11 +360,11 @@ class UWidget_MailPanel : UEUIActivatableWidget
         }
         FDialogDynamicCallback local_6;
         local_6.BindUFunction(this, n"OnConfirmClearRead");
-        FText local_12 = NSLOCTEXT("Mail", "DialogCancel", "иї”е›ћ");
-        FText local_16 = NSLOCTEXT("Mail", "DialogConfirm", "зЎ®и®¤");
+        FText local_12 = NSLOCTEXT("Mail", "DialogCancel", "返回");
+        FText local_16 = NSLOCTEXT("Mail", "DialogConfirm", "确认");
         FDialogCallback local_48 = FDialogCallback(local_6);
-        FText local_52 = NSLOCTEXT("Mail", "ClearReadMessage", "зЎ®и®¤е€ й™¤ж‰Ђжњ‰е·ІиЇ»й‚®д»¶пјџ\n<Gray16>жњЄйў†еЏ–й™„д»¶зљ„й‚®д»¶дёЌдјљиў«е€ й™¤</>");
-        FText local_56 = NSLOCTEXT("Mail", "ClearReadTitle", "жЏђз¤є");
+        FText local_52 = NSLOCTEXT("Mail", "ClearReadMessage", "确认删除所有已读邮件？\n<Gray16>未领取附件的邮件不会被删除</>");
+        FText local_56 = NSLOCTEXT("Mail", "ClearReadTitle", "提示");
         FCommonDialogParam local_58;
         ::CommonPopup::Dialog_Decision(local_56, local_52, local_48, local_16, local_12, local_58);
         return;
@@ -335,7 +390,103 @@ class UWidget_MailPanel : UEUIActivatableWidget
     }
     void RefreshActionBindingVisibility()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        bool local_6;
+        bool local_8;
+        bool local_9;
+        bool local_5 = (int(this.GetCurrentInputType()) == 1);
+        if (this.MailPanel)
+        {
+            local_8 = !(this.MailPanel.opArrow().IsMailEmpty());
+        }
+        else
+        {
+            local_8 = false;
+        }
+        if (this.MailPanel)
+        {
+            local_6 = (this.MailPanel.opArrow().GetSelectedMailIndex() != INDEX_NONE);
+        }
+        else
+        {
+            local_6 = false;
+        }
+        if (this.MailPanel)
+        {
+            bool local_7;
+            local_7 = this.MailPanel.opArrow().GetbHasMorePages();
+        }
+        else
+        {
+            bool local_7;
+            local_7 = false;
+        }
+        if (this.MailPanel)
+        {
+            bool local_1;
+            local_1 = this.MailPanel.opArrow().GetbHasClaimableAttachment();
+        }
+        else
+        {
+            bool local_1;
+            local_1 = false;
+        }
+        bool local_12 = false;
+        bool local_13 = false;
+        if (!(this.MailPanel))
+        {
+            local_9 = false;
+        }
+        else
+        {
+            local_9 = this.MailPanel.opArrow().GetMailDetailVM();
+        }
+        if (local_9)
+        {
+            local_12 = this.MailPanel.opArrow().GetMailDetailVM().opArrow().GetHasAttachment();
+            local_13 = this.MailPanel.opArrow().GetMailDetailVM().opArrow().GetHasReward();
+        }
+        bool local_17 = false;
+        if (this.UI_Email_Comp_Content != nullptr)
+        {
+            UEUITextBlock local_22 = this.UI_Email_Comp_Content.GetContentTextBlock();
+            if (local_22 != nullptr)
+            {
+                local_17 = (local_22.GetHyperlinkCount() > 0);
+            }
+        }
+        if (!(local_8))
+        {
+            local_9 = false;
+        }
+        else
+        {
+            bool local_7;
+            bool local_1;
+            local_9 = local_7 || local_1;
+        }
+        bool local_10 = local_17 || local_13;
+        bool local_25 = !(local_5);
+        bool local_11 = local_25 || !(this.IsListFocused());
+        bool local_26 = local_11 || !(local_6);
+        this.ViewDetailsBinding.SetCollapsed(local_26 || !(local_10));
+        this.OpenLinkBinding.SetCollapsed(!(local_17));
+        this.ClaimBinding.SetCollapsed(!(local_12));
+        bool local_25_2 = local_5 || !(local_9);
+        this.ClaimAllPCBinding.SetCollapsed(local_25_2);
+        this.ClaimAllGamepadBinding.SetCollapsed(!(local_5) || !(local_9));
+        this.DeleteBinding.SetCollapsed(!(local_6));
+        if (this.MailPanel)
+        {
+            local_25_2 = this.MailPanel.opArrow().GetbHasDeletableReadMail();
+        }
+        else
+        {
+            local_25_2 = false;
+        }
+        this.ClearReadPCBinding.SetCollapsed(local_5 || !(local_25_2));
+        bool local_26_2 = !(local_5);
+        this.ClearReadGamepadBinding.SetCollapsed(local_26_2 || !(local_25_2));
+        return;
     }
     UFUNCTION()
     void MailPanel_SelectMailByIndex(const int Index) const
@@ -555,6 +706,7 @@ namespace UWidget_MailPanel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MailPanel;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedMailIndexChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnMailDetailVMChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCanClaimAttachmentChanged"));

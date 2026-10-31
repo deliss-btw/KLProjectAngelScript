@@ -1,4 +1,3 @@
-﻿
 enum EServerDataTrackDeathReason
 {
     DirectByDamage,
@@ -203,13 +202,15 @@ void EntityRescueFromNearDeath(const FECSEntity &inout RescueEntity, const FECSE
     Has local_16;
     if (!(local_16.opCall()))
     {
-        FString local_10 = RescueEntity.ToString();
+        FString local_20 = (RescueEntity.ToString() + " not NearDead!");
+        XWarning(ELog(0), local_20);
         return;
     }
     FECSWorldPtr local_22 = ECS::GetECSWorld();
     if (!(local_28.GetReviveData()))
     {
-        FString local_10_2 = RescueEntity.ToString();
+        FString local_20_2 = (RescueEntity.ToString() + " not found revivedata!");
+        XError(ELog(0), local_20_2);
         return;
     }
     if (bRescueWithAnimation)
@@ -369,7 +370,8 @@ void EntityReadyToDestroy(const FECSEntity &inout Entity)
     bool local_5 = local_4.opCall();
     if (local_5)
     {
-        FString local_10 = Entity.ToString();
+        FString local_14 = (Entity.ToString() + " Already WaitingDestroy!");
+        XWarning(ELog(0), local_14);
         return;
     }
     FC_ReadyToDestroyTag local_22;

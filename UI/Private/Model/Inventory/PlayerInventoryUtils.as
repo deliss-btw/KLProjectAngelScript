@@ -1,5 +1,3 @@
-﻿
-
 namespace PlayerInventoryUtils
 {
 void ShowInventoryAddMessage(const UObject ContextObject, const TDataObjectPtr<FItemConfig> &inout ItemConfig, const int IncreaseNum)
@@ -14,7 +12,7 @@ void ShowInventoryAddMessage(const UObject ContextObject, const TDataObjectPtr<F
     {
         FVM_ItemRarity& local_12 = FVM_ItemRarity::Create(ContextObject, ItemConfig.opArrow().Rarity);
         FCommonSideHintData local_108;
-        local_108.Content = FText::Format(NSLOCTEXT("InventoryAddItemSideHintContent", "иЋ·еѕ—{0}: {1}x{2}"), local_12.GetRarityConfig().opArrow().ItemNamePrefix, ItemConfig.opArrow().ItemName, IncreaseNum);
+        local_108.Content = FText::Format(NSLOCTEXT("InventoryAddItemSideHintContent", "获得{0}: {1}x{2}"), local_12.GetRarityConfig().opArrow().ItemNamePrefix, ItemConfig.opArrow().ItemName, IncreaseNum);
         local_108.Icon = ItemConfig.opArrow().ItemIcon;
         local_108.SpecialBgImage = ItemFeature_SpecialBg_Util::GetSpecialBgImage(ItemConfig);
         local_108.Lifetime = CommonPopupSettings::Get().DefaultSmallSideHintLifetime;

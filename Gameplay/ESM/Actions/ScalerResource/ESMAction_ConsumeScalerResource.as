@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_ConsumeScalerResource : UESMBPBaseInstantAction
 {
     UPROPERTY()

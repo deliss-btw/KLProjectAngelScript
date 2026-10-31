@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Level_DebugPublicEvent = FConsoleVariable();
 
 class US_LevelPublicEventSystem : UECSScriptSystem
@@ -89,9 +88,9 @@ class US_LevelPublicEventSystem : UECSScriptSystem
                 local_14 = local_24;
             }
         }
-        FString local_28 = local_24.Append("Event: ").Append(local_14).Append("  entity: ").Append(Entity.GetIdValue()).Append(" Status: ").Append(LevelPublicEventInfo.GetStatus()).Append(" Time: ").Append(local_1);
-        Entity.GetEntityName();
-        __GetWorldContext();
+        EPublicEventStatus local_30 = LevelPublicEventInfo.GetStatus();
+        int local_29 = Entity.GetIdValue();
+        System::PrintString(__GetWorldContext(), FString(local_24.Append("Event: ").Append(local_14).Append("  entity: ").Append(local_29).Append(" Status: ").Append(local_30).Append(" Time: ").Append(local_1)), true, false, FLinearColor::Green, -1.0f, Entity.GetEntityName());
         return;
     }
     UFUNCTION()

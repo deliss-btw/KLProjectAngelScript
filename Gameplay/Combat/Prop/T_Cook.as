@@ -1,5 +1,3 @@
-﻿
-
 struct FT_Cook : FECSTrait
 {
     FECSTrait _base_FECSTrait;

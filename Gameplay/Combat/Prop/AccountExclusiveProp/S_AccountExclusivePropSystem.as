@@ -1,5 +1,3 @@
-﻿
-
 class US_AccountExclusivePropSystem : UECSScriptSystem
 {
     US_AccountExclusivePropSystem()
@@ -25,10 +23,9 @@ class US_AccountExclusivePropSystem : UECSScriptSystem
         }
         if (local_18)
         {
-            FECSEntityId local_23;
             Entity.GetEntityName();
-            Entity.GetId();
-            FName local_27 = FName(FString().Append("LocalEntityOfDefaultEntity_Id_").Append(local_23).Append(local_23).Append("_Name_"));
+            FECSEntityId local_23 = Entity.GetId();
+            FString local_22 = FString();
             FECSWorldPtr local_30 = Entity.GetWorld();
             local_18.LocalEntityId = local_23;
             if (FECSEntity(local_18.LocalEntityId).IsValid())
@@ -37,8 +34,7 @@ class US_AccountExclusivePropSystem : UECSScriptSystem
                 local_42.opCall(FC_LocalTag());
                 if (local_52)
                 {
-                    Entity.GetId();
-                    local_52.DefaultEntityId = local_23;
+                    local_52.DefaultEntityId = Entity.GetId();
                 }
             }
         }

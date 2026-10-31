@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_NewsTracker
 {
     const int ViewID = 0;
@@ -20,7 +19,6 @@ class UWidget_NewsTracker : UEUIUserWidget
     bool bScrollInitialized = false;
     UPROPERTY()
     FGetEUIModelRef NewsTickerDelegate;
-
 
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
@@ -73,6 +71,7 @@ namespace UWidget_NewsTracker
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_NewsTracker;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

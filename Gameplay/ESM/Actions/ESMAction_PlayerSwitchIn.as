@@ -1,10 +1,8 @@
-﻿
 enum ENextEntityType
 {
     NextCharacter,
     EntityBB,
 }
-
 
 class UESMAction_PlayerSwitchIn : UESMBPBaseInstantAction
 {
@@ -16,7 +14,6 @@ class UESMAction_PlayerSwitchIn : UESMBPBaseInstantAction
     FName SwitchInStateMachineName;
     UPROPERTY()
     FName SwitchInStateName;
-
 
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const

@@ -1,5 +1,3 @@
-﻿
-
 class UFillLightTestComponent : UActorComponent
 {
     AActor CachedParentActor;

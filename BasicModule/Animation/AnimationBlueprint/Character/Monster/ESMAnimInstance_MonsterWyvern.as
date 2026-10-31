@@ -1,5 +1,3 @@
-﻿
-
 class UESMAnimInstance_MonsterWyvern : UESMAnimInstance_MonsterBase
 {
     UPROPERTY()
@@ -14,7 +12,6 @@ class UESMAnimInstance_MonsterWyvern : UESMAnimInstance_MonsterBase
     float32 WingDynamicAlpha = 0.0f;
     UPROPERTY()
     float32 TailDynamicAlpha = 0.0f;
-
 
     UFUNCTION()
     void EntitySync_SyncHistory_Implementation(const FFPTime &inout SampleTime)
@@ -57,10 +54,9 @@ class UESMAnimInstance_MonsterWyvern : UESMAnimInstance_MonsterBase
     {
         if (this.Entity.IsValid())
         {
+            FC_RelativeDesiredRotation local_14;
             FFPTime local_6 = this.GetContextSampleTime();
-            FFPTime local_4 = (local_6 - 0.5);
-            FECSEntity::SampleHistory(this.Entity);
-            FFPTime local_14;
+            FECSEntity::SampleHistory(this.Entity).opCall((local_6 - 0.5), local_14);
             return FMath::Lerp(this.RelativeDesiredRotation.GetYaw(), local_14.GetYaw(), 0.5f);
         }
         else
@@ -73,10 +69,9 @@ class UESMAnimInstance_MonsterWyvern : UESMAnimInstance_MonsterBase
     {
         if (this.Entity.IsValid())
         {
+            FC_RelativeDesiredRotation local_14;
             FFPTime local_6 = this.GetContextSampleTime();
-            FFPTime local_4 = (local_6 - 0.5);
-            FECSEntity::SampleHistory(this.Entity);
-            FFPTime local_14;
+            FECSEntity::SampleHistory(this.Entity).opCall((local_6 - 0.5), local_14);
             return FMath::Lerp(this.RelativeDesiredRotation.GetYaw(), local_14.GetYaw(), 0.5f);
         }
         else

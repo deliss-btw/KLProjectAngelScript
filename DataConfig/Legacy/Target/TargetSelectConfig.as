@@ -1,4 +1,3 @@
-﻿
 enum EViewportSelectTeammateType
 {
     All,
@@ -14,7 +13,6 @@ enum ESelectTargetQuickSelectType
     Teammate3,
     Teammate4,
 }
-
 
 struct FSkillTargetPositionFXConfig
 {
@@ -36,7 +34,7 @@ struct FSkillTargetPositionFXConfig
     FFXConfig ToFXConfig() const
     {
         FFXConfig local_116;
-        local_116.SetAsset(this);
+        local_116.SetAsset(this.Asset);
         local_116.SetScale(this.Scale);
         local_116.SetOverrideParams(this.OverrideParams);
         local_116.SetbDetach(true);
@@ -95,7 +93,6 @@ struct FViewportSelectTargetParams : FDataObject
     UPROPERTY()
     FDataObjectPtr m_QuickSelectOutOfRangeMessageHint;
 
-
     const TDataObjectPtr<FEnhancedInputContextConfig> GetConfirmInputContextConfig() const property
     {
         const TDataObjectPtr<FEnhancedInputContextConfig> __r;
@@ -147,7 +144,6 @@ struct FSkillTargetPositionSelectParams : FDataObject
     FDataObjectPtr CameraLookAtTargetConfig;
     UPROPERTY()
     FSkillTargetPositionFXConfig HintFxConfig;
-
 
 }
 

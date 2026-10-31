@@ -1,4 +1,3 @@
-﻿
 enum EVirtualItemType
 {
     None,
@@ -11,7 +10,6 @@ enum EVirtualItemType
     MaxCount,
 }
 
-
 struct FVirtualItemConfig : FItemConfig
 {
     FItemConfig _base_FItemConfig;
@@ -22,7 +20,6 @@ struct FVirtualItemConfig : FItemConfig
 
     FVirtualItemConfig()
     {
-        super();
         this.VirtualType = EVirtualItemType(0);
         this.__InitDefaults();
         return;

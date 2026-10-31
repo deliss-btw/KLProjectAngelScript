@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommissionFinishResurltItem_Helpers
 {
 UFUNCTION()

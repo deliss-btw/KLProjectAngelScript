@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FEcologyPropLayoutDef (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FEcologyPropLayoutDef : FCreatureDefinitionRow
 {
     FCreatureDefinitionRow _base_FCreatureDefinitionRow;
@@ -21,7 +16,6 @@ struct FEcologyPropLayoutDef : FCreatureDefinitionRow
 
     FEcologyPropLayoutDef()
     {
-        super();
         this.bRandomizeLocalRotationZOnSpawn = false;
         this.bSnapPerpendicularlyToGround = false;
         this.bApplyRandomSpawnScaleUniformFactor = true;
@@ -47,12 +41,12 @@ struct FEcologyPropLayoutDef : FCreatureDefinitionRow
         FDataObjectValidationResult local_16;
         if (!(this.PropPrefabDef.IsValid()))
         {
-            local_16.Error = FString("PropPrefabдёЌиѓЅдёєз©єпјЃ");
+            local_16.Error = FString("PropPrefab不能为空！");
             return local_16;
         }
         if (this.bApplyRandomSpawnScaleUniformFactor && (this.SpawnScaleUniformFactorRandomRange.X > this.SpawnScaleUniformFactorRandomRange.Y || (this.SpawnScaleUniformFactorRandomRange.X <= 0.0)))
         {
-            local_16.Error = FString("зЎ®дїќSpawnScaleRandomRangeзљ„зі»ж•°е¤§дєЋ0пјЊдё”Min <= Max!");
+            local_16.Error = FString("确保SpawnScaleRandomRange的系数大于0，且Min <= Max!");
         }
         return local_16;
     }

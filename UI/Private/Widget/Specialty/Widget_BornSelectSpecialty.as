@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_BornSelectSpecialty
 {
     const int ViewID = 0;
@@ -145,6 +144,7 @@ namespace UWidget_BornSelectSpecialty
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_BornSelectSpecialty;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnBornAlreadyChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectSpecialty"));
     return;

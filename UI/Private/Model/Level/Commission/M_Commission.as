@@ -1,4 +1,3 @@
-﻿
 namespace FM_CommissionInstanceData
 {
     const int ModelId = 0;

@@ -1,4 +1,3 @@
-﻿
 namespace BlueprintFunctions_Common
 {
 FFPTime GetWorldTime(const FECSEntity &inout ContextEntity)
@@ -122,17 +121,15 @@ void AddTargetToSourceFlock(const FECSEntity &inout SourceEntity, const FECSEnti
 UFUNCTION()
 void PushAttributeStopRecover(const FECSEntityAdapter &inout Entity, const FGameAttributeRef &inout Attribute)
 {
-    int local_8 = 0;
     FECSWorldPtr local_2 = Entity.GetWorld();
-    FGameAttributeUtils::PushStopRecover(Entity.opImplConv(), Attribute, local_8.Time);
+    FGameAttributeUtils::PushStopRecover(Entity.opImplConv(), Attribute, 0.Time);
     return;
 }
 UFUNCTION()
 void PopAttributeStopRecover(const FECSEntityAdapter &inout Entity, const FGameAttributeRef &inout Attribute)
 {
-    int local_8 = 0;
     FECSWorldPtr local_2 = Entity.GetWorld();
-    FGameAttributeUtils::PopStopRecover(Entity.opImplConv(), Attribute, local_8.Time);
+    FGameAttributeUtils::PopStopRecover(Entity.opImplConv(), Attribute, 0.Time);
     return;
 }
 UFUNCTION()
@@ -160,7 +157,7 @@ void HealHP(const FECSEntityAdapter &inout HealFromEntity, const FECSEntityAdapt
     }
     FFPTime local_22 = BlueprintFunctions_Common::GetWorldTime(Entity.opImplConv());
     float32 local_23 = 0.0f;
-    if (!(HealHpUtils::HealHP(HealFromEntity.opImplConv(), Entity.opImplConv(), local_22, HP, HPRatio, local_23)))
+    if (!(HealHpUtils::HealHP(HealFromEntity.opImplConv(), Entity.opImplConv(), local_22, HP, HPRatio, EHealHPType(HealHPType), local_23)))
     {
         return;
     }
@@ -375,6 +372,7 @@ FECSEntity AddBuff(const FECSEntityAdapter &inout BuffFromEntity, const FECSEnti
 {
     FBuffAddParams local_40;
     local_40.BuffOwnerEntity = Entity.opImplConv();
+    local_40.BuffConfig = BuffConfig;
     local_40.BuffFromEntity = BuffFromEntity.opImplConv();
     local_40.OverrideDuration = OverrideDuration;
     local_40.StackNum = AddStackNum;
@@ -510,10 +508,7 @@ FECSEntity CreateCombatArealEffectEntityByPrefab(const FECSEntityAdapter &inout 
     Has local_8;
     if (local_8.opCall())
     {
-        ACombatArealEffectPrefab local_12 = PrefabClass.GetDefaultObject();
-        OwnerEntity;
-        FECSEntity local_22;
-        local_4 = local_22;
+        local_4 = FEntityPoolUtils::PopFromPoolOrSpawnEntity(false, EEntityPoolType(4), OwnerEntity.opImplConv(), PrefabClass.GetDefaultObject());
         if (local_4.IsValid())
         {
             ECS::MarkEntityPrefabPendingInit(local_4, PrefabClass, Position, Rotation.Quaternion(), EPrefabCollisionAlignment(2), false);
@@ -546,15 +541,14 @@ FECSEntity CreateArealBuffEntity(const FECSEntityAdapter &inout OwnerEntity, FCo
     Has local_24;
     if (local_24.opCall())
     {
-        OwnerEntity;
-        FECSEntity local_36;
-        local_4 = local_36;
+        bool local_7 = false;
+        local_4 = FEntityPoolUtils::PopFromPoolOrSpawnEntity(local_7, EEntityPoolType(4), OwnerEntity.opImplConv(), nullptr);
         if (local_4.IsValid())
         {
             local_4.InitTransform(Position, Rotation.Quaternion());
+            TDataObjectPtr<FCombatArealEffectConfigDataObject_Buff> local_122 = TDataObjectPtr<FCombatArealEffectConfigDataObject_Buff>(UDataObjectManager::GetDataObjectPtr(Data));
             FC_CombatArealEffectBuffOverride local_98;
             Assign local_72;
-            TDataObjectPtr<FCombatArealEffectConfigDataObject_Buff> local_122;
             local_72.opCall(local_98).SetDataObject(local_122);
             local_136.SetSpawnTime(BlueprintFunctions_Common::GetWorldTime(local_4));
             local_136.SetLifeDuration(FFPTime(LifeDuration));
@@ -585,15 +579,14 @@ FECSEntity CreateArealAbilityEffectTriggerEntity(const FECSEntityAdapter &inout 
     Has local_24;
     if (local_24.opCall())
     {
-        OwnerEntity;
-        FECSEntity local_36;
-        local_4 = local_36;
+        bool local_7 = false;
+        local_4 = FEntityPoolUtils::PopFromPoolOrSpawnEntity(local_7, EEntityPoolType(4), OwnerEntity.opImplConv(), nullptr);
         if (local_4.IsValid())
         {
             local_4.InitTransform(Position, Rotation.Quaternion());
+            TDataObjectPtr<FCombatArealEffectConfigDataObject_AbilityEffectTrigger> local_122 = TDataObjectPtr<FCombatArealEffectConfigDataObject_AbilityEffectTrigger>(UDataObjectManager::GetDataObjectPtr(Data));
             FC_CombatArealEffectAbilityEffectTriggerOverride local_98;
             Assign local_72;
-            TDataObjectPtr<FCombatArealEffectConfigDataObject_AbilityEffectTrigger> local_122;
             local_72.opCall(local_98).SetDataObject(local_122);
             local_136.SetSpawnTime(BlueprintFunctions_Common::GetWorldTime(local_4));
             local_136.SetLifeDuration(FFPTime(LifeDuration));
@@ -680,7 +673,7 @@ FECSEntity PlayFXDurational(const FECSEntityAdapter &inout OwnerEntity, const TS
         local_161 = int(FFXUtils::ToEFXOffsetSpace(EFXOffsetSpaceWithAttachmentOption(RotationOffsetSpace)));
         local_118.SetRotationOffsetSpace(EFXOffsetSpace(local_161));
     }
-    return ECSFX::PlayFXDurationalEx(OwnerEntity.opImplConv(), local_118, BlueprintFunctions_Common::GetWorldTime(OwnerEntity.opImplConv()), 1.0f, true, AttachOveride, false);
+    return ECSFX::PlayFXDurationalEx(OwnerEntity.opImplConv(), local_118, BlueprintFunctions_Common::GetWorldTime(OwnerEntity.opImplConv()), 1.0f, true, AttachOveride, EAttachFXStopMethod(AttachFXStopMethod), false);
 }
 UFUNCTION()
 void PlayFXAnimCurve(const FECSEntityAdapter &inout FxEntity, const UFXAnimCurveConfig AnimCurve, const float32 Duration = 1)
@@ -951,6 +944,8 @@ void ProjectileTimelineTurnState(const FECSEntity &inout ProjectileEntity, const
     Get local_4;
     if (local_4.opCall())
     {
+        UProjectileTimelineAsset local_12;
+        FProjectileTimelineUtils::TurnToState(ProjectileEntity, local_12.TimelineConfigData, TargetState, BlueprintFunctions_Common::GetWorldTime(ProjectileEntity));
     }
     return;
 }
@@ -960,8 +955,8 @@ void TriggerProjectileEvent(const FECSEntity &inout ProjectileEntity, const FNam
     Get local_4;
     if (local_4.opCall())
     {
-        FECSEntity local_12;
-        BlueprintFunctions_Common::GetWorldTime(local_12);
+        UProjectileTimelineAsset local_14;
+        FProjectileTimelineUtils::ActivateEventTimeline(ProjectileEntity, local_14.TimelineConfigData, EventName, FVector::ZeroVector, FQuat4f::Identity, ENTITY_NULL, BlueprintFunctions_Common::GetWorldTime(ProjectileEntity));
     }
     return;
 }
@@ -1173,8 +1168,55 @@ FECSEntity SpawnNPCInValidPos(const FECSEntityAdapter &inout Entity, const TSoft
 UFUNCTION()
 FECSEntity BP_SpawnPropInValidPos(const FECSEntityAdapter &inout Entity, const TSoftClassPtr<APropPrefabBase> &inout SoftPrefab, const FVector &inout Location, const FRotator &inout Rotation, const FEntityCreateFinishDelegate &inout OnCreateFinish, const float32 MaxNearbyRadius = 500, const float32 StepLength = 50, const bool bSpawnEvenNoValidPos = true, const bool bSpawnOnGround = false, const float32 SpawnOnGroundMaxTraceDownDist = 1000.f, const float32 SpawnOnGroundHeightFromGround = 50.f, const FName &inout SpawnInitEntryName = NAME_None)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    FECSEntity __r; return __r;
+    UObject local_24;
+    FECSEntity __return;
+    if (!(Entity.IsValid()) == !(false))
+    {
+        XError(ELog(0), FString().Append("Failed to SpawnNPCInValidPos,  Entity not Valid"));
+        return FECSEntity();
+    }
+    if (ECS::GetRuntimeInfo().IsServer)
+    {
+        bool local_25;
+        local_24 = SoftPrefab.ToSoftObjectPath().TryLoad();
+        if (local_24 == nullptr)
+        {
+            XError(ELog(0), FString().Append("Failed to BP_SpawnPropInValidPos,  Prefab not Valid"));
+            return FECSEntity();
+        }
+        bool local_1 = false;
+        local_25 = local_1;
+        FVector local_52 = FASCommonUtils::FindLegalLocationByPrefab(local_25, Entity.opImplConv(), SoftPrefab.Get().GetDefaultObject(), Location, Rotation.Quaternion(), MaxNearbyRadius, StepLength, 8, true);
+        if (local_25 || bSpawnEvenNoValidPos)
+        {
+            if (bSpawnOnGround)
+            {
+                FHitResult local_118;
+                FCollisionQueryParams local_156;
+                local_156.bTraceComplex = false;
+                local_156.AddIgnoredEntityId(Entity.GetEntity().GetId().GetIdValue());
+                FCollisionResponseParams local_176;
+                if (FPhysicsUtils::LineTraceSingle(Entity.opImplConv(), false, EPhysicsTraceTag(38), local_118, local_52, (local_52 - (FVector(FVector::UpVector) * SpawnOnGroundMaxTraceDownDist)), FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(5)), local_156, local_176))
+                {
+                    XLog(ELog(4), FString().Append("BP_SpawnPropInValidPos SpawnOnGround hit at ").Append(local_118.Location).Append(", adjusted Z from ").Append(local_52.Z).Append(" to ").Append((local_118.Location.Z + SpawnOnGroundHeightFromGround)));
+                    local_52.Z = (local_118.Location.Z + SpawnOnGroundHeightFromGround);
+                }
+                else
+                {
+                    XLog(ELog(4), FString().Append("BP_SpawnPropInValidPos SpawnOnGround trace failed from ").Append(local_52).Append(" downward ").Append(SpawnOnGroundMaxTraceDownDist).Append(", skip spawn"));
+                    __return = FECSEntity();
+                }
+            }
+            FECSEntity local_190 = PropUtils::SpawnPropByPrefabNew(Entity.opImplConv(), SoftPrefab.Get(), BlueprintFunctions_Common::GetWorldTime(Entity.opImplConv()), local_52, Rotation, SpawnInitEntryName);
+            if (OnCreateFinish.IsBound())
+            {
+                ULevelEventManager::Get().RegisterEntityEntityCreateFinishCallback(local_190, OnCreateFinish);
+            }
+            return local_190;
+        }
+    }
+    __return = FECSEntity();
+    return __return;
 }
 UFUNCTION()
 void InitEntityAddBuff(const FECSEntityAdapter &inout Entity, const FBuffConfigRef &inout ConfigRef)
@@ -1508,6 +1550,7 @@ void DispatchAISpecialToken(const FECSEntityAdapter &inout Entity, const TDataOb
 {
     if (SpecialToken)
     {
+        TArray<FAISmart_AnyValue> local_8;
         TArray<FECSEntityId> local_12;
         if (int(DispatchMode) == 1)
         {
@@ -1520,7 +1563,7 @@ void DispatchAISpecialToken(const FECSEntityAdapter &inout Entity, const TDataOb
                 }
             }
         }
-        FECSEntity local_34 = Entity.opImplConv();
+        FAICombatTokenUtils::GenerateSpecialToken(Entity.opImplConv(), SpecialToken, local_8, GenerateTokenDelay, EAISpecialTokenDispatchMode(DispatchMode), local_12);
     }
     return;
 }
@@ -1612,8 +1655,7 @@ void ToggleVisualComponents(const FECSEntity &inout Entity, const bool bHidden, 
     }
     if (local_20)
     {
-        InstigatorObject.GetFName();
-        FECSWorldPtr local_14 = Entity.GetWorld();
+        VisualComponentToggleUtils::SetVisualComponentHiddenWithPotentialDelay(Entity, local_20, Names, bHidden, Entity.GetWorld().GetFixedTime().Time, InstigatorObject.GetFName(), true);
     }
     return;
 }
@@ -1721,6 +1763,7 @@ void DamageTarget(const FECSEntityAdapter &inout Entity, const FECSEntity &inout
     TDataObjectPtr<FAttackData> local_54 = FCombatUtils::GetAttackDataPtrFromDataTable(AttackDataConfig.opImplConv(), Entity.opImplConv());
     if (local_54)
     {
+        int local_187;
         const FAttackData& local_98;
         FFPTime local_86 = BlueprintFunctions_Common::GetWorldTime(Entity.opImplConv());
         GetDefaulted local_96;
@@ -1752,6 +1795,7 @@ void DamageTarget(const FECSEntityAdapter &inout Entity, const FECSEntity &inout
             break;
         }
         }
+        local_187 = 0;
         if (local_98.HasHitPresentation())
         {
             FCE_HitEvent local_190;
@@ -1766,7 +1810,7 @@ void DamageTarget(const FECSEntityAdapter &inout Entity, const FECSEntity &inout
             local_190.StrikeData.SetStrikeShape(local_212);
             local_190.StrikeData.SetStrikeDirection(local_176);
             local_190.StrikeData.SetDecalConfig(DecalConfig.opImplConv());
-            int local_177 = int(local_190._base_FECSEvent);
+            local_187 = int(local_190._base_FECSEvent);
         }
         bool local_2 = FDamageUtils::IsDamageToAvatar(Target);
         FAttackInfo local_278;
@@ -1778,9 +1822,9 @@ void DamageTarget(const FECSEntityAdapter &inout Entity, const FECSEntity &inout
         }
         FECSEntity local_84 = Entity.opImplConv();
         FECSEntity local_84_2 = Entity.opImplConv();
-        FECSEntity local_84_3 = Entity.opImplConv();
-        FECSEntity local_308 = Entity.opImplConv();
-        FECSEntity local_312 = Entity.opImplConv();
+        FAttackRecoverEnergyValue local_294;
+        FAttackBaseDamageValue local_301;
+        FDamageUtils::AddHitDamage(Entity.opImplConv(), Entity.opImplConv(), Entity.opImplConv(), Target, local_278, NAME_None, local_301, local_294, 1.0f, NAME_None, false, false, local_92, local_92, local_176, local_187, local_86, false);
     }
     return;
 }
@@ -2016,19 +2060,24 @@ void ConsumeTemporarySkillTime(const FECSEntityAdapter &inout Entity)
 UFUNCTION()
 void SetSkillDisabledByConfig(const FECSEntityAdapter &inout Entity, const USkillConfig SkillConfig, const bool bDisabled)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    int local_7 = FSkillUtils::GetSkillIndex(Entity.opImplConv(), SkillConfig);
+    if (local_7 != INDEX_NONE)
+    {
+        FSkillUtils::SetSkillDisabled(Entity.opImplConv(), local_7, bDisabled);
+    }
+    return;
 }
 UFUNCTION()
 void SetSkillSlotDisabled(const FECSEntityAdapter &inout Entity, const ESkillSlot SkillSlot, const bool bDisabled)
 {
-    FSkillUtils::SetSkillSlotDisabled(Entity.opImplConv(), bDisabled);
+    FSkillUtils::SetSkillSlotDisabled(Entity.opImplConv(), ESkillSlot(SkillSlot), bDisabled);
     return;
 }
 UFUNCTION()
 bool HasSkill(const FECSEntityAdapter &inout Entity, const USkillConfig SkillConfig)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    bool __r; return __r;
+    int local_1 = INDEX_NONE;
+    return (FSkillUtils::GetSkillIndex(Entity.opImplConv(), SkillConfig) != local_1);
 }
 UFUNCTION()
 int GetSkillIndexByConfig(const FECSEntityAdapter &inout Entity, const USkillConfig SkillConfig)
@@ -2038,43 +2087,89 @@ int GetSkillIndexByConfig(const FECSEntityAdapter &inout Entity, const USkillCon
 UFUNCTION()
 int GetSkillIndexBySlot(const FECSEntityAdapter &inout Entity, const ESkillSlot SkillSlot)
 {
-    return FSkillUtils::GetSkillIndex(Entity.opImplConv());
+    return FSkillUtils::GetSkillIndex(Entity.opImplConv(), ESkillSlot(SkillSlot));
 }
 UFUNCTION()
 int GetContextSkillIndex(const FECSEntityAdapter &inout Entity)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    int __r; return __r;
+    if ((!((UEASAbility::GetContextAbility() != nullptr))))
+    {
+        return INDEX_NONE;
+    }
+    return UEASAbility::GetContextAbility().GetContextSkillIndex();
 }
 UFUNCTION()
 void ConsumeSkillCD(const FECSEntityAdapter &inout Entity, const int SkillIndex)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    if (SkillIndex == INDEX_NONE)
+    {
+        return;
+    }
+    FSkillUtils::ConsumeSkillCD(Entity.opImplConv(), SkillIndex, BlueprintFunctions_Common::GetWorldTime(Entity.opImplConv()));
+    return;
 }
 UFUNCTION()
 void ConsumeSkillAttribute(const FECSEntityAdapter &inout Entity, const int SkillIndex)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    if (SkillIndex == INDEX_NONE)
+    {
+        return;
+    }
+    FSkillUtils::ConsumeSkillAttribute(Entity.opImplConv(), SkillIndex, BlueprintFunctions_Common::GetWorldTime(Entity.opImplConv()));
+    return;
 }
 UFUNCTION()
 void ConsumeSkillItem(const FECSEntityAdapter &inout Entity, const int SkillIndex)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    int local_8 = 0;
+    if (SkillIndex == INDEX_NONE)
+    {
+        return;
+    }
+    FSkillUtils::GetSkillInstance(Entity.opImplConv(), SkillIndex);
+    InventoryUtils::ConsumeInventoryItem(Entity.opImplConv(), TDataObjectPtr<FItemConfig>(local_8.GetConsumeConfig().ConsumeItemRow), int(local_8.GetConsumeConfig().ConsumeItemNumber));
+    return;
 }
 UFUNCTION()
 void RecoverSkillCDBySecond(const FECSEntityAdapter &inout Entity, const float32 Seconds, const int SkillIndex)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    if (SkillIndex == INDEX_NONE)
+    {
+        return;
+    }
+    FSkillUtils::RecoverSkillCDBySecond(Entity.opImplConv(), SkillIndex, BlueprintFunctions_Common::GetWorldTime(Entity.opImplConv()), Seconds);
+    return;
 }
 UFUNCTION()
 void RecoverSkillCDByRate(const FECSEntityAdapter &inout Entity, const float32 Rate, const int SkillIndex)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    if (SkillIndex == INDEX_NONE)
+    {
+        return;
+    }
+    FSkillUtils::RecoverSkillCD(Entity.opImplConv(), SkillIndex, BlueprintFunctions_Common::GetWorldTime(Entity.opImplConv()), Rate);
+    return;
 }
 UFUNCTION()
 void RecoverAllSimpleSkillCD(const FECSEntityAdapter &inout Entity)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    FFPTime local_8 = BlueprintFunctions_Common::GetWorldTime(Entity.opImplConv());
+    int local_11 = FSkillUtils::GetSkillIndex(Entity.opImplConv(), ESkillSlot(3));
+    int local_9 = FSkillUtils::GetSkillIndex(Entity.opImplConv(), ESkillSlot(5));
+    int local_12 = FSkillUtils::GetSkillIndex(Entity.opImplConv(), ESkillSlot(6));
+    if (local_11 != INDEX_NONE)
+    {
+        FSkillUtils::RecoverSkillCD(Entity.opImplConv(), local_11, local_8, 1.0f);
+    }
+    if (local_9 != INDEX_NONE)
+    {
+        FSkillUtils::RecoverSkillCD(Entity.opImplConv(), local_9, local_8, 1.0f);
+    }
+    if (local_12 != INDEX_NONE)
+    {
+        FSkillUtils::RecoverSkillCD(Entity.opImplConv(), local_12, local_8, 1.0f);
+    }
+    return;
 }
 UFUNCTION()
 EFactionRelation GetEntityFactionRelation(const FECSEntityAdapter &inout EntityA, const FECSEntity &inout EntityB)
@@ -2098,7 +2193,7 @@ void SetEntityFaction(const FECSEntityAdapter &inout Entity, const EFaction Fact
             }
         }
     }
-    FFactionUtils::SetEntityFaction(Entity.opImplConv());
+    FFactionUtils::SetEntityFaction(Entity.opImplConv(), EFaction(Faction));
     return;
 }
 UFUNCTION()
@@ -2286,8 +2381,7 @@ FAITargetingQueryResult ExecuteTargetingQuery(const FECSEntity &inout Entity, co
     {
         return FAITargetingQueryResult();
     }
-    FAITargetingQueryConfig::CreateBehaviorTreeContextForEntity(Entity);
-    return FAITargetingUtils::Query(Entity, TargetingQueryConfig, FAISmartValueContext());
+    return FAITargetingUtils::Query(Entity, TargetingQueryConfig, FAISmartValueContext(FAITargetingQueryConfig::CreateBehaviorTreeContextForEntity(Entity)));
 }
 UFUNCTION()
 void GetCurrentAttackTarget(const FECSEntity &inout Entity, bool &out HasAttackTarget, FECSEntity &out TargetEntity)
@@ -2407,9 +2501,12 @@ void PushExternalAITargetingQuery(const FECSEntity &inout Entity, const FName &i
         XWarning(ELog(14), FString().Append("PushExternalAITargetingQuery: QueryConfig is null (SourceName=").Append(SourceName.ToString()).Append(")"));
         return;
     }
-    FAITargetingQueryConfig::CreateBehaviorTreeContextForEntity(Entity);
+    FAIBehaviorTreeContext local_26 = FAITargetingQueryConfig::CreateBehaviorTreeContextForEntity(Entity);
     TArray<FAISmart_EntityId> local_46;
     local_46.Add(FAISmart_EntityId(n"TargetEntityID", EAISmartValue(0)));
+    FAITargetingQueryResult local_56;
+    TArray<FAISmartEntityValue> local_66 = FAITargetingUtils::BuildQueryOutputs(Entity, QueryConfig, local_46, FAISmartValueContext(local_26), local_56);
+    FAITargetingUtils::PushQueryInstance(Entity, EAITargetingQuerySourceType(3), QueryConfig, local_66, local_56, SourceName, 0);
     return;
 }
 UFUNCTION()
@@ -2435,7 +2532,7 @@ void PopExternalAITargetingQuery(const FECSEntity &inout Entity, const FName &in
 UFUNCTION()
 void AddInventoryItem(const FECSEntityAdapter &inout Entity, const FItemTableRowRef &inout Item, const int number = 1)
 {
-    InventoryUtils::AddInventoryItem(Entity.opImplConv(), TDataObjectPtr<FItemConfig>(), number);
+    InventoryUtils::AddInventoryItem(Entity.opImplConv(), TDataObjectPtr<FItemConfig>(Item), number);
     return;
 }
 UFUNCTION()
@@ -2458,7 +2555,7 @@ void SpawnCollectItem(const FECSEntityAdapter &inout Entity, const TSoftClassPtr
     UObject local_18;
     FECSEntity local_4;
     PropEntity = local_4;
-    if (ECS::GetRuntimeInfo().IsServer)
+    if (int(ECS::GetRuntimeInfo().IsServer) != 0)
     {
         local_18 = SoftPrefab.ToSoftObjectPath().TryLoad();
         if (local_18 == nullptr)
@@ -2475,7 +2572,7 @@ void RemoveInventoryItem(const FECSEntityAdapter &inout Entity, const FItemTable
 {
     if (ECS::GetRuntimeInfo().IsServer)
     {
-        InventoryUtils::RemoveInventoryItem(Entity.opImplConv(), TDataObjectPtr<FItemConfig>(), number);
+        InventoryUtils::RemoveInventoryItem(Entity.opImplConv(), TDataObjectPtr<FItemConfig>(Item), number);
     }
     return;
 }
@@ -2503,12 +2600,68 @@ void RemoveItemDrop(const FECSEntityAdapter &inout Entity, const EDropTriggerTyp
 UFUNCTION()
 void SpawnProp(const FECSEntityAdapter &inout Entity, const TSoftClassPtr<APropPrefab> &inout SoftPrefab, const FVector &inout Location, const FRotator &inout Rotation, FECSEntity &out PropEntity, const bool bSpawnOnGround = false, const float32 SpawnOnGroundMaxTraceDownDist = 1000.f, const float32 SpawnOnGroundHeightFromGround = 50.f)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    FECSEntity local_4;
+    PropEntity = local_4;
+    UObject local_16 = SoftPrefab.ToSoftObjectPath().TryLoad();
+    if (local_16 == nullptr)
+    {
+        XError(ELog(0), FString().Append("Failed to SpawnProp,  Prefab not Valid"));
+        return;
+    }
+    FVector local_30 = Location;
+    if (bSpawnOnGround)
+    {
+        FHitResult local_96;
+        FCollisionQueryParams local_134;
+        local_134.bTraceComplex = false;
+        local_134.AddIgnoredEntityId(Entity.GetEntity().GetId().GetIdValue());
+        FCollisionResponseParams local_164;
+        if (FPhysicsUtils::LineTraceSingle(Entity.opImplConv(), false, EPhysicsTraceTag(38), local_96, local_30, (local_30 - (FVector(FVector::UpVector) * SpawnOnGroundMaxTraceDownDist)), FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(5)), local_134, local_164))
+        {
+            XLog(ELog(4), FString().Append("SpawnProp SpawnOnGround hit at ").Append(local_96.Location).Append(", adjusted Z from ").Append(local_30.Z).Append(" to ").Append((local_96.Location.Z + SpawnOnGroundHeightFromGround)));
+            local_30.Z = (local_96.Location.Z + SpawnOnGroundHeightFromGround);
+        }
+        else
+        {
+            XLog(ELog(4), FString().Append("SpawnProp SpawnOnGround trace failed from ").Append(local_30).Append(" downward ").Append(SpawnOnGroundMaxTraceDownDist).Append(", skip spawn"));
+            return;
+        }
+    }
+    PropEntity = PropUtils::SpawnPropByPrefab(Entity.opImplConv(), SoftPrefab.Get(), BlueprintFunctions_Common::GetWorldTime(Entity.opImplConv()), local_30, Rotation);
+    return;
 }
 UFUNCTION()
 void SpawnPropNew(const FECSEntityAdapter &inout Entity, const TSoftClassPtr<APropPrefabBase> &inout SoftPrefab, const FVector &inout Location, const FRotator &inout Rotation, FECSEntity &out PropEntity, const bool bSpawnOnGround = false, const float32 SpawnOnGroundMaxTraceDownDist = 1000.f, const float32 SpawnOnGroundHeightFromGround = 50.f)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    FECSEntity local_4;
+    PropEntity = local_4;
+    UObject local_16 = SoftPrefab.ToSoftObjectPath().TryLoad();
+    if (local_16 == nullptr)
+    {
+        XError(ELog(0), FString().Append("Failed to SpawnPropNew,  Prefab not Valid"));
+        return;
+    }
+    FVector local_30 = Location;
+    if (bSpawnOnGround)
+    {
+        FHitResult local_96;
+        FCollisionQueryParams local_134;
+        local_134.bTraceComplex = false;
+        local_134.AddIgnoredEntityId(Entity.GetEntity().GetId().GetIdValue());
+        FCollisionResponseParams local_164;
+        if (FPhysicsUtils::LineTraceSingle(Entity.opImplConv(), false, EPhysicsTraceTag(38), local_96, local_30, (local_30 - (FVector(FVector::UpVector) * SpawnOnGroundMaxTraceDownDist)), FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(5)), local_134, local_164))
+        {
+            XLog(ELog(4), FString().Append("[SpawnPropNew] SpawnOnGround hit at ").Append(local_96.Location).Append(", hit actor:[").Append(local_96.GetActor().GetActorNameOrLabel()).Append("] adjusted Z from ").Append(local_30.Z).Append(" to ").Append((local_96.Location.Z + SpawnOnGroundHeightFromGround)));
+            local_30.Z = (local_96.Location.Z + SpawnOnGroundHeightFromGround);
+        }
+        else
+        {
+            XLog(ELog(4), FString().Append("[SpawnPropNew] SpawnOnGround trace failed from ").Append(local_30).Append(" downward ").Append(SpawnOnGroundMaxTraceDownDist).Append(", skip spawn"));
+            return;
+        }
+    }
+    PropEntity = PropUtils::SpawnPropByPrefabNew(Entity.opImplConv(), SoftPrefab.Get(), BlueprintFunctions_Common::GetWorldTime(Entity.opImplConv()), local_30, Rotation, NAME_None);
+    return;
 }
 UFUNCTION()
 FECSEntity GetCharacterRegionEntity(const FECSEntity &inout CharacterEntity)
@@ -2740,8 +2893,7 @@ bool RangeTaunt(const FECSEntityAdapter &inout TauntEntity, const float32 Durati
     int local_190 = 0;
     bool local_1 = false;
     FECSEntity local_14 = FAITargetingUtils::GetPlayerController(TauntEntity.opImplConv());
-    bool local_2 = ECS::GetRuntimeInfo().IsServer;
-    if (local_2)
+    if (int(ECS::GetRuntimeInfo().IsServer) != 0)
     {
         FECSRuntimeQuery local_56 = FECSRuntimeQueryHelper::RuntimeQueryInSphere(TauntEntity.opImplConv(), Center, Radius, EECSQueryRegsitryType(3), false);
         Include local_100;
@@ -2774,7 +2926,7 @@ bool RangeTaunt(const FECSEntityAdapter &inout TauntEntity, const float32 Durati
             {
                 FECSEntity local_10 = TauntEntity.opImplConv();
                 FECSWorldPtr local_170_5 = TauntEntity.GetWorld();
-                FBuffUtils::AddBuff(TauntEntity.opImplConv(), TauntBuff, local_174.opCall().Time, local_10, false, DurationTimeSeconds, 1, false);
+                FBuffUtils::AddBuff(TauntEntity.opImplConv(), TauntBuff, local_174.opCall().Time, local_10, false, DurationTimeSeconds, 1, (0 != 0));
             }
         }
     }
@@ -2829,7 +2981,7 @@ bool RemoveEntityAllBeTaunted(const FECSEntityAdapter &inout BeTauntedEntity)
 UFUNCTION()
 void AddHostilityInRange(const FECSEntityAdapter &inout TargetEntity, const FVector &inout Center, const float32 Radius, const float32 Increment)
 {
-    if (ECS::GetRuntimeInfo().IsServer)
+    if (int(ECS::GetRuntimeInfo().IsServer) != 0)
     {
         int local_97;
         FECSRuntimeQuery local_48 = FECSRuntimeQueryHelper::RuntimeQueryInSphere(TargetEntity.opImplConv(), Center, Radius, EECSQueryRegsitryType(3), false);
@@ -2871,7 +3023,7 @@ void SpawnMonster(const TSoftClassPtr<AMonsterPrefab> &inout SoftPrefab, const F
     UObject local_18;
     FECSEntity local_4;
     MonsterEntity = local_4;
-    if (ECS::GetRuntimeInfo().IsServer)
+    if (int(ECS::GetRuntimeInfo().IsServer) != 0)
     {
         local_18 = SoftPrefab.ToSoftObjectPath().TryLoad();
         if (local_18 == nullptr)
@@ -2932,7 +3084,7 @@ void SpawnEnergyBall(const FECSEntityAdapter &inout Entity, const TSoftClassPtr<
         XError(ELog(0), FString().Append("Failed to SpawnEnergyBall,  Prefab not Valid"));
         return;
     }
-    EnergyBallUtils::SpawnEnergyBallByPrefab(Entity.opImplConv(), SoftPrefab.Get(), BlueprintFunctions_Common::GetWorldTime(Entity.opImplConv()), Location, SpawnNum);
+    EnergyBallUtils::SpawnEnergyBallByPrefab(Entity.opImplConv(), SoftPrefab.Get(), BlueprintFunctions_Common::GetWorldTime(Entity.opImplConv()), Location, SpawnNum, EEnergyBallSpawnDirection(SpawnDirection));
     return;
 }
 UFUNCTION()
@@ -2944,7 +3096,7 @@ void SpawnEnergyBallInSphere(const FECSEntityAdapter &inout Entity, const TSoftC
         XError(ELog(0), FString().Append("Failed to SpawnEnergyBallInSphere,  Prefab not Valid"));
         return;
     }
-    EnergyBallUtils::SpawnEnergyBallInSphere(Entity.opImplConv(), SoftPrefab.Get(), BlueprintFunctions_Common::GetWorldTime(Entity.opImplConv()), Radius, SpawnNum);
+    EnergyBallUtils::SpawnEnergyBallInSphere(Entity.opImplConv(), SoftPrefab.Get(), BlueprintFunctions_Common::GetWorldTime(Entity.opImplConv()), Radius, SpawnNum, EEnergyBallSpawnDirection(SpawnDirection));
     return;
 }
 UFUNCTION()
@@ -2968,17 +3120,17 @@ void PlayCameraPostProcessRadius(const FECSEntityAdapter &inout Entity, const fl
 UFUNCTION()
 void Level_AddCameraOverride(const FECSEntity &inout PlayerEntity, const FECSEntity &inout LookAtTargetEntity, const FVector &inout LookAtTargetOffset, const FName &inout LookAtTargetSocketName, const TDataObjectPtr<FCameraLookAtTargetConfig> &inout LookAtConfig, const TDataObjectPtr<FTPCameraStateConfig> &inout CameraState)
 {
-    ECameraOverrideLayer local_8;
     if (!(FASCommonUtils::GetUniquePlayerEntity(PlayerEntity).IsValid()))
     {
         return;
     }
     GetDefaulted local_14;
-    local_14.opCall().GetCameraViewTargetEntity();
+    FECSEntity local_8 = local_14.opCall().GetCameraViewTargetEntity();
     if (!(local_8.IsValid()))
     {
         return;
     }
+    FCameraOverrideUtils::AddSyncCameraOverrideLayer(ECameraOverrideLayer(5), local_8, LookAtTargetEntity, LookAtTargetOffset, LookAtTargetSocketName, LookAtConfig, CameraState);
     return;
 }
 UFUNCTION()
@@ -3016,9 +3168,9 @@ void Level_AddOverrideSceneCameraInfo(const FECSEntity &inout PlayerEntity, cons
     local_106.GetOverrideCamera().SetRotation(Rotation);
     local_106.GetOverrideCamera().SetFOV(FOV);
     local_106.GetOverrideCamera().SetFadeInDuration(FadeInDuration);
-    local_106.GetOverrideCamera().SetFadeInType();
+    local_106.GetOverrideCamera().SetFadeInType(ECameraBlend(FadeInType));
     local_106.GetOverrideCamera().SetFadeOutDuration(FadeOutDuration);
-    local_106.GetOverrideCamera().SetFadeOutType();
+    local_106.GetOverrideCamera().SetFadeOutType(ECameraBlend(FadeOutType));
     local_106.GetOverrideCamera().SetDataID(BlueprintFunctions_Common::GetWorldTime(PlayerEntity).GetTicks());
     FCameraOverrideUtils::AddSyncCameraOverrideLayer(PlayerEntity, local_106);
     return;
@@ -3155,8 +3307,7 @@ void PlayAudioVoOnlyPresentation(const FECSEntityAdapter &inout Entity, const FD
         XWarning(ELog(0), "Ability_Vo::PlayAudioVo, VoRowName is None.");
         return;
     }
-    FFPTime local_14 = FFPTime(-1);
-    Entity;
+    FAudioVoUtils::SendAudioVoEventOnlyPresentation(VoRowName.RowName, Entity.opImplConv(), FFPTime(-1));
     return;
 }
 UFUNCTION()
@@ -3193,7 +3344,6 @@ void PlayAudioVoWithSync(const FECSEntityAdapter &inout Entity, const FDataTable
 UFUNCTION()
 void SetMinimapIconVisibility(const FECSEntityAdapter &inout Target, const EEntityMinimapIconVisibility Visibility, const TArray<FECSEntity> &inout SpecifiedVisiblePlayers, const EEntityMinimapIconSource IconSource = EEntityMinimapIconSource::Config)
 {
-    int local_21 = 0;
     Has local_6;
     if (!(Target.IsValid()) || !(local_6.opCall()))
     {
@@ -3202,24 +3352,30 @@ void SetMinimapIconVisibility(const FECSEntityAdapter &inout Target, const EEnti
     }
     if (int(IconSource) == 4)
     {
+        int local_21;
+        int local_18;
         XWarning(ELog(16), FString().Append("Using deprecated function SetMinimapIconVisibility to set spot config visiblilty to ").Append(Visibility));
         local_21 = 5;
+        local_18 = local_21;
     }
     else
     {
+        int local_21;
+        int local_18;
         local_21 = 4;
+        local_18 = local_21;
     }
     switch (int(Visibility))
     {
+        int local_18;
     case 1:
     {
-        EntityLevelSpotUtils::ChangeSpotDataViewers(Target.opImplConv(), FLevelSpotViewers::AllViewers);
+        EntityLevelSpotUtils::ChangeSpotDataViewers(Target.opImplConv(), ELevelSpotDataSource(local_18), FLevelSpotViewers::AllViewers);
         return;
     }
     case 2:
     {
-        ELevelSpotDataSource local_48;
-        EntityLevelSpotUtils::ChangeSpotDataViewers(Target.opImplConv(), local_48);
+        EntityLevelSpotUtils::ChangeSpotDataViewers(Target.opImplConv(), ELevelSpotDataSource(local_18), FLevelSpotViewers(SpecifiedVisiblePlayers));
         return;
     }
     case 3:
@@ -3229,7 +3385,7 @@ void SetMinimapIconVisibility(const FECSEntityAdapter &inout Target, const EEnti
     }
     case 0:
     {
-        EntityLevelSpotUtils::ChangeSpotDataViewers(Target.opImplConv(), FLevelSpotViewers::NoViewer);
+        EntityLevelSpotUtils::ChangeSpotDataViewers(Target.opImplConv(), ELevelSpotDataSource(local_18), FLevelSpotViewers::NoViewer);
         return;
     }
     }
@@ -3238,7 +3394,34 @@ void SetMinimapIconVisibility(const FECSEntityAdapter &inout Target, const EEnti
 UFUNCTION()
 void AddMinimapIcon(const FECSEntityAdapter &inout Target, const FEntityMinimapIconSettingsRowRef &inout IconSettings, const EEntityMinimapIconVisibility Visibility, const TArray<FECSEntity> &inout SpecifiedVisiblePlayers)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    if (!(Target.IsValid()))
+    {
+        return;
+    }
+    switch (int(Visibility))
+    {
+    case 1:
+    {
+        EntityLevelSpotUtils::AddSpotData(Target.opImplConv(), ELevelSpotDataSource(4), FLevelSpotData::CreateMinimapIconOverride(TDataObjectPtr<FMinimapIconConfig>(IconSettings)));
+        return;
+    }
+    case 2:
+    {
+        EntityLevelSpotUtils::AddSpotDataForViewers(Target.opImplConv(), ELevelSpotDataSource(4), FLevelSpotData::CreateMinimapIconOverride(TDataObjectPtr<FMinimapIconConfig>(IconSettings)), FLevelSpotViewers(SpecifiedVisiblePlayers));
+        return;
+    }
+    case 3:
+    {
+        XError(ELog(0), "SameWithEntityNetRelevance is no longer supported");
+        return;
+    }
+    case 0:
+    {
+        EntityLevelSpotUtils::AddSpotDataForViewers(Target.opImplConv(), ELevelSpotDataSource(4), FLevelSpotData::CreateMinimapIconOverride(TDataObjectPtr<FMinimapIconConfig>(IconSettings)), FLevelSpotViewers::NoViewer);
+        return;
+    }
+    }
+    return;
 }
 UFUNCTION()
 void RemoveMinimapIcon(const FECSEntityAdapter &inout Target)
@@ -3248,12 +3431,11 @@ void RemoveMinimapIcon(const FECSEntityAdapter &inout Target)
     {
         return;
     }
-    ELevelSpotDataSource local_138;
-    EntityLevelSpotUtils::GetSpotData(Target.opImplConv(), local_138);
+    FLevelSpotData local_138 = EntityLevelSpotUtils::GetSpotData(Target.opImplConv(), ELevelSpotDataSource(4));
     if (local_138)
     {
         local_138.SetMinimapIconDisplaySettings(TDataObjectPtr<FMinimapIconConfig>(nullptr));
-        FECSEntity local_12 = Target.opImplConv();
+        EntityLevelSpotUtils::ChangeSpotData(Target.opImplConv(), ELevelSpotDataSource(4), local_138);
     }
     return;
 }
@@ -3498,7 +3680,7 @@ FECSEntity Level_PlayFX_Durational(const FECSEntityAdapter &inout OwnerEntity, c
         local_116.SetRotationOffsetSpace(EFXOffsetSpace(local_134));
     }
     FFPTime local_140 = ECS::GetContextTime();
-    return ECSFX::PlayFXDurationalEx(OwnerEntity.opImplConv(), local_116, local_140, 1.0f, true, AttachOveride, false);
+    return ECSFX::PlayFXDurationalEx(OwnerEntity.opImplConv(), local_116, local_140, 1.0f, true, AttachOveride, EAttachFXStopMethod(AttachFXStopMethod), false);
 }
 UFUNCTION()
 void Level_EcosimAIMuteCreature(const FString &inout Creature, const bool bMute)
@@ -3575,6 +3757,7 @@ UFUNCTION()
 void SetSkillBtnDurationEffect(const FECSEntityAdapter &inout Entity, const int SkillIndex, const bool bEnabled, const float32 DurationTime, const FBuffConfigRef &inout DurationTimeBuffConfig)
 {
     int local_14 = 0;
+    int local_16;
     int local_46 = 0;
     Has local_6;
     if (!(Entity.IsValid()) || !(local_6.opCall()))
@@ -3585,18 +3768,16 @@ void SetSkillBtnDurationEffect(const FECSEntityAdapter &inout Entity, const int 
     {
         return;
     }
-    ESkillSlot local_16;
     local_16 = local_14.GetSkillRuntimeInfos()[SkillIndex].GetSlot();
     float32 local_18 = DurationTime;
     if (DurationTimeBuffConfig.IsValid())
     {
-        TDataObjectPtr<FBuffConfig> local_42;
-        local_18 = local_42.opArrow().BuffDuration;
+        local_18 = TDataObjectPtr<FBuffConfig>(DurationTimeBuffConfig).opArrow().BuffDuration;
     }
     int local_53 = local_46.GetDurationEffect().Num() - 1;
     for (; local_53 >= 0; --local_53)
     {
-        if ((int(local_46.GetDurationEffect()[local_53].GetSlot())) == (int(local_16)))
+        if ((int(local_46.GetDurationEffect()[local_53].GetSlot())) == (local_16))
         {
             local_46.GetModify_DurationEffect().RemoveAt(local_53);
         }
@@ -3614,26 +3795,23 @@ void SetSkillBtnDurationEffect(const FECSEntityAdapter &inout Entity, const int 
 UFUNCTION()
 void LevelSpot_OverridePresentationConfig(const FECSEntityAdapter &inout Entity, const TDataObjectPtr<FPresentationConfig> &inout PresentationConfig)
 {
-    ELevelSpotDataSource local_258;
-    EntityLevelSpotUtils::GetSpotData(Entity.opImplConv(), local_258);
+    FLevelSpotData local_258 = EntityLevelSpotUtils::GetSpotData(Entity.opImplConv(), ELevelSpotDataSource(4));
     local_258.SetPresentationConfig(PresentationConfig);
-    FECSEntity local_132 = Entity.opImplConv();
+    EntityLevelSpotUtils::AddSpotData(Entity.opImplConv(), ELevelSpotDataSource(4), local_258);
     return;
 }
 UFUNCTION()
 void LevelSpot_OverridePresentationRuleConfig(const FECSEntityAdapter &inout Entity, const TDataObjectPtr<FPresentationRuleConfig> &inout PresentationRuleConfig)
 {
-    ELevelSpotDataSource local_258;
-    EntityLevelSpotUtils::GetSpotData(Entity.opImplConv(), local_258);
+    FLevelSpotData local_258 = EntityLevelSpotUtils::GetSpotData(Entity.opImplConv(), ELevelSpotDataSource(4));
     local_258.SetPresentationRuleConfig(PresentationRuleConfig);
-    FECSEntity local_132 = Entity.opImplConv();
+    EntityLevelSpotUtils::AddSpotData(Entity.opImplConv(), ELevelSpotDataSource(4), local_258);
     return;
 }
 UFUNCTION()
 void LevelSpot_RemovePresentationConfigOverride(const FECSEntityAdapter &inout Entity)
 {
-    ELevelSpotDataSource local_258;
-    EntityLevelSpotUtils::GetSpotData(Entity.opImplConv(), local_258);
+    FLevelSpotData local_258 = EntityLevelSpotUtils::GetSpotData(Entity.opImplConv(), ELevelSpotDataSource(4));
     local_258.RemovePresentationConfig();
     if (local_258.IsEmpty())
     {
@@ -3641,15 +3819,14 @@ void LevelSpot_RemovePresentationConfigOverride(const FECSEntityAdapter &inout E
     }
     else
     {
-        FECSEntity local_132 = Entity.opImplConv();
+        EntityLevelSpotUtils::AddSpotData(Entity.opImplConv(), ELevelSpotDataSource(4), local_258);
     }
     return;
 }
 UFUNCTION()
 void LevelSpot_RemovePresentationRuleConfigOverride(const FECSEntityAdapter &inout Entity)
 {
-    ELevelSpotDataSource local_258;
-    EntityLevelSpotUtils::GetSpotData(Entity.opImplConv(), local_258);
+    FLevelSpotData local_258 = EntityLevelSpotUtils::GetSpotData(Entity.opImplConv(), ELevelSpotDataSource(4));
     local_258.RemovePresentationRuleConfig();
     if (local_258.IsEmpty())
     {
@@ -3657,7 +3834,7 @@ void LevelSpot_RemovePresentationRuleConfigOverride(const FECSEntityAdapter &ino
     }
     else
     {
-        FECSEntity local_132 = Entity.opImplConv();
+        EntityLevelSpotUtils::AddSpotData(Entity.opImplConv(), ELevelSpotDataSource(4), local_258);
     }
     return;
 }
@@ -3694,7 +3871,7 @@ void TeleportToNearestPrefab(const FECSEntityAdapter &inout Entity, const FName 
         }
         else
         {
-            FString local_234 = "Can't Find Teleport Target ! ";
+            XError(ELog(0), (FString("Can't Find Teleport Target ! ") + PrefabRowName));
         }
     }
     return;
@@ -3711,7 +3888,7 @@ UFUNCTION()
 void Ability_StartVengeance(const FECSEntityAdapter &inout Target, const FECSEntity &inout Killer)
 {
     int local_16 = 0;
-    if (ECS::GetRuntimeInfo().IsServer)
+    if (int(ECS::GetRuntimeInfo().IsServer) != 0)
     {
         FFPTime local_14 = BlueprintFunctions_Common::GetWorldTime(Target.opImplConv());
         FECSEntity local_12 = Target.opImplConv();
@@ -3731,7 +3908,7 @@ int GetInventoryItemNumber(const FECSEntityAdapter &inout Entity, const FItemTab
     {
         return 0;
     }
-    return InventoryUtils::GetInventoryItemNumber(Entity.opImplConv(), TDataObjectPtr<FItemConfig>());
+    return InventoryUtils::GetInventoryItemNumber(Entity.opImplConv(), TDataObjectPtr<FItemConfig>(Item));
 }
 UFUNCTION()
 void SetTextRender(const FECSEntityAdapter &inout Entity, const FName &inout Text)
@@ -4181,13 +4358,11 @@ void SupplyPotionToMax(const FECSEntityAdapter &inout Entity)
     {
         local_16 = local_15;
     }
-    UNearDeathSettings local_20 = NearDeathSettings::Get();
-    int local_17 = InventoryUtils::GetInventoryItemNumber(local_14, TDataObjectPtr<FItemConfig>());
+    int local_17 = InventoryUtils::GetInventoryItemNumber(local_14, TDataObjectPtr<FItemConfig>(NearDeathSettings::Get().PotionItemConfig));
     if (local_17 < local_16)
     {
         int local_18 = local_16 - local_17;
-        UNearDeathSettings local_20_2 = NearDeathSettings::Get();
-        InventoryUtils::AddInventoryItem(local_14, TDataObjectPtr<FItemConfig>());
+        InventoryUtils::AddInventoryItem(local_14, TDataObjectPtr<FItemConfig>(NearDeathSettings::Get().PotionItemConfig), local_18);
         XLog(ELog(0), FString().Append("[SupplyPotionToMax] cur=").Append(local_17).Append(", max=").Append(local_16).Append(", added=").Append(local_18));
     }
     return;

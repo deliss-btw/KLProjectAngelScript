@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_ArealStrikeTimeFilter_NS
 {
     const TECSComponentDerivedPtr<FC_ArealStrikeTimeFilter> DerivedPtr = TECSComponentDerivedPtr<FC_ArealStrikeTimeFilter>();
@@ -32,6 +31,8 @@ struct FC_ArealStrikeTimeFilter : FECSComponent
 
     FC_ArealStrikeTimeFilter()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_LastFilterTime = -1;
         this.m_CurFilterTime = -1;
         this.m_LastEventCheckJobTime = -1;
@@ -40,6 +41,8 @@ struct FC_ArealStrikeTimeFilter : FECSComponent
     }
     FC_ArealStrikeTimeFilter(const FC_ArealStrikeTimeFilter &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_LastFilterTime = -1;
         this.m_CurFilterTime = -1;
         this.m_LastEventCheckJobTime = -1;
@@ -174,11 +177,51 @@ struct FHitTestDebugRecord
 
     FHitTestDebugRecord()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags32 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bServer = false;
+        this.m_ServerHitTimeSeconds = 0.0;
+        this.m_ServerFixedFrame = 0;
+        this.m_ClientFixedFrame = 0;
+        this.m_ServerRequestTimeSeconds = 0.0;
+        this.m_RequestCreatedFrame = 0;
+        this.m_RequestEventId = 0;
+        this.m_ActionFromFrame = INDEX_NONE;
+        this.m_ActionToFrame = INDEX_NONE;
+        this.m_bPerEntityQuest = false;
+        return;
     }
     FHitTestDebugRecord(const FHitTestDebugRecord &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags32 local_7;
+        this.__DirtyFlags = local_7;
+        this.m_bServer = false;
+        this.m_ServerHitTimeSeconds = 0.0;
+        this.m_ServerFixedFrame = 0;
+        this.m_ClientFixedFrame = 0;
+        this.m_ServerRequestTimeSeconds = 0.0;
+        this.m_RequestCreatedFrame = 0;
+        this.m_RequestEventId = 0;
+        this.m_ActionFromFrame = INDEX_NONE;
+        this.m_ActionToFrame = INDEX_NONE;
+        this.m_bPerEntityQuest = false;
+        this.m_bServer = Other.m_bServer;
+        this.m_ServerHitTimeSeconds = Other.m_ServerHitTimeSeconds;
+        this.m_ClientHitTime = Other.m_ClientHitTime;
+        this.m_ServerFixedFrame = int(Other.m_ServerFixedFrame);
+        this.m_ClientFixedFrame = int(Other.m_ClientFixedFrame);
+        this.m_ServerRequestTimeSeconds = Other.m_ServerRequestTimeSeconds;
+        this.m_ClientRequestTime = Other.m_ClientRequestTime;
+        this.m_RequestCreatedFrame = int(Other.m_RequestCreatedFrame);
+        this.m_RequestEventId = int(Other.m_RequestEventId);
+        this.m_ActionFromFrame = int(Other.m_ActionFromFrame);
+        this.m_ActionToFrame = int(Other.m_ActionToFrame);
+        this.m_SenderEntityId = Other.m_SenderEntityId;
+        this.m_ActionIdentifier = Other.m_ActionIdentifier;
+        this.m_StrikeKey = Other.m_StrikeKey;
+        this.m_bPerEntityQuest = Other.m_bPerEntityQuest;
+        this.m_HitEntityIds = Other.m_HitEntityIds;
+        return;
     }
     FHitTestDebugRecord opAssign(const FHitTestDebugRecord &inout Other)
     {
@@ -468,7 +511,6 @@ struct FCS_ServerHitTestDebugRecords : FECSSingleton
     UPROPERTY()
     TArray<FHitTestDebugRecord> Records;
 
-
 }
 
 struct FCS_ClientHitTestDebugRecords : FECSSingleton
@@ -479,7 +521,6 @@ struct FCS_ClientHitTestDebugRecords : FECSSingleton
     bool bPausePIEOnHit = false;
     UPROPERTY()
     TArray<FHitTestDebugRecord> Records;
-
 
 }
 
@@ -560,37 +601,37 @@ bool RemoveArealStrikeTimeFilter(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorArealStrikeTimeFilterOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ArealStrikeTimeFilter, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ArealStrikeTimeFilter, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorArealStrikeTimeFilterOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ArealStrikeTimeFilter, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ArealStrikeTimeFilter, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorArealStrikeTimeFilterOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ArealStrikeTimeFilter, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ArealStrikeTimeFilter, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorArealStrikeTimeFilterOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ArealStrikeTimeFilter, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ArealStrikeTimeFilter, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorArealStrikeTimeFilterOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ArealStrikeTimeFilter, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ArealStrikeTimeFilter, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorArealStrikeTimeFilterLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ArealStrikeTimeFilter, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ArealStrikeTimeFilter, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorArealStrikeTimeFilterActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ArealStrikeTimeFilter, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ArealStrikeTimeFilter, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorArealStrikeTimeFilterModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ArealStrikeTimeFilter, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ArealStrikeTimeFilter, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_PerReceiverArealStrikeRequestClear
@@ -681,17 +722,17 @@ bool RemovePerReceiverArealStrikeRequestClear(const FECSWorldPtr &inout World)
 }
 void __MonitorPerReceiverArealStrikeRequestClearLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_PerReceiverArealStrikeRequestClear, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_PerReceiverArealStrikeRequestClear, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPerReceiverArealStrikeRequestClearActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_PerReceiverArealStrikeRequestClear, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_PerReceiverArealStrikeRequestClear, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPerReceiverArealStrikeRequestClearModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_PerReceiverArealStrikeRequestClear, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_PerReceiverArealStrikeRequestClear, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_ServerHitTestDebugRecords
@@ -782,17 +823,17 @@ bool RemoveServerHitTestDebugRecords(const FECSWorldPtr &inout World)
 }
 void __MonitorServerHitTestDebugRecordsLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_ServerHitTestDebugRecords, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_ServerHitTestDebugRecords, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorServerHitTestDebugRecordsActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_ServerHitTestDebugRecords, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_ServerHitTestDebugRecords, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorServerHitTestDebugRecordsModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_ServerHitTestDebugRecords, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_ServerHitTestDebugRecords, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_ClientHitTestDebugRecords
@@ -883,17 +924,17 @@ bool RemoveClientHitTestDebugRecords(const FECSWorldPtr &inout World)
 }
 void __MonitorClientHitTestDebugRecordsLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_ClientHitTestDebugRecords, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_ClientHitTestDebugRecords, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorClientHitTestDebugRecordsActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_ClientHitTestDebugRecords, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_ClientHitTestDebugRecords, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorClientHitTestDebugRecordsModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_ClientHitTestDebugRecords, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_ClientHitTestDebugRecords, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

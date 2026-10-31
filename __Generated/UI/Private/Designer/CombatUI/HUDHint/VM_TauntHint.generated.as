@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TauntHint_Helpers
 {
 UFUNCTION()

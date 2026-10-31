@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TransformSkillSelection
 {
     const int ViewID = 0;
@@ -44,7 +43,11 @@ class UWidget_TransformSkillSelection : UEUIUserWidget
     UFUNCTION()
     void TransformSkill()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FECSEntity local_8 = ::FASCommonUtils::GetLocalPlayerProxy();
+        FItemActionSource local_76 = ::FItemActionSource::InvokeFromQuickSlot(local_8, this.ItemConfig);
+        ::ItemActionUtils::ExecuteActionFromUI(this.ItemConfig, local_76, EItemActionType(0));
+        this.PlayAnimationReverse(this.TransformSkillPanelAnim, 1.0f, false);
+        return;
     }
     UFUNCTION()
     float32 TransformSkillSelection_TeamLinkEnergy() const
@@ -69,6 +72,7 @@ namespace UWidget_TransformSkillSelection
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TransformSkillSelection;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

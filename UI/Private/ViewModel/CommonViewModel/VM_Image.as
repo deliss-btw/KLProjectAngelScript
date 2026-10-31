@@ -1,4 +1,3 @@
-﻿
 namespace FVM_Image
 {
     const int ModelId = 0;

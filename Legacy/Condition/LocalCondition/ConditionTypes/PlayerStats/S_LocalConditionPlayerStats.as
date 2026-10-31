@@ -1,5 +1,3 @@
-﻿
-
 class US_LocalConditionPlayerStats : UECSScriptSystem
 {
     US_LocalConditionPlayerStats()
@@ -15,10 +13,10 @@ class US_LocalConditionPlayerStats : UECSScriptSystem
         {
             return;
         }
-        ECommissionPlayerStatsType local_8 = Event.PlayerStatsType;
+        int local_8 = Event.PlayerStatsType;
         TMap<ECommissionPlayerStatsType, FPlayerStatsMonitorConditions> local_12 = PlayerStatsConditionManager.MonitoredStats;
         CastTo local_56;
-        if (local_12.Contains(local_8))
+        if (local_12.Contains(ECommissionPlayerStatsType(local_8)))
         {
             TArray<FConditionInstanceHandle> local_14;
             for (auto& local_28 : local_14)

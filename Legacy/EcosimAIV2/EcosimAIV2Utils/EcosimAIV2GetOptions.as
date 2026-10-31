@@ -1,4 +1,3 @@
-﻿
 namespace EcosimAIV2
 {
 UFUNCTION()

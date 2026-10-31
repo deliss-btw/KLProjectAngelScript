@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AvatarSelection
 {
     const int ModelId = 0;
@@ -61,11 +60,35 @@ struct FVM_AvatarSelection : FEUIViewModel
 
     FVM_AvatarSelection()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_SelectedAvatarIndex = 0;
+        this.m_SelectionTargetSlotIndex = INDEX_NONE;
+        this.m_FilterByIllustrate = EAvatarIllustrate(3);
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVM_AvatarSelection(const FVM_AvatarSelection &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_SelectedAvatarIndex = 0;
+        this.m_SelectionTargetSlotIndex = INDEX_NONE;
+        this.m_FilterByIllustrate = EAvatarIllustrate(3);
+        this.m_SelectedAvatarIndex = int(Other.m_SelectedAvatarIndex);
+        this.m_SelectionTargetSlotIndex = int(Other.m_SelectionTargetSlotIndex);
+        this.m_AvatarIllustrateIconAll = Other.m_AvatarIllustrateIconAll;
+        this.m_RedDotNewAvatarTag = Other.m_RedDotNewAvatarTag;
+        this.m_SelectedAvatar = Other.m_SelectedAvatar;
+        this.m_AllAvatars = Other.m_AllAvatars;
+        this.m_FilteredAvatars = Other.m_FilteredAvatars;
+        this.m_IllustrateTypes = Other.m_IllustrateTypes;
+        this.m_FilterByIllustrate = Other.m_FilterByIllustrate;
+        this.m_WeaponEntry = Other.m_WeaponEntry;
+        this.m_TalentEntry = Other.m_TalentEntry;
+        this.m_RelicEntry = Other.m_RelicEntry;
+        this.m_TitleHoverTipsVM = Other.m_TitleHoverTipsVM;
+        this.m_AvailableIllustrateTypes = Other.m_AvailableIllustrateTypes;
+        return;
     }
     FVM_AvatarSelection& opAssign(const FVM_AvatarSelection &inout Other)
     {
@@ -105,8 +128,26 @@ struct FVM_AvatarSelection : FEUIViewModel
     }
     int GetSelectAvatarSlotIndex() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        if (this.GetSelectionTargetSlotIndex() != INDEX_NONE)
+        {
+            return this.GetSelectionTargetSlotIndex();
+        }
+        bool local_9 = this.GetSelectedAvatar();
+        if (!(local_9))
+        {
+            local_9 = false;
+        }
+        else
+        {
+            TEUIModelRef<FVM_AvatarInfo> local_8 = this.GetSelectedAvatar();
+            local_9 = IsCombatAvatar();
+        }
+        if (local_9)
+        {
+            TEUIModelRef<FVM_AvatarInfo> local_8_2 = this.GetSelectedAvatar();
+            return GetSlotIndex();
+        }
+        return 0;
     }
     bool IsSelectCombatAvatar() const
     {
@@ -121,16 +162,14 @@ struct FVM_AvatarSelection : FEUIViewModel
     {
         const UUtilitySettings local_14;
         const UAvatarBuildSettings local_42;
-        this.SetTitleHoverTipsVM(TEUIModelRef<FVM_TitleAndDesc>(::FVM_TitleAndDesc::Create(this.GetManager(), NSLOCTEXT("AssaultAvatarTitle", "еЌЏж€и§’и‰ІиЇґжЋ"), NSLOCTEXT("AssaultAvatarDesc", "еЌЏж€и§’и‰Ід»…еЏЇењЁйѓЁе€†зЋ©жі•дё­е€‡жЌўе‡єж€пјЊдёЋдё»ж€и§’и‰Іж€ж–—зЉ¶жЂЃеђЊж­ҐпјЊдёЌеЅ±е“ЌзҐћж јжЉЂжїЂжґ»"))));
+        this.SetTitleHoverTipsVM(TEUIModelRef<FVM_TitleAndDesc>(::FVM_TitleAndDesc::Create(this.GetManager(), NSLOCTEXT("AssaultAvatarTitle", "协战角色说明"), NSLOCTEXT("AssaultAvatarDesc", "协战角色仅可在部分玩法中切换出战，与主战角色战斗状态同步，不影响神格技激活"))));
         GetGameplaySettings<UUtilitySettings> local_16;
         local_14 = local_16;
         FEUIModelContainer local_32;
-        UEUIManagerSubsystem local_10 = this.GetManager();
-        FEUIModelRef local_36;
-        local_32.AddModel(local_36, false);
+        local_32.AddModel(FEUIModelRef(::FVM_Image::Create(this.GetManager(), local_14.CommonCategoryAllIcon)), false);
         FVM_CommonTabItem& local_38 = ::FVM_CommonTabItem::Create(this.GetManager());
-        local_38.SetTitleText(NSLOCTEXT("AvatarIllustrateAll", "е…ЁйѓЁ"));
-        local_36 = FEUIModelRef(local_38);
+        local_38.SetTitleText(NSLOCTEXT("AvatarIllustrateAll", "全部"));
+        FEUIModelRef local_36 = FEUIModelRef(local_38);
         local_32.AddModel(local_36, false);
         this.GetModify_IllustrateTypes().Add(local_32);
         this.GetModify_AvailableIllustrateTypes().Add(EAvatarIllustrate(3));
@@ -144,7 +183,7 @@ struct FVM_AvatarSelection : FEUIViewModel
                 if (local_42.AvatarIllustrateInfos.Find(EAvatarIllustrate(local_48)))
                 {
                     FEUIModelContainer local_66;
-                    UEUIManagerSubsystem local_10_2 = this.GetManager();
+                    UEUIManagerSubsystem local_10 = this.GetManager();
                     local_66.AddModel(local_36, false);
                     local_66.AddModel(FEUIModelRef(::FVM_CommonTabItem::Create(this.GetManager())), false);
                     this.GetModify_IllustrateTypes().Add(local_66);
@@ -193,16 +232,57 @@ struct FVM_AvatarSelection : FEUIViewModel
         {
             return;
         }
-        this.SetFilterByIllustrate(EAvatarIllustrate(this.GetAvailableIllustrateTypes()[IllustrateFilterItemIndex]));
+        this.SetFilterByIllustrate(this.GetAvailableIllustrateTypes()[IllustrateFilterItemIndex]);
         return;
     }
     void OnSelectAvatar(const int AvatarIndex)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (AvatarIndex != INDEX_NONE)
+        {
+            this.SetSelectedAvatarIndex(AvatarIndex);
+        }
+        return;
     }
     void RefreshFilteredAvatarList()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_37 = 0;
+        TArray<FEUIModelContainer>& local_2 = this.GetModify_FilteredAvatars();
+        int local_4 = INDEX_NONE;
+        int local_3 = local_4;
+        local_2.Reset(0);
+        int local_5 = 0;
+        for (; local_5 < this.GetAllAvatars().Num(); ++local_5)
+        {
+            const TEUIModelRef<FVM_AvatarInfo>& local_10 = this.GetAllAvatars()[local_5];
+            if (local_10.IsValid() && GetAvatarConfig().IsSet())
+            {
+                if (int(this.GetFilterByIllustrate()) == 3 || (0 == int(this.GetFilterByIllustrate())))
+                {
+                    if ((local_10 == this.GetSelectedAvatar().opImplConv()))
+                    {
+                        local_3 = local_5;
+                    }
+                    FEUIModelContainer local_32;
+                    local_32.AddModel(local_10.opImplConv(), true);
+                    int64 local_40 = local_37;
+                    FVM_RedDot& local_42 = ::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(this.GetRedDotNewAvatarTag(), local_40));
+                    local_32.AddModel(FEUIModelRef(local_42), false);
+                    local_2.Add(local_32);
+                }
+            }
+        }
+        if (local_2.Num() > 0)
+        {
+            int local_4_2 = INDEX_NONE;
+            if (local_3 == local_4_2)
+            {
+                local_3 = 0;
+            }
+            this.SetSelectedAvatarIndex(local_3);
+            return;
+        }
+        this.SetSelectedAvatarIndex(INDEX_NONE);
+        return;
     }
     void RefreshSelectedAvatar()
     {
@@ -841,7 +921,6 @@ struct __GeneratedProperties_FVM_AvatarSelection
     bool IsIllustrateFilterNotReachMin;
     UPROPERTY()
     TEUIModelRef<FVM_AvatarSelection> Self;
-
 
 }
 

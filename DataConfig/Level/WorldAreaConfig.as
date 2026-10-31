@@ -1,5 +1,3 @@
-﻿
-
 struct FWorldAreaConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -17,7 +15,6 @@ struct FWorldAreaConfig : FDataObject
     UDataTable DifficultyLevelConfig = nullptr;
     UPROPERTY()
     int MonsterDifficultyLevel;
-
 
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 class US_PlayerNotifySystem : UECSScriptSystem
 {
     US_PlayerNotifySystem()
@@ -9,7 +7,39 @@ class US_PlayerNotifySystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_HandlePlayerNotify(const FECSEntity &inout Player, const FC_PlayerNotify &inout C_PlayerNotify) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_6 = 0;
+        int local_8 = 0;
+        int local_7 = local_8;
+        for (; local_7 < 2; ++local_7)
+        {
+            if (C_PlayerNotify.GetPlayerNotifies().GetBit(local_7))
+            {
+                if (local_6.HandledNotifies.GetBit(local_7) || C_PlayerNotify.GetPlayerResponce().GetBit(local_7))
+                {
+                    continue;
+                }
+                int local_9 = local_7;
+                if (!(local_6.HasSendEventToView.GetBit(local_9)))
+                {
+                    FFPTime local_18 = FFPTime(-1);
+                    SendEvent local_16;
+                    FCE_OnReceivePlayerNotify& local_20 = local_16.opCall(local_18);
+                    if (local_20)
+                    {
+                        int local_22 = local_7;
+                        local_20.NotifyType = EPlayerNotify(local_22);
+                    }
+                    int local_21 = local_7;
+                    local_6.HasSendEventToView.SetBit(local_21, true);
+                }
+                continue;
+            }
+            int local_21_2 = local_7;
+            local_6.HandledNotifies.SetBit(local_21_2, false);
+            local_21_2 = local_7;
+            local_6.HasSendEventToView.SetBit(local_21_2, false);
+        }
+        return;
     }
     UFUNCTION()
     void Monitor_SyncNotifyToAllPlayers(const FCS_PlayerNotifyRegistry &inout Registry) const
@@ -20,7 +50,20 @@ class US_PlayerNotifySystem : UECSScriptSystem
     UFUNCTION()
     void Job_SyncNotifyToPlayer(const FECSEntity &inout Player, const FC_PlayerController &inout C_PlayerController, const FCS_PlayerNotifyRegistry &inout Registry) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_6 = 0;
+        int local_8 = 0;
+        int local_7 = local_8;
+        for (; local_7 < 2; ++local_7)
+        {
+            int local_9 = local_7;
+            if (!(Registry.PlayerNotifies.GetBit(local_9)))
+            {
+                local_9 = local_7;
+                local_6.GetModify_PlayerResponce().SetBit(local_9, false);
+            }
+        }
+        local_6.SetPlayerNotifies(Registry.PlayerNotifies);
+        return;
     }
     UFUNCTION()
     void ServerJob_OnPlayerConnected(const FECSEntity &inout Player, const FCS_PlayerNotifyRegistry &inout Registry) const
@@ -85,11 +128,11 @@ class US_PlayerNotifySystem : UECSScriptSystem
     {
         int local_24 = 0;
         ECS::GetContextJob();
-        if (ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_PlayerNotifyRegistry, EECSRegType(0), true, true).bIsMonitored)
+        if (int(ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_PlayerNotifyRegistry, EECSRegType(0), true, true).bIsMonitored) != 0)
         {
             this.Monitor_SyncNotifyToAllPlayers(local_24);
         }
-        if (ECSInternal::GetMonitorSingletonOnModify(this.GetECSWorld(), FCS_PlayerNotifyRegistry, EECSRegType(0), true, true).bIsMonitored)
+        if (int(ECSInternal::GetMonitorSingletonOnModify(this.GetECSWorld(), FCS_PlayerNotifyRegistry, EECSRegType(0), true, true).bIsMonitored) != 0)
         {
             this.Monitor_SyncNotifyToAllPlayers(local_24);
         }

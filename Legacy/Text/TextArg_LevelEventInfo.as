@@ -1,4 +1,3 @@
-﻿
 enum ETextArgLevelEventInfoProperty
 {
     EventTitle,
@@ -7,13 +6,11 @@ enum ETextArgLevelEventInfoProperty
     EventRewardBriefDesc,
 }
 
-
 struct FTextArg_LevelEventInfo : FTextArgConfig
 {
     FTextArgConfig _base_FTextArgConfig;
     UPROPERTY()
     ETextArgLevelEventInfoProperty Property;
-
 
 }
 

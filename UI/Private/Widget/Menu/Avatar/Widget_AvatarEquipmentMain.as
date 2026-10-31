@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_AvatarEquipmentMain
 {
     const int ViewID = 0;
@@ -85,7 +84,7 @@ class UWidget_AvatarEquipmentMain : UEUIActivatableWidget
                 int local_7 = int(GetFilterByIllustrate());
                 local_4 = local_7 - 1;
             }
-            int local_7_2 = GetIllustrateTypes().IsValidIndex() ? local_4 : 0;
+            int local_7_2 = GetIllustrateTypes().IsValidIndex(local_4) ? local_4 : 0;
             this.w_list_tab.SetSelectedIndex(local_7_2);
             TWeakObjectPtr<UEUICommonListViewBase>(this.w_list_tab).SetIllustrateFilterListWidget();
         }
@@ -611,6 +610,7 @@ namespace UWidget_AvatarEquipmentMain
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_AvatarEquipmentMain;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleSelectedItemsChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleCurSlotEquipedItemUIdChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleItemComparedChanged"));

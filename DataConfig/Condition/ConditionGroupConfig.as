@@ -1,4 +1,3 @@
-﻿
 enum EConditionGroupOperator
 {
     And,
@@ -15,14 +14,12 @@ enum EConditionSpecContextType
     Global,
 }
 
-
 struct FConditionSpec
 {
     UPROPERTY()
     EConditionSpecContextType ContextType;
     UPROPERTY()
     TDataObjectPtr<FLocalConditionConfigBase> ConditionConfig;
-
 
 }
 
@@ -38,7 +35,6 @@ struct FConditionGroupConfig : FLocalConditionConfigBase
 
     FConditionGroupConfig()
     {
-        super();
         this.Operator = EConditionGroupOperator(0);
         this.__InitDefaults();
         return;

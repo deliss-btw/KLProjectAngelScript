@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_MinimapPageLifeCycle_Helpers
 {
 UFUNCTION()

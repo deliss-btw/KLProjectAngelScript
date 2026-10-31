@@ -1,5 +1,3 @@
-﻿
-
 class US_ConditionGameplayTagChanged : UECSScriptSystem
 {
     US_ConditionGameplayTagChanged()

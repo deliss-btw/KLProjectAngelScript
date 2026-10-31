@@ -1,4 +1,3 @@
-﻿
 namespace FVM_GammaSlider
 {
     const int ModelId = 0;

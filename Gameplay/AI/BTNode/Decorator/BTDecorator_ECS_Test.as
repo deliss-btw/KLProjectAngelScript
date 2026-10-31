@@ -1,10 +1,7 @@
-﻿
-
 struct FTestBTDecoratorInstanceData
 {
     UPROPERTY()
     int TestValue;
-
 
 }
 

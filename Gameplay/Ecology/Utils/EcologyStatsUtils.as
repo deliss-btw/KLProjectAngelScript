@@ -1,4 +1,3 @@
-﻿
 namespace EcologyStatsUtils
 {
 FName GetCreatureRowName(const FC_CreatureMeta &inout CreatureMeta)

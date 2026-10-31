@@ -1,5 +1,3 @@
-﻿
-
 class US_AutoTrackTurretSystem : UECSScriptSystem
 {
     US_AutoTrackTurretSystem()
@@ -50,7 +48,7 @@ class US_AutoTrackTurretSystem : UECSScriptSystem
             return;
         }
         int local_33 = Entity.GetIdValue();
-        ::AutoTrackTurretDebug::Log(FString().Append("[AutoTrackTurret] Job Entity[").Append(local_33).Append("] re-seek failed, жњЄж‰ѕе€°еђ€жі•з›®ж ‡"));
+        ::AutoTrackTurretDebug::Log(FString().Append("[AutoTrackTurret] Job Entity[").Append(local_33).Append("] re-seek failed, 未找到合法目标"));
         return;
     }
     UFUNCTION()

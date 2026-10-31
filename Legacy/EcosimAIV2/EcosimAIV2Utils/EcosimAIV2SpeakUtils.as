@@ -1,4 +1,3 @@
-﻿
 namespace FEcosimAIV2Utils
 {
 void SetEntityDialogContent(const FECSEntity &inout Entity, const FString &inout Content)

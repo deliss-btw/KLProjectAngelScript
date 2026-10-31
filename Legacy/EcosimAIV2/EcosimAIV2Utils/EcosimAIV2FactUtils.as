@@ -1,4 +1,3 @@
-﻿
 namespace FEcosimAIV2Utils
 {
 FString GameplayTagToPrologStr(const FGameplayTag &inout Tag)

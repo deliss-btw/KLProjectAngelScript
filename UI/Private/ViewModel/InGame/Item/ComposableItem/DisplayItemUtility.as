@@ -1,4 +1,3 @@
-﻿
 namespace DisplayItemUtility
 {
 void SetDisplayState(const FEUIModelContainer &inout DisplayItemContainer, const int DisplayState)

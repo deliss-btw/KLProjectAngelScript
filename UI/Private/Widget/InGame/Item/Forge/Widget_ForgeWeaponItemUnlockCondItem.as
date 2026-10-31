@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ForgeWeaponItemUnlockCondItem
 {
     const int ViewID = 0;
@@ -36,6 +35,7 @@ namespace UWidget_ForgeWeaponItemUnlockCondItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ForgeWeaponItemUnlockCondItem;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

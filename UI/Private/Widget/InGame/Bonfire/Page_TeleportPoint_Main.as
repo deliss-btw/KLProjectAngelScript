@@ -1,4 +1,3 @@
-﻿
 namespace UPage_TeleportPoint
 {
     const int ViewID = 0;
@@ -90,6 +89,7 @@ namespace UPage_TeleportPoint
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UPage_TeleportPoint;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

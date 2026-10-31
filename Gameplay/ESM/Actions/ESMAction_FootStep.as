@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_FootStep_EnableDebugDraw = FConsoleVariable();
 
 class UESMAction_InstantFootStep : UESMSFXBaseInstantAction
@@ -23,7 +22,6 @@ class UESMAction_InstantFootStep : UESMSFXBaseInstantAction
     FName RootBoneName = n"Rider_Point";
     UPROPERTY()
     uint8 ImpactFeedbackType = (3 != 0);
-
 
     UFUNCTION()
     EESMActionType GetActionType_Implementation() const
@@ -147,7 +145,6 @@ class UESMAction_ActionImpactFX : UESMSFXBaseInstantAction
     FName RootBoneName = n"Rider_Point";
     UPROPERTY()
     uint8 ImpactFeedbackType = (3 != 0);
-
 
     UFUNCTION()
     EESMAssetWorkflow GetWorkflow_Implementation() const

@@ -1,11 +1,20 @@
-﻿
 namespace __FConditionConfigBaseFunctions
 {
 UFUNCTION()
 EConditionConfigType __FConditionConfigBase_GetConfigType(const TDataObjectPtr<FConditionConfigBase> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    EConditionConfigType __r; return __r;
+    int local_17 = 0;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'ConfigType' from a null 'FConditionConfigBase' DataObject!");
+        }
+        FConditionConfigBase local_16;
+        local_17 = int(local_16.ConfigType);
+        return EConditionConfigType(local_17);
+    }
+    return EConditionConfigType(local_17);
 }
 UFUNCTION()
 FConditionConfigBase CastToFConditionConfigBase(const TDataObjectPtr<FConditionConfigBase> &inout DataObject)
@@ -19,8 +28,17 @@ namespace __FServerConditionConfigBaseFunctions
 UFUNCTION()
 FText __FServerConditionConfigBase_GetConditionTips(const TDataObjectPtr<FServerConditionConfigBase> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FText __r; return __r;
+    FText __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'ConditionTips' from a null 'FServerConditionConfigBase' DataObject!");
+        }
+        FServerConditionConfigBase local_20;
+        return local_20.ConditionTips;
+    }
+    return __r;
 }
 UFUNCTION()
 FServerConditionConfigBase CastToFServerConditionConfigBase(const TDataObjectPtr<FServerConditionConfigBase> &inout DataObject)

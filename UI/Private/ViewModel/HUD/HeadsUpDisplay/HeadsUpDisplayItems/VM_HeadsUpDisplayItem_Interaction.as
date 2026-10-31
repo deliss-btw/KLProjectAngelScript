@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_HeadsUpDisplayItem_Interaction_InternalCache
 {
     const int ModelId = 0;
@@ -36,13 +35,11 @@ struct FVMS_HeadsUpDisplayItem_Interaction_InternalCache : FEUIViewModelSingleto
         FVector local_6;
         FVector2D local_10;
         FString local_14;
-        bool local_16 = false;
-        FString local_15 = local_16;
+        bool local_15 = false;
         FSoftBrush local_60;
         FVector local_66;
         FVector2D local_70;
-        bool local_16_2 = false;
-        FVector2D local_71 = local_16_2;
+        bool local_71 = false;
         FECSEntity local_76;
         if (::FInteractUtils::GetCurrentInteractTargetInfoForUI(this.GetContext().GetLocalPlayerPawn(), EInteractMode(1), local_6, local_10, local_14, local_15, local_60, local_66, local_70, local_71, local_76))
         {
@@ -182,7 +179,6 @@ struct __GeneratedProperties_FVM_HeadsUpDisplayItem_Interaction
     bool HasSocialInteraction;
     UPROPERTY()
     TEUIModelRef<FVM_HeadsUpDisplayItem_Interaction> Self;
-
 
 }
 

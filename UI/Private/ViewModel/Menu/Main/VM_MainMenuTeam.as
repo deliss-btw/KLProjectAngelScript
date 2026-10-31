@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MainMenuTeam
 {
     const int ModelId = 0;
@@ -189,7 +188,7 @@ struct FVM_MainMenuTeam : FEUIViewModel
         if (!(::FSwitchPlayerUtils::CheckSwitchPlayerCondition(this.GetContext().GetLocalPlayer(), this.GetContext().Time)))
         {
             FCommonTipsParam local_14;
-            ::CommonPopup::Tips(NSLOCTEXT("ChangeRole", "ChangeRole_CheckConditionFailed", "еЅ“е‰ЌзЉ¶жЂЃж— жі•е€‡жЌўи§’и‰І"), local_14);
+            ::CommonPopup::Tips(NSLOCTEXT("ChangeRole", "ChangeRole_CheckConditionFailed", "当前状态无法切换角色"), local_14);
             return false;
         }
         if (this.GetbPendingFieldSwitch())
@@ -251,7 +250,7 @@ struct FVM_MainMenuTeam : FEUIViewModel
         if (local_33)
         {
             FCommonTipsParam local_14;
-            ::CommonPopup::Tips(NSLOCTEXT("MainMenuTeam", "TwoMainPlayerNotAllowed", "дёЌиѓЅеђЊж—¶дёЉйµдё¤еђЌдё»и§’"), local_14);
+            ::CommonPopup::Tips(NSLOCTEXT("MainMenuTeam", "TwoMainPlayerNotAllowed", "不能同时上阵两名主角"), local_14);
             return false;
         }
         local_35 = (int(this.GetCombatSettingData().opArrow().GetCurrentLevelPresetType()) == int(this.GetCombatSettingData().opArrow().GetEditingPresetType()));
@@ -374,7 +373,7 @@ struct FVM_MainMenuTeam : FEUIViewModel
         }
         this.ResetPendingFieldSwitch();
         FCommonTipsParam local_12;
-        ::CommonPopup::Tips(NSLOCTEXT("ChangeRole", "ChangeRole_CheckConditionFailed", "еЅ“е‰ЌзЉ¶жЂЃж— жі•е€‡жЌўи§’и‰І"), local_12);
+        ::CommonPopup::Tips(NSLOCTEXT("ChangeRole", "ChangeRole_CheckConditionFailed", "当前状态无法切换角色"), local_12);
         return;
     }
     void ApplyPendingFieldSwitch()
@@ -411,7 +410,30 @@ struct FVM_MainMenuTeam : FEUIViewModel
     }
     void OpenAvatarSelection(const int Index)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (Index == 1 && !(this.GetAvatar1()))
+        {
+            return;
+        }
+        if (Index != INDEX_NONE)
+        {
+            this.SetSelectedAvatarIndex(Index);
+        }
+        FVM_AvatarSelection& local_10 = ::FVM_AvatarSelection::Create(this.GetManager());
+        local_10.SetSelectionTargetSlotIndex(this.GetSelectedAvatarIndex());
+        TEUIModelRef<FVM_AvatarInfo> local_16 = this.GetSelectedAvatarIndex() == 0 ? this.GetAvatar0() : this.GetAvatar1();
+        local_10.SetSelectedAvatar(local_16);
+        TEUIModelRef<FVMS_PlayerOwnedAvatarInfo> local_18 = this.GetPlayerOwnedAvatarInfo();
+        local_10.SetAllAvatars(GetUnLockAvatarList());
+        local_10.GetOnApply().Bind(this, FVM_MainMenuTeam::ApplyAvatarSelection);
+        FVM_AvatarSelectionShowcase& local_20 = ::FVM_AvatarSelectionShowcase::Create(this.GetManager());
+        local_20.SetSelection(TEUIModelRef<FVM_AvatarSelection>(local_10));
+        local_20.SetSelectionApplyIndex(this.GetSelectedAvatarIndex());
+        local_20.GetModify_TeamAvatars().Add(this.GetAvatar0());
+        local_20.GetModify_TeamAvatars().Add(this.GetAvatar1());
+        FVM_AvatarShowcase& local_24 = ::FVM_AvatarShowcase::Create(this.GetManager());
+        local_24.SetShowcaseConfigIndex(this.GetSelectedAvatarIndex());
+        FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_Avatar_Selection, FEUIModelRef(local_10), FEUIModelRef(local_20), FEUIModelRef(local_24));
+        return;
     }
     void OnHoverAvatar(const int Index)
     {
@@ -809,7 +831,6 @@ struct __GeneratedProperties_FVM_MainMenuTeam
     UPROPERTY()
     TEUIModelRef<FVM_MainMenuTeam> Self;
 
-
 }
 
 namespace FVM_MainMenuTeam
@@ -826,7 +847,96 @@ FVM_MainMenuTeam CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "Avatar0";
+    local_14.TypeName = "TEUIModelRef<FVM_AvatarInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Avatar1";
+    local_14.TypeName = "TEUIModelRef<FVM_AvatarInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bShowReturn";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AvatarName0";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AvatarName1";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HoverAlphaAvatar0";
+    local_14.TypeName = "float32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HoverAlphaAvatar1";
+    local_14.TypeName = "float32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsDivineSkillHoverVisible";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_MainMenuTeam>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_MainMenuTeam;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(12);
+    local_22.AddRefPropertyDirty(0, 2, FVMS_PlayerOwnedAvatarInfo::__IndexOf_CurrentTeamAvatars());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("PlayerOwnedAvatarInfo");
+    int local_2_2 = FVMS_PlayerOwnedAvatarInfo::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(2);
+    local_30.RelatedDirtyMask.SetBit(FVMS_PlayerOwnedAvatarInfo::__IndexOf_CurrentTeamAvatars(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelMetaPropertyModelRef local_35;
+    local_35.PropertyName = FName("CombatSettingData");
+    int local_24 = FMS_CombatSettingData::ModelId;
+    Result.FunctionalPropertyModelRefs.Add(local_35);
+    FEUIModelMsgHandleDefine local_46;
+    local_46.FunctionName = "__OnWidgetPresenceChanged";
+    local_46.MessageTypeName = "Msg_WidgetPresence";
+    local_46.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_46);
+    FEUIModelDirtyDefine local_58;
+    local_58.FunctionName = "__UpdateAvatar";
+    local_58.DirtyFlags.Set(FVM_MainMenuTeam::__IndexOf_PlayerOwnedAvatarInfo());
+    local_58.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_58);
+    local_46.FunctionName = "__UpdatePresetAvatar";
+    local_46.MessageTypeName = "Msg_EditingCombatSettingPresetTypeChanged";
+    local_46.SourcePropertyModelRefs = FBitSet64(1);
+    Result.MessageHandleFunctions.Add(local_46);
+    FEUIModelEventDefine local_64;
+    local_64.FunctionName = "__OnFieldChangeRoleSucceeded";
+    local_64.EventType = FCE_ServerToClientChangeRole;
+    Result.EventFunctions.Add(local_64);
+    local_64.FunctionName = "__OnFieldChangeRoleResult";
+    local_64.EventType = FCE_ServerToClientChangeRoleResult;
+    Result.EventFunctions.Add(local_64);
+    local_58.FunctionName = "__RefreshShowcaseAvatars";
+    local_58.DirtyFlags.Set(FVM_MainMenuTeam::__IndexOf_Avatar1());
+    local_58.DirtyFlags.Set(FVM_MainMenuTeam::__IndexOf_Avatar0());
+    Result.DirtyFunctions.Add(local_58);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

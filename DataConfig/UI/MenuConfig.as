@@ -1,5 +1,3 @@
-﻿
-
 struct FMenuConfig : FDataObject
 {
     FDataObject _base_FDataObject;

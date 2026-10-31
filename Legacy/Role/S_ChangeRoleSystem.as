@@ -1,4 +1,3 @@
-﻿
 enum EChangeRoleReplaceOutcome
 {
     Replaced,
@@ -7,7 +6,6 @@ enum EChangeRoleReplaceOutcome
     FailFakeControl,
     FailSpawn,
 }
-
 
 class US_ChangeRoleSystem : UECSScriptSystem
 {
@@ -279,17 +277,17 @@ class US_ChangeRoleSystem : UECSScriptSystem
         if (!(local_6))
         {
             XError(ELog(0), "PlayerController is null");
-            this.SendChangeRoleFailed(PlayerEntity, SlotIndex, AvatarId, EChangeRoleFailReason(1), ESwitchPlayerBlockReason(ESwitchPlayerBlockReason(0)));
+            this.SendChangeRoleFailed(PlayerEntity, SlotIndex, AvatarId, EChangeRoleFailReason(1), ESwitchPlayerBlockReason(0));
             return;
         }
         if (!(bForceChangeRole))
         {
             FECSWorldPtr local_14 = PlayerEntity.GetWorld();
-            ESwitchPlayerBlockReason local_9_2 = ::FSwitchPlayerUtils::GetSwitchPlayerBlockReason(PlayerEntity, FFPTime(local_18.opCall().Time));
-            if (int(local_9_2) != 0)
+            int local_9 = int(::FSwitchPlayerUtils::GetSwitchPlayerBlockReason(PlayerEntity, FFPTime(local_18.opCall().Time)));
+            if (local_9 != 0)
             {
-                XWarning(ELog(42), FString().Append("SwitchPlayerCondition not met, BlockReason=").Append(int(local_9_2)));
-                this.SendChangeRoleFailed(PlayerEntity, SlotIndex, AvatarId, EChangeRoleFailReason(2), ESwitchPlayerBlockReason(local_9_2));
+                XWarning(ELog(42), FString().Append("SwitchPlayerCondition not met, BlockReason=").Append(local_9));
+                this.SendChangeRoleFailed(PlayerEntity, SlotIndex, AvatarId, EChangeRoleFailReason(2), ESwitchPlayerBlockReason(local_9));
                 return;
             }
         }
@@ -397,8 +395,7 @@ class US_ChangeRoleSystem : UECSScriptSystem
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_ClientChangeSpecialty, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_ClientChangeSpecialty, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());
@@ -418,8 +415,7 @@ class US_ChangeRoleSystem : UECSScriptSystem
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_ClientToServerChangeRole, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_ClientToServerChangeRole, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());

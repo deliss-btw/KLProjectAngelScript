@@ -1,5 +1,3 @@
-﻿
-
 class AAirNavigationRoute : AAirNavigationRouteBase
 {
     AAirNavigationRoute()

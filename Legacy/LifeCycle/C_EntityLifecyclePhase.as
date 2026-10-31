@@ -1,4 +1,3 @@
-﻿
 enum EEntityLifecycleUnifiedPhaseType
 {
     None,
@@ -47,6 +46,8 @@ struct FC_EntityLifecyclePhase : FECSComponent
     {
         this.m_LasetPhase = EEntityLifecycleUnifiedPhaseType(0);
         this.m_CurrentPhase = EEntityLifecycleUnifiedPhaseType(0);
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
@@ -54,6 +55,8 @@ struct FC_EntityLifecyclePhase : FECSComponent
     {
         this.m_LasetPhase = EEntityLifecycleUnifiedPhaseType(0);
         this.m_CurrentPhase = EEntityLifecycleUnifiedPhaseType(0);
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_LasetPhase = Other.m_LasetPhase;
         this.m_CurrentPhase = Other.m_CurrentPhase;
@@ -105,7 +108,6 @@ struct FCE_EntityLifecyclePhaseChanged : FECSEvent
     EEntityLifecycleUnifiedPhaseType PreviousPhase;
     UPROPERTY()
     EEntityLifecycleUnifiedPhaseType NewPhase;
-
 
 }
 
@@ -222,37 +224,37 @@ bool RemoveEntityLifecyclePhase(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEntityLifecyclePhaseOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EntityLifecyclePhase, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EntityLifecyclePhase, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityLifecyclePhaseOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EntityLifecyclePhase, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EntityLifecyclePhase, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityLifecyclePhaseOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EntityLifecyclePhase, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EntityLifecyclePhase, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityLifecyclePhaseOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EntityLifecyclePhase, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EntityLifecyclePhase, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEntityLifecyclePhaseOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EntityLifecyclePhase, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EntityLifecyclePhase, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEntityLifecyclePhaseLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EntityLifecyclePhase, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EntityLifecyclePhase, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEntityLifecyclePhaseActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EntityLifecyclePhase, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EntityLifecyclePhase, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEntityLifecyclePhaseModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EntityLifecyclePhase, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EntityLifecyclePhase, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

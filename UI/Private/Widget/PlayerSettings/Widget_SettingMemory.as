@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_SettingMemory
 {
     const int ViewID = 0;
@@ -114,6 +113,7 @@ namespace UWidget_SettingMemory
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SettingMemory;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnIsFullChanged"));
     return;
 }

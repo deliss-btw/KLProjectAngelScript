@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_WaterAudioSystem_EnableDebugDraw = FConsoleVariable();
 const FConsoleVariable CVar_WaterAudioSystem_EnableDebugHUD = FConsoleVariable();
 

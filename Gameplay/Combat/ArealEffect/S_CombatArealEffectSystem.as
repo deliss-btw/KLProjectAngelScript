@@ -1,5 +1,3 @@
-﻿
-
 class US_CombatArealEffectSystem : UECSScriptSystem
 {
     US_CombatArealEffectSystem()
@@ -60,7 +58,153 @@ class US_CombatArealEffectSystem : UECSScriptSystem
     UFUNCTION()
     void Job_UpdateArealEffectSpawner(const FECSEntity &inout Entity, const FC_Transform &inout Transform, const FC_CombatArealEffectSpawnerConfig &inout Config, FC_CombatArealEffectSpawnerRuntime &inout Runtime, const FCS_FixedTime &inout FixedTime) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FVector local_146;
+        int local_242 = 0;
+        float local_276;
+        int local_324 = 0;
+        if (FFPTime(FixedTime.Time).opCmp(Runtime.GetNextSpawnTime()) >= 0)
+        {
+            bool local_17;
+            bool local_4;
+            FVector local_10 = Transform.GetPosition();
+            FVector local_16 = Transform.GetPosition();
+            local_17 = false;
+            if (Config.bOnlySpawnOnGround || Config.bOnlyEmitFXGround)
+            {
+                FCollisionQueryParams local_56;
+                local_56.bTraceComplex = false;
+                local_56.bFindInitialOverlaps = true;
+                FHitResult local_122;
+                FCollisionResponseParams local_160;
+                FVector local_130 = (FVector(Transform.GetPosition()) - (FVector(FVector::UpVector) * Config.TestGroundTraceDownDist));
+                FVector local_152 = FVector(Transform.GetPosition());
+                FVector local_140_2 = (FVector(FVector::UpVector) * 0.5);
+                local_146 = (local_140_2 * Config.TestGroundTraceDownDist);
+                local_4 = FPhysicsUtils::LineTraceSingle(Entity, false, EPhysicsTraceTag(9), local_122, (local_152 + local_146), local_130, FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(5)), local_56, local_160);
+                if (local_4)
+                {
+                    if (Runtime.GetbLastSpawnSuccess())
+                    {
+                        FVector local_152_2 = (FVector(local_122.Location) + Runtime.GetLastSpawnPos());
+                        local_10 = (local_152_2 * 0.5);
+                    }
+                    else
+                    {
+                        local_10 = local_122.Location;
+                    }
+                    local_17 = true;
+                    local_16 = local_122.Location;
+                }
+                else
+                {
+                    Runtime.SetbLastSpawnSuccess(false);
+                }
+            }
+            else
+            {
+                if (Runtime.GetbLastSpawnSuccess())
+                {
+                    local_146 = FVector(Transform.GetPosition());
+                    FVector local_130_2 = (local_146 + Runtime.GetLastSpawnPos());
+                    local_10 = (local_130_2 * 0.5);
+                }
+                else
+                {
+                    local_10 = Transform.GetPosition();
+                }
+            }
+            bool local_18 = !(Config.bOnlySpawnOnGround);
+            if (local_18 || local_17)
+            {
+                FECSEntity local_166 = Entity;
+                Get local_170;
+                const FC_Owner& local_172 = local_170.opCall();
+                if (local_172)
+                {
+                    local_166 = local_172.GetOwnerEntity();
+                }
+                local_4 = false;
+                FECSEntity local_176 = ::FEntityPoolUtils::PopFromPoolOrSpawnEntity(local_4, EEntityPoolType(4), local_166, Config.ArealEffectPrefab.GetDefaultObject());
+                if (local_176.IsValid())
+                {
+                    FRotator local_210;
+                    if (Runtime.GetbLastSpawnSuccess())
+                    {
+                        FVector local_140_3 = (local_16 - Runtime.GetLastSpawnPos());
+                        local_210 = local_140_3.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector).ToOrientationRotator();
+                    }
+                    else
+                    {
+                        local_210 = Transform.GetRotation().Rotator();
+                    }
+                    FHitTestShape local_266;
+                    if (int(Config.ShapeMode) == 0)
+                    {
+                        local_266.SetShapeType(EHitTestShapeType(4));
+                        if (Runtime.GetbLastSpawnSuccess())
+                        {
+                            local_146 = (local_16 - Runtime.GetLastSpawnPos());
+                            local_276 = (local_146.Size() * 0.5) + Config.Radius;
+                        }
+                        else
+                        {
+                            local_276 = Config.Radius;
+                        }
+                        local_266.SetHalfHeight(float32(local_276));
+                        local_266.SetSphereRadius(Config.Radius);
+                        local_266.SetRotation(FRotator((FRotator(90.0, 0.0, 0.0).Quaternion() * local_210.Quaternion())));
+                    }
+                    else
+                    {
+                        if (int(Config.ShapeMode) == 1)
+                        {
+                            local_266.SetShapeType(EHitTestShapeType(1));
+                            if (Runtime.GetbLastSpawnSuccess())
+                            {
+                                float local_274 = (Config.Height * 0.5f);
+                                float local_308 = (Config.Width * 0.5f);
+                                FVector local_130_3 = (local_16 - Runtime.GetLastSpawnPos());
+                                local_276 = local_130_3.Size() * 0.5;
+                                local_146 = FVector(local_276, local_308, local_274);
+                            }
+                            else
+                            {
+                                local_276 = (Config.Height * 0.5f);
+                                local_146 = FVector((Config.Width * 0.5f), (Config.Width * 0.5f), local_276);
+                            }
+                            local_266.SetBoxHalfExtend(local_146);
+                            local_266.SetRotation(local_210);
+                        }
+                    }
+                    local_242.SetShape(local_266);
+                    local_210.Pitch = 0.0;
+                    ECS::MarkEntityPrefabPendingInit(local_176, Config.ArealEffectPrefab, local_10, local_210.Quaternion(), EPrefabCollisionAlignment(2), false);
+                    local_324.SetSpawnTime(FixedTime.Time);
+                    local_324.SetLifeDuration(FFPTime(Config.ArealEffectDuration));
+                    Assign local_328;
+                    local_328.opCall(FC_LifeTimeCommonControlTag());
+                    Runtime.SetbLastSpawnSuccess(true);
+                }
+            }
+            Runtime.SetLastSpawnPos(local_16);
+            Runtime.SetNextSpawnTime((FFPTime(Runtime.GetNextSpawnTime()) + Config.SpawnInterval));
+            local_4 = Config.bOnlyEmitFXGround;
+            if (local_4)
+            {
+                Get local_336;
+                const FC_CombatArealEffectFXRuntime& local_338 = local_336.opCall();
+                if (local_338)
+                {
+                    local_18 = !(local_17);
+                    if (!(local_338.GetbActiveEmitter()) != local_18)
+                    {
+                        Modify local_342;
+                        local_342.opCall().SetbActiveEmitter(local_17);
+                    }
+                }
+            }
+        }
+        return;
     }
     void CheckRangeTarget(FECSRuntimeQuery &inout Query, const FECSEntity &inout Entity, FC_CombatArealEffectRuntime &inout Runtime, const FECSEntity &inout OwnerEntity, const FVector &inout Position, const FCombatArealEffectData &inout AreaData, TArray<FECSEntity> &inout OutLeaveEntities, TArray<FECSEntity> &inout OutEnterEntities) const
     {
@@ -133,11 +277,10 @@ class US_CombatArealEffectSystem : UECSScriptSystem
     void CheckRangeTargetByHitTestShape(const FHitTestShape &inout Shape, const FECSEntity &inout Entity, FC_CombatArealEffectRuntime &inout Runtime, const FECSEntity &inout OwnerEntity, const FCombatArealEffectData &inout AreaData, TArray<FECSEntity> &inout OutLeaveEntities, TArray<FECSEntity> &inout OutEnterEntities) const
     {
         TMap<FECSEntity, FFPTime> local_20 = Runtime.GetEntityLastEffectedTime();
-        FECSWorldPtr local_24 = this.GetECSWorld();
+        FFPTime local_26 = FCollisionUtils::GetCollisionRollbackTime(OwnerEntity, this.GetECSWorld().GetFixedTime());
         TArray<FHitTestResult> local_30;
         GetDefaulted local_36;
-        FTransform local_60 = local_36.opCall().ToFTransform();
-        UWorld local_64 = this.GetWorld();
+        Shape.DoHitTest(local_30, this.GetWorld(), ENTITY_ID_NULL, local_36.opCall().ToFTransform(), ECollisionChannel(17), local_26, n"ArealEffect");
         for (auto& local_80 : local_30)
         {
             if (local_80.HitEntity.IsValid())
@@ -446,7 +589,8 @@ class US_CombatArealEffectSystem : UECSScriptSystem
             return;
         }
         Get local_22;
-        if (!(FECSEntity(local_22.opCall().GetOwnerEntity()).IsValid()))
+        FECSEntity local_18 = FECSEntity(local_22.opCall().GetOwnerEntity());
+        if (!(local_18.IsValid()))
         {
             return;
         }
@@ -468,6 +612,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
                 {
                     FAbilityEffectEventData_ArealEffect local_48;
                     local_48.SetTargetEntity(local_40);
+                    ::FAbilityUtils::TryTriggerAbilityEffectEvent(Entity, local_18, EAbilityEffectEvent(8), Time, FAbilityEffectEventData_ArealEffect, local_48);
                 }
             }
         }
@@ -480,6 +625,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
                 {
                     FAbilityEffectEventData_ArealEffect local_48;
                     local_48.SetTargetEntity(local_70.GetKey());
+                    ::FAbilityUtils::TryTriggerAbilityEffectEvent(Entity, local_18, EAbilityEffectEvent(7), Time, FAbilityEffectEventData_ArealEffect, local_48);
                     Runtime.GetModify_EntityLastEffectedTime()[local_70.GetKey()] = Time;
                 }
             }
@@ -488,6 +634,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
         {
             FAbilityEffectEventData_ArealEffect local_48;
             local_48.SetTargetEntity(local_40);
+            ::FAbilityUtils::TryTriggerAbilityEffectEvent(Entity, local_18, EAbilityEffectEvent(7), Time, FAbilityEffectEventData_ArealEffect, local_48);
             Runtime.GetModify_EntityLastEffectedTime().Add(local_40, Time);
         }
         return;
@@ -592,14 +739,14 @@ class US_CombatArealEffectSystem : UECSScriptSystem
             {
                 if (int(ConfigData.AreaData.GetRange()) == 0)
                 {
-                    local_28.SetShapeType(EHitTestShapeType(EHitTestShapeType(3)));
+                    local_28.SetShapeType(EHitTestShapeType(3));
                     local_28.SetSphereRadius(ConfigData.AreaData.GetDistance());
                 }
                 else
                 {
                     if (int(ConfigData.AreaData.GetRange()) == 1)
                     {
-                        local_28.SetShapeType(EHitTestShapeType(EHitTestShapeType(4)));
+                        local_28.SetShapeType(EHitTestShapeType(4));
                         local_28.SetSphereRadius(ConfigData.AreaData.GetDistance());
                         local_28.SetHalfHeight(1000.0f);
                     }
@@ -607,7 +754,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
                     {
                         if (int(ConfigData.AreaData.GetRange()) == 2)
                         {
-                            local_28.SetShapeType(EHitTestShapeType(EHitTestShapeType(1)));
+                            local_28.SetShapeType(EHitTestShapeType(1));
                             local_28.SetBoxHalfExtend(ConfigData.AreaData.GetBoxExtent());
                         }
                     }
@@ -687,7 +834,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
     UFUNCTION()
     void Job_UpdateArealHitTestOverride(const FECSEntity &inout Entity, const FC_CombatArealEffectHitTestOverride &inout Override, FC_CombatArealEffectRuntime &inout Runtime, const FC_Owner &inout OwnerComp, const FC_Transform &inout Transform, const FCS_FixedTime &inout FixedTime) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     UFUNCTION()
     void Monitor_OnArealHitTestInactive(const FECSEntity &inout Entity, const FC_CombatArealEffectHitTestConfig &inout Config) const
@@ -1043,8 +1190,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
             }
             if (!(local_52.opCall()) == !(false))
             {
-                FString local_56 = "Timer job error: 'FC_LocalTag' included by job but not exist on ";
-                FString local_60 = local_32.ToString();
+                XLog(ELog(2), (FString("Timer job error: 'FC_LocalTag' included by job but not exist on ") + local_32.ToString()));
                 local_34 = true;
             }
             if (local_34)
@@ -1515,8 +1661,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
             }
             if (!(local_52.opCall()) == !(false))
             {
-                FString local_56 = "Timer job error: 'FC_LocalTag' included by job but not exist on ";
-                FString local_60 = local_32.ToString();
+                XLog(ELog(2), (FString("Timer job error: 'FC_LocalTag' included by job but not exist on ") + local_32.ToString()));
                 local_34 = true;
             }
             if (local_34)
@@ -2019,8 +2164,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
             }
             if (!(local_52.opCall()) == !(false))
             {
-                FString local_56 = "Timer job error: 'FC_LocalTag' included by job but not exist on ";
-                FString local_60 = local_32.ToString();
+                XLog(ELog(2), (FString("Timer job error: 'FC_LocalTag' included by job but not exist on ") + local_32.ToString()));
                 local_34 = true;
             }
             if (local_34)
@@ -2491,8 +2635,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
             }
             if (!(local_52.opCall()) == !(false))
             {
-                FString local_56 = "Timer job error: 'FC_LocalTag' included by job but not exist on ";
-                FString local_60 = local_32.ToString();
+                XLog(ELog(2), (FString("Timer job error: 'FC_LocalTag' included by job but not exist on ") + local_32.ToString()));
                 local_34 = true;
             }
             if (local_34)

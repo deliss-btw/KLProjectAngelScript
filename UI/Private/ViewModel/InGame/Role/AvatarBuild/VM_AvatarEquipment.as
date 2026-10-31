@@ -1,4 +1,3 @@
-﻿
 namespace FVM_EquipmentSlotInfo
 {
     const int ModelId = 0;
@@ -214,7 +213,8 @@ struct FVM_AvatarEquipment : FEUIViewModel
     }
     void GotoChangeEquipment()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        ::FVM_EquipmentEditPage::GotoPage(this.GetContext().UELocalPlayer, this.GetEquipSlot(), this.GetAvatarConfig());
+        return;
     }
     void SyncAvatarConfigFromAvatar()
     {
@@ -257,11 +257,73 @@ struct FVM_AvatarEquipment : FEUIViewModel
     }
     void UpdateWeapon()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        if (int(this.GetEquipSlot()) != 1)
+        {
+            return;
+        }
+        int64 local_12 = ::FEquipmentUtils::GetAvatarEquipmentUid(this.GetContext().GetLocalPlayer(), this.GetEquipSlot(), this.GetAvatarConfig());
+        if (local_12 != 0)
+        {
+            TEUIModelRef<FM_Equipment> local_14;
+            TEUIModelRef<FVM_EquipmentInfo> local_16;
+            local_14 = ::FMS_EquipmentDataCache::Get(this.GetContext().Manager).GetEquipment(local_12);
+            local_16 = TEUIModelRef<FVM_EquipmentInfo>(::FVM_EquipmentInfo::Create(this.GetContext().Manager, local_14));
+            this.SetEquipment(local_16);
+        }
+        else
+        {
+            TEUIModelRef<FVM_EquipmentInfo> local_16;
+            TEUIModelRef<FM_Equipment> local_14;
+            this.SetEquipment(local_16);
+            TDataObjectPtr<FEquipmentConfig> local_66 = TDataObjectPtr<FEquipmentConfig>(nullptr);
+            TDataObjectPtr<FEquipmentConfig> local_42 = local_66;
+            if (!(int(this.GetEquipSlot()) != 1) && this.GetAvatarConfig())
+            {
+                local_42 = local_66;
+            }
+            if (local_42)
+            {
+                TEUIModelRef<FMS_EquipmentDataCache> local_94 = this.GetEquipmentCache();
+                local_14.CreateFromConfig(local_42);
+                this.GetAvatarConfig().SetEquiptingAvatar();
+                local_16 = TEUIModelRef<FVM_EquipmentInfo>(::FVM_EquipmentInfo::Create(this.GetContext().Manager, local_14));
+                this.SetEquipment(local_16);
+            }
+            else
+            {
+                this.SetEquipment(local_16);
+            }
+        }
+        this.SetEquipmentSlotInfo(TEUIModelRef<FVM_EquipmentSlotInfo>(::FVM_EquipmentSlotInfo::Create(this.GetContext().Manager, EEquipSlotType(this.GetEquipSlot()), false, false, this.GetIsAvatarUnlocked())));
+        return;
     }
     void UpdateTalisman()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_3;
+        TEUIModelRef<FVM_EquipmentInfo> local_24;
+        if (!(::FEquipmentUtils::IsTalismanSlot(this.GetEquipSlot())))
+        {
+            return;
+        }
+        local_3 = ::FMS_Talisman::Get(this.GetManager()).GetUnlockSlotCount();
+        bool local_2 = ((int(this.GetEquipSlot()) - 2) >= local_3);
+        bool local_12 = false;
+        if (!(local_2))
+        {
+            int64 local_20 = ::FEquipmentUtils::GetAvatarEquipmentUid(this.GetContext().GetLocalPlayer(), this.GetEquipSlot(), this.GetAvatarConfig());
+            if (local_20 != 0)
+            {
+                local_24 = TEUIModelRef<FVM_EquipmentInfo>(::FVM_EquipmentInfo::Create(this.GetContext().Manager, ::FMS_EquipmentDataCache::Get(this.GetContext().Manager).GetEquipment(local_20)));
+                this.SetEquipment(local_24);
+            }
+            else
+            {
+                local_12 = true;
+                this.SetEquipment(local_24);
+            }
+        }
+        this.SetEquipmentSlotInfo(TEUIModelRef<FVM_EquipmentSlotInfo>(::FVM_EquipmentSlotInfo::Create(this.GetContext().Manager, EEquipSlotType(this.GetEquipSlot()), local_2, local_12, this.GetIsAvatarUnlocked())));
+        return;
     }
     EEquipSlotType GetEquipSlot() const property
     {
@@ -397,7 +459,7 @@ namespace FVM_EquipmentSlotInfo
 {
 FVM_EquipmentSlotInfo& Create(const UObject ContextObject, const EEquipSlotType EquipSlot, const bool bIsLocked, const bool bIsEmpty, const bool bIsAvatarUnLocked)
 {
-    return FVM_EquipmentSlotInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), bIsLocked, bIsEmpty, bIsAvatarUnLocked);
+    return FVM_EquipmentSlotInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), EEquipSlotType(EquipSlot), bIsLocked, bIsEmpty, bIsAvatarUnLocked);
 }
 FVM_EquipmentSlotInfo CreateByManager(const UEUIManagerSubsystem Manager, const EEquipSlotType EquipSlot, const bool bIsLocked, const bool bIsEmpty, const bool bIsAvatarUnLocked)
 {
@@ -454,10 +516,9 @@ UScriptStruct StaticStruct()
 }
 namespace FVM_AvatarEquipment
 {
-FVM_AvatarEquipment Create(const UObject ContextObject, const EEquipSlotType EquipSlot, const TEUIModelRef<FM_Avatar> &inout Avatar)
+FVM_AvatarEquipment& Create(const UObject ContextObject, const EEquipSlotType EquipSlot, const TEUIModelRef<FM_Avatar> &inout Avatar)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    FVM_AvatarEquipment __r; return __r;
+    return FVM_AvatarEquipment::CreateByManager(EUIInternal::GetContextManager(ContextObject), EEquipSlotType(EquipSlot), Avatar);
 }
 FVM_AvatarEquipment CreateByManager(const UEUIManagerSubsystem Manager, const EEquipSlotType EquipSlot, const TEUIModelRef<FM_Avatar> &inout Avatar)
 {
@@ -467,7 +528,56 @@ FVM_AvatarEquipment CreateByManager(const UEUIManagerSubsystem Manager, const EE
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "Equipment";
+    local_14.TypeName = "TEUIModelRef<FVM_EquipmentInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_AvatarEquipment>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_AvatarEquipment;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(6);
+    local_22.AddRefPropertyDirty(0, 3, FMS_EquipmentDataCache::__IndexOf_CachedEquipments());
+    local_22.AddRefPropertyDirty(1, 0, FM_Avatar::__IndexOf_AvatarConfig());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("EquipmentCache");
+    int local_2_2 = FMS_EquipmentDataCache::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(3);
+    local_30.RelatedDirtyMask.SetBit(FMS_EquipmentDataCache::__IndexOf_CachedEquipments(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    local_30.PropertyName = FName("Avatar");
+    int local_23 = FM_Avatar::ModelId;
+    int local_23_2 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FM_Avatar::__IndexOf_AvatarConfig(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelMonitorDefine local_42;
+    local_42.FunctionName = "__OnAvatarEquipmentChanged";
+    local_42.ComponentType = FC_DSPlayerAvatarInfo;
+    Result.MonitorFunctions.Add(local_42);
+    FEUIModelMsgHandleDefine local_54;
+    local_54.FunctionName = "__HandleTalismanSlotUnlockCountChange";
+    local_54.MessageTypeName = "Msg_TalismanSlotUnlockCountChange";
+    local_54.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_54);
+    FEUIModelDirtyDefine local_66;
+    local_66.FunctionName = "__OnEditingAvatarChanged";
+    local_66.DirtyFlags.Set(FVM_AvatarEquipment::__IndexOf_EquipSlot());
+    local_66.DirtyFlags.Set(FVM_AvatarEquipment::__IndexOf_EquipmentCache());
+    local_66.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    local_66.DirtyFlags.Set(FVM_AvatarEquipment::__IndexOf_Avatar());
+    local_66.DirtyFlags.Set(local_22.GetMappingDirtyIndex(1));
+    local_66.DirtyFlags.Set(FVM_AvatarEquipment::__IndexOf_Avatar());
+    Result.DirtyFunctions.Add(local_66);
+    return;
 }
 UScriptStruct GetModelStruct()
 {
@@ -490,7 +600,9 @@ void __OnEditingAvatarChanged(FVM_AvatarEquipment &inout Model)
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorDSPlayerAvatarInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorDSPlayerAvatarInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TEUIModelRef<FVM_EquipmentInfo> __UIGetter_Equipment(const FVM_AvatarEquipment &inout Model)
 {

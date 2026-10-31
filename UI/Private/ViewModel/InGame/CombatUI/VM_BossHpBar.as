@@ -1,4 +1,3 @@
-﻿
 enum EBossHpBarDisplayReason
 {
     None,
@@ -433,7 +432,7 @@ struct FVMS_BossHpBar : FEUIViewModelSingleton
     }
     void RefreshDivineStatus()
     {
-        // body not fully recovered вЂ” stub [unresolved-operand]
+        // body not fully recovered — stub [unresolved-operand]
     }
     void RefreshExecutedState()
     {
@@ -573,7 +572,7 @@ struct FVMS_BossHpBar : FEUIViewModelSingleton
                 if (!((local_18 == this.GetOldSoftLockBossEntity())))
                 {
                     this.SetOldSoftLockBossEntity(local_18);
-                    this.SetDisplayBossEntity(local_18, EBossHpBarDisplayReason(EBossHpBarDisplayReason(2)));
+                    this.SetDisplayBossEntity(local_18, EBossHpBarDisplayReason(2));
                 }
                 local_6 = ENTITY_NULL;
             }
@@ -604,10 +603,10 @@ struct FVMS_BossHpBar : FEUIViewModelSingleton
             }
             this.SetLockBossEntity(ENTITY_NULL);
         }
-        this.SetDisplayBossEntity(this.GetLockBossEntity(), EBossHpBarDisplayReason(EBossHpBarDisplayReason(4)));
+        this.SetDisplayBossEntity(this.GetLockBossEntity(), EBossHpBarDisplayReason(4));
         if ((FECSEntity(this.GetLockBossEntity()) == ENTITY_NULL) && (int(this.GetDisplayReason()) == 4))
         {
-            this.SetDisplayReason(EBossHpBarDisplayReason(EBossHpBarDisplayReason(3)));
+            this.SetDisplayReason(EBossHpBarDisplayReason(3));
         }
         return;
     }
@@ -1888,7 +1887,6 @@ struct __GeneratedProperties_FVMS_BossHpBar
     UPROPERTY()
     TEUIModelRef<FVMS_BossHpBar> Self;
 
-
 }
 
 namespace FVMS_BossHpBar
@@ -1905,7 +1903,191 @@ FVMS_BossHpBar GetByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasBeginDestroy(true);
+    Result.SetbHasLoadConfigDefault(true);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "VM_BuffInfo";
+    local_14.TypeName = "TEUIModelRef<FVM_BuffInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "BossDisplayPrefix";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "BossDisplayName";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "DisplayHpBarRatio";
+    local_14.TypeName = "float32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "DisplayPreviewHpBarRatio";
+    local_14.TypeName = "float32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "DivineStatus";
+    local_14.TypeName = "int";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "DivineLiteraryNormal";
+    local_14.TypeName = "FSoftBrush";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "DivineLiteraryStrengthening";
+    local_14.TypeName = "FSoftBrush";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "DivineLiteraryWeaken";
+    local_14.TypeName = "FSoftBrush";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HpSegmentIconVMList";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_BossHpSegmentIcon>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PostureBarRatio";
+    local_14.TypeName = "float32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "BuffDataList";
+    local_14.TypeName = "TArray<FEUIDynamicWidgetData>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ExecutedState";
+    local_14.TypeName = "int";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ExecutedWaitTimeRatio";
+    local_14.TypeName = "float32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ExecutedWaitTextVisiblity";
+    local_14.TypeName = "ESlateVisibility";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ExecuteEntityDataList";
+    local_14.TypeName = "TArray<FEUIModelContainer>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ExecuteCanJoinState";
+    local_14.TypeName = "int";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "BossLowHpTipsVisibility";
+    local_14.TypeName = "ESlateVisibility";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "BossHpBarVisibility";
+    local_14.TypeName = "ESlateVisibility";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVMS_BossHpBar>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVMS_BossHpBar;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(42);
+    local_22.AddRefPropertyDirty(0, 0, FVM_BuffInfo::__IndexOf_BuffModels());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("VM_BuffInfo");
+    int local_2_2 = FVM_BuffInfo::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FVM_BuffInfo::__IndexOf_BuffModels(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelWatcherProperty local_35;
+    local_35.PropertyName = FName("HpRatioSource");
+    int local_24 = FVMS_BossHpBar::__IndexOf_HpRatioSource();
+    Result.WatcherProperties.Add(local_35);
+    local_35.PropertyName = FName("PreviewHpBarRatioSource");
+    int local_2_4 = FVMS_BossHpBar::__IndexOf_PreviewHpBarRatioSource();
+    Result.WatcherProperties.Add(local_35);
+    local_35.PropertyName = FName("PostureRatioSource");
+    int local_24_2 = FVMS_BossHpBar::__IndexOf_PostureRatioSource();
+    Result.WatcherProperties.Add(local_35);
+    local_35.PropertyName = FName("DivineBurstTag");
+    int local_2_5 = FVMS_BossHpBar::__IndexOf_DivineBurstTag();
+    Result.WatcherProperties.Add(local_35);
+    local_35.PropertyName = FName("DivineChaosTag");
+    int local_24_3 = FVMS_BossHpBar::__IndexOf_DivineChaosTag();
+    Result.WatcherProperties.Add(local_35);
+    local_35.PropertyName = FName("ExecutedWaitTimeSource");
+    int local_2_6 = FVMS_BossHpBar::__IndexOf_ExecutedWaitTimeSource();
+    Result.WatcherProperties.Add(local_35);
+    FEUIModelMsgHandleDefine local_46;
+    local_46.FunctionName = "__OnWorldChanged";
+    local_46.MessageTypeName = "Msg_ECSWorldRequireCleanUp";
+    local_46.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_46);
+    FEUIModelEffectDefine local_54;
+    local_54.FunctionName = "SyncDamageTransferTargets";
+    Result.EffectFunctions.Add(local_54);
+    local_54.FunctionName = "SyncBossAttributeSources";
+    Result.EffectFunctions.Add(local_54);
+    local_54.FunctionName = "RefreshHpDisplay";
+    Result.EffectFunctions.Add(local_54);
+    local_54.FunctionName = "RefreshPreviewHpBarRatio";
+    Result.EffectFunctions.Add(local_54);
+    local_54.FunctionName = "RefreshPostureDisplay";
+    Result.EffectFunctions.Add(local_54);
+    local_54.FunctionName = "RefreshDivineStatus";
+    Result.EffectFunctions.Add(local_54);
+    local_54.FunctionName = "RefreshExecutedState";
+    Result.EffectFunctions.Add(local_54);
+    local_54.FunctionName = "RefreshExecutedWaitTimeRatio";
+    Result.EffectFunctions.Add(local_54);
+    FEUIModelMonitorDefine local_64;
+    local_64.FunctionName = "__OnPlayerLockTargetChange";
+    local_64.ComponentType = FC_LockTarget;
+    Result.MonitorFunctions.Add(local_64);
+    FEUIModelDirtyDefine local_74;
+    local_74.FunctionName = "__OnBuffInfoChange";
+    local_74.DirtyFlags.Set(FVMS_BossHpBar::__IndexOf_VM_BuffInfo());
+    local_74.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_74);
+    local_74.FunctionName = "__HandleHpBarSegmentChanged";
+    local_74.DirtyFlags.Set(FVMS_BossHpBar::__IndexOf_HpBarSegment());
+    Result.DirtyFunctions.Add(local_74);
+    local_74.FunctionName = "__HandleHpTargetEntityChanged";
+    local_74.DirtyFlags.Set(FVMS_BossHpBar::__IndexOf_HpTargetEntity());
+    Result.DirtyFunctions.Add(local_74);
+    local_74.FunctionName = "__HandlePostureTargetEntityChanged";
+    local_74.DirtyFlags.Set(FVMS_BossHpBar::__IndexOf_PostureTargetEntity());
+    Result.DirtyFunctions.Add(local_74);
+    local_64.FunctionName = "__OnOverrideDivineChanged";
+    local_64.ComponentType = FC_OverrideDivineLiteraryType;
+    local_64.MonitorPropertyName = FName("DisplayBossEntity");
+    int local_23 = FVMS_BossHpBar::__IndexOf_DisplayBossEntity();
+    Result.MonitorFunctions.Add(local_64);
+    FEUIModelEventDefine local_82;
+    local_82.FunctionName = "__OnHandleHitEvent";
+    local_82.EventType = FCE_HitEvent;
+    Result.EventFunctions.Add(local_82);
+    return;
 }
 UScriptStruct GetModelStruct()
 {
@@ -1953,7 +2135,11 @@ void __OnHandleHitEvent(FVMS_BossHpBar &inout Model, const FCE_HitEvent &inout E
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    ECSWorld.__MonitorLockTargetLifetime(EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    ECSWorld.__MonitorLockTargetModification(EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorOverrideDivineLiteraryTypeLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorOverrideDivineLiteraryTypeModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TEUIModelRef<FVM_BuffInfo> __UIGetter_VM_BuffInfo(const FVMS_BossHpBar &inout Model)
 {

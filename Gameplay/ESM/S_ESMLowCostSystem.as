@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_ShowESMTriggers = FConsoleVariable();
 
 class US_ESMLowCostSystem : UECSScriptSystem

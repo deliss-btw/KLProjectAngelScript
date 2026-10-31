@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_RegionInfo_Helpers
 {
 UFUNCTION()

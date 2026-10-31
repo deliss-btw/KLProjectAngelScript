@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_PageDot_Helpers
 {
 UFUNCTION()

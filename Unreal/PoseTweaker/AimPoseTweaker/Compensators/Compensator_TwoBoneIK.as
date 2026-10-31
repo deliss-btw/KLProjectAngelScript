@@ -1,5 +1,3 @@
-﻿
-
 class UCompensator_TwoBoneIK : UAimPoseCompensator
 {
     FPT_TwoBoneIK IKSolver;
@@ -26,8 +24,7 @@ class UCompensator_TwoBoneIK : UAimPoseCompensator
     {
         if (!(Tweaker.InitializeBoneRef(this.TargetBone)))
         {
-            this.TargetBone.GetBoneName();
-            FString local_6 = FString();
+            Tweaker.AddOnScreenDebugMessage(FString().Append("AimPose ERROR: [").Append(this.ProcessorName).Append("] TargetBone '").Append(this.TargetBone.GetBoneName()).Append("' not found"), -1, false, 2.0f);
         }
         if (!(this.IKSolver.Initialize()))
         {

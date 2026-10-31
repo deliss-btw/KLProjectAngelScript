@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_AvatarTraining_Helpers
 {
 UFUNCTION()

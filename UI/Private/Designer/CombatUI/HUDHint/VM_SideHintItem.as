@@ -1,4 +1,3 @@
-﻿
 namespace FVM_SideHintItem
 {
     const int ModelId = 0;
@@ -53,10 +52,20 @@ struct FVM_SideHintItem : FEUIViewModel
     }
     void Tick()
     {
+        int local_1;
         this.SetbShowHint(false);
-        if (this.GetIcon() == nullptr && (int(this.GetIconVisibility()) == 0))
+        if (this.GetIcon() != nullptr)
         {
-            this.SetIconVisibility(ESlateVisibility(ESlateVisibility(2)));
+            local_1 = 0;
+        }
+        else
+        {
+            bool local_8 = (int(this.GetIconVisibility()) == 0);
+            local_1 = local_8;
+        }
+        if (local_1 != 0)
+        {
+            this.SetIconVisibility(ESlateVisibility(2));
         }
         return;
     }

@@ -1,5 +1,3 @@
-﻿
-
 class US_HUDHintSystem : UECSScriptSystem
 {
     UPROPERTY()
@@ -34,7 +32,7 @@ class US_HUDHintSystem : UECSScriptSystem
         GetGameplaySettings<UUtilitySettings> local_114;
         local_112 = local_114;
         Make local_130;
-        local_130;
+        ::CommonPopup::SmallHintCustom(local_112.BuffSmallSideHintTitle, local_130.opImplConv(), 0);
         return;
     }
     UFUNCTION()
@@ -60,12 +58,59 @@ class US_HUDHintSystem : UECSScriptSystem
     }
     void ParseAttributeFormattedString(const FString &inout Input, FString &inout OutFormatted, TArray<FBuffModifierAttributeDescriptionInfos> &inout AttrValues) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        bool local_37;
+        OutFormatted = Input;
+        int local_1 = 0;
+        int local_3 = 0;
+        int local_4 = 0;
+        while (OutFormatted.FindChar(int16(123), local_3))
+        {
+            int local_2 = OutFormatted.Find("{", ESearchCase(1), ESearchDir(0), local_3);
+            if (local_2 == INDEX_NONE)
+            {
+                break;
+            }
+            int local_7 = OutFormatted.Find("}", ESearchCase(1), ESearchDir(0), local_2);
+            if (local_7 == INDEX_NONE)
+            {
+                break;
+            }
+            FGameAttributeRef local_34 = FGameAttributeRef(FName(OutFormatted.Mid(local_2 + 1, ((local_7 - local_2) - 1))));
+            local_37 = false;
+            for (auto& local_52 : AttrValues)
+            {
+                if (local_52.Attribute.GetGlobalIndex() == local_34.GetGlobalIndex())
+                {
+                    FString local_56;
+                    if (int(local_52.ValueShowType) == 0)
+                    {
+                        local_56 = FText::Format(FText::FromString("{0}%"), FText::AsNumber((local_52.Value * 100.0f), FNumberFormattingOptions())).ToString();
+                    }
+                    else
+                    {
+                        if (int(local_52.ValueShowType) == 1)
+                        {
+                            local_56 = FText::Format(FText::FromString("{0}"), FText::AsNumber(local_52.Value, FNumberFormattingOptions())).ToString();
+                        }
+                    }
+                    OutFormatted = ((OutFormatted.Left(local_2) + local_56) + OutFormatted.Mid(local_7 + 1, 2147483647));
+                    local_3 = local_2 + local_56.Len();
+                    local_37 = true;
+                    break;
+                }
+            }
+            if (!(local_37))
+            {
+                break;
+            }
+        }
+        Input.FindChar(int16(125), local_3);
+        return;
     }
     UFUNCTION()
     void ClientJob_HandleBuffHints(const FCE_HUDBuffAddHintEvent &inout Event) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     UFUNCTION()
     void Job_HandleHealHPEvent(const FCE_HealHpAudioVo &inout Event) const

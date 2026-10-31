@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommissionMonsterInfo
 {
     const int ModelId = 0;
@@ -51,8 +50,7 @@ struct FVM_CommissionMonsterInfo : FEUIViewModel
         for (auto& local_22 : this.GetCommissionModel().opArrow().GetCommissionConfig().opArrow().DisplayMonsters)
         {
             FEUIDynamicWidgetData local_46;
-            FEUIModelContainer local_60;
-            local_46.ModelContainer = local_60;
+            local_46.ModelContainer = FEUIModelContainer(::FVM_MonsterInfo::Create(this.GetContext().Manager, local_22.MonsterConfig));
             local_46.WidgetClass = local_22.DisplayWidget;
             local_4.Add(local_46);
         }
@@ -200,7 +198,67 @@ FVM_CommissionMonsterInfo CreateByManager(const UEUIManagerSubsystem Manager, co
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "MonsterSelector";
+    local_14.TypeName = "TEUIModelRef<FVM_DynamicWidgetSelector>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "DropPreview";
+    local_14.TypeName = "TEUIModelRef<FVM_DropPreview>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectedMonsterInfo";
+    local_14.TypeName = "TEUIModelRef<FVM_MonsterInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AttributeDamageTypes";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_DamageType>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "WeaknessDamageTypes";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_DamageType>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_CommissionMonsterInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_CommissionMonsterInfo;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(3);
+    local_22.AddRefPropertyDirty(0, 1, FVM_DynamicWidgetSelector::__IndexOf_SelectedIndex());
+    local_22.AddRefPropertyDirty(1, 0, FM_Commission::__IndexOf_InstanceData());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("MonsterSelector");
+    int local_2_2 = FVM_DynamicWidgetSelector::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(1);
+    local_30.RelatedDirtyMask.SetBit(FVM_DynamicWidgetSelector::__IndexOf_SelectedIndex(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    local_30.PropertyName = FName("CommissionModel");
+    int local_23 = FM_Commission::ModelId;
+    int local_23_2 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FM_Commission::__IndexOf_InstanceData(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnMonsterSelectorSelectedModelChanged";
+    local_40.DirtyFlags.Set(FVM_CommissionMonsterInfo::__IndexOf_MonsterSelector());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnCommissionModelInstanceDataChanged";
+    local_40.DirtyFlags.Set(FVM_CommissionMonsterInfo::__IndexOf_CommissionModel());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(1));
+    Result.DirtyFunctions.Add(local_40);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

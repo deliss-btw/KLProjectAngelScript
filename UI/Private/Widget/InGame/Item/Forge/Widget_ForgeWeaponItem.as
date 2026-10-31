@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ForgeWeaponItem
 {
     const int ViewID = 0;
@@ -137,6 +136,7 @@ namespace UWidget_ForgeWeaponItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ForgeWeaponItem;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleItemSelectedChanged"));
     return;
 }

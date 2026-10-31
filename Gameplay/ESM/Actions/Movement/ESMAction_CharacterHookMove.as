@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CharacterHookMove : UESMBPBaseSpanAction
 {
     UESMAction_CharacterHookMove()

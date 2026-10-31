@@ -1,4 +1,3 @@
-﻿
 namespace FVM_GuideDecoractor
 {
     const int ModelId = 0;
@@ -98,14 +97,13 @@ struct __GeneratedProperties_FVM_GuideDecoractor
     UPROPERTY()
     TEUIModelRef<FVM_GuideDecoractor> Self;
 
-
 }
 
 namespace FVM_GuideDecoractor
 {
 FVM_GuideDecoractor& Create(const UObject ContextObject, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationSpotUsage SpotUsage)
 {
-    return FVM_GuideDecoractor::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot);
+    return FVM_GuideDecoractor::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot, EPresentationSpotUsage(SpotUsage));
 }
 FVM_GuideDecoractor CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationSpotUsage SpotUsage)
 {

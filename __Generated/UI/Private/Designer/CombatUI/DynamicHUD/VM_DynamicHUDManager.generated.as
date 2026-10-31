@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_DynamicHUDManager_Helpers
 {
 UFUNCTION()

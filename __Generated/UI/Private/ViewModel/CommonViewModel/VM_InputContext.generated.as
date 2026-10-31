@@ -1,5 +1,3 @@
-﻿
-
 struct FConfigVM_InputContext : FConfigEUIModelBase
 {
     UPROPERTY()

@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_ChangeRole
 {
     const int ModelId = 0;
@@ -114,14 +113,13 @@ struct FVMS_ChangeRole : FEUIViewModelSingleton
         TDataObjectPtr<FGameAttribute_DefaultConfig> local_82_2 = TDataObjectPtr<FGameAttribute_DefaultConfig>(local_58.InitValues);
         if (this.GetSlotIndex() == 0)
         {
-            FEUIModelRef local_134;
             FSlateBrush local_132;
             FGameAttribute_DefaultConfig local_86;
             this.SetOtherAvatarBrush(local_56.PlayerTachieBack.LoadBrush());
             local_132 = local_58.PlayerTachie.LoadBrush();
             this.SetSelectAvatarBrush(local_132);
             local_28 = TDataObjectPtr<FAvatarPrefabConfig>(local_58);
-            this.SetSelectedAvatar(local_134);
+            this.SetSelectedAvatar(FEUIModelRef(::FVM_PlayerAvatar::Create(this.GetContext().Manager, local_28)));
             this.SetSelectAvatarClass(local_58.PlayerPowerName);
             this.SetSelectAvatarIllustrate(local_58.PlayerIllustrate1);
             this.SetSelectAvatarAttack(this.MakeAttackDisplayText(local_86.Attack));
@@ -129,13 +127,12 @@ struct FVMS_ChangeRole : FEUIViewModelSingleton
         }
         else
         {
-            FEUIModelRef local_134;
             FSlateBrush local_132;
             FGameAttribute_DefaultConfig local_84;
             this.SetOtherAvatarBrush(local_132);
             this.SetSelectAvatarBrush(local_132);
             local_52 = TDataObjectPtr<FAvatarPrefabConfig>(local_56);
-            this.SetSelectedAvatar(local_134);
+            this.SetSelectedAvatar(FEUIModelRef(::FVM_PlayerAvatar::Create(this.GetContext().Manager, local_52)));
             this.SetSelectAvatarAttack(this.MakeAttackDisplayText(local_84.Attack));
             this.SetSelectAvatarPostureAttack(this.MakePostureAttackDisplayText(local_84.PostureAttack));
         }
@@ -278,7 +275,7 @@ struct FVMS_ChangeRole : FEUIViewModelSingleton
         if (!(::FSwitchPlayerUtils::CheckSwitchPlayerCondition(this.GetContext().GetLocalPlayer(), local_14.opCall().Time)))
         {
             FCommonTipsParam local_22;
-            ::CommonPopup::Tips(NSLOCTEXT("ChangeRole", "ChangeRole_CheckConditionFailed", "еЅ“е‰ЌзЉ¶жЂЃж— жі•е€‡жЌўи§’и‰І"), local_22);
+            ::CommonPopup::Tips(NSLOCTEXT("ChangeRole", "ChangeRole_CheckConditionFailed", "当前状态无法切换角色"), local_22);
             return;
         }
         int local_2 = this.GetCurrentSelectedRoleIndex();
@@ -290,7 +287,7 @@ struct FVMS_ChangeRole : FEUIViewModelSingleton
                 this.OnCancel();
                 return;
             }
-            ::CommonPopup::Tips(NSLOCTEXT("ChangeRole", "ChangeRole_IsCurrent", "еЅ“е‰Ќи§’и‰Іе·Із»ЏењЁењєдёЉ"), local_22);
+            ::CommonPopup::Tips(NSLOCTEXT("ChangeRole", "ChangeRole_IsCurrent", "当前角色已经在场上"), local_22);
             return;
         }
         FFPTime local_38 = FFPTime(-1);
@@ -309,25 +306,24 @@ struct FVMS_ChangeRole : FEUIViewModelSingleton
     }
     void OnSelectIndexChanged()
     {
-        EEquipSlotType local_140;
         int local_1 = this.GetCurrentSelectedRoleIndex();
         Get local_6;
         TDataObjectPtr<FAvatarPrefabConfig> local_30 = local_6.opCall().GetAvatarConfig();
         FAvatarPrefabConfig local_56;
         TDataObjectPtr<FGameAttribute_DefaultConfig> local_80 = TDataObjectPtr<FGameAttribute_DefaultConfig>(local_56.InitValues);
         this.SetSelectAvatarBrush(local_56.PlayerTachie.LoadBrush());
-        TDataObjectPtr<FAvatarPrefabConfig> local_54 = TDataObjectPtr<FAvatarPrefabConfig>(local_56);
-        this.SetSelectedAvatar(FEUIModelRef());
+        this.SetSelectedAvatar(FEUIModelRef(::FVM_PlayerAvatar::Create(this.GetContext().Manager, TDataObjectPtr<FAvatarPrefabConfig>(local_56))));
         this.SetSelectAvatarClass(local_56.PlayerPowerName);
         this.SetSelectAvatarIllustrate(local_56.PlayerIllustrate1);
         FGameAttribute_DefaultConfig local_82;
         this.SetSelectAvatarAttack(this.MakeAttackDisplayText(local_82.Attack));
         this.SetSelectAvatarPostureAttack(this.MakePostureAttackDisplayText(local_82.PostureAttack));
+        TEUIModelRef<FM_Avatar> local_140 = ::FMS_PlayerAvatarData::Get(this.GetContext().Manager).FindAvatar(local_30);
         if (!(local_140))
         {
             local_140 = TEUIModelRef<FM_Avatar>(::FM_Avatar::Create(this.GetContext().Manager, local_30));
         }
-        this.SetAvatarEquipment(FEUIModelRef());
+        this.SetAvatarEquipment(FEUIModelRef(::FVM_AvatarEquipment::Create(this.GetContext().Manager, EEquipSlotType(1), local_140)));
         return;
     }
     void GotoAvatarBuildPage()
@@ -342,13 +338,13 @@ struct FVMS_ChangeRole : FEUIViewModelSingleton
     {
         FText local_4;
         FText::AsNumber(local_4, Attack);
-        return FText::Format(NSLOCTEXT("ChangeRole", "ChangeRole_AttackFmt", "ж”»е‡»:{0}"), local_4);
+        return FText::Format(NSLOCTEXT("ChangeRole", "ChangeRole_AttackFmt", "攻击:{0}"), local_4);
     }
     FText MakePostureAttackDisplayText(const float32 PostureAttack)
     {
         FText local_4;
         FText::AsNumber(local_4, PostureAttack);
-        return FText::Format(NSLOCTEXT("ChangeRole", "ChangeRole_PostureAttackFmt", "жћ¶еЉїж”»е‡»:{0}"), local_4);
+        return FText::Format(NSLOCTEXT("ChangeRole", "ChangeRole_PostureAttackFmt", "架势攻击:{0}"), local_4);
     }
     int GetSlotIndex() const property
     {

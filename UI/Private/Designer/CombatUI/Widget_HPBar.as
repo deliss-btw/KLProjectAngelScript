@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_HPBar
 {
     const int ViewID = 0;
@@ -55,7 +54,7 @@ class UWidget_HPBar : UEUIUserWidget
         else
         {
             this.Text_HPBarNum.SetVisibility(ESlateVisibility(0));
-            this.Text_HPBarNum.SetText(FText::FromString((FString("Г— ") + CurrentHPBarSegmentIndex)));
+            this.Text_HPBarNum.SetText(FText::FromString((FString("× ") + CurrentHPBarSegmentIndex)));
         }
         FProgressBarStyle local_156 = this.ProgressBar_HP.GetWidgetStyle();
         local_156.BackgroundImage.TintColor.SpecifiedColor = this.HPColorConfig[CurrentHPBarSegmentIndex - 1];
@@ -100,7 +99,7 @@ class UWidget_HPBar : UEUIUserWidget
                     }
                     if (local_6)
                     {
-                        this.OnHPLowChanged(local_6.GetbIsHPLow(), int(local_6.GetCurrentHPRatio()));
+                        this.OnHPLowChanged(local_6.GetbIsHPLow(), local_6.GetCurrentHPRatio());
                     }
                     this.HPBar.TrackRead();
                     if (local_6)
@@ -153,6 +152,7 @@ namespace UWidget_HPBar
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_HPBar;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnHPLowChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleCurrentHPBarSegmentIndexChanged"));
     return;

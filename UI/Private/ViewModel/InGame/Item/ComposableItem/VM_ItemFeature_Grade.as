@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ItemFeature_Grade
 {
     const int ModelId = 0;

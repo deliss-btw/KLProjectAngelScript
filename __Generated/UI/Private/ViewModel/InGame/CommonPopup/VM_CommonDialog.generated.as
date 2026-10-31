@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommonDialog_Helpers
 {
 UFUNCTION()

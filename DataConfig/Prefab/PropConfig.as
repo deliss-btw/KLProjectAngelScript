@@ -1,4 +1,3 @@
-﻿
 enum EPropType
 {
     Default,
@@ -31,7 +30,6 @@ struct FPropPrefabConfig : FBasePrefabConfig
     EPropType PropType = EPropType(0);
     UPROPERTY()
     ECombatPropType CombatPropType = ECombatPropType(0);
-
 
 }
 

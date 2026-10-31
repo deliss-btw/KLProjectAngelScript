@@ -1,10 +1,7 @@
-﻿
-
 class UESMAction_ExtraFloorDetection : UESMBPBaseSpanAction
 {
     UPROPERTY()
     float32 ExtraRange = 200.0f;
-
 
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const

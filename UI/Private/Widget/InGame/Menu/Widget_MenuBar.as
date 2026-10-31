@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_MenuBar
 {
     const int ViewID = 0;
@@ -24,7 +23,11 @@ class UWidget_MenuBar : UEUIActivatableWidget
     UFUNCTION()
     void Refresh()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (this.EUI_List != nullptr && (GetCurrentMenuIndex() != INDEX_NONE))
+        {
+            this.EUI_List.SetSelectedIndex(GetCurrentMenuIndex());
+        }
+        return;
     }
     UFUNCTION()
     void MenuManager_OnMenuBarItemSelected(const FEUIModelContainer &inout MenuBarItem) const
@@ -100,6 +103,7 @@ namespace UWidget_MenuBar
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MenuBar;
     Result.ObservedModelChangesSubscriberNames.Add(FString("Refresh"));
     return;
 }

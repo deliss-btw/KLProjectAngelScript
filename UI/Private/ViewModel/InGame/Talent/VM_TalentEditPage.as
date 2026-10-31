@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TalentEditPage
 {
     const int ModelId = 0;
@@ -59,11 +58,41 @@ struct FVM_TalentEditPage : FEUIViewModel
 
     FVM_TalentEditPage()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_CurrentSkillIndex = INDEX_NONE;
+        this.m_CacheLastSkillIndex = INDEX_NONE;
+        this.m_TalentSkillChangePageIsOpen = false;
+        this.m_bPendingClose = false;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVM_TalentEditPage(const FVM_TalentEditPage &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_CurrentSkillIndex = INDEX_NONE;
+        this.m_CacheLastSkillIndex = INDEX_NONE;
+        this.m_TalentSkillChangePageIsOpen = false;
+        this.m_bPendingClose = false;
+        this.m_CurrentSkillIndex = int(Other.m_CurrentSkillIndex);
+        this.m_CacheLastSkillIndex = int(Other.m_CacheLastSkillIndex);
+        this.m_TalentModel = Other.m_TalentModel;
+        this.m_Showcase = Other.m_Showcase;
+        this.m_EditingAvatar = Other.m_EditingAvatar;
+        this.m_OnEquipmentSkill = Other.m_OnEquipmentSkill;
+        this.m_OnSelectTypeAllSkill = Other.m_OnSelectTypeAllSkill;
+        this.m_CurSkillBtnConfig = Other.m_CurSkillBtnConfig;
+        this.m_SelectSkillChangeVM = Other.m_SelectSkillChangeVM;
+        this.m_CurrentTalentTreeList = Other.m_CurrentTalentTreeList;
+        this.m_CurrentTalentTreeListA = Other.m_CurrentTalentTreeListA;
+        this.m_HoverTalentInfo = Other.m_HoverTalentInfo;
+        this.m_SelectedTalentPageHandle = Other.m_SelectedTalentPageHandle;
+        this.m_SelectedDetailTalentNode = Other.m_SelectedDetailTalentNode;
+        this.m_SelectedDetailSkillInfo = Other.m_SelectedDetailSkillInfo;
+        this.m_SelectedDetailUpgradeConfirm = Other.m_SelectedDetailUpgradeConfirm;
+        this.m_TalentSkillChangePageIsOpen = Other.m_TalentSkillChangePageIsOpen;
+        this.m_bPendingClose = Other.m_bPendingClose;
+        return;
     }
     FVM_TalentEditPage opAssign(const FVM_TalentEditPage &inout Other)
     {
@@ -103,7 +132,7 @@ struct FVM_TalentEditPage : FEUIViewModel
         if (local_3)
         {
             TEUIModelRef<FMS_EditingAvatar> local_2_2 = this.GetEditingAvatar();
-            NSLOCTEXT("Talent", "TalentTitleFormat", "е¤©иµ‹ <Beige24>/ {0}</>");
+            NSLOCTEXT("Talent", "TalentTitleFormat", "天赋 <Beige24>/ {0}</>");
             return FText();
         }
         return FText::FromString("");
@@ -114,8 +143,8 @@ struct FVM_TalentEditPage : FEUIViewModel
     }
     bool TalentSkillHasSelect() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        bool __r; return __r;
+        int local_2 = INDEX_NONE;
+        return (this.GetCurrentSkillIndex() != local_2);
     }
     bool TalentSkillHasNotSelect() const
     {
@@ -255,7 +284,9 @@ struct FVM_TalentEditPage : FEUIViewModel
     void UpdateSkillList()
     {
         int local_137 = 0;
-        int local_179 = 0;
+        int local_175;
+        int local_178;
+        int local_179;
         this.GetModify_OnEquipmentSkill().Empty(0);
         bool local_5 = this.GetEditingAvatar().IsNull();
         if (local_5)
@@ -295,7 +326,7 @@ struct FVM_TalentEditPage : FEUIViewModel
         TEUIModelRef<FMS_Talent> local_8_3 = this.GetTalentModel();
         TEUIModelWeakRef<FM_TalentNode> local_142;
         local_142.GetNodeByTalentId(local_137);
-        TEUIModelRef<FVM_TalentEditSkillBtn> local_148 = TEUIModelRef<FVM_TalentEditSkillBtn>(::FVM_TalentEditSkillBtn::Create(this.GetContext().Manager, local_32, local_142, ESkillSlot(ESkillSlot(0))));
+        TEUIModelRef<FVM_TalentEditSkillBtn> local_148 = TEUIModelRef<FVM_TalentEditSkillBtn>(::FVM_TalentEditSkillBtn::Create(this.GetContext().Manager, local_32, local_142, ESkillSlot(0)));
         TEUIModelRef<FMS_Talent> local_8_4 = this.GetTalentModel();
         TArray<TEUIModelRef<FM_TalentNode>> local_154;
         local_154.GetActiveFoundationTalentNodeList(local_84);
@@ -303,21 +334,25 @@ struct FVM_TalentEditPage : FEUIViewModel
         local_5_2.SetbCanChange();
         this.GetModify_OnEquipmentSkill().Add(local_148);
         TArray<ESkillSlot> local_158 = ::FSkillUIUtils::GetAvatarAllSkillSlots(local_32);
-        for (auto local_175 : local_158)
+        auto local_168 = local_158.Iterator();
+        for (; local_168.CanProceed;)
         {
-            if (int(local_175) == 1 || (int(local_175) == 2))
+            local_175 = int(local_168.Proceed());
+            if (local_175 == 1 || ((local_175 == 2)))
             {
-                if (int(local_175) == 1)
+                if (local_175 == 1)
                 {
                     local_179 = 3;
+                    local_178 = local_179;
                 }
                 else
                 {
                     local_179 = 4;
+                    local_178 = local_179;
                 }
                 TEUIModelWeakRef<FM_TalentNode> local_182;
                 TEUIModelRef<FMS_Talent> local_8_5 = this.GetTalentModel();
-                local_154.GetActiveTalentNodeListByType(local_84);
+                local_154.GetActiveTalentNodeListByType(local_84, ESkillType(local_178));
                 for (auto& local_200 : local_154)
                 {
                     local_200;
@@ -332,11 +367,12 @@ struct FVM_TalentEditPage : FEUIViewModel
                         }
                     }
                 }
-                TEUIModelRef<FVM_TalentEditSkillBtn> local_230 = TEUIModelRef<FVM_TalentEditSkillBtn>(::FVM_TalentEditSkillBtn::Create(this.GetContext().Manager, local_32, local_182));
+                TEUIModelRef<FVM_TalentEditSkillBtn> local_230 = TEUIModelRef<FVM_TalentEditSkillBtn>(::FVM_TalentEditSkillBtn::Create(this.GetContext().Manager, local_32, local_182, ESkillSlot(local_175)));
                 this.GetModify_OnEquipmentSkill().Add(local_230);
                 continue;
             }
-            int local_231 = int(local_175);
+            int local_176 = local_175;
+            int local_231 = local_176;
             TEUIModelWeakRef<FM_TalentNode> local_182;
             if (local_136.SlotToTalentId.Contains(local_231))
             {
@@ -346,14 +382,15 @@ struct FVM_TalentEditPage : FEUIViewModel
                 local_142.GetNodeByTalentId(local_232);
                 local_182 = local_142;
             }
-            TEUIModelRef<FVM_TalentEditSkillBtn> local_230_2 = TEUIModelRef<FVM_TalentEditSkillBtn>(::FVM_TalentEditSkillBtn::Create(this.GetContext().Manager, local_32, local_182));
+            TEUIModelRef<FVM_TalentEditSkillBtn> local_230_2 = TEUIModelRef<FVM_TalentEditSkillBtn>(::FVM_TalentEditSkillBtn::Create(this.GetContext().Manager, local_32, local_182, ESkillSlot(local_175)));
             if (local_182.IsValid())
             {
-                if (int(GetEffectiveSkillType()) != 0)
+                int local_177 = int(GetEffectiveSkillType());
+                if (local_177 != 0)
                 {
                     TArray<TEUIModelRef<FM_TalentNode>> local_186;
                     TEUIModelRef<FMS_Talent> local_8_7 = this.GetTalentModel();
-                    local_186.GetActiveTalentNodeListByType(local_84);
+                    local_186.GetActiveTalentNodeListByType(local_84, ESkillType(local_177));
                     if (local_186.Num() > 1)
                     {
                         bool local_5_3 = true;
@@ -383,7 +420,19 @@ struct FVM_TalentEditPage : FEUIViewModel
     }
     void OnSkillItemSelected(const FEUIModelContainer &inout SkillItem)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_7 = this.GetOnEquipmentSkill().IndexOfByKey(TEUIModelRef<FVM_TalentEditSkillBtn>(FEUIModelContainer::GetModel(SkillItem).opCall()));
+        if (local_7 == this.GetCurrentSkillIndex())
+        {
+            return;
+        }
+        if (local_7 == INDEX_NONE)
+        {
+            this.SetTalentSkillChangePageIsOpen(false);
+            return;
+        }
+        this.SetCurrentSkillIndex(local_7);
+        this.UpdateSkillSellectType(FEUIModelContainer::GetModel(SkillItem).opCall().GetSkillButtonSlot(), FEUIModelContainer::GetModel(SkillItem).opCall().GetSkillType());
+        return;
     }
     void OnSkillItemSelectedSlot(const ESkillSlot SkillSlot)
     {
@@ -411,7 +460,26 @@ struct FVM_TalentEditPage : FEUIViewModel
     }
     void SelectFirst()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (this.GetOnEquipmentSkill().Num() <= 0)
+        {
+            this.SetCurrentSkillIndex(INDEX_NONE);
+            this.SetCacheLastSkillIndex(INDEX_NONE);
+            return;
+        }
+        if (this.GetCacheLastSkillIndex() == INDEX_NONE)
+        {
+            if (this.GetCurrentSkillIndex() < 0)
+            {
+                this.SetCurrentSkillIndex(0);
+                TEUIModelRef<FVM_TalentEditSkillBtn> local_6 = TEUIModelRef<FVM_TalentEditSkillBtn>(this.GetOnEquipmentSkill()[this.GetCurrentSkillIndex()]);
+                this.UpdateSkillSellectType(local_6.opArrow().GetSkillButtonSlot(), local_6.opArrow().GetSkillType());
+            }
+            return;
+        }
+        this.SetCurrentSkillIndex(this.GetCacheLastSkillIndex());
+        TEUIModelRef<FVM_TalentEditSkillBtn> local_6_2 = TEUIModelRef<FVM_TalentEditSkillBtn>(this.GetOnEquipmentSkill()[this.GetCurrentSkillIndex()]);
+        this.UpdateSkillSellectType(local_6_2.opArrow().GetSkillButtonSlot(), local_6_2.opArrow().GetSkillType());
+        return;
     }
     void MoveSelectSkill(const int Offset)
     {
@@ -431,8 +499,7 @@ struct FVM_TalentEditPage : FEUIViewModel
             this.SetCurrentSkillIndex(0);
         }
         TEUIModelRef<FVM_TalentEditSkillBtn> local_6 = TEUIModelRef<FVM_TalentEditSkillBtn>(this.GetOnEquipmentSkill()[this.GetCurrentSkillIndex()]);
-        int local_7 = int(local_6.opArrow().GetSkillType());
-        this.UpdateSkillSellectType(local_6.opArrow().GetSkillButtonSlot());
+        this.UpdateSkillSellectType(local_6.opArrow().GetSkillButtonSlot(), local_6.opArrow().GetSkillType());
         return;
     }
     void ClosePage()
@@ -540,7 +607,7 @@ struct FVM_TalentEditPage : FEUIViewModel
             for (auto& local_154 : local_136)
             {
                 TEUIModelRef<FVM_TalentSkillInfoItem> local_156 = TEUIModelRef<FVM_TalentSkillInfoItem>(::FVM_TalentSkillInfoItem::Create(this.GetContext().Manager, local_78, local_154, ESkillSlot(0), ETalentInfoShowPageType(2)));
-                SetEnterButtonSlot();
+                SkillSlot.SetEnterButtonSlot();
                 this.GetModify_OnSelectTypeAllSkill().Add(local_156);
             }
         }
@@ -548,14 +615,13 @@ struct FVM_TalentEditPage : FEUIViewModel
         {
             TArray<TEUIModelRef<FM_TalentNode>> local_140;
             TEUIModelRef<FMS_Talent> local_132_2 = this.GetTalentModel();
-            local_140.GetActiveTalentNodeListByType(local_78);
+            local_140.GetActiveTalentNodeListByType(local_78, ESkillType(SkillType));
             for (auto& local_154 : local_140)
             {
                 int local_162 = GetDataId();
                 TEUIModelRef<FMS_Talent> local_132_3 = this.GetTalentModel();
-                int local_158 = local_163.GetSlotByTalentNodeId(local_162);
-                TEUIModelRef<FVM_TalentSkillInfoItem> local_156_2 = TEUIModelRef<FVM_TalentSkillInfoItem>(::FVM_TalentSkillInfoItem::Create(this.GetContext().Manager, local_78, local_154, ESkillSlot(2)));
-                SetEnterButtonSlot();
+                TEUIModelRef<FVM_TalentSkillInfoItem> local_156_2 = TEUIModelRef<FVM_TalentSkillInfoItem>(::FVM_TalentSkillInfoItem::Create(this.GetContext().Manager, local_78, local_154, ESkillSlot(local_163.GetSlotByTalentNodeId(local_162)), ETalentInfoShowPageType(2)));
+                SkillSlot.SetEnterButtonSlot();
                 this.GetModify_OnSelectTypeAllSkill().Add(local_156_2);
             }
         }
@@ -583,11 +649,139 @@ struct FVM_TalentEditPage : FEUIViewModel
     }
     void OnTalentSetEquipSkillSlot(const FMsg_TalentSetEquipSkillSlot &inout Msg)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_69;
+        int local_135 = 0;
+        int local_136 = 0;
+        if (!(Msg.TalentNode.IsValid()))
+        {
+            return;
+        }
+        if (int(GetStateType()) != 3)
+        {
+            FCommonTipsParam local_12;
+            ::CommonPopup::WeakTips(NSLOCTEXT("Talent", "TalentNotUnlocked", "请先解锁当前天赋"), local_12);
+            return;
+        }
+        if (this.GetCurrentSkillIndex() == INDEX_NONE || !(this.GetOnEquipmentSkill().IsValidIndex(this.GetCurrentSkillIndex())))
+        {
+            return;
+        }
+        if (::FASCommonUtils::IsInCombat(this.GetContext().GetLocalPlayerPawn()))
+        {
+            FCommonTipsParam local_12;
+            ::CommonPopup::WeakTips(NSLOCTEXT("Talent", "TalentNotInBattle", "战斗中无法切换天赋"), local_12);
+            return;
+        }
+        TEUIModelRef<FMS_EditingAvatar> local_20 = this.GetEditingAvatar();
+        TDataObjectPtr<FAvatarPrefabConfig> local_44 = GetAvatarConfig();
+        if (!(local_44))
+        {
+            return;
+        }
+        int local_4 = this.GetCurrentSkillIndex();
+        local_69 = int(GetSkillButtonSlot());
+        int local_3 = FSkillUtils::GetSkillIndex(this.GetContext().GetLocalPlayerPawn(), ESkillSlot(local_69));
+        if (local_3 != INDEX_NONE && (float32(FSkillUtils::GetSkillCDRemainTime(this.GetContext().GetLocalPlayerPawn(), local_3).ToSeconds()) > 0.0f))
+        {
+            FCommonTipsParam local_12;
+            ::CommonPopup::WeakTips(NSLOCTEXT("Talent", "TalentSkillInCD", "技能冷却中，无法切换"), local_12);
+            return;
+        }
+        UAvatarMappingSettings local_82 = ::UAvatarMappingSettings::Get();
+        if (local_82 != nullptr)
+        {
+            FCommonTipsParam local_12;
+            if (local_82.GetMappingConfigOfAvatar(local_44))
+            {
+                local_135 = GetDataId();
+                TEUIModelRef<FMS_Talent> local_134 = this.GetTalentModel();
+                int local_137 = local_136.GetSlotByTalentNodeId(local_135);
+                if (local_137 != 0 && ((local_137 != local_69)))
+                {
+                    int local_71 = FSkillUtils::GetSkillIndex(this.GetContext().GetLocalPlayerPawn(), ESkillSlot(local_137));
+                    if (local_71 != INDEX_NONE && (float32(FSkillUtils::GetSkillCDRemainTime(this.GetContext().GetLocalPlayerPawn(), local_71).ToSeconds()) > 0.0f))
+                    {
+                        ::CommonPopup::WeakTips(NSLOCTEXT("Talent", "TalentSkillInCD", "技能冷却中，无法切换"), local_12);
+                        return;
+                    }
+                }
+            }
+        }
+        local_136 = GetCurrentLevel();
+        TDataObjectPtr<FTalentConfig> local_186;
+        local_186.FindTalentByChoiceAndLevel(int(Msg.ChoiceIndex), FMath::Max(local_136, 1));
+        if (!(local_186))
+        {
+            return;
+        }
+        FPbManageTalentReq local_190;
+        local_190.SetAvatarId(local_135);
+        FPbAvatarReplaceSkillBin local_200 = local_190.GetReplaceSkill();
+        local_200.SetSlot(local_69);
+        local_200.SetTalentId(local_136);
+        ::UGameClientConnectionSubsystem::Get().SendProtoWrapper(local_190.ToWrapper());
+        this.CloseSkillChoice();
+        return;
     }
     void OnTalentSetEquipChoiceTalent(const FMsg_TalentSetEquipChoiceTalent &inout Msg)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_119 = 0;
+        int local_124 = 0;
+        if (!(Msg.TalentNode.IsValid()))
+        {
+            return;
+        }
+        if (int(GetStateType()) != 3)
+        {
+            FCommonTipsParam local_12;
+            ::CommonPopup::WeakTips(NSLOCTEXT("Talent", "TalentNotUnlocked", "请先解锁当前天赋"), local_12);
+            return;
+        }
+        if (::FASCommonUtils::IsInCombat(this.GetContext().GetLocalPlayerPawn()))
+        {
+            FCommonTipsParam local_12;
+            ::CommonPopup::WeakTips(NSLOCTEXT("Talent", "TalentNotInBattle", "战斗中无法切换天赋"), local_12);
+            return;
+        }
+        TEUIModelRef<FMS_EditingAvatar> local_18 = this.GetEditingAvatar();
+        TDataObjectPtr<FAvatarPrefabConfig> local_42 = GetAvatarConfig();
+        if (!(local_42))
+        {
+            return;
+        }
+        UAvatarMappingSettings local_70 = ::UAvatarMappingSettings::Get();
+        if ((!((local_70 != nullptr))))
+        {
+            return;
+        }
+        if (!(local_70.GetMappingConfigOfAvatar(local_42)))
+        {
+            return;
+        }
+        TEUIModelRef<FMS_Talent> local_122 = this.GetTalentModel();
+        int local_125 = local_124.GetSlotByTalentNodeId(GetDataId());
+        if (local_125 != 0)
+        {
+            FCommonTipsParam local_12;
+            int local_4 = FSkillUtils::GetSkillIndex(this.GetContext().GetLocalPlayerPawn(), ESkillSlot(local_125));
+            if (local_4 != INDEX_NONE && (float32(FSkillUtils::GetSkillCDRemainTime(this.GetContext().GetLocalPlayerPawn(), local_4).ToSeconds()) > 0.0f))
+            {
+                ::CommonPopup::WeakTips(NSLOCTEXT("Talent", "TalentSkillInCD", "技能冷却中，无法切换"), local_12);
+                return;
+            }
+        }
+        int local_123_2 = GetCurrentLevel();
+        TDataObjectPtr<FTalentConfig> local_184;
+        local_184.FindTalentByChoiceAndLevel(int(Msg.NewChoice), FMath::Max(local_123_2, 1));
+        if (!(local_184))
+        {
+            return;
+        }
+        FPbManageTalentReq local_188;
+        local_188.SetAvatarId(local_123_2);
+        local_188.SetChooseId(local_119);
+        ::UGameClientConnectionSubsystem::Get().SendProtoWrapper(local_188.ToWrapper());
+        return;
     }
     void OnTalentSetEquipFoundation(const FMsg_TalentSetEquipFoundation &inout Msg)
     {
@@ -599,13 +793,13 @@ struct FVM_TalentEditPage : FEUIViewModel
         if ((int(GetStateType())) != 3)
         {
             FCommonTipsParam local_12;
-            ::CommonPopup::WeakTips(NSLOCTEXT("Talent", "TalentNotUnlocked", "иЇ·е…€и§Јй”ЃеЅ“е‰Ќе¤©иµ‹"), local_12);
+            ::CommonPopup::WeakTips(NSLOCTEXT("Talent", "TalentNotUnlocked", "请先解锁当前天赋"), local_12);
             return;
         }
         if (::FASCommonUtils::IsInCombat(this.GetContext().GetLocalPlayerPawn()))
         {
             FCommonTipsParam local_12;
-            ::CommonPopup::WeakTips(NSLOCTEXT("Talent", "TalentNotInBattle", "ж€ж–—дё­ж— жі•е€‡жЌўе¤©иµ‹"), local_12);
+            ::CommonPopup::WeakTips(NSLOCTEXT("Talent", "TalentNotInBattle", "战斗中无法切换天赋"), local_12);
             return;
         }
         TEUIModelRef<FMS_EditingAvatar> local_18 = this.GetEditingAvatar();
@@ -1291,7 +1485,6 @@ struct __GeneratedProperties_FVM_TalentEditPage
     UPROPERTY()
     TEUIModelRef<FVM_TalentEditPage> Self;
 
-
 }
 
 namespace FVM_TalentEditPage
@@ -1305,7 +1498,7 @@ bool CanViewAvatarTalent(const UEUIManagerSubsystem Manager, const TDataObjectPt
     if (!(FMS_PlayerAvatarData::Get(Manager).IsAvatarUnlocked(InAvatarConfig)))
     {
         FCommonTipsParam local_12;
-        CommonPopup::Tips(NSLOCTEXT("Talent", "AvatarNotUnlockedViewTalent", "и§’и‰ІжњЄи§Јй”ЃпјЊдёЌиѓЅжџҐзњ‹е¤©иµ‹гЂ‚"), local_12);
+        CommonPopup::Tips(NSLOCTEXT("Talent", "AvatarNotUnlockedViewTalent", "角色未解锁，不能查看天赋。"), local_12);
         return false;
     }
     return true;
@@ -1341,7 +1534,174 @@ FVM_TalentEditPage CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasPostLoad(true);
+    Result.SetbHasBeginDestroy(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "OnEquipmentSkill";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_TalentEditSkillBtn>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "OnSelectTypeAllSkill";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_TalentSkillInfoItem>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectSkillChangeVM";
+    local_14.TypeName = "TEUIModelRef<FVM_TalentEditPageChangeSkill>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurrentTalentTreeList";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_TalentUpgradeFormulaTree>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurrentTalentTreeListA";
+    local_14.TypeName = "TArray<FEUIModelContainer>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectedDetailSkillInfo";
+    local_14.TypeName = "TEUIModelRef<FVM_TalentSkillInfoItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectedDetailUpgradeConfirm";
+    local_14.TypeName = "TEUIModelRef<FVM_TalentUpgradeConfirm>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TalentSkillChangePageIsOpen";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bPendingClose";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Title";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TalentSkillChangePageIsClose";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TalentSkillHasSelect";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TalentSkillHasNotSelect";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CanShowCurrency";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectedSkillItem";
+    local_14.TypeName = "TEUIModelRef<FVM_TalentEditSkillBtn>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsCurSelectIsChooiceNode";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsDetailSelected";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsNotDetailSelected";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShowTalentSkillChangeList";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_TalentEditPage>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_TalentEditPage;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(19);
+    local_22.AddRefPropertyDirty(0, 2, FMS_EditingAvatar::__IndexOf_AvatarConfig());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("EditingAvatar");
+    int local_2_2 = FMS_EditingAvatar::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(2);
+    local_30.RelatedDirtyMask.SetBit(FMS_EditingAvatar::__IndexOf_AvatarConfig(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__RefreshShowcaseAvatars";
+    local_40.DirtyFlags.Set(FVM_TalentEditPage::__IndexOf_EditingAvatar());
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnShouldUpdateEquipmentSelectDetail";
+    local_40.DirtyFlags.Set(FVM_TalentEditPage::__IndexOf_EditingAvatar());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    FEUIModelMonitorDefine local_50;
+    local_50.FunctionName = "__OnPlayerEquipmentChanged";
+    local_50.ComponentType = FC_DSPlayerAvatarInfo;
+    Result.MonitorFunctions.Add(local_50);
+    FEUIModelMsgHandleDefine local_62;
+    local_62.FunctionName = "__OnTalentDataUpdated";
+    local_62.MessageTypeName = "Msg_TalentTreeDataUpdate";
+    local_62.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_62);
+    local_62.FunctionName = "__OnTalentTreeUpdateFinish";
+    local_62.MessageTypeName = "Msg_TalentTreeUpdateFinish";
+    local_62.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_62);
+    local_62.FunctionName = "__OnTalentUnlockOrUpgradeRequest";
+    local_62.MessageTypeName = "Msg_TalentUnlockOrUpgradeOpenConfirm";
+    local_62.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_62);
+    local_62.FunctionName = "__OnTalentSetEquipSkillSlot";
+    local_62.MessageTypeName = "Msg_TalentSetEquipSkillSlot";
+    local_62.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_62);
+    local_62.FunctionName = "__OnTalentSetEquipChoiceTalent";
+    local_62.MessageTypeName = "Msg_TalentSetEquipChoiceTalent";
+    local_62.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_62);
+    local_62.FunctionName = "__OnTalentSetEquipFoundation";
+    local_62.MessageTypeName = "Msg_TalentSetEquipFoundation";
+    local_62.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_62);
+    Result.TickFunction.FunctionName = "__Tick";
+    local_62.FunctionName = "__OnTalentItemHoverStateChagne";
+    local_62.MessageTypeName = "Msg_TalentItemHoverStateChagne";
+    local_62.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_62);
+    local_62.FunctionName = "__OnTalentNodeHoverOpenDetails";
+    local_62.MessageTypeName = "Msg_TalentNodeHoverOpenDetails";
+    local_62.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_62);
+    local_62.FunctionName = "__OnTalentNodeHoverCloseDetails";
+    local_62.MessageTypeName = "Msg_TalentNodeHoverCloseDetails";
+    local_62.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_62);
+    return;
 }
 UScriptStruct GetModelStruct()
 {
@@ -1414,7 +1774,9 @@ void __OnTalentNodeHoverCloseDetails(FVM_TalentEditPage &inout Model, const FMsg
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorDSPlayerAvatarInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorDSPlayerAvatarInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TArray<TEUIModelRef<FVM_TalentEditSkillBtn>> __UIGetter_OnEquipmentSkill(const FVM_TalentEditPage &inout Model)
 {

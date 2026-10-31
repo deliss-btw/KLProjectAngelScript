@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_InventoryRootTab
 {
     const int ViewID = 0;
@@ -156,6 +155,7 @@ namespace UWidget_InventoryRootTab
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_InventoryRootTab;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -171,6 +171,7 @@ namespace UWidget_InventoryTab
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_InventoryTab;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -186,6 +187,7 @@ namespace UWidget_InventoryMainTabSecond
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_InventoryMainTabSecond;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

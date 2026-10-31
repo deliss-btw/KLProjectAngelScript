@@ -1,5 +1,3 @@
-﻿
-
 class US_KillZSystem : UECSScriptSystem
 {
     US_KillZSystem()

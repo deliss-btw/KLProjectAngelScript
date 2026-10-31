@@ -1,5 +1,3 @@
-﻿
-
 class AECSCombatRegionVolume : AECSRegionVolume
 {
     UPROPERTY()

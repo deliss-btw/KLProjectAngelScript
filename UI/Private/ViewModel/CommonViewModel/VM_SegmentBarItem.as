@@ -1,4 +1,3 @@
-﻿
 namespace FVM_SegmentBarItem
 {
     const int ModelId = 0;
@@ -10,7 +9,6 @@ struct FSegmentBarItemData
     FText Nop;
     UPROPERTY()
     bool IsFinish;
-
 
 }
 

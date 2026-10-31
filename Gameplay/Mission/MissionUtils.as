@@ -1,4 +1,3 @@
-﻿
 enum EMissionTabType
 {
     Commission,
@@ -495,7 +494,7 @@ void InitMissionTrackingAndGuiding(const FECSEntity &inout PlayerEntity, const F
 {
     bool local_59 = false;
     EMissionType local_2;
-    EMissionType local_1 = local_2;
+    int local_1 = local_2;
     if (MissionUtils::GetMissionPresentationRuleConfig(MissionDetail.GetMissionConfig()).IsSet())
     {
         bool local_51 = (0 == 1);
@@ -1012,7 +1011,7 @@ bool TrySetObjectiveStatusForMission(const FECSEntity &inout PlayerEntity, const
     {
         if (GetObjectiveId() == 0)
         {
-            ObjectiveUtils::SetObjectiveStatusManually(local_40.GetKey());
+            ObjectiveUtils::SetObjectiveStatusManually(local_40.GetKey(), EObjectiveStatus(ObjectiveStatus));
             return true;
         }
     }

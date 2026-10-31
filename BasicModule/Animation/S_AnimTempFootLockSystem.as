@@ -1,5 +1,3 @@
-﻿
-
 class US_FootLockSystemAS : UECSScriptSystem
 {
     US_FootLockSystemAS()

@@ -1,4 +1,3 @@
-﻿
 enum EExtraDeathStateTargetType
 {
     Self,
@@ -6,7 +5,6 @@ enum EExtraDeathStateTargetType
     LockTarget,
     BBValue,
 }
-
 
 struct FESMExtraDeathStateInstanceData
 {
@@ -35,7 +33,6 @@ class UESMAction_ExtraDeathState : UESMBPBaseSpanAction
     EExtraDeathStateTargetType TargetType = EExtraDeathStateTargetType(0);
     UPROPERTY()
     FNameHandle_EntityBBVarEntity TargetEntityBBVar;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const

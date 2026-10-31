@@ -1,4 +1,3 @@
-﻿
 namespace FM_SpotRegistry
 {
     const int ModelId = 0;
@@ -37,7 +36,6 @@ struct FMsg_SpotRegistryPresentationDataModified : FEUIMessage
     UPROPERTY()
     EPresentationDataType DataType;
 
-
 }
 
 struct FSpotPresentationData
@@ -61,7 +59,7 @@ struct FSpotPresentationData
     }
     FDataObjectPtr GetPresentationConfigData() const
     {
-        return this;
+        return this.PresentationConfig;
     }
     FDataObjectPtr GetMinimapIconConfigData() const
     {
@@ -81,7 +79,7 @@ struct FSpotPresentationData
     }
     bool HasPresentationConfigData() const
     {
-        return !(!(this));
+        return !(!(this.PresentationConfig));
     }
     bool HasMinimapIconConfigData() const
     {
@@ -101,7 +99,8 @@ struct FSpotPresentationData
     }
     void SetPresentationConfigData(const FDataObjectPtr &inout ConfigData)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.PresentationConfig = ConfigData;
+        return;
     }
     void SetMinimapIconConfigData(const FDataObjectPtr &inout ConfigData)
     {
@@ -346,7 +345,7 @@ struct FM_SpotRegistry : FEUIModel
             TConstRawPtr<FSpotPresentationData> local_4 = this.GetAllSpotsPrivate().Find(Spot);
             if (local_4)
             {
-                return local_4.opArrow().GetConfigData();
+                return local_4.opArrow().GetConfigData(EPresentationDataType(DataType));
             }
         }
         return FDataObjectPtr();
@@ -461,9 +460,7 @@ struct FM_SpotRegistry : FEUIModel
             return;
         }
         local_4.SetPresentationConfigData(ConfigData);
-        EPresentationDataType local_36;
-        FInstancedStruct::Make(local_36);
-        local_4.PresentationDataMap.Add(local_36, 0);
+        local_4.PresentationDataMap.Add(EPresentationDataType(0), FInstancedStruct::Make(ConfigData));
         this.NotifySpotPresentationDataModifiedInternal(Spot, EPresentationDataType(0));
         return;
     }
@@ -485,9 +482,7 @@ struct FM_SpotRegistry : FEUIModel
             return;
         }
         local_4.SetMinimapIconConfigData(ConfigData);
-        EPresentationDataType local_36;
-        FInstancedStruct::Make(local_36);
-        local_4.PresentationDataMap.Add(local_36, 1);
+        local_4.PresentationDataMap.Add(EPresentationDataType(1), FInstancedStruct::Make(ConfigData));
         this.NotifySpotPresentationDataModifiedInternal(Spot, EPresentationDataType(1));
         return;
     }
@@ -509,9 +504,7 @@ struct FM_SpotRegistry : FEUIModel
             return;
         }
         local_4.SetIndicatorConfigData(ConfigData);
-        EPresentationDataType local_36;
-        FInstancedStruct::Make(local_36);
-        local_4.PresentationDataMap.Add(local_36, 2);
+        local_4.PresentationDataMap.Add(EPresentationDataType(2), FInstancedStruct::Make(ConfigData));
         this.NotifySpotPresentationDataModifiedInternal(Spot, EPresentationDataType(2));
         return;
     }
@@ -533,9 +526,7 @@ struct FM_SpotRegistry : FEUIModel
             return;
         }
         local_4.SetNavigationBarIconConfigData(ConfigData);
-        EPresentationDataType local_36;
-        FInstancedStruct::Make(local_36);
-        local_4.PresentationDataMap.Add(local_36, 3);
+        local_4.PresentationDataMap.Add(EPresentationDataType(3), FInstancedStruct::Make(ConfigData));
         this.NotifySpotPresentationDataModifiedInternal(Spot, EPresentationDataType(3));
         return;
     }
@@ -557,9 +548,7 @@ struct FM_SpotRegistry : FEUIModel
             return;
         }
         local_4.SetHeadsUpDisplayConfigData(ConfigData);
-        EPresentationDataType local_36;
-        FInstancedStruct::Make(local_36);
-        local_4.PresentationDataMap.Add(local_36, 4);
+        local_4.PresentationDataMap.Add(EPresentationDataType(4), FInstancedStruct::Make(ConfigData));
         this.NotifySpotPresentationDataModifiedInternal(Spot, EPresentationDataType(4));
         return;
     }
@@ -829,7 +818,7 @@ struct FM_SpotRegistry : FEUIModel
             local_10.Spot = Spot;
             local_10.DataType = DataType;
         }
-        Spot.opArrow().OnPresentationDataModifiedInternal(this);
+        Spot.opArrow().OnPresentationDataModifiedInternal(this, EPresentationDataType(DataType));
         TArray<int> local_14;
         int local_15 = 0;
         for (; local_15 < this.GetConcerningSpotViews().Num(); ++local_15)
@@ -837,7 +826,7 @@ struct FM_SpotRegistry : FEUIModel
             TEUIModelRef<FM_SpotView> local_20 = this.GetSpotViewOrMarkInvalid(local_14, local_15);
             if (local_20)
             {
-                local_20.opArrow().NotifySpotPresentationDataModifiedInternal(Spot, this);
+                local_20.opArrow().NotifySpotPresentationDataModifiedInternal(Spot, EPresentationDataType(DataType), this);
             }
         }
         this.RemoveInvalidSpotViewIndices(local_14);

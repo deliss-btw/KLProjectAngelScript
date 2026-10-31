@@ -1,5 +1,3 @@
-﻿
-
 class US_SimpleDestructible : UECSScriptSystem
 {
     US_SimpleDestructible()
@@ -492,7 +490,7 @@ class US_SimpleDestructible : UECSScriptSystem
     {
         int local_24 = 0;
         ECS::GetContextJob();
-        if (ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_SimpleDestructibleManager, EECSRegType(0), false, true).bIsMonitored)
+        if (int(ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_SimpleDestructibleManager, EECSRegType(0), false, true).bIsMonitored) != 0)
         {
             this.Monitor_ClientConnectUpdateSimpleDestructibleStates(local_24);
         }
@@ -503,7 +501,7 @@ class US_SimpleDestructible : UECSScriptSystem
     {
         int local_24 = 0;
         ECS::GetContextJob();
-        if (ECSInternal::GetMonitorSingletonOnModify(this.GetECSWorld(), FCS_SimpleDestructibleManager, EECSRegType(0), false, true).bIsMonitored)
+        if (int(ECSInternal::GetMonitorSingletonOnModify(this.GetECSWorld(), FCS_SimpleDestructibleManager, EECSRegType(0), false, true).bIsMonitored) != 0)
         {
             this.Monitor_ClientSyncSimpleDestructibleStates(local_24);
         }
@@ -544,7 +542,7 @@ class US_SimpleDestructible : UECSScriptSystem
     {
         int local_24 = 0;
         ECS::GetContextJob();
-        if (ECSInternal::GetMonitorSingletonOnModify(this.GetECSWorld(), FCS_SimpleDestructibleStreamingSignal, EECSRegType(0), false, true).bIsMonitored)
+        if (int(ECSInternal::GetMonitorSingletonOnModify(this.GetECSWorld(), FCS_SimpleDestructibleStreamingSignal, EECSRegType(0), false, true).bIsMonitored) != 0)
         {
             this.Monitor_ReconcileSimpleDestructibleStreaming(local_24);
         }

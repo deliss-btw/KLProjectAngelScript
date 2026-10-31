@@ -1,4 +1,3 @@
-﻿
 namespace FM_Attribute
 {
     const int ModelId = 0;
@@ -223,7 +222,7 @@ namespace FM_Attribute
 {
 FM_Attribute& Create(const UObject ContextObject, const FGameAttributeRef &inout Attribute, const EAttributeDisplayType DisplayType, const float32 Value)
 {
-    return FM_Attribute::CreateByManager(EUIInternal::GetContextManager(ContextObject), Attribute, Value);
+    return FM_Attribute::CreateByManager(EUIInternal::GetContextManager(ContextObject), Attribute, EAttributeDisplayType(DisplayType), Value);
 }
 FM_Attribute CreateByManager(const UEUIManagerSubsystem Manager, const FGameAttributeRef &inout Attribute, const EAttributeDisplayType DisplayType, const float32 Value)
 {

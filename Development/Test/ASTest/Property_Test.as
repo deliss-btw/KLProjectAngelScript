@@ -1,12 +1,9 @@
-﻿
-
 struct FTestProperty1
 {
     UPROPERTY()
     int _IntValue = 0;
     UPROPERTY()
     FVector _VectorValue = FVector();
-
 
     int GetIntValue() property
     {

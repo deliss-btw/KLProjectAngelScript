@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_TeamMemberInfoSkillHintTag_NS
 {
     const TECSComponentDerivedPtr<FC_TeamMemberInfoSkillHintTag> DerivedPtr = TECSComponentDerivedPtr<FC_TeamMemberInfoSkillHintTag>();
@@ -122,36 +121,36 @@ bool RemoveTeamMemberInfoSkillHintTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTeamMemberInfoSkillHintTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TeamMemberInfoSkillHintTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TeamMemberInfoSkillHintTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeamMemberInfoSkillHintTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TeamMemberInfoSkillHintTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TeamMemberInfoSkillHintTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeamMemberInfoSkillHintTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TeamMemberInfoSkillHintTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TeamMemberInfoSkillHintTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeamMemberInfoSkillHintTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TeamMemberInfoSkillHintTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TeamMemberInfoSkillHintTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTeamMemberInfoSkillHintTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TeamMemberInfoSkillHintTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TeamMemberInfoSkillHintTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTeamMemberInfoSkillHintTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TeamMemberInfoSkillHintTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TeamMemberInfoSkillHintTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeamMemberInfoSkillHintTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TeamMemberInfoSkillHintTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TeamMemberInfoSkillHintTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTeamMemberInfoSkillHintTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TeamMemberInfoSkillHintTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TeamMemberInfoSkillHintTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

@@ -1,12 +1,10 @@
-﻿
-
 class US_EcosimAIV2WorldCellSystem : UECSScriptSystem
 {
-    TArray<int> NearbyCellIndexList;
+    TArray<int> NearbyCellIndexList = {-1, 0, 1};
 
     US_EcosimAIV2WorldCellSystem()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        return;
     }
     UFUNCTION()
     void Job_InitRealWorld() const

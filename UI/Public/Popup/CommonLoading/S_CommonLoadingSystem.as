@@ -1,5 +1,3 @@
-﻿
-
 class US_CommonLoadingSystem : UECSScriptSystem
 {
     US_CommonLoadingSystem()
@@ -9,13 +7,45 @@ class US_CommonLoadingSystem : UECSScriptSystem
     UFUNCTION()
     void ClientJob_HandleServerShowLoading(const FCE_ShowLoadingPage &inout Event) const
     {
-        ::CommonPopup::Loading(FGameplayTag::RequestGameplayTag(n"UI.Type.Commonpupop.Loading", true), int(Event.DisplayTime), Event.FadeInTime, Event.FadeOutTime);
+        ::CommonPopup::Loading(FGameplayTag::RequestGameplayTag(n"UI.Type.Commonpupop.Loading", true), Event.DisplayTime, Event.FadeInTime, Event.FadeOutTime);
         return;
     }
     UFUNCTION()
     void ClientJob_OnCommonPopupManagerChanged(const FCE_NotifyCommonPopupManagerChanged &inout Event, FCS_CommonLoadingManager &inout Manager, const FCS_LocalPlayer &inout LocalPlayer) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        if (!(::CommonPopupUtils::HasMatchingPopupType(Event.AffectedPopupTypes, FGameplayTag::RequestGameplayTag(n"UI.Type.Commonpupop.Loading", true))))
+        {
+            return;
+        }
+        if (Event.NewDisplayingPopupIds.Contains(Manager.PopupId))
+        {
+            if (!(Manager.LoadingPage.IsValid()))
+            {
+                Manager.LoadingPage = FEUIWidget::AddWidgetByClass(LocalPlayer.UEPlayerController.GetLocalPlayer(), ::CommonPopupSettings::Get().CommonLoadingWidget);
+            }
+            Manager.bClosing = false;
+            Manager.FadeOutRemainingTime = 0.0f;
+            Manager.DisplayingPopupRemainingTime = Manager.QueuedPopupDisplayTime;
+            Manager.QueuedPopupDisplayTime = 0.0f;
+            Manager.BlendInSpeed = Manager.QueuedBlendInSpeed;
+            Manager.QueuedBlendInSpeed = 0.0f;
+            Manager.BlendOutSpeed = Manager.QueuedBlendOutSpeed;
+            local_11 = 0.0f;
+            Manager.QueuedBlendOutSpeed = 0.0f;
+            return;
+        }
+        for (auto local_26 : Event.RemovedPopupIds)
+        {
+            if (int(local_26) == int(Manager.PopupId))
+            {
+                FEUIWidget::RemoveWidget(Manager.LoadingPage);
+                FECSWorldPtr local_30 = ECS::GetECSWorld();
+                Remove local_34;
+                local_34.opCall();
+                break;
+            }
+        }
+        return;
     }
     UFUNCTION()
     void ClientJob_TickLoading(FCS_CommonLoadingManager &inout Manager) const

@@ -1,4 +1,3 @@
-﻿
 namespace GameplayItemBankUtils
 {
 void AddItem(const FECSEntity &inout Player, const TDataObjectPtr<FItemConfig> &inout Config, const int Number)

@@ -1,5 +1,3 @@
-﻿
-
 class US_EcologyDelayTaskSystem : UECSScriptSystem
 {
     US_EcologyDelayTaskSystem()

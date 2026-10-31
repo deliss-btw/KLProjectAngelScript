@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class UWidget_MinimapBorder : UUserWidget
 {

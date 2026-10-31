@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::AsyncUtils
 {
 FString CallServerFunction(const FJsonObjectWrapper &inout ExecParamJson)

@@ -1,10 +1,8 @@
-﻿
 enum EMaterialUpdateType
 {
     Float,
     Color,
 }
-
 
 struct FMaterialUpdateParam
 {
@@ -14,7 +12,6 @@ struct FMaterialUpdateParam
     float32 AttributeThreshold;
     UPROPERTY()
     TArray<FSingleMaterialParamRequestData> MaterialParams;
-
 
 }
 
@@ -41,7 +38,6 @@ class UESMAction_UpdateMaterial : UESMBPBaseSpanTickAction
     float32 BlendOutTime = 1.0f;
     UPROPERTY()
     FSoftObjectPath BlendOutCurve;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetViewInstanceDataInfo_Implementation() const
@@ -89,7 +85,7 @@ class UESMAction_UpdateMaterial : UESMBPBaseSpanTickAction
         {
             if (!(FGameAttributeUtils::GetAttributeValue(local_2, local_30.ListenAttribute, Time.WorldTime, false, 0.0f, false, FGameAttributeModificationValue()) < local_30.AttributeThreshold) && (!(local_14.UpdateParamTriggerHistory[local_15]) == !(false)))
             {
-                local_14.UpdateParamTriggerHistory[local_15] = true;
+                local_14.UpdateParamTriggerHistory[local_15] = 1;
                 FName local_48 = FName((this.GetDataPathName().ToString() + local_15));
                 ::FMaterialUtils::LocalOnlyRequestChangeMaterialParam(local_6, local_48, local_30.MaterialParams);
             }
@@ -144,7 +140,6 @@ class UESMAction_OverrideMaterial : UESMBPBaseSpanTickAction
     FSoftObjectPath BlendOutCurvePath;
     UPROPERTY()
     TArray<FMeshMaterialInfo> MeshMaterialOverrides;
-
 
     UFUNCTION()
     EESMActionType GetActionType_Implementation() const

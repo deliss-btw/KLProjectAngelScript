@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_DebugCommissionSubTaret = FConsoleVariable();
 
 class US_CommissionSubTargetSystem : UECSScriptSystem
@@ -147,7 +146,7 @@ class US_CommissionSubTargetSystem : UECSScriptSystem
     UFUNCTION()
     void ClientJob_DebugCommissionSubTarget(const FCS_CommissionSubTarget &inout CommissionSubTarget) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argint]
+        // body not fully recovered — stub [argmismatch:argint]
     }
     UFUNCTION()
     void Run_ServerJob_CommissionSubTargetHandleConditionReachStateUpdate() const

@@ -1,4 +1,3 @@
-﻿
 enum ELocalCondType
 {
     None,
@@ -22,7 +21,6 @@ enum ELocalConditionPlayerFilter
     NonPlayer,
 }
 
-
 struct FLocalConditionConfigBase : FConditionConfigBase
 {
     FConditionConfigBase _base_FConditionConfigBase;
@@ -33,7 +31,6 @@ struct FLocalConditionConfigBase : FConditionConfigBase
 
     FLocalConditionConfigBase()
     {
-        super();
         this.LocalConditionType = ELocalConditionConfigType(0);
         this.__InitDefaults();
         return;
@@ -54,7 +51,6 @@ struct FLocalConditionConfig : FLocalConditionConfigBase
 
     FLocalConditionConfig()
     {
-        super();
         this.CompareType = ECondCmpType(4);
         this.TargetValue = 1;
         this.__InitDefaults();

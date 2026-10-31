@@ -1,5 +1,3 @@
-﻿
-
 struct FCompensatorParams_Roll
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ struct FCompensatorParams_Roll
     float32 RollSpringStrength = 30.0f;
     UPROPERTY()
     float32 RollSpringDamping = 0.1f;
-
 
 }
 
@@ -24,7 +21,6 @@ struct FAimPoseCompensatorState_Roll
     TArray<float> BoneLengthRatios;
     UPROPERTY()
     bool bLengthsCached = false;
-
 
     void Reset()
     {

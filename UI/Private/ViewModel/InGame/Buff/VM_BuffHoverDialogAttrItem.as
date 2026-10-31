@@ -1,4 +1,3 @@
-﻿
 namespace FVM_BuffHoverDialogAttrItem
 {
     const int ModelId = 0;
@@ -94,7 +93,6 @@ struct __GeneratedProperties_FVM_BuffHoverDialogAttrItem
     bool HasBuffIcon;
     UPROPERTY()
     TEUIModelRef<FVM_BuffHoverDialogAttrItem> Self;
-
 
 }
 

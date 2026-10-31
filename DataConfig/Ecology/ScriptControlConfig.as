@@ -1,5 +1,3 @@
-﻿
-
 struct FScriptControlESMSkillConfig : FDataObject
 {
     FDataObject _base_FDataObject;

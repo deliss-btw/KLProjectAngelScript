@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: UBTDecorator_CheckIsTheSameSide (default scalar field UBTDecorator.FlowAbortMode has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
-
 class UBTDecorator_CheckIsTheSameSide : UBTDecorator_ECSScriptBase
 {
     UPROPERTY()
@@ -13,7 +8,6 @@ class UBTDecorator_CheckIsTheSameSide : UBTDecorator_ECSScriptBase
     FAISmart_EntityId TargetEntity = FAISmart_EntityId(n"TargetEntityID", EAISmartValue(0));
     UPROPERTY()
     float32 RequiredDegree = 75.0f;
-
 
     UFUNCTION()
     bool CalculateRawConditionValue_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const

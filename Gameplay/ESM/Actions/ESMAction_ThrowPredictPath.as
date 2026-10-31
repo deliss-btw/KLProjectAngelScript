@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_ThrowPredictPath : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
@@ -27,7 +25,6 @@ class UESMAction_ThrowPredictPath : UESMBPBaseSpanTickAction
     UPROPERTY()
     FThrowPredictPathParams BakedThrowPredictPathParams;
 
-
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const
     {
@@ -53,7 +50,7 @@ class UESMAction_ThrowPredictPath : UESMBPBaseSpanTickAction
             {
                 local_8 = FString().Append("<").Append(this.FireData.GetPositionAttachRefName().Name).Append("> ");
             }
-            return FString().Append(local_8).Append("жЉ•жЋ·з‰©иЅЁиї№йў„жµ‹: ").Append(this.FireData.GetProjectilePrefab().GetAssetName());
+            return FString().Append(local_8).Append("投掷物轨迹预测: ").Append(this.FireData.GetProjectilePrefab().GetAssetName());
         }
         FString local_28;
         if (int(this.ThrowTargetType) == 1)
@@ -67,9 +64,9 @@ class UESMAction_ThrowPredictPath : UESMBPBaseSpanTickAction
             {
                 local_28 = FString().Append("<").Append(this.AttachInfo.GetSocketName()).Append("> ");
             }
-            return FString().Append(local_28).Append("жЉ•жЋ·з‰©иЅЁиї№йў„жµ‹: ").Append(this.ThrowStateName);
+            return FString().Append(local_28).Append("投掷物轨迹预测: ").Append(this.ThrowStateName);
         }
-        return local_28.Append("жЉ•жЋ·з‰©иЅЁиї№йў„жµ‹");
+        return local_28.Append("投掷物轨迹预测");
     }
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const
@@ -82,6 +79,7 @@ class UESMAction_ThrowPredictPath : UESMBPBaseSpanTickAction
         FThrowPredictPathParams local_16;
         int local_60 = 0;
         int local_150 = 0;
+        int local_206 = 0;
         this.GetThrowPredictPathParams(Context, local_16);
         FThrowTargetInfo local_54;
         if (int(this.ThrowTargetType) == 0)
@@ -125,6 +123,7 @@ class UESMAction_ThrowPredictPath : UESMBPBaseSpanTickAction
         }
         local_136.SocketRelativeTransform = local_176;
         local_136.PredictPathParams = local_16;
+        local_206.ThrowPathDataMap.Add(local_54, local_136);
         if (ECS::GetRuntimeInfo().IsServer && (int(this.ThrowTargetType) == 1) && this.bSendThrowPathAtEnd)
         {
             if (FECSEntity(local_54.GetPropEntityId()).IsValid())
@@ -191,10 +190,7 @@ class UESMAction_ThrowPredictPath : UESMBPBaseSpanTickAction
     {
         if ((int(this.ThrowTargetType) == 1 && this.bSendThrowPathAtEnd))
         {
-            FThrowTargetInfo local_26;
-            Context.GetEntity().GetId();
-            FECSEntityId local_19 = ::FThrowUtils::GetThrowTargetEntity(Context.GetEntity(), this.AttachTargetType, this.AttachTargetEntityBBVar).GetId();
-            if (::FThrowUtils::TrySendThrowPredictPath(Context.GetEntity(), local_26))
+            if (::FThrowUtils::TrySendThrowPredictPath(Context.GetEntity(), FThrowTargetInfo(::FThrowUtils::GetThrowTargetEntity(Context.GetEntity(), this.AttachTargetType, this.AttachTargetEntityBBVar).GetId(), Context.GetEntity().GetId())))
             {
                 return;
             }
@@ -207,10 +203,7 @@ class UESMAction_ThrowPredictPath : UESMBPBaseSpanTickAction
     {
         if (this.bSendThrowPathAtEnd)
         {
-            Context.GetEntity().GetId();
-            FECSEntityId local_15 = ::FThrowUtils::GetThrowTargetEntity(Context.GetEntity(), this.AttachTargetType, this.AttachTargetEntityBBVar).GetId();
-            FThrowTargetInfo local_22;
-            ::FThrowUtils::TrySendThrowPredictPath(Context.GetEntity(), local_22);
+            ::FThrowUtils::TrySendThrowPredictPath(Context.GetEntity(), FThrowTargetInfo(::FThrowUtils::GetThrowTargetEntity(Context.GetEntity(), this.AttachTargetType, this.AttachTargetEntityBBVar).GetId(), Context.GetEntity().GetId()));
         }
         Remove local_26;
         local_26.opCall();
@@ -290,7 +283,90 @@ class UESMAction_ThrowPredictPath : UESMBPBaseSpanTickAction
     }
     void UpdateThrowPredictPath(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        bool local_1;
+        int local_58 = 0;
+        Has local_6;
+        if (!(ECS::GetRuntimeInfo().IsClient) || !(local_6.opCall()))
+        {
+            return;
+        }
+        FECSWorldPtr local_10 = ECS::GetECSWorld();
+        ModifyOrAdd local_14;
+        FCS_ThrowPredictPathTrace& local_16 = local_14.opCall();
+        if (local_16)
+        {
+            bool local_150;
+            FThrowTargetInfo local_52;
+            if (int(this.ThrowTargetType) == 0)
+            {
+                local_52 = FThrowTargetInfo(this.ProjectileKey, Context.GetEntity().GetId());
+            }
+            else
+            {
+                local_52 = FThrowTargetInfo(::FThrowUtils::GetThrowTargetEntity(Context.GetEntity(), this.AttachTargetType, this.AttachTargetEntityBBVar).GetId(), Context.GetEntity().GetId());
+            }
+            if (local_16.UploadedProjectileKeys.Contains(local_52))
+            {
+                return;
+            }
+            if (!(local_58))
+            {
+                return;
+            }
+            FThrowPredictPathData local_136;
+            if (!(local_58.ThrowPathDataMap.Find(local_52, local_136)))
+            {
+                return;
+            }
+            if (int(local_52.GetTargetType()) == 1)
+            {
+                local_16.PreparedLaunchVelocities.Add(local_52, FVector3f(::FThrowUtils::GetPropThrowVelocity(FECSEntity(local_52.GetPropEntityId()), Time.WorldTime, local_52)));
+                return;
+            }
+            local_1 = false;
+            local_150 = local_1;
+            FTransform local_200 = ::FProjectileUtils::GetProjectileSpawnTransform(Context.GetEntity(), Time.WorldTime, this.FireData, false, local_150);
+            if (local_150)
+            {
+                return;
+            }
+            FVector3f local_212 = (FVector3f(local_200.GetRotation().GetForwardVector()) * local_136.PredictPathParams.GetInitSpeed());
+            FKLPredictProjectilePathResult local_242;
+            if (int(local_52.GetTargetType()) != 0)
+            {
+                local_1 = false;
+            }
+            else
+            {
+                local_1 = local_16.PathTraceResults.Find(local_52, local_242);
+            }
+            local_1 = local_1 && (local_242.PathData.Num() > 0);
+            if (local_1)
+            {
+                return;
+            }
+            FKLPredictProjectilePathParams local_276;
+            local_276.SetProjectileShape(local_136.PredictPathParams.GetShapeInfo());
+            local_276.SetProjectileScale(local_136.PredictPathParams.GetCollisionScale());
+            local_276.SetGravityScale(local_136.PredictPathParams.GetGravityScale());
+            local_276.SetMaxSimTime(local_136.PredictPathParams.GetMaxSimTime());
+            local_276.SetSimFrequency(local_136.PredictPathParams.GetSimFrequency());
+            local_276.SetbTraceWithCollision(local_136.PredictPathParams.GetbTraceWithCollision());
+            local_276.SetStartLocation(local_200.GetLocation());
+            local_276.SetStartRotation(local_200.GetRotation());
+            local_276.SetLaunchVelocity(local_212);
+            FKLPredictProjectilePathResult& local_278 = local_16.PreparedPredictPaths.FindOrAdd(local_52);
+            TArray<FECSEntity> local_282;
+            local_282.Add(Context.GetEntity());
+            Get local_286;
+            const FC_InteractionInfoForESM& local_288 = local_286.opCall();
+            if (local_288)
+            {
+                local_282.Add(local_288.GetTargetEntity());
+            }
+            FProjectileUtils::PredictProjectilePath(Context.GetEntity(), local_276, local_282, local_278, local_16.PathTraceCache, true);
+        }
+        return;
     }
     FECSEntity GetThrowTargetEntity(const FECSEntity &inout PawnEntity) const
     {

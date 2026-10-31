@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TaskPanel
 {
     const int ModelId = 0;
@@ -63,8 +62,7 @@ struct FVM_TaskPanel : FEUIViewModel
             TDataObjectPtr<FDropItemConfigBase> local_30 = local_2.opArrow().GetCommissionConfig().opArrow().GetCommissionReward();
             if (local_30)
             {
-                ::FCommonRewardListBuilder::BuildFromDropConfig(local_30);
-                this.SetTaskRewardList(FEUIModelRef());
+                this.SetTaskRewardList(FEUIModelRef(::FVM_CommonRewardList::Create(this.GetContext().Manager, ::FCommonRewardListBuilder::BuildFromDropConfig(local_30))));
             }
         }
         return;
@@ -295,7 +293,6 @@ struct __GeneratedProperties_FVM_TaskPanel
     FText Detail;
     UPROPERTY()
     TEUIModelRef<FVM_TaskPanel> Self;
-
 
 }
 

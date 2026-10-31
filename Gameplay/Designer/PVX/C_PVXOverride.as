@@ -1,5 +1,3 @@
-﻿
-
 struct FPVPGameAttributeByLevelConfig
 {
     UPROPERTY()
@@ -13,16 +11,16 @@ struct FPVPGameAttributeByLevelConfig
     }
     bool IsValid() const
     {
-        return !(this.IsNull());
+        return !(this.GameAttributeDataTable.IsNull());
     }
     TDataObjectPtr<FGameAttributeInitConfigBase> FindAttributeConfigByLevel(const int Level) const
     {
-        if (this.IsNull())
+        if (this.GameAttributeDataTable.IsNull())
         {
             return TDataObjectPtr<FGameAttributeInitConfigBase>(nullptr);
         }
         FName local_58 = FName(FString().Append(this.RowNamePrefix).Append("_").Append(Level));
-        return TDataObjectPtr<FGameAttributeInitConfigBase>(this.FindDataObjectPtr(local_58));
+        return TDataObjectPtr<FGameAttributeInitConfigBase>(this.GameAttributeDataTable.FindDataObjectPtr(local_58));
     }
 }
 

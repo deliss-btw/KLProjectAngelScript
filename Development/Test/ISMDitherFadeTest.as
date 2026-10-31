@@ -1,5 +1,3 @@
-﻿
-
 class AISMDitherFadeTestActor : AKLEditorTickableActor
 {
     UPROPERTY()
@@ -18,7 +16,6 @@ class AISMDitherFadeTestActor : AKLEditorTickableActor
     TMap<int, FTransform> SavedTransforms;
     bool bFadeInProgress = false;
     float32 FadeElapsedTime = 0.0f;
-
 
     UFUNCTION()
     void ConstructionScript_Implementation()

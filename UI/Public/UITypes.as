@@ -1,4 +1,3 @@
-﻿
 enum EEUILayoutLayer
 {
     Invalid,

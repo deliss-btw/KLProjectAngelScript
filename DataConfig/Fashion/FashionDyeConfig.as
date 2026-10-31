@@ -1,5 +1,3 @@
-﻿
-
 struct FFashionHairDyeConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -36,7 +34,6 @@ struct FFashionHairDyeConfig : FDataObject
     UPROPERTY()
     TArray<FName> DecoSlotNames;
 
-
 }
 
 struct FFashionClothDyeConfig : FDataObject
@@ -61,7 +58,6 @@ struct FFashionClothDyeConfig : FDataObject
     UPROPERTY()
     TArray<FName> SlotNames;
 
-
 }
 
 struct FFashionUpperClothDyeConfig : FFashionClothDyeConfig
@@ -70,7 +66,6 @@ struct FFashionUpperClothDyeConfig : FFashionClothDyeConfig
 
     FFashionUpperClothDyeConfig()
     {
-        super();
         return;
     }
 }
@@ -81,7 +76,6 @@ struct FFashionLowerClothDyeConfig : FFashionClothDyeConfig
 
     FFashionLowerClothDyeConfig()
     {
-        super();
         return;
     }
 }

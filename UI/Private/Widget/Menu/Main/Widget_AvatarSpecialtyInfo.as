@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_AvatarSpecialtyInfo
 {
     const int ViewID = 0;
@@ -14,7 +13,6 @@ class UWidget_AvatarSpecialtyInfo : UEUIUserWidget
     FEUIModelWeakRef __AvatarSpecialtyInfo;
     UPROPERTY()
     FGetEUIModelRef AvatarSpecialtyInfoDelegate;
-
 
     UFUNCTION()
     void OnAvatarConfigChanged()
@@ -116,6 +114,7 @@ namespace UWidget_AvatarSpecialtyInfo
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_AvatarSpecialtyInfo;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnAvatarConfigChanged"));
     return;
 }

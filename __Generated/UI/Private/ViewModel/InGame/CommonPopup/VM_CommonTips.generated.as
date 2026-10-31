@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommonTips_Helpers
 {
 UFUNCTION()

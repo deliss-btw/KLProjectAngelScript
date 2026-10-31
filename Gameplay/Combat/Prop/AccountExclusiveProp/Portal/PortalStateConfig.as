@@ -1,29 +1,19 @@
-﻿
 enum EPortalState
 {
     Unlocked,
     Locked,
 }
 
-
 struct FPortalStateData
 {
     UPROPERTY()
-    FName StateMachineName;
+    FName StateMachineName = FName("Main");
     UPROPERTY()
-    FName StateName;
+    FName StateName = FName("Unlocked");
     UPROPERTY()
     bool bFallBack;
     UPROPERTY()
     EPortalState FallBack;
 
-    FPortalStateData()
-    {
-        this.bFallBack = false;
-        this.FallBack = EPortalState(0);
-        FName local_4 = FName("Main");
-        this.StateName = FName("Unlocked");
-        return;
-    }
 }
 

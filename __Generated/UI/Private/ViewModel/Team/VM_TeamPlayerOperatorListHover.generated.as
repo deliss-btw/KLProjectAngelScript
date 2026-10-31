@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TeamPlayerOperatorListHover_Helpers
 {
 UFUNCTION()

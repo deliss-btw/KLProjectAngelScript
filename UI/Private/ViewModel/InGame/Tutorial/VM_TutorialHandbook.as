@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TutorialHandbook
 {
     const int ModelId = 0;
@@ -59,7 +58,7 @@ struct FVM_TutorialHandbook : FEUIViewModel
     }
     void OnEntryHoverChanged(const FMsg_TutorialHandbookEntryHovered &inout Msg)
     {
-        if (Msg.bHovered)
+        if Msg.bHovered
         {
             this.SetHoveredEntry(Msg.HoveredEntry);
             this.SetbHasHoveredEntry(true);

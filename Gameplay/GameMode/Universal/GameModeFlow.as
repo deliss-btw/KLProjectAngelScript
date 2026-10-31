@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class UGameModeFlow : UObject
 {
@@ -601,7 +599,7 @@ class UGameModeFlow : UObject
         local_22.SetWinnerTeamIds(InWinnerTeamIds);
         local_22.SetLoserTeamIds(InLoserTeamIds);
         local_22.SetFinishStartTime(ECS::GetECSWorld().GetFixedTime().Time);
-        this.ChangeGameState(EFCS_GameStageType(EFCS_GameStageType(4)));
+        this.ChangeGameState(EFCS_GameStageType(4));
         return;
     }
     void ApplyCombatRestrictionsForPawn(const FECSEntity &inout PawnEntity) const
@@ -635,11 +633,11 @@ class UGameModeFlow : UObject
             if (local_24 >= 0)
             {
                 FECSEntity local_40 = local_6.GetPlayerEntity();
-                FItemTableRowRef local_66 = FItemTableRowRef(::NearDeathSettings::Get().PotionItemConfig);
-                int local_23 = ::InventoryUtils::GetInventoryItemNumber(local_40, TDataObjectPtr<FItemConfig>());
+                TDataObjectPtr<FItemConfig> local_92 = TDataObjectPtr<FItemConfig>(FItemTableRowRef(::NearDeathSettings::Get().PotionItemConfig));
+                int local_23 = ::InventoryUtils::GetInventoryItemNumber(local_40, local_92);
                 if (local_23 > local_24)
                 {
-                    ::InventoryUtils::RemoveInventoryItem(local_40, TDataObjectPtr<FItemConfig>(), local_23 - local_24);
+                    ::InventoryUtils::RemoveInventoryItem(local_40, local_92, local_23 - local_24);
                 }
             }
         }

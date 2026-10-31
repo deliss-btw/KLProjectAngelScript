@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TeamInvitationPage
 {
     const int ViewID = 0;
@@ -182,6 +181,7 @@ namespace UWidget_TeamInvitationPage
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TeamInvitationPage;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnFriendPlayerInfoListChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnNearbyPlayerInfoListChanged"));
     return;

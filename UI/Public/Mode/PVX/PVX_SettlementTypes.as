@@ -1,10 +1,8 @@
-﻿
 enum EPVX_SettlementPhaseType
 {
     Result,
     Performance,
 }
-
 
 struct FPVX_SettlementPhaseConfig
 {
@@ -15,7 +13,6 @@ struct FPVX_SettlementPhaseConfig
     UPROPERTY()
     TSoftClassPtr<UEUIUserWidget> PhaseWidgetClass;
 
-
 }
 
 struct FPVX_SettlementFactionPhases
@@ -24,7 +21,6 @@ struct FPVX_SettlementFactionPhases
     EFaction Faction;
     UPROPERTY()
     TArray<EPVX_SettlementPhaseType> Phases;
-
 
 }
 

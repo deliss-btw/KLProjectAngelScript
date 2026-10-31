@@ -1,5 +1,3 @@
-﻿
-
 class UWidget_MissionTarget : UASUserWidget
 {
     UPROPERTY()

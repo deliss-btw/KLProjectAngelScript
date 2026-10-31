@@ -1,18 +1,15 @@
-﻿
-
 struct FOnMinimapMarkOptionSelected : FEUIModelEvent
 {
-    FEUIModelEvent _base_FEUIModelEvent;
+    FEUIModelEvent _base_FEUIModelEvent = FEUIModelEvent("", "int32");
 
     FOnMinimapMarkOptionSelected()
     {
-        FEUIModelEvent local_22 = FEUIModelEvent("", "int32");
         return;
     }
     void Broadcast(const int Arg0) const
     {
         Z__CastTemplate local_4;
-        local_4.opCall().Broadcast();
+        local_4.opCall().Broadcast(Arg0);
         return;
     }
 }

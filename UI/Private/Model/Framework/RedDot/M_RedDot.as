@@ -1,4 +1,3 @@
-﻿
 const uint RedDotManualSource = 0;
 const float32 ReddotRequestStoreCountDown = 5f;
 namespace FM_RedDotNode
@@ -140,7 +139,7 @@ struct FM_RedDotNode : FEUIModel
     }
     void RemoveChildNodeData(const FRedDotNodeData &inout InNodeData)
     {
-        // body not fully recovered вЂ” stub [unresolved-operand]
+        // body not fully recovered — stub [unresolved-operand]
     }
     void RemoveAllChildNodeData()
     {

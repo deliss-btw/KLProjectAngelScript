@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_LinkSkillEnergy_Helpers
 {
 UFUNCTION()

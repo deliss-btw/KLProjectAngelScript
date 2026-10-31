@@ -1,5 +1,3 @@
-﻿
-
 struct FT_EcologySpawnerTrait : FECSTrait
 {
     FECSTrait _base_FECSTrait;

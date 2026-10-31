@@ -1,4 +1,3 @@
-﻿
 namespace FMS_CommissionModelFactory
 {
     const int ModelId = 0;
@@ -96,7 +95,9 @@ void __OnCommissionInfoChanged(FMS_CommissionModelFactory &inout Model, const FE
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorCommissionInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorCommissionInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_CommissionPopup()
 {

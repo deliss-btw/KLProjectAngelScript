@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_BlackScreen
 {
     const int ViewID = 0;
@@ -88,6 +87,7 @@ namespace UWidget_BlackScreen
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_BlackScreen;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnPendingClose"));
     return;
 }

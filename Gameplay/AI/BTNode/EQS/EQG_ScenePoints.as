@@ -1,5 +1,3 @@
-﻿
-
 class UEQG_ScenePoints : UEnvQueryGenerator_ECS_BlueprintBase
 {
     UPROPERTY()
@@ -20,7 +18,6 @@ class UEQG_ScenePoints : UEnvQueryGenerator_ECS_BlueprintBase
     FKLGameplayTagQuery TagFilter;
 
     default GeneratedItemType = UEnvQueryItemType_Point;
-
 
     UFUNCTION()
     void DoItemGenerationFromEntities_Implementation(const TArray<FECSEntityId> &inout ContextEntities) const

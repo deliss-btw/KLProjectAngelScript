@@ -1,5 +1,3 @@
-﻿
-
 struct FTestListInitialization
 {
     UPROPERTY()
@@ -7,11 +5,11 @@ struct FTestListInitialization
 
     FTestListInitialization()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
 }
 
 void Test_ListInitialization(FUnitTest &inout T)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
 }

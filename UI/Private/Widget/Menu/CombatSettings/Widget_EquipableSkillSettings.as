@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_EquipableSkillSettings
 {
     const int ViewID = 0;
@@ -42,7 +41,6 @@ class UWidget_EquipableSkillSettings : UEUIActivatableWidget
     FGetEUIModelRef AvatarShowcaseDelegate;
     UPROPERTY()
     FGetEUIModelRef SelectedDivineSkillDelegate;
-
 
     UFUNCTION()
     void OnViewBind_Implementation()
@@ -351,6 +349,7 @@ namespace UWidget_EquipableSkillSettings
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_EquipableSkillSettings;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnShouldClosePageChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCanChangeToSelectedEquipableSkillChanged"));
     return;
@@ -368,6 +367,7 @@ namespace UWidget_EquipableDivineSkillDescription
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_EquipableDivineSkillDescription;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

@@ -1,12 +1,9 @@
-﻿
-
 struct FStringValidatorCharRange
 {
     UPROPERTY()
     int StartChar = 0;
     UPROPERTY()
     int EndChar = 0;
-
 
     bool IsCharInRange(const int Char) const
     {
@@ -30,7 +27,7 @@ struct FStringValidatorCharRangeList
         for (; local_21 < String::Len(String); ++local_21)
         {
             int local_23 = String::GetCharacterAsNumber(String, local_21);
-            for (auto& local_40 : this)
+            for (auto& local_40 : this.CharRanges)
             {
                 if (local_40.IsCharInRange(local_23))
                 {
@@ -50,7 +47,7 @@ struct FStringValidatorCharRangeList
         {
             int local_23 = String::GetCharacterAsNumber(String, local_21);
             local_26 = false;
-            for (auto& local_40 : this)
+            for (auto& local_40 : this.CharRanges)
             {
                 if (local_40.IsCharInRange(local_23))
                 {
@@ -77,7 +74,6 @@ class UStringValidator_CharRange : UStringValidatorBase
     FText ErrorMessage;
     UPROPERTY()
     FText InvalidCharListDelimiter = INVTEXT(", ");
-
 
     EStringValidationResult ValidateString(const FString &inout String, FStringValidationContext &inout Context) const
     {

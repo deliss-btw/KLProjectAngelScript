@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_GamepadTips_Helpers
 {
 UFUNCTION()

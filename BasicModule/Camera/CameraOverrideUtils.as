@@ -1,9 +1,24 @@
-﻿
 namespace FCameraOverrideUtils
 {
 void AddLocalCameraOverrideLayer(const FECSEntity &inout Entity, const FCameraOverrideParam &inout CameraOverrideParam)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    int local_8 = 0;
+    if (!(Entity.IsActive()))
+    {
+        return;
+    }
+    int local_11 = local_8.GetCameraOverrideLayerIndex(CameraOverrideParam.GetLayer(), local_8.LocalCameraOverrides);
+    if (local_11 != INDEX_NONE)
+    {
+        XLog(ELog(10), FString().Append("AddLocalCameraOverrideLayer: replaceing camera override layer: ").Append(int(CameraOverrideParam.GetLayer())));
+        local_8.LocalCameraOverrides[local_11] = CameraOverrideParam;
+    }
+    else
+    {
+        local_8.LocalCameraOverrides.Add(CameraOverrideParam);
+    }
+    local_8.MergeCameraOverrides();
+    return;
 }
 void RemoveLocalCameraOverrideLayer(const FECSEntity &inout Entity, const ECameraOverrideLayer Layer)
 {
@@ -12,14 +27,13 @@ void RemoveLocalCameraOverrideLayer(const FECSEntity &inout Entity, const ECamer
     if (local_6)
     {
         int local_8 = 0;
-        while (local_8 < 0)
+        for (; local_8 < local_6.LocalCameraOverrides.Num(); ++local_8)
         {
             if (int(local_6.LocalCameraOverrides[local_8].GetLayer()) == int(Layer))
             {
                 local_6.LocalCameraOverrides.RemoveAt(local_8);
                 break;
             }
-            ++local_8;
         }
         local_6.MergeCameraOverrides();
         if (local_6.CameraOverridesIndex.Num() == 0)

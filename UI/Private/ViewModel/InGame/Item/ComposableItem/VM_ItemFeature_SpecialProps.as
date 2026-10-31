@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ItemFeature_SpecialProps
 {
     const int ModelId = 0;

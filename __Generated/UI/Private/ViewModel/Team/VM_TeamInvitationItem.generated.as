@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TeamInvitationItem_Helpers
 {
 UFUNCTION()

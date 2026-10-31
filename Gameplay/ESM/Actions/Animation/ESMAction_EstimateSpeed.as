@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_EstimateSpeed : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -7,22 +5,21 @@ class UESMAction_EstimateSpeed : UESMBPBaseSpanAction
     UPROPERTY()
     FFPTime SampleTimeOffset = 0.1;
 
-
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const
     {
         if (this.bUseInternalSpeed)
         {
-            return "дј°з®—йЂџеє¦ InternalVelocity";
+            return "估算速度 InternalVelocity";
         }
-        return FString().Append("дј°з®—йЂџеє¦ й‡‡ж ·ж—¶й—ґеЃЏз§»=").Append(this.SampleTimeOffset.ToSeconds()).Append("s");
+        return FString().Append("估算速度 采样时间偏移=").Append(this.SampleTimeOffset.ToSeconds()).Append("s");
     }
     UFUNCTION()
     void OnDataValidate_Implementation(const FESMDataHierarchyInfo &inout Info)
     {
         if (!(this.bUseInternalSpeed) && (this.SampleTimeOffset.opCmp(0.0) <= 0))
         {
-            Info.AddDataInvalidComment(EESMDataValidType(1), "й‡‡ж ·ж—¶й—ґеЃЏз§»еї…йЎ»е¤§дєЋ0");
+            Info.AddDataInvalidComment(EESMDataValidType(1), "采样时间偏移必须大于0");
         }
         return;
     }
@@ -31,7 +28,7 @@ class UESMAction_EstimateSpeed : UESMBPBaseSpanAction
     {
         int local_8 = 0;
         const FECSEntity& local_2 = Context.GetEntity();
-        local_8.SetbUseInternalSpeed(this.bUseInternalSpeed);
+        local_8.SetbUseInternalSpeed((this.bUseInternalSpeed));
         local_8.SetSampleTimeOffset(this.SampleTimeOffset);
         return;
     }

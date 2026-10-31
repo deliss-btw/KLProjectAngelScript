@@ -1,4 +1,3 @@
-﻿
 enum ERedPointEvent
 {
     None,
@@ -34,7 +33,6 @@ enum ERedDotType
     Text,
 }
 
-
 struct FRedPointNodeConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -46,7 +44,6 @@ struct FRedPointNodeConfig : FDataObject
     FGameplayTag NodeTag;
     UPROPERTY()
     TArray<FDataObjectPtr> m_ParentNodeList;
-
 
     const TArray<TDataObjectPtr<FRedPointNodeConfig>> GetParentNodeList() const property
     {
@@ -72,7 +69,6 @@ struct FRedPointConfig : FDataObject
     ERedPointEvent EventType = ERedPointEvent(0);
     UPROPERTY()
     FDataObjectPtr m_NodeConfig;
-
 
     TDataObjectPtr<FRedPointNodeConfig> GetNodeConfig() const property
     {

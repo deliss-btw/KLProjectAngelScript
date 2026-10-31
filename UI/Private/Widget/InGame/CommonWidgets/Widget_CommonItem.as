@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommonItem
 {
     const int ViewID = 0;
@@ -151,6 +150,7 @@ namespace UWidget_CommonItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonItem;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleCustomSelectedChanged"));
     return;
 }
@@ -167,6 +167,7 @@ namespace UWidget_CommonItem_Rectangle
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonItem_Rectangle;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

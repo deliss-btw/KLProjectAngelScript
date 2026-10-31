@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_SkillBts_Helpers
 {
 UFUNCTION()

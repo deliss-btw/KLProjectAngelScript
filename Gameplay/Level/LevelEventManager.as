@@ -1,10 +1,8 @@
-﻿
 enum ELevelListeningAttributeType
 {
     HP,
     MAX,
 }
-
 
 struct FEntityAttributeChangedCallbackContainer
 {
@@ -56,7 +54,7 @@ struct FLevelListeningCreatureCreateFinish
     }
     void opCall() const
     {
-        this.Callback.ExecuteIfBound(FECSEntity(this));
+        this.Callback.ExecuteIfBound(FECSEntity(this.Entiity));
         return;
     }
 }
@@ -78,7 +76,6 @@ struct FRandomFriendNameRequestContext
     FRandomFriendNameDelegate Callback;
     UPROPERTY()
     bool bFallbackToSelfName = true;
-
 
 }
 
@@ -505,7 +502,7 @@ class ULevelEventManager : UScriptWorldSubsystem
                 UESMStateMachine local_36 = local_24.Asset.GetStateMachine(StateMachineIndex);
                 if (local_36 != nullptr)
                 {
-                    UESMBaseState local_40 = local_36.GetBaseState(local_30.Player.GetSMRuntime()[].GetStateIndex());
+                    UESMBaseState local_40 = local_36.GetBaseState(local_30.Player.GetSMRuntime()[StateMachineIndex].GetStateIndex());
                     if (local_40 != nullptr)
                     {
                         local_8 = local_40.GetDataName().ToString();
@@ -734,14 +731,14 @@ class ULevelEventManager : UScriptWorldSubsystem
                 UESMStateMachine local_42 = local_32.Asset.GetStateMachine(StateMachineIndex);
                 if (local_42 != nullptr)
                 {
-                    UESMBaseState local_46 = local_42.GetBaseState(local_38.Player.GetSMRuntime()[].GetStateIndex());
+                    UESMBaseState local_46 = local_42.GetBaseState(local_38.Player.GetSMRuntime()[StateMachineIndex].GetStateIndex());
                     if (local_46 != nullptr)
                     {
                         local_10 = local_46.GetDataName().ToString();
                     }
                     else
                     {
-                        local_14 = FString().Append("StateNull StateIndex=").Append(local_38.Player.GetSMRuntime()[].GetStateIndex());
+                        local_14 = FString().Append("StateNull StateIndex=").Append(local_38.Player.GetSMRuntime()[StateMachineIndex].GetStateIndex());
                     }
                 }
                 else

@@ -1,4 +1,3 @@
-﻿
 namespace MissionNetUtils
 {
 EMissionStatus GSStatusToMissionStatus(const uint NetMissionStatus)

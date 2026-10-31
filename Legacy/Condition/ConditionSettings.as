@@ -1,5 +1,3 @@
-﻿
-
 class UConditionSettings : UGameplaySettingsBase
 {
     UConditionSettings()

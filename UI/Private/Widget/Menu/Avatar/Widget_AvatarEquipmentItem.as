@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_AvatarEquipmenItem
 {
     const int ViewID = 0;
@@ -45,6 +44,7 @@ namespace UWidget_AvatarEquipmenItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_AvatarEquipmenItem;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

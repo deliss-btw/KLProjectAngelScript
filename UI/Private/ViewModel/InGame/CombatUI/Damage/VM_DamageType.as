@@ -1,4 +1,3 @@
-﻿
 namespace FVM_DamageType
 {
     const int ModelId = 0;
@@ -80,8 +79,7 @@ struct FVM_DamageType : FEUIViewModel
                 }
             }
         }
-        FEUIModelRef local_62;
-        this.GetModify_TitleAndDesc().AddModel(local_62, false);
+        this.GetModify_TitleAndDesc().AddModel(FEUIModelRef(::FVM_TitleAndDesc::Create(this.GetContext().Manager, this.GetDamageName(), this.GetDamageDescription())), false);
         return;
     }
     EDamageType GetDamageType() const property
@@ -208,7 +206,7 @@ namespace FVM_DamageType
 {
 FVM_DamageType& Create(const UObject ContextObject, const EDamageType DamageType)
 {
-    return FVM_DamageType::CreateByManager(EUIInternal::GetContextManager(ContextObject));
+    return FVM_DamageType::CreateByManager(EUIInternal::GetContextManager(ContextObject), EDamageType(DamageType));
 }
 FVM_DamageType CreateByManager(const UEUIManagerSubsystem Manager, const EDamageType DamageType)
 {

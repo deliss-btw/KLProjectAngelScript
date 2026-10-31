@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonDialog
 {
     const int ModelId = 0;

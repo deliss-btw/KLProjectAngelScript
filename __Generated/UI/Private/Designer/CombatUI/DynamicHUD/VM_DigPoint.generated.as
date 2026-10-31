@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_DigPoint_Helpers
 {
 UFUNCTION()

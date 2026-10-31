@@ -1,4 +1,3 @@
-﻿
 namespace FVM_EquipmentEditPage
 {
     const int ModelId = 0;
@@ -175,8 +174,7 @@ struct FVM_EquipmentEditPage : FEUIViewModel
                 local_4 = local_10.GetbShowCompare();
             }
             TEUIModelRef<FMS_EditingAvatar> local_12 = this.GetEditingAvatar();
-            TEUIModelRef<FM_Equipment> local_2 = this.GetEquipment();
-            this.SetEquipmentSelectDetail(FEUIModelRef());
+            this.SetEquipmentSelectDetail(FEUIModelRef(::FVM_EquipmentSelectDetail::Create(this.GetContext().Manager, this.GetEquipment(), GetAvatarConfig())));
             local_8.opCall().SetbShowCompare(local_4);
             return;
         }
@@ -319,7 +317,6 @@ struct __GeneratedProperties_FVM_EquipmentEditPage
     UPROPERTY()
     TEUIModelRef<FVM_EquipmentEditPage> Self;
 
-
 }
 
 namespace FVM_EquipmentEditPage
@@ -336,7 +333,7 @@ void GotoPage(const ULocalPlayer InLocalPlayer, const EEquipSlotType InEditingEq
     if (!(!(local_6)))
     {
         FEUIWidgetRef::GetViewModel local_14;
-        local_14.opCall(NAME_None).Setup();
+        local_14.opCall(NAME_None).Setup(EEquipSlotType(InEditingEquipSlot));
     }
     return;
 }
@@ -352,7 +349,73 @@ FVM_EquipmentEditPage CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasBeginDestroy(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "EditingEquipSlot";
+    local_14.TypeName = "EEquipSlotType";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "EquipmentSelectList";
+    local_14.TypeName = "TArray<FEUIModelRef>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "EquipmentSelectDetail";
+    local_14.TypeName = "FEUIModelRef";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsComparing";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CompareButtonText";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CanEquip";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_EquipmentEditPage>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_EquipmentEditPage;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(5);
+    local_22.AddRefPropertyDirty(0, 0, FMS_EditingAvatar::__IndexOf_AvatarConfig());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("EditingAvatar");
+    int local_2_2 = FMS_EditingAvatar::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FMS_EditingAvatar::__IndexOf_AvatarConfig(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnShouldUpdateEquipmentSelectDetail";
+    local_40.DirtyFlags.Set(FVM_EquipmentEditPage::__IndexOf_Equipment());
+    local_40.DirtyFlags.Set(FVM_EquipmentEditPage::__IndexOf_EditingAvatar());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnShouldUpdateEquipmentSelectList";
+    local_40.DirtyFlags.Set(FVM_EquipmentEditPage::__IndexOf_EditingEquipSlot());
+    local_40.DirtyFlags.Set(FVM_EquipmentEditPage::__IndexOf_EditingAvatar());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    FEUIModelMonitorDefine local_50;
+    local_50.FunctionName = "__OnAvatarEquipmentChanged";
+    local_50.ComponentType = FC_DSPlayerAvatarInfo;
+    Result.MonitorFunctions.Add(local_50);
+    return;
 }
 UScriptStruct GetModelStruct()
 {
@@ -375,7 +438,9 @@ void __OnAvatarEquipmentChanged(FVM_EquipmentEditPage &inout Model, const FECSEn
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorDSPlayerAvatarInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorDSPlayerAvatarInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 EEquipSlotType __UIGetter_EditingEquipSlot(const FVM_EquipmentEditPage &inout Model)
 {

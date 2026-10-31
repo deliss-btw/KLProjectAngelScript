@@ -1,5 +1,3 @@
-﻿
-
 struct FConfigVM_TestEUICanvas : FConfigEUIModelBase
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ struct FConfigVM_TestEUICanvas : FConfigEUIModelBase
     FSmallSideHintDataWithBuffStack SmallBuffSideHintData;
     UPROPERTY()
     FBuffHintDescParamItemListParam LargeBuffSideHintData;
-
 
 }
 

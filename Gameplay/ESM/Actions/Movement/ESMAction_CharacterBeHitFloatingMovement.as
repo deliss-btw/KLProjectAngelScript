@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CharacterBeHitFloatingMovement : UESMCharacterBeHitFloatingMovementAction
 {
     UESMAction_CharacterBeHitFloatingMovement()

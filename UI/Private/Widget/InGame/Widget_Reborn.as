@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_Reborn
 {
     const int ViewID = 0;
@@ -29,7 +28,7 @@ class UWidget_Reborn : UEUIUserWidget
     UFUNCTION()
     FText GetLookForHelpActionText() const
     {
-        FText local_4 = NSLOCTEXT("LookForHelpActionFormat", "жЊ‰гЂђ{0}гЂ‘еЇ»ж±‚д»–дєєеё®еЉ©");
+        FText local_4 = NSLOCTEXT("LookForHelpActionFormat", "按【{0}】寻求他人帮助");
         FText local_12;
         if (::UICommonUtil::GetInputActionKeyName(this.GetOwningLocalPlayer(), this.LookForHelpAction, local_12))
         {
@@ -40,7 +39,7 @@ class UWidget_Reborn : UEUIUserWidget
     UFUNCTION()
     FText GetRebornActionText() const
     {
-        FText local_4 = NSLOCTEXT("RebornActionFormat", "жЊ‰гЂђ{0}гЂ‘е›ће€°жњЂиї‘е¤Ќжґ»з‚№");
+        FText local_4 = NSLOCTEXT("RebornActionFormat", "按【{0}】回到最近复活点");
         FText local_12;
         if (::UICommonUtil::GetInputActionKeyName(this.GetOwningLocalPlayer(), this.RebornAction, local_12))
         {
@@ -54,6 +53,7 @@ namespace UWidget_Reborn
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_Reborn;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

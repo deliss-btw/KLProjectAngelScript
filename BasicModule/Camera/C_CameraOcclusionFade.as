@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_CameraOcclusionFade_NS
 {
     const TECSComponentDerivedPtr<FCS_CameraOcclusionFade> DerivedPtr = TECSComponentDerivedPtr<FCS_CameraOcclusionFade>();
@@ -40,7 +39,6 @@ struct FCameraOcclusionFadeItem
     UPROPERTY()
     TArray<bool> SetEnableDynamicMaskedMaterialByFades;
 
-
 }
 
 struct FCS_CameraOcclusionFade : FECSSingleton
@@ -69,7 +67,6 @@ struct FC_CameraOcclusionFadeDisableCounter : FECSComponent
 {
     UPROPERTY()
     int Counter = 0;
-
 
 }
 
@@ -161,17 +158,17 @@ bool RemoveCameraOcclusionFade(const FECSWorldPtr &inout World)
 }
 void __MonitorCameraOcclusionFadeLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_CameraOcclusionFade, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_CameraOcclusionFade, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraOcclusionFadeActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_CameraOcclusionFade, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_CameraOcclusionFade, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraOcclusionFadeModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_CameraOcclusionFade, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_CameraOcclusionFade, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_CameraOcclusionFadeUpdated
@@ -262,17 +259,17 @@ bool RemoveCameraOcclusionFadeUpdated(const FECSWorldPtr &inout World)
 }
 void __MonitorCameraOcclusionFadeUpdatedLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_CameraOcclusionFadeUpdated, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_CameraOcclusionFadeUpdated, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraOcclusionFadeUpdatedActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_CameraOcclusionFadeUpdated, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_CameraOcclusionFadeUpdated, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraOcclusionFadeUpdatedModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_CameraOcclusionFadeUpdated, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_CameraOcclusionFadeUpdated, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_CameraOcclusionFadeDisableCounter
@@ -352,36 +349,36 @@ bool RemoveCameraOcclusionFadeDisableCounter(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCameraOcclusionFadeDisableCounterOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CameraOcclusionFadeDisableCounter, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CameraOcclusionFadeDisableCounter, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraOcclusionFadeDisableCounterOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CameraOcclusionFadeDisableCounter, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CameraOcclusionFadeDisableCounter, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraOcclusionFadeDisableCounterOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CameraOcclusionFadeDisableCounter, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CameraOcclusionFadeDisableCounter, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraOcclusionFadeDisableCounterOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CameraOcclusionFadeDisableCounter, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CameraOcclusionFadeDisableCounter, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraOcclusionFadeDisableCounterOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CameraOcclusionFadeDisableCounter, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CameraOcclusionFadeDisableCounter, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCameraOcclusionFadeDisableCounterLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CameraOcclusionFadeDisableCounter, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CameraOcclusionFadeDisableCounter, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraOcclusionFadeDisableCounterActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CameraOcclusionFadeDisableCounter, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CameraOcclusionFadeDisableCounter, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraOcclusionFadeDisableCounterModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CameraOcclusionFadeDisableCounter, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CameraOcclusionFadeDisableCounter, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

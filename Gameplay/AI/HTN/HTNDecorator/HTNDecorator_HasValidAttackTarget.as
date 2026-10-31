@@ -1,8 +1,6 @@
-﻿
-
 class UHTNDecorator_HasValidAttackTarget : UHTNDecorator_ECSScriptBase
 {
-    default SetNodeName("жЇеђ¦ж‹Ґжњ‰еђ€жі•з›®ж ‡");
+    default SetNodeName("是否拥有合法目标");
 
     UHTNDecorator_HasValidAttackTarget()
     {

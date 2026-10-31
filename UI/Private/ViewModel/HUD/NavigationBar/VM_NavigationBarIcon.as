@@ -1,4 +1,3 @@
-﻿
 namespace FVM_NavigationBarIcon
 {
     const int ModelId = 0;
@@ -114,7 +113,6 @@ struct __GeneratedProperties_FVM_NavigationBarIcon
     bool IsGuidingTarget;
     UPROPERTY()
     TEUIModelRef<FVM_NavigationBarIcon> Self;
-
 
 }
 

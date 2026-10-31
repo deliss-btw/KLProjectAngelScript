@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_SettingSubTitle_Helpers
 {
 UFUNCTION()

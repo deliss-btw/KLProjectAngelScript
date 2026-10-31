@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_BuffSideHintDesc_Helpers
 {
 UFUNCTION()

@@ -1,4 +1,3 @@
-﻿
 enum EPresentationCameraLayer
 {
     Logic,

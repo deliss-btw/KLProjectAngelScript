@@ -1,5 +1,3 @@
-﻿
-
 struct FTeleporterConfigArray
 {
     UPROPERTY()
@@ -49,8 +47,14 @@ class UTeleporterSettings : UGameplaySettingsBase
     }
     TArray<TDataObjectPtr<FTeleporterConfig>> GetTeleportersInLevel(const TDataObjectPtr<FLevelInfoConfig> &inout LevelInfoConfig) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
-        TArray<TDataObjectPtr<FTeleporterConfig>> __r; return __r;
+        int local_8 = 0;
+        TConstRawPtr<FTeleporterSettingsCache> local_6 = FInstancedStruct::GetPtr(this.GetCacheData()).opCall();
+        FTeleporterConfigArray local_12;
+        if (local_8.TeleportersInLevel.Find(LevelInfoConfig, local_12))
+        {
+            return local_12.Array;
+        }
+        return TArray<TDataObjectPtr<FTeleporterConfig>>();
     }
 }
 

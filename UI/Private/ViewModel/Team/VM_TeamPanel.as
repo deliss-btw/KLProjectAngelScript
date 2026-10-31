@@ -1,4 +1,3 @@
-﻿
 enum ETeamOtherPlayerOperatorType
 {
     ViewInfo,
@@ -376,11 +375,11 @@ struct FVM_TeamPanel : FEUIViewModel
     {
         FDialogModelCallback local_26;
         local_26.Bind(this, FVM_TeamPanel::LeaveTeamComfirm);
-        FText local_30 = NSLOCTEXT("Cook", "TeamESCCancle", "иї”е›ћ");
-        FText local_34 = NSLOCTEXT("Cook", "TeamESCConfirm", "зЎ®и®¤");
+        FText local_30 = NSLOCTEXT("Cook", "TeamESCCancle", "返回");
+        FText local_34 = NSLOCTEXT("Cook", "TeamESCConfirm", "确认");
         FDialogCallback local_66 = FDialogCallback(local_26);
-        FText local_70 = NSLOCTEXT("Cook", "TeamESCMessage", "жЇеђ¦зЎ®и®¤йЂЂе‡єйџдјЌ?");
-        FText local_74 = NSLOCTEXT("Cook", "TeamESCTitle", "жЏђз¤є");
+        FText local_70 = NSLOCTEXT("Cook", "TeamESCMessage", "是否确认退出队伍?");
+        FText local_74 = NSLOCTEXT("Cook", "TeamESCTitle", "提示");
         FCommonDialogParam local_76;
         ::CommonPopup::Dialog_Decision(local_74, local_70, local_66, local_34, local_30, local_76);
         return;
@@ -618,23 +617,23 @@ struct FVM_TeamPanel : FEUIViewModel
     }
     void SetListenStateDirect(const ETeamListenState NewState)
     {
-        if ((int(this.GetListenState())) == (int(NewState)))
+        if (int(this.GetListenState()) == int(NewState))
         {
             return;
         }
         this.SetListenState(ETeamListenState(NewState));
-        ::VOXUtils::SetSpeakerMode(this.ListenStateToVoiceMode(ETeamListenState(this.GetListenState())));
+        ::VOXUtils::SetSpeakerMode(this.ListenStateToVoiceMode(this.GetListenState()));
         this.NotifyVoiceBtnsChanged();
         return;
     }
     void SetSpeakStateDirect(const ETeamSpeakState NewState)
     {
-        if ((int(this.GetSpeakState())) == (int(NewState)))
+        if (int(this.GetSpeakState()) == int(NewState))
         {
             return;
         }
         this.SetSpeakState(ETeamSpeakState(NewState));
-        ::VOXUtils::SetMicMode(this.SpeakStateToVoiceMode(ETeamSpeakState(this.GetSpeakState())));
+        ::VOXUtils::SetMicMode(this.SpeakStateToVoiceMode(this.GetSpeakState()));
         this.NotifyVoiceBtnsChanged();
         return;
     }
@@ -650,16 +649,16 @@ struct FVM_TeamPanel : FEUIViewModel
     {
         int local_6;
         int local_2 = int(this.GetToggleListenTarget());
-        if ((int(this.GetListenState())) == 0)
+        if (int(this.GetListenState()) == 0)
         {
             local_6 = local_2;
         }
         else
         {
-            local_6 = ETeamListenState(0);
+            local_6 = 0;
         }
         this.SetListenState(ETeamListenState(local_6));
-        ::VOXUtils::SetSpeakerMode(this.ListenStateToVoiceMode(ETeamListenState(this.GetListenState())));
+        ::VOXUtils::SetSpeakerMode(this.ListenStateToVoiceMode(this.GetListenState()));
         this.NotifyVoiceBtnsChanged();
         return;
     }
@@ -667,16 +666,16 @@ struct FVM_TeamPanel : FEUIViewModel
     {
         int local_6;
         int local_2 = int(this.GetToggleSpeakTarget());
-        if ((int(this.GetSpeakState())) == 0)
+        if (int(this.GetSpeakState()) == 0)
         {
             local_6 = local_2;
         }
         else
         {
-            local_6 = ETeamSpeakState(0);
+            local_6 = 0;
         }
         this.SetSpeakState(ETeamSpeakState(local_6));
-        ::VOXUtils::SetMicMode(this.SpeakStateToVoiceMode(ETeamSpeakState(this.GetSpeakState())));
+        ::VOXUtils::SetMicMode(this.SpeakStateToVoiceMode(this.GetSpeakState()));
         this.NotifyVoiceBtnsChanged();
         return;
     }
@@ -1017,7 +1016,6 @@ struct __GeneratedProperties_FVM_TeamPanel
     bool CanInvitationTeamIntoDS;
     UPROPERTY()
     TEUIModelRef<FVM_TeamPanel> Self;
-
 
 }
 

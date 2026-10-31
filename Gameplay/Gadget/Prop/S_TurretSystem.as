@@ -1,5 +1,3 @@
-﻿
-
 class US_TurretSystem : UECSScriptSystem
 {
     US_TurretSystem()

@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_ChangeRole_Helpers
 {
 UFUNCTION()

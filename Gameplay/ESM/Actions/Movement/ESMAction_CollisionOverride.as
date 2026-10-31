@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CollisionOverride : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
@@ -7,11 +5,10 @@ class UESMAction_CollisionOverride : UESMBPBaseSpanTickAction
     UPROPERTY()
     bool bAdditive = false;
 
-
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        0.PushOrUpdateModify(Context.GetEntity(), this.GetDataPathName(), this.OverrideShapeInfo, this.bAdditive);
+        0.PushOrUpdateModify(Context.GetEntity(), this.GetDataPathName(), this.OverrideShapeInfo, (this.bAdditive));
         return;
     }
     UFUNCTION()

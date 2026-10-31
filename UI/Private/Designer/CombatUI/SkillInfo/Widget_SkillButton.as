@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_SkillButton
 {
     const int ViewID = 0;
@@ -96,9 +95,18 @@ class UWidget_SkillButton : UEUIUserWidget
         {
             return;
         }
-        if (this.ShowKey)
+        int local_1 = this.ShowKey;
+        if (local_1 != 0)
         {
-            if ((int(::UICommonUtil::GetCurrentInputType(this.GetOwningLocalPlayer()))) == 1 && this.IsComposite)
+            if ((int(::UICommonUtil::GetCurrentInputType(this.GetOwningLocalPlayer()))) != 1)
+            {
+                local_1 = 0;
+            }
+            else
+            {
+                local_1 = this.IsComposite;
+            }
+            if (local_1 != 0)
             {
                 this.InputHint_Background.SetBrushFromTexture(this.InputHintBGWide, false);
                 this.InputHint_Background.SetRenderScale(FVector2D(2.0, 1.0));
@@ -212,13 +220,22 @@ class UWidget_SkillButton : UEUIUserWidget
         UObject local_62;
         if (int(SkillState) == 1)
         {
-            if ((this.SkillConfig != nullptr && (int(SkillButtonType) != 3)))
+            int local_7;
+            if (this.SkillConfig == nullptr)
             {
-                ESkillActiveState local_10;
-                int local_11 = 1;
-                if (this.SkillConfig.DefaultSkillStateConfig.PresentationConfig.StateIcons.Find(local_10, local_11))
+                local_7 = 0;
+            }
+            else
+            {
+                bool local_3 = (int(SkillButtonType) != 3);
+                local_7 = local_3;
+            }
+            if (local_7 != 0)
+            {
+                UTexture2D local_10;
+                if (this.SkillConfig.DefaultSkillStateConfig.PresentationConfig.StateIcons.Find(ESkillActiveState(1), local_10))
                 {
-                    this.SkillButton_Icon.SetBrushFromTexture(false, local_10);
+                    this.SkillButton_Icon.SetBrushFromTexture(local_10, false);
                 }
             }
             if (SkillStage == 1)
@@ -229,7 +246,17 @@ class UWidget_SkillButton : UEUIUserWidget
         }
         else
         {
-            if ((this.SkillConfig != nullptr && (int(SkillButtonType) != 3)))
+            int local_7;
+            if (this.SkillConfig == nullptr)
+            {
+                local_7 = 0;
+            }
+            else
+            {
+                bool local_3_2 = (int(SkillButtonType) != 3);
+                local_7 = local_3_2;
+            }
+            if (local_7 != 0)
             {
                 local_62 = this.SkillConfig.DefaultSkillStateConfig.PresentationConfig.DefaultIcon.LoadBrush().ResourceObject;
                 this.SkillButton_Icon.SetBrushFromTexture(Cast<UTexture2D>(local_62), false);
@@ -252,6 +279,7 @@ class UWidget_SkillButton : UEUIUserWidget
         }
         else
         {
+            int local_7;
             if (int(SkillButtonState) == 2)
             {
                 if (int(SkillButtonType) == 5)
@@ -268,7 +296,15 @@ class UWidget_SkillButton : UEUIUserWidget
                 {
                     this.ProgressBar_SkillCD.SetVisibility(ESlateVisibility(2));
                     this.SkillButton_Icon.SetColorAndOpacity(this.Color_SkillIcon_Free);
-                    if ((int(SkillButtonType) == 4 || (int(SkillButtonType) == 2)))
+                    if (int(SkillButtonType) == 4)
+                    {
+                        local_7 = 1;
+                    }
+                    else
+                    {
+                        local_7 = (int(SkillButtonType) == 2);
+                    }
+                    if (local_7 != 0)
                     {
                         this.SkillButton_ActiveHint.SetVisibility(ESlateVisibility(2));
                         return;
@@ -320,8 +356,7 @@ class UWidget_SkillButton : UEUIUserWidget
                 }
                 if (local_6)
                 {
-                    int local_61 = int(local_6.GetSkillButtonType());
-                    this.HandleSkillConfigChanged(local_6.GetSkillConfig());
+                    this.HandleSkillConfigChanged(local_6.GetSkillConfig(), local_6.GetSkillButtonType());
                 }
                 break;
             }
@@ -335,8 +370,7 @@ class UWidget_SkillButton : UEUIUserWidget
                 }
                 if (local_6)
                 {
-                    int local_61_2 = int(local_6.GetSkillButtonType());
-                    this.HandleConsumableItemConfigChanged(local_6.GetConsumableItem());
+                    this.HandleConsumableItemConfigChanged(local_6.GetConsumableItem(), local_6.GetSkillButtonType());
                 }
                 break;
             }
@@ -404,9 +438,7 @@ class UWidget_SkillButton : UEUIUserWidget
                 }
                 if (local_6)
                 {
-                    int local_61_3 = int(local_6.GetSkillButtonType());
-                    int local_66 = int(local_6.GetSkillButtonState());
-                    this.HandleSkillButtonStateChanged(local_6.GetSkillState(), local_6.GetSkillStage());
+                    this.HandleSkillButtonStateChanged(local_6.GetSkillState(), local_6.GetSkillStage(), local_6.GetSkillButtonState(), local_6.GetSkillButtonType());
                 }
             }
             }
@@ -470,6 +502,7 @@ namespace UWidget_SkillButton
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SkillButton;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleSkillConfigChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleConsumableItemConfigChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleSkillProgressTypeChanged"));

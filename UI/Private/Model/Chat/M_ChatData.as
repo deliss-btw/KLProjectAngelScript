@@ -1,4 +1,3 @@
-﻿
 const uint64 OfflinePrivateMsgRedDotPlaceholderId = 4294967296;
 namespace FM_ChatMessage
 {
@@ -336,7 +335,6 @@ struct FMsg_SubmitChatText : FEUIMessage
     UPROPERTY()
     FString Text;
 
-
 }
 
 struct FMsg_ChatDataUpdated : FEUIMessage
@@ -362,7 +360,6 @@ struct FMsg_OnReceiveChatMessage : FEUIMessage
     UPROPERTY()
     TEUIModelRef<FM_ChatMessage> MessageRef;
 
-
 }
 
 struct FMsg_ChatReadAllMessages : FEUIMessage
@@ -371,7 +368,6 @@ struct FMsg_ChatReadAllMessages : FEUIMessage
     EChatChannelTab ChannelTab;
     UPROPERTY()
     uint PeerUid;
-
 
 }
 
@@ -388,7 +384,6 @@ struct FMsg_PrivateChatUpdated : FEUIMessage
     UPROPERTY()
     uint PeerUid = 0;
 
-
 }
 
 struct FMsg_GenSystemMsg : FEUIMessage
@@ -399,7 +394,6 @@ struct FMsg_GenSystemMsg : FEUIMessage
     uint SystemContentDataId = 0;
     UPROPERTY()
     TArray<FChatSystemSerializedArg> SystemContentArgs;
-
 
 }
 
@@ -429,7 +423,6 @@ struct FChatPrivatePeerThread
     FString CachedLastMessagePreview;
     UPROPERTY()
     uint64 LastActivitySendTime = 0;
-
 
 }
 
@@ -655,7 +648,7 @@ struct FMS_ChatDataModel : FEUIModelSingleton
     }
     void GS_OnSyncOfflineChatMsgNotify(const FPbSyncOfflineChatMsgNotify &inout N)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     void GS_OnGetChatHistoryRsp(const FPbGetChatHistoryRsp &inout Rsp)
     {
@@ -780,7 +773,7 @@ struct FMS_ChatDataModel : FEUIModelSingleton
         int local_19 = 0;
         for (; local_19 < local_14.Num(); ++local_19)
         {
-            int local_24 = ::ChatSystemUtil::ResolveToProtoByChannelType(EChatChannelTab(local_14[local_19]));
+            int local_24 = ::ChatSystemUtil::ResolveToProtoByChannelType(local_14[local_19]);
             if (local_24 == 0)
             {
                 continue;
@@ -852,8 +845,8 @@ struct FMS_ChatDataModel : FEUIModelSingleton
     }
     void HandleChatReadAllMessages(const FMsg_ChatReadAllMessages &inout Msg)
     {
-        EChatChannelTab local_1 = Msg.ChannelTab;
-        if ((int(local_1)) == 6)
+        int local_1 = Msg.ChannelTab;
+        if ((local_1) == 6)
         {
             int local_6;
             local_6 = int(Msg.PeerUid);
@@ -863,7 +856,7 @@ struct FMS_ChatDataModel : FEUIModelSingleton
                 for (auto& local_24 : local_10.Messages)
                 {
                     local_24;
-                    true.SetbIsRead();
+                    1.SetbIsRead();
                 }
             }
         }
@@ -876,7 +869,7 @@ struct FMS_ChatDataModel : FEUIModelSingleton
                 for (auto& local_24 : local_26.Messages)
                 {
                     local_24;
-                    true.SetbIsRead();
+                    1.SetbIsRead();
                 }
             }
         }
@@ -1159,7 +1152,7 @@ struct FMS_ChatDataModel : FEUIModelSingleton
     }
     bool IsDuplicateChannelMessageByTimeMs(const uint Ch, const uint64 SendTimeMs, const FPbChatContent &inout Content)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
         bool __r; return __r;
     }
     bool IsSameChannelMessageContent(const FM_ChatMessage &inout M, const FPbChatContent &inout Content)
@@ -1559,11 +1552,37 @@ struct FMS_ChatDataModel : FEUIModelSingleton
     }
     void IncrementalPrivateChatAfterPush(const TEUIModelRef<FM_ChatMessage> &inout PushedRef)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        FM_ChatMessage local_2;
+        int local_4 = this.ResolvePrivateChatPeerUid(local_2);
+        if (local_4 == 0)
+        {
+            return;
+        }
+        bool local_5 = !(this.GetPrivateChatThreadsByPeer().Contains(local_4));
+        FChatPrivatePeerThread& local_8 = this.GetModify_PrivateChatThreadsByPeer().FindOrAdd(local_4);
+        local_8.PeerUid = local_4;
+        int local_13 = this.FindInsertIndexBySendTimeAscending(local_8.Messages, local_2.GetSendTimeMs());
+        local_8.Messages.Insert(PushedRef, local_13);
+        this.UpdatePrivatePeerCachesFromMessage(local_8);
+        if (local_13 < (local_8.Messages.Num() - 1))
+        {
+            this.TryUpsertStrangerWhenPeerSenderMidOrder(local_8, local_2);
+        }
+        int local_14 = this.GetModify_PrivateChatPeerOrder().IndexOfByKey(local_4);
+        if (local_14 != INDEX_NONE)
+        {
+            this.GetModify_PrivateChatPeerOrder().RemoveAt(local_14);
+        }
+        this.GetModify_PrivateChatPeerOrder().Insert(local_4, 0);
+        FEUIModelRef local_22 = FEUIModelRef(this);
+        FEUIMessageBus::Publish(EUIMessageBus);
+        FMsg_PrivateChatUpdated local_24;
+        local_24.PeerUid = local_4;
+        return;
     }
     int TrimAndPush(FM_ChatMessage &inout Msg, const bool bSkipPersist = false, const bool bSkipPrivateChatDerivedRefresh = false, const bool ForbidAutoPublishMsg = false)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         int __r; return __r;
     }
     void RefreshPrivateChatDerivedState()
@@ -2097,7 +2116,7 @@ struct FMS_ChatDataModel : FEUIModelSingleton
                 int local_65_2 = SystemContentArgs.Num();
                 if (local_65_2 >= 2)
                 {
-                    EItemRarity local_127;
+                    int local_127;
                     int local_73 = String::Conv_StringToInt(SystemContentArgs[0].GetValue());
                     if (!(::FItemConfig::GetByDataId(local_73)))
                     {
@@ -2105,7 +2124,7 @@ struct FMS_ChatDataModel : FEUIModelSingleton
                     }
                     EItemRarity local_128;
                     local_127 = local_128;
-                    if (::UGlobalItemSettings::Get().GetRarityConfig())
+                    if (::UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(local_127)))
                     {
                     }
                     else
@@ -2692,7 +2711,9 @@ void __OnGenSystemMsg(FMS_ChatDataModel &inout Model, const FMsg_GenSystemMsg &i
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    ECSWorld.__MonitorPlayerControllerLifetime(EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    ECSWorld.__MonitorPlayerControllerModification(EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_RecentMessages()
 {

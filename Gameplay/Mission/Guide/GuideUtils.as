@@ -1,5 +1,3 @@
-﻿
-
 namespace GuideUtils
 {
 struct FOpenMapData

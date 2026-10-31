@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_RegionMapTeleporterList
 {
     const int ViewID = 0;
@@ -70,6 +69,7 @@ namespace UWidget_RegionMapTeleporterList
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_RegionMapTeleporterList;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

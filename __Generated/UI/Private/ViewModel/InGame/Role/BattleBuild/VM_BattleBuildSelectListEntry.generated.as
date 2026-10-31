@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_BattleBuildSelectListEntry_Helpers
 {
 UFUNCTION()

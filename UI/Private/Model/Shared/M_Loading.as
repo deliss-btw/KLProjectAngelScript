@@ -1,4 +1,3 @@
-﻿
 namespace FMS_Loading
 {
     const int ModelId = 0;

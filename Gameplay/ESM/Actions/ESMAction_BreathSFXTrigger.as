@@ -1,10 +1,8 @@
-﻿
 enum EBreathSFXTriggerType
 {
     Enable,
     Disable,
 }
-
 
 class UESMAction_BreathSFXTrigger : UESMBPBaseInstantAction
 {
@@ -14,7 +12,6 @@ class UESMAction_BreathSFXTrigger : UESMBPBaseInstantAction
     FName AudioComponentName = n"None";
     UPROPERTY()
     bool bAllowStacking = false;
-
 
     UFUNCTION()
     EESMAssetWorkflow GetWorkflow_Implementation() const
@@ -34,7 +31,7 @@ class UESMAction_BreathSFXTrigger : UESMBPBaseInstantAction
             XWarning(ELog(1), FString().Append("ESMAction_BreathSFXTrigger: AudioComponentName is empty! Please select an audio component from the dropdown menu."));
             return;
         }
-        this.ExecuteBreathSFXTrigger(Context.GetEntity(), this.BreathSFXTriggerType, this.AudioComponentName, this.bAllowStacking);
+        this.ExecuteBreathSFXTrigger(Context.GetEntity(), this.BreathSFXTriggerType, this.AudioComponentName, (this.bAllowStacking));
         return;
     }
     UFUNCTION()
@@ -42,7 +39,7 @@ class UESMAction_BreathSFXTrigger : UESMBPBaseInstantAction
     {
         if (this.AudioComponentName.IsNone())
         {
-            Node.AddDataInvalidComment(EESMDataValidType(2), "йџійў‘з»„д»¶еђЌз§°дёЌиѓЅдёєз©єпјЊиЇ·д»Ћдё‹ж‹‰иЏњеЌ•дё­йЂ‰ж‹©йџійў‘з»„д»¶");
+            Node.AddDataInvalidComment(EESMDataValidType(2), "音频组件名称不能为空，请从下拉菜单中选择音频组件");
         }
         return;
     }
@@ -54,13 +51,13 @@ class UESMAction_BreathSFXTrigger : UESMBPBaseInstantAction
         FString local_14;
         if (this.bAllowStacking)
         {
-            local_14 = " [еЏ еЉ ]";
+            local_14 = " [叠加]";
         }
         else
         {
-            local_14 = " [еЌ•ж¬Ў]";
+            local_14 = " [单次]";
         }
-        return FString().Append(local_10).Append("е‘јеђёйџіж•€: ").Append(local_4).Append(local_14);
+        return FString().Append(local_10).Append("呼吸音效: ").Append(local_4).Append(local_14);
     }
     void ExecuteBreathSFXTrigger(const FECSEntity &inout Entity, const EBreathSFXTriggerType InTriggerType, const FName &inout InAudioComponentName, const bool InAllowStacking) const
     {
@@ -81,11 +78,11 @@ class UESMAction_BreathSFXTrigger : UESMBPBaseInstantAction
             }
             else
             {
-                __return = "еђЇз”Ё";
-                __return = "з¦Ѓз”Ё";
+                __return = "启用";
+                __return = "禁用";
             }
         }
-        return "жњЄзџҐ";
+        return "未知";
     }
 }
 

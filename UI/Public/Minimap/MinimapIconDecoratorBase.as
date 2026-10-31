@@ -1,4 +1,3 @@
-﻿
 enum EMinimapIconDecoratorType
 {
     Mark,
@@ -6,7 +5,6 @@ enum EMinimapIconDecoratorType
     GuidingPath,
     MAX,
 }
-
 
 struct FMinimapIconDecoratorTooltip
 {
@@ -21,6 +19,7 @@ struct FMinimapIconDecoratorTooltip
     }
     FMinimapIconDecoratorTooltip(const FText &inout InTooltip, const FText &inout InDetail)
     {
+        this.Tooltip = InTooltip;
         this.Detail = InDetail;
         return;
     }
@@ -52,7 +51,6 @@ class UMinimapIconDecoratorBase : UObject
     FMargin Padding;
     UPROPERTY()
     int ZOrder = 0;
-
 
     bool GetDecorator(const FEUIModelContext &inout Context, const FECSEntityId &inout EntityID, FMinimapIconDecoratorData &out DecoratorData) const
     {

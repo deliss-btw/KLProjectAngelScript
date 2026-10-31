@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommissionPanel
 {
     const int ViewID = 0;
@@ -371,6 +370,7 @@ namespace UWidget_CommissionPanel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionPanel;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedCommissionChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedCommissionCanMatchChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedCommissionMatchingChanged"));

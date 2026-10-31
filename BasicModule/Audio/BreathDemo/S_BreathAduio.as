@@ -1,5 +1,3 @@
-﻿
-
 class US_BreathAudio : UECSScriptSystem
 {
     US_BreathAudio()
@@ -24,7 +22,7 @@ class US_BreathAudio : UECSScriptSystem
     void ClientJob_BreathAudioUpdate(const FECSEntity &inout Entity, FC_BreathAudio &inout BreathAudio) const
     {
         UBreathAudioSettings local_4;
-        EBreathAudioState local_6;
+        int local_6;
         float32 local_19;
         if (local_4 == nullptr)
         {
@@ -32,14 +30,15 @@ class US_BreathAudio : UECSScriptSystem
         }
         if (BreathAudio.bBreathStateSet)
         {
-            local_6 = BreathAudio.BreathState;
+            local_6 = int(BreathAudio.BreathState);
         }
         else
         {
-            local_6 = EBreathAudioState(0);
+            int local_7 = 0;
+            local_6 = local_7;
         }
         float32 local_9 = 0.0f;
-        local_4.BreathAudioStateWeightMap.Find(local_6, local_9);
+        local_4.BreathAudioStateWeightMap.Find(EBreathAudioState(local_6), local_9);
         FNameHandle_EntityBBVarBool local_16;
         local_16;
         BreathAudio.bIsInCombat = Entity.GetBB_Bool(local_16);
@@ -48,7 +47,7 @@ class US_BreathAudio : UECSScriptSystem
             local_9 = local_9 + local_4.CombatAdditiveWeight;
         }
         local_9 = FMath::Clamp(local_9, 0.0f, 1.0f);
-        if (!(local_4.CustomBlendSpeeds.Find(FBreathAudioBlendKey(EBreathAudioState(BreathAudio.PrevBreathState), EBreathAudioState(local_6)), local_19)) == (!(false)))
+        if (local_4.CustomBlendSpeeds.Find(FBreathAudioBlendKey(EBreathAudioState(BreathAudio.PrevBreathState), EBreathAudioState(local_6)), local_19) == false)
         {
             local_19 = local_4.DefaultBlendSpeed;
         }

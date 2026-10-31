@@ -1,5 +1,3 @@
-﻿
-
 class UESMDeferredDeathCustomData : UESMCustomConfig_BP
 {
     UPROPERTY()

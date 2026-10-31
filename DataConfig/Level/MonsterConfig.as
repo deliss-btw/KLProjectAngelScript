@@ -1,5 +1,3 @@
-﻿
-
 struct FMonsterPresentationConfig : FPresentationConfig
 {
     FPresentationConfig _base_FPresentationConfig;
@@ -25,7 +23,6 @@ struct FMonsterPresentationConfig : FPresentationConfig
 
     FMonsterPresentationConfig()
     {
-        super();
         this.bShowChangeArea = false;
         this.HPBarSegment = 1;
         this.__InitDefaults();
@@ -50,7 +47,6 @@ struct FMonsterBaseConfig : FCombatUnitBaseConfig
     UPROPERTY()
     int MonsterStrength = -1;
 
-
 }
 
 struct FMonsterMainConfig : FCreatureUnitConfig
@@ -72,7 +68,6 @@ struct FMonsterMainConfig : FCreatureUnitConfig
     EAbnormalState WeaknessAbnormalState = EAbnormalState(0);
     UPROPERTY()
     TArray<EAbnormalState> AbnormalStateResistanceArr;
-
 
     TDataObjectPtr<FMonsterPresentationConfig> GetPresentationConfig() const property
     {

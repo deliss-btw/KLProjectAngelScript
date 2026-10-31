@@ -1,4 +1,3 @@
-﻿
 namespace FPIECommissionRandomPolicy
 {
 TDataObjectPtr<FRandomPolicyConfig> GetRandomPolicyByRandomSeedConfig(const TDataObjectPtr<FRandomSeedConfig> &inout RandomSeedConfig)

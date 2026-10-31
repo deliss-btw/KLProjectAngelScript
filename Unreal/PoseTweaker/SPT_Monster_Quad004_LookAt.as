@@ -1,5 +1,3 @@
-﻿
-
 class USPT_Monster_Quad004_LookAt : USPT_QiongQiD3_FootIK_Base
 {
     UPROPERTY()
@@ -117,7 +115,6 @@ struct FAngleDampingSettings
     float32 Damping = 0.1f;
     UPROPERTY()
     float32 MaxSpeed = 300.0f;
-
 
 }
 

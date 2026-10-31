@@ -1,4 +1,3 @@
-﻿
 namespace ItemCategoryTrunkBindings
 {
     const FItemCategoryTrunkBinding Weapon = FItemCategoryTrunkBinding();
@@ -19,18 +18,17 @@ struct FItemCategoryTrunkBinding
     UPROPERTY()
     EItemTrunk m_Trunk;
 
-    FItemCategoryTrunkBinding()
-    {
-        this.m_Trunk = EItemTrunk(0);
-        return;
-    }
     FItemCategoryTrunkBinding(const FGameplayTag &inout InCategory, const EItemTrunk InTrunk)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Category = InCategory;
+        this.m_Trunk = InTrunk;
+        InCategory.Add(InTrunk);
+        InTrunk.Add(InCategory);
+        return;
     }
     FGameplayTag GetCategory() const property
     {
-        return this;
+        return this.m_Category;
     }
     EItemTrunk GetTrunk() const property
     {

@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_MatchSwitchConfirm_Helpers
 {
 UFUNCTION()

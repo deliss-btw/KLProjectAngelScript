@@ -1,5 +1,3 @@
-﻿
-
 class UDebugInputSubsystemExt : UDebugInputSubsystem
 {
     UDebugInputSubsystemExt()

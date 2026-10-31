@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ItemFeature_Level
 {
     const int ModelId = 0;

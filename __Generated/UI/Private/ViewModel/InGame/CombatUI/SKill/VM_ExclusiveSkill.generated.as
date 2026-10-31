@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_GramherExclusiveSkill_Helpers
 {
 UFUNCTION()

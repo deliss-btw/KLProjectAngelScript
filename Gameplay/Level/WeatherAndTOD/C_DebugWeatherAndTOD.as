@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_DebugViewWeatherAndTOD_NS
 {
     const TECSComponentDerivedPtr<FCS_DebugViewWeatherAndTOD> DerivedPtr = TECSComponentDerivedPtr<FCS_DebugViewWeatherAndTOD>();
@@ -40,7 +39,6 @@ struct FCS_DebugViewWeatherAndTOD : FECSSingleton
     UPROPERTY()
     bool bIsDirty = false;
 
-
 }
 
 struct FCS_DebugLogicWeatherAndTOD : FECSSingleton
@@ -66,11 +64,24 @@ struct FC_DebugOverrideRegionWeatherData : FECSComponent
 
     FC_DebugOverrideRegionWeatherData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Duration = -1.0f;
+        this.m_ArtWeatherBlendTime = -1.0f;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_DebugOverrideRegionWeatherData(const FC_DebugOverrideRegionWeatherData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_26;
+        this.__DirtyFlags = local_26;
+        this.m_Duration = -1.0f;
+        this.m_ArtWeatherBlendTime = -1.0f;
+        this.__InitDirtyFlags();
+        this.m_WeatherConfig = Other.m_WeatherConfig;
+        this.m_Duration = Other.m_Duration;
+        this.m_ArtWeatherBlendTime = Other.m_ArtWeatherBlendTime;
+        return;
     }
     FC_DebugOverrideRegionWeatherData opAssign(const FC_DebugOverrideRegionWeatherData &inout Other)
     {
@@ -152,11 +163,30 @@ struct FC_DebugRegionWeatherData : FECSComponent
 
     FC_DebugRegionWeatherData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Duration = 0.0f;
+        this.m_ElapsedTime = 0.0f;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bIsOverrideWeather = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_DebugRegionWeatherData(const FC_DebugRegionWeatherData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Duration = 0.0f;
+        this.m_ElapsedTime = 0.0f;
+        FRootDirtyFlags8 local_27;
+        this.__DirtyFlags = local_27;
+        this.m_bIsOverrideWeather = false;
+        this.__InitDirtyFlags();
+        this.m_WeatherTemplate = Other.m_WeatherTemplate;
+        this.m_RuntimeOverrideWeatherTemplate = Other.m_RuntimeOverrideWeatherTemplate;
+        this.m_WeatherEntity = Other.m_WeatherEntity;
+        this.m_UpdatedTimeStamp = Other.m_UpdatedTimeStamp;
+        this.m_Duration = Other.m_Duration;
+        this.m_ElapsedTime = Other.m_ElapsedTime;
+        this.m_bIsOverrideWeather = Other.m_bIsOverrideWeather;
+        return;
     }
     FC_DebugRegionWeatherData opAssign(const FC_DebugRegionWeatherData &inout Other)
     {
@@ -316,14 +346,12 @@ struct FCE_ClientToServerDebugDrawWeahterInfo : FECSEvent
     UPROPERTY()
     bool bDrawWeatherInfo;
 
-
 }
 
 struct FCS_SyncDebugWeatherInfo : FECSSingleton
 {
     UPROPERTY()
     bool bDrawWeatherInfo;
-
 
 }
 
@@ -412,17 +440,17 @@ bool RemoveDebugViewWeatherAndTOD(const FECSWorldPtr &inout World)
 }
 void __MonitorDebugViewWeatherAndTODLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_DebugViewWeatherAndTOD, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_DebugViewWeatherAndTOD, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDebugViewWeatherAndTODActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_DebugViewWeatherAndTOD, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_DebugViewWeatherAndTOD, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDebugViewWeatherAndTODModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_DebugViewWeatherAndTOD, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_DebugViewWeatherAndTOD, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_DebugLogicWeatherAndTOD
@@ -510,17 +538,17 @@ bool RemoveDebugLogicWeatherAndTOD(const FECSWorldPtr &inout World)
 }
 void __MonitorDebugLogicWeatherAndTODLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_DebugLogicWeatherAndTOD, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_DebugLogicWeatherAndTOD, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDebugLogicWeatherAndTODActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_DebugLogicWeatherAndTOD, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_DebugLogicWeatherAndTOD, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDebugLogicWeatherAndTODModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_DebugLogicWeatherAndTOD, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_DebugLogicWeatherAndTOD, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_DebugOverrideRegionWeatherData
@@ -600,37 +628,37 @@ bool RemoveDebugOverrideRegionWeatherData(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorDebugOverrideRegionWeatherDataOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_DebugOverrideRegionWeatherData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_DebugOverrideRegionWeatherData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDebugOverrideRegionWeatherDataOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_DebugOverrideRegionWeatherData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_DebugOverrideRegionWeatherData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDebugOverrideRegionWeatherDataOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_DebugOverrideRegionWeatherData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_DebugOverrideRegionWeatherData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDebugOverrideRegionWeatherDataOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_DebugOverrideRegionWeatherData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_DebugOverrideRegionWeatherData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDebugOverrideRegionWeatherDataOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_DebugOverrideRegionWeatherData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_DebugOverrideRegionWeatherData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorDebugOverrideRegionWeatherDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_DebugOverrideRegionWeatherData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_DebugOverrideRegionWeatherData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDebugOverrideRegionWeatherDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_DebugOverrideRegionWeatherData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_DebugOverrideRegionWeatherData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDebugOverrideRegionWeatherDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_DebugOverrideRegionWeatherData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_DebugOverrideRegionWeatherData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_DebugRegionWeatherData
@@ -710,37 +738,37 @@ bool RemoveDebugRegionWeatherData(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorDebugRegionWeatherDataOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_DebugRegionWeatherData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_DebugRegionWeatherData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDebugRegionWeatherDataOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_DebugRegionWeatherData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_DebugRegionWeatherData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDebugRegionWeatherDataOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_DebugRegionWeatherData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_DebugRegionWeatherData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDebugRegionWeatherDataOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_DebugRegionWeatherData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_DebugRegionWeatherData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorDebugRegionWeatherDataOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_DebugRegionWeatherData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_DebugRegionWeatherData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorDebugRegionWeatherDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_DebugRegionWeatherData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_DebugRegionWeatherData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDebugRegionWeatherDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_DebugRegionWeatherData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_DebugRegionWeatherData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDebugRegionWeatherDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_DebugRegionWeatherData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_DebugRegionWeatherData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_SyncDebugWeatherInfo
@@ -828,17 +856,17 @@ bool RemoveSyncDebugWeatherInfo(const FECSWorldPtr &inout World)
 }
 void __MonitorSyncDebugWeatherInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_SyncDebugWeatherInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_SyncDebugWeatherInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSyncDebugWeatherInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_SyncDebugWeatherInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_SyncDebugWeatherInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSyncDebugWeatherInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_SyncDebugWeatherInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_SyncDebugWeatherInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

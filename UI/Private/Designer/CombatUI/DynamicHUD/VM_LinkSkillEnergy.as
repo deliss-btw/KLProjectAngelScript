@@ -1,4 +1,3 @@
-﻿
 namespace FVM_LinkSkillEnergy
 {
     const int ModelId = 0;
@@ -56,14 +55,14 @@ struct FVM_LinkSkillEnergy : FEUIViewModel
         const FC_ManipulateProp& local_18 = local_16.opCall();
         if (local_18)
         {
-            this.SetProjectileFireResourceType(EProjectileFireResourceType(local_18.GetFireResourceType()));
-            if ((int(this.GetProjectileFireResourceType())) == 0)
+            this.SetProjectileFireResourceType(local_18.GetFireResourceType());
+            if (int(this.GetProjectileFireResourceType()) == 0)
             {
                 this.SetEnergyRatio((local_18.GetEnergy() / local_18.GetEnergyMax()));
             }
             else
             {
-                if ((int(this.GetProjectileFireResourceType())) == 1)
+                if (int(this.GetProjectileFireResourceType()) == 1)
                 {
                     FECSEntity local_28 = FECSEntity(local_18.GetManipulatedPropEntity());
                     Get local_32;

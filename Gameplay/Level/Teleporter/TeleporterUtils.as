@@ -1,4 +1,3 @@
-﻿
 namespace TeleporterUtils
 {
     const float32 OccupancyCheckRadius = 150f;
@@ -167,7 +166,7 @@ void ApplyTeleportVisualHide(const FECSEntity &inout Entity)
         local_16.HiddenMeshNames = local_4;
         if (local_4.Num() == 0)
         {
-            XWarning(ELog(22), FString().Append("дј йЂЃйљђи—ЏпјљULevelGlobalSettings.TeleportHideMeshNames жњЄй…ЌзЅ®пјЊдј йЂЃжњџй—ґдёЌдјљйљђи—Џи§’и‰Іиє«дЅ“ Meshпј€еЏЄйљђи—Џж­¦е™Ёпј‰пјЊиЇ·еЎ«е…Ґи§’и‰І Mesh з»„д»¶еђЌгЂ‚"));
+            XWarning(ELog(22), FString().Append("传送隐藏：ULevelGlobalSettings.TeleportHideMeshNames 未配置，传送期间不会隐藏角色身体 Mesh（只隐藏武器），请填入角色 Mesh 组件名。"));
         }
     }
     local_16.TransactionSerial = 0;

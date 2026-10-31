@@ -1,4 +1,3 @@
-﻿
 enum EAISpecialTokenDispatchMode
 {
     SendToAll,
@@ -18,14 +17,12 @@ enum EAISpecialCombatTokenFilterByTokenType
     HasSpecifiedToken,
 }
 
-
 struct FAISpecialCombatTokenGenNum
 {
     UPROPERTY()
     EAISpecialCombatTokenGenNumType Type = EAISpecialCombatTokenGenNumType(0);
     UPROPERTY()
     float32 Num = 1.0f;
-
 
     int CalculateNum(const int ReceiverNum) const
     {
@@ -67,11 +64,17 @@ struct FAISpecialCombatTokenConfig : FDataObject
     UPROPERTY()
     TArray<FDataObjectPtr> m_FilterByTokens;
 
-
     int GetParamIndex(const FName &inout InName) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        int local_1 = 0;
+        for (; local_1 < this.Params.Num(); ++local_1)
+        {
+            if ((FName(this.Params[local_1].Name) == InName))
+            {
+                return local_1;
+            }
+        }
+        return INDEX_NONE;
     }
     bool PassTokenFilter(const uint64 TargetOwnedTokenUid) const
     {

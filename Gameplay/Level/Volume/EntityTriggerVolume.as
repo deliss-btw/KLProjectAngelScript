@@ -1,5 +1,3 @@
-﻿
-
 class AEntityTriggerVolume : AECSRegionVolume
 {
     AEntityTriggerVolume()

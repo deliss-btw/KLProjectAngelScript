@@ -1,4 +1,3 @@
-﻿
 namespace FLevelGroupLoadingPassNames
 {
     const TArray<FName> AllAvailableLoadingPassNames = TArray<FName>();

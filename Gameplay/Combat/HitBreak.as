@@ -1,4 +1,3 @@
-﻿
 enum EHitBreakLevel
 {
     Level_0,

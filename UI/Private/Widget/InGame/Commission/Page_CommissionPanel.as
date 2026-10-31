@@ -1,4 +1,3 @@
-﻿
 namespace UPage_CommissionPanel
 {
     const int ViewID = 0;
@@ -29,7 +28,7 @@ class UPage_CommissionPanel : UEUIActivatableWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        // body not fully recovered вЂ” stub [unresolved-operand]
+        // body not fully recovered — stub [unresolved-operand]
     }
     UFUNCTION()
     void Page_ClosePage() const
@@ -114,6 +113,7 @@ namespace UPage_CommissionPanel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UPage_CommissionPanel;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

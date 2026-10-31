@@ -1,5 +1,3 @@
-﻿
-
 struct FConfigVM_Common_Pop_Center_Spend : FConfigEUIModelBase
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ struct FConfigVM_Common_Pop_Center_Spend : FConfigEUIModelBase
     bool bShowCancelButton = true;
     UPROPERTY()
     FText TitleText;
-
 
 }
 

@@ -1,10 +1,7 @@
-﻿
-
 struct FConfigVM_TestLoad0 : FConfigEUIModelBase
 {
     UPROPERTY()
     int Value0;
-
 
 }
 
@@ -15,14 +12,12 @@ struct FConfigVM_TestLoad1 : FConfigEUIModelBase
     UPROPERTY()
     int Value1Config;
 
-
 }
 
 struct FConfigVM_TestLoad2 : FConfigEUIModelBase
 {
     UPROPERTY()
     int Value2;
-
 
 }
 

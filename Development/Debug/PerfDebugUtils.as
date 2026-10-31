@@ -1,11 +1,10 @@
-﻿
 namespace FPerfDebugUtils
 {
 UFUNCTION()
 void PrintMemoryInfo()
 {
-    XLog(ELog(54), FString().Append("еЏЇз”Ёи™љж‹џе†…е­: ").Append(UPerformanceUtils::GetAvailableVirtualMemString()));
-    XLog(ELog(54), FString().Append("е·Із”Ёи™љж‹џе†…е­: ").Append(UPerformanceUtils::GetUsedVirtualMemString()));
+    XLog(ELog(54), FString().Append("可用虚拟内存: ").Append(UPerformanceUtils::GetAvailableVirtualMemString()));
+    XLog(ELog(54), FString().Append("已用虚拟内存: ").Append(UPerformanceUtils::GetUsedVirtualMemString()));
     return;
 }
 UFUNCTION()

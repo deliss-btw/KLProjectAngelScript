@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_Image_Helpers
 {
 UFUNCTION()

@@ -1,5 +1,3 @@
-﻿
-
 struct FShopGoodsListConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -9,7 +7,6 @@ struct FShopGoodsListConfig : FDataObject
     FDataObjectPtr m_Category;
     UPROPERTY()
     TArray<FDataObjectPtr> m_GoodsList;
-
 
     TDataObjectPtr<FShopCategoryConfig> GetCategory() const property
     {

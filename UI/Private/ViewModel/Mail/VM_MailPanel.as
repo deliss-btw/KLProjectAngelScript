@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MailPanel
 {
     const int ModelId = 0;
@@ -43,11 +42,51 @@ struct FVM_MailPanel : FEUIViewModel
 
     FVM_MailPanel()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_bHasMorePages = false;
+        this.m_bHasClaimableAttachment = false;
+        this.m_TotalCount = 0;
+        this.m_MailCapacity = 1000;
+        this.m_bIsMailboxFull = false;
+        this.m_bHasDeletableReadMail = false;
+        this.m_SelectedMailIndex = INDEX_NONE;
+        this.m_ExpireTextAccumulator = 0.0f;
+        this.m_ExpireTextInterval = 60.0f;
+        this.m_NextExpireTimestamp = 0;
+        this.m_MinVisibleItemCount = 15;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVM_MailPanel(const FVM_MailPanel &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_bHasMorePages = false;
+        this.m_bHasClaimableAttachment = false;
+        this.m_TotalCount = 0;
+        this.m_MailCapacity = 1000;
+        this.m_bIsMailboxFull = false;
+        this.m_bHasDeletableReadMail = false;
+        this.m_SelectedMailIndex = INDEX_NONE;
+        this.m_ExpireTextAccumulator = 0.0f;
+        this.m_ExpireTextInterval = 60.0f;
+        this.m_NextExpireTimestamp = 0;
+        this.m_MinVisibleItemCount = 15;
+        this.m_MailModel = Other.m_MailModel;
+        this.m_MailBriefItems = Other.m_MailBriefItems;
+        this.m_MailDetailVM = Other.m_MailDetailVM;
+        this.m_bHasMorePages = Other.m_bHasMorePages;
+        this.m_bHasClaimableAttachment = Other.m_bHasClaimableAttachment;
+        this.m_TotalCount = int(Other.m_TotalCount);
+        this.m_MailCapacity = int(Other.m_MailCapacity);
+        this.m_bIsMailboxFull = Other.m_bIsMailboxFull;
+        this.m_bHasDeletableReadMail = Other.m_bHasDeletableReadMail;
+        this.m_SelectedMailIndex = int(Other.m_SelectedMailIndex);
+        this.m_ExpireTextAccumulator = Other.m_ExpireTextAccumulator;
+        this.m_ExpireTextInterval = Other.m_ExpireTextInterval;
+        this.m_NextExpireTimestamp = Other.m_NextExpireTimestamp;
+        this.m_MinVisibleItemCount = int(Other.m_MinVisibleItemCount);
+        return;
     }
     FVM_MailPanel opAssign(const FVM_MailPanel &inout Other)
     {
@@ -98,7 +137,7 @@ struct FVM_MailPanel : FEUIViewModel
     {
         if (this.GetbIsMailboxFull())
         {
-            return NSLOCTEXT("Mail", "MailboxFull", "й‚®з®±е·Іж»ЎпјЊиЇ·еЏЉж—¶жё…зђ†");
+            return NSLOCTEXT("Mail", "MailboxFull", "邮箱已满，请及时清理");
         }
         return FText();
     }
@@ -108,7 +147,7 @@ struct FVM_MailPanel : FEUIViewModel
         this.GetMailCountText();
         if (this.GetbIsMailboxFull())
         {
-            return FText::Format(NSLOCTEXT("Mail", "MailboxFullWithCount", "{0}  <Red16>й‚®з®±е·Іж»ЎпјЊиЇ·еЏЉж—¶жё…зђ†</>"), local_8);
+            return FText::Format(NSLOCTEXT("Mail", "MailboxFullWithCount", "{0}  <Red16>邮箱已满，请及时清理</>"), local_8);
         }
         return local_8;
     }
@@ -133,8 +172,10 @@ struct FVM_MailPanel : FEUIViewModel
         {
             FText local_20 = FText();
             FText local_24 = FText();
-            ::FCommonRewardListBuilder::BuildFromRewardEntries(Msg.Items);
-            NSLOCTEXT("Mail", "ClaimRewardTitle", "иЋ·еѕ—");
+            TArray<FRewardItemEntry> local_8 = ::FCommonRewardListBuilder::BuildFromRewardEntries(Msg.Items);
+            FText local_12 = NSLOCTEXT("Mail", "ClaimRewardTitle", "获得");
+            FDialogCallback local_56;
+            ::CommonPopup::RewardDialog_Confirm(local_12, local_8, local_56, local_24, local_20, FText());
         }
         int local_1 = this.GetSelectedMailIndex() + 1;
         this.RebuildBriefItemList();
@@ -151,7 +192,9 @@ struct FVM_MailPanel : FEUIViewModel
         {
             FText local_16 = FText();
             FText local_20 = FText();
-            NSLOCTEXT("Mail", "ClaimRewardTitle", "иЋ·еѕ—");
+            FText local_8 = NSLOCTEXT("Mail", "ClaimRewardTitle", "获得");
+            FDialogCallback local_52;
+            ::CommonPopup::RewardDialog_Confirm(local_8, Msg.Items, local_52, local_20, local_16, FText());
         }
         this.RebuildBriefItemList();
         if (!(!(this.GetMailDetailVM())) && this.GetMailDetailVM().opArrow().GetCurrentMailData())
@@ -239,7 +282,77 @@ struct FVM_MailPanel : FEUIViewModel
     }
     void RebuildAndRestoreSelection()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        TArray<uint> local_4;
+        int local_5 = 0;
+        for (; local_5 < this.GetMailBriefItems().Num(); )
+        {
+            int local_9 = this.GetMailBriefItems()[local_5].opArrow().GetMailId();
+            local_4.Add(local_9);
+            ++local_5;
+        }
+        int local_9_2 = this.GetSelectedMailId();
+        int local_5_2 = INDEX_NONE;
+        int local_11 = 0;
+        for (; local_11 < local_4.Num(); ++local_11)
+        {
+            if (local_4[local_11] == local_9_2)
+            {
+                local_5_2 = local_11;
+                break;
+            }
+        }
+        this.RebuildBriefItemList();
+        this.RecalcNextExpireTimestamp();
+        TMap<uint, int> local_32;
+        int local_11_2 = 0;
+        for (; local_11_2 < this.GetMailBriefItems().Num(); )
+        {
+            local_32.Add(this.GetMailBriefItems()[local_11_2].opArrow().GetMailId(), local_11_2);
+            ++local_11_2;
+        }
+        int local_11_3 = INDEX_NONE;
+        if (local_9_2 != 0)
+        {
+            local_32.Find(local_9_2, local_11_3);
+        }
+        int local_6 = INDEX_NONE;
+        if (local_11_3 == local_6 && ((local_5_2 != INDEX_NONE)))
+        {
+            int local_6_2 = local_5_2 + 1;
+            for (; local_6_2 < local_4.Num(); ++local_6_2)
+            {
+                if (local_32.Find(local_4[local_6_2], local_11_3))
+                {
+                    break;
+                }
+            }
+        }
+        if (local_11_3 == INDEX_NONE && ((local_5_2 != INDEX_NONE)))
+        {
+            int local_7 = local_5_2 - 1;
+            for (; local_7 >= 0; --local_7)
+            {
+                if (local_32.Find(local_4[local_7], local_11_3))
+                {
+                    break;
+                }
+            }
+        }
+        int local_6_3 = INDEX_NONE;
+        if (local_11_3 != local_6_3)
+        {
+            this.SetSelectedMailIndex(INDEX_NONE);
+            this.SelectMailByIndex(local_11_3);
+        }
+        else
+        {
+            this.AutoSelectAfterDelete();
+        }
+        if (this.GetbHasMorePages() && (this.GetMailBriefItems().Num() < this.GetMinVisibleItemCount()))
+        {
+            this.GetMailModel().opArrow().GS_RequestNextPage();
+        }
+        return;
     }
     void RebuildBriefItemList()
     {
@@ -623,7 +736,6 @@ struct __GeneratedProperties_FVM_MailPanel
     FText MailStatusText;
     UPROPERTY()
     TEUIModelRef<FVM_MailPanel> Self;
-
 
 }
 

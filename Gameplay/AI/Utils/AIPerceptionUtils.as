@@ -1,4 +1,3 @@
-﻿
 namespace FAIPerceptionUtils
 {
 TDataObjectPtr<FAIPerceptionConfig> GetPerceptionConfig(const FECSEntity &inout Entity)
@@ -11,15 +10,34 @@ TDataObjectPtr<FAIPerceptionConfig> GetPerceptionConfig(const FECSEntity &inout 
 }
 FSightPerceptionConfig GetCurrentSightConfig(const FECSEntity &inout Entity, const FC_AIKnowledge &inout AIKnowledge)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    FSightPerceptionConfig __r; return __r;
+    FSightPerceptionConfig __r;
+    if ((!((FAIPerceptionUtils::GetPerceptionConfig(Entity) == nullptr))))
+    {
+        if (AIKnowledge.CurrentOverrideSightConfigKey.IsNone())
+        {
+        }
+        else
+        {
+            FSightPerceptionConfig local_56;
+            if (unresolved.OverrideSightConfigMap.Find(AIKnowledge.CurrentOverrideSightConfigKey, local_56))
+            {
+            }
+            else
+            {
+            }
+        }
+    }
+    else
+    {
+    }
+    return __r;
 }
 UAIAlertnessConfigDataAsset GetCurrentAlertConfig(const FECSEntity &inout Entity, const FC_AIKnowledge &inout AIKnowledge)
 {
     UAIAlertnessConfigDataAsset local_52;
     if ((!((FAIPerceptionUtils::GetPerceptionConfig(Entity) == nullptr))))
     {
-        FName local_54;
+        UAIAlertnessConfigDataAsset local_54;
         if (AIKnowledge.CurrentOverrideAlertConfigKey.IsNone())
         {
             return local_52;

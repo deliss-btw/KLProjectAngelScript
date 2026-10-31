@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_CurrentRole
 {
     const int ModelId = 0;
@@ -64,7 +63,7 @@ struct FVMS_CurrentRole : FEUIViewModelSingleton
             FECSWorldUIRef::GetDefaulted<FCS_AvatarConfigTable> local_16 = FECSWorldUIRef::GetDefaulted<FCS_AvatarConfigTable>(this.GetContext().World);
             if (local_20 != nullptr && (local_10.GetAllPlayerPawnEntities().Num() > 1))
             {
-                FName local_692;
+                FAvatarPrefabConfig local_692;
                 local_20.FindRow(::GetPrefabAvatarName(local_10.GetAllPlayerPawnEntities()[0]), local_692);
                 this.SetMainAvatarConfig(TDataObjectPtr<FAvatarPrefabConfig>());
                 local_20.FindRow(::GetPrefabAvatarName(local_10.GetAllPlayerPawnEntities()[1]), local_692);
@@ -250,11 +249,11 @@ struct FVMS_CurrentRole : FEUIViewModelSingleton
     }
     FText GetHealthInfo() const
     {
-        return FText::Format(NSLOCTEXT("HealthInfo", "з”џе‘Ѕпјљ{0}"), FGameAttributeUtils::GetAttributeValue(this.GetContext().GetLocalPlayerPawn(), Attribute::HPMax, this.GetContext().Time, false, 0.0f, false, FGameAttributeModificationValue()));
+        return FText::Format(NSLOCTEXT("HealthInfo", "生命：{0}"), FGameAttributeUtils::GetAttributeValue(this.GetContext().GetLocalPlayerPawn(), Attribute::HPMax, this.GetContext().Time, false, 0.0f, false, FGameAttributeModificationValue()));
     }
     FText GetStaminaInfo() const
     {
-        return FText::Format(NSLOCTEXT("StaminaInfo", "дЅ“еЉ›пјљ{0}"), FGameAttributeUtils::GetAttributeValue(this.GetContext().GetLocalPlayerPawn(), Attribute::StaminaMax, this.GetContext().Time, false, 0.0f, false, FGameAttributeModificationValue()));
+        return FText::Format(NSLOCTEXT("StaminaInfo", "体力：{0}"), FGameAttributeUtils::GetAttributeValue(this.GetContext().GetLocalPlayerPawn(), Attribute::StaminaMax, this.GetContext().Time, false, 0.0f, false, FGameAttributeModificationValue()));
     }
     int GetCurrentLevel() const
     {
@@ -263,7 +262,7 @@ struct FVMS_CurrentRole : FEUIViewModelSingleton
     FText GetEXPText() const
     {
         FM_LocalPlayerLevel& local_2 = ::FM_LocalPlayerLevel::Get(this.GetContext().Manager);
-        return FText::Format(NSLOCTEXT("EXPFormat", "з»ЏйЄЊеЂјпјљ{0}/{1}"), local_2.GetCurrentExp(), local_2.GetUpgradeExp());
+        return FText::Format(NSLOCTEXT("EXPFormat", "经验值：{0}/{1}"), local_2.GetCurrentExp(), local_2.GetUpgradeExp());
     }
     void GotoAvatarBuildPage()
     {
@@ -392,7 +391,6 @@ struct __GeneratedProperties_FVMS_CurrentRole
     FText EXPText;
     UPROPERTY()
     TEUIModelRef<FVMS_CurrentRole> Self;
-
 
 }
 

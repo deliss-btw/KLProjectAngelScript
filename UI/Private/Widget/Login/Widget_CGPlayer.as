@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CGPlayer
 {
     const int ViewID = 0;
@@ -139,6 +138,7 @@ namespace UWidget_CGPlayer
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CGPlayer;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnNextButtonStateChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCanCloseChanged"));
     return;

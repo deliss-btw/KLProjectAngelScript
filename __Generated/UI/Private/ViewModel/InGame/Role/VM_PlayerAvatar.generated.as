@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_PlayerAvatar_Helpers
 {
 UFUNCTION()

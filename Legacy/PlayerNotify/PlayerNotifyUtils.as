@@ -1,4 +1,3 @@
-﻿
 namespace PlayerNotify
 {
 void NotifyPlayer(const EPlayerNotify NotifyType)

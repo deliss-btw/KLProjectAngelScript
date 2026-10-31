@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TeamTab
 {
     const int ViewID = 0;
@@ -46,6 +45,7 @@ namespace UWidget_TeamTab
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TeamTab;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

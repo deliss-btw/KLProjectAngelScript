@@ -1,5 +1,3 @@
-﻿
-
 class US_MarkSystem : UECSScriptSystem
 {
     US_MarkSystem()
@@ -78,11 +76,10 @@ class US_MarkSystem : UECSScriptSystem
         FECSEntity local_4 = FECSEntity(Event.EntityID);
         if (local_4)
         {
-            FECSEntity local_34;
-            ::MarkUtil_Internal::GetFastMarkConfigByEntity(local_34);
+            TDataObjectPtr<FMarkConfig> local_34 = ::MarkUtil_Internal::GetFastMarkConfigByEntity(local_4);
             if (local_34)
             {
-                FECSEntity local_8 = ::MarkUtil::MarkEntity(local_34, local_4, Event.Sender);
+                FECSEntity local_8 = ::MarkUtil::MarkEntity(Event.Sender, local_4, local_34);
             }
         }
         return;
@@ -192,15 +189,17 @@ class US_MarkSystem : UECSScriptSystem
         }
         GetGameplaySettings<UMarkSettings> local_10;
         local_8 = local_10;
+        TDataObjectPtr<FPresentationRuleConfig> local_36 = local_8.MarkedEntityPresentationRule;
         TDataObjectPtr<FPresentationConfig> local_84 = ::EntityLevelSpotUtils::GetDefaultPresentationConfig(Entity);
         if (local_84)
         {
             TDataObjectPtr<FPresentationRuleConfig> local_132;
             if (local_8.MarkedEntityPresentationRuleBySpotTypeOverrides.Find(local_84.opArrow().SpotType, local_132))
             {
-                local_8.MarkedEntityPresentationRule = local_132;
+                local_36 = local_132;
             }
         }
+        ::EntityLevelSpotUtils::AddSpotDataForViewers(Entity, ELevelSpotDataSource(3), FLevelSpotData(local_36), FLevelSpotViewers(C_Marked.MarkPlayers));
         return;
     }
     UFUNCTION()
@@ -215,13 +214,13 @@ class US_MarkSystem : UECSScriptSystem
         {
             for (auto& local_26 : local_6.GetAllMarks())
             {
-                FECSEntity local_30 = FECSEntity(local_26.GetKey());
+                ::EntityLevelSpotUtils::ChangeSpotDataViewers(FECSEntity(local_26.GetKey()), ELevelSpotDataSource(3), FLevelSpotViewers(CreaterPlayer));
             }
             return;
         }
         for (auto& local_26 : local_6.GetAllMarks())
         {
-            FECSEntity local_30_2 = FECSEntity(local_26.GetKey());
+            ::EntityLevelSpotUtils::ChangeSpotDataViewers(FECSEntity(local_26.GetKey()), ELevelSpotDataSource(3), FLevelSpotViewers(C_PlayerInTeam.GetTeamEntity()));
         }
         return;
     }
@@ -532,7 +531,7 @@ class US_MarkSystem : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_SetLevelSpotConfigForMarkedEntity(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = ::__GetMonitorMarkedOnRemoveView(this.GetECSWorld(), EECSRegType(0), true, true);
+        FECSMonitorRuntimeView local_56 = ::__GetMonitorMarkedOnRemoveView(this.GetECSWorld(), EECSRegType(0), (1 != 0), true);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {
@@ -669,7 +668,7 @@ class US_MarkSystem : UECSScriptSystem
             GetComponent local_48_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_OnMarkChanged(local_50);
         }
-        FECSMonitorRuntimeView local_54 = ::__GetMonitorMarkOnRemoveView(this.GetECSWorld(), EECSRegType(0), false, true);
+        FECSMonitorRuntimeView local_54 = ::__GetMonitorMarkOnRemoveView(this.GetECSWorld(), EECSRegType(0), (0 != 0), true);
         FECSMonitorRuntimeViewIterator local_28_2 = local_54.Iterator();
         for (; local_28_2.CanProceed;)
         {
@@ -678,7 +677,7 @@ class US_MarkSystem : UECSScriptSystem
             GetComponent local_48_3 = FECSMonitorRuntimeViewItem::GetComponent(local_42_3);
             this.Monitor_OnMarkChanged(local_50);
         }
-        FECSMonitorRuntimeView local_58 = ::__GetMonitorMarkOnActiveView(this.GetECSWorld(), EECSRegType(0), false, true);
+        FECSMonitorRuntimeView local_58 = ::__GetMonitorMarkOnActiveView(this.GetECSWorld(), EECSRegType(0), (0 != 0), true);
         FECSMonitorRuntimeViewIterator local_40_2 = local_58.Iterator();
         for (; local_40_2.CanProceed;)
         {
@@ -687,7 +686,7 @@ class US_MarkSystem : UECSScriptSystem
             GetComponent local_48_4 = FECSMonitorRuntimeViewItem::GetComponent(local_42_4);
             this.Monitor_OnMarkChanged(local_50);
         }
-        FECSMonitorRuntimeView local_62 = ::__GetMonitorMarkOnInactiveView(this.GetECSWorld(), EECSRegType(0), false, true);
+        FECSMonitorRuntimeView local_62 = ::__GetMonitorMarkOnInactiveView(this.GetECSWorld(), EECSRegType(0), false, (1 != 0));
         FECSMonitorRuntimeViewIterator local_28_3 = local_62.Iterator();
         for (; local_28_3.CanProceed;)
         {

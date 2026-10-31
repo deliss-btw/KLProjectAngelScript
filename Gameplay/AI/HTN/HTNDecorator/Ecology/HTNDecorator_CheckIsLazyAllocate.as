@@ -1,12 +1,9 @@
-﻿
-
 class UHTNDecorator_CheckIsLazyAllocate : UHTNDecorator_ECSScriptBase
 {
     UPROPERTY()
     bool Inverse = false;
 
     default SetNodeName("CheckIsLazyAllocate");
-
 
     UFUNCTION()
     bool PerformConditionCheck_Implementation(const FHTNContext &inout Context, const EHTNDecoratorConditionCheckType CheckType) const

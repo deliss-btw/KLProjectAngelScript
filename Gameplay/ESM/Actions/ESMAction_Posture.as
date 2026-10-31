@@ -1,10 +1,7 @@
-﻿
-
 struct FESMAction_WindupPostureInstanceData
 {
     UPROPERTY()
     float32 PreviousPostureValue = 0.0f;
-
 
 }
 
@@ -12,7 +9,6 @@ class UESMAction_WindupPosture : UESMBPBaseSpanAction
 {
     UPROPERTY()
     float32 AddPostureValue = 0.0f;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const
@@ -62,7 +58,6 @@ class UESMAction_HitBreakResistance : UESMBPBaseSpanAction
 {
     UPROPERTY()
     EHitBreakResistanceLevel Level = EHitBreakResistanceLevel(2);
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const

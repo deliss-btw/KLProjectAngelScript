@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ItemNumOperationPanel
 {
     const int ViewID = 0;
@@ -158,6 +157,7 @@ namespace UWidget_ItemNumOperationPanel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ItemNumOperationPanel;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnResultPreviewChanged"));
     return;
 }

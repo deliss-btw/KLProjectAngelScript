@@ -1,4 +1,3 @@
-﻿
 namespace FEcologyResourceUtils
 {
 void PinedResource(const FECSEntity &inout Flock, FC_EcologyFlockComponent &inout FlockComponent, const FECSEntity &inout Resource, const bool bPin)

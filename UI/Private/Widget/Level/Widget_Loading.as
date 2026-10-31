@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class UWidget_LoadingCommissionInfo : UUserWidget
 {
@@ -94,17 +92,14 @@ class UWidget_LoadingCommissionInfo : UUserWidget
             }
             else
             {
-                FText local_226;
-                FText local_66 = local_2.opArrow().GetCommissionTargetObjectiveOrAimDesc();
-                NSLOCTEXT("CommissionTargetText", "дё»и¦Ѓпјљ{0}");
-                FText::Format(local_226);
+                FText local_226 = FText::Format(NSLOCTEXT("CommissionTargetText", "主要：{0}"), local_2.opArrow().GetCommissionTargetObjectiveOrAimDesc());
                 if (int(local_30.opArrow().CommissionType) == 2)
                 {
                     FText local_218;
                     ::ObjectiveUtils::GetObjectiveDesc(local_218, local_2.opArrow().GetSubTargetConfig(), 0);
                     if (!(local_218.IsEmpty()))
                     {
-                        local_226 = FText::Format(FText::AsCultureInvariant("{0}\n{1}"), local_226, FText::Format(NSLOCTEXT("CommissionSubTargetText", "еЏЇйЂ‰пјљ{0}"), local_218));
+                        local_226 = FText::Format(FText::AsCultureInvariant("{0}\n{1}"), local_226, FText::Format(NSLOCTEXT("CommissionSubTargetText", "可选：{0}"), local_218));
                     }
                 }
                 this.TextBlock_CommissionTarget.SetText(local_226);
@@ -132,13 +127,13 @@ class UWidget_LoadingCommissionInfo : UUserWidget
                     FNumberFormattingOptions local_261;
                     local_261 = FNumberFormattingOptions::DefaultNoGrouping();
                     local_261.SetMinimumFractionalDigits(0);
-                    this.TextBlock_CommissionTimeLimit.SetText(FText::Format(NSLOCTEXT("CommissionTimeLimitText", "й™ђж—¶{0}е€†й’џ"), FText::AsNumber((local_30.opArrow().CommissionTimeLimit / 60.0f), local_261)));
+                    this.TextBlock_CommissionTimeLimit.SetText(FText::Format(NSLOCTEXT("CommissionTimeLimitText", "限时{0}分钟"), FText::AsNumber((local_30.opArrow().CommissionTimeLimit / 60.0f), local_261)));
                 }
                 this.bHasDeathLimit = (local_30.opArrow().MaxDeathCount > 0);
                 if (this.bHasDeathLimit)
                 {
                     int local_61_2 = local_30.opArrow().MaxDeathCount;
-                    this.TextBlock_CommissionDeathLimit.SetText(FText::Format(NSLOCTEXT("CommissionDeathLimitText", "ж­»дєЎиѕѕе€°{0}ж¬Ў"), FText::AsNumber(local_61_2, FNumberFormattingOptions::DefaultNoGrouping())));
+                    this.TextBlock_CommissionDeathLimit.SetText(FText::Format(NSLOCTEXT("CommissionDeathLimitText", "死亡达到{0}次"), FText::AsNumber(local_61_2, FNumberFormattingOptions::DefaultNoGrouping())));
                 }
             }
         }

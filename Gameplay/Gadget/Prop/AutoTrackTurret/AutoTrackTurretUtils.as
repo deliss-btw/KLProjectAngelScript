@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Debug_AutoTrackTurret = FConsoleVariable();
 
 namespace AutoTrackTurretDebug
@@ -256,7 +255,7 @@ FECSEntity FilterMonster(const FECSEntity &inout Entity, const FC_AutoTrackTurre
     else
     {
         int local_79_2 = Entity.GetIdValue();
-        AutoTrackTurretDebug::Log(FString().Append("[AutoTrackTurret] FilterMonster Result: Entity[").Append(local_79_2).Append("] -> жњЄж‰ѕе€°еђ€жі•з›®ж ‡"));
+        AutoTrackTurretDebug::Log(FString().Append("[AutoTrackTurret] FilterMonster Result: Entity[").Append(local_79_2).Append("] -> 未找到合法目标"));
     }
     return local_28;
 }
@@ -273,7 +272,7 @@ bool PassesBlackboardConditions(const TArray<FESMBlackboardCondition> &inout Con
 }
 bool ValidateTarget(const FECSEntity &inout TurretEntity, const FC_AutoTrackTurretConfig &inout Config, const FAutoTrackTurretTargetingCondition_Monster &inout Condition, const FECSEntity &inout Candidate)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    // body not fully recovered — stub [opcode-uncovered]
     bool __r; return __r;
 }
 void ComputeDesiredAngles(const FECSEntity &inout TurretEntity, const FECSEntity &inout TargetEntity, const FC_AutoTrackTurretConfig &inout Config, float32 &inout OutYaw, float32 &inout OutPitch)
@@ -323,29 +322,26 @@ float32 InterpAngle(const float32 Current, const float32 Desired, const float32 
 FQuat ResolveParentWorldRotation(const FName &inout ParentFName, const FQuat &inout EntityRot, const FC_AutoTrackTurretClientCache &inout Cache, const TArray<FQuat> &inout YawWorldRotations)
 {
     int local_1 = 0;
-    while (local_1 < 0)
+    for (; local_1 < Cache.CachedYawCompFNames.Num(); ++local_1)
     {
         if ((FName(Cache.CachedYawCompFNames[local_1]) == ParentFName) && (local_1 < YawWorldRotations.Num()))
         {
             return YawWorldRotations[local_1];
         }
-        ++local_1;
     }
     int local_1_2 = 0;
-    while (local_1_2 < 0)
+    for (; local_1_2 < Cache.CachedStaticCompFNames.Num(); ++local_1_2)
     {
         if ((FName(Cache.CachedStaticCompFNames[local_1_2]) == ParentFName) && (local_1_2 < Cache.StaticComponentInitialWorldRotations.Num()))
         {
             return Cache.StaticComponentInitialWorldRotations[local_1_2];
         }
-        ++local_1_2;
     }
     return EntityRot;
 }
 void UpdateMeshRotation(const FECSEntity &inout Entity, const FC_AutoTrackTurretConfig &inout Config, FC_AutoTrackTurretClientCache &inout ClientCache)
 {
     int local_6 = 0;
-    int local_21 = 0;
     if (!(local_6))
     {
         return;
@@ -374,8 +370,7 @@ void UpdateMeshRotation(const FECSEntity &inout Entity, const FC_AutoTrackTurret
                 local_7 = false;
                 continue;
             }
-            local_21 = ClientCache.StaticComponentInitialWorldRotations.Num();
-            local_7 = (local_19 < local_21);
+            local_7 = (local_19 < ClientCache.StaticComponentInitialWorldRotations.Num());
         }
     }
     if (Config.bTrackYaw && !((Config.YawAxisMeshLogicName == NAME_None)))
@@ -383,7 +378,7 @@ void UpdateMeshRotation(const FECSEntity &inout Entity, const FC_AutoTrackTurret
         TArray<FQuat> local_70;
         FQuat local_56_2 = local_16;
         int local_19_2 = 0;
-        while (local_19_2 < local_21)
+        for (; local_19_2 < ClientCache.CachedYawCompFNames.Num(); ++local_19_2)
         {
             FQuat local_32 = local_16;
             if (local_19_2 < ClientCache.CachedYawParentFNames.Num() && !((FName(ClientCache.CachedYawParentFNames[local_19_2]) == NAME_None)))
@@ -399,17 +394,15 @@ void UpdateMeshRotation(const FECSEntity &inout Entity, const FC_AutoTrackTurret
             {
                 local_66_2.SetLocation(local_16.Inverse().RotateVector(ClientCache.CachedInitialEntityRotation.RotateVector(FVector(ClientCache.YawComponentInitialRelativeLocations[local_19_2]))));
             }
-            local_21 = ClientCache.YawComponentInitialRelativeScales.Num();
-            if (local_19_2 < local_21)
+            if (local_19_2 < ClientCache.YawComponentInitialRelativeScales.Num())
             {
                 local_66_2.SetScale3D(ClientCache.YawComponentInitialRelativeScales[local_19_2]);
             }
-            ++local_19_2;
         }
         if (Config.bTrackPitch && !((Config.PitchAxisMeshLogicName == NAME_None)))
         {
             local_19_2 = 0;
-            while (local_19_2 < local_21)
+            for (; local_19_2 < ClientCache.CachedPitchCompFNames.Num(); ++local_19_2)
             {
                 FQuat local_32_2 = local_16;
                 if (local_19_2 < ClientCache.CachedPitchParentFNames.Num() && !((FName(ClientCache.CachedPitchParentFNames[local_19_2]) == NAME_None)))
@@ -427,7 +420,6 @@ void UpdateMeshRotation(const FECSEntity &inout Entity, const FC_AutoTrackTurret
                 {
                     local_66_3.SetScale3D(ClientCache.PitchComponentInitialRelativeScales[local_19_2]);
                 }
-                ++local_19_2;
             }
         }
     }

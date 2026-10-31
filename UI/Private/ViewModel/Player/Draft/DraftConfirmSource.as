@@ -1,5 +1,3 @@
-﻿
-
 class UDraftConfirmSource : UTeamMemberConfirmSourceBase
 {
     UDraftConfirmSource()
@@ -16,7 +14,6 @@ class UDraftConfirmSource : UTeamMemberConfirmSourceBase
     }
     TArray<TEUIModelRef<FVM_TeamMemberPrepareItem>> BuildMembers(const FEUIModelContext &inout Context, const FEUIModelRef &inout Business) const
     {
-        UObject local_32;
         TArray<TEUIModelRef<FVM_TeamMemberPrepareItem>> local_4;
         int local_40 = 0;
         TEUIModelRef<FM_Draft> local_6 = TEUIModelRef<FM_Draft>(Business);
@@ -33,20 +30,19 @@ class UDraftConfirmSource : UTeamMemberConfirmSourceBase
                 continue;
             }
             TEUIModelRef<FVM_TeammateInfo> local_30;
-            TEUIModelRef<FM_Player> local_12_2 = local_28.opArrow().GetPlayer();
-            ::FMS_LocalPlayerTeamData::Get(Context.Manager).GetTeamMemberInAnyTeam(local_32);
+            TEUIModelRef<FM_TeamMember> local_32 = ::FMS_LocalPlayerTeamData::Get(Context.Manager).GetTeamMemberInAnyTeam(local_28.opArrow().GetPlayer());
             if (local_32.IsValid())
             {
-                local_30 = TEUIModelRef<FVM_TeammateInfo>(::FVM_TeammateInfo::Create(local_32, Context.Manager));
+                local_30 = TEUIModelRef<FVM_TeammateInfo>(::FVM_TeammateInfo::Create(Context.Manager, local_32));
             }
             else
             {
-                TEUIModelRef<FM_Player> local_12_3 = local_28.opArrow().GetPlayer();
-                local_40.SetPlayer(local_12_3);
+                TEUIModelRef<FM_Player> local_12_2 = local_28.opArrow().GetPlayer();
+                local_40.SetPlayer(local_12_2);
                 local_30 = TEUIModelRef<FVM_TeammateInfo>(::FVM_TeammateInfo::Create(Context.Manager, (TEUIModelRef<FM_TeamMember>(local_40))));
             }
             TEUIModelRef<FVM_TeamMemberPrepareItem> local_42 = TEUIModelRef<FVM_TeamMemberPrepareItem>(::FVM_TeamMemberPrepareItem::Create(Context.Manager, local_30));
-            TEUIModelRef<FM_Player> local_12_4 = local_28.opArrow().GetPlayer();
+            TEUIModelRef<FM_Player> local_12_3 = local_28.opArrow().GetPlayer();
             bool local_9 = (GetPlayerUid() == local_13);
             local_9.SetbSelf();
             local_9 = (local_28.opArrow().GetDraftInviteReply() == 1);
@@ -242,7 +238,7 @@ class UDraftConfirmSource : UTeamMemberConfirmSourceBase
         if (local_2.opArrow().GetDraftInviteResult() == 4)
         {
             FCommonTipsParam local_16;
-            ::CommonPopup::Tips(NSLOCTEXT("DraftInviteTimeOut_UnknownPlayer", "еЊ№й…Ќе¤±иґҐпјЊжњ‰зЋ©е®¶жњЄе‡†е¤‡"), local_16);
+            ::CommonPopup::Tips(NSLOCTEXT("DraftInviteTimeOut_UnknownPlayer", "匹配失败，有玩家未准备"), local_16);
             return;
         }
         if (local_2.opArrow().GetDraftInviteResult() == 1)
@@ -253,7 +249,7 @@ class UDraftConfirmSource : UTeamMemberConfirmSourceBase
         if (local_22 == 0)
         {
             FCommonTipsParam local_16;
-            ::CommonPopup::Tips(NSLOCTEXT("PlayerLeaveTeam", "е·Із¦»ејЂеЊ№й…ЌйџдјЌ"), local_16);
+            ::CommonPopup::Tips(NSLOCTEXT("PlayerLeaveTeam", "已离开匹配队伍"), local_16);
             return;
         }
         this.ShowFailTips(Context, local_2);
@@ -289,11 +285,11 @@ class UDraftConfirmSource : UTeamMemberConfirmSourceBase
             TArray<TEUIModelRef<FM_DraftPlayer>> local_24 = Draft.opArrow().FindDraftPlayersWithReplyType(0);
             if (!(local_24.IsEmpty()))
             {
-                ::CommonPopup::Tips(FText::Format(NSLOCTEXT("DraftInviteTimeOut", "еЊ№й…Ќе¤±иґҐпјЊзЋ©е®¶ {0} жњЄе‡†е¤‡"), ::DraftPlayerUtils::FormatDraftPlayerNames(local_24)), local_40);
+                ::CommonPopup::Tips(FText::Format(NSLOCTEXT("DraftInviteTimeOut", "匹配失败，玩家 {0} 未准备"), ::DraftPlayerUtils::FormatDraftPlayerNames(local_24)), local_40);
             }
             else
             {
-                ::CommonPopup::Tips(NSLOCTEXT("DraftInviteTimeOut_UnknownPlayer", "еЊ№й…Ќе¤±иґҐпјЊжњ‰зЋ©е®¶жњЄе‡†е¤‡"), local_40);
+                ::CommonPopup::Tips(NSLOCTEXT("DraftInviteTimeOut_UnknownPlayer", "匹配失败，有玩家未准备"), local_40);
             }
             return;
         }
@@ -302,25 +298,25 @@ class UDraftConfirmSource : UTeamMemberConfirmSourceBase
             TArray<TEUIModelRef<FM_DraftPlayer>> local_20 = Draft.opArrow().FindDraftPlayersWithReplyType(2);
             if (!(local_20.IsEmpty()))
             {
-                ::CommonPopup::Tips(FText::Format(NSLOCTEXT("DraftInviteReject", "еЊ№й…Ќе¤±иґҐпјЊзЋ©е®¶ {0} ж‹’з»ќиї›е…Ґе§”ж‰"), ::DraftPlayerUtils::FormatDraftPlayerNames(local_20)), local_40);
+                ::CommonPopup::Tips(FText::Format(NSLOCTEXT("DraftInviteReject", "匹配失败，玩家 {0} 拒绝进入委托"), ::DraftPlayerUtils::FormatDraftPlayerNames(local_20)), local_40);
             }
             else
             {
-                ::CommonPopup::Tips(NSLOCTEXT("DraftInviteReject_UnknownPlayer", "еЊ№й…Ќе¤±иґҐпјЊжњ‰зЋ©е®¶ж‹’з»ќиї›е…Ґе§”ж‰"), local_40);
+                ::CommonPopup::Tips(NSLOCTEXT("DraftInviteReject_UnknownPlayer", "匹配失败，有玩家拒绝进入委托"), local_40);
             }
             return;
         }
         if (local_1 == 2)
         {
-            ::CommonPopup::Tips(NSLOCTEXT("DraftInviteInterrupt", "йџдјЌдєєж•°еЏ‘з”џеЏеЊ–пјЊиЇ·й‡Ќж–°ејЂеђЇеЊ№й…Ќ"), local_40);
+            ::CommonPopup::Tips(NSLOCTEXT("DraftInviteInterrupt", "队伍人数发生变化，请重新开启匹配"), local_40);
             return;
         }
         if (local_1 == 5)
         {
-            ::CommonPopup::Tips(NSLOCTEXT("DraftInviteMemberOffline", "еЊ№й…Ќе¤±иґҐпјЊйџдјЌж€ђе‘з¦»зєї"), local_40);
+            ::CommonPopup::Tips(NSLOCTEXT("DraftInviteMemberOffline", "匹配失败，队伍成员离线"), local_40);
             return;
         }
-        ::CommonPopup::Tips(NSLOCTEXT("DraftInviteFail", "еЊ№й…Ќе¤±иґҐ"), local_40);
+        ::CommonPopup::Tips(NSLOCTEXT("DraftInviteFail", "匹配失败"), local_40);
         return;
     }
 }

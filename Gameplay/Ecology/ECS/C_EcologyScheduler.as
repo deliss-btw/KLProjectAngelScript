@@ -1,4 +1,3 @@
-﻿
 enum EEcologySchedulerLevel
 {
     PerFrame,
@@ -46,21 +45,20 @@ struct FLegacyEntityArrayContainer
     UPROPERTY()
     int Step = 0;
 
-
     FECSEntity Current()
     {
-        return this[this.Step];
+        return this.PendingActivityGroups[this.Step];
     }
     bool IsEmpty() const
     {
-        return (this.Step >= this.Num());
+        return (this.Step >= this.PendingActivityGroups.Num());
     }
     bool MoveNext()
     {
         ++this.Step;
-        if (this.Step >= this.Num())
+        if (this.Step >= this.PendingActivityGroups.Num())
         {
-            this.Empty(0);
+            this.PendingActivityGroups.Empty(0);
             this.Step = 0;
             return false;
         }
@@ -68,12 +66,12 @@ struct FLegacyEntityArrayContainer
     }
     void Add(const FECSEntity &inout Entity)
     {
-        this.Add(Entity);
+        this.PendingActivityGroups.Add(Entity);
         return;
     }
     void Append(const TSet<FECSEntity> &inout Entities)
     {
-        ::AppendSet(this, Entities);
+        ::AppendSet(this.PendingActivityGroups, Entities);
         return;
     }
 }
@@ -89,47 +87,46 @@ struct FEntitySchedulerContainer
     UPROPERTY()
     int Step = 0;
 
-
     FECSEntityId Current()
     {
-        if (this.Step >= this.Num())
+        if (this.Step >= this.PendingStepGroups.Num())
         {
             return ENTITY_ID_NULL;
         }
-        return this[this.Step];
+        return this.PendingStepGroups[this.Step];
     }
     bool IsEmpty() const
     {
-        return (this.Step >= this.Num());
+        return (this.Step >= this.PendingStepGroups.Num());
     }
     void ResetStepGroups()
     {
-        this.Empty(0);
+        this.PendingStepGroups.Empty(0);
         this.Step = 0;
         if (this.bAutoRefreshPendingGroups)
         {
-            ::AppendSet(this, this.AllEntity);
+            ::AppendSet(this.PendingStepGroups, this.AllEntity);
         }
         return;
     }
     bool MoveNext()
     {
         ++this.Step;
-        if (this.Step >= this.Num())
+        if (this.Step >= this.PendingStepGroups.Num())
         {
             this.ResetStepGroups();
-            return (this.Num() > 0);
+            return (this.PendingStepGroups.Num() > 0);
         }
         return true;
     }
     void AddToPending(const FECSEntityId &inout Entity)
     {
-        this.Add(Entity);
+        this.PendingStepGroups.Add(Entity);
         return;
     }
     void AppendToPending(const TSet<FECSEntityId> &inout Entities)
     {
-        ::AppendSet(this, Entities);
+        ::AppendSet(this.PendingStepGroups, Entities);
         return;
     }
     void Add(const FECSEntityId &inout Entity)
@@ -137,7 +134,7 @@ struct FEntitySchedulerContainer
         this.AllEntity.Add(Entity);
         if (this.bAutoRefreshPendingGroups)
         {
-            this.Add(Entity);
+            this.PendingStepGroups.Add(Entity);
         }
         return;
     }
@@ -193,7 +190,6 @@ struct FC_EcologySchedulerUnit : FECSComponent
     UPROPERTY()
     EEcologySchedulerLevel CurrentScedulerLevel = EEcologySchedulerLevel(4);
 
-
 }
 
 struct FCS_EcologyScheduler : FECSSingleton
@@ -209,10 +205,10 @@ struct FCS_EcologyScheduler : FECSSingleton
     }
     void Setup()
     {
-        this.SetNum(4);
-        this[1].bAutoRefreshPendingGroups = true;
-        this[2].bAutoRefreshPendingGroups = true;
-        this[3].bAutoRefreshPendingGroups = true;
+        this.AllUnits.SetNum(4);
+        this.AllUnits[1].bAutoRefreshPendingGroups = true;
+        this.AllUnits[2].bAutoRefreshPendingGroups = true;
+        this.AllUnits[3].bAutoRefreshPendingGroups = true;
         return;
     }
     void UpdateSchedulerUnit(const FECSEntity &inout Entity, const EEcologySchedulerLevel NewLevel, const EEcologySchedulerLevel OldLevel = EEcologySchedulerLevel::Max)
@@ -221,14 +217,14 @@ struct FCS_EcologyScheduler : FECSSingleton
         {
             return;
         }
-        if (int(OldLevel) != 4 && this.IsValidIndex(int(OldLevel)))
+        if (int(OldLevel) != 4 && this.AllUnits.IsValidIndex(int(OldLevel)))
         {
             FECSEntityId local_5 = Entity.GetId();
             int local_1 = int(OldLevel);
         }
-        if (int(NewLevel) != 4 && this.IsValidIndex(int(NewLevel)))
+        if (int(NewLevel) != 4 && this.AllUnits.IsValidIndex(int(NewLevel)))
         {
-            this[int(NewLevel)].Add(Entity.GetId());
+            this.AllUnits[int(NewLevel)].Add(Entity.GetId());
         }
         if (int(NewLevel) == 0)
         {
@@ -323,37 +319,37 @@ bool RemoveControlByEcologySchedulerTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorControlByEcologySchedulerTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ControlByEcologySchedulerTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ControlByEcologySchedulerTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorControlByEcologySchedulerTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ControlByEcologySchedulerTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ControlByEcologySchedulerTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorControlByEcologySchedulerTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ControlByEcologySchedulerTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ControlByEcologySchedulerTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorControlByEcologySchedulerTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ControlByEcologySchedulerTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ControlByEcologySchedulerTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorControlByEcologySchedulerTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ControlByEcologySchedulerTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ControlByEcologySchedulerTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorControlByEcologySchedulerTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ControlByEcologySchedulerTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ControlByEcologySchedulerTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorControlByEcologySchedulerTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ControlByEcologySchedulerTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ControlByEcologySchedulerTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorControlByEcologySchedulerTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ControlByEcologySchedulerTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ControlByEcologySchedulerTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcologyAllowedToUpdateThisFrameTag
@@ -433,37 +429,37 @@ bool RemoveEcologyAllowedToUpdateThisFrameTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcologyAllowedToUpdateThisFrameTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyAllowedToUpdateThisFrameTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyAllowedToUpdateThisFrameTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyAllowedToUpdateThisFrameTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyAllowedToUpdateThisFrameTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyAllowedToUpdateThisFrameTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyAllowedToUpdateThisFrameTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyAllowedToUpdateThisFrameTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyAllowedToUpdateThisFrameTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyAllowedToUpdateThisFrameTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyAllowedToUpdateThisFrameTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyAllowedToUpdateThisFrameTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyAllowedToUpdateThisFrameTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyAllowedToUpdateThisFrameTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyAllowedToUpdateThisFrameTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcologyAllowedToUpdateThisFrameTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcologyAllowedToUpdateThisFrameTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcologyAllowedToUpdateThisFrameTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyAllowedToUpdateThisFrameTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcologyAllowedToUpdateThisFrameTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcologyAllowedToUpdateThisFrameTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyAllowedToUpdateThisFrameTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcologyAllowedToUpdateThisFrameTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcologyAllowedToUpdateThisFrameTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcologyForceScheduledUpdateTag
@@ -543,37 +539,37 @@ bool RemoveEcologyForceScheduledUpdateTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcologyForceScheduledUpdateTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyForceScheduledUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyForceScheduledUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyForceScheduledUpdateTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyForceScheduledUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyForceScheduledUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyForceScheduledUpdateTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyForceScheduledUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyForceScheduledUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyForceScheduledUpdateTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyForceScheduledUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyForceScheduledUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyForceScheduledUpdateTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyForceScheduledUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyForceScheduledUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcologyForceScheduledUpdateTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcologyForceScheduledUpdateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcologyForceScheduledUpdateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyForceScheduledUpdateTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcologyForceScheduledUpdateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcologyForceScheduledUpdateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyForceScheduledUpdateTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcologyForceScheduledUpdateTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcologyForceScheduledUpdateTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcologyScheduledAlwaysUpdateTag
@@ -653,37 +649,37 @@ bool RemoveEcologyScheduledAlwaysUpdateTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcologyScheduledAlwaysUpdateTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyScheduledAlwaysUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyScheduledAlwaysUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyScheduledAlwaysUpdateTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyScheduledAlwaysUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyScheduledAlwaysUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyScheduledAlwaysUpdateTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyScheduledAlwaysUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyScheduledAlwaysUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyScheduledAlwaysUpdateTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyScheduledAlwaysUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyScheduledAlwaysUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyScheduledAlwaysUpdateTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyScheduledAlwaysUpdateTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyScheduledAlwaysUpdateTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcologyScheduledAlwaysUpdateTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcologyScheduledAlwaysUpdateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcologyScheduledAlwaysUpdateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyScheduledAlwaysUpdateTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcologyScheduledAlwaysUpdateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcologyScheduledAlwaysUpdateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyScheduledAlwaysUpdateTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcologyScheduledAlwaysUpdateTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcologyScheduledAlwaysUpdateTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcologySchedulerUnit
@@ -763,37 +759,37 @@ bool RemoveEcologySchedulerUnit(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcologySchedulerUnitOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologySchedulerUnit, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologySchedulerUnit, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologySchedulerUnitOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologySchedulerUnit, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologySchedulerUnit, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologySchedulerUnitOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologySchedulerUnit, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologySchedulerUnit, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologySchedulerUnitOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologySchedulerUnit, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologySchedulerUnit, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologySchedulerUnitOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologySchedulerUnit, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologySchedulerUnit, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcologySchedulerUnitLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcologySchedulerUnit, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcologySchedulerUnit, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologySchedulerUnitActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcologySchedulerUnit, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcologySchedulerUnit, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologySchedulerUnitModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcologySchedulerUnit, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcologySchedulerUnit, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_EcologyScheduler
@@ -884,16 +880,16 @@ bool RemoveEcologyScheduler(const FECSWorldPtr &inout World)
 }
 void __MonitorEcologySchedulerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_EcologyScheduler, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_EcologyScheduler, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologySchedulerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_EcologyScheduler, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_EcologyScheduler, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologySchedulerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_EcologyScheduler, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_EcologyScheduler, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

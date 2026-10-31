@@ -1,9 +1,7 @@
-﻿
-
 struct FConfigVM_DivineSkillSettings : FConfigEUIModelBase
 {
     UPROPERTY()
-    FLinearColor NotSuitTintColor;
+    FLinearColor NotSuitTintColor = FLinearColor::DPink;
 
     FConfigVM_DivineSkillSettings()
     {

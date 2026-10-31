@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_StartMultiExecution_NS
 {
     const TECSEventDerivedPtr<FCE_StartMultiExecution> DerivedPtr = TECSEventDerivedPtr<FCE_StartMultiExecution>();
@@ -102,7 +101,6 @@ struct FCE_OnAbilityCustomInteract : FECSEvent
     UPROPERTY()
     int PointIndex;
 
-
 }
 
 struct FCE_SetEntityInteractTargetEnabled : FECSEvent
@@ -113,7 +111,6 @@ struct FCE_SetEntityInteractTargetEnabled : FECSEvent
     UPROPERTY()
     int PointIndex = -1;
 
-
 }
 
 struct FCE_SetEntityInteractionBlocked : FECSEvent
@@ -121,7 +118,6 @@ struct FCE_SetEntityInteractionBlocked : FECSEvent
     FECSEvent _base_FECSEvent;
     UPROPERTY()
     bool bBlocked = false;
-
 
 }
 
@@ -136,7 +132,6 @@ struct FCE_BeginInteractEvent : FECSEvent
     FInteractionPointAndBehaviorIndex InteractTargetPointAndBehaviorIndex;
     UPROPERTY()
     EInteractMode InteractMode = EInteractMode(0);
-
 
 }
 
@@ -163,7 +158,6 @@ struct FCE_ServerTriggerBeginInteractEvent : FECSEvent
     bool bIsSecondaryInteract = false;
     UPROPERTY()
     FInteractionPointAndBehaviorIndex InteractTargetPointAndBehaviorIndex;
-
 
 }
 
@@ -220,14 +214,14 @@ struct FInteractActionESMBBForEvent
     UPROPERTY()
     float32 m_TriggerValidateTime = 0.1f;
 
-
     FName GetESMBBTriggerName() const property
     {
-        return this;
+        return this.m_ESMBBTriggerName;
     }
     void SetESMBBTriggerName(const FName &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_ESMBBTriggerName = __Value;
+        return;
     }
     float32 GetTriggerValidateTime() const property
     {

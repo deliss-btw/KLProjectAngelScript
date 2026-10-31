@@ -1,5 +1,3 @@
-﻿
-
 struct FT_AccountExclusiveCollectionPrefab : FECSTrait
 {
     FECSTrait _base_FECSTrait;

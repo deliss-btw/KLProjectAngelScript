@@ -1,4 +1,3 @@
-﻿
 namespace FAsGameAudioUtils
 {
     const FConsoleVariable CVar_EnvSound_EnableDebug = FConsoleVariable();
@@ -74,8 +73,21 @@ FECSEntity GetInstrumentTargetEntity(const FECSEntity &inout Entity)
 UFUNCTION()
 FName GetInstrumentIdFromSubType(const EInteractionSubTypeForESM SubType)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FName __r; return __r;
+
+    switch (int8(SubType))
+    {
+    case 24:
+        return n"Piano";
+    case 55:
+        return n"WeavingOud";
+    case 56:
+        return n"VitalityDrum";
+    case 57:
+        return n"NetFlute";
+    case 58:
+        return n"FuXiString";
+    }
+    return n"None";
 }
 UFUNCTION()
 FName GetInstrumentIdFromSocialType(const EInteractionSocialTypeForESM SocialType)

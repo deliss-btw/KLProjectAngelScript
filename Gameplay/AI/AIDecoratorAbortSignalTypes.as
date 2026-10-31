@@ -1,4 +1,3 @@
-﻿
 enum EAIDecoratorAbortSignal
 {
     Invalid,

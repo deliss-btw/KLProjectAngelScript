@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class UPVPGameModeFlowBase : UGameModeFlow
 {
@@ -615,7 +613,7 @@ class UPVPGameModeFlowBase : UGameModeFlow
     {
         TDataObjectPtr<FLevelInfoConfig> local_48 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
         ESpawnPointSelectionRule local_50 = ESpawnPointSelectionRule(0);
-        ESpawnPointSelectionRule local_49 = local_50;
+        int local_49 = local_50;
         if (local_48.IsSet())
         {
             local_49 = local_50;
@@ -872,7 +870,7 @@ class UPVPGameModeFlowBase : UGameModeFlow
         {
             return;
         }
-        local_8.SetSelectedGameRuleType(EPVPGameRuleType(Event.NewGameRuleType));
+        local_8.SetSelectedGameRuleType(Event.NewGameRuleType);
         return;
     }
     void HandleAddBot(const FCE_PVPAddBot &inout Event) const

@@ -1,11 +1,9 @@
-﻿
 enum EEntityMinimapIconType
 {
     Common,
     Player,
     Custom,
 }
-
 
 struct FMinimapIconSimplifiedDisplayRule : FDataObject
 {
@@ -20,7 +18,6 @@ struct FMinimapIconSimplifiedDisplayRule : FDataObject
     EStretchDirection StretchDirection;
     UPROPERTY()
     UCurveFloat UserSpecifiedScaleByMapScale = nullptr;
-
 
 }
 
@@ -39,7 +36,6 @@ struct FMinimapIconConfig : FDataObject
     bool bEnableSimplifiedDisplay;
     UPROPERTY()
     FDataObjectPtr m_CustomSimplifiedDisplayRule;
-
 
     const TDataObjectPtr<FMinimapIconSimplifiedDisplayRule> GetCustomSimplifiedDisplayRule() const property
     {
@@ -73,7 +69,6 @@ struct FMinimapIconConfig_Common : FMinimapIconConfig
 
     FMinimapIconConfig_Common()
     {
-        super();
         this.bNeverHittestable = false;
         this.bCanSetGuideTarget = true;
         this.bShowTooltip = true;
@@ -92,7 +87,6 @@ struct FMinimapIconConfig_Player : FMinimapIconConfig
 
     FMinimapIconConfig_Player()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -108,7 +102,6 @@ struct FMinimapIconConfig_Custom : FMinimapIconConfig
 
     FMinimapIconConfig_Custom()
     {
-        super();
         this.__InitDefaults();
         return;
     }

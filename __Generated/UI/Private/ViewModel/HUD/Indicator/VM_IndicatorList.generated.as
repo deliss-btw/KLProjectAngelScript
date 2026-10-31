@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_IndicatorList_Helpers
 {
 UFUNCTION()

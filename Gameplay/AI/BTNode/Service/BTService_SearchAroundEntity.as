@@ -1,5 +1,3 @@
-﻿
-
 class UBTService_SearchAroundEntity : UBTService_ECSScriptBase
 {
     UPROPERTY()
@@ -13,7 +11,7 @@ class UBTService_SearchAroundEntity : UBTService_ECSScriptBase
     UPROPERTY()
     FGameplayTagContainer ExcludeGameplayTags;
 
-    default SetNodeName("жђњеЇ»е‘Ёе›ґзљ„з›®ж ‡");
+    default SetNodeName("搜寻周围的目标");
 
     UBTService_SearchAroundEntity()
     {

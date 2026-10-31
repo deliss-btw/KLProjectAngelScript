@@ -1,5 +1,3 @@
-﻿
-
 class UEQG_FindCurrentCombatAreaNearestInnerVolumePoint : UEnvQueryGenerator_ECS_BlueprintBase
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ class UEQG_FindCurrentCombatAreaNearestInnerVolumePoint : UEnvQueryGenerator_ECS
     bool bDebugDrawPoints = false;
 
     default GeneratedItemType = UEnvQueryItemType_Point;
-
 
     UFUNCTION()
     void DoItemGenerationFromEntities_Implementation(const TArray<FECSEntityId> &inout ContextEntities) const
@@ -49,8 +46,7 @@ class UEQG_FindCurrentCombatAreaNearestInnerVolumePoint : UEnvQueryGenerator_ECS
             {
                 continue;
             }
-            int local_6 = local_50.PreferAreaPoints.Num();
-            if (local_6 < 3)
+            if (local_50.PreferAreaPoints.Num() < 3)
             {
                 continue;
             }
@@ -63,23 +59,20 @@ class UEQG_FindCurrentCombatAreaNearestInnerVolumePoint : UEnvQueryGenerator_ECS
             {
                 FECSDebugDraw::DrawDebugSphere(n"PathFindingDebugDraw", local_78, 80.0f, 12, FColor::Purple, FColor::Purple, 30.0f, uint8(0), 5.0f);
                 int local_82 = 0;
-                while (local_82 < local_6)
+                for (; local_82 < local_50.PreferAreaPoints.Num(); )
                 {
                     FVector local_72 = local_50.PreferAreaPoints[local_82];
                     FVector local_94 = (local_72 + local_66);
                     local_94.Z = local_60.Z;
                     FECSDebugDraw::DrawDebugSphere(n"PathFindingDebugDraw", local_94, 50.0f, 8, FColor::Purple, FColor::Purple, 30.0f, uint8(0), 4.0f);
-                    local_6 = local_82 + 1;
-                    local_6 = local_6 % local_50.PreferAreaPoints.Num();
-                    local_72 = local_50.PreferAreaPoints[local_6];
+                    local_72 = local_50.PreferAreaPoints[((local_82 + 1) % local_50.PreferAreaPoints.Num())];
                     FVector local_88 = (local_72 + local_66);
                     local_88.Z = local_60.Z;
                     FECSDebugDraw::DrawDebugLine(n"PathFindingDebugDraw", local_94, local_88, FColor::Purple, FColor::Purple, 30.0f, uint8(0), 3.0f);
                     ++local_82;
-                    local_6 = local_50.PreferAreaPoints.Num();
                 }
             }
-            local_6 = 0;
+            int local_6_2 = 0;
             if (local_50.IsPointInPreferArea(local_60))
             {
                 this.AddGeneratedVector(local_60);
@@ -89,7 +82,7 @@ class UEQG_FindCurrentCombatAreaNearestInnerVolumePoint : UEnvQueryGenerator_ECS
                 }
                 continue;
             }
-            ++local_6;
+            ++local_6_2;
             FVector local_102 = (local_78 - local_60);
             local_102.Z = 0.0;
             if (local_102.SizeSquared2D() <= 1.0)
@@ -147,8 +140,8 @@ class UEQG_FindCurrentCombatAreaNearestInnerVolumePoint : UEnvQueryGenerator_ECS
                     {
                         continue;
                     }
-                    ++local_6;
-                    if (local_6 > local_8)
+                    ++local_6_2;
+                    if (local_6_2 > local_8)
                     {
                         if (local_123)
                         {

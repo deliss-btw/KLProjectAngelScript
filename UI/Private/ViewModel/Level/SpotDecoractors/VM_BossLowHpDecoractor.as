@@ -1,4 +1,3 @@
-﻿
 namespace FVM_BossLowHpDecoractor
 {
     const int ModelId = 0;
@@ -96,7 +95,7 @@ namespace FVM_BossLowHpDecoractor
 {
 FVM_BossLowHpDecoractor& Create(const UObject ContextObject, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationSpotUsage SpotUsage)
 {
-    return FVM_BossLowHpDecoractor::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot);
+    return FVM_BossLowHpDecoractor::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot, EPresentationSpotUsage(SpotUsage));
 }
 FVM_BossLowHpDecoractor CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationSpotUsage SpotUsage)
 {

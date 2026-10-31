@@ -1,5 +1,3 @@
-﻿
-
 struct FConfigVM_PVX_Match : FConfigEUIModelBase
 {
     UPROPERTY()

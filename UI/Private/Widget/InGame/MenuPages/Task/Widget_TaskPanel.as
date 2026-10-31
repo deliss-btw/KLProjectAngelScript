@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TaskPanel
 {
     const int ViewID = 0;
@@ -190,6 +189,7 @@ namespace UWidget_TaskPanel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TaskPanel;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnTaskListChanged"));
     return;
 }

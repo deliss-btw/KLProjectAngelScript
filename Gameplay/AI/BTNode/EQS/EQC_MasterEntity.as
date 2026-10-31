@@ -1,5 +1,3 @@
-﻿
-
 class UEQC_MasterEntity : UEnvQueryContext_ECS_BlueprintBase
 {
     UEQC_MasterEntity()

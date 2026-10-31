@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommonRewardDialog_Helpers
 {
 UFUNCTION()

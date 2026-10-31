@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_EcosimAIV2ActionExpression : UESMBPBaseInstantAction
 {
     UPROPERTY()

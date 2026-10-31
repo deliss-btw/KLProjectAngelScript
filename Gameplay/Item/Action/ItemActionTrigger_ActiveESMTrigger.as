@@ -1,5 +1,3 @@
-﻿
-
 class UItemActionTrigger_ActiveESMTrigger : UItemActionTriggerBase
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ class UItemActionTrigger_ActiveESMTrigger : UItemActionTriggerBase
     FFPTime ValidateTime = 1.0;
     UPROPERTY()
     int ConsumeKey = 0;
-
 
     void Execute(const FItemActionSource &inout ActionSource) const
     {

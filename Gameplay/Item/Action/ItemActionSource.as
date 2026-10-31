@@ -1,4 +1,3 @@
-﻿
 namespace FItemActionSource
 {
 FItemActionSource InvokeFromInventory(const FEUIModelContext &inout Context, const FM_ItemData &inout ItemData)

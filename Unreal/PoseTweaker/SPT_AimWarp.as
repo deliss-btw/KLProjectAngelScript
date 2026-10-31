@@ -1,5 +1,3 @@
-﻿
-
 class USPT_AimWarp_Base : USkeletalPoseTweaker
 {
     UPROPERTY()
@@ -18,7 +16,6 @@ class USPT_AimWarp_Base : USkeletalPoseTweaker
     FVector AnimTargetCS;
     UPROPERTY()
     bool bWantDebug = false;
-
 
     UFUNCTION()
     void OnInitialization_Implementation()

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TalentEditPageChangeSkill
 {
     const int ModelId = 0;
@@ -89,7 +88,13 @@ struct FVM_TalentEditPageChangeSkill : FEUIViewModel
     }
     void OnSkillItemSelected(const FEUIModelContainer &inout SkillItem)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_7 = this.GetOnSelectTypeAllSkill().IndexOfByKey(TEUIModelRef<FVM_TalentSkillInfoItem>(FEUIModelContainer::GetModel(SkillItem).opCall()));
+        if (local_7 == INDEX_NONE || (local_7 == this.GetCurrentSkillIndex()))
+        {
+            return;
+        }
+        this.SetCurrentSkillIndex(local_7);
+        return;
     }
     const TArray<TEUIModelRef<FVM_TalentSkillInfoItem>> GetOnSelectTypeAllSkill() const property
     {

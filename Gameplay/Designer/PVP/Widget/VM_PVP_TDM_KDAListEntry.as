@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PVP_TDM_KDAListEntry
 {
     const int ModelId = 0;
@@ -196,11 +195,11 @@ struct FVM_PVP_TDM_KDAListEntry : FEUIViewModel
         {
             if (this.GetPlayerIdText().IsEmpty())
             {
-                local_66 = "зЋ©е®¶";
+                local_66 = "玩家";
             }
             else
             {
-                local_66 = FString().Append("зЋ©е®¶ ").Append(this.GetPlayerIdText());
+                local_66 = FString().Append("玩家 ").Append(this.GetPlayerIdText());
             }
             this.SetPlayerDisplayName(local_66);
         }

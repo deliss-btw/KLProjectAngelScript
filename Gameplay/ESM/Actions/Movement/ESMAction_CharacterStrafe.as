@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CharacterStrafe : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ class UESMAction_CharacterStrafe : UESMBPBaseSpanAction
     bool bOverrideMaxTurnSpeed = false;
     UPROPERTY()
     float32 MaxTurnSpeed = 180.0f;
-
 
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const
@@ -23,7 +20,7 @@ class UESMAction_CharacterStrafe : UESMBPBaseSpanAction
         if (local_6)
         {
             local_6.SetStrafeWeightTarget(1.0f);
-            local_6.SetbLimitStrafeTurnSpeed(this.bLimitStrafeTurnSpeed);
+            local_6.SetbLimitStrafeTurnSpeed((this.bLimitStrafeTurnSpeed));
             local_6.SetStrafeMaxTurnSpeed(this.GetMaxTurnSpeed(Context));
         }
         return;

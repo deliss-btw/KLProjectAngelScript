@@ -1,5 +1,3 @@
-﻿
-
 class UESMAnimInstance_Prop_Boltturret : UESMAnimInstance_Prop
 {
     UPROPERTY()

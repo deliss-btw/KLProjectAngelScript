@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_HumanSlopeAdaptation : UESMBPBaseSpanTickAction
 {
     UESMAction_HumanSlopeAdaptation()

@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_MenuManager
 {
     const int ModelId = 0;
@@ -25,11 +24,28 @@ struct FVMS_MenuManager : FEUIViewModelSingleton
 
     FVMS_MenuManager()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_CurrentMenuIndex = INDEX_NONE;
+        this.m_bRefreshMenuBar = false;
+        this.m_CurrentCategoryIndex = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVMS_MenuManager(const FVMS_MenuManager &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_CurrentMenuIndex = INDEX_NONE;
+        this.m_bRefreshMenuBar = false;
+        this.m_CurrentCategoryIndex = INDEX_NONE;
+        this.m_CurrentMenuIndex = int(Other.m_CurrentMenuIndex);
+        this.m_bRefreshMenuBar = Other.m_bRefreshMenuBar;
+        this.m_OpenedMenuPage = Other.m_OpenedMenuPage;
+        this.m_OpenedMenuBarPage = Other.m_OpenedMenuBarPage;
+        this.m_CurrentCategoryIndex = int(Other.m_CurrentCategoryIndex);
+        this.m_MenuBarEntries = Other.m_MenuBarEntries;
+        this.m_MenuEntries = Other.m_MenuEntries;
+        return;
     }
     FVMS_MenuManager& opAssign(const FVMS_MenuManager &inout Other)
     {
@@ -51,7 +67,25 @@ struct FVMS_MenuManager : FEUIViewModelSingleton
     }
     void OnMenuBarItemSelected(const FEUIModelContainer &inout MenuBarItem)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_1 = this.GetMenuBarEntries().IndexOfByKey(MenuBarItem);
+        if (local_1 == INDEX_NONE || (local_1 == this.GetCurrentMenuIndex()))
+        {
+            return;
+        }
+        if (this.GetMenuEntries().IsValidIndex(this.GetCurrentMenuIndex()))
+        {
+            if ((this.GetMenuEntries()[this.GetCurrentMenuIndex()].GetDataName() == n"Settings") && FEUIWidgetRef::GetViewModel(this.GetOpenedMenuPage()).opCall(NAME_None).RequireSwitchMenuPage(this.GetMenuBarEntries()[this.GetCurrentMenuIndex()], this.GetMenuEntries()[local_1].opArrow().GetEntranceWidget()))
+            {
+                this.SetbRefreshMenuBar(!(this.GetbRefreshMenuBar()));
+                return;
+            }
+            this.SetCurrentMenuIndex(local_1);
+            if (this.GetMenuEntries().IsValidIndex(this.GetCurrentMenuIndex()))
+            {
+                FEUIWidgetTag local_12 = this.GetMenuEntries()[this.GetCurrentMenuIndex()].opArrow().GetEntranceWidget();
+            }
+        }
+        return;
     }
     void OnMenuPageOpen(const TDataObjectPtr<FMenuConfig> &inout MenuConfig)
     {
@@ -111,12 +145,48 @@ struct FVMS_MenuManager : FEUIViewModelSingleton
     }
     void UpdateMenuBarEntries(const TDataObjectPtr<FMenuConfig> &inout MenuConfig)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        FGameplayTag local_46;
+        int local_3 = ::MenuSettings::Get().GetBelongingCategoryIndex(MenuConfig);
+        if (local_3 == INDEX_NONE)
+        {
+            this.GetModify_MenuBarEntries().Empty(0);
+            FEUIModelContainer local_20;
+            local_20.AddModel(FEUIModelRef(::FVM_MenuBarItem::Create(this.GetContext().Manager, MenuConfig)), false);
+            local_20.AddModel(FEUIModelRef(::FVM_Text::Create(this.GetContext().Manager, MenuConfig.opArrow().MenuName)), false);
+            this.GetModify_MenuBarEntries().Add(FEUIModelContainer());
+            this.SetCurrentCategoryIndex(INDEX_NONE);
+            this.SetCurrentMenuIndex(INDEX_NONE);
+            return;
+        }
+        if (local_3 == this.GetCurrentCategoryIndex())
+        {
+            return;
+        }
+        this.SetCurrentCategoryIndex(local_3);
+        this.GetModify_MenuEntries().Empty(0);
+        this.GetModify_MenuBarEntries().Empty(0);
+        FMS_SystemControl& local_26 = ::FMS_SystemControl::Get(this.GetManager());
+        for (auto& local_44 : this.GetAllMenuConfigs())
+        {
+            local_44.opArrow().GetEntranceWidget();
+            if (!(local_26.IsWidgetLocked(local_46)))
+            {
+                FEUIModelContainer local_20;
+                local_20.AddModel(FEUIModelRef(::FVM_MenuBarItem::Create(this.GetContext().Manager, local_44)), false);
+                local_20.AddModel(FEUIModelRef(::FVM_Text::Create(this.GetContext().Manager, local_44.opArrow().MenuName)), false);
+                this.GetModify_MenuBarEntries().Add(local_20);
+                this.GetModify_MenuEntries().Add(local_44);
+            }
+        }
+        return;
     }
     TArray<TDataObjectPtr<FMenuConfig>> GetAllMenuConfigs() const property
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        TArray<TDataObjectPtr<FMenuConfig>> __r; return __r;
+        if (this.GetCurrentCategoryIndex() == INDEX_NONE)
+        {
+            return TArray<TDataObjectPtr<FMenuConfig>>();
+        }
+        return ::MenuSettings::Get().MenuCategories[this.GetCurrentCategoryIndex()].MenuConfigs;
     }
     int GetCurrentMenuIndex() const property
     {

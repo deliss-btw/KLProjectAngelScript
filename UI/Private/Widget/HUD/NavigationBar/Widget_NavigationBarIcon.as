@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_NavigationBarIcon
 {
     const int ViewID = 0;
@@ -39,8 +38,8 @@ class UWidget_NavigationBarIcon : UEUIUserWidget
         {
             ::PresentationSpotUtils::GetSpotLocation(this.NavigationBarIcon.opArrow().GetSpot());
             float32 local_21 = local_4.GetFOVAngle();
-            local_4.GetCameraLocation();
-            FRotator local_28 = local_4.GetCameraRotation();
+            FVector local_20 = local_4.GetCameraLocation();
+            local_4.GetCameraRotation();
             local_30 = this.Icon.Slot;
             this.SetIsAtCenter(::UWidget_NavigationBar::UpdateNavigationCanvasSlotAndReturnIfAtCenter(this.IconCanvas, Cast<UCanvasPanelSlot>(local_30)));
         }
@@ -78,6 +77,7 @@ namespace UWidget_NavigationBarIcon
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_NavigationBarIcon;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

@@ -1,4 +1,3 @@
-﻿
 enum EPresentationDisplayConditionRequirement
 {
     Ignore,
@@ -21,7 +20,6 @@ struct FPresentationDisplayRuleBasic
     UPROPERTY()
     float32 MaxDistance = 0.0f;
 
-
     bool opEquals(const FPresentationDisplayRuleBasic &inout Other) const
     {
         bool local_1 = !(this.bEnableDisplay);
@@ -38,7 +36,6 @@ struct FPresentationDisplayCondition
     EPresentationDisplayConditionRequirement PlayerInCombat;
     UPROPERTY()
     EPresentationDisplayConditionRequirement EntityInCombat;
-
 
     bool opEquals(const FPresentationDisplayCondition &inout Other) const
     {
@@ -59,9 +56,7 @@ struct FPresentationDisplayConditionalRule
     }
     bool opEquals(const FPresentationDisplayConditionalRule &inout Other) const
     {
-        FPresentationDisplayCondition local_2;
-        local_2 = this;
-        return ((local_2 == Other.Condition) && (this.Rule == Other.Rule));
+        return ((this.Condition == Other.Condition) && (this.Rule == Other.Rule));
     }
 }
 
@@ -160,7 +155,6 @@ struct FPresentationRuleConfig : FDataObject
     bool bShowHeadsUpDisplay;
     UPROPERTY()
     FDataObjectPtr m_HeadsUpDisplayConfig;
-
 
     const TDataObjectPtr<FMinimapIconConfig> GetMinimapIconSettings() const property
     {

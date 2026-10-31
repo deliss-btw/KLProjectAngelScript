@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ItemOperationList
 {
     const int ModelId = 0;
@@ -171,7 +170,6 @@ struct __GeneratedProperties_FVM_ItemOperationList
     TEUIModelRef<FVM_ItemOperationList> ModelRef;
     UPROPERTY()
     TEUIModelRef<FVM_ItemOperationList> Self;
-
 
 }
 

@@ -1,10 +1,7 @@
-﻿
-
 class UFlowNode_Blank : UFlowNode
 {
     UPROPERTY()
     bool bSuccess = true;
-
 
     UFUNCTION()
     void ExecuteInput_Implementation(const FName &inout PinName)

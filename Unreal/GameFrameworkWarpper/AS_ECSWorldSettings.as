@@ -1,5 +1,3 @@
-﻿
-
 struct FMsg_CurrentLevelInfoConfigChanged : FEUIMessage
 {
     FMsg_CurrentLevelInfoConfigChanged()
@@ -28,7 +26,6 @@ class AAS_ECSWorldSettings : AECSGameWorldSettings
     TArray<AEcologySpawnerECSPrefab> EcologySpawners;
     UPROPERTY()
     TArray<AEcologyResourcePrefab> EcologyResources;
-
 
     void InitLevelInfo()
     {

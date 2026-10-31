@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PlayerMinimapIcon
 {
     const int ModelId = 0;
@@ -109,8 +108,39 @@ struct FVM_PlayerMinimapIcon : FEUIViewModel
     }
     int GetDisplayStyleIndex() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        TEUIModelRef<FM_Spot> local_2 = this.GetSpot();
+        TEUIModelRef<FM_Player> local_4 = ::GetPlayer(local_2.opArrow());
+        if (local_4)
+        {
+            if (local_4.opArrow().IsLocalPlayer())
+            {
+                return 0;
+            }
+            FMS_LocalPlayerTeamData& local_10 = ::FMS_LocalPlayerTeamData::Get(this.GetContext().Manager);
+            if (::FTeamUtils::GetIsInCityTeamState())
+            {
+                if (local_10.IsTeamMember(local_4, ETeamType(1)))
+                {
+                    return 2;
+                }
+                if (local_10.IsTeamMember(local_4, ETeamType(2)))
+                {
+                    return 1;
+                }
+            }
+            else
+            {
+                if (local_10.IsTeamMember(local_4, ETeamType(2)))
+                {
+                    return 1;
+                }
+                if (local_10.IsTeamMember(local_4, ETeamType(1)))
+                {
+                    return 2;
+                }
+            }
+        }
+        return INDEX_NONE;
     }
     void PostConstruct()
     {
@@ -220,7 +250,6 @@ struct __GeneratedProperties_FVM_PlayerMinimapIcon
     int DisplayStyleIndex;
     UPROPERTY()
     TEUIModelRef<FVM_PlayerMinimapIcon> Self;
-
 
 }
 

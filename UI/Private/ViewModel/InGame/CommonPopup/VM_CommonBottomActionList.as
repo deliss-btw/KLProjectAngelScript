@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_CommonBottomActionList
 {
     const int ModelId = 0;
@@ -208,7 +207,6 @@ struct __GeneratedProperties_FVMS_CommonBottomActionList
     bool HasActions4;
     UPROPERTY()
     TEUIModelRef<FVMS_CommonBottomActionList> Self;
-
 
 }
 

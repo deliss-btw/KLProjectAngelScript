@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_CommonLoading_Helpers
 {
 UFUNCTION()

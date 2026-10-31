@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: AMovementExternalRadialForce (default scalar field AECSPrefab.bHasActor has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FT_MovementRadialForce : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -83,7 +78,7 @@ FECSEntity CreateRadialForceEx(const FVector &inout Location, const FC_MovementR
     if (int(Faction) != 0)
     {
         ModifyOrAdd local_18;
-        local_18.opCall().SetFactionId();
+        local_18.opCall().SetFactionId(EFaction(Faction));
     }
     int local_20 = Settings;
     local_20.SetStartSeconds(ECS::GetECSWorld().GetFixedTime().Time);
@@ -116,7 +111,7 @@ FECSEntity CreateBoxForceEx(const FVector &inout Location, const FRotator &inout
     if (int(Faction) != 0)
     {
         ModifyOrAdd local_18;
-        local_18.opCall().SetFactionId();
+        local_18.opCall().SetFactionId(EFaction(Faction));
     }
     int local_20 = Settings;
     local_20.SetStartSeconds(ECS::GetECSWorld().GetFixedTime().Time);

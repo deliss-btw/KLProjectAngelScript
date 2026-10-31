@@ -1,12 +1,9 @@
-﻿
-
 struct FOnCommonComponentSliderSelected : FEUIModelEvent
 {
-    FEUIModelEvent _base_FEUIModelEvent;
+    FEUIModelEvent _base_FEUIModelEvent = FEUIModelEvent("", "float");
 
     FOnCommonComponentSliderSelected()
     {
-        FEUIModelEvent local_22 = FEUIModelEvent("", "float");
         return;
     }
     void Broadcast(const float32 Arg0) const

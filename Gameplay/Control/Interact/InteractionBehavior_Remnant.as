@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class UInteractionBehavior_RemnantPickup : UInteractionBehaviorBase
 {
@@ -22,7 +20,7 @@ class UInteractionBehavior_RemnantPickup : UInteractionBehaviorBase
         {
             if (local_8.GetItems().Num() != 1)
             {
-                XError(ELog(42), FString().Append("жЌЎиµ·е’’з‰©ж—¶пјЊеЊ…еђ«зљ„з‰©е“Ѓз§Ќз±»ж•°й‡ЏдёЌж­ЈзЎ®пјЊжњџжњ›ж•°й‡Џдёє1пјЊе®ћй™…ж•°й‡Џпјљ").Append(local_8.GetItems().Num()));
+                XError(ELog(42), FString().Append("捡起咒物时，包含的物品种类数量不正确，期望数量为1，实际数量：").Append(local_8.GetItems().Num()));
             }
             if (local_8.GetItems().Num() > 0)
             {
@@ -51,7 +49,7 @@ class UInteractionBehavior_RemnantPickup : UInteractionBehaviorBase
                     InteractTarget.DestroyDeferred();
                     return;
                 }
-                XError(ELog(42), FString().Append("жЌЎиµ·е’’з‰©ж—¶пјЊItemConfigз±»ећ‹й”™иЇЇ"));
+                XError(ELog(42), FString().Append("捡起咒物时，ItemConfig类型错误"));
             }
         }
         return;

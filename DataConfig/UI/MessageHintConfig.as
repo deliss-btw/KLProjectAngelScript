@@ -1,10 +1,8 @@
-﻿
 enum EImportantTipsStyle
 {
     Red,
     Blue,
 }
-
 
 struct FMessageHintConfig : FDataObject
 {
@@ -13,7 +11,6 @@ struct FMessageHintConfig : FDataObject
     FGameplayTag HintType;
     UPROPERTY()
     int Priority;
-
 
 }
 
@@ -29,7 +26,6 @@ struct FMessageHintConfig_SimpleTips : FMessageHintConfig
 
     FMessageHintConfig_SimpleTips()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -49,7 +45,6 @@ struct FMessageHintConfig_Dialog : FMessageHintConfig
 
     FMessageHintConfig_Dialog()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -71,7 +66,6 @@ struct FMessageHintConfig_LargeHint : FMessageHintConfig
 
     FMessageHintConfig_LargeHint()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -91,7 +85,6 @@ struct FMessageHintConfig_SmallHint : FMessageHintConfig
 
     FMessageHintConfig_SmallHint()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -117,7 +110,6 @@ struct FMessageHintConfig_Banner : FMessageHintConfig
 
     FMessageHintConfig_Banner()
     {
-        super();
         this.BGType = EBannerBGType(0);
         this.SpecialWidgetType = EBannerWidgetType(0);
         this.__InitDefaults();
@@ -141,7 +133,6 @@ struct FMessageHintConfig_Banner_MissionChapter : FMessageHintConfig
 
     FMessageHintConfig_Banner_MissionChapter()
     {
-        super();
         this.bEnd = false;
         this.__InitDefaults();
         return;
@@ -162,7 +153,6 @@ struct FMessageHintConfig_NewsTicker : FMessageHintConfig
 
     FMessageHintConfig_NewsTicker()
     {
-        super();
         this.RepeatCount = 1;
         this.__InitDefaults();
         return;
@@ -177,7 +167,6 @@ struct FMessageHintConfig_WeakTips : FMessageHintConfig_SimpleTips
 
     FMessageHintConfig_WeakTips()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -193,7 +182,6 @@ struct FMessageHintConfig_ImportantTips : FMessageHintConfig_SimpleTips
 
     FMessageHintConfig_ImportantTips()
     {
-        super();
         this.Style = EImportantTipsStyle(0);
         this.__InitDefaults();
         return;

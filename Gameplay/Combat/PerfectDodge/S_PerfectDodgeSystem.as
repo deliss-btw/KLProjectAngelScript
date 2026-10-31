@@ -1,5 +1,3 @@
-﻿
-
 class US_PerfectDodgeSystem : UECSScriptSystem
 {
     US_PerfectDodgeSystem()

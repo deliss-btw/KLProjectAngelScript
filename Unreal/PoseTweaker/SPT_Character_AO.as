@@ -1,12 +1,9 @@
-﻿
-
 struct FCharacter_AO_DebugDrawSetting
 {
     UPROPERTY()
     bool bDrawAnimTarget = false;
     UPROPERTY()
     bool bDrawCurrentTarget = false;
-
 
 }
 
@@ -71,7 +68,6 @@ class USPT_Character_AO_Template : USkeletalPoseTweaker
     FTransform RightShoulderOffset;
     FRotator AimRotationOffset;
     FVector CurrentTargetLocation;
-
 
     UFUNCTION()
     void OnInitialization_Implementation()
@@ -149,7 +145,31 @@ class USPT_Character_AO_Template : USkeletalPoseTweaker
     }
     void AdjustArm()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        if (this.bEnableAdjustLeftArm)
+        {
+            FVector local_8((this.SpineOffset * this.Spine03.GetTransform()).GetLocation());
+            FVector local_92(this.Shoulder_L.GetLocation());
+            FTransform local_32 = this.RotateBoneWithOffsetQuat(this.Shoulder_L, FQuat::FindBetween((local_8 - local_92), (this.CurrentTargetLocation - local_92)).Rotator(), this.MinPitch, this.MaxPitch, -15.0f, 20.0f, this.MinYaw, this.MaxYaw, -10.0f, 10.0f);
+            FTransform local_140 = (this.LeftShoulderOffset * local_32);
+            FVector local_160(local_140.GetLocation());
+            FVector local_166(this.UpArm_L.GetLocation());
+            FVector local_86 = (this.CurrentTargetLocation - local_166);
+            FVector local_106 = (local_160 - local_166);
+            FTransform local_80_2 = this.RotateBoneWithOffsetQuat(this.UpArm_L, FQuat::FindBetween(local_106, local_86).Rotator(), this.MinPitch, this.MaxPitch, -90.0f, 90.0f, this.MinYaw, this.MaxYaw, -90.0f, 90.0f);
+        }
+        if (this.bEnableAdjustRightArm)
+        {
+            FTransform local_80_3 = (this.SpineOffset * this.Spine03.GetTransform());
+            FVector local_8_2(local_80_3.GetLocation());
+            FVector local_92_2(this.Shoulder_R.GetLocation());
+            FTransform local_140_2 = this.RotateBoneWithOffsetQuat(this.Shoulder_R, FQuat::FindBetween((local_8_2 - local_92_2), (this.CurrentTargetLocation - local_92_2)).Rotator(), this.MinPitch, this.MaxPitch, -15.0f, 20.0f, this.MinYaw, this.MaxYaw, -10.0f, 10.0f);
+            FVector local_166_2((this.RightShoulderOffset * local_140_2).GetLocation());
+            FVector local_160_2(this.UpArm_R.GetLocation());
+            FVector local_106_2 = (this.CurrentTargetLocation - local_160_2);
+            FVector local_86_2 = (local_166_2 - local_160_2);
+            FTransform local_32_2 = this.RotateBoneWithOffsetQuat(this.UpArm_R, FQuat::FindBetween(local_86_2, local_106_2).Rotator(), this.MinPitch, this.MaxPitch, -90.0f, 90.0f, this.MinYaw, this.MaxYaw, -90.0f, 90.0f);
+        }
+        return;
     }
     FTransform RotateBoneWithOffsetQuat(FPT_BoneRef &inout Bone, const FRotator &inout OffsetRotation, const float32 _MinPitch, const float32 _MaxPitch, const float32 _LimitMinPitch, const float32 _LimitMaxPitch, const float32 _MinYaw, const float32 _MaxYaw, const float32 _LimitMinYaw, const float32 _LimitMaxYaw)
     {

@@ -1,5 +1,3 @@
-﻿
-
 struct FEventToESMTriggerFilterConfigItem_DeathEvent : FEventToESMTriggerFilterConfigItemBase
 {
     FEventToESMTriggerFilterConfigItemBase _base_FEventToESMTriggerFilterConfigItemBase;
@@ -8,7 +6,6 @@ struct FEventToESMTriggerFilterConfigItem_DeathEvent : FEventToESMTriggerFilterC
 
     FEventToESMTriggerFilterConfigItem_DeathEvent()
     {
-        super();
         return;
     }
     bool EvaluateAndTrigger(const FCE_DeathEvent &inout Event, const FECSEntity &inout Entity) const

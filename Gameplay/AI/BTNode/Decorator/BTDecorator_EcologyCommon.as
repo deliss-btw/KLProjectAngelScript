@@ -1,5 +1,3 @@
-﻿
-
 class UBTDecorator_CheckTargetFlockState : UBTDecorator_ECSScriptBase
 {
     UPROPERTY()

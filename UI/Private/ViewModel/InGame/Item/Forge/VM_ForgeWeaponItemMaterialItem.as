@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ForgeWeaponItemMaterialItem
 {
     const int ModelId = 0;
@@ -72,9 +71,9 @@ struct FVM_ForgeWeaponItemMaterialItem : FEUIViewModel
     }
     FSlateColor GetInventoryTextColor() const
     {
-        const UUtilitySettings local_2;
+        const UUtilitySettings local_6;
         GetGameplaySettings<UUtilitySettings> local_4;
-        local_2 = local_4;
+        local_6 = local_4;
         TEUIModelRef<FM_ItemData> local_8 = this.GetInventoryItemData();
         if (GetNum() < this.GetCostNum())
         {
@@ -183,7 +182,6 @@ struct __GeneratedProperties_FVM_ForgeWeaponItemMaterialItem
     FEUIModelContainer HoverModels;
     UPROPERTY()
     TEUIModelRef<FVM_ForgeWeaponItemMaterialItem> Self;
-
 
 }
 

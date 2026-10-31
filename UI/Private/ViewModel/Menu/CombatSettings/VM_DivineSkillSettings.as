@@ -1,4 +1,3 @@
-﻿
 namespace FVM_DivineSkillSettings
 {
     const int ModelId = 0;
@@ -38,11 +37,35 @@ struct FVM_DivineSkillSettings : FEUIViewModel
 
     FVM_DivineSkillSettings()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_NotSuitTintColor = FLinearColor::DPink;
+        this.m_SelectedCategoryIndex = INDEX_NONE;
+        this.m_bShouldClosePage = false;
+        this.m_bPendingSelectEditingDivineSkill = false;
+        this.m_bCanChangeToSelectedEquipableSkill = true;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVM_DivineSkillSettings(const FVM_DivineSkillSettings &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_NotSuitTintColor = FLinearColor::DPink;
+        this.m_SelectedCategoryIndex = INDEX_NONE;
+        this.m_bShouldClosePage = false;
+        this.m_bPendingSelectEditingDivineSkill = false;
+        this.m_bCanChangeToSelectedEquipableSkill = true;
+        this.m_NotSuitTintColor = Other.m_NotSuitTintColor;
+        this.m_EquipableSkillCategories = Other.m_EquipableSkillCategories;
+        this.m_EquipableSkills = Other.m_EquipableSkills;
+        this.m_EquipableSkillTypes = Other.m_EquipableSkillTypes;
+        this.m_SelectedCategoryIndex = int(Other.m_SelectedCategoryIndex);
+        this.m_SelectedEquipableSkill = Other.m_SelectedEquipableSkill;
+        this.m_AvatarShowcase = Other.m_AvatarShowcase;
+        this.m_bShouldClosePage = Other.m_bShouldClosePage;
+        this.m_bPendingSelectEditingDivineSkill = Other.m_bPendingSelectEditingDivineSkill;
+        this.m_bCanChangeToSelectedEquipableSkill = Other.m_bCanChangeToSelectedEquipableSkill;
+        return;
     }
     FVM_DivineSkillSettings opAssign(const FVM_DivineSkillSettings &inout Other)
     {
@@ -69,8 +92,7 @@ struct FVM_DivineSkillSettings : FEUIViewModel
         TDataObjectIterator<FDivineSkillTypeConfig> local_16;
         for (; local_16; )
         {
-            TDataObjectPtr<FDivineSkillTypeConfig> local_58;
-            this.GetModify_EquipableSkillTypes().Add(local_58);
+            this.GetModify_EquipableSkillTypes().Add(TDataObjectPtr<FDivineSkillTypeConfig>(local_16.GetData()));
             local_16.Next();
         }
         this.UpdateDivineSkillCategories();
@@ -89,8 +111,7 @@ struct FVM_DivineSkillSettings : FEUIViewModel
         TDataObjectIterator<FDivineSkillConfig> local_18;
         for (; local_18; )
         {
-            TDataObjectPtr<FDivineSkillConfig> local_60;
-            bool local_35 = ::FMS_DivineSkillData::Get(this.GetContext().Manager).IsUnlocked(local_60);
+            bool local_35 = ::FMS_DivineSkillData::Get(this.GetContext().Manager).IsUnlocked(TDataObjectPtr<FDivineSkillConfig>(local_18.GetData()));
             if (local_35)
             {
                 int64 local_64 = local_18.GetData().DataId;
@@ -185,7 +206,7 @@ struct FVM_DivineSkillSettings : FEUIViewModel
             if (::FASCommonUtils::IsInCombat(this.GetContext().GetLocalPlayerPawn()))
             {
                 FCommonTipsParam local_16;
-                ::CommonPopup::WeakTips(NSLOCTEXT("CannotChangeEquipableSkillInCombat", "ж€ж–—дё­ж— жі•ж›ґжЌўзҐћж јжЉЂ"), local_16);
+                ::CommonPopup::WeakTips(NSLOCTEXT("CannotChangeEquipableSkillInCombat", "战斗中无法更换神格技"), local_16);
                 return;
             }
             FMS_PvpModeState& local_18 = ::FMS_PvpModeState::Get(this.GetContext().Manager);
@@ -200,13 +221,39 @@ struct FVM_DivineSkillSettings : FEUIViewModel
     }
     void OnSelectedCategoryIndexChanged()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.GetModify_EquipableSkills().Empty(0);
+        if (this.GetSelectedCategoryIndex() == INDEX_NONE)
+        {
+            this.AddEquipableSkillsByType(TDataObjectPtr<FDivineSkillTypeConfig>(nullptr));
+        }
+        else
+        {
+            if (this.GetEquipableSkillTypes().IsValidIndex(this.GetSelectedCategoryIndex()))
+            {
+                this.AddEquipableSkillsByType(this.GetEquipableSkillTypes()[this.GetSelectedCategoryIndex()]);
+            }
+        }
+        if (this.GetEquipableSkills().IsEmpty())
+        {
+            this.SetSelectedEquipableSkill(TEUIModelRef<FVM_DivineSkillInfo>());
+            return;
+        }
+        bool local_33 = false;
+        if (this.GetbPendingSelectEditingDivineSkill())
+        {
+            local_33 = this.SelectEditingDivineSkillInternal();
+        }
+        if (!(local_33))
+        {
+            this.SetSelectedEquipableSkill(this.GetEquipableSkills()[0]);
+        }
+        return;
     }
     void OnCombatSettingPresetUpdated(const FMsg_CombatSettingPresetUpdated &inout Msg)
     {
         this.UpdateCanChangeToSelectedEquipableSkill();
         FCommonTipsParam local_8;
-        ::CommonPopup::Tips(NSLOCTEXT("EquipableSkillChanged", "иЈ…й…Ќж€ђеЉџ"), local_8);
+        ::CommonPopup::Tips(NSLOCTEXT("EquipableSkillChanged", "装配成功"), local_8);
         this.SetbShouldClosePage(true);
         return;
     }
@@ -217,26 +264,24 @@ struct FVM_DivineSkillSettings : FEUIViewModel
         GetGameplaySettings<UUtilitySettings> local_6;
         local_4 = local_6;
         FEUIModelContainer local_22;
-        FEUIModelRef local_26;
-        local_22.AddModel(local_26, false);
-        local_22.AddModel(local_26, false);
+        local_22.AddModel(FEUIModelRef(::FVM_Index::Create(this.GetContext().Manager, INDEX_NONE)), false);
+        local_22.AddModel(FEUIModelRef(::FVM_Image::Create(this.GetContext().Manager, local_4.CommonCategoryAllIcon)), false);
         FVM_CommonTabItem& local_28 = ::FVM_CommonTabItem::Create(this.GetContext().Manager);
-        local_28.SetTitleText(NSLOCTEXT("DivineSkillCategoryAll", "е…ЁйѓЁ"));
-        local_26 = FEUIModelRef(local_28);
-        local_22.AddModel(local_26, false);
+        local_28.SetTitleText(NSLOCTEXT("DivineSkillCategoryAll", "全部"));
+        local_22.AddModel(FEUIModelRef(local_28), false);
         this.GetModify_EquipableSkillCategories().Add(local_22);
         int local_33 = 0;
         for (; local_33 < this.GetEquipableSkillTypes().Num(); )
         {
             const TDataObjectPtr<FDivineSkillTypeConfig>& local_36 = this.GetEquipableSkillTypes()[local_33];
             FEUIModelContainer local_50;
-            local_50.AddModel(local_26, false);
+            local_50.AddModel(FEUIModelRef(::FVM_Index::Create(this.GetContext().Manager, local_33)), false);
             FSoftBrush local_96 = FSoftBrush(local_36.opArrow().TypeIcon);
             if (!(::DivineSkillUtils::SuitForPlayerCurrentAvatars(local_36, this.GetContext().GetLocalPlayer())))
             {
                 local_96.TintColor = FSlateColor(this.GetNotSuitTintColor());
             }
-            local_50.AddModel(local_26, false);
+            local_50.AddModel(FEUIModelRef(::FVM_Image::Create(this.GetContext().Manager, local_96)), false);
             FVM_CommonTabItem& local_108 = ::FVM_CommonTabItem::Create(this.GetContext().Manager);
             local_108.SetTitleText(local_36.opArrow().TypeName);
             local_50.AddModel(FEUIModelRef(local_108), false);
@@ -247,7 +292,6 @@ struct FVM_DivineSkillSettings : FEUIViewModel
     }
     void AddEquipableSkillsByType(const TDataObjectPtr<FDivineSkillTypeConfig> &inout EquipableSkillType)
     {
-        TDataObjectPtr<FDivineSkillConfig> local_56;
         FMS_DivineSkillData& local_2 = ::FMS_DivineSkillData::Get(this.GetContext().Manager);
         TDataObjectPtr<FDivineSkillConfig> local_26;
         TEUIModelRef<FM_DivineSkill> local_28 = local_2.GetEditingDivineSkill();
@@ -259,12 +303,12 @@ struct FVM_DivineSkillSettings : FEUIViewModel
         TDataObjectIterator<FDivineSkillConfig> local_76;
         for (; local_76; )
         {
-            if (!(local_2.IsUnlocked(local_56)))
+            if (!(local_2.IsUnlocked(TDataObjectPtr<FDivineSkillConfig>(local_76.GetData()))))
             {
             }
             else
             {
-                bool local_31 = this.IsAnyUpgradeSkillUnlocked(local_56);
+                bool local_31 = this.IsAnyUpgradeSkillUnlocked(TDataObjectPtr<FDivineSkillConfig>(local_76.GetData()));
                 if (local_31)
                 {
                 }
@@ -302,7 +346,7 @@ struct FVM_DivineSkillSettings : FEUIViewModel
                         }
                         if (local_31)
                         {
-                            local_60.Add(local_2.GetLocalPlayerDivineSkillModel(local_56));
+                            local_60.Add(local_2.GetLocalPlayerDivineSkillModel(TDataObjectPtr<FDivineSkillConfig>(local_94)));
                         }
                     }
                 }
@@ -405,7 +449,7 @@ struct FVM_DivineSkillSettings : FEUIViewModel
     TEUIModelRef<FVM_EquipHoverTips> GetHoverTips()
     {
         FVM_EquipHoverTips& local_2 = ::FVM_EquipHoverTips::Create(this.GetContext().Manager);
-        local_2.SetDisplayName(NSLOCTEXT("DivineSkillDescTitle", "зҐћж јиЇґжЋ"));
+        local_2.SetDisplayName(NSLOCTEXT("DivineSkillDescTitle", "神格说明"));
         local_2.SetEquipLevel(0);
         local_2.SetbIsShowLevel(false);
         local_2.SetClickModelRef(FEUIModelRef(this));
@@ -624,7 +668,6 @@ struct __GeneratedProperties_FVM_DivineSkillSettings
     bool CanSelectNextCategory;
     UPROPERTY()
     TEUIModelRef<FVM_DivineSkillSettings> Self;
-
 
 }
 

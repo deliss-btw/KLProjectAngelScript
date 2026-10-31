@@ -1,5 +1,3 @@
-﻿
-
 struct FRichTextKeyHintData : FDataObject
 {
     FDataObject _base_FDataObject;

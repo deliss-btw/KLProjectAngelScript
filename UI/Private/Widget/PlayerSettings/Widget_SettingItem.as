@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_SettingSubTitle
 {
     const int ViewID = 0;
@@ -52,7 +51,6 @@ class UWidget_SettingItem : UEUIActivatableWidget
     FEUIModelWeakRef __Item;
     UPROPERTY()
     FGetEUIModelRef ItemDelegate;
-
 
     UFUNCTION()
     void Destruct_Implementation()
@@ -153,8 +151,9 @@ class UWidget_SettingItem : UEUIActivatableWidget
         local_6.BindUFunction(this, n"HandleRequireSaveItemAnswer");
         FCommonDialogParam local_10;
         local_10.bIsForbidIgnored = false;
-        NSLOCTEXT("PlayerSettings", "RequireSaveItemTitle", "жЏђз¤є");
-        ULocalPlayer local_50 = this.GetOwningLocalPlayer();
+        FDialogCallback local_44 = FDialogCallback(local_6);
+        FText local_48 = NSLOCTEXT("PlayerSettings", "RequireSaveItemTitle", "提示");
+        ::CommonPopup_Internal::OpenDialogForLocalPlayer(this.GetOwningLocalPlayer(), local_48, this.RequireSaveItemTitle, this.RequireSaveItemOptions, local_44, local_10);
         return;
     }
     UFUNCTION()
@@ -162,7 +161,7 @@ class UWidget_SettingItem : UEUIActivatableWidget
     {
         if (int(Answer.AnswerType) == 0)
         {
-            int(GetPreviousValue()).InitializeApplyValue(0.0f);
+            GetPreviousValue().InitializeApplyValue(0.0f);
         }
         else
         {
@@ -355,6 +354,7 @@ namespace UWidget_SettingSubTitle
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SettingSubTitle;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -370,6 +370,7 @@ namespace UWidget_SettingItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SettingItem;
     Result.ObservedModelChangesSubscriberNames.Add(FString("ApplyDisplayAndGraphicOptions"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("RequireSaveItem"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnComponentWidgetDataChanged"));

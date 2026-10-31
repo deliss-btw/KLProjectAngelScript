@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_GameMode
 {
     const int ModelId = 0;
@@ -82,7 +81,6 @@ struct __GeneratedProperties_FVMS_GameMode
     ESlateVisibility VisibleInPVPGame;
     UPROPERTY()
     TEUIModelRef<FVMS_GameMode> Self;
-
 
 }
 

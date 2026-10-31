@@ -1,5 +1,3 @@
-﻿
-
 struct FLevelGroupLoadingPassConfig : FDataObject
 {
     FDataObject _base_FDataObject;

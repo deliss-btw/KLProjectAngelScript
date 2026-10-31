@@ -1,5 +1,3 @@
-﻿
-
 struct FForeign_TestCheckEntityHasComponent : FScriptForeignAutoBinder
 {
     FScriptForeignAutoBinder _base_FScriptForeignAutoBinder;

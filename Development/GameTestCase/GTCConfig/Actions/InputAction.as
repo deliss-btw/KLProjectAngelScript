@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FGTCInputAction (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FSimulatedInput
 {
     UPROPERTY()
@@ -12,11 +7,10 @@ struct FSimulatedInput
     UPROPERTY()
     float32 TimeOffset = 0.0f;
 
-
     FInputData GetCopyData(const FFPTime &inout Time)
     {
         FInputData local_10;
-        local_10.Name = this;
+        local_10.Name = this.Name;
         local_10.Value = this.Value;
         local_10.Time = Time;
         return local_10;

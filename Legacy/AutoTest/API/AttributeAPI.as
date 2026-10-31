@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::API::AttributeAPI
 {
 float32 GetAttrValue(const uint EntityId, const FName &inout AttributeName)

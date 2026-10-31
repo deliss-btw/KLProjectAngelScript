@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonComponentDropDown
 {
     const int ModelId = 0;
@@ -60,16 +59,35 @@ struct FVM_CommonComponentDropDown : FEUIViewModel
     }
     void PostConstruct()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (this.GetOptionTexts().IsEmpty())
+        {
+            TArray<FText> local_6;
+            local_6.Add(FText::FromString("Default"));
+            this.SetOptionTexts(local_6);
+        }
+        if (this.GetDefaultIndex() == INDEX_NONE || (this.GetDefaultIndex() >= this.GetOptionTexts().Num()))
+        {
+            this.SetDefaultIndex(0);
+        }
+        TArray<FEUIModelContainer> local_18;
+        for (auto& local_32 : this.GetOptionTexts())
+        {
+            local_18.Add(FEUIModelContainer(::FVM_Text::Create(this.GetManager(), local_32)));
+        }
+        FOnCommonDropdownSelected local_70;
+        local_70.Add(this, FVM_CommonComponentDropDown::OnInnerDropdownSelected);
+        this.SetCommonDropdownVM(TEUIModelRef<FVM_CommonDropdown>(::FVM_CommonDropdown::Create(this.GetContext().Manager, local_18, FCommonDropdownDefaultOption(this.GetDefaultIndex()), local_70)));
+        bool local_13 = false;
+        TEUIModelRef<FVM_CommonDropdown> local_76 = this.GetCommonDropdownVM();
+        local_13.SetbWithIcon();
+        return;
     }
     void OnOptionTextsChanged()
     {
         TArray<FEUIModelContainer> local_4;
         for (auto& local_20 : this.GetOptionTexts())
         {
-            local_20;
-            UEUIManagerSubsystem local_22 = this.GetManager();
-            local_4.Add(FEUIModelContainer());
+            local_4.Add(FEUIModelContainer(::FVM_Text::Create(this.GetManager(), local_20)));
         }
         TEUIModelRef<FVM_CommonDropdown> local_40 = this.GetCommonDropdownVM();
         local_4.SetOptionDatas();

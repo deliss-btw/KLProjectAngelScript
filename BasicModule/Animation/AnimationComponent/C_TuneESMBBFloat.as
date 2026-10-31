@@ -1,4 +1,3 @@
-﻿
 enum ETuneFloatOptions
 {
     LockValue,
@@ -61,11 +60,51 @@ struct FTuneFloatConfig
 
     FTuneFloatConfig()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bUseBlendInDuration = false;
+        this.m_BlendInDuration = 0.0f;
+        this.m_bUseBlendOutDuration = false;
+        this.m_BlendOutDuration = 0.0f;
+        this.m_SmoothTime = 0.1f;
+        this.m_bClampMin = false;
+        this.m_MinValue = 0.0f;
+        this.m_bClampMax = false;
+        this.m_MaxValue = 0.0f;
+        this.m_Options = false;
+        this.m_bUseSnapDeltaThreshold = false;
+        this.m_SnapDeltaThreshold = -1.0f;
+        return;
     }
     FTuneFloatConfig(const FTuneFloatConfig &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags16 local_5;
+        this.__DirtyFlags = local_5;
+        this.m_bUseBlendInDuration = false;
+        this.m_BlendInDuration = 0.0f;
+        this.m_bUseBlendOutDuration = false;
+        this.m_BlendOutDuration = 0.0f;
+        this.m_SmoothTime = 0.1f;
+        this.m_bClampMin = false;
+        this.m_MinValue = 0.0f;
+        this.m_bClampMax = false;
+        this.m_MaxValue = 0.0f;
+        this.m_Options = false;
+        this.m_bUseSnapDeltaThreshold = false;
+        this.m_SnapDeltaThreshold = -1.0f;
+        this.m_bUseBlendInDuration = Other.m_bUseBlendInDuration;
+        this.m_BlendInDuration = Other.m_BlendInDuration;
+        this.m_bUseBlendOutDuration = Other.m_bUseBlendOutDuration;
+        this.m_BlendOutDuration = Other.m_BlendOutDuration;
+        this.m_SmoothTime = Other.m_SmoothTime;
+        this.m_bClampMin = Other.m_bClampMin;
+        this.m_MinValue = Other.m_MinValue;
+        this.m_bClampMax = Other.m_bClampMax;
+        this.m_MaxValue = Other.m_MaxValue;
+        this.m_Options = (int(Other.m_Options) != 0);
+        this.m_bUseSnapDeltaThreshold = Other.m_bUseSnapDeltaThreshold;
+        this.m_SnapDeltaThreshold = Other.m_SnapDeltaThreshold;
+        return;
     }
     FTuneFloatConfig opAssign(const FTuneFloatConfig &inout Other)
     {
@@ -292,11 +331,32 @@ struct FTuneFloatData
 
     FTuneFloatData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_TunedValue = 0.0f;
+        this.m_SmoothVelocity = 0.0f;
+        this.m_BlendAlpha = 1.0f;
+        this.m_SpanElapsed = 0.0f;
+        this.m_SpanDuration = 0.0f;
+        return;
     }
     FTuneFloatData(const FTuneFloatData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_TunedValue = 0.0f;
+        this.m_SmoothVelocity = 0.0f;
+        this.m_BlendAlpha = 1.0f;
+        this.m_SpanElapsed = 0.0f;
+        this.m_SpanDuration = 0.0f;
+        this.m_Config = Other.m_Config;
+        this.m_TunedValue = Other.m_TunedValue;
+        this.m_SmoothVelocity = Other.m_SmoothVelocity;
+        this.m_ConfigStack = Other.m_ConfigStack;
+        this.m_BlendAlpha = Other.m_BlendAlpha;
+        this.m_SpanElapsed = Other.m_SpanElapsed;
+        this.m_SpanDuration = Other.m_SpanDuration;
+        return;
     }
     FTuneFloatData opAssign(const FTuneFloatData &inout Other)
     {
@@ -438,11 +498,15 @@ struct FC_TuneESMBBFloat : FECSComponent
 
     FC_TuneESMBBFloat()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_TuneESMBBFloat(const FC_TuneESMBBFloat &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_DataMap = Other.m_DataMap;
         return;
@@ -493,7 +557,7 @@ struct FC_TuneESMBBFloat : FECSComponent
         {
             return false;
         }
-        return this.GetDataMap()[ParamName].GetConfig().HasOption();
+        return this.GetDataMap()[ParamName].GetConfig().HasOption(ETuneFloatOptions(Option));
     }
     float32 TunedRelativeDesiredRotationYaw() const
     {
@@ -557,11 +621,29 @@ struct FC_TuneESMBBFloatValue : FECSComponent
 
     FC_TuneESMBBFloatValue()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_TunedRelativeDesiredRotationYaw = 0.0f;
+        this.m_TunedRelativeDesiredRotationYaw360 = 0.0f;
+        this.m_TunedRelativeDesiredViewRotationYaw = 0.0f;
+        this.m_TunedRelativeToLockTargetYaw = 0.0f;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_TuneESMBBFloatValue(const FC_TuneESMBBFloatValue &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_TunedRelativeDesiredRotationYaw = 0.0f;
+        this.m_TunedRelativeDesiredRotationYaw360 = 0.0f;
+        this.m_TunedRelativeDesiredViewRotationYaw = 0.0f;
+        this.m_TunedRelativeToLockTargetYaw = 0.0f;
+        this.__InitDirtyFlags();
+        this.m_TunedRelativeDesiredRotationYaw = Other.m_TunedRelativeDesiredRotationYaw;
+        this.m_TunedRelativeDesiredRotationYaw360 = Other.m_TunedRelativeDesiredRotationYaw360;
+        this.m_TunedRelativeDesiredViewRotationYaw = Other.m_TunedRelativeDesiredViewRotationYaw;
+        this.m_TunedRelativeToLockTargetYaw = Other.m_TunedRelativeToLockTargetYaw;
+        return;
     }
     FC_TuneESMBBFloatValue opAssign(const FC_TuneESMBBFloatValue &inout Other)
     {
@@ -770,37 +852,37 @@ bool RemoveTuneESMBBFloat(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTuneESMBBFloatOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TuneESMBBFloat, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TuneESMBBFloat, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTuneESMBBFloatOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TuneESMBBFloat, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TuneESMBBFloat, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTuneESMBBFloatOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TuneESMBBFloat, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TuneESMBBFloat, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTuneESMBBFloatOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TuneESMBBFloat, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TuneESMBBFloat, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTuneESMBBFloatOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TuneESMBBFloat, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TuneESMBBFloat, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTuneESMBBFloatLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TuneESMBBFloat, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TuneESMBBFloat, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTuneESMBBFloatActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TuneESMBBFloat, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TuneESMBBFloat, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTuneESMBBFloatModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TuneESMBBFloat, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TuneESMBBFloat, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_TuneESMBBFloatValue
@@ -880,37 +962,37 @@ bool RemoveTuneESMBBFloatValue(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorTuneESMBBFloatValueOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_TuneESMBBFloatValue, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_TuneESMBBFloatValue, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTuneESMBBFloatValueOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_TuneESMBBFloatValue, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_TuneESMBBFloatValue, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTuneESMBBFloatValueOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_TuneESMBBFloatValue, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_TuneESMBBFloatValue, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTuneESMBBFloatValueOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_TuneESMBBFloatValue, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_TuneESMBBFloatValue, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorTuneESMBBFloatValueOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_TuneESMBBFloatValue, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_TuneESMBBFloatValue, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorTuneESMBBFloatValueLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_TuneESMBBFloatValue, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_TuneESMBBFloatValue, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTuneESMBBFloatValueActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_TuneESMBBFloatValue, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_TuneESMBBFloatValue, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTuneESMBBFloatValueModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_TuneESMBBFloatValue, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_TuneESMBBFloatValue, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace EntityBB

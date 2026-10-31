@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_AttributeDisplayExtend_Helpers
 {
 UFUNCTION()

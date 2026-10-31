@@ -1,11 +1,9 @@
-﻿
 enum EAttributeShowType
 {
     Hide,
     InSide,
     AlwaysShow,
 }
-
 
 struct FAttributeConfig : FDataObject
 {
@@ -26,7 +24,6 @@ struct FAttributeConfig : FDataObject
     EAttributeShowType ShowType = EAttributeShowType(0);
     UPROPERTY()
     FAttributePresentation Presentation;
-
 
 }
 

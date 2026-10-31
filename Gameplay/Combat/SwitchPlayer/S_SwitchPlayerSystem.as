@@ -1,5 +1,3 @@
-﻿
-
 class US_SwitchPlayerSystem : UECSScriptSystem
 {
     UPROPERTY()
@@ -16,7 +14,6 @@ class US_SwitchPlayerSystem : UECSScriptSystem
     FName InactiveStateName = n"Inactive";
     UPROPERTY()
     UAkAudioEvent SwithOffVOEvent;
-
 
     bool CanSwitch() const
     {

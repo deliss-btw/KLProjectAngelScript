@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TauntHintPointer
 {
     const int ViewID = 0;
@@ -13,7 +12,6 @@ class UWidget_TauntHintPointer : UEUIUserWidget
     bool bFirstFrame = true;
     UPROPERTY()
     FGetEUIModelRef TauntHintPointerDelegate;
-
 
     UFUNCTION()
     void Construct_Implementation()
@@ -90,6 +88,7 @@ namespace UWidget_TauntHintPointer
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TauntHintPointer;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

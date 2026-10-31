@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_ForceDetachSocialInteractTarget : UESMBPBaseInstantAction
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ class UESMAction_ForceDetachSocialInteractTarget : UESMBPBaseInstantAction
     bool bCheckSpecificTarget = false;
     UPROPERTY()
     FDataObjectPtr AttackDataConfigWhileDetatch;
-
 
     UFUNCTION()
     void Do_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const

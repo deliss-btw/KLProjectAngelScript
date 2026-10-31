@@ -1,12 +1,9 @@
-﻿
-
 class UESMAction_SkillConsumeResourse : UESMBPBaseInstantAction
 {
     UPROPERTY()
     bool bAutoFillSkill = true;
     UPROPERTY()
     USkillConfig SkillConfig;
-
 
     UFUNCTION()
     void Do_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
@@ -44,11 +41,42 @@ class UESMAction_AbilityConsumeItem : UESMBPBaseInstantAction
     UPROPERTY()
     int ConsumeNumberOverride = 1;
 
-
     UFUNCTION()
     void Do_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_10 = 0;
+        if (!(Context.GetECSRuntime().IsServer))
+        {
+            return;
+        }
+        if (this.SkillConfig == nullptr)
+        {
+            return;
+        }
+        if (!(local_10))
+        {
+            return;
+        }
+        int local_12 = local_10.IndexOfSkill(this.SkillConfig);
+        int local_11 = INDEX_NONE;
+        if (local_12 == local_11)
+        {
+            return;
+        }
+        const FC_SkillInstance& local_14 = local_10.GetSkillInstance(local_12);
+        if (!(local_14.GetConsumeConfig().ConsumeItemRow.IsValid()))
+        {
+            return;
+        }
+        if (this.bOverrideConsumeNumber)
+        {
+        }
+        else
+        {
+        }
+        int local_15 = local_11;
+        ::InventoryUtils::ConsumeInventoryItem(Context.GetEntity(), TDataObjectPtr<FItemConfig>(local_14.GetConsumeConfig().ConsumeItemRow), local_15);
+        return;
     }
     UFUNCTION()
     void OnDataValidate_Implementation(const FESMDataHierarchyInfo &inout Info)
@@ -75,7 +103,6 @@ class UESMAction_AbilityConsumeCD : UESMBPBaseSpanAction
     bool bConsumeOnEnter = true;
     UPROPERTY()
     bool bConsumeOnExit;
-
 
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
@@ -130,7 +157,6 @@ class UESMAction_ConsumeTemporarySkillTime : UESMBPBaseSpanAction
     bool bConsumeOnEnter = true;
     UPROPERTY()
     bool bConsumeOnExit = false;
-
 
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const
@@ -191,7 +217,6 @@ class UESMAction_ConsumeRemnantSkillUsableCount : UESMBPBaseSpanAction
     bool bConsumeOnEnter = true;
     UPROPERTY()
     bool bConsumeOnExit = false;
-
 
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const

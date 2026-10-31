@@ -1,5 +1,3 @@
-﻿
-
 class US_DebugConsoleCommandSystemAS : UECSScriptSystem
 {
     US_DebugConsoleCommandSystemAS()

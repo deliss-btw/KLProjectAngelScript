@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_WorldMapTeleporterListEntry
 {
     const int ViewID = 0;
@@ -46,6 +45,7 @@ namespace UWidget_WorldMapTeleporterListEntry
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_WorldMapTeleporterListEntry;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

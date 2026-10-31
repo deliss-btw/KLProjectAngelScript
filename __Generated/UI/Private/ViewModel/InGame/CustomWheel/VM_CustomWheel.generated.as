@@ -1,5 +1,3 @@
-﻿
-
 struct FVMS_CustomWheelConfigDefault : FConfigEUIModelDefaultBase
 {
     UPROPERTY()

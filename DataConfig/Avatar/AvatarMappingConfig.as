@@ -1,5 +1,3 @@
-﻿
-
 struct FAvatarMappingConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -9,7 +7,6 @@ struct FAvatarMappingConfig : FDataObject
     FText Name;
     UPROPERTY()
     TArray<FDataObjectPtr> m_Avatar;
-
 
     TArray<TDataObjectPtr<FAvatarPrefabConfig>> GetAvatar() const property
     {

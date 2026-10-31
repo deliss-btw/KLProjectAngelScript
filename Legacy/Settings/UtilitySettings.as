@@ -1,5 +1,3 @@
-﻿
-
 class UUtilitySettings : UGameplaySettingsBase
 {
     UPROPERTY()
@@ -38,7 +36,6 @@ class UUtilitySettings : UGameplaySettingsBase
     TMap<int, UESMInputTriggerAsset> TeamInfoSkillHintIAMap;
     UPROPERTY()
     FFPTime UnstuckCooldown = 30.0;
-
 
 }
 

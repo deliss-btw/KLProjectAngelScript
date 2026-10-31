@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Damage_HitStunDetach = FConsoleVariable();
 
 class US_HitStunDetachSystem : US_ECSScriptGameModeSystemBase

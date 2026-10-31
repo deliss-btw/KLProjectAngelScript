@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_Lifetime_Helpers
 {
 UFUNCTION()

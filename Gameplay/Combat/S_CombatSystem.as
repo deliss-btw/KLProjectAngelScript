@@ -1,5 +1,3 @@
-﻿
-
 class US_CombatSystem : UECSScriptSystem
 {
     UPROPERTY()
@@ -195,9 +193,19 @@ class US_CombatSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_CheckDeath(const FECSEntity &inout Entity, const FC_GameAttribute &inout GameAttribute, const FCS_FixedTime &inout FixedTime) const
     {
+        int local_5;
         bool local_1 = false;
         float32 local_4 = FGameAttributeUtils::TryGetAttributeValue(GameAttribute, Attribute::HP, FixedTime.Time, local_1);
-        if ((local_1 && (local_4 <= 0.0f)))
+        if (!(local_1))
+        {
+            local_5 = 0;
+        }
+        else
+        {
+            bool local_2 = (local_4 <= 0.0f);
+            local_5 = local_2;
+        }
+        if (local_5 != 0)
         {
             ::FLifeCycleUtils::KillEntityCheckNearDeathRule(Entity, ENTITY_ID_NULL, FixedTime.Time, true, true, false, true);
         }
@@ -553,7 +561,7 @@ class US_CombatSystem : UECSScriptSystem
         int local_68 = 0;
         if (!(RebornEntity.IsValid()))
         {
-            XWarning(ELog(42), FString().Append("[DoReborn] и·іиї‡е¤±ж•€е¤Ќжґ»е®ћдЅ“: ").Append(RebornEntity));
+            XWarning(ELog(42), FString().Append("[DoReborn] 跳过失效复活实体: ").Append(RebornEntity));
             return;
         }
         if (bRebornWithAnimation)
@@ -609,7 +617,7 @@ class US_CombatSystem : UECSScriptSystem
             }
             return;
         }
-        XWarning(ELog(42), FString().Append("[DoReborn] е¤Ќжґ»е®ћдЅ“зјєе°‘ FC_GameAttributeпјЊи·іиї‡е±ћжЂ§жЃўе¤Ќ: ").Append(RebornEntity));
+        XWarning(ELog(42), FString().Append("[DoReborn] 复活实体缺少 FC_GameAttribute，跳过属性恢复: ").Append(RebornEntity));
         return;
     }
     UFUNCTION()
@@ -702,7 +710,7 @@ class US_CombatSystem : UECSScriptSystem
         {
             if (int(local_24.GetExecutionState()) == 1)
             {
-                local_24.SetExecutionState(EExecutionState(EExecutionState(0)));
+                local_24.SetExecutionState(EExecutionState(0));
                 local_30.opCall(FixedTime.Time);
                 local_10.opCall();
                 const FC_HitReaction& local_36 = local_34.opCall();
@@ -727,7 +735,7 @@ class US_CombatSystem : UECSScriptSystem
                     }
                     if (!(local_47) && (FFPTime(FixedTime.Time).opCmp(local_24.GetCanRecoverFromExecutedTime()) >= 0))
                     {
-                        local_24.SetExecutionState(EExecutionState(EExecutionState(0)));
+                        local_24.SetExecutionState(EExecutionState(0));
                         local_30.opCall(FixedTime.Time);
                         local_10.opCall();
                     }
@@ -938,9 +946,8 @@ class US_CombatSystem : UECSScriptSystem
         local_14.SetEntityInstanceId(local_4);
         local_14.SetCastType(1);
         local_14.SetSkillId(Event.SkillConfig.ToSoftObjectPath().ToString());
-        local_14.GetCommon();
-        FECSEntity local_36;
-        ::FCombatStateUtils::GetDataTrackPbCombatCommonData(local_36, Event.Sender);
+        FPbPlayerLogDsCombatCommon local_36 = local_14.GetCommon();
+        ::FCombatStateUtils::GetDataTrackPbCombatCommonData(Event.Sender, local_36);
         ::ServerDataTrackerHelper::LogProtoMessage3WithPawn(Event.Sender, 102506, local_14.ToWrapper());
         return;
     }
@@ -1028,15 +1035,15 @@ class US_CombatSystem : UECSScriptSystem
             local_30.SetEntityType(local_1);
             local_30.SetEntityConfigId(local_3);
             local_30.SetEntityInstanceId(local_4);
-            if (Event.bMakeTargetNearDeath)
+            if Event.bMakeTargetNearDeath
             {
                 local_30.AddResultState(1);
             }
-            if (Event.bKillTarget)
+            if Event.bKillTarget
             {
                 local_30.AddResultState(2);
             }
-            if (Event.bMakeTargetBodyPartDestroy)
+            if Event.bMakeTargetBodyPartDestroy
             {
                 local_30.AddResultState(5);
             }
@@ -1087,11 +1094,11 @@ class US_CombatSystem : UECSScriptSystem
             local_30.SetEntityType(local_1);
             local_30.SetEntityConfigId(local_3);
             local_30.SetEntityInstanceId(local_4);
-            if (Event.bMakeTargetPostureStagger)
+            if Event.bMakeTargetPostureStagger
             {
                 local_30.AddResultState(3);
             }
-            if (Event.bMakeTargetPostureBreak)
+            if Event.bMakeTargetPostureBreak
             {
                 local_30.AddResultState(4);
             }
@@ -1180,7 +1187,7 @@ class US_CombatSystem : UECSScriptSystem
         {
             return;
         }
-        int local_12 = 0;
+        float32 local_12 = 0.0f;
         Get local_18;
         const FC_HitReaction& local_20 = local_18.opCall();
         if (local_20)

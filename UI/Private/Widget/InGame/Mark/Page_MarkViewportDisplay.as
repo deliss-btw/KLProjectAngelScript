@@ -1,4 +1,3 @@
-﻿
 namespace UPage_MarkViewportDisplay
 {
     const int ViewID = 0;
@@ -52,6 +51,7 @@ namespace UPage_MarkViewportDisplay
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UPage_MarkViewportDisplay;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

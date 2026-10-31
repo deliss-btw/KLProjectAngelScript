@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AvatarBuildPage
 {
     const int ModelId = 0;
@@ -63,17 +62,16 @@ struct FVM_AvatarBuildPage : FEUIViewModel
     }
     void OnAvatarConfigChanged()
     {
-        EEquipSlotType local_56;
         this.SetAvatarAttributeList(TEUIModelRef<FVM_AvatarAttributeList>(::FVM_AvatarAttributeList::Create(this.GetContext().Manager, this.GetAvatarConfig())));
         this.UpdateAvatarTraitList();
+        this.SetEditingPlayerAvatar(FEUIModelRef(::FVM_PlayerAvatar::Create(this.GetContext().Manager, this.GetAvatarConfig())));
         TDataObjectPtr<FAvatarPrefabConfig> local_24 = this.GetAvatarConfig();
-        this.SetEditingPlayerAvatar(FEUIModelRef());
-        TDataObjectPtr<FAvatarPrefabConfig> local_24_2 = this.GetAvatarConfig();
+        TEUIModelRef<FM_Avatar> local_56 = ::FMS_PlayerAvatarData::Get(this.GetContext().Manager).FindAvatar(local_24);
         if (!(local_56))
         {
-            local_56 = TEUIModelRef<FM_Avatar>(::FM_Avatar::Create(this.GetContext().Manager, local_24_2));
+            local_56 = TEUIModelRef<FM_Avatar>(::FM_Avatar::Create(this.GetContext().Manager, local_24));
         }
-        this.SetAvatarEquipment(FEUIModelRef());
+        this.SetAvatarEquipment(FEUIModelRef(::FVM_AvatarEquipment::Create(this.GetContext().Manager, EEquipSlotType(1), local_56)));
         return;
     }
     void OnEquipmentChanged(const FC_DSPlayerAvatarInfo &inout C_PlayerAvatarInfo)
@@ -83,7 +81,17 @@ struct FVM_AvatarBuildPage : FEUIViewModel
     }
     void UpdateAvatarTraitList()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        this.GetModify_AvatarTraitList().Empty(0);
+        int64 local_36 = ::FEquipmentUtils::GetAvatarEquipmentUid(this.GetContext().GetLocalPlayer(), EEquipSlotType(1), this.GetAvatarConfig());
+        if (local_36 != 0)
+        {
+            TEUIModelRef<FM_Equipment> local_40 = ::FMS_EquipmentDataCache::Get(this.GetContext().Manager).GetEquipment(local_36);
+            for (auto& local_56 : GetEquipmentTraits())
+            {
+                this.GetModify_AvatarTraitList().Add(TEUIModelRef<FVM_TraitInfo>(::FVM_TraitInfo::Create(this.GetContext().Manager, local_56)));
+            }
+        }
+        return;
     }
     TEUIModelRef<FMS_EditingAvatar> GetEditingAvatar() const property
     {
@@ -227,7 +235,62 @@ FVM_AvatarBuildPage CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasBeginDestroy(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "AvatarAttributeList";
+    local_14.TypeName = "TEUIModelRef<FVM_AvatarAttributeList>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AvatarTraitList";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_TraitInfo>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "EditingPlayerAvatar";
+    local_14.TypeName = "FEUIModelRef";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AvatarEquipment";
+    local_14.TypeName = "FEUIModelRef";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AvatarConfig";
+    local_14.TypeName = "TDataObjectPtr<FAvatarPrefabConfig>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_AvatarBuildPage>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_AvatarBuildPage;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(5);
+    local_22.AddRefPropertyDirty(0, 0, FMS_EditingAvatar::__IndexOf_AvatarConfig());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("EditingAvatar");
+    int local_2_2 = FMS_EditingAvatar::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FMS_EditingAvatar::__IndexOf_AvatarConfig(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnAvatarConfigChanged";
+    local_40.DirtyFlags.Set(FVM_AvatarBuildPage::__IndexOf_EditingAvatar());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    FEUIModelMonitorDefine local_50;
+    local_50.FunctionName = "__OnEquipmentChanged";
+    local_50.ComponentType = FC_DSPlayerAvatarInfo;
+    Result.MonitorFunctions.Add(local_50);
+    return;
 }
 UScriptStruct GetModelStruct()
 {
@@ -245,7 +308,9 @@ void __OnEquipmentChanged(FVM_AvatarBuildPage &inout Model, const FECSEntity &in
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorDSPlayerAvatarInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorDSPlayerAvatarInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TEUIModelRef<FVM_AvatarAttributeList> __UIGetter_AvatarAttributeList(const FVM_AvatarBuildPage &inout Model)
 {

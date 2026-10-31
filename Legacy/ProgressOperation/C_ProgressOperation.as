@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_ProgressOperationRuntime_NS
 {
     const TECSComponentDerivedPtr<FC_ProgressOperationRuntime> DerivedPtr = TECSComponentDerivedPtr<FC_ProgressOperationRuntime>();
@@ -68,11 +67,49 @@ struct FC_ProgressOperationRuntime : FECSComponent
 
     FC_ProgressOperationRuntime()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_ProgressValueWhenAccurateInput = -1.0f;
+        this.m_State = EProgressOperationState(0);
+        this.m_NextState = EProgressOperationState(0);
+        this.m_ProgressValue = 0.0f;
+        this.m_ProgressMaxValue = 100.0f;
+        this.m_ProgressIncreseSpeed = 0.0f;
+        this.m_CurTime = 0;
+        this.m_TotalTime = 0;
+        this.m_bLocalPrediction = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_ProgressOperationRuntime(const FC_ProgressOperationRuntime &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_28;
+        this.__DirtyFlags = local_28;
+        this.m_ProgressValueWhenAccurateInput = -1.0f;
+        this.m_State = EProgressOperationState(0);
+        this.m_NextState = EProgressOperationState(0);
+        this.m_ProgressValue = 0.0f;
+        this.m_ProgressMaxValue = 100.0f;
+        this.m_ProgressIncreseSpeed = 0.0f;
+        this.m_CurTime = 0;
+        this.m_TotalTime = 0;
+        this.m_bLocalPrediction = false;
+        this.__InitDirtyFlags();
+        this.m_Config = Other.m_Config;
+        this.m_OperationEntity = Other.m_OperationEntity;
+        this.m_InitiatorEntity = Other.m_InitiatorEntity;
+        this.m_ParticipantEntities = Other.m_ParticipantEntities;
+        this.m_TargetEntity = Other.m_TargetEntity;
+        this.m_ProgressValueWhenAccurateInput = Other.m_ProgressValueWhenAccurateInput;
+        this.m_State = Other.m_State;
+        this.m_NextState = Other.m_NextState;
+        this.m_ProgressValue = Other.m_ProgressValue;
+        this.m_ProgressMaxValue = Other.m_ProgressMaxValue;
+        this.m_ProgressIncreseSpeed = Other.m_ProgressIncreseSpeed;
+        this.m_CurTime = Other.m_CurTime;
+        this.m_TotalTime = Other.m_TotalTime;
+        this.m_bLocalPrediction = Other.m_bLocalPrediction;
+        return;
     }
     FC_ProgressOperationRuntime opAssign(const FC_ProgressOperationRuntime &inout Other)
     {
@@ -359,11 +396,22 @@ struct FC_ProgressOperationMember : FECSComponent
 
     FC_ProgressOperationMember()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bIsInitiator = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_ProgressOperationMember(const FC_ProgressOperationMember &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_26;
+        this.__DirtyFlags = local_26;
+        this.m_bIsInitiator = false;
+        this.__InitDirtyFlags();
+        this.m_OperationEntity = Other.m_OperationEntity;
+        this.m_Config = Other.m_Config;
+        this.m_bIsInitiator = Other.m_bIsInitiator;
+        return;
     }
     FC_ProgressOperationMember opAssign(const FC_ProgressOperationMember &inout Other)
     {
@@ -443,11 +491,15 @@ struct FC_ProgressOperationTarget : FECSComponent
 
     FC_ProgressOperationTarget()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_ProgressOperationTarget(const FC_ProgressOperationTarget &inout Other)
     {
+        FRootDirtyFlags8 local_25;
+        this.__DirtyFlags = local_25;
         this.__InitDirtyFlags();
         this.m_OperationEntity = Other.m_OperationEntity;
         this.m_Config = Other.m_Config;
@@ -520,7 +572,6 @@ struct FCE_ProgressOerationEndEvent : FECSEvent
     UPROPERTY()
     float32 FinalProgressTotalTime = 0.0f;
 
-
 }
 
 struct FC_ProgressOperationResult : FECSComponent
@@ -541,11 +592,35 @@ struct FC_ProgressOperationResult : FECSComponent
 
     FC_ProgressOperationResult()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_FinalState = EProgressOperationState(3);
+        this.m_FinalProgressValue = 0.0f;
+        this.m_FinalProgressMaxValue = 0.0f;
+        this.m_FinalProgressTime = 0.0f;
+        this.m_FinalProgressTotalTime = 0.0f;
+        this.m_bIsLeave = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_ProgressOperationResult(const FC_ProgressOperationResult &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_4;
+        this.__DirtyFlags = local_4;
+        this.m_FinalState = EProgressOperationState(3);
+        this.m_FinalProgressValue = 0.0f;
+        this.m_FinalProgressMaxValue = 0.0f;
+        this.m_FinalProgressTime = 0.0f;
+        this.m_FinalProgressTotalTime = 0.0f;
+        this.m_bIsLeave = false;
+        this.__InitDirtyFlags();
+        this.m_FinalState = Other.m_FinalState;
+        this.m_FinalProgressValue = Other.m_FinalProgressValue;
+        this.m_FinalProgressMaxValue = Other.m_FinalProgressMaxValue;
+        this.m_FinalProgressTime = Other.m_FinalProgressTime;
+        this.m_FinalProgressTotalTime = Other.m_FinalProgressTotalTime;
+        this.m_bIsLeave = Other.m_bIsLeave;
+        return;
     }
     FC_ProgressOperationResult opAssign(const FC_ProgressOperationResult &inout Other)
     {
@@ -665,11 +740,20 @@ struct FC_ProgressLocalPredicationHide : FECSComponent
 
     FC_ProgressLocalPredicationHide()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bHide = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_ProgressLocalPredicationHide(const FC_ProgressLocalPredicationHide &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bHide = false;
+        this.__InitDirtyFlags();
+        this.m_bHide = Other.m_bHide;
+        return;
     }
     FC_ProgressLocalPredicationHide opAssign(const FC_ProgressLocalPredicationHide &inout Other)
     {
@@ -770,37 +854,37 @@ bool RemoveProgressOperationRuntime(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationRuntimeOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ProgressOperationRuntime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ProgressOperationRuntime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationRuntimeOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProgressOperationRuntime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProgressOperationRuntime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationRuntimeOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ProgressOperationRuntime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ProgressOperationRuntime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationRuntimeOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProgressOperationRuntime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProgressOperationRuntime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationRuntimeOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ProgressOperationRuntime, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ProgressOperationRuntime, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorProgressOperationRuntimeLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ProgressOperationRuntime, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ProgressOperationRuntime, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProgressOperationRuntimeActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ProgressOperationRuntime, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ProgressOperationRuntime, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProgressOperationRuntimeModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ProgressOperationRuntime, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ProgressOperationRuntime, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ProgressOperationMember
@@ -880,37 +964,37 @@ bool RemoveProgressOperationMember(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationMemberOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ProgressOperationMember, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ProgressOperationMember, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationMemberOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProgressOperationMember, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProgressOperationMember, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationMemberOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ProgressOperationMember, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ProgressOperationMember, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationMemberOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProgressOperationMember, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProgressOperationMember, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationMemberOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ProgressOperationMember, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ProgressOperationMember, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorProgressOperationMemberLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ProgressOperationMember, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ProgressOperationMember, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProgressOperationMemberActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ProgressOperationMember, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ProgressOperationMember, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProgressOperationMemberModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ProgressOperationMember, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ProgressOperationMember, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ProgressOperationTarget
@@ -990,37 +1074,37 @@ bool RemoveProgressOperationTarget(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationTargetOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ProgressOperationTarget, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ProgressOperationTarget, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationTargetOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProgressOperationTarget, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProgressOperationTarget, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationTargetOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ProgressOperationTarget, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ProgressOperationTarget, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationTargetOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProgressOperationTarget, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProgressOperationTarget, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationTargetOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ProgressOperationTarget, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ProgressOperationTarget, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorProgressOperationTargetLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ProgressOperationTarget, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ProgressOperationTarget, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProgressOperationTargetActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ProgressOperationTarget, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ProgressOperationTarget, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProgressOperationTargetModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ProgressOperationTarget, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ProgressOperationTarget, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ProgressOperationResult
@@ -1100,37 +1184,37 @@ bool RemoveProgressOperationResult(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationResultOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ProgressOperationResult, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ProgressOperationResult, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationResultOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProgressOperationResult, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProgressOperationResult, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationResultOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ProgressOperationResult, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ProgressOperationResult, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationResultOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProgressOperationResult, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProgressOperationResult, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationResultOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ProgressOperationResult, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ProgressOperationResult, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorProgressOperationResultLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ProgressOperationResult, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ProgressOperationResult, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProgressOperationResultActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ProgressOperationResult, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ProgressOperationResult, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProgressOperationResultModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ProgressOperationResult, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ProgressOperationResult, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ProgressOperationUIData
@@ -1213,37 +1297,37 @@ bool RemoveProgressOperationUIData(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationUIDataOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ProgressOperationUIData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ProgressOperationUIData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationUIDataOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProgressOperationUIData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProgressOperationUIData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationUIDataOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ProgressOperationUIData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ProgressOperationUIData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationUIDataOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProgressOperationUIData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProgressOperationUIData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressOperationUIDataOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ProgressOperationUIData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ProgressOperationUIData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorProgressOperationUIDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ProgressOperationUIData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ProgressOperationUIData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProgressOperationUIDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ProgressOperationUIData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ProgressOperationUIData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProgressOperationUIDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ProgressOperationUIData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ProgressOperationUIData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ProgressLocalPredicationHide
@@ -1323,37 +1407,37 @@ bool RemoveProgressLocalPredicationHide(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorProgressLocalPredicationHideOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ProgressLocalPredicationHide, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ProgressLocalPredicationHide, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressLocalPredicationHideOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProgressLocalPredicationHide, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProgressLocalPredicationHide, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressLocalPredicationHideOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ProgressLocalPredicationHide, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ProgressLocalPredicationHide, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressLocalPredicationHideOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProgressLocalPredicationHide, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProgressLocalPredicationHide, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProgressLocalPredicationHideOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ProgressLocalPredicationHide, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ProgressLocalPredicationHide, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorProgressLocalPredicationHideLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ProgressLocalPredicationHide, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ProgressLocalPredicationHide, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProgressLocalPredicationHideActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ProgressLocalPredicationHide, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ProgressLocalPredicationHide, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProgressLocalPredicationHideModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ProgressLocalPredicationHide, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ProgressLocalPredicationHide, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

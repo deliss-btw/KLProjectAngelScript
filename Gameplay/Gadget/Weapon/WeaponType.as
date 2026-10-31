@@ -1,4 +1,3 @@
-﻿
 enum EWeaponType
 {
     None,

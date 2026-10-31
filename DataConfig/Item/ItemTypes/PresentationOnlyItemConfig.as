@@ -1,5 +1,3 @@
-﻿
-
 struct FPresentationOnlyItemConfig : FItemConfig
 {
     FItemConfig _base_FItemConfig;
@@ -9,7 +7,6 @@ struct FPresentationOnlyItemConfig : FItemConfig
 
     FPresentationOnlyItemConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }
@@ -31,7 +28,6 @@ struct FRemnantItemConfig : FPresentationOnlyItemConfig
 
     FRemnantItemConfig()
     {
-        super();
         this.ItemSkillConfig = nullptr;
         this.UsableCount = 1;
         this.__InitDefaults();

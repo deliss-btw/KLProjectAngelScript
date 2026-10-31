@@ -1,11 +1,8 @@
-﻿
-
 class UAutoTestClientConnectionSubsystem : UGameInstanceSubsystem
 {
     bool IsInited = false;
     FProtoRspDelegate SearchPlayerRspDelegate;
     FProtoRspDelegate CommissionDataNotifyDelegate;
-
 
     void Initialize()
     {

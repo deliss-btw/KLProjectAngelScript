@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Material_WarnMissingParam = FConsoleVariable();
 
 class US_MaterialParamSystem : UECSScriptSystem
@@ -61,6 +60,7 @@ class US_MaterialParamSystem : UECSScriptSystem
     void BuildFloatParamForBlendData(const FChangeMaterialParamRequest &inout Request, const TSoftObjectPtr<UMaterialInterface> &inout Mat, const FFloatParamRequestData &inout RequestParam, FFloatParamBlendData &inout OutFloatParam, const bool bAllowMissingParam = false) const
     {
         float32 local_3;
+        int local_6;
         UMaterialInterface local_10;
         if (!(Mat.IsValid()))
         {
@@ -76,12 +76,14 @@ class US_MaterialParamSystem : UECSScriptSystem
         }
         if (RequestParam.bUseMaterialParameterInfo)
         {
-            int local_7 = int(RequestParam.ParamAssociation);
+            local_6 = int(RequestParam.ParamAssociation);
         }
         else
         {
+            int local_7 = 2;
+            local_6 = local_7;
         }
-        if (GameMaterial::GetFloatParameterDefaultValue(local_2, local_10, RequestParam.ParamName))
+        if (GameMaterial::GetFloatParameterDefaultValue(local_2, local_10, RequestParam.ParamName, EMaterialParameterAssociation(local_6)))
         {
             if (Request.GetbIsBlendingOut())
             {
@@ -113,12 +115,13 @@ class US_MaterialParamSystem : UECSScriptSystem
         if (!(bAllowMissingParam) || CVar_Material_WarnMissingParam.GetBool())
         {
             FString local_28 = ((FString("BuildFloatParamForBlendData: failed to get default value for float param: ") + RequestParam.ParamName) + " Material: ");
-            FString local_32_2 = Mat.ToString();
+            XWarning(ELog(55), (local_28 + Mat.ToString()));
         }
         return;
     }
     void BuildVectorParamForBlendData(const FChangeMaterialParamRequest &inout Request, const TSoftObjectPtr<UMaterialInterface> &inout Mat, const FVectorParamRequestData &inout RequestParam, FVectorParamBlendData &inout OutVectorParam, const bool bAllowMissingParam = false) const
     {
+        int local_8;
         UMaterialInterface local_12;
         if (!(Mat.IsValid()))
         {
@@ -134,12 +137,14 @@ class US_MaterialParamSystem : UECSScriptSystem
         }
         if (RequestParam.bUseMaterialParameterInfo)
         {
-            int local_9 = int(RequestParam.ParamAssociation);
+            local_8 = int(RequestParam.ParamAssociation);
         }
         else
         {
+            int local_9 = 2;
+            local_8 = local_9;
         }
-        if (GameMaterial::GetVectorParameterDefaultValue(local_5, local_12, RequestParam.ParamName))
+        if (GameMaterial::GetVectorParameterDefaultValue(local_5, local_12, RequestParam.ParamName, EMaterialParameterAssociation(local_8)))
         {
             if (Request.GetbIsBlendingOut())
             {
@@ -172,13 +177,14 @@ class US_MaterialParamSystem : UECSScriptSystem
         if (!(bAllowMissingParam) || CVar_Material_WarnMissingParam.GetBool())
         {
             FString local_34 = ((FString("BuildVectorParamForBlendData: failed to get default value for vector param: ") + RequestParam.ParamName) + " Material: ");
-            FString local_38_2 = Mat.ToString();
+            XWarning(ELog(55), (local_34 + Mat.ToString()));
         }
         return;
     }
     void BuildTextureParamForBlendData(const FChangeMaterialParamRequest &inout Request, const TSoftObjectPtr<UMaterialInterface> &inout Mat, const FTextureParamRequestData &inout RequestParam, FTextureParamBlendData &inout OutTextureParam, const bool bAllowMissingParam = false) const
     {
         UTexture local_4;
+        int local_7;
         UMaterialInterface local_10;
         if (!(Mat.IsValid()))
         {
@@ -193,12 +199,14 @@ class US_MaterialParamSystem : UECSScriptSystem
         }
         if (RequestParam.bUseMaterialParameterInfo)
         {
-            int local_8 = int(RequestParam.ParamAssociation);
+            local_7 = int(RequestParam.ParamAssociation);
         }
         else
         {
+            int local_8 = 2;
+            local_7 = local_8;
         }
-        if (GameMaterial::GetTextureParameterDefaultValue(local_4, local_10, RequestParam.ParamName))
+        if (GameMaterial::GetTextureParameterDefaultValue(local_4, local_10, RequestParam.ParamName, EMaterialParameterAssociation(local_7)))
         {
             if (Request.GetbIsBlendingOut())
             {
@@ -218,7 +226,7 @@ class US_MaterialParamSystem : UECSScriptSystem
         if (!(bAllowMissingParam) || CVar_Material_WarnMissingParam.GetBool())
         {
             FString local_30 = ((FString("BuildTextureParamForBlendData: failed to get default texture for TextureParam: ") + RequestParam.ParamName) + " Material: ");
-            FString local_34_2 = Mat.ToString();
+            XWarning(ELog(55), (local_30 + Mat.ToString()));
         }
         return;
     }
@@ -937,8 +945,7 @@ class US_MaterialParamSystem : UECSScriptSystem
                         }
                         else
                         {
-                            FString local_74 = "UpdateCachedMaterialOverrides: Failed to load material: ";
-                            FString local_70 = local_20.ToString();
+                            XWarning(ELog(55), (FString("UpdateCachedMaterialOverrides: Failed to load material: ") + local_20.ToString()));
                         }
                     }
                 }
@@ -953,8 +960,7 @@ class US_MaterialParamSystem : UECSScriptSystem
                         }
                         else
                         {
-                            FString local_70_2 = "UpdateCachedMaterialOverrides: Failed to load material: ";
-                            FString local_74_2 = local_20.ToString();
+                            XWarning(ELog(55), (FString("UpdateCachedMaterialOverrides: Failed to load material: ") + local_20.ToString()));
                         }
                     }
                 }
@@ -1109,7 +1115,13 @@ class US_MaterialParamSystem : UECSScriptSystem
     UFUNCTION()
     void ClientJob_UpdateMaterialParamBlending(const FECSEntity &inout Entity, FC_CachedAllChangeMateraialData &inout C_CachedAllChangeMateraialData) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        bool local_6 = this.UpdateMaterialParamForActor(Entity, C_CachedAllChangeMateraialData.CachedData, ECS::GetContextTime());
+        if (!(local_6))
+        {
+            Remove local_10;
+            local_10.opCall();
+        }
+        return;
     }
     UFUNCTION()
     void Run_Job_TickSyncBlendingOutMaterialParamLifeTime() const
@@ -1478,7 +1490,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_SyncChangeMaterialParamRequests(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = ::__GetMonitorSyncChangeMaterialParamRequestsOnActiveView(this.GetECSWorld(), EECSRegType(0), false, true);
+        FECSMonitorRuntimeView local_56 = ::__GetMonitorSyncChangeMaterialParamRequestsOnActiveView(this.GetECSWorld(), EECSRegType(0), (0 != 0), true);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {
@@ -1487,7 +1499,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             GetComponent local_50_3 = FECSMonitorRuntimeViewItem::GetComponent(local_42_3);
             this.Monitor_SyncChangeMaterialParamRequests(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_60 = ::__GetMonitorSyncChangeMaterialParamRequestsOnRemoveView(this.GetECSWorld(), EECSRegType(0), false, true);
+        FECSMonitorRuntimeView local_60 = ::__GetMonitorSyncChangeMaterialParamRequestsOnRemoveView(this.GetECSWorld(), EECSRegType(0), false, (1 != 0));
         FECSMonitorRuntimeViewIterator local_40_2 = local_60.Iterator();
         for (; local_40_2.CanProceed;)
         {
@@ -1522,7 +1534,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_LocalChangeMaterialParamRequestsWhenTickMaterial(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = ::__GetMonitorLocalChangeMaterialParamRequestsOnActiveView(this.GetECSWorld(), EECSRegType(1), false, false);
+        FECSMonitorRuntimeView local_56 = ::__GetMonitorLocalChangeMaterialParamRequestsOnActiveView(this.GetECSWorld(), EECSRegType(1), (0 != 0), false);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {
@@ -1531,7 +1543,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             GetComponent local_50_3 = FECSMonitorRuntimeViewItem::GetComponent(local_42_3);
             this.Monitor_LocalChangeMaterialParamRequestsWhenTickMaterial(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_60 = ::__GetMonitorLocalChangeMaterialParamRequestsOnRemoveView(this.GetECSWorld(), EECSRegType(1), false, false);
+        FECSMonitorRuntimeView local_60 = ::__GetMonitorLocalChangeMaterialParamRequestsOnRemoveView(this.GetECSWorld(), EECSRegType(1), false, (0 != 0));
         FECSMonitorRuntimeViewIterator local_40_2 = local_60.Iterator();
         for (; local_40_2.CanProceed;)
         {
@@ -1566,7 +1578,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_LocalChangeMaterialParamRequestsWhenTickMaterial(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = ::__GetMonitorLocalChangeMaterialParamRequestsOnActiveView(this.GetECSWorld(), EECSRegType(0), false, false);
+        FECSMonitorRuntimeView local_56 = ::__GetMonitorLocalChangeMaterialParamRequestsOnActiveView(this.GetECSWorld(), EECSRegType(0), (0 != 0), false);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {
@@ -1575,7 +1587,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             GetComponent local_50_3 = FECSMonitorRuntimeViewItem::GetComponent(local_42_3);
             this.Monitor_LocalChangeMaterialParamRequestsWhenTickMaterial(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_60 = ::__GetMonitorLocalChangeMaterialParamRequestsOnRemoveView(this.GetECSWorld(), EECSRegType(0), false, false);
+        FECSMonitorRuntimeView local_60 = ::__GetMonitorLocalChangeMaterialParamRequestsOnRemoveView(this.GetECSWorld(), EECSRegType(0), false, (0 != 0));
         FECSMonitorRuntimeViewIterator local_40_2 = local_60.Iterator();
         for (; local_40_2.CanProceed;)
         {
@@ -1610,7 +1622,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_LocalChangeMaterialParamRequestsWhenTickMaterial(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = ::__GetMonitorLocalChangeMaterialParamRequestsOnActiveView(this.GetECSWorld(), EECSRegType(2), false, false);
+        FECSMonitorRuntimeView local_56 = ::__GetMonitorLocalChangeMaterialParamRequestsOnActiveView(this.GetECSWorld(), EECSRegType(2), (0 != 0), false);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {
@@ -1619,7 +1631,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             GetComponent local_50_3 = FECSMonitorRuntimeViewItem::GetComponent(local_42_3);
             this.Monitor_LocalChangeMaterialParamRequestsWhenTickMaterial(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_60 = ::__GetMonitorLocalChangeMaterialParamRequestsOnRemoveView(this.GetECSWorld(), EECSRegType(2), false, false);
+        FECSMonitorRuntimeView local_60 = ::__GetMonitorLocalChangeMaterialParamRequestsOnRemoveView(this.GetECSWorld(), EECSRegType(2), false, (0 != 0));
         FECSMonitorRuntimeViewIterator local_40_2 = local_60.Iterator();
         for (; local_40_2.CanProceed;)
         {
@@ -1654,7 +1666,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_LocalChangeMaterialParamRequestsAfterRecycleViewObject(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = ::__GetMonitorLocalChangeMaterialParamRequestsOnActiveView(this.GetECSWorld(), EECSRegType(1), false, true);
+        FECSMonitorRuntimeView local_56 = ::__GetMonitorLocalChangeMaterialParamRequestsOnActiveView(this.GetECSWorld(), EECSRegType(1), (0 != 0), true);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {
@@ -1663,7 +1675,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             GetComponent local_50_3 = FECSMonitorRuntimeViewItem::GetComponent(local_42_3);
             this.Monitor_LocalChangeMaterialParamRequestsAfterRecycleViewObject(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_60 = ::__GetMonitorLocalChangeMaterialParamRequestsOnRemoveView(this.GetECSWorld(), EECSRegType(1), false, true);
+        FECSMonitorRuntimeView local_60 = ::__GetMonitorLocalChangeMaterialParamRequestsOnRemoveView(this.GetECSWorld(), EECSRegType(1), false, (1 != 0));
         FECSMonitorRuntimeViewIterator local_40_2 = local_60.Iterator();
         for (; local_40_2.CanProceed;)
         {
@@ -1698,7 +1710,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_LocalChangeMaterialParamRequestsAfterRecycleViewObject(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = ::__GetMonitorLocalChangeMaterialParamRequestsOnActiveView(this.GetECSWorld(), EECSRegType(0), false, true);
+        FECSMonitorRuntimeView local_56 = ::__GetMonitorLocalChangeMaterialParamRequestsOnActiveView(this.GetECSWorld(), EECSRegType(0), (0 != 0), true);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {
@@ -1707,7 +1719,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             GetComponent local_50_3 = FECSMonitorRuntimeViewItem::GetComponent(local_42_3);
             this.Monitor_LocalChangeMaterialParamRequestsAfterRecycleViewObject(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_60 = ::__GetMonitorLocalChangeMaterialParamRequestsOnRemoveView(this.GetECSWorld(), EECSRegType(0), false, true);
+        FECSMonitorRuntimeView local_60 = ::__GetMonitorLocalChangeMaterialParamRequestsOnRemoveView(this.GetECSWorld(), EECSRegType(0), false, (1 != 0));
         FECSMonitorRuntimeViewIterator local_40_2 = local_60.Iterator();
         for (; local_40_2.CanProceed;)
         {
@@ -1742,7 +1754,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_LocalChangeMaterialParamRequestsAfterRecycleViewObject(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = ::__GetMonitorLocalChangeMaterialParamRequestsOnActiveView(this.GetECSWorld(), EECSRegType(2), false, true);
+        FECSMonitorRuntimeView local_56 = ::__GetMonitorLocalChangeMaterialParamRequestsOnActiveView(this.GetECSWorld(), EECSRegType(2), (0 != 0), true);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {
@@ -1751,7 +1763,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             GetComponent local_50_3 = FECSMonitorRuntimeViewItem::GetComponent(local_42_3);
             this.Monitor_LocalChangeMaterialParamRequestsAfterRecycleViewObject(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_60 = ::__GetMonitorLocalChangeMaterialParamRequestsOnRemoveView(this.GetECSWorld(), EECSRegType(2), false, true);
+        FECSMonitorRuntimeView local_60 = ::__GetMonitorLocalChangeMaterialParamRequestsOnRemoveView(this.GetECSWorld(), EECSRegType(2), false, (1 != 0));
         FECSMonitorRuntimeViewIterator local_40_2 = local_60.Iterator();
         for (; local_40_2.CanProceed;)
         {

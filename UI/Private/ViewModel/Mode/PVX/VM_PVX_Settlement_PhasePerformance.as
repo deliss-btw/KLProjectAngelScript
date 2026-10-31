@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PVX_Settlement_PhasePerformance
 {
     const int ModelId = 0;

@@ -1,5 +1,3 @@
-﻿
-
 class US_FakeCharacterSystem : UECSScriptSystem
 {
     US_FakeCharacterSystem()

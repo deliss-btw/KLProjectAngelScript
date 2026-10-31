@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_PVP_Match_Helpers
 {
 UFUNCTION()

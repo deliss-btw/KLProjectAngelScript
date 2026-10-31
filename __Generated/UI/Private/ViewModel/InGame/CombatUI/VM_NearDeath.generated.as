@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_NearDeath_Helpers
 {
 UFUNCTION()

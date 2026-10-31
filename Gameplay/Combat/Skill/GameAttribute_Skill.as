@@ -1,5 +1,3 @@
-﻿
-
 class UGameAttribute_Skill_SkillEnergy : UGameAttributeConsumable
 {
     default MinValue = 0;

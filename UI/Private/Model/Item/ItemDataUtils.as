@@ -1,5 +1,3 @@
-﻿
-
 struct FItemDataSortContext
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ struct FItemDataSortContext
     int64 CategoryLastSortTimestamp;
     UPROPERTY()
     bool bAscending;
-
 
 }
 
@@ -36,7 +33,8 @@ struct __Lambda_UI_Private_Model_Item_ItemDataUtils_60
     }
     bool opCall(const TEUIModelRef<FM_ItemData> &inout A, const TEUIModelRef<FM_ItemData> &inout B)
     {
-        return ::ItemSorterUtils::CmpSequence(this.GetSortContext().Sorters, ::ItemDataUtils_Internal::CreateSortContext(A, this.GetSortContext()), ::ItemDataUtils_Internal::CreateSortContext(B, this.GetSortContext()), this.GetSortContext().bAscending);
+        int local_61 = this.GetSortContext().bAscending;
+        return ::ItemSorterUtils::CmpSequence(this.GetSortContext().Sorters, ::ItemDataUtils_Internal::CreateSortContext(A, this.GetSortContext()), ::ItemDataUtils_Internal::CreateSortContext(B, this.GetSortContext()), (local_61 != 0));
     }
 }
 
@@ -103,9 +101,10 @@ FItemSortContext CreateSortContext(const TEUIModelRef<FM_ItemData> &inout Item, 
     {
         local_30.ItemConfig = Item.opArrow().GetConfig();
         local_30.ItemNum = Item.opArrow().GetNum();
-        if (SortContext.ItemDataCache.opArrow().TryGetItemUid(Item, 0))
+        int64 local_60 = 0;
+        if (SortContext.ItemDataCache.opArrow().TryGetItemUid(Item, local_60))
         {
-            local_30.LastModifiedTimestamp = SortContext.PlayerInventory.opArrow().GetItemLastModifiedTimestamp();
+            local_30.LastModifiedTimestamp = SortContext.PlayerInventory.opArrow().GetItemLastModifiedTimestamp(local_60);
         }
         else
         {

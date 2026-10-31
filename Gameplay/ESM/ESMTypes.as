@@ -1,4 +1,3 @@
-﻿
 enum EESMActionTargetType
 {
     Self,

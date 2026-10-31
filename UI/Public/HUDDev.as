@@ -1,4 +1,3 @@
-﻿
 namespace HUD_Development
 {
     const TMap<EDamageType, FLinearColor> DamageTypeColorTable = TMap<EDamageType, FLinearColor>();

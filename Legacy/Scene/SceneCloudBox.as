@@ -1,5 +1,3 @@
-﻿
-
 struct FCloudBoxSetting
 {
     UPROPERTY()
@@ -22,7 +20,6 @@ struct FCloudBoxSetting
     float32 Density = 3.0f;
     UPROPERTY()
     FLinearColor EmissiveColor = FLinearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
 
 }
 
@@ -83,30 +80,29 @@ class ASceneCloudBox : AActor
     }
     void FillCloudboxSettingToPrimitiveData()
     {
-        int local_4;
         if (this.MeshComp == nullptr)
         {
             return;
         }
-        this.MeshComp.SetCustomPrimitiveDataFloat(0, int(this.CloudboxSetting.NoiseScale));
-        this.MeshComp.SetCustomPrimitiveDataFloat(1, int(this.CloudboxSetting.NoiseTilling));
-        this.MeshComp.SetCustomPrimitiveDataFloat(2, int(this.CloudboxSetting.NoiseSpeed));
-        this.MeshComp.SetCustomPrimitiveDataFloat(3, int(this.CloudboxSetting.LightScale));
-        this.MeshComp.SetCustomPrimitiveDataFloat(4, int(this.CloudboxSetting.Density));
-        this.MeshComp.SetCustomPrimitiveDataFloat(5, int(this.CloudboxSetting.FadeLength));
-        this.MeshComp.SetCustomPrimitiveDataFloat(6, int(this.CloudboxSetting.FadeOffset));
+        this.MeshComp.SetCustomPrimitiveDataFloat(0, this.CloudboxSetting.NoiseScale);
+        this.MeshComp.SetCustomPrimitiveDataFloat(1, this.CloudboxSetting.NoiseTilling);
+        this.MeshComp.SetCustomPrimitiveDataFloat(2, this.CloudboxSetting.NoiseSpeed);
+        this.MeshComp.SetCustomPrimitiveDataFloat(3, this.CloudboxSetting.LightScale);
+        this.MeshComp.SetCustomPrimitiveDataFloat(4, this.CloudboxSetting.Density);
+        this.MeshComp.SetCustomPrimitiveDataFloat(5, this.CloudboxSetting.FadeLength);
+        float32 local_4 = this.CloudboxSetting.FadeOffset;
+        this.MeshComp.SetCustomPrimitiveDataFloat(6, local_4);
         if (this.CloudboxSetting.ShapeIndex >= 0)
         {
-            float local_7 = (this.CloudboxSetting.ShapeIndex % 2);
-            local_4 = int(local_7);
+            local_4 = (this.CloudboxSetting.ShapeIndex % 2);
         }
         else
         {
-            local_4 = -1082130432;
+            local_4 = -1.0f;
         }
         this.MeshComp.SetCustomPrimitiveDataFloat(7, local_4);
         this.MeshComp.SetCustomPrimitiveDataFloat(8, this.CloudboxSetting.EmissiveColor.R);
-        this.MeshComp.SetCustomPrimitiveDataFloat(9, int(this.CloudboxSetting.EmissiveColor.G));
+        this.MeshComp.SetCustomPrimitiveDataFloat(9, this.CloudboxSetting.EmissiveColor.G);
         this.MeshComp.SetCustomPrimitiveDataFloat(10, this.CloudboxSetting.EmissiveColor.B);
         return;
     }

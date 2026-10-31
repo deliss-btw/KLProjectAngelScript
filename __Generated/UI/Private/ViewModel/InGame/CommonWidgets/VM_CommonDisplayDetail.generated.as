@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommonDisplayDetail_Helpers
 {
 UFUNCTION()

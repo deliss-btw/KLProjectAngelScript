@@ -1,5 +1,3 @@
-﻿
-
 class UBTService_EcosimAIGetOffsetByEntity : UBTService_ECSScriptBase
 {
     UPROPERTY()

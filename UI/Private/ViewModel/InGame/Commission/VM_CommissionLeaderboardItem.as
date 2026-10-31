@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommissionLeaderboardItem
 {
     const int ModelId = 0;
@@ -18,7 +17,6 @@ struct FCommissionLeaderboardItemData
     TEUIModelRef<FM_CommissionLeaderboardEntry> EntryModel;
     UPROPERTY()
     TEUIModelWeakRef<FVM_CommissionLeaderboard> OwnerLeaderboard;
-
 
 }
 
@@ -374,7 +372,7 @@ struct FVM_CommissionLeaderboardPlayer : FEUIViewModel
             if (bShowTipsIfSelf)
             {
                 FCommonTipsParam local_12;
-                ::CommonPopup::WeakTips(NSLOCTEXT("CommissionLeaderboard", "CannotViewSelf", "ж— жі•жџҐзњ‹и‡Єиє«дїЎжЃЇ"), local_12);
+                ::CommonPopup::WeakTips(NSLOCTEXT("CommissionLeaderboard", "CannotViewSelf", "无法查看自身信息"), local_12);
             }
             return;
         }
@@ -465,7 +463,6 @@ struct __GeneratedProperties_FVM_CommissionLeaderboardItem
     UPROPERTY()
     TEUIModelRef<FVM_CommissionLeaderboardItem> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_CommissionLeaderboardPlayer
@@ -478,7 +475,6 @@ struct __GeneratedProperties_FVM_CommissionLeaderboardPlayer
     bool IsSelected;
     UPROPERTY()
     TEUIModelRef<FVM_CommissionLeaderboardPlayer> Self;
-
 
 }
 

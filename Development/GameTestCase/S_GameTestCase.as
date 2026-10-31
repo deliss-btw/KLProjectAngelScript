@@ -1,9 +1,6 @@
-﻿
-
 class US_GameTestCase : UECSScriptSystem
 {
     int GTCForceFixedOffsetFrame = 0;
-
 
     UFUNCTION()
     void ServerJob_GameTestBegin(const FECSEntity &inout Entity, FC_GameTest &inout GameTest, const FCS_FixedTime &inout FixedTime) const
@@ -168,7 +165,7 @@ class US_GameTestCase : UECSScriptSystem
         GameTest.RuntimeEntityIds.Empty(0);
         for (auto& local_24 : GameTest.TestCaseList)
         {
-            if (local_24.bDisabled)
+            if (int(local_24.bDisabled) != 0)
             {
                 continue;
             }
@@ -181,12 +178,12 @@ class US_GameTestCase : UECSScriptSystem
             local_166.SetGameTestId(int(GameTest.GameTestId));
             local_166.SetGameTestEntityId(Entity.GetId());
             local_166.SetGTCJsonAssetPath(local_24.GTCJsonAssetPath);
-            local_166.SetbEnableLatency(local_24.bEnableLatency);
+            local_166.SetbEnableLatency((int(local_24.bEnableLatency) != 0));
             local_166.SetBaseLatency(local_24.BaseLatency);
-            local_166.SetbResetCaseEnvironment(local_24.bResetCaseEnvironment);
+            local_166.SetbResetCaseEnvironment((int(local_24.bResetCaseEnvironment) != 0));
             local_166.SetFilterRemoveEntityNames(local_24.FilterRemoveEntityNames);
-            local_166.SetbFilterClearCheckpoints(local_24.bFilterClearCheckpoints);
-            local_166.SetbFilterClearSamplers(local_24.bFilterClearSamplers);
+            local_166.SetbFilterClearCheckpoints((int(local_24.bFilterClearCheckpoints) != 0));
+            local_166.SetbFilterClearSamplers((int(local_24.bFilterClearSamplers) != 0));
             local_166.SetNoReuseEntityNames(local_24.NoReuseEntityNames);
             TMap<FName, FECSEntityId> local_188;
             for (auto& local_206 : local_24.ManualPrefabs)
@@ -266,7 +263,7 @@ class US_GameTestCase : UECSScriptSystem
             }
             if (local_216.Contains(local_254.UniqueName))
             {
-                XError(ELog(40), FString().Append("еЏ‘зЋ°й‡Ќе¤Ќзљ„EntityUniqueName: ").Append(local_254.UniqueName));
+                XError(ELog(40), FString().Append("发现重复的EntityUniqueName: ").Append(local_254.UniqueName));
                 continue;
             }
             FECSEntity local_264;
@@ -386,7 +383,8 @@ class US_GameTestCase : UECSScriptSystem
                         }
                         else
                         {
-                            FECSEntityId local_454 = Cast<UClass>(local_254.PrefabToSpawn.ToSoftObjectPath().TryLoad());
+                            UClass local_454;
+                            local_454 = Cast<UClass>(local_254.PrefabToSpawn.ToSoftObjectPath().TryLoad());
                             local_264 = ECS::RequestEntityByPrefabDeferred(TSubclassOf<AECSPrefab>(local_454), local_254.InitTransform.GetLocation(), local_254.InitTransform.GetRotation().Rotator(), EPrefabCollisionAlignment(2), EECSRegType(0), false);
                             local_240.Add(local_264.GetId());
                         }
@@ -1493,12 +1491,12 @@ class US_GameTestCase : UECSScriptSystem
     void ClientJob_TestCaseSmoothCameraOnRenderFrame(const FECSEntity &inout Entity, const FC_TestCaseClientFixedInputs &inout FixedInputs) const
     {
         int local_6 = 0;
-        FRotator local_28;
         int local_38 = 0;
         if (local_6 && local_6.GetTargetEntity().IsValid() && (int(local_6.GetType()) == 2))
         {
             return;
         }
+        FRotator local_28 = this.SampleRecordedViewDir(FixedInputs.Actions, FixedInputs.BeginTime, FECSInterpoUtils::GetInterpoTime(Entity));
         if (local_28.IsNearlyZero(9.999999747378752e-5))
         {
             return;
@@ -1552,7 +1550,7 @@ class US_GameTestCase : UECSScriptSystem
             local_44.opCall();
         }
         this.RetargetTestCaseToNewPawn(local_18, local_4.GetId(), local_8.GetId());
-        XLog(ELog(40), FString().Append("[GTC] е€‡дєєиїЃз§»дё»и§’е›ћж”ѕ(Server): ").Append(local_4.GetId()).Append(" -> ").Append(local_8.GetId()));
+        XLog(ELog(40), FString().Append("[GTC] 切人迁移主角回放(Server): ").Append(local_4.GetId()).Append(" -> ").Append(local_8.GetId()));
         return;
     }
     UFUNCTION()
@@ -1589,7 +1587,7 @@ class US_GameTestCase : UECSScriptSystem
         }
         FECSEntityId local_12 = local_8.GetId();
         local_4.GetId();
-        XLog(ELog(40), FString().Append("[GTC] е€‡дєєиїЃз§»дё»и§’е›ћж”ѕ(Client-Logic): ").Append(local_11).Append(local_11).Append(" -> "));
+        XLog(ELog(40), FString().Append("[GTC] 切人迁移主角回放(Client-Logic): ").Append(local_11).Append(local_11).Append(" -> "));
         return;
     }
     UFUNCTION()
@@ -1630,7 +1628,7 @@ class US_GameTestCase : UECSScriptSystem
         }
         FECSEntityId local_12 = local_8.GetId();
         local_4.GetId();
-        XLog(ELog(40), FString().Append("[GTC] е€‡дєєиїЃз§»дё»и§’е›ћж”ѕ(Client-View): ").Append(local_11).Append(local_11).Append(" -> "));
+        XLog(ELog(40), FString().Append("[GTC] 切人迁移主角回放(Client-View): ").Append(local_11).Append(local_11).Append(" -> "));
         return;
     }
     void MoveComponent_ServerFixedInputs(const FECSEntity &inout From, const FECSEntity &inout To) const
@@ -1775,7 +1773,8 @@ class US_GameTestCase : UECSScriptSystem
     UFUNCTION()
     void ServerJob_TestCaseTickAction(const FECSEntity &inout Entity, FC_TestCaseActions &inout ActionComp, const FCS_FixedTime &inout FixedTime, const FCS_LocalTime &inout LocalTime) const
     {
-        int local_1 = int(ActionComp._base_FC_GTCActionContainer);
+        FGTCActionContext local_34 = this.MakeActionContext(ActionComp.TestCaseEntityId, int(ActionComp._base_FC_GTCActionContainer), ActionComp.BeginTime, FixedTime, LocalTime);
+        this.ExecuteAndRemoveActions(Entity, ActionComp.Actions, ActionComp.StartedFlags, local_34);
         if (ActionComp.Actions.Num() == 0)
         {
             Remove local_72;
@@ -1788,37 +1787,30 @@ class US_GameTestCase : UECSScriptSystem
     {
         FFPTime local_6 = (FFPTime(FixedTime.Time) - RoundCache.BeginTime);
         int local_7 = 0;
-        while (local_7 < 0)
+        for (; local_7 < LazyBind.PendingMonsters.Num(); ++local_7)
         {
             FGTCLazyBindMonster& local_12 = LazyBind.PendingMonsters[local_7];
             if (local_12.bBound)
             {
+                continue;
             }
-            else
+            if (local_6.GetTicks() < local_12.FirstStartTime.GetTicks())
             {
-                if (local_6.GetTicks() < local_12.FirstStartTime.GetTicks())
-                {
-                }
-                else
-                {
-                    FECSEntity local_24 = this.FindGameSpawnedMonster(TestCase, local_12);
-                    if (!(local_24.IsValid()))
-                    {
-                    }
-                    else
-                    {
-                        TMap<FName, FECSEntityId> local_44 = TestCase.GetEntityMap();
-                        local_24.GetId();
-                        TestCase.SetEntityMap(local_44);
-                        TMap<FName, FECSEntityId> local_66 = TestCase.GetAICommandEntityAliasMap();
-                        local_24.GetId();
-                        TestCase.SetAICommandEntityAliasMap(local_66);
-                        this.BindLazyMonster(Entity, RoundCache, local_12, local_24);
-                        local_12.bBound = true;
-                    }
-                }
+                continue;
             }
-            ++local_7;
+            FECSEntity local_24 = this.FindGameSpawnedMonster(TestCase, local_12);
+            if (!(local_24.IsValid()))
+            {
+                continue;
+            }
+            TMap<FName, FECSEntityId> local_44 = TestCase.GetEntityMap();
+            local_44.Add(local_12.UniqueName, local_24.GetId());
+            TestCase.SetEntityMap(local_44);
+            TMap<FName, FECSEntityId> local_66 = TestCase.GetAICommandEntityAliasMap();
+            local_66.Add(local_12.UniqueName, local_24.GetId());
+            TestCase.SetAICommandEntityAliasMap(local_66);
+            this.BindLazyMonster(Entity, RoundCache, local_12, local_24);
+            local_12.bBound = true;
         }
         return;
     }
@@ -1949,10 +1941,13 @@ class US_GameTestCase : UECSScriptSystem
     UFUNCTION()
     void ServerJob_TestCaseTickSampler(const FECSEntity &inout Entity, FC_TestCaseServerSamplers &inout ActionComp, const FCS_FixedTime &inout FixedTime, const FCS_LocalTime &inout LocalTime) const
     {
+        int local_82 = 0;
+        FGTCActionContext local_34 = this.MakeActionContext(ActionComp.TestCaseEntityId, int(ActionComp._base_FC_GTCActionContainer), ActionComp.BeginTime, FixedTime, LocalTime);
         if (!(FECSEntity(ActionComp.TestCaseEntityId).IsValid()))
         {
             return;
         }
+        this.ExecuteSamplersByIndex(Entity, local_82.SamplerConfigs, ActionComp.SamplerIndices, ActionComp.SamplerStartedFlags, local_34);
         return;
     }
     UFUNCTION()
@@ -1998,7 +1993,8 @@ class US_GameTestCase : UECSScriptSystem
     UFUNCTION()
     void ClientJob_TestCaseTickLocalInput(const FECSEntity &inout Entity, FC_TestCaseClientInputs &inout ActionComp, const FCS_FixedTime &inout FixedTime, const FCS_LocalTime &inout LocalTime) const
     {
-        int local_1 = int(ActionComp._base_FC_GTCActionContainer);
+        FGTCActionContext local_34 = this.MakeActionContext(ActionComp.TestCaseEntityId, int(ActionComp._base_FC_GTCActionContainer), ActionComp.BeginTime, FixedTime, LocalTime);
+        this.ExecuteAndRemoveActions(Entity, ActionComp.Actions, ActionComp.StartedFlags, local_34);
         if (ActionComp.Actions.Num() == 0)
         {
             Remove local_72;
@@ -2009,19 +2005,25 @@ class US_GameTestCase : UECSScriptSystem
     UFUNCTION()
     void ClientJob_TestCaseTickSampler(const FECSEntity &inout Entity, FC_TestCaseClientViewSamplers &inout ActionComp, const FCS_FixedTime &inout FixedTime, const FCS_LocalTime &inout LocalTime) const
     {
+        int local_82 = 0;
+        FGTCActionContext local_34 = this.MakeActionContext(ActionComp.TestCaseEntityId, int(ActionComp._base_FC_GTCActionContainer), ActionComp.BeginTime, FixedTime, LocalTime);
         if (!(FECSEntity(ActionComp.TestCaseEntityId).IsValid()))
         {
             return;
         }
+        this.ExecuteSamplersByIndex(Entity, local_82.SamplerConfigs, ActionComp.SamplerIndices, ActionComp.SamplerStartedFlags, local_34);
         return;
     }
     UFUNCTION()
     void ClientJob_TestCaseFixedFrameSampler(const FECSEntity &inout Entity, FC_TestCaseClientLogicSamplers &inout ActionComp, const FCS_FixedTime &inout FixedTime, const FCS_LocalTime &inout LocalTime) const
     {
+        int local_82 = 0;
+        FGTCActionContext local_34 = this.MakeActionContext(ActionComp.TestCaseEntityId, int(ActionComp._base_FC_GTCActionContainer), ActionComp.BeginTime, FixedTime, LocalTime);
         if (!(FECSEntity(ActionComp.TestCaseEntityId).IsValid()))
         {
             return;
         }
+        this.ExecuteSamplersByIndex(Entity, local_82.SamplerConfigs, ActionComp.SamplerIndices, ActionComp.SamplerStartedFlags, local_34);
         return;
     }
     UFUNCTION()
@@ -2070,7 +2072,7 @@ class US_GameTestCase : UECSScriptSystem
                 local_40 = 0.0f;
             }
             local_22 = FMath::Lerp(local_32_2.Position, local_34.Position, local_40);
-            float32 local_48 = FMath::Lerp(local_32_2.Rotation.Roll, local_34.Rotation.Roll, local_40);
+            float local_48 = FMath::Lerp(local_32_2.Rotation.Roll, local_34.Rotation.Roll, local_40);
             float local_58 = FMathUtils::LerpDegree(float32(local_32_2.Rotation.Yaw), float32(local_34.Rotation.Yaw), local_40);
             local_28 = FRotator(FMath::Lerp(local_32_2.Rotation.Pitch, local_34.Rotation.Pitch, local_40), local_58, local_48);
             local_29 = FMath::Lerp(local_32_2.FOV, local_28, local_40);
@@ -2086,15 +2088,13 @@ class US_GameTestCase : UECSScriptSystem
         {
             return;
         }
-        int local_2 = RoundCache.DetailedDataCurrentIndex;
-        int local_1 = RoundCache.DetailedDataLists.Num();
-        if (local_2 >= local_1)
+        if (int(RoundCache.DetailedDataCurrentIndex) >= RoundCache.DetailedDataLists.Num())
         {
             return;
         }
         FFPTime local_10 = (FFPTime(FixedTime.Time) - RoundCache.BeginTime);
         FFPTime local_6 = (FFPTime(FixedTime.LastTime) - RoundCache.BeginTime);
-        while (local_2 < local_1)
+        while (int(RoundCache.DetailedDataCurrentIndex) < RoundCache.DetailedDataLists.Num())
         {
             FDetailedData& local_14 = RoundCache.DetailedDataLists[int(RoundCache.DetailedDataCurrentIndex)];
             FFPTime local_16 = FFPTime(local_14.TimeStamp.FrameTime);
@@ -2293,11 +2293,11 @@ class US_GameTestCase : UECSScriptSystem
     }
     void TickFixedInputActions(const FECSEntity &inout Entity, FC_TestCaseServerFixedInputs &inout ActionComp, const FCS_FixedTime &inout FixedTime, const FCS_LocalTime &inout LocalTime) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     void TickFixedInputActions(const FECSEntity &inout Entity, FC_TestCaseClientFixedInputs &inout ActionComp, const FCS_FixedTime &inout FixedTime, const FCS_LocalTime &inout LocalTime) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     void InterpolateFixedInputCamera(const FECSEntity &inout Entity, TArray<FInstancedStruct> &inout Actions, const int Idx, const FGTCActionContext &inout Context) const
     {
@@ -2556,7 +2556,7 @@ class US_GameTestCase : UECSScriptSystem
     }
     void ExecuteAndRemoveActions(const FECSEntity &inout Entity, TArray<FInstancedStruct> &inout Actions, TArray<bool> &inout StartedFlags, const FGTCActionContext &inout Context) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     void ApplyCheckpointIfPresent(const FECSEntity &inout TargetEntity, FC_TestCaseServerFixedInputs &inout ActionComp, const FFPTime &inout CurTime) const
     {
@@ -2589,8 +2589,7 @@ class US_GameTestCase : UECSScriptSystem
         bool local_7 = FECSEntity::Has<FC_ESMPlayer>(TargetEntity).opCall();
         if (local_7)
         {
-            int local_2 = local_10.ESMStates.Num();
-            int local_24 = FMath::Min(local_22.Player.GetSMRuntime().Num());
+            int local_24 = FMath::Min(local_22.Player.GetSMRuntime().Num(), local_10.ESMStates.Num());
             int local_25 = 0;
             for (; local_25 < local_24; )
             {
@@ -2647,6 +2646,7 @@ class US_GameTestCase : UECSScriptSystem
     bool GenerateTestRoundOuput(const FString &inout GTCAssetName, const int Round, const int64 CurrntStartTicks, const int BeginFrame, FC_TestCaseSharedSamplers &inout SharedSamplers, FString &out JsonString) const
     {
         FString local_56;
+        bool local_63;
         FString local_4;
         JsonString = local_4;
         FGTCTestCaseJsonOutput local_16;
@@ -2655,40 +2655,36 @@ class US_GameTestCase : UECSScriptSystem
         local_16.BeginFrame = BeginFrame;
         TMap<FString, FString> local_36;
         int local_37 = 0;
-        while (local_37 < 0)
+        for (; local_37 < SharedSamplers.SamplerConfigs.Num(); ++local_37)
         {
             if ((FInstancedStruct::GetMutablePtr(SharedSamplers.SamplerConfigs[local_37]).opCall() == nullptr))
             {
+                continue;
+            }
+            FString local_52;
+            FString local_60 = FString();
+            int local_62 = CurrntStartTicks;
+            local_63 = false;
+            if (!((FInstancedStruct::GetMutablePtr(SharedSamplers.SamplerConfigs[local_37]).opCall() == nullptr)))
+            {
+                local_63 = local_62.TryCollectResult(local_52);
             }
             else
             {
-                bool local_63;
-                FString local_52;
-                FString local_60 = FString();
-                int local_62 = CurrntStartTicks;
-                local_63 = false;
                 if (!((FInstancedStruct::GetMutablePtr(SharedSamplers.SamplerConfigs[local_37]).opCall() == nullptr)))
                 {
                     local_63 = local_62.TryCollectResult(local_52);
                 }
-                else
-                {
-                    if (!((FInstancedStruct::GetMutablePtr(SharedSamplers.SamplerConfigs[local_37]).opCall() == nullptr)))
-                    {
-                        local_63 = local_62.TryCollectResult(local_52);
-                    }
-                }
-                if (local_63)
-                {
-                    local_16.SamplerResults.Add(local_56);
-                    local_36.Add(local_56, local_52);
-                }
-                else
-                {
-                    XError(ELog(40), FString().Append("[ERROR] Failed To Replace ").Append(local_56));
-                }
             }
-            ++local_37;
+            if (local_63)
+            {
+                local_16.SamplerResults.Add(local_56);
+                local_36.Add(local_56, local_52);
+            }
+            else
+            {
+                XError(ELog(40), FString().Append("[ERROR] Failed To Replace ").Append(local_56));
+            }
         }
         if (FJsonObjectConverter::UStructToJsonObjectString(local_16, local_56, 0, 0, 0, true))
         {

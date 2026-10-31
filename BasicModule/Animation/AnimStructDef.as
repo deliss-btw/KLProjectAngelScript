@@ -1,5 +1,3 @@
-﻿
-
 struct FBeShakeBodyInfo
 {
     UPROPERTY()
@@ -19,7 +17,6 @@ struct FBeShakeBodyInfo
     UPROPERTY()
     float32 BeHitShakeScale;
 
-
 }
 
 struct FAnimFloatStack
@@ -33,15 +30,15 @@ struct FAnimFloatStack
     }
     void Push(const float32 InValue)
     {
-        this.Add(InValue);
+        this.Value.Add(InValue);
         return;
     }
     void Pop()
     {
-        int local_2 = this.Num();
+        int local_2 = this.Value.Num();
         if (local_2 >= 1)
         {
-            this.SetNum(local_2 - 1);
+            this.Value.SetNum(local_2 - 1);
         }
         return;
     }
@@ -50,7 +47,7 @@ struct FAnimFloatStack
         float32 local_4;
         if (!(this.IsEmpty()))
         {
-            local_4 = this[(this.Num() - 1)];
+            local_4 = this.Value[(this.Value.Num() - 1)];
         }
         else
         {
@@ -60,7 +57,7 @@ struct FAnimFloatStack
     }
     bool IsEmpty() const
     {
-        return (this.Num() == 0);
+        return (this.Value.Num() == 0);
     }
 }
 

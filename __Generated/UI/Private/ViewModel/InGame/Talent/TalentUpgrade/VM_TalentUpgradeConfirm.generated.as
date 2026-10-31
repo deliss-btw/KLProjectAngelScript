@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TalentUpgradeConfirm_Helpers
 {
 UFUNCTION()

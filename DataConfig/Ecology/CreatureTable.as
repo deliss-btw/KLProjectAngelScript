@@ -1,4 +1,3 @@
-﻿
 enum ECreatureMoveStance
 {
     None,
@@ -6,7 +5,6 @@ enum ECreatureMoveStance
     Walk,
     Sprint,
 }
-
 
 struct FCreatureDefinitionRow : FDataObject
 {
@@ -45,7 +43,6 @@ struct FEcologyBossBattleForAreaInfo
     FChangeAreaMessageInfo BattleStartMessageInfo;
     UPROPERTY()
     FChangeAreaMessageInfo BattleEndMessageInfo;
-
 
 }
 
@@ -91,7 +88,6 @@ struct FEcologyCreatureDefinitionRow : FCreatureDefinitionRow
 
     FEcologyCreatureDefinitionRow()
     {
-        super();
         this.OverSlotWanderInnerRadius = 600.0f;
         this.OverSlotWanderOuterRadius = 1000.0f;
         return;
@@ -114,7 +110,6 @@ struct FEcoCollectableCreatureDefinitionRow : FCreatureDefinitionRow
     UPROPERTY()
     FVector2D SpawnScaleUniformFactorRandomRange = FVector2D(0.9, 1.1);
 
-
     float32 GetSpawnScaleUniformFactor() const
     {
         float32 local_8;
@@ -133,12 +128,12 @@ struct FEcoCollectableCreatureDefinitionRow : FCreatureDefinitionRow
         FDataObjectValidationResult local_16;
         if (!(this.EcoCollectablePrefab.IsValid()))
         {
-            local_16.Error = FString("EcoCollectablePrefabдёЌиѓЅдёєз©єпјЃ");
+            local_16.Error = FString("EcoCollectablePrefab不能为空！");
             return local_16;
         }
         if (this.bApplyRandomSpawnScaleUniformFactor && (this.SpawnScaleUniformFactorRandomRange.X > this.SpawnScaleUniformFactorRandomRange.Y || (this.SpawnScaleUniformFactorRandomRange.X <= 0.0)))
         {
-            local_16.Error = FString("зЎ®дїќSpawnScaleRandomRangeзљ„зі»ж•°е¤§дєЋ0пјЊдё”Min <= Max!");
+            local_16.Error = FString("确保SpawnScaleRandomRange的系数大于0，且Min <= Max!");
         }
         return local_16;
     }

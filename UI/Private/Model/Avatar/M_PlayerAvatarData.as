@@ -1,4 +1,3 @@
-﻿
 namespace FMS_PlayerAvatarData
 {
     const int ModelId = 0;
@@ -16,7 +15,6 @@ struct FMsg_UnlockAvatar : FEUIMessage
 {
     UPROPERTY()
     uint AvatarDataId;
-
 
 }
 
@@ -205,7 +203,51 @@ struct FMS_PlayerAvatarData : FEUIModelSingleton
     }
     void RefreshAvatarListEntryRedDot()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_37;
+        int local_38 = 0;
+        bool local_39;
+        FMS_RedDotSystem& local_2 = ::FMS_RedDotSystem::Get(this.GetContext().Manager);
+        TDataObjectIterator<FAvatarMappingConfig> local_18;
+        for (; local_18; )
+        {
+            const FAvatarMappingConfig& local_22 = local_18.GetData();
+            for (auto& local_36 : local_22.GetAvatar())
+            {
+                if (!(local_36))
+                {
+                    continue;
+                }
+                local_37 = local_38;
+                local_39 = false;
+                int64 local_42 = 2;
+                for (; local_42 <= 5; ++local_42)
+                {
+                    local_38 = 32;
+                    int64 local_46 = (local_42 << local_38) | local_37;
+                    if (local_2.HasRedDotFromEvent(ERedPointEvent(11), GameplayTags::RedDotSystem_Talisman_NewTalismanSlot, local_46))
+                    {
+                        local_39 = true;
+                        break;
+                    }
+                }
+                bool local_51 = (local_2.HasRedDot(GameplayTags::RedDotSystem_Avatar_GetNewAvatar, local_37) || local_2.HasRedDot(GameplayTags::RedDotSystem_Avatar_NewSkillEntry, local_37) || local_2.HasRedDot(GameplayTags::RedDotSystem_Talent_Entrance, local_37)) || local_39;
+                int64 local_44 = local_37;
+                bool local_50 = local_2.HasRedDot(GameplayTags::RedDotSystem_Avatar_ListEntry, local_44);
+                if ((local_51 && !(local_50)))
+                {
+                    local_44 = local_37;
+                    local_2.GenerateSpecificRedDot(GameplayTags::RedDotSystem_Avatar_ListEntry, local_44, 1, false);
+                    continue;
+                }
+                if (!(local_51) && local_50)
+                {
+                    local_44 = local_37;
+                    local_2.ConsumeRedDot(GameplayTags::RedDotSystem_Avatar_ListEntry, local_44);
+                }
+            }
+            local_18.Next();
+        }
+        return;
     }
     const TArray<TEUIModelRef<FM_Avatar>> GetCurrentAvatars() const property
     {
@@ -319,7 +361,11 @@ void __GS_OnUnlockAvatarNotify(FMS_PlayerAvatarData &inout Model, const FProtoWr
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorDSPlayerAvatarInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorDSPlayerAvatarInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    ECSWorld.__MonitorPlayerControllerLifetime(EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    ECSWorld.__MonitorPlayerControllerModification(EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_CurrentAvatars()
 {

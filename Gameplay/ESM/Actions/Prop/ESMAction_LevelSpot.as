@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_OverrideLevelSpotPresentation : UESMBPBaseInstantAction
 {
     UPROPERTY()
@@ -19,6 +17,7 @@ class UESMAction_OverrideLevelSpotPresentation : UESMBPBaseInstantAction
     UFUNCTION()
     void Do_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
+        ::EntityLevelSpotUtils::AddSpotData(Context.GetEntity(), ELevelSpotDataSource(4), FLevelSpotData(this.OverridePresentationConfig, this.OverridePresentationRuleConfig));
         return;
     }
 }

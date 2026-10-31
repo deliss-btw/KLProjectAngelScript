@@ -1,4 +1,3 @@
-﻿
 namespace FTeamCommonData
 {
     const FTeamCommonData Dummy = FTeamCommonData();

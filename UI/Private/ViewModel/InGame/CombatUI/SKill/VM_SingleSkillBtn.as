@@ -1,4 +1,3 @@
-﻿
 enum ESkillBtnProgressType
 {
     None,
@@ -692,7 +691,7 @@ struct FVM_NormalSkillBtn : FEUIViewModel
     }
     FLinearColor GetCommonDamageColor() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         FLinearColor __r; return __r;
     }
     FLinearColor GetIconColor() const
@@ -867,7 +866,7 @@ struct FVM_NormalSkillBtn : FEUIViewModel
         FText local_16;
         if (local_10)
         {
-            local_16 = FText::AsCultureInvariant("Г—{0}");
+            local_16 = FText::AsCultureInvariant("×{0}");
             return FText::Format(local_16, local_10.GetRemainUsableCount());
         }
         return local_16;
@@ -877,7 +876,7 @@ struct FVM_NormalSkillBtn : FEUIViewModel
         FText local_8;
         if (this.GetbShowItemUsableCount() && (this.GetItemUsableCount() >= 0))
         {
-            local_8 = FText::AsCultureInvariant("Г—{0}");
+            local_8 = FText::AsCultureInvariant("×{0}");
             return FText::Format(local_8, this.GetItemUsableCount());
         }
         return local_8;
@@ -1160,7 +1159,7 @@ struct FVM_NormalSkillBtn : FEUIViewModel
     }
     void SyncDurationEffectSource()
     {
-        // body not fully recovered вЂ” stub [unresolved-operand]
+        // body not fully recovered — stub [unresolved-operand]
     }
     void ClearSkillWatchSources()
     {
@@ -2711,7 +2710,6 @@ struct __GeneratedProperties_FVM_SkillBtnSpecialCountItem
     UPROPERTY()
     TEUIModelRef<FVM_SkillBtnSpecialCountItem> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_SkillBtnSpecialCounts
@@ -2813,7 +2811,6 @@ struct __GeneratedProperties_FVM_NormalSkillBtn
     FLinearColor RechargingColorTemp;
     UPROPERTY()
     TEUIModelRef<FVM_NormalSkillBtn> Self;
-
 
 }
 

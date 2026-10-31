@@ -1,12 +1,9 @@
-﻿
-
 struct FTestInternal1
 {
     UPROPERTY()
     int A;
     UPROPERTY()
     int B;
-
 
 }
 
@@ -18,7 +15,6 @@ struct FTestInternal2
     int A;
     UPROPERTY()
     int B;
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_DSSocialTeamInfoPendingUpdateTag_NS
 {
     const TECSComponentDerivedPtr<FCS_DSSocialTeamInfoPendingUpdateTag> DerivedPtr = TECSComponentDerivedPtr<FCS_DSSocialTeamInfoPendingUpdateTag>();
@@ -18,7 +17,6 @@ struct FSocialTeamMember
     UPROPERTY()
     FDivineSkillData DivineSkillData;
 
-
 }
 
 struct FClientSocialTeamInfo
@@ -29,7 +27,6 @@ struct FClientSocialTeamInfo
     TArray<FSocialTeamMember> Members;
     UPROPERTY()
     uint LeaderID;
-
 
     FString GetMemberNameByUid(const uint MemberID) const
     {
@@ -174,16 +171,16 @@ bool RemoveDSSocialTeamInfoPendingUpdateTag(const FECSWorldPtr &inout World)
 }
 void __MonitorDSSocialTeamInfoPendingUpdateTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_DSSocialTeamInfoPendingUpdateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_DSSocialTeamInfoPendingUpdateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDSSocialTeamInfoPendingUpdateTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_DSSocialTeamInfoPendingUpdateTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_DSSocialTeamInfoPendingUpdateTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorDSSocialTeamInfoPendingUpdateTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_DSSocialTeamInfoPendingUpdateTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_DSSocialTeamInfoPendingUpdateTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

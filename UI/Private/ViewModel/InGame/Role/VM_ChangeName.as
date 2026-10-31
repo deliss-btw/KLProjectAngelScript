@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_ChangeName
 {
     const int ModelId = 0;
@@ -53,7 +52,7 @@ struct FVMS_ChangeName : FEUIViewModelSingleton
             return;
         }
         FCommonTipsParam local_12;
-        ::CommonPopup::Tips(NSLOCTEXT("ChangeName", "ChangeName_ChangeNameFailed", "дї®ж”№еђЌе­—е¤±иґҐ"), local_12);
+        ::CommonPopup::Tips(NSLOCTEXT("ChangeName", "ChangeName_ChangeNameFailed", "修改名字失败"), local_12);
         return;
     }
     bool GetbShouldClose() const property

@@ -1,4 +1,3 @@
-﻿
 enum ECombatTeamRule
 {
     None,
@@ -6,7 +5,6 @@ enum ECombatTeamRule
     AllInOne,
     PVX,
 }
-
 
 struct FGameRuleConfig : FDataObject
 {
@@ -35,7 +33,6 @@ struct FGameRuleConfig : FDataObject
     TArray<FDataObjectPtr> m_DisabledSystemControls;
     UPROPERTY()
     FCombatRestrictionSettings CombatRestriction;
-
 
     const TArray<TDataObjectPtr<FSystemControlConfig>> GetDisabledSystemControls() const property
     {

@@ -1,9 +1,7 @@
-﻿
-
 struct FESMCharacterCurveMovementInstanceData
 {
     UPROPERTY()
-    FVector DeltaMovement;
+    FVector DeltaMovement = FVector::ZeroVector;
 
     FESMCharacterCurveMovementInstanceData()
     {
@@ -33,7 +31,6 @@ class UESMAction_CharacterCurveMovementAction : UESMBPBaseSpanTickAction
     FESMBBVar_Float RightOffsetDistScale = 0.0f;
     UPROPERTY()
     FVector2D ForwardBlendInOut = FVector2D(0.1, 0.0);
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const

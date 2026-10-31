@@ -1,4 +1,3 @@
-﻿
 enum EInteractionSubTypeForESM
 {
     None,

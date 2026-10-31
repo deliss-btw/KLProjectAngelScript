@@ -1,5 +1,3 @@
-﻿
-
 struct FExecutionConfigDataObject : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -39,7 +37,6 @@ struct FExecutionConfigDataObject : FDataObject
     TSoftClassPtr<AEnergyBallPrefab> BuffBallPrefab;
     UPROPERTY()
     int BuffBallNum;
-
 
     TDataObjectPtr<FMessageHintConfig> GetMessageHintConfig() const property
     {

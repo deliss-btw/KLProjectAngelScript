@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_Common_Center_Spend_Helpers
 {
 UFUNCTION()

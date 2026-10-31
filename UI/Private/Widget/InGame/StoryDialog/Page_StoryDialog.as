@@ -1,4 +1,3 @@
-﻿
 namespace UPage_StoryDialog
 {
     const int ViewID = 0;
@@ -110,6 +109,7 @@ namespace UPage_StoryDialog
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UPage_StoryDialog;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

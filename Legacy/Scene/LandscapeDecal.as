@@ -1,5 +1,3 @@
-﻿
-
 class ALandscapeDecal : AActor
 {
     UPROPERTY()

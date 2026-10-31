@@ -1,4 +1,3 @@
-﻿
 namespace PVXSettlementEventNames
 {
     const FName LevelEvent_PVXBossDeath = n"PVXBossDeath";
@@ -37,8 +36,8 @@ void SetPlayerFinalState(const FECSEntity &inout PlayerEntity, const EPVXPlayerF
     FECSWorldPtr local_2_2 = ECS::GetECSWorld();
     if (local_14.GetPlayerProgressMap().Contains(PlayerEntity))
     {
-        local_14.GetModify_PlayerProgressMap()[PlayerEntity].SetFinalState();
-        local_14.GetModify_PlayerProgressMap()[PlayerEntity].SetFinishReason();
+        local_14.GetModify_PlayerProgressMap()[PlayerEntity].SetFinalState(EPVXPlayerFinalState(State));
+        local_14.GetModify_PlayerProgressMap()[PlayerEntity].SetFinishReason(EPVXPlayerFinishReason(FinishReason));
     }
     return;
 }

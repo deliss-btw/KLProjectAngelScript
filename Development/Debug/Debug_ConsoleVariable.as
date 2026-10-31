@@ -1,4 +1,3 @@
-﻿
 namespace Debug
 {
     const FConsoleVariable CVar_Debug_MaxAttack = FConsoleVariable();

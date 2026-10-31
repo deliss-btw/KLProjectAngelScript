@@ -1,5 +1,3 @@
-﻿
-
 class US_ChapterSystem : UECSScriptSystem
 {
     US_ChapterSystem()

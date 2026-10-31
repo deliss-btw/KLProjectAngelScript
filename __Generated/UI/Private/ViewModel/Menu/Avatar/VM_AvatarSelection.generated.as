@@ -1,5 +1,3 @@
-﻿
-
 struct FConfigVM_AvatarSelection : FConfigEUIModelBase
 {
     UPROPERTY()
@@ -15,11 +13,10 @@ struct FConfigVM_AvatarSelection : FConfigEUIModelBase
 
 struct FAvatarApplySelection : FEUIModelDelegate
 {
-    FEUIModelDelegate _base_FEUIModelDelegate;
+    FEUIModelDelegate _base_FEUIModelDelegate = FEUIModelDelegate("bool", "FEUIModelRef");
 
     FAvatarApplySelection()
     {
-        FEUIModelDelegate local_26 = FEUIModelDelegate("bool", "FEUIModelRef");
         return;
     }
     bool Execute(const FEUIModelRef &inout Arg0) const

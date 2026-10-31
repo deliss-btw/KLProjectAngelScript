@@ -1,4 +1,3 @@
-﻿
 enum ECustomWheelOptionType
 {
     Emoji,
@@ -6,7 +5,6 @@ enum ECustomWheelOptionType
     SocialAction,
     Message,
 }
-
 
 struct FSignalConfig : FDataObject
 {
@@ -41,7 +39,6 @@ struct FCustomWheelOptionConfig : FDataObject
     FDataObjectPtr m_DefaultSignalData;
     UPROPERTY()
     FDataObjectPtr m_DefaultMotionData;
-
 
     const TDataObjectPtr<FEmojiData> GetDefaultEmojiData() const property
     {

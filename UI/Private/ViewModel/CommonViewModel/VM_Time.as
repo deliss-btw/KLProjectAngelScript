@@ -1,4 +1,3 @@
-﻿
 namespace FVM_Lifetime
 {
     const int ModelId = 0;
@@ -189,7 +188,6 @@ struct __GeneratedProperties_FVM_Lifetime
     float32 RemainingLifetimePercentage;
     UPROPERTY()
     TEUIModelRef<FVM_Lifetime> Self;
-
 
 }
 

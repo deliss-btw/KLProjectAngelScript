@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_PlayerStoryDialog_NS
 {
     const TECSComponentDerivedPtr<FC_PlayerStoryDialog> DerivedPtr = TECSComponentDerivedPtr<FC_PlayerStoryDialog>();
@@ -40,11 +39,12 @@ struct FStoryDialogDisplayData
     }
     FString GetStringData() const property
     {
-        return this;
+        return this.m_StringData;
     }
     void SetStringData(const FString &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_StringData = __Value;
+        return;
     }
 }
 
@@ -54,7 +54,6 @@ struct FStoryDialogParticipantDetail
     int m_ParticipantIndex;
     UPROPERTY()
     FString m_NickName;
-
 
     int GetParticipantIndex() const property
     {
@@ -90,11 +89,16 @@ struct FStoryDialogSection
 
     FStoryDialogSection()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_bIsPureOption = false;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        return;
     }
     FStoryDialogSection(const FStoryDialogSection &inout Other)
     {
         this.m_bIsPureOption = false;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.m_ParticipantDetails = Other.m_ParticipantDetails;
         this.m_Options = Other.m_Options;
         this.m_bIsPureOption = Other.m_bIsPureOption;
@@ -213,7 +217,8 @@ struct FStoryDialogInfo
     }
     void SetParticipants(const TArray<FECSEntity> &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Participants = __Value;
+        return;
     }
     const TArray<FStoryDialogSection> GetDialogSections() const property
     {
@@ -252,18 +257,17 @@ struct FStoryDialogInfoBuilder
     UPROPERTY()
     bool ContainsChoose = false;
 
-
     FStoryDialogInfo Get()
     {
         FStoryDialogInfo local_8;
         FStoryDialogInfo __r;
-        local_8.SetParticipants(this);
+        local_8.SetParticipants(this.ParticipatedEntities);
         local_8.SetDialogSections(this.BuildingSections);
         return __r;
     }
     bool IsEmpty() const
     {
-        return this.IsEmpty() && this.BuildingSections.IsEmpty();
+        return this.ParticipatedEntities.IsEmpty() && this.BuildingSections.IsEmpty();
     }
     bool EntitySay(const FECSEntity &inout Entity, const FString &inout Content, const FString &inout UseNickName = "")
     {
@@ -326,8 +330,19 @@ struct FStoryDialogInfoBuilder
     }
     TArray<FStoryDialogParticipantDetail> MakeParticipantDetailArray(const FECSEntity &inout Entity, const FString &inout NickName)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        TArray<FStoryDialogParticipantDetail> __r; return __r;
+        int local_2 = this.ParticipatedEntities.IndexOfByKey(Entity);
+        int local_1 = INDEX_NONE;
+        if (local_2 == local_1)
+        {
+            local_2 = this.ParticipatedEntities.Num();
+            this.ParticipatedEntities.Add(Entity);
+        }
+        FStoryDialogParticipantDetail local_10;
+        local_10.SetParticipantIndex(local_2);
+        local_10.SetNickName(NickName);
+        TArray<FStoryDialogParticipantDetail> local_14;
+        local_14.Add(local_10);
+        return local_14;
     }
 }
 
@@ -373,7 +388,6 @@ struct FCE_StoryDialogSelect : FECSEvent
     UPROPERTY()
     int SelectedIndex;
 
-
 }
 
 struct FCE_StoryDialogInterrupt : FECSEvent
@@ -395,7 +409,6 @@ struct FCE_StoryDialogEnd : FECSEvent
     FECSEntity TargetEntity;
     UPROPERTY()
     int SelectedIndex;
-
 
 }
 
@@ -479,37 +492,37 @@ bool RemovePlayerStoryDialog(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPlayerStoryDialogOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerStoryDialog, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerStoryDialog, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerStoryDialogOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerStoryDialog, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerStoryDialog, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerStoryDialogOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerStoryDialog, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerStoryDialog, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerStoryDialogOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerStoryDialog, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerStoryDialog, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerStoryDialogOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerStoryDialog, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerStoryDialog, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPlayerStoryDialogLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PlayerStoryDialog, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PlayerStoryDialog, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerStoryDialogActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PlayerStoryDialog, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PlayerStoryDialog, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerStoryDialogModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PlayerStoryDialog, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PlayerStoryDialog, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

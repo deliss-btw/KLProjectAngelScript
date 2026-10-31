@@ -1,12 +1,9 @@
-﻿
-
 struct FCookRecipeRuntime
 {
     UPROPERTY()
     FFoodCraftConfig Recipe;
     UPROPERTY()
     int LoadOrder = 0;
-
 
 }
 
@@ -22,7 +19,6 @@ struct FCookOutcome
     TDataObjectPtr<FFoodProductConfig> ProductFood;
     UPROPERTY()
     TArray<TDataObjectPtr<FGameplayModifierConfig>> Modifiers;
-
 
 }
 
@@ -196,7 +192,7 @@ FCookOutcome ResolveCookOutcome(const TArray<FCookRecipeRuntime> &inout SortedRe
             for (auto local_101 : local_86)
             {
                 int local_102 = 0;
-                local_82.Find(local_101, local_102);
+                local_82.Find(ECookStatType(local_101), local_102);
                 TDataObjectPtr<FGameplayModifierConfig> local_126 = FCookUtils::LookupStatModifier(Ladder, ECookStatType(local_101), local_102);
                 if ((!((local_126 == nullptr))))
                 {

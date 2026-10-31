@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::API::GTCAPI
 {
 uint StartTest(const int EntityId, const TArray<FGTCTestCaseInputConfig> &inout TestCaseConfigList, const FString &inout OutputFolder)
@@ -65,7 +64,7 @@ bool IsTestFinished(const uint GameTestId)
 }
 TArray<FString> GetGameTestLogFiles(const uint GameTestId)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     TArray<FString> __r; return __r;
 }
 TMap<uint, FGTCInfo> GetGameTestSummary()

@@ -1,4 +1,3 @@
-﻿
 enum EFaction
 {
     None,
@@ -37,7 +36,6 @@ enum EFaction
     RevenantBoss,
     Max,
 }
-
 
 struct FDamageFactionRelationConfig
 {
@@ -106,10 +104,9 @@ struct FDamageFactionRelationConfig
     UPROPERTY()
     EFactionRelation RevenantBoss = EFactionRelation(1);
 
-
     TArray<EFactionRelation> ToRelationArray()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         TArray<EFactionRelation> __r; return __r;
     }
 }

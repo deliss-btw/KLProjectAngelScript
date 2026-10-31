@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PVX_Settlement_Main
 {
     const int ModelId = 0;
@@ -39,11 +38,45 @@ struct FVM_PVX_Settlement_Main : FEUIViewModel
 
     FVM_PVX_Settlement_Main()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_CurrentPhaseType = EPVX_SettlementPhaseType(0);
+        this.m_CurrentPhaseIndex = INDEX_NONE;
+        this.m_bAllPhasesCompleted = false;
+        this.m_LocalPlayerFaction = EFaction(1);
+        this.m_CountdownDisplaySeconds = 0;
+        this.m_bIsSuccess = false;
+        this.m_WinnerTeamId = -1;
+        this.m_LocalPlayerTeamId = -1;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVM_PVX_Settlement_Main(const FVM_PVX_Settlement_Main &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_CurrentPhaseType = EPVX_SettlementPhaseType(0);
+        this.m_CurrentPhaseIndex = INDEX_NONE;
+        this.m_bAllPhasesCompleted = false;
+        this.m_LocalPlayerFaction = EFaction(1);
+        this.m_CountdownDisplaySeconds = 0;
+        this.m_bIsSuccess = false;
+        this.m_WinnerTeamId = -1;
+        this.m_LocalPlayerTeamId = -1;
+        this.m_CurrentPhaseIndex = int(Other.m_CurrentPhaseIndex);
+        this.m_CurrentPhaseType = Other.m_CurrentPhaseType;
+        this.m_DynamicWidget = Other.m_DynamicWidget;
+        this.m_bAllPhasesCompleted = Other.m_bAllPhasesCompleted;
+        this.m_LocalPlayerFaction = Other.m_LocalPlayerFaction;
+        this.m_ActivePhaseList = Other.m_ActivePhaseList;
+        this.m_PhaseConfigs = Other.m_PhaseConfigs;
+        this.m_PhaseCountdownEndTime = Other.m_PhaseCountdownEndTime;
+        this.m_CountdownDisplaySeconds = int(Other.m_CountdownDisplaySeconds);
+        this.m_PhaseTimerHandle = Other.m_PhaseTimerHandle;
+        this.m_bIsSuccess = Other.m_bIsSuccess;
+        this.m_WinnerTeamId = int(Other.m_WinnerTeamId);
+        this.m_LocalPlayerTeamId = int(Other.m_LocalPlayerTeamId);
+        this.m_CommissionFinish = Other.m_CommissionFinish;
+        return;
     }
     FVM_PVX_Settlement_Main& opAssign(const FVM_PVX_Settlement_Main &inout Other)
     {
@@ -164,13 +197,13 @@ struct FVM_PVX_Settlement_Main : FEUIViewModel
         {
             return;
         }
-        this.SetCurrentPhaseType(EPVX_SettlementPhaseType(this.GetActivePhaseList()[this.GetCurrentPhaseIndex()]));
+        this.SetCurrentPhaseType(this.GetActivePhaseList()[this.GetCurrentPhaseIndex()]);
         TSoftClassPtr<UEUIUserWidget> local_14 = TSoftClassPtr<UEUIUserWidget>(this.GetPhaseConfigs()[this.GetCurrentPhaseIndex()].PhaseWidgetClass);
         if (!(local_14.IsNull()))
         {
             FEUIDynamicWidgetData local_38;
             local_38.WidgetClass = local_14;
-            local_38.ModelContainer = this.CreatePhaseViewModel(EPVX_SettlementPhaseType(this.GetCurrentPhaseType()));
+            local_38.ModelContainer = this.CreatePhaseViewModel(this.GetCurrentPhaseType());
             this.SetDynamicWidget(local_38);
         }
         float32 local_54 = this.GetCurrentPhaseDuration();
@@ -196,10 +229,8 @@ struct FVM_PVX_Settlement_Main : FEUIViewModel
             }
             else
             {
-                bool local_3 = this.GetbIsSuccess();
-                int local_4 = int(this.GetLocalPlayerFaction());
-                __return = FEUIModelContainer();
-                __return = FEUIModelContainer();
+                __return = FEUIModelContainer(::FVM_PVX_Settlement_PhaseResult::Create(this.GetContext().Manager, this.GetLocalPlayerFaction(), this.GetbIsSuccess()));
+                __return = FEUIModelContainer(::FVM_PVX_Settlement_PhasePerformance::Create(this.GetContext().Manager));
             }
         }
         return FEUIModelContainer();
@@ -247,7 +278,7 @@ struct FVM_PVX_Settlement_Main : FEUIViewModel
             {
                 TEUIModelRef<FVM_CommissionFinish> local_8 = this.GetCommissionFinish();
                 0.SetTitleTextIndex();
-                FText local_12 = NSLOCTEXT("PVX", "Settlement_HuntEnd", "з‹©зЊЋз»“жќџ");
+                FText local_12 = NSLOCTEXT("PVX", "Settlement_HuntEnd", "狩猎结束");
                 TEUIModelRef<FVM_CommissionFinish> local_8_2 = this.GetCommissionFinish();
                 local_12.SetTitleNormalText();
             }
@@ -270,7 +301,7 @@ struct FVM_PVX_Settlement_Main : FEUIViewModel
         {
             TEUIModelRef<FVM_CommissionFinish> local_8_5 = this.GetCommissionFinish();
             0.SetTitleTextIndex();
-            FText local_12_2 = NSLOCTEXT("PVX", "Settlement_Performance", "е›ўйџиЎЁзЋ°");
+            FText local_12_2 = NSLOCTEXT("PVX", "Settlement_Performance", "团队表现");
             TEUIModelRef<FVM_CommissionFinish> local_8_6 = this.GetCommissionFinish();
             local_12_2.SetTitleNormalText();
         }
@@ -553,7 +584,6 @@ struct __GeneratedProperties_FVM_PVX_Settlement_Main
     int CountdownSeconds;
     UPROPERTY()
     TEUIModelRef<FVM_PVX_Settlement_Main> Self;
-
 
 }
 

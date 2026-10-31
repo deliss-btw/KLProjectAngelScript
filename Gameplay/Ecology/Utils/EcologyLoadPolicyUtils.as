@@ -1,4 +1,3 @@
-﻿
 namespace EcologyLoadPolicyUtils
 {
 const FEcologyLoadPolicy GetCurrentPolicy()

@@ -1,4 +1,3 @@
-﻿
 enum EAttributeCompareResult
 {
     Equal,
@@ -77,14 +76,13 @@ struct __GeneratedProperties_FVM_AttributeCompare
     UPROPERTY()
     TEUIModelRef<FVM_AttributeCompare> Self;
 
-
 }
 
 namespace FVM_AttributeCompare
 {
 FVM_AttributeCompare& Create(const UObject ContextObject, const EAttributeCompareResult CompareResult)
 {
-    return FVM_AttributeCompare::CreateByManager(EUIInternal::GetContextManager(ContextObject));
+    return FVM_AttributeCompare::CreateByManager(EUIInternal::GetContextManager(ContextObject), EAttributeCompareResult(CompareResult));
 }
 FVM_AttributeCompare CreateByManager(const UEUIManagerSubsystem Manager, const EAttributeCompareResult CompareResult)
 {

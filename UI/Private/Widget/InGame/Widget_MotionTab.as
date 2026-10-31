@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_MotionTab
 {
     const int ViewID = 0;
@@ -59,6 +58,7 @@ namespace UWidget_MotionTab
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MotionTab;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

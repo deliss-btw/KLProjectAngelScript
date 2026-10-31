@@ -1,5 +1,3 @@
-﻿
-
 struct FIntrusionPolicyConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -15,7 +13,6 @@ struct FIntrusionPolicyConfig : FDataObject
     FSoftBrush IntrusionIcon;
     UPROPERTY()
     TSet<TSoftClassPtr<AKLLevelScriptActor>> ExtraLoadDatalayerClasses;
-
 
 }
 

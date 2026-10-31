@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommonHoverItemTips
 {
     const int ViewID = 0;
@@ -46,7 +45,6 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
     FGetEUIModelRef OperationListDelegate;
     UPROPERTY()
     FGetEUIModelRef CommonHoverContentDelegate;
-
 
     UFUNCTION()
     void OnViewBind_Implementation()
@@ -843,6 +841,7 @@ namespace UWidget_CommonHoverItemTips
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonHoverItemTips;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnDisplayTipChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnOperationListShowStateChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnDisplayTipActionFingerprintChanged"));

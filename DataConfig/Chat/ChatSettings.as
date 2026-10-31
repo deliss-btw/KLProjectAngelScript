@@ -1,4 +1,3 @@
-﻿
 enum EChatMainTab
 {
     Channel,
@@ -20,7 +19,6 @@ enum EChatChannelTabStateInLevel
     OnlyInnerLevel,
 }
 
-
 struct FChatTabInfoConfig
 {
     UPROPERTY()
@@ -35,7 +33,6 @@ struct FChatTabInfoConfig
     ESystemModule SystemModule;
     UPROPERTY()
     FSoftBrush TabIcon;
-
 
 }
 
@@ -63,7 +60,6 @@ struct FChatChannelTabInfoConfig
     UPROPERTY()
     EChatChannelTabStateInLevel StateInLevel;
 
-
 }
 
 struct FChatHudConfig
@@ -83,7 +79,6 @@ struct FChatHudConfig
     UPROPERTY()
     TArray<EChatChannelTab> ShowChannelsInner;
 
-
 }
 
 struct FFriendTabInfoConfig
@@ -96,7 +91,6 @@ struct FFriendTabInfoConfig
     FGameplayTag RedDotTag;
     UPROPERTY()
     bool bHide;
-
 
 }
 
@@ -178,7 +172,6 @@ class UChatSettings : UGameplaySettingsBase
     TDataObjectPtr<FKLTextData> RecruitCommissionTeamTextData;
     UPROPERTY()
     TDataObjectPtr<FKLTextData> RecruitSendSuccessTipsTextData;
-
 
 }
 

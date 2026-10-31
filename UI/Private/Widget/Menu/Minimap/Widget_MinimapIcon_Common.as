@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_MinimapIcon_Common
 {
     const int ViewID = 0;
@@ -57,6 +56,7 @@ namespace UWidget_MinimapIcon_Common
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MinimapIcon_Common;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

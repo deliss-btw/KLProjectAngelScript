@@ -1,4 +1,3 @@
-﻿
 enum ENetReason
 {
     ENET_NONE,
@@ -10,7 +9,6 @@ enum ENetReason
     ENET_DSAllocFailed,
     ENET_GAME_DOWNTIME,
 }
-
 
 struct FErrorCodeSettingsCache
 {

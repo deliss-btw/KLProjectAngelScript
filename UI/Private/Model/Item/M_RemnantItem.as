@@ -1,4 +1,3 @@
-﻿
 namespace FMS_RemnantItemModel
 {
     const int ModelId = 0;
@@ -198,7 +197,9 @@ void __OnRemnantSlotChanged(FMS_RemnantItemModel &inout Model, const FCE_Remnant
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorRemnantInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorRemnantInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_PlayerInventory()
 {

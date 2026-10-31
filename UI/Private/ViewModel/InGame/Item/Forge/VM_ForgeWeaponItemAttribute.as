@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ForgeWeaponItemAttribute
 {
     const int ModelId = 0;

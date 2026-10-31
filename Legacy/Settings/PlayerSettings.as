@@ -1,5 +1,3 @@
-﻿
-
 struct FStigmataConfigGroup
 {
     UPROPERTY()
@@ -55,12 +53,88 @@ class UPlayerInfoSettings : UGameplaySettingsBase
     UPROPERTY()
     FEUIInputActionDataRow StigmataUnlockConfirmAction;
 
-
     UFUNCTION()
     FInstancedStruct ComputeCacheData_Implementation() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        FInstancedStruct __r; return __r;
+        FPlayerSettingsCache local_60;
+        TDataObjectIterator<FPlayerLevelConfig> local_76;
+        for (; local_76; )
+        {
+            TDataObjectPtr<FPlayerLevelConfig> local_142 = local_76.GetDataPtr();
+            int local_146 = this.GetLevelIndexInCache(::NumericUtils::AsInt32(local_142.opArrow().Level));
+            if (local_60.LevelConfigs.Num() <= local_146)
+            {
+                local_60.LevelConfigs.SetNum(local_146 + 1);
+            }
+            local_60.LevelConfigs[local_146] = local_142;
+            local_76.Next();
+        }
+        int local_146_2 = 0;
+        for (; local_146_2 < local_60.LevelConfigs.Num(); ++local_146_2)
+        {
+            TDataObjectPtr<FPlayerLevelConfig> local_118;
+            local_118 = local_60.LevelConfigs[local_146_2];
+            if ((local_118 == nullptr))
+            {
+                continue;
+            }
+            int local_145 = this.GetLevelByIndexInCache(local_146_2);
+            if (local_60.LevelConfigs[local_146_2].opArrow().IsBreakthroughLevel)
+            {
+                local_60.BreakthroughLevels.Add(local_145);
+            }
+            if (local_60.LevelConfigs[local_146_2].opArrow().bIsStigmataLevel)
+            {
+                local_60.StigmataLevels.Add(local_145);
+                local_60.FakeStigmataPointNums.Add(local_145, local_60.LevelConfigs[local_146_2].opArrow().FakeStigmataPointNum);
+            }
+        }
+        bool local_93 = false;
+        TDataObjectIterator<FStigmataConfig> local_188;
+        for (; local_188; )
+        {
+            TDataObjectPtr<FStigmataConfig> local_252 = local_188.GetDataPtr();
+            if (local_252.opArrow().UnlockCost.Num() == 0)
+            {
+                local_60.NoCostStigmataConfigs.Add(local_252);
+            }
+            else
+            {
+                int local_171 = this.FindOwnerStigmataLevel(local_60.StigmataLevels, ::NumericUtils::AsInt32(local_252.opArrow().RoleLevel));
+                if (local_171 != INDEX_NONE)
+                {
+                    local_60.HasCostStigmataConfigsByLevel.FindOrAdd(local_171).Configs.Add(local_252);
+                }
+            }
+            local_188.Next();
+        }
+        for (auto& local_272 : local_60.HasCostStigmataConfigsByLevel)
+        {
+            local_272;
+        }
+        if (this.AttributeGrowByLevelConfigTable != nullptr)
+        {
+            TArray<FName> local_280;
+            this.AttributeGrowByLevelConfigTable.GetRowNames(local_280);
+            int local_171_2 = 0;
+            while (local_93)
+            {
+                UDataTable::FindDataObject local_286;
+                TDataObjectPtr<FGameAttributeGrowByLevelConfig> local_310 = local_286.opCall(local_280[local_171_2]);
+                if (local_310)
+                {
+                    local_60.AttributeGrowByLevelConfigs.Add(local_310);
+                }
+                ++local_171_2;
+                if (local_171_2 >= local_60.LevelConfigs.Num())
+                {
+                    local_93 = false;
+                    continue;
+                }
+                local_93 = (local_171_2 < local_280.Num());
+            }
+        }
+        return FInstancedStruct::Make(local_60);
     }
     TDataObjectPtr<FPlayerLevelConfig> GetLevelConfig(const int Level) const
     {
@@ -85,12 +159,12 @@ class UPlayerInfoSettings : UGameplaySettingsBase
     }
     TArray<int> GetBreakthroughLevels() const property
     {
-        // body not fully recovered вЂ” stub [no-return]
+        // body not fully recovered — stub [no-return]
         TArray<int> __r; return __r;
     }
     TArray<int> GetStigmataLevels() const property
     {
-        // body not fully recovered вЂ” stub [no-return]
+        // body not fully recovered — stub [no-return]
         TArray<int> __r; return __r;
     }
     uint GetLevelupTotalUpgradeExp(const int FromLevel, const int ToLevel) const
@@ -152,7 +226,7 @@ class UPlayerInfoSettings : UGameplaySettingsBase
     }
     TArray<TDataObjectPtr<FStigmataConfig>> GetAllNoCostStigmataConfigs() const
     {
-        // body not fully recovered вЂ” stub [no-return]
+        // body not fully recovered — stub [no-return]
         TArray<TDataObjectPtr<FStigmataConfig>> __r; return __r;
     }
     TArray<TDataObjectPtr<FStigmataConfig>> GetNoCostStigmataConfigsInRange(const int MinLevel, const int MaxLevelExclusive) const
@@ -188,8 +262,16 @@ class UPlayerInfoSettings : UGameplaySettingsBase
     }
     int FindOwnerStigmataLevel(const TArray<int> &inout InStigmataLevels, const int RoleLevel) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        int local_1 = INDEX_NONE;
+        for (auto local_16 : InStigmataLevels)
+        {
+            if (local_16 > RoleLevel)
+            {
+                break;
+            }
+            local_1 = local_16;
+        }
+        return local_1;
     }
 }
 

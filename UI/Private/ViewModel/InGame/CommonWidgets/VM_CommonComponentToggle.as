@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonComponentToggle
 {
     const int ModelId = 0;
@@ -36,15 +35,65 @@ struct FVM_CommonComponentToggle : FEUIViewModel
 
     FVM_CommonComponentToggle()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_DefaultIndex = 0;
+        this.m_CurrentSelectedIndex = INDEX_NONE;
+        this.m_MultipleSelectionState = 0;
+        this.m_RightArrowHoverState = 0;
+        this.m_LeftArrowHoverState = 0;
+        this.m_BtnHoverState = 0;
+        this.m_RightArrowEnabled = true;
+        this.m_LeftArrowEnabled = true;
+        this.m_SwitcherEnabled = true;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        XError(ELog(17), "Should not construct model'FVM_CommonComponentToggle' by default constructor.");
+        return;
     }
     FVM_CommonComponentToggle(const FVM_CommonComponentToggle &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_DefaultIndex = 0;
+        this.m_CurrentSelectedIndex = INDEX_NONE;
+        this.m_MultipleSelectionState = 0;
+        this.m_RightArrowHoverState = 0;
+        this.m_LeftArrowHoverState = 0;
+        this.m_BtnHoverState = 0;
+        this.m_RightArrowEnabled = true;
+        this.m_LeftArrowEnabled = true;
+        this.m_SwitcherEnabled = true;
+        this.m_OptionTexts = Other.m_OptionTexts;
+        this.m_DefaultIndex = int(Other.m_DefaultIndex);
+        this.m_DisplayText = Other.m_DisplayText;
+        this.m_CurrentSelectedIndex = int(Other.m_CurrentSelectedIndex);
+        this.m_MultipleSelectionState = int(Other.m_MultipleSelectionState);
+        this.m_RightArrowHoverState = int(Other.m_RightArrowHoverState);
+        this.m_LeftArrowHoverState = int(Other.m_LeftArrowHoverState);
+        this.m_BtnHoverState = int(Other.m_BtnHoverState);
+        this.m_RightArrowEnabled = Other.m_RightArrowEnabled;
+        this.m_LeftArrowEnabled = Other.m_LeftArrowEnabled;
+        this.m_SwitcherEnabled = Other.m_SwitcherEnabled;
+        return;
     }
     FVM_CommonComponentToggle(const TArray<FText> &inout InOptionTexts, const int InDefaultIndex, const FOnCommonComponentToggleSelected &inout InOnComponentToggleSelected)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_DefaultIndex = 0;
+        this.m_CurrentSelectedIndex = INDEX_NONE;
+        this.m_MultipleSelectionState = 0;
+        this.m_RightArrowHoverState = 0;
+        this.m_LeftArrowHoverState = 0;
+        this.m_BtnHoverState = 0;
+        this.m_RightArrowEnabled = true;
+        this.m_LeftArrowEnabled = true;
+        this.m_SwitcherEnabled = true;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        this.SetOptionTexts(InOptionTexts);
+        this.SetDefaultIndex(InDefaultIndex);
+        this.SetOnComponentToggleSelected(InOnComponentToggleSelected);
+        return;
     }
     FVM_CommonComponentToggle opAssign(const FVM_CommonComponentToggle &inout Other)
     {

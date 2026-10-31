@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ArmWrestle_Result
 {
     const int ModelId = 0;

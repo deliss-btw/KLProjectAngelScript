@@ -1,5 +1,3 @@
-﻿
-
 struct FDistanceFormattingOptions
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ struct FDistanceFormattingOptions
     EUnit ImperialMinUnit = EUnit(6);
     UPROPERTY()
     EUnit ImperialMaxUnit = EUnit(8);
-
 
     bool IsConfigValid() const
     {

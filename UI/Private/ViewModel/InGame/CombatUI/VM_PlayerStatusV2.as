@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_PlayerStatusV2
 {
     const int ModelId = 0;
@@ -239,7 +238,7 @@ struct FVMS_PlayerStatusV2 : FEUIViewModelSingleton
     }
     void RefreshStaminaRecoverState()
     {
-        // body not fully recovered вЂ” stub [unresolved-operand]
+        // body not fully recovered — stub [unresolved-operand]
     }
     void MonitorPlayerControllerChanged(const FC_PlayerController &inout PlayerController)
     {
@@ -835,7 +834,6 @@ struct __GeneratedProperties_FVMS_PlayerStatusV2
     UPROPERTY()
     TEUIModelRef<FVMS_PlayerStatusV2> Self;
 
-
 }
 
 namespace FVMS_PlayerStatusV2
@@ -977,7 +975,9 @@ void __MonitorPlayerControllerChanged(FVMS_PlayerStatusV2 &inout Model, const FE
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    ECSWorld.__MonitorPlayerControllerLifetime(EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    ECSWorld.__MonitorPlayerControllerModification(EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TEUIModelRef<FVM_PlayerAvatarIcon> __UIGetter_PlayerAvatarIconFirst(const FVMS_PlayerStatusV2 &inout Model)
 {

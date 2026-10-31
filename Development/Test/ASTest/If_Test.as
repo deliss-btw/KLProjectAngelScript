@@ -1,4 +1,3 @@
-﻿
 int IfTest1(const int X)
 {
     int local_1 = 0;

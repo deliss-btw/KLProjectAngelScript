@@ -1,4 +1,3 @@
-﻿
 namespace EcologyPropUtils
 {
 FName GetWeatherName(const FECSEntity &inout Entity)
@@ -17,13 +16,12 @@ FName GetWeatherName(const FECSEntity &inout Entity)
 }
 bool CalculateActivationState(const FECSEntity &inout Entity, bool &out bOutShow)
 {
-    TDataObjectPtr<FEcologyResourceDefinitionRow> local_6;
     int local_8;
     int local_9;
     int local_10;
     float32 local_40 = 0.0f;
     bOutShow = false;
-    if ((local_6 == NAME_None))
+    if ((EcologyPropUtils::GetWeatherName(Entity) == NAME_None))
     {
         return false;
     }

@@ -1,4 +1,3 @@
-﻿
 enum ELevelSequenceVisibilityMode
 {
     None,

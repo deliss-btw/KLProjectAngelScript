@@ -1,5 +1,3 @@
-﻿
-
 class UWidget_SkillResAnimCache : UObject
 {
     UPROPERTY()
@@ -13,7 +11,6 @@ class UWidget_SkillResAnimCache : UObject
     UPROPERTY()
     TArray<float> CachedStartTimes;
     bool bPendingVisible;
-
 
     void Init(const UEUIUserWidget InOwner)
     {
@@ -49,7 +46,7 @@ class UWidget_SkillResAnimCache : UObject
     UFUNCTION()
     void ApplyVisibilityChanged()
     {
-        this.OnOwnerVisibilityChanged(this.bPendingVisible);
+        this.OnOwnerVisibilityChanged((this.bPendingVisible));
         return;
     }
     UFUNCTION()

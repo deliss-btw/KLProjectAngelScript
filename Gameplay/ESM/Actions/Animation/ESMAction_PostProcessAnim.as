@@ -1,5 +1,3 @@
-﻿
-
 struct FESMPostProcessAnimInstanceData
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ struct FESMPostProcessAnimInstanceData
     FVector AttachLocation;
     UPROPERTY()
     bool bIsLocalPlayer = false;
-
 
 }
 
@@ -38,7 +35,6 @@ class UESMAction_PostProcessAnim : UESMBPBaseSpanTickAction
     FName AttachSocketName;
     UPROPERTY()
     FVector AttachOffset;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetViewInstanceDataInfo_Implementation() const
@@ -75,7 +71,7 @@ class UESMAction_PostProcessAnim : UESMBPBaseSpanTickAction
         {
             return;
         }
-        float local_9 = float32(Time.ActionDuration.ToSeconds());
+        float32 local_9 = float32(Time.ActionDuration.ToSeconds());
         if (this.bUseCustomDuration)
         {
             local_9 = this.CustomDuration;

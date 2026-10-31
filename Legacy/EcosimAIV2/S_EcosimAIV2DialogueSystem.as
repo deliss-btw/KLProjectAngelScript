@@ -1,5 +1,3 @@
-﻿
-
 class US_EcosimAIV2InteractDialogueSystem : UECSScriptSystem
 {
     US_EcosimAIV2InteractDialogueSystem()

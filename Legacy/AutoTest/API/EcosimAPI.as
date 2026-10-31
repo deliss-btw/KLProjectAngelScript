@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::API::EcosimAPI
 {
 void SetEntityBehaviorTreeRunState(const uint EntityId, const bool bRun)

@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_SetAnimDataSpanTime : UESMBPBaseSpanTickAction
 {
     UPROPERTY()

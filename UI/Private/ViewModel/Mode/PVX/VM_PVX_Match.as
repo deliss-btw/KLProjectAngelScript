@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PVX_Match
 {
     const int ModelId = 0;
@@ -156,7 +155,7 @@ struct FVM_PVX_Match : FEUIViewModel
                     this.SetBossCampusItem(TEUIModelRef<FVM_PVX_Match_CampusItem>(::FVM_PVX_Match_CampusItem::Create(this.GetContext().Manager, local_62, false)));
                     if (this.GetOutOfOpenPeriodTips().IsEmpty())
                     {
-                        this.SetOutOfOpenPeriodTips(NSLOCTEXT("PVXMatch", "OutOfOpenPeriod", "жњЄењЁзЋ©жі•ејЂе§‹ж—¶ж®µ"));
+                        this.SetOutOfOpenPeriodTips(NSLOCTEXT("PVXMatch", "OutOfOpenPeriod", "未在玩法开始时段"));
                     }
                     bool local_3 = ::OpenTimeRangeUtils::IsNowInAnyRange(GetOpenPeriods());
                     this.SetbInOpenPeriod(local_3);
@@ -166,7 +165,7 @@ struct FVM_PVX_Match : FEUIViewModel
                         FText local_72 = ::OpenTimeRangeUtils::GetRangesDisplayText(GetOpenPeriods());
                         if (!(local_72.IsEmpty()))
                         {
-                            this.SetOpenPeriodHint(FText::Format(NSLOCTEXT("PVXMatch", "OpenPeriodHint", "<Beige20F>жЇЏж—Ґ </>{0}<Beige20F> ејЂеђЇ</>"), local_72));
+                            this.SetOpenPeriodHint(FText::Format(NSLOCTEXT("PVXMatch", "OpenPeriodHint", "<Beige20F>每日 </>{0}<Beige20F> 开启</>"), local_72));
                         }
                     }
                     TEUIModelRef<FMS_Mode> local_2 = this.GetModeMS();
@@ -487,7 +486,7 @@ struct FVM_PVX_Match : FEUIViewModel
         if (GetbMatching())
         {
             FCommonTipsParam local_18;
-            ::CommonPopup::Tips(NSLOCTEXT("PVXMatch", "AlreadyMatchingOther", "е·Іжњ‰иї›иЎЊдё­зљ„еЊ№й…Ќ"), local_18);
+            ::CommonPopup::Tips(NSLOCTEXT("PVXMatch", "AlreadyMatchingOther", "已有进行中的匹配"), local_18);
             return;
         }
         if (this.GetbCanMatch())
@@ -898,7 +897,6 @@ struct __GeneratedProperties_FVM_PVX_Match
     UPROPERTY()
     TEUIModelRef<FVM_PVX_Match> Self;
 
-
 }
 
 namespace FVM_PVX_Match
@@ -915,7 +913,122 @@ FVM_PVX_Match CreateByManager(const UEUIManagerSubsystem Manager, const TEUIMode
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasBeginDestroy(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(true);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "bMatching";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bInOpenPeriod";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "OpenPeriodHint";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TitleHoverTipsVM";
+    local_14.TypeName = "TEUIModelRef<FVM_TitleAndDesc>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "MatchHint";
+    local_14.TypeName = "TEUIModelRef<FVM_Match_HintComp>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PlayerCampusItem";
+    local_14.TypeName = "TEUIModelRef<FVM_PVX_Match_CampusItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "BossCampusItem";
+    local_14.TypeName = "TEUIModelRef<FVM_PVX_Match_CampusItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurDisplayingTeammates";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_TeammateInfo>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CanLeaveTeam";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasPlayerCampusSelected";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasBossCampusSelected";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsCurrentModeMatching";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_PVX_Match>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_PVX_Match;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(20);
+    local_22.AddRefPropertyDirty(0, 2, FVM_TeamPanel::__IndexOf_DisplayingTeammates());
+    local_22.AddRefPropertyDirty(1, 5, FVM_PVX_Match_CampusItem::__IndexOf_bSelected());
+    local_22.AddRefPropertyDirty(2, 6, FVM_PVX_Match_CampusItem::__IndexOf_bSelected());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("TeamPanel");
+    int local_2_2 = FVM_TeamPanel::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(2);
+    local_30.RelatedDirtyMask.SetBit(FVM_TeamPanel::__IndexOf_DisplayingTeammates(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    local_30.PropertyName = FName("PlayerCampusItem");
+    int local_24 = FVM_PVX_Match_CampusItem::ModelId;
+    int local_24_2 = local_22.GetMappingDirtyOffset(5);
+    local_30.RelatedDirtyMask.SetBit(FVM_PVX_Match_CampusItem::__IndexOf_bSelected(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    local_30.PropertyName = FName("BossCampusItem");
+    int local_23 = FVM_PVX_Match_CampusItem::ModelId;
+    int local_23_2 = local_22.GetMappingDirtyOffset(6);
+    local_30.RelatedDirtyMask.SetBit(FVM_PVX_Match_CampusItem::__IndexOf_bSelected(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnDisplayingTeammatesChanged";
+    local_40.DirtyFlags.Set(FVM_PVX_Match::__IndexOf_TeamPanel());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    FEUIModelMsgHandleDefine local_50;
+    local_50.FunctionName = "__OnCampusItemClicked";
+    local_50.MessageTypeName = "Msg_PVXMatchCampusItemClicked";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    local_40.FunctionName = "__OnPlayerCampusItemSelectedChange";
+    local_40.DirtyFlags.Set(FVM_PVX_Match::__IndexOf_PlayerCampusItem());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(1));
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnBossCampusItemSelectedChange";
+    local_40.DirtyFlags.Set(FVM_PVX_Match::__IndexOf_BossCampusItem());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(2));
+    Result.DirtyFunctions.Add(local_40);
+    local_50.FunctionName = "__OnModeMatchStatusUpdate";
+    local_50.MessageTypeName = "Msg_ModeMatchStatusUpdate";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

@@ -1,4 +1,3 @@
-﻿
 namespace NPCDailyRouteRuntimeLibrary
 {
 FName GetEffectiveRouteSourceId(const ANPCPathRouteActor RouteActor)
@@ -380,6 +379,7 @@ FECSEntity SpawnMonsterByMonsterId(const TDataObjectPtr<FMonsterMainConfig> &ino
     if (MonsterConfig)
     {
         FEcologyCreatureSpawnerContext local_64;
+        FCreatureConfigProxy local_90 = FCreatureConfigProxy(MonsterConfig);
         local_64.TargetLocation = Position;
         local_64.TargetRotation = Rotation;
         local_64.SpawnInitEntryName = SpawnInitEntryName;
@@ -398,6 +398,7 @@ FECSEntity SpawnNPCByNPCConfig(const TDataObjectPtr<FNPCMainConfig> &inout NPCCo
     if (NPCConfig)
     {
         FEcologyCreatureSpawnerContext local_64;
+        FCreatureConfigProxy local_90 = FCreatureConfigProxy(NPCConfig);
         local_64.TargetLocation = Position;
         local_64.TargetRotation = Rotation;
         local_64.SpawnInitEntryName = SpawnInitEntryName;

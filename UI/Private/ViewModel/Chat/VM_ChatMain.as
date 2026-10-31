@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_ChatMain
 {
     const int ModelId = 0;
@@ -348,9 +347,7 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
                 {
                     return;
                 }
-                bool local_3 = false;
-                int local_146 = int(local_56.GetHoverLayout());
-                local_56.SetHoverHandle(::CommonPopup::HoverCustom(local_142, local_56.GetHoverWidgetClass(), local_56.GetHoverModels(), true, false, ECommonHoverLayout(0), local_3));
+                local_56.SetHoverHandle(::CommonPopup::HoverCustom(local_142, local_56.GetHoverWidgetClass(), local_56.GetHoverModels(), true, false, local_56.GetHoverLayout(), EEUILayoutLayer(0), false));
             }
         }
         return;
@@ -685,15 +682,12 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
             FVM_CommonTabItem& local_28 = ::FVM_CommonTabItem::Create(this.GetContext().Manager);
             local_28.SetTitleText(::ChatSystemUtil::ResolveKLTextData(local_20.TabNameTextData));
             FEUIModelContainer local_46;
-            FEUIModelRef local_48 = FEUIModelRef(local_24);
-            local_46.AddModel(local_48, false);
-            local_46.AddModel(local_48, false);
-            local_48 = FEUIModelRef(local_28);
-            local_46.AddModel(local_48, false);
+            local_46.AddModel(FEUIModelRef(local_24), false);
+            local_46.AddModel(FEUIModelRef(::FVM_Image::Create(this.GetContext().Manager, local_20.TabIcon)), false);
+            local_46.AddModel(FEUIModelRef(local_28), false);
             if (local_20.RedDotTabTag.IsValid())
             {
-                FRedDotNodeData local_52 = FRedDotNodeData(local_20.RedDotTabTag, 0);
-                local_46.AddModel(local_48, false);
+                local_46.AddModel(FEUIModelRef(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(local_20.RedDotTabTag, 0))), false);
             }
             this.MainTabTypes.Add(this.GetModify_MainTabs().Add(local_46));
         }
@@ -713,7 +707,7 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
     }
     void SyncMainTabVisualFromRuntime()
     {
-        this.SetSelectedMainTab(EChatMainTab(this.GetChatRuntimeData().opArrow().GetSelectMainTab()));
+        this.SetSelectedMainTab(this.GetChatRuntimeData().opArrow().GetSelectMainTab());
         FEUIModelContainer local_18;
         int local_19 = 0;
         for (; local_19 < this.MainTabTypes.Num(); ++local_19)
@@ -778,6 +772,8 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
         FMS_PlayerBriefInfo& local_26 = ::FMS_PlayerBriefInfo::Get(this.GetManager());
         FPlayerBriefInfo local_62 = local_26.GetPlayerBriefInfo(PlayerUid);
         TEUIModelRef<FM_Player> local_68 = ::FMS_PlayerData::Get(this.GetManager()).UpdateOrCreateByBriefInfo(local_62, EPlayerInfoTrust(1));
+        int local_70 = 2;
+        int local_69 = local_70;
         if (::FLevelUtils::GetCurrentLevelInfoConfig(nullptr))
         {
             ELevelType local_119;
@@ -785,21 +781,27 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
             local_119 = local_120;
             if (int(local_119) == 2)
             {
+                int local_70_2 = 2;
+                local_69 = local_70_2;
             }
             else
             {
                 if (int(local_119) == 1)
                 {
+                    int local_70_3 = 1;
+                    local_69 = local_70_3;
                 }
                 else
                 {
                     if ((int(local_119) == 3 || (int(local_119) == 5)))
                     {
+                        int local_70_4 = 3;
+                        local_69 = local_70_4;
                     }
                 }
             }
         }
-        ::FVM_SocialViewPage::GotoPage(this.GetContext().UELocalPlayer, local_68, ESocialViewPageOpenType(0));
+        ::FVM_SocialViewPage::GotoPage(this.GetContext().UELocalPlayer, local_68, ESocialViewPageOpenType(local_69), 0);
         return;
     }
     TEUIModelRef<FMS_ChatDataModel> GetChatDataModel() const property
@@ -1133,7 +1135,6 @@ struct __GeneratedProperties_FVMS_ChatMain
     UPROPERTY()
     TEUIModelRef<FVMS_ChatMain> Self;
 
-
 }
 
 namespace FVMS_ChatMain
@@ -1150,7 +1151,217 @@ FVMS_ChatMain GetByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "ChannelPanel";
+    local_14.TypeName = "TEUIModelRef<FVM_ChatChannelPanel>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PrivateChatPanel";
+    local_14.TypeName = "TEUIModelRef<FVM_ChatPrivateChatPanel>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "FriendPanel";
+    local_14.TypeName = "TEUIModelRef<FVM_ChatFriendPanel>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "UnReadTips";
+    local_14.TypeName = "TEUIModelRef<FVM_ChatUnReadTips>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "MainTabWidthSize";
+    local_14.TypeName = "float32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "MainTabs";
+    local_14.TypeName = "TArray<FEUIModelContainer>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectedMainTabItem";
+    local_14.TypeName = "FEUIModelContainer";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ChatInputPanel";
+    local_14.TypeName = "TEUIModelRef<FVM_ChatInputPanel>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurrentMessages";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_ChatMessage>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectMainTabIndex";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "MainContextStateIndex";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ChatContextStateIndex";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "FriendContextStateIndex";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "NoFriendTipsTips";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsShowFriendNum";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsShowSearchFriendResult";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "FriendSearchContextStateIndex";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShowChatUnread";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "FriendSystemOpenTips";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ChannelTabs";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_ChatChannelTab>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectedChannelTabItem";
+    local_14.TypeName = "FEUIModelContainer";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PrivatePeerItems";
+    local_14.TypeName = "TArray<FEUIModelContainer>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectedPrivatePeerItem";
+    local_14.TypeName = "FEUIModelContainer";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "FriendTabs";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_ChatChannelTab>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "FriendItemList";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_FriendItem>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectedFriendTabItem";
+    local_14.TypeName = "FEUIModelContainer";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SearchFriendItemList";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_FriendItem>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CanSendChat";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVMS_ChatMain>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVMS_ChatMain;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(16);
+    local_22.AddRefPropertyDirty(0, 3, FVM_ChatPrivateChatPanel::__IndexOf_PanelMessages());
+    local_22.AddRefPropertyDirty(1, 1, FMS_ChatRuntimeData::__IndexOf_SelectMainTab());
+    local_22.AddRefPropertyDirty(2, 2, FVM_ChatChannelPanel::__IndexOf_PanelMessages());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("PrivateChatPanel");
+    int local_2_2 = FVM_ChatPrivateChatPanel::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(3);
+    local_30.RelatedDirtyMask.SetBit(FVM_ChatPrivateChatPanel::__IndexOf_PanelMessages(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    local_30.PropertyName = FName("ChatRuntimeData");
+    int local_24 = FMS_ChatRuntimeData::ModelId;
+    int local_24_2 = local_22.GetMappingDirtyOffset(1);
+    local_30.RelatedDirtyMask.SetBit(FMS_ChatRuntimeData::__IndexOf_SelectMainTab(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    local_30.PropertyName = FName("ChannelPanel");
+    int local_23 = FVM_ChatChannelPanel::ModelId;
+    int local_23_2 = local_22.GetMappingDirtyOffset(2);
+    local_30.RelatedDirtyMask.SetBit(FVM_ChatChannelPanel::__IndexOf_PanelMessages(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnChatMainTabSelectedChange";
+    local_40.DirtyFlags.Set(FVMS_ChatMain::__IndexOf_ChatRuntimeData());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(1));
+    Result.DirtyFunctions.Add(local_40);
+    FEUIModelMsgHandleDefine local_50;
+    local_50.FunctionName = "__OnSystemUnlockFromGS";
+    local_50.MessageTypeName = "Msg_SystemUnlockFromGS";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    local_50.FunctionName = "__OnOpenPlayerBasicInfo";
+    local_50.MessageTypeName = "Msg_OpenPlayerBasicInfo";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    local_50.FunctionName = "__OnPersistenceBoundPlayerChanged";
+    local_50.MessageTypeName = "Msg_ChatPersistenceBoundPlayerChanged";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    local_50.FunctionName = "__HandleAddNewFriendSuccess";
+    local_50.MessageTypeName = "Msg_AddNewFriendSuccess";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    local_50.FunctionName = "__OnChatWithPlayerByMsg";
+    local_50.MessageTypeName = "Msg_ChatWithPlayer";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    local_50.FunctionName = "__OnChatSystemItemHyperlinkClicked";
+    local_50.MessageTypeName = "Msg_ChatSystemItemHyperlinkClicked";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    local_40.FunctionName = "__OnChannelPanelMessagesUpdated";
+    local_40.DirtyFlags.Set(FVMS_ChatMain::__IndexOf_ChannelPanel());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(2));
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnPrivateChatPanelMessagesUpdated";
+    local_40.DirtyFlags.Set(FVMS_ChatMain::__IndexOf_PrivateChatPanel());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

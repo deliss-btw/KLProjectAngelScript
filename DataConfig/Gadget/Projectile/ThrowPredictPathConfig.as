@@ -1,5 +1,3 @@
-﻿
-
 struct FThrowPredictPathConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -9,7 +7,6 @@ struct FThrowPredictPathConfig : FDataObject
     FFXConfig PredictPathFXConfig;
     UPROPERTY()
     FRuntimeFloatCurve ThrowPitchMappingCurve = FRuntimeCurveUtils::CreateLinear(-90.0f, -90.0f, 90.0f, 90.0f);
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_SwordSkillResourceItem
 {
     const int ModelId = 0;
@@ -733,7 +732,6 @@ struct __GeneratedProperties_FVM_SwordSkillResourceItem
     UPROPERTY()
     TEUIModelRef<FVM_SwordSkillResourceItem> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_SwordSkillResourcePoint
@@ -742,7 +740,6 @@ struct __GeneratedProperties_FVM_SwordSkillResourcePoint
     float32 PointPercent;
     UPROPERTY()
     TEUIModelRef<FVM_SwordSkillResourcePoint> Self;
-
 
 }
 

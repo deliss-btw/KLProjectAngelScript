@@ -1,5 +1,3 @@
-﻿
-
 class UHTNS_GetSpecifiedEntity : UHTNService_ECSScriptBase
 {
     UPROPERTY()
@@ -16,7 +14,6 @@ class UHTNS_GetSpecifiedEntity : UHTNService_ECSScriptBase
     FBlackboardKeySelector ResultEntity;
     UPROPERTY()
     bool bTickUpdate = false;
-
 
     UFUNCTION()
     void ExecutionStart_Implementation(const FHTNContext &inout Context)
@@ -75,7 +72,7 @@ class UHTNS_GetSpecifiedEntity : UHTNService_ECSScriptBase
                         {
                             continue;
                         }
-                        local_50.GetId();
+                        HTNNode::SetWorldStateValueAsEntityId(Context, this.ResultEntity, local_50.GetId());
                         return;
                     }
                 }
@@ -101,7 +98,7 @@ class UHTNS_GetSpecifiedEntity : UHTNService_ECSScriptBase
                     {
                         continue;
                     }
-                    local_206.GetId();
+                    HTNNode::SetWorldStateValueAsEntityId(Context, this.ResultEntity, local_206.GetId());
                     return;
                 }
             }

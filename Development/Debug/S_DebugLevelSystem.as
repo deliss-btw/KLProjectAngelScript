@@ -1,5 +1,3 @@
-﻿
-
 class US_DebugLevelSystem : UECSScriptSystem
 {
     US_DebugLevelSystem()

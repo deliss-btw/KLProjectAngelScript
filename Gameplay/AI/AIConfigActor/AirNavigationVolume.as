@@ -1,5 +1,3 @@
-﻿
-
 class AAirNavigationVolume : AAirNavigationVolumeBase
 {
     AAirNavigationVolume()

@@ -1,4 +1,3 @@
-﻿
 const TArray<FName> EntityType_ViewEntity_CompCategory = TArray<FName>();
 namespace FECSEntityType
 {

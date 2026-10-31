@@ -1,5 +1,3 @@
-﻿
-
 class US_ReactionSystem : UECSScriptSystem
 {
     UPROPERTY()
@@ -18,14 +16,14 @@ class US_ReactionSystem : UECSScriptSystem
         XError(ELog(0), (((FString("HandleQuestForGPTCallBack: ") + PawnEntity.GetEntityName()) + "\n") + CallBackContent));
         local_18.SetInfoOnHead(CallBackContent);
         FString local_22;
-        ::FLLMUtils::GetLLMCallBackValueByKey(CallBackContent, "зЋ©е®¶иЎЊдёєзљ„ж„Џе›ѕ", local_22);
+        ::FLLMUtils::GetLLMCallBackValueByKey(CallBackContent, "玩家行为的意图", local_22);
         if (!(local_22.IsEmpty()))
         {
             FString local_6_2 = (local_22 + "\n");
             ::FLLMUtils::AppendCandidateDataTo("PlayerIntensionCandidate", local_6_2, true);
         }
         FString local_28;
-        ::FLLMUtils::GetLLMCallBackValueByKey(CallBackContent, "е•†дєєзљ„еЏЌеє”жЂ»з»“", local_28);
+        ::FLLMUtils::GetLLMCallBackValueByKey(CallBackContent, "商人的反应总结", local_28);
         if (!(local_28.IsEmpty()))
         {
             FString local_10_2 = (local_28 + "\n");

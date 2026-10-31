@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommissionRewardInfo
 {
     const int ViewID = 0;
@@ -37,6 +36,7 @@ namespace UWidget_CommissionRewardInfo
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionRewardInfo;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

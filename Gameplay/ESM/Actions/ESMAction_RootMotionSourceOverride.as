@@ -1,10 +1,8 @@
-﻿
 enum ERootMotionOverrideValueSource
 {
     FixedSpeed,
     CurvedDistanceOrAngle,
 }
-
 
 struct FRootMotionSourceOverrideAxis
 {
@@ -16,7 +14,6 @@ struct FRootMotionSourceOverrideAxis
     float32 FixedSpeed;
     UPROPERTY()
     FRuntimeFloatCurve DistanceOrAngleCurve;
-
 
 }
 
@@ -43,7 +40,6 @@ class UESMAction_RootMotionSourceOverride : UESMBPBaseSpanTickAction
     FRootMotionSourceOverrideData Data;
     UPROPERTY()
     bool bShowPreviewTrajectory = true;
-
 
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const
@@ -152,10 +148,10 @@ class UESMAction_RootMotionSourceOverride : UESMBPBaseSpanTickAction
     }
     void InitSampleAxisConfigs(FC_RootMotionOverrideSampleInfo &inout SampleInfo) const
     {
-        SampleInfo.SetAxisConfig(ERootMotionOverrideModAxis(0), this.Data.X.ModifyType, (int(this.Data.X.ModifySource) == 1), int(this.Data.X.FixedSpeed), this.Data.X.DistanceOrAngleCurve);
-        SampleInfo.SetAxisConfig(ERootMotionOverrideModAxis(1), this.Data.Y.ModifyType, (int(this.Data.Y.ModifySource) == 1), int(this.Data.Y.FixedSpeed), this.Data.Y.DistanceOrAngleCurve);
-        SampleInfo.SetAxisConfig(ERootMotionOverrideModAxis(2), this.Data.Z.ModifyType, (int(this.Data.Z.ModifySource) == 1), int(this.Data.Z.FixedSpeed), this.Data.Z.DistanceOrAngleCurve);
-        SampleInfo.SetAxisConfig(ERootMotionOverrideModAxis(3), this.Data.Yaw.ModifyType, (int(this.Data.Yaw.ModifySource) == 1), int(this.Data.Yaw.FixedSpeed), this.Data.Yaw.DistanceOrAngleCurve);
+        SampleInfo.SetAxisConfig(ERootMotionOverrideModAxis(0), this.Data.X.ModifyType, (int(this.Data.X.ModifySource) == 1), this.Data.X.FixedSpeed, this.Data.X.DistanceOrAngleCurve);
+        SampleInfo.SetAxisConfig(ERootMotionOverrideModAxis(1), this.Data.Y.ModifyType, (int(this.Data.Y.ModifySource) == 1), this.Data.Y.FixedSpeed, this.Data.Y.DistanceOrAngleCurve);
+        SampleInfo.SetAxisConfig(ERootMotionOverrideModAxis(2), this.Data.Z.ModifyType, (int(this.Data.Z.ModifySource) == 1), this.Data.Z.FixedSpeed, this.Data.Z.DistanceOrAngleCurve);
+        SampleInfo.SetAxisConfig(ERootMotionOverrideModAxis(3), this.Data.Yaw.ModifyType, (int(this.Data.Yaw.ModifySource) == 1), this.Data.Yaw.FixedSpeed, this.Data.Yaw.DistanceOrAngleCurve);
         return;
     }
     void UpdateSampleTime(FC_RootMotionOverrideSampleInfo &inout SampleInfo, const FESMActionTime &inout Time) const

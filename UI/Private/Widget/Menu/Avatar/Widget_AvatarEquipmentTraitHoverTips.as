@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_AvatarEquipmentTraitHoverTips
 {
     const int ViewID = 0;
@@ -51,6 +50,7 @@ namespace UWidget_AvatarEquipmentTraitHoverTips
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_AvatarEquipmentTraitHoverTips;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

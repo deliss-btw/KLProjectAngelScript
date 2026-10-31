@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommissionEntrance
 {
     const int ViewID = 0;
@@ -53,7 +52,6 @@ class UWidget_CommissionEntrance : UEUIActivatableWidget
     FGetEUIModelRef HardVMDelegate;
     UPROPERTY()
     FGetEUIModelRef GoldVMDelegate;
-
 
     UFUNCTION()
     void OnViewBind_Implementation()
@@ -219,6 +217,7 @@ namespace UWidget_CommissionEntrance
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionEntrance;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnVisibilityOverrideChanged"));
     return;
 }

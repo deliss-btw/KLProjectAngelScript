@@ -1,5 +1,3 @@
-﻿
-
 class UESMAnimInstance_QiongSolarResona : UESMAnimInstance_Base
 {
     UPROPERTY()

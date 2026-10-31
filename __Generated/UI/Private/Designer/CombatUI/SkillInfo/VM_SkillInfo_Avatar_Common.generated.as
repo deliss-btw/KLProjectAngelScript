@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_SkillInfo_Avatar_Common_Helpers
 {
 UFUNCTION()

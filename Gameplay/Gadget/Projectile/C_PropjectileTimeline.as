@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_ProjectileTimelineConfig_NS
 {
     const TECSComponentDerivedPtr<FC_ProjectileTimelineConfig> DerivedPtr = TECSComponentDerivedPtr<FC_ProjectileTimelineConfig>();
@@ -63,11 +62,15 @@ struct FC_ProjectileTimelineData : FECSComponent
 
     FC_ProjectileTimelineData()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_ProjectileTimelineData(const FC_ProjectileTimelineData &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_TimelineAsset = Other.m_TimelineAsset;
         this.m_InitState = Other.m_InitState;
@@ -152,7 +155,8 @@ struct FProjectileTimelineActionRelativeData
     }
     void SetRelativeEntity(const FECSEntity &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_RelativeEntity = __Value;
+        return;
     }
 }
 
@@ -188,11 +192,48 @@ struct FProjectileTimelineRuntimeInfo
 
     FProjectileTimelineRuntimeInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bIsActive = false;
+        this.m_IndexInConfig = 0;
+        this.m_TimeOffset = 0;
+        this.m_CurLocalTime = 0;
+        this.m_NextBeginActionIndex = 0;
+        this.m_NextEndActionIndexInEndOrderList = 0;
+        this.m_NextActionBeginTime = -1;
+        this.m_NextActionEndTime = -1;
+        this.m_ContextPosition = FVector::ZeroVector;
+        this.m_ContextRotation = FQuat4f::Identity;
+        return;
     }
     FProjectileTimelineRuntimeInfo(const FProjectileTimelineRuntimeInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags16 local_4;
+        this.__DirtyFlags = local_4;
+        this.m_bIsActive = false;
+        this.m_IndexInConfig = 0;
+        this.m_TimeOffset = 0;
+        this.m_CurLocalTime = 0;
+        this.m_NextBeginActionIndex = 0;
+        this.m_NextEndActionIndexInEndOrderList = 0;
+        this.m_NextActionBeginTime = -1;
+        this.m_NextActionEndTime = -1;
+        this.m_ContextPosition = FVector::ZeroVector;
+        this.m_ContextRotation = FQuat4f::Identity;
+        this.m_bIsActive = Other.m_bIsActive;
+        this.m_IndexInConfig = int(Other.m_IndexInConfig);
+        this.m_TimeOffset = Other.m_TimeOffset;
+        this.m_CurLocalTime = Other.m_CurLocalTime;
+        this.m_NextBeginActionIndex = int(Other.m_NextBeginActionIndex);
+        this.m_NextEndActionIndexInEndOrderList = int(Other.m_NextEndActionIndexInEndOrderList);
+        this.m_NextActionBeginTime = Other.m_NextActionBeginTime;
+        this.m_NextActionEndTime = Other.m_NextActionEndTime;
+        this.m_ContextPosition = Other.m_ContextPosition;
+        this.m_ContextRotation = Other.m_ContextRotation;
+        this.m_ContextEntity = Other.m_ContextEntity;
+        this.m_ActiveActionIndexes = Other.m_ActiveActionIndexes;
+        this.m_RelativeDatas = Other.m_RelativeDatas;
+        return;
     }
     FProjectileTimelineRuntimeInfo opAssign(const FProjectileTimelineRuntimeInfo &inout Other)
     {
@@ -501,11 +542,30 @@ struct FC_ProjectileTimelineController : FECSComponent
 
     FC_ProjectileTimelineController()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_CurStateConfigTimelineIndex = 0;
+        this.m_WorldTimeOffset = -1;
+        this.m_NextTickTime = 0;
+        this.m_LastTickTime = 0;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_ProjectileTimelineController(const FC_ProjectileTimelineController &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_CurStateConfigTimelineIndex = 0;
+        this.m_WorldTimeOffset = -1;
+        this.m_NextTickTime = 0;
+        this.m_LastTickTime = 0;
+        this.__InitDirtyFlags();
+        this.m_CurStateConfigTimelineIndex = int(Other.m_CurStateConfigTimelineIndex);
+        this.m_WorldTimeOffset = Other.m_WorldTimeOffset;
+        this.m_NextTickTime = Other.m_NextTickTime;
+        this.m_LastTickTime = Other.m_LastTickTime;
+        this.m_TimelineInfos = Other.m_TimelineInfos;
+        return;
     }
     FC_ProjectileTimelineController opAssign(const FC_ProjectileTimelineController &inout Other)
     {
@@ -641,11 +701,22 @@ struct FProjectileTimelineEventContext
 
     FProjectileTimelineEventContext()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_TimelineConfigIndex = 0;
+        return;
     }
     FProjectileTimelineEventContext(const FProjectileTimelineEventContext &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_TimelineConfigIndex = 0;
+        this.m_TimelineConfigIndex = int(Other.m_TimelineConfigIndex);
+        this.m_WorldTime = Other.m_WorldTime;
+        this.m_ContextEntity = Other.m_ContextEntity;
+        this.m_ContextPosition = Other.m_ContextPosition;
+        this.m_ContextRotation = Other.m_ContextRotation;
+        return;
     }
     FProjectileTimelineEventContext opAssign(const FProjectileTimelineEventContext &inout Other)
     {
@@ -773,11 +844,22 @@ struct FC_ProjectileTimelineChange : FECSComponent
 
     FC_ProjectileTimelineChange()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_NextStateTimelineIndex = -1;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_ProjectileTimelineChange(const FC_ProjectileTimelineChange &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_NextStateTimelineIndex = -1;
+        this.__InitDirtyFlags();
+        this.m_NextStateTimelineIndex = int(Other.m_NextStateTimelineIndex);
+        this.m_NextStateStartWorldTime = Other.m_NextStateStartWorldTime;
+        this.m_PendingActivateTimelineContext = Other.m_PendingActivateTimelineContext;
+        return;
     }
     FC_ProjectileTimelineChange opAssign(const FC_ProjectileTimelineChange &inout Other)
     {
@@ -854,7 +936,6 @@ struct FProjectileTimelineComponentReplaceData
     UPROPERTY()
     int m_ActionIndex = 0;
 
-
     int GetTimelineConfigIndex() const property
     {
         return this.m_TimelineConfigIndex;
@@ -883,11 +964,15 @@ struct FC_ProjectileTimelineComponentReplaceSync : FECSComponent
 
     FC_ProjectileTimelineComponentReplaceSync()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_ProjectileTimelineComponentReplaceSync(const FC_ProjectileTimelineComponentReplaceSync &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_Data = Other.m_Data;
         return;
@@ -962,7 +1047,6 @@ struct FProjectileEventTriggerReaction
     bool bListenMoveBlockedDestroy;
     UPROPERTY()
     FProjectileEventTriggerConfig ReactionTrigger;
-
 
 }
 
@@ -1057,37 +1141,37 @@ bool RemoveProjectileTimelineConfig(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileTimelineConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileTimelineConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileTimelineConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileTimelineConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileTimelineConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileTimelineConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileTimelineConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileTimelineConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileTimelineConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileTimelineConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorProjectileTimelineConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ProjectileTimelineConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ProjectileTimelineConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileTimelineConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ProjectileTimelineConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ProjectileTimelineConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileTimelineConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ProjectileTimelineConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ProjectileTimelineConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ProjectileTimelineData
@@ -1167,37 +1251,37 @@ bool RemoveProjectileTimelineData(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineDataOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileTimelineData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileTimelineData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineDataOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileTimelineData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileTimelineData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineDataOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileTimelineData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileTimelineData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineDataOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileTimelineData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileTimelineData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineDataOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileTimelineData, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileTimelineData, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorProjectileTimelineDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ProjectileTimelineData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ProjectileTimelineData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileTimelineDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ProjectileTimelineData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ProjectileTimelineData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileTimelineDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ProjectileTimelineData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ProjectileTimelineData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ProjectileUseTimelineTag
@@ -1277,37 +1361,37 @@ bool RemoveProjectileUseTimelineTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorProjectileUseTimelineTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileUseTimelineTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileUseTimelineTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileUseTimelineTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileUseTimelineTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileUseTimelineTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileUseTimelineTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileUseTimelineTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileUseTimelineTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileUseTimelineTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileUseTimelineTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileUseTimelineTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileUseTimelineTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileUseTimelineTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileUseTimelineTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorProjectileUseTimelineTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ProjectileUseTimelineTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ProjectileUseTimelineTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileUseTimelineTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ProjectileUseTimelineTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ProjectileUseTimelineTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileUseTimelineTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ProjectileUseTimelineTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ProjectileUseTimelineTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ProjectileTimelineController
@@ -1387,37 +1471,37 @@ bool RemoveProjectileTimelineController(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineControllerOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileTimelineController, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileTimelineController, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineControllerOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileTimelineController, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileTimelineController, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineControllerOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileTimelineController, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileTimelineController, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineControllerOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileTimelineController, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileTimelineController, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineControllerOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileTimelineController, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileTimelineController, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorProjectileTimelineControllerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ProjectileTimelineController, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ProjectileTimelineController, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileTimelineControllerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ProjectileTimelineController, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ProjectileTimelineController, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileTimelineControllerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ProjectileTimelineController, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ProjectileTimelineController, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ProjectileTimelineChange
@@ -1497,37 +1581,37 @@ bool RemoveProjectileTimelineChange(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineChangeOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileTimelineChange, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileTimelineChange, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineChangeOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileTimelineChange, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileTimelineChange, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineChangeOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileTimelineChange, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileTimelineChange, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineChangeOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileTimelineChange, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileTimelineChange, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineChangeOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileTimelineChange, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileTimelineChange, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorProjectileTimelineChangeLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ProjectileTimelineChange, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ProjectileTimelineChange, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileTimelineChangeActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ProjectileTimelineChange, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ProjectileTimelineChange, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileTimelineChangeModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ProjectileTimelineChange, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ProjectileTimelineChange, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ProjectileTimelineComponentReplaceSync
@@ -1607,37 +1691,37 @@ bool RemoveProjectileTimelineComponentReplaceSync(const FECSEntity &inout Entity
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineComponentReplaceSyncOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileTimelineComponentReplaceSync, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileTimelineComponentReplaceSync, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineComponentReplaceSyncOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileTimelineComponentReplaceSync, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileTimelineComponentReplaceSync, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineComponentReplaceSyncOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileTimelineComponentReplaceSync, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileTimelineComponentReplaceSync, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineComponentReplaceSyncOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileTimelineComponentReplaceSync, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileTimelineComponentReplaceSync, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineComponentReplaceSyncOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileTimelineComponentReplaceSync, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileTimelineComponentReplaceSync, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorProjectileTimelineComponentReplaceSyncLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ProjectileTimelineComponentReplaceSync, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ProjectileTimelineComponentReplaceSync, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileTimelineComponentReplaceSyncActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ProjectileTimelineComponentReplaceSync, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ProjectileTimelineComponentReplaceSync, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileTimelineComponentReplaceSyncModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ProjectileTimelineComponentReplaceSync, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ProjectileTimelineComponentReplaceSync, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ProjectileTimelineComponentReplaceNonSync
@@ -1720,37 +1804,37 @@ bool RemoveProjectileTimelineComponentReplaceNonSync(const FECSEntity &inout Ent
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineComponentReplaceNonSyncOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileTimelineComponentReplaceNonSync, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileTimelineComponentReplaceNonSync, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineComponentReplaceNonSyncOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileTimelineComponentReplaceNonSync, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileTimelineComponentReplaceNonSync, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineComponentReplaceNonSyncOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileTimelineComponentReplaceNonSync, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileTimelineComponentReplaceNonSync, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineComponentReplaceNonSyncOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileTimelineComponentReplaceNonSync, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileTimelineComponentReplaceNonSync, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineComponentReplaceNonSyncOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileTimelineComponentReplaceNonSync, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileTimelineComponentReplaceNonSync, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorProjectileTimelineComponentReplaceNonSyncLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ProjectileTimelineComponentReplaceNonSync, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ProjectileTimelineComponentReplaceNonSync, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileTimelineComponentReplaceNonSyncActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ProjectileTimelineComponentReplaceNonSync, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ProjectileTimelineComponentReplaceNonSync, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileTimelineComponentReplaceNonSyncModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ProjectileTimelineComponentReplaceNonSync, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ProjectileTimelineComponentReplaceNonSync, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ProjectileTimelineEventTriggerConfig
@@ -1833,37 +1917,37 @@ bool RemoveProjectileTimelineEventTriggerConfig(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineEventTriggerConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileTimelineEventTriggerConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileTimelineEventTriggerConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineEventTriggerConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileTimelineEventTriggerConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileTimelineEventTriggerConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineEventTriggerConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileTimelineEventTriggerConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileTimelineEventTriggerConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineEventTriggerConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileTimelineEventTriggerConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileTimelineEventTriggerConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileTimelineEventTriggerConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileTimelineEventTriggerConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileTimelineEventTriggerConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorProjectileTimelineEventTriggerConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ProjectileTimelineEventTriggerConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ProjectileTimelineEventTriggerConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileTimelineEventTriggerConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ProjectileTimelineEventTriggerConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ProjectileTimelineEventTriggerConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileTimelineEventTriggerConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ProjectileTimelineEventTriggerConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ProjectileTimelineEventTriggerConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

@@ -1,4 +1,3 @@
-﻿
 namespace PVXUtil
 {
     const FGameplayTag Team1Tag = FGameplayTag();
@@ -23,6 +22,7 @@ struct __Lambda_Gameplay_Designer_PVX_PVXUtil_284
     }
     __Lambda_Gameplay_Designer_PVX_PVXUtil_284(const FECSEntity &inout _InPlayerPawn, const FDefaultAvatarData &inout _InEvolveAvatarData, const FSpawnFakeCharacterExtractData &inout _InExtraData)
     {
+        this.__PlayerPawn = _InPlayerPawn;
         this.__EvolveAvatarData = _InEvolveAvatarData;
         this.__ExtraData = _InExtraData;
         return;

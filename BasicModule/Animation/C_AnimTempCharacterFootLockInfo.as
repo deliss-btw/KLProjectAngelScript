@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_CharacterFootLockInfo_NS
 {
     const TECSComponentDerivedPtr<FC_CharacterFootLockInfo> DerivedPtr = TECSComponentDerivedPtr<FC_CharacterFootLockInfo>();
@@ -81,11 +80,116 @@ struct FC_CharacterFootLockInfo : FECSComponent
 
     FC_CharacterFootLockInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags64 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_FootLockDecreaseSpeed = 15.0f;
+        this.m_FootLockRecoverSpeed = 5.0f;
+        this.m_FootLockInputChangeAngle = 30.0f;
+        this.m_FootLockInputChangeDuration = 0.4f;
+        this.m_FootLockQuickChangeThreshold = 0.4f;
+        this.m_FootLockCirclingUnlockCycles = 1.6f;
+        this.m_FootLockCirclingUnlockDuration = 0.8f;
+        this.m_StopStartTransitionDecreaseSpeed = 15.0f;
+        this.m_StopStartTransitionRecoverSpeed = 5.0f;
+        this.m_StopStartTransitionDuration = 0.3f;
+        this.m_LocalMovementInputAngleChangeWindow = 0.2f;
+        this.m_bOverrideFootLockAlpha = false;
+        this.m_OverrideFootLockAlpha = 1.0f;
+        this.m_FootLockAlpha = 1.0f;
+        this.m_PrevAccelerationDir = FVector::ZeroVector;
+        this.m_FootLockDirStableTime = 999.0f;
+        this.m_FootLockInputChangeCooldown = 0.0f;
+        this.m_FootLockCirclingAccumYaw = 0.0f;
+        this.m_FootLockCirclingPrevInputYaw = -999.0f;
+        this.m_FootLockCirclingCooldown = 0.0f;
+        this.m_StopStartTransitionAlpha = 1.0f;
+        this.m_StopStartTransitionCooldown = 0.0f;
+        this.m_LastMovingMoveDirection = EMoveDirection(0);
+        this.m_StopStartCheckTimer = 0.0f;
+        this.m_FootLockAlphaTemp = 0.0f;
+        this.m_LocalMovementInputAngleDelta = 0.0f;
+        this.m_LocalMovementInputAngleFrameDelta = 0.0f;
+        this.m_FramePrevLocalMovementInputAngle = 0.0f;
+        this.m_PrevLocalMovementInputAngle = 0.0f;
+        this.m_LastLocalMovementInputAngle = 0.0f;
+        this.m_bLocalMovementInputAngleInitialized = false;
+        this.m_PendingLocalMovementInputAngle = 0.0f;
+        this.m_PendingLocalMovementInputAngleDuration = 0.0f;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_CharacterFootLockInfo(const FC_CharacterFootLockInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags64 local_5;
+        this.__DirtyFlags = local_5;
+        this.m_FootLockDecreaseSpeed = 15.0f;
+        this.m_FootLockRecoverSpeed = 5.0f;
+        this.m_FootLockInputChangeAngle = 30.0f;
+        this.m_FootLockInputChangeDuration = 0.4f;
+        this.m_FootLockQuickChangeThreshold = 0.4f;
+        this.m_FootLockCirclingUnlockCycles = 1.6f;
+        this.m_FootLockCirclingUnlockDuration = 0.8f;
+        this.m_StopStartTransitionDecreaseSpeed = 15.0f;
+        this.m_StopStartTransitionRecoverSpeed = 5.0f;
+        this.m_StopStartTransitionDuration = 0.3f;
+        this.m_LocalMovementInputAngleChangeWindow = 0.2f;
+        this.m_bOverrideFootLockAlpha = false;
+        this.m_OverrideFootLockAlpha = 1.0f;
+        this.m_FootLockAlpha = 1.0f;
+        this.m_PrevAccelerationDir = FVector::ZeroVector;
+        this.m_FootLockDirStableTime = 999.0f;
+        this.m_FootLockInputChangeCooldown = 0.0f;
+        this.m_FootLockCirclingAccumYaw = 0.0f;
+        this.m_FootLockCirclingPrevInputYaw = -999.0f;
+        this.m_FootLockCirclingCooldown = 0.0f;
+        this.m_StopStartTransitionAlpha = 1.0f;
+        this.m_StopStartTransitionCooldown = 0.0f;
+        this.m_LastMovingMoveDirection = EMoveDirection(0);
+        this.m_StopStartCheckTimer = 0.0f;
+        this.m_FootLockAlphaTemp = 0.0f;
+        this.m_LocalMovementInputAngleDelta = 0.0f;
+        this.m_LocalMovementInputAngleFrameDelta = 0.0f;
+        this.m_FramePrevLocalMovementInputAngle = 0.0f;
+        this.m_PrevLocalMovementInputAngle = 0.0f;
+        this.m_LastLocalMovementInputAngle = 0.0f;
+        this.m_bLocalMovementInputAngleInitialized = false;
+        this.m_PendingLocalMovementInputAngle = 0.0f;
+        this.m_PendingLocalMovementInputAngleDuration = 0.0f;
+        this.__InitDirtyFlags();
+        this.m_FootLockDecreaseSpeed = Other.m_FootLockDecreaseSpeed;
+        this.m_FootLockRecoverSpeed = Other.m_FootLockRecoverSpeed;
+        this.m_FootLockInputChangeAngle = Other.m_FootLockInputChangeAngle;
+        this.m_FootLockInputChangeDuration = Other.m_FootLockInputChangeDuration;
+        this.m_FootLockQuickChangeThreshold = Other.m_FootLockQuickChangeThreshold;
+        this.m_FootLockCirclingUnlockCycles = Other.m_FootLockCirclingUnlockCycles;
+        this.m_FootLockCirclingUnlockDuration = Other.m_FootLockCirclingUnlockDuration;
+        this.m_StopStartTransitionDecreaseSpeed = Other.m_StopStartTransitionDecreaseSpeed;
+        this.m_StopStartTransitionRecoverSpeed = Other.m_StopStartTransitionRecoverSpeed;
+        this.m_StopStartTransitionDuration = Other.m_StopStartTransitionDuration;
+        this.m_LocalMovementInputAngleChangeWindow = Other.m_LocalMovementInputAngleChangeWindow;
+        this.m_bOverrideFootLockAlpha = Other.m_bOverrideFootLockAlpha;
+        this.m_OverrideFootLockAlpha = Other.m_OverrideFootLockAlpha;
+        this.m_FootLockAlpha = Other.m_FootLockAlpha;
+        this.m_PrevAccelerationDir = Other.m_PrevAccelerationDir;
+        this.m_FootLockDirStableTime = Other.m_FootLockDirStableTime;
+        this.m_FootLockInputChangeCooldown = Other.m_FootLockInputChangeCooldown;
+        this.m_FootLockCirclingAccumYaw = Other.m_FootLockCirclingAccumYaw;
+        this.m_FootLockCirclingPrevInputYaw = Other.m_FootLockCirclingPrevInputYaw;
+        this.m_FootLockCirclingCooldown = Other.m_FootLockCirclingCooldown;
+        this.m_StopStartTransitionAlpha = Other.m_StopStartTransitionAlpha;
+        this.m_StopStartTransitionCooldown = Other.m_StopStartTransitionCooldown;
+        this.m_LastMovingMoveDirection = Other.m_LastMovingMoveDirection;
+        this.m_StopStartCheckTimer = Other.m_StopStartCheckTimer;
+        this.m_FootLockAlphaTemp = Other.m_FootLockAlphaTemp;
+        this.m_LocalMovementInputAngleDelta = Other.m_LocalMovementInputAngleDelta;
+        this.m_LocalMovementInputAngleFrameDelta = Other.m_LocalMovementInputAngleFrameDelta;
+        this.m_FramePrevLocalMovementInputAngle = Other.m_FramePrevLocalMovementInputAngle;
+        this.m_PrevLocalMovementInputAngle = Other.m_PrevLocalMovementInputAngle;
+        this.m_LastLocalMovementInputAngle = Other.m_LastLocalMovementInputAngle;
+        this.m_bLocalMovementInputAngleInitialized = Other.m_bLocalMovementInputAngleInitialized;
+        this.m_PendingLocalMovementInputAngle = Other.m_PendingLocalMovementInputAngle;
+        this.m_PendingLocalMovementInputAngleDuration = Other.m_PendingLocalMovementInputAngleDuration;
+        return;
     }
     FC_CharacterFootLockInfo opAssign(const FC_CharacterFootLockInfo &inout Other)
     {
@@ -695,37 +799,37 @@ bool RemoveCharacterFootLockInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCharacterFootLockInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CharacterFootLockInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CharacterFootLockInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCharacterFootLockInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CharacterFootLockInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CharacterFootLockInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCharacterFootLockInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CharacterFootLockInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CharacterFootLockInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCharacterFootLockInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CharacterFootLockInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CharacterFootLockInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCharacterFootLockInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CharacterFootLockInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CharacterFootLockInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCharacterFootLockInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CharacterFootLockInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CharacterFootLockInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCharacterFootLockInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CharacterFootLockInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CharacterFootLockInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCharacterFootLockInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CharacterFootLockInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CharacterFootLockInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace EntityBB

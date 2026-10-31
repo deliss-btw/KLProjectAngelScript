@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CharacterEnableDualUpstairs : UESMBPBaseSpanAction
 {
     UESMAction_CharacterEnableDualUpstairs()

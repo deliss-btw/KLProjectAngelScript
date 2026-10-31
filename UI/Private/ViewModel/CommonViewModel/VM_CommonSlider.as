@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonSlider
 {
     const int ModelId = 0;

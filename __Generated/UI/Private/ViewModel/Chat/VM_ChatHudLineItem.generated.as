@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ChatHudLineItem_Helpers
 {
 UFUNCTION()

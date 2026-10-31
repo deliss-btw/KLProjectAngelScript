@@ -1,12 +1,42 @@
-﻿
 const FConsoleVariable CVar_Level_UseTagQueryDataLayerInit = FConsoleVariable();
 
 namespace FLevelDataLayerUtils
 {
 bool BuildMapUrlFromLevelKey(const int LevelKey, FString &inout OutUrl)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    bool __r; return __r;
+    FString local_4 = FString();
+    XLog(ELog(22), local_4.Append("[").Append(LevelKey).Append("] BuildMapUrlFromLevelKey"));
+    if (!(FLevelInfoConfig::GetByDataId(LevelKey)))
+    {
+        XError(ELog(22), FString().Append("Cannot get LevelInfoConfig for LevelKey: ").Append(LevelKey).Append("!"));
+        return false;
+    }
+    if (!(GetMapConfig()))
+    {
+        local_4 = FString();
+        XError(ELog(22), local_4.Append("Cannot get MapConfig for LevelKey: ").Append(LevelKey).Append("!"));
+        return false;
+    }
+    int local_62 = INDEX_NONE;
+    int local_61 = local_62;
+    if (local_4.FindLastChar(int16(46), local_61))
+    {
+        local_4 = local_4.Left(local_61);
+    }
+    FString local_60;
+    if (local_4.Len() == 0)
+    {
+        FName local_66;
+        local_66.GetDataName();
+        local_60 = FString();
+        XError(ELog(22), local_60.Append("MapReference is null for MapConfig: ").Append(local_66).Append("!"));
+        return false;
+    }
+    int local_62_2 = local_4.Len();
+    int local_64 = local_60.Len();
+    OutUrl = FString().Append(local_4).Append("?GameSettings=").Append(local_60).Append("?level_key=").Append(LevelKey);
+    XLog(ELog(22), FString().Append("[").Append(LevelKey).Append("] BuildMapUrlFromLevelKey: ").Append(local_4).Append(" ").Append(local_60).Append(",  URL: ").Append(OutUrl));
+    return true;
 }
 bool TSetIntersect(const TSet<EKLDataLayerFilterTags> &inout Set1, const TSet<EKLDataLayerFilterTags> &inout Set2)
 {
@@ -156,7 +186,7 @@ void SetDataLayerState(const UDataLayerManager DataLayerManager, const UDataLaye
     UKLDataLayerInstance local_4 = (Cast<UKLDataLayerInstance>(InDataLayerInstance));
     if (local_4 != nullptr)
     {
-        KLDataLayer::SetDataLayerRuntimeStateByLBPClass(__GetWorldContext(), local_4.KLLevelClass);
+        KLDataLayer::SetDataLayerRuntimeStateByLBPClass(__GetWorldContext(), local_4.KLLevelClass, EDataLayerRuntimeState(InState));
     }
     else
     {

@@ -1,4 +1,3 @@
-﻿
 enum EChatSystemPbArgKind
 {
     None,
@@ -21,7 +20,6 @@ enum EChatSystemContentType
     RecruitSendCommission,
 }
 
-
 struct FChatSystemSerializedArg
 {
     FSubDirtyFlags8 __DirtyFlags;
@@ -34,15 +32,29 @@ struct FChatSystemSerializedArg
 
     FChatSystemSerializedArg()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Kind = EChatSystemPbArgKind(0);
+        return;
     }
     FChatSystemSerializedArg(const FChatSystemSerializedArg &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_Kind = EChatSystemPbArgKind(0);
+        this.m_Kind = Other.m_Kind;
+        this.m_Value = Other.m_Value;
+        this.m_DisplayName = Other.m_DisplayName;
+        return;
     }
     FChatSystemSerializedArg(const EChatSystemPbArgKind InKind, const FString &inout InValue)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Kind = EChatSystemPbArgKind(0);
+        this.SetKind(EChatSystemPbArgKind(InKind));
+        this.SetValue(InValue);
+        return;
     }
     FChatSystemSerializedArg opAssign(const FChatSystemSerializedArg &inout Other)
     {
@@ -107,7 +119,6 @@ struct FChatContentConfig : FDataObject
     FArgText Content;
     UPROPERTY()
     bool bIsShowInMiddle = false;
-
 
 }
 

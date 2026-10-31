@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CharacterJumpToTarget : UESMCharacterJumpToTargetAction
 {
     UESMAction_CharacterJumpToTarget()

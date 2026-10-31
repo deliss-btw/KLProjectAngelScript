@@ -1,4 +1,3 @@
-﻿
 namespace ForgeWeaponRuntimeAutoLineBuilder
 {
 bool IsNodeNormal(const FM_ForgeNode &inout Node)
@@ -158,7 +157,7 @@ void BuildGraphNodes(const UEUIAutoLineCanvas AutoLineCanvas, const TArray<TEUIM
 }
 void BuildGraphConnections(const UObject ContextObject, const TArray<TEUIModelWeakRef<FM_ForgeNode>> &inout NodeList, const float32 BranchFromExtend, const float32 BranchToExtend, const float32 SameBranchFromExtend, const float32 SameBranchToExtend, const TArray<FForgeWeaponAutoLineRouteOverride> &inout RouteOverrides, TArray<FEUIAutoLineConnection> &inout OutConnections)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    // body not fully recovered — stub [argmismatch:argtype]
 }
 void BuildAndApplyGraph(const UObject ContextObject, const UEUIAutoLineCanvas AutoLineCanvas, const TArray<TEUIModelWeakRef<FM_ForgeNode>> &inout NodeList, const TMap<uint, UWidget_ForgeWeaponItem> &inout NodeWidgetMap, const float32 BranchFromExtend, const float32 BranchToExtend, const float32 SameBranchFromExtend, const float32 SameBranchToExtend, const TArray<FForgeWeaponAutoLineRouteOverride> &inout RouteOverrides)
 {

@@ -1,20 +1,15 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FGTCTriggerAction (temporary `local_2` did not fold: m_ScriptOverrideMeta = Cast<UASStruct>(local_2);).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FSimulatedTrigger
 {
     UPROPERTY()
-    FFPTime TriggerValidTime;
+    FFPTime TriggerValidTime = 0.1;
     UPROPERTY()
-    UESMInputTriggerAsset InputTrigger;
+    UESMInputTriggerAsset InputTrigger = nullptr;
     UPROPERTY()
     FName TriggerName;
 
     FSimulatedTrigger()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        return;
     }
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace FMS_PvpModeState
 {
     const int ModelId = 0;

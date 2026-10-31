@@ -1,5 +1,3 @@
-﻿
-
 namespace TeamMemberConfirmUtils
 {
 FText BuildMissingIllustrateWarning(const TArray<TEUIModelRef<FM_Player>> &inout Players)
@@ -34,8 +32,8 @@ FText BuildMissingIllustrateWarning(const TArray<TEUIModelRef<FM_Player>> &inout
                 local_96.Add(local_88.AvatarIllustrateInfos[EAvatarIllustrate(local_98)].DisplayName);
             }
         }
-        local_108 = FText::Join(NSLOCTEXT("MissingIllustrateDelimiter", "пјЊ"), local_96);
-        return FText::Format(NSLOCTEXT("MissingIllustrateWarning", "йџдјЌдё­зјєе°‘{0}е®љдЅЌпјЊеЏЇиї›е…ҐеђЋи°ѓж•ґ"), local_108);
+        local_108 = FText::Join(NSLOCTEXT("MissingIllustrateDelimiter", "，"), local_96);
+        return FText::Format(NSLOCTEXT("MissingIllustrateWarning", "队伍中缺少{0}定位，可进入后调整"), local_108);
     }
     return local_108;
 }

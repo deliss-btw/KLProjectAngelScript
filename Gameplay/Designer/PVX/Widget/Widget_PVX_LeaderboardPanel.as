@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PVX_LeaderboardPanel
 {
     const int ViewID = 0;
@@ -198,6 +197,7 @@ namespace UWidget_PVX_LeaderboardPanel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PVX_LeaderboardPanel;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

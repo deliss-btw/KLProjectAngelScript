@@ -1,10 +1,9 @@
-﻿
 namespace ScriptCameraUtils
 {
 void CameraFreezeAndLookAtFollowTarget(const FECSEntity &inout PlayerPawnEntity, const FName &inout LookAtSocketName, const FVector &inout LookAtSocketOffset, const TDataObjectPtr<FCameraLookAtTargetConfig> &inout LookAtConfig)
 {
     int local_162 = 0;
-    if (ECS::GetRuntimeInfo().IsServer)
+    if (int(ECS::GetRuntimeInfo().IsServer) != 0)
     {
         FFPTime local_8 = FFPTime(-1);
         SendEvent local_6;

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_WizardSkillResourceStarItem
 {
     const int ModelId = 0;
@@ -628,7 +627,6 @@ struct __GeneratedProperties_FVM_WizardSkillResource
     ESlateVisibility Point5Visibility;
     UPROPERTY()
     TEUIModelRef<FVM_WizardSkillResource> Self;
-
 
 }
 

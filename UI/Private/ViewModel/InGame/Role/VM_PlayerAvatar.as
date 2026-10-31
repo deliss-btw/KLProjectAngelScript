@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PlayerAvatar
 {
     const int ModelId = 0;

@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_BossLowHpDecoractor
 {
     const int ViewID = 0;
@@ -15,7 +14,6 @@ class UWidget_BossLowHpDecoractor : UEUIUserWidget
     bool bAnimPlayed = false;
     UPROPERTY()
     FGetEUIModelRef DecoractorDelegate;
-
 
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
@@ -57,6 +55,7 @@ namespace UWidget_BossLowHpDecoractor
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_BossLowHpDecoractor;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

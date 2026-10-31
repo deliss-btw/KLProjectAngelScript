@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MonsterInfo
 {
     const int ModelId = 0;
@@ -75,13 +74,11 @@ struct FVM_MonsterInfo : FEUIViewModel
         }
         for (auto local_97 : this.GetMonsterConfig().opArrow().GetPresentationConfig().opArrow().AttributeTypes)
         {
-            local_97;
-            this.GetModify_AttributeDamageTypes().Add(TEUIModelRef<FVM_DamageType>(::FVM_DamageType::Create(this.GetContext().Manager)));
+            this.GetModify_AttributeDamageTypes().Add(TEUIModelRef<FVM_DamageType>(::FVM_DamageType::Create(this.GetContext().Manager, EDamageType(local_97))));
         }
         for (auto local_97 : this.GetMonsterConfig().opArrow().GetPresentationConfig().opArrow().WeaknessDamageTypes)
         {
-            local_97;
-            this.GetModify_WeaknessDamageTypes().Add(TEUIModelRef<FVM_DamageType>(::FVM_DamageType::Create(this.GetContext().Manager)));
+            this.GetModify_WeaknessDamageTypes().Add(TEUIModelRef<FVM_DamageType>(::FVM_DamageType::Create(this.GetContext().Manager, EDamageType(local_97))));
         }
         return;
     }
@@ -92,7 +89,7 @@ struct FVM_MonsterInfo : FEUIViewModel
     void AddDropRewardItems(FCommonRewardListBuilder &inout Builder, const TDataObjectPtr<FDropItemConfigBase> &inout DropReward)
     {
         FDropItemConfigParser local_20;
-        bool local_37 = false;
+        int local_37 = 0;
         int local_41;
         int local_42 = 0;
         int local_44 = 0;
@@ -103,10 +100,10 @@ struct FVM_MonsterInfo : FEUIViewModel
             local_41 = local_42;
             if (0 > 0)
             {
-                local_37 = false;
-                Builder.AddItem(local_41, local_44, FName(), FText(), local_37);
+                local_37 = 0;
+                Builder.AddItem(local_41, local_44, FName(), FText(), (local_37 != 0));
             }
-            if (local_37)
+            if (local_37 != 0)
             {
                 Builder.AddItem(local_41, 0, n"CommissionDrop", FText(), false);
             }
@@ -129,7 +126,7 @@ struct FVM_MonsterInfo : FEUIViewModel
             ::ComposableItemUtility::SetItemCountText(local_2, FText::AsNumber(ItemData.opArrow().GetNum(), FNumberFormattingOptions::DefaultNoGrouping()));
         }
         FEUIModelContainer local_28;
-        local_28.AddModel(FEUIModelRef(), false);
+        local_28.AddModel(FEUIModelRef(::FVM_Item::Create(this.GetContext().Manager, ItemData)), false);
         FVM_CommonRewardItem& local_32 = ::FVM_CommonRewardItem::Create(this.GetContext().Manager, local_28, false);
         local_32.SetComposableItemVM(TEUIModelRef<FVM_ComposableItem>(local_2));
         return local_32;
@@ -264,7 +261,6 @@ struct __GeneratedProperties_FVM_MonsterInfo
     bool HasWeaknessDamageType;
     UPROPERTY()
     TEUIModelRef<FVM_MonsterInfo> Self;
-
 
 }
 

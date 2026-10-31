@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CommonConsume_Helpers
 {
 UFUNCTION()

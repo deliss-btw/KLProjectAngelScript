@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_SnapToFloor : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
@@ -60,7 +58,6 @@ class UESMAction_SnapToFloor : UESMBPBaseSpanTickAction
     float32 StepRejectMinGapCm = 25.0f;
     UPROPERTY()
     float32 StepRejectLargeMinGapCm = 25.0f;
-
 
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
@@ -348,7 +345,7 @@ class UESMAction_SnapToFloor : UESMBPBaseSpanTickAction
                     local_40.SetCurrentWeightQ(0);
                     local_40.SetBlendElapsedFrames(0);
                     local_40.SetBlendDurationFrames(0);
-                    local_40.SetPhase(ESnapToFloorApplyWeightPhase(ESnapToFloorApplyWeightPhase(3)));
+                    local_40.SetPhase(ESnapToFloorApplyWeightPhase(3));
                 }
             }
             return;
@@ -368,7 +365,7 @@ class UESMAction_SnapToFloor : UESMBPBaseSpanTickAction
         ApplyWeightBlend.SetBlendElapsedFrames(0);
         ApplyWeightBlend.SetBlendDurationFrames(ECS::FlatTimeToFrame(FFPTime(FMath::Max(this.SnapWeightBlendOutTime, 0.0f))));
         ApplyWeightBlend.SetBlendInDurationFrames(ECS::FlatTimeToFrame(FFPTime(FMath::Max(this.SnapWeightBlendInTime, 0.0f))));
-        ApplyWeightBlend.SetbHoldBlendInWhileIdle(this.bHoldBlendInWhileIdle);
+        ApplyWeightBlend.SetbHoldBlendInWhileIdle((this.bHoldBlendInWhileIdle));
         ApplyWeightBlend.SetIdleRestoreMaxAngleQ(FMath::Max(FMath::RoundToInt(FMath::Clamp(this.IdleRestoreMaxAngle, 0.0f, 90.0f) * 1000.0f), 0));
         ApplyWeightBlend.SetResumeHorizontalMoveDistanceQ(FMath::Max(FMath::RoundToInt(FMath::Clamp(this.ResumeHorizontalMoveDistanceCm, 0.0f, 10000.0f) * 10.0f), 0));
         ApplyWeightBlend.SetResumeAnchorXQ(0);

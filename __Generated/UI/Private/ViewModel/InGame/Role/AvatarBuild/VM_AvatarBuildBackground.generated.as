@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_AvatarBuildBackground_Helpers
 {
 UFUNCTION()

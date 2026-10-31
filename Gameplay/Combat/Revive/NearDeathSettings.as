@@ -1,5 +1,3 @@
-﻿
-
 class UNearDeathSettings : UGameplaySettingsBase
 {
     UPROPERTY()

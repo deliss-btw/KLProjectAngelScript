@@ -1,5 +1,3 @@
-﻿
-
 class UScriptAsToCppModelFunctionRegister : UAsToCppModelFunctionRegister
 {
     UPROPERTY()
@@ -237,22 +235,91 @@ namespace CommonPopup_Internal
 {
 FGameplayTag GetTipsPopupType(const ECommonTipsType Type)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     FGameplayTag __r; return __r;
 }
 bool IsSameTipsContentPendingOrDisplaying(FCS_CommonTipsManager &inout Manager, const ECommonTipsType Type, const FText &inout Content)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    bool __r; return __r;
+    FDisplayingCommonTipsInfo local_12;
+    if (Manager.DisplayingTips.Find(Type, local_12) && ((local_12.Content == Content)))
+    {
+        return true;
+    }
+    for (auto& local_38 : Manager.PendingTips)
+    {
+        local_38;
+        if (0 == int(Type) && (FText() == Content))
+        {
+            return true;
+        }
+    }
+    return false;
 }
 FEUIWidgetRef CreateTipsWidget(const ULocalPlayer LocalPlayer, const ECommonTipsType Type, const FText &inout Content, const FEUIModelContainer &inout TypeSpecificModels)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    FEUIWidgetRef __r; return __r;
+    UCommonPopupSettings local_4 = CommonPopupSettings::Get();
+    FCommonTipsSettings local_8;
+    if (!(local_4.TipsSettings.Find(Type, local_8)))
+    {
+        XError(ELog(16), FString().Append("No tips settings found for type: ").Append(Type));
+        return FEUIWidgetRef();
+    }
+    FEUIModelContainer local_34 = TypeSpecificModels;
+    local_34.AddModel(FEUIModelRef(FVM_CommonTips::Create(LocalPlayer, Content)), false);
+    return FEUIWidget::AddWidgetWithModelContainer(LocalPlayer, local_8.WidgetTag, local_34);
 }
 void OpenTips(const FText &inout Content, const FCommonTipsParam &inout ExtraParam, const ECommonTipsType Type, const FEUIModelContainer &inout TypeSpecificModels = FEUIModelContainer(), const ULocalPlayer FallbackLocalPlayer = nullptr)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    int local_30 = 0;
+    float32 local_61;
+    bool local_3 = !(ECS::GetECSWorld().IsValid());
+    if (local_3)
+    {
+        local_3 = true;
+    }
+    else
+    {
+        FECSWorldPtr local_2 = ECS::GetECSWorld();
+        Has local_8;
+        local_3 = !(local_8.opCall());
+    }
+    if (local_3)
+    {
+        CommonPopup_Internal::OpenTipsWithoutECSWorld(FallbackLocalPlayer, Content, ExtraParam, ECommonTipsType(Type), TypeSpecificModels);
+        return;
+    }
+    UCommonPopupSettings local_14 = CommonPopupSettings::Get();
+    FCommonTipsSettings local_18;
+    if (!(local_14.TipsSettings.Find(Type, local_18)))
+    {
+        XError(ELog(16), FString().Append("No tips settings found for type: ").Append(Type));
+        return;
+    }
+    FECSWorldPtr local_2_2 = ECS::GetECSWorld();
+    if (!(ExtraParam.bAllowSameContent) && CommonPopup_Internal::IsSameTipsContentPendingOrDisplaying(local_30, ECommonTipsType(Type), Content))
+    {
+        return;
+    }
+    int local_35 = CommonPopupUtils::TryEnqueuePopup(CommonPopup_Internal::GetTipsPopupType(ECommonTipsType(Type)), int(ExtraParam.Priority));
+    if (local_35 == INDEX_NONE)
+    {
+        return;
+    }
+    FPendingCommonTipsInfo local_58;
+    local_58.Type = Type;
+    local_58.Content = Content;
+    if (ExtraParam.LifetimeOverride > 0.0f)
+    {
+        local_61 = ExtraParam.LifetimeOverride;
+    }
+    else
+    {
+        local_61 = local_18.DefaultTipsLifetime;
+    }
+    local_58.Lifetime = local_61;
+    local_58.TypeSpecificModels = TypeSpecificModels;
+    local_30.PendingTips.Add(local_35, local_58);
+    return;
 }
 void OpenTipsWithoutECSWorld(const ULocalPlayer LocalPlayer, const FText &inout Content, const FCommonTipsParam &inout ExtraParam, const ECommonTipsType Type, const FEUIModelContainer &inout TypeSpecificModels = FEUIModelContainer())
 {
@@ -320,7 +387,8 @@ void OpenRewardDialog(const FCommonRewardDialogParam &inout Param)
     if (local_2 != nullptr)
     {
         ULocalPlayer local_8 = local_2.GetLocalPlayer();
-        TEUIModelRef<FVM_CommonRewardList> local_14 = TEUIModelRef<FVM_CommonRewardList>(FVM_CommonRewardList::Create(local_8, Param.Items));
+        FVM_CommonRewardList& local_12 = FVM_CommonRewardList::Create(local_8, Param.Items);
+        TEUIModelRef<FVM_CommonRewardList> local_14 = TEUIModelRef<FVM_CommonRewardList>(local_12);
         local_16.SetRewardHintText(Param.RewardHint);
         TSoftClassPtr<UEUIUserWidget> local_28;
         if (Param.WidgetClassOverride.IsNull())
@@ -390,8 +458,25 @@ void SetHoverInfo(const FCommonHoverHandle &inout Handle, const FCommonHoverInfo
 }
 bool IsHoverDisplayed(const FCommonHoverHandle &inout Handle, const UObject ContextObject = nullptr)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    bool __r; return __r;
+    UObject local_6;
+    if (!(Handle.IsValid()))
+    {
+        return false;
+    }
+    if (ContextObject != nullptr)
+    {
+    }
+    else
+    {
+        local_6 = Cast<UObject>(ECS::GetUEWorld());
+    }
+    FMS_CommonHoverManager& local_8 = FMS_CommonHoverManager::Get(local_6);
+    if (local_8)
+    {
+        int local_11 = INDEX_NONE;
+        return (local_8.GetDisplayingHovers().IndexOfByKey(Handle) != local_11);
+    }
+    return false;
 }
 void ShowSideHint(const TEUIModelRef<FM_CommonSideHintManager> &inout SideHintManager, const TSoftClassPtr<UEUIUserWidget> &inout SideHintWidget, const FEUIModelContainer &inout WidgetModels, const int Priority = 0)
 {

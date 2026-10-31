@@ -1,5 +1,3 @@
-﻿
-
 class US_TutorialGraphic : UECSScriptSystem
 {
     US_TutorialGraphic()

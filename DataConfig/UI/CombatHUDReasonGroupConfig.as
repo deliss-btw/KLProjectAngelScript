@@ -1,10 +1,8 @@
-﻿
 enum EWidgetHideRuleType
 {
     ShowWhenAnyActive,
     HideWhenAnyActive,
 }
-
 
 struct FCombatHUDReasonGroupConfig : FDataObject
 {
@@ -17,7 +15,6 @@ struct FCombatHUDReasonGroupConfig : FDataObject
     TArray<FDataObjectPtr> m_HideConfigs;
     UPROPERTY()
     float32 DelaySec = 0.0f;
-
 
     const TArray<TDataObjectPtr<FWidgetHiddenConfig>> GetHideConfigs() const property
     {

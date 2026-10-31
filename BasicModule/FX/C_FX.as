@@ -1,4 +1,3 @@
-﻿
 enum EFXOffsetSpaceWithAttachmentOption
 {
     LocalSpace,
@@ -38,18 +37,26 @@ struct FFXParamChangePoint
 {
     FSubDirtyFlags8 __DirtyFlags;
     UPROPERTY()
-    FFPTime m_Time = 0;
+    FFPTime m_Time;
     UPROPERTY()
-    FFPTime m_LerpToDuration = 0;
+    FFPTime m_LerpToDuration;
     UPROPERTY()
     TArray<FFXOverrideParam> m_OverrideParams;
 
     FFXParamChangePoint()
     {
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Time = 0;
+        this.m_LerpToDuration = 0;
         return;
     }
     FFXParamChangePoint(const FFXParamChangePoint &inout Other)
     {
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Time = 0;
+        this.m_LerpToDuration = 0;
         this.m_Time = Other.m_Time;
         this.m_LerpToDuration = Other.m_LerpToDuration;
         this.m_OverrideParams = Other.m_OverrideParams;
@@ -139,16 +146,24 @@ struct FFXParamValueLerpTime
     UPROPERTY()
     FFXOverrideParam m_EndValue;
     UPROPERTY()
-    FFPTime m_StartTime = 0;
+    FFPTime m_StartTime;
     UPROPERTY()
-    FFPTime m_EndTime = 0;
+    FFPTime m_EndTime;
 
     FFXParamValueLerpTime()
     {
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_StartTime = 0;
+        this.m_EndTime = 0;
         return;
     }
     FFXParamValueLerpTime(const FFXParamValueLerpTime &inout Other)
     {
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_StartTime = 0;
+        this.m_EndTime = 0;
         this.m_StartValue = Other.m_StartValue;
         this.m_EndValue = Other.m_EndValue;
         this.m_StartTime = Other.m_StartTime;
@@ -276,11 +291,15 @@ struct FC_FXParamChangePoint : FECSComponent
 
     FC_FXParamChangePoint()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_FXParamChangePoint(const FC_FXParamChangePoint &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_ParamChangePoints = Other.m_ParamChangePoints;
         this.m_ParamLerpDatas = Other.m_ParamLerpDatas;
@@ -430,37 +449,37 @@ bool RemoveFXParamChangePoint(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorFXParamChangePointOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_FXParamChangePoint, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_FXParamChangePoint, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFXParamChangePointOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_FXParamChangePoint, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_FXParamChangePoint, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFXParamChangePointOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_FXParamChangePoint, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_FXParamChangePoint, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFXParamChangePointOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_FXParamChangePoint, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_FXParamChangePoint, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFXParamChangePointOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_FXParamChangePoint, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_FXParamChangePoint, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorFXParamChangePointLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_FXParamChangePoint, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_FXParamChangePoint, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFXParamChangePointActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_FXParamChangePoint, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_FXParamChangePoint, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFXParamChangePointModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_FXParamChangePoint, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_FXParamChangePoint, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

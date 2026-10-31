@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ShopPanel
 {
     const int ModelId = 0;
@@ -92,11 +91,12 @@ struct FVM_ShopPanel : FEUIViewModel
             if (local_18.IsValid())
             {
                 FEUIModelContainer local_32;
-                FSoftBrush local_76 = local_18.opArrow().GetCategoryIcon();
-                local_32.AddModel(FEUIModelRef(), false);
+                FEUIModelRef local_78 = FEUIModelRef(::FVM_Image::Create(this.GetContext().Manager, local_18.opArrow().GetCategoryIcon()));
+                local_32.AddModel(local_78, false);
                 FVM_CommonTabItem& local_80 = ::FVM_CommonTabItem::Create(this.GetContext().Manager);
                 local_80.SetTitleText(local_18.opArrow().GetCategoryName());
-                local_32.AddModel(FEUIModelRef(local_80), false);
+                local_78 = FEUIModelRef(local_80);
+                local_32.AddModel(local_78, false);
                 this.GetModify_GoodsCategories().Add(local_32);
             }
         }
@@ -193,9 +193,9 @@ struct FVM_ShopPanel : FEUIViewModel
             {
                 if (this.HasRemainingCount())
                 {
-                    return FText::Format(NSLOCTEXT("PersonalLimitCountText", "{0}й™ђиґ­пјљ{1}/{2}"), local_30.opArrow().Description, this.GetSelectedGoodsItem().opArrow().GetShopGoods().opArrow().GetRemainingCount(), this.GetSelectedGoodsItem().opArrow().GetShopGoods().opArrow().GetShopGoodsConfig().opArrow().PersonalLimitCount);
+                    return FText::Format(NSLOCTEXT("PersonalLimitCountText", "{0}限购：{1}/{2}"), local_30.opArrow().Description, this.GetSelectedGoodsItem().opArrow().GetShopGoods().opArrow().GetRemainingCount(), this.GetSelectedGoodsItem().opArrow().GetShopGoods().opArrow().GetShopGoodsConfig().opArrow().PersonalLimitCount);
                 }
-                local_70 = NSLOCTEXT("PersonalLimitCountText_SoldOut", "{0}й™ђиґ­пјљ<Red18B>{1}</>/{2}");
+                local_70 = NSLOCTEXT("PersonalLimitCountText_SoldOut", "{0}限购：<Red18B>{1}</>/{2}");
                 __return = FText::Format(local_70, local_30.opArrow().Description, this.GetSelectedGoodsItem().opArrow().GetShopGoods().opArrow().GetRemainingCount(), this.GetSelectedGoodsItem().opArrow().GetShopGoods().opArrow().GetShopGoodsConfig().opArrow().PersonalLimitCount);
             }
             else
@@ -586,7 +586,6 @@ struct __GeneratedProperties_FVM_ShopPanel
     FEUIModelContainer SelectedComposableItem;
     UPROPERTY()
     TEUIModelRef<FVM_ShopPanel> Self;
-
 
 }
 

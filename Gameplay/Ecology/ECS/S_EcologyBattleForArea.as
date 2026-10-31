@@ -1,5 +1,3 @@
-﻿
-
 class US_EcologyBattleForAreaSystem : UECSScriptSystem
 {
     US_EcologyBattleForAreaSystem()
@@ -25,7 +23,7 @@ class US_EcologyBattleForAreaSystem : UECSScriptSystem
     UFUNCTION()
     void Job_BossBattleForAreaRunner(const FECSEntity &inout Entity, const FCS_FixedTime &inout FixedTime, const FC_EcologyFlockBehaviorComponent &inout BehaviorComponent) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
     UFUNCTION()
     void Job_BossBattleForAreaFinishHandle(const FECSEntity &inout Entity, const FCS_FixedTime &inout FixedTime, FC_EcologyFlockBehaviorComponent &inout BehaviorComponent, const FC_EcologyFlockComponent &inout FlockComp, const FC_EcologyFlockBossBattleForAreaComponent &inout BattleForAreaInfo) const
@@ -103,7 +101,7 @@ class US_EcologyBattleForAreaSystem : UECSScriptSystem
         FECSWorldPtr local_10 = ECS::GetECSWorld();
         if (float32(((FFPTime(FixedTime.Time) - BattleComp.EnterStateTime).ToSeconds())) > 15.0f)
         {
-            XLog(ELog(30), FString().Append("[BattleForArea]: FinishStayзЉ¶жЂЃи¶…ж—¶пјЊејєе€¶иЅ¬жЌўе€°None"));
+            XLog(ELog(30), FString().Append("[BattleForArea]: FinishStay状态超时，强制转换到None"));
             ::FEcologyBattleForAreaUtils::ModifyBattleForAreaState(Entity, EBossBattleForAreaState(0));
         }
         return;

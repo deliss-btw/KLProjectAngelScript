@@ -1,4 +1,3 @@
-﻿
 enum ECharacterInvincibleType
 {
     DodgeInvincible,
@@ -6,12 +5,10 @@ enum ECharacterInvincibleType
     GuardInvincible,
 }
 
-
 class UESMAction_CharacterInvincible : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
     int CharacterInvincibleType = 1;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const
@@ -74,7 +71,6 @@ class UESMAction_ModifyGameplayTagsInstantly : UESMBPBaseInstantAction
     UPROPERTY()
     FGameplayTagContainer GameplayTags;
 
-
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const
     {
@@ -91,18 +87,24 @@ class UESMAction_ModifyGameplayTagsInstantly : UESMBPBaseInstantAction
         FString local_10;
         if (this.bAdd)
         {
-            local_10 = "ж·»еЉ ";
+            local_10 = "添加";
         }
         else
         {
-            local_10 = "з§»й™¤";
+            local_10 = "移除";
         }
-        return FString().Append("GameplayTag з«‹еЌі").Append(local_10).Append(": ").Append(this.GameplayTags.Num()).Append("дёЄ");
+        return FString().Append("GameplayTag 立即").Append(local_10).Append(": ").Append(this.GameplayTags.Num()).Append("个");
     }
     UFUNCTION()
     void Do_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        if (this.bAdd)
+        {
+            Context.GetEntity().AddGameplayTags(this.GameplayTags, this.GetDataPathName());
+            return;
+        }
+        Context.GetEntity().RemoveGameplayTags(this.GameplayTags, this.GetDataPathName());
+        return;
     }
 }
 
@@ -128,17 +130,19 @@ class UESMAction_ModifyGameplayTags : UESMBPBaseSpanAction
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const
     {
-        return FString().Append("GameplayTag ").Append(FString("ж·»еЉ ")).Append(": ").Append(this.GameplayTags.Num()).Append("дёЄ");
+        return FString().Append("GameplayTag ").Append(FString("添加")).Append(": ").Append(this.GameplayTags.Num()).Append("个");
     }
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Context.GetEntity().AddGameplayTags(this.GameplayTags, this.GetDataPathName());
+        return;
     }
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Context.GetEntity().RemoveGameplayTags(this.GameplayTags, this.GetDataPathName());
+        return;
     }
 }
 

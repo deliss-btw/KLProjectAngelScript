@@ -1,4 +1,3 @@
-﻿
 enum ELandedMaterialType
 {
     Default,
@@ -22,7 +21,6 @@ enum ELandedStrength
     Extreme,
 }
 
-
 struct FLISStrengthData
 {
     UPROPERTY()
@@ -33,7 +31,6 @@ struct FLISStrengthData
     float32 MaxImpactStrength = 9999999.0f;
     UPROPERTY()
     TSoftObjectPtr<UAkAudioEvent> Event;
-
 
 }
 
@@ -56,7 +53,7 @@ struct FLISCharacterSizeData
     }
     void Preload()
     {
-        ::FPreloadAssetUtils::LoadAkEvent(this.Event);
+        ::FPreloadAssetUtils::LoadAkEvent(this.Default.Event);
         ::FPreloadAssetUtils::LoadAkEvent(this.Light.Event);
         ::FPreloadAssetUtils::LoadAkEvent(this.Moderate.Event);
         ::FPreloadAssetUtils::LoadAkEvent(this.High.Event);
@@ -82,10 +79,9 @@ struct FLandedImpactSFXData
     UPROPERTY()
     ELandedMaterialType FallBack = ELandedMaterialType(0);
 
-
     void Preload()
     {
-        this.Preload();
+        this.Default.Preload();
         this.Small.Preload();
         this.Medium.Preload();
         this.Large.Preload();
@@ -110,7 +106,6 @@ struct FLIVStrengthData
     FVector3f LocationOffset = FVector3f::ZeroVector;
     UPROPERTY()
     FRotator3f RotationOffset = FRotator3f::ZeroRotator;
-
 
     bool IsInImpactForceRange(const float32 ImpactForce)
     {
@@ -141,7 +136,7 @@ struct FLIVCharacterSizeData
     }
     void Preload()
     {
-        ::FPreloadAssetUtils::LoadFXActor(this.FXActor);
+        ::FPreloadAssetUtils::LoadFXActor(this.Default.FXActor);
         ::FPreloadAssetUtils::LoadFXActor(this.Light.FXActor);
         ::FPreloadAssetUtils::LoadFXActor(this.Moderate.FXActor);
         ::FPreloadAssetUtils::LoadFXActor(this.High.FXActor);
@@ -167,10 +162,9 @@ struct FLandedImpactVFXData
     UPROPERTY()
     ELandedMaterialType FallBack = ELandedMaterialType(0);
 
-
     void Preload()
     {
-        this.Preload();
+        this.Default.Preload();
         this.Small.Preload();
         this.Medium.Preload();
         this.Large.Preload();

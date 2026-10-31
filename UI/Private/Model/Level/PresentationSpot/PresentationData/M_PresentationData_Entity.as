@@ -1,4 +1,3 @@
-﻿
 namespace FMS_SpotByEntityId
 {
     const int ModelId = 0;

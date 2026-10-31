@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TalentSkillInfoItem
 {
     const int ViewID = 0;
@@ -32,7 +31,6 @@ class UWidget_TalentSkillInfoItem : UEUIUserListItemWidget
     FGetEUIModelRef TalentSkillInfoDelegate;
     UPROPERTY()
     FGetEUIModelRef SelectableItemDelegate;
-
 
     UFUNCTION()
     void OnViewBind_Implementation()
@@ -331,6 +329,7 @@ namespace UWidget_TalentSkillInfoItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TalentSkillInfoItem;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSkillChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnHoverTalentDetailsChange"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectChanged"));

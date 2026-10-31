@@ -1,4 +1,3 @@
-﻿
 enum EHUDSideHintType
 {
     Default,
@@ -25,7 +24,6 @@ enum ECombineTextEntitySelector
     CustomEntity_2,
 }
 
-
 struct FCombinedText
 {
     UPROPERTY()
@@ -34,7 +32,6 @@ struct FCombinedText
     FText Text;
     UPROPERTY()
     ECombineTextEntitySelector CombineTextEntitySelector = ECombineTextEntitySelector(0);
-
 
 }
 
@@ -51,7 +48,6 @@ struct FSideHintConfig : FDataObject
     TArray<FCombinedText> CombineText;
     UPROPERTY()
     float32 ShowHintTime = 3.0f;
-
 
 }
 

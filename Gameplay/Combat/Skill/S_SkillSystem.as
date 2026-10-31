@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Skill_AllowPreInputInCD = FConsoleVariable();
 
 class US_SkillSystem : UECSScriptSystem
@@ -212,7 +211,7 @@ class US_SkillSystem : UECSScriptSystem
         ::FASCommonUtils::GetUniquePlayerEntity(Entity);
         for (auto& local_34 : Bindings.GetBindingsBySlot())
         {
-            if (local_14.IsSlotBlocked(EESMTriggerInputSlot(local_34.GetKey())))
+            if (local_14.IsSlotBlocked(local_34.GetKey()))
             {
                 continue;
             }
@@ -231,7 +230,61 @@ class US_SkillSystem : UECSScriptSystem
     UFUNCTION()
     void Job_UpdateSimpleInputSkill(const FECSEntity &inout Entity, const FC_SimpleInputSkill &inout SimpleInputSkill, const FCS_FixedTime &inout FixedTime, FC_ESMTrigger &inout ESMTrigger) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        if (SimpleInputSkill.GetSimpleInputSkillConfigs().IsEmpty())
+        {
+            Remove local_6;
+            local_6.opCall();
+            return;
+        }
+        for (auto& local_20 : SimpleInputSkill.GetSimpleInputSkillConfigs())
+        {
+            if (local_20.IsValid())
+            {
+                UESMInputTriggerAsset local_24 = local_20.GetSimpleInputTrigger();
+                FActiveTriggerResult local_40 = FCharacterInputUtils::TestTrigger(local_24, Entity, FixedTime.LastTime, FixedTime.Time, ESMTrigger.Storage);
+                if (local_40.bClear)
+                {
+                    if (!(local_20.ActivateTriggerUsedForTransit.IsNone()))
+                    {
+                        FESMTriggerUtils::ClearTrigger(Entity, ESMTrigger.Storage, local_20.ActivateTriggerUsedForTransit);
+                    }
+                }
+                else
+                {
+                    if (local_40.bActive && (FFPTime(local_40.TriggerTime).opCmp(FixedTime.Time) <= 0) && (local_40.GetTriggerExpireTime().opCmp(FixedTime.LastTime) >= 0))
+                    {
+                        if (local_24.TriggersToClear.Num() > 0)
+                        {
+                            for (auto& local_60 : local_24.TriggersToClear)
+                            {
+                                UESMInputTriggerAsset::ClearTriggersOnActivate(local_40, ESMTrigger.Storage, local_60.GetTriggerName(), int16(local_60.GetTriggerConsumeKey()), NAME_None);
+                            }
+                        }
+                        if (local_24.BanTriggersToCache.Num() > 0)
+                        {
+                            for (auto& local_60 : local_24.BanTriggersToCache)
+                            {
+                                UESMInputTriggerAsset::BanTriggerCache(local_40, ESMTrigger.Storage, FixedTime.Time, local_60.GetTriggerName(), int16(local_60.GetTriggerConsumeKey()));
+                            }
+                        }
+                        if (!(local_20.EntityBBIntKeyUsedForTransit.IsNone()))
+                        {
+                            FNameHandle_EntityBBVarInt local_68;
+                            int local_45 = int(local_20.EntityBBIntValueUsedForTransit);
+                            FFPTime local_42 = ECS::GetContextTime();
+                            local_68;
+                            Entity.SetBB_Int(local_68, local_20.EntityBBIntKeyUsedForTransit, local_42);
+                        }
+                        if (!(local_20.ActivateTriggerUsedForTransit.IsNone()))
+                        {
+                            FESMTriggerUtils::ActivateTrigger(Entity, ESMTrigger.Storage, local_20.ActivateTriggerUsedForTransit, local_40.TriggerTime, local_40.ValidateTime, local_24.GetConsumeKey());
+                        }
+                    }
+                }
+                continue;
+            }
+        }
+        return;
     }
     UFUNCTION()
     void Job_UpdateSkillInput(const FECSEntity &inout Entity, FC_Skill &inout Skill, const FC_ESMCommonTriggerInputResult &inout InputResult, const FCS_FixedTime &inout FixedTime, FC_ESMTrigger &inout ESMTrigger) const
@@ -296,7 +349,7 @@ class US_SkillSystem : UECSScriptSystem
     }
     bool ValidateSkillTrigger(const FECSEntity &inout Entity, FC_Skill &inout Skill, const FSkillInputTriggerConfig &inout SkillInputConfig, const FActiveTriggerResult &inout InResult, const int SkillIndex, const FC_SkillInstance &inout Instance, FC_ESMTrigger &inout ESMTrigger, const FCS_FixedTime &inout FixedTime) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
         bool __r; return __r;
     }
     UFUNCTION()

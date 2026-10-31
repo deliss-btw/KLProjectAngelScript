@@ -1,10 +1,7 @@
-﻿
-
 struct FConfigVM_CommissionEntry : FConfigEUIModelBase
 {
     UPROPERTY()
     ECommissionType CommissionType;
-
 
 }
 

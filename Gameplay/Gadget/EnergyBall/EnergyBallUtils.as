@@ -1,4 +1,3 @@
-﻿
 enum EEnergyBallSpawnDirection
 {
     LeftThenRight,
@@ -169,7 +168,7 @@ bool TryDropDeathEnergyBall(const FECSEntity &inout SourceEntity, const FFPTime 
     }
     for (auto& local_54 : local_38)
     {
-        EnergyBallUtils::SpawnEnergyBallInSphere(SourceEntity, local_54.Prefab, Time, local_31, local_54.Number, EEnergyBallSpawnDirection(0));
+        EnergyBallUtils::SpawnEnergyBallInSphere(SourceEntity, local_54.Prefab, Time, local_31, int(local_54.Number), EEnergyBallSpawnDirection(0));
     }
     local_22.opCall(local_24);
     return true;

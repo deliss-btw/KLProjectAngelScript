@@ -1,5 +1,3 @@
-﻿
-
 class US_GameModeUniversalSystem : US_ECSScriptGameModeSystemBase
 {
     US_GameModeUniversalSystem()
@@ -694,8 +692,7 @@ class US_GameModeUniversalSystem : US_ECSScriptGameModeSystemBase
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_PlayerSelectInfoPVX, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_PlayerSelectInfoPVX, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());
@@ -831,11 +828,11 @@ class US_GameModeUniversalSystem : US_ECSScriptGameModeSystemBase
     {
         int local_24 = 0;
         ECS::GetContextJob();
-        if (ECSInternal::GetMonitorSingletonOnModify(this.GetECSWorld(), FCS_GameModeTimer, EECSRegType(0), true, true).bIsMonitored)
+        if (int(ECSInternal::GetMonitorSingletonOnModify(this.GetECSWorld(), FCS_GameModeTimer, EECSRegType(0), true, true).bIsMonitored) != 0)
         {
             this.Monitor___JobTimer_Pre___ServerJob_HandleGameModeTimer(local_24);
         }
-        if (ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_GameModeTimer, EECSRegType(0), true, true).bIsMonitored)
+        if (int(ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_GameModeTimer, EECSRegType(0), true, true).bIsMonitored) != 0)
         {
             this.Monitor___JobTimer_Pre___ServerJob_HandleGameModeTimer(local_24);
         }
@@ -846,11 +843,11 @@ class US_GameModeUniversalSystem : US_ECSScriptGameModeSystemBase
     {
         int local_24 = 0;
         ECS::GetContextJob();
-        if (ECSInternal::GetMonitorSingletonOnModify(this.GetECSWorld(), FCS_GameModeTimer, EECSRegType(0), true, true).bIsMonitored)
+        if (int(ECSInternal::GetMonitorSingletonOnModify(this.GetECSWorld(), FCS_GameModeTimer, EECSRegType(0), true, true).bIsMonitored) != 0)
         {
             this.Monitor___JobTimer_Post___ServerJob_HandleGameModeTimer(local_24);
         }
-        if (ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_GameModeTimer, EECSRegType(0), true, true).bIsMonitored)
+        if (int(ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_GameModeTimer, EECSRegType(0), true, true).bIsMonitored) != 0)
         {
             this.Monitor___JobTimer_Post___ServerJob_HandleGameModeTimer(local_24);
         }
@@ -887,8 +884,7 @@ class US_GameModeUniversalSystem : US_ECSScriptGameModeSystemBase
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_PlayerSetReady, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_PlayerSetReady, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());
@@ -908,8 +904,7 @@ class US_GameModeUniversalSystem : US_ECSScriptGameModeSystemBase
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_PVPPlayerSetGO, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_PVPPlayerSetGO, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());
@@ -929,8 +924,7 @@ class US_GameModeUniversalSystem : US_ECSScriptGameModeSystemBase
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_PVPPlayerSwitchTeam, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_PVPPlayerSwitchTeam, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());
@@ -950,8 +944,7 @@ class US_GameModeUniversalSystem : US_ECSScriptGameModeSystemBase
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_PVPPlayerSwitchGameRule, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_PVPPlayerSwitchGameRule, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());
@@ -971,8 +964,7 @@ class US_GameModeUniversalSystem : US_ECSScriptGameModeSystemBase
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_PVPAddBot, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_PVPAddBot, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());
@@ -992,8 +984,7 @@ class US_GameModeUniversalSystem : US_ECSScriptGameModeSystemBase
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_PVPRemoveBot, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_PVPRemoveBot, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());
@@ -1013,8 +1004,7 @@ class US_GameModeUniversalSystem : US_ECSScriptGameModeSystemBase
             FECSEntityScopeCycleCounter local_61 = FECSEntityScopeCycleCounter(local_60.Sender);
             if (local_60.Validate() == false)
             {
-                FString local_70 = "Validate Failed: FCE_PVPPlayerRequestBackToRoom, sender";
-                FString local_66 = local_60.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_PVPPlayerRequestBackToRoom, sender") + local_60.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_60.GetHandleTime());
@@ -1088,11 +1078,11 @@ class US_GameModeUniversalSystem : US_ECSScriptGameModeSystemBase
     {
         int local_24 = 0;
         ECS::GetContextJob();
-        if (ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_GameStates, EECSRegType(0), false, true).bIsMonitored)
+        if (int(ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_GameStates, EECSRegType(0), false, true).bIsMonitored) != 0)
         {
             this.Monitor_PVXEntryUIByStage(local_24);
         }
-        if (ECSInternal::GetMonitorSingletonOnModify(this.GetECSWorld(), FCS_GameStates, EECSRegType(0), false, true).bIsMonitored)
+        if (int(ECSInternal::GetMonitorSingletonOnModify(this.GetECSWorld(), FCS_GameStates, EECSRegType(0), false, true).bIsMonitored) != 0)
         {
             this.Monitor_PVXEntryUIByStage(local_24);
         }

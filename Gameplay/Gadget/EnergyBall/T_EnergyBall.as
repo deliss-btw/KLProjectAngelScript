@@ -1,5 +1,3 @@
-﻿
-
 struct FT_EnergyBallTrait : FECSTrait
 {
     FECSTrait _base_FECSTrait;

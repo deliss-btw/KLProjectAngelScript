@@ -1,4 +1,3 @@
-﻿
 namespace StigmataUtils
 {
 int GetDefaultHealItemMax()

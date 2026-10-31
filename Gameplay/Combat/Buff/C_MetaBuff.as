@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_PlayerMetaBuffList_NS
 {
     const TECSComponentDerivedPtr<FC_PlayerMetaBuffList> DerivedPtr = TECSComponentDerivedPtr<FC_PlayerMetaBuffList>();
@@ -23,11 +22,16 @@ struct FPlayerMetaBuff
 
     FPlayerMetaBuff()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_StartTime = 0;
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        return;
     }
     FPlayerMetaBuff(const FPlayerMetaBuff &inout Other)
     {
         this.m_StartTime = 0;
+        FSubDirtyFlags8 local_26;
+        this.__DirtyFlags = local_26;
         this.m_MetaBuffConfig = Other.m_MetaBuffConfig;
         this.m_RuntimeGamePlayModifierIDs = Other.m_RuntimeGamePlayModifierIDs;
         this.m_ModifiersDataIDs = Other.m_ModifiersDataIDs;
@@ -181,11 +185,15 @@ struct FC_PlayerMetaBuffList : FECSComponent
 
     FC_PlayerMetaBuffList()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_PlayerMetaBuffList(const FC_PlayerMetaBuffList &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_MetaBuffs = Other.m_MetaBuffs;
         return;
@@ -297,37 +305,37 @@ bool RemovePlayerMetaBuffList(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPlayerMetaBuffListOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerMetaBuffList, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerMetaBuffList, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerMetaBuffListOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerMetaBuffList, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerMetaBuffList, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerMetaBuffListOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerMetaBuffList, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerMetaBuffList, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerMetaBuffListOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerMetaBuffList, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerMetaBuffList, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerMetaBuffListOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerMetaBuffList, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerMetaBuffList, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPlayerMetaBuffListLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PlayerMetaBuffList, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PlayerMetaBuffList, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerMetaBuffListActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PlayerMetaBuffList, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PlayerMetaBuffList, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerMetaBuffListModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PlayerMetaBuffList, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PlayerMetaBuffList, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

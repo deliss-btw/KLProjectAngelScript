@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_DraftPlayerInfo_Helpers
 {
 UFUNCTION()

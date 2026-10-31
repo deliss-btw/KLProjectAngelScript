@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_AI_CheckHitTestToTarget_DebugEntity = FConsoleVariable();
 
 class UBTDecorator_CheckHitTestToTarget : UBTDecorator_ECSScriptBase
@@ -12,8 +11,7 @@ class UBTDecorator_CheckHitTestToTarget : UBTDecorator_ECSScriptBase
     UPROPERTY()
     float32 DebugDrawThickness = 2.0f;
 
-    default SetNodeName("HitTestеЏЇе‘Ѕдё­з›®ж ‡");
-
+    default SetNodeName("HitTest可命中目标");
 
     UFUNCTION()
     bool CalculateRawConditionValue_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const
@@ -201,7 +199,7 @@ class UBTDecorator_CheckHitTestToTarget : UBTDecorator_ECSScriptBase
     }
     void DrawDebugNavigationRay(const FVector &inout OriginLocation, const FVector &inout EndLocation, const FColor &inout Color) const
     {
-        FECSDebugDraw::DrawDebugLine(n"CheckHitTestToTarget", OriginLocation, EndLocation, Color, Color, this.DebugDrawDuration, uint8(0), int(this.DebugDrawThickness));
+        FECSDebugDraw::DrawDebugLine(n"CheckHitTestToTarget", OriginLocation, EndLocation, Color, Color, this.DebugDrawDuration, uint8(0), this.DebugDrawThickness);
         FECSDebugDraw::DrawDebugPoint(n"CheckHitTestToTarget", EndLocation, 12.0f, Color, Color, this.DebugDrawDuration, uint8(0));
         return;
     }

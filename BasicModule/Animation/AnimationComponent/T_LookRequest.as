@@ -1,5 +1,3 @@
-﻿
-
 struct FT_LookRequest : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -35,7 +33,6 @@ struct FT_LookRequest : FECSTrait
     FECSInternalTraitCompDefinition FC_LookResolvedTarget_Defination = FECSInternalTraitCompDefinition::CreateNoCheck(FC_LookResolvedTarget, NAME_None);
     UPROPERTY()
     bool bHas_FC_LookResolvedTarget = true;
-
 
 }
 

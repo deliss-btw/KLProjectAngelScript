@@ -1,5 +1,3 @@
-﻿
-
 struct FGlobalSettingsConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -11,7 +9,6 @@ struct FGlobalSettingsConfig : FDataObject
     TArray<FDataObjectPtr> m_TutorialMissionConfigs;
     UPROPERTY()
     int NicknameChangeCDHours;
-
 
     const TArray<TDataObjectPtr<FMissionCommissionConfig>> GetTutorialMissionConfigs() const property
     {

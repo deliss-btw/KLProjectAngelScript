@@ -1,5 +1,3 @@
-﻿
-
 struct FAnimAimPoseAllowSource : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -8,7 +6,7 @@ struct FAnimAimPoseAllowSource : FDataObject
 
     FAnimAimPoseAllowSource()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CharacterJumpCurve : UESMCharacterJumpCurveAction
 {
     UESMAction_CharacterJumpCurve()

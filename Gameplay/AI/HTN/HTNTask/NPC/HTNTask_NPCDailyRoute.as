@@ -1,5 +1,3 @@
-﻿
-
 struct FHTNTask_NPCDailyRouteMoveInstanceData
 {
     UPROPERTY()
@@ -9,7 +7,6 @@ struct FHTNTask_NPCDailyRouteMoveInstanceData
     UPROPERTY()
     FVector LastLocation = FVector::ZeroVector;
 
-
 }
 
 struct FHTNTask_NPCDailyRouteWaitInstanceData
@@ -18,7 +15,6 @@ struct FHTNTask_NPCDailyRouteWaitInstanceData
     float32 ElapsedTime = 0.0f;
     UPROPERTY()
     float32 WaitTime = 0.0f;
-
 
 }
 
@@ -135,7 +131,6 @@ class UHTNTask_NPCDailyRouteMoveAlongPath : UHTNTask_ECSScriptBase
     float32 BlockedMoveDistanceThreshold = 5.0f;
 
     default SetNodeName("NPC Daily Route Move Along Path");
-
 
     UFUNCTION()
     UScriptStruct GetInstanceDataType_Implementation() const
@@ -302,7 +297,7 @@ class UHTNTask_NPCDailyRouteWaitAndAdvance : UHTNTask_ECSScriptBase
     void Tick_Implementation(const FHTNContext &inout Context, const float32 DeltaSeconds)
     {
         FC_NPCDailyRouteRuntime local_38;
-        if (!(::FNPCDailyRouteUtils::TryGetPreparedTarget(local_38, Context.PawnEntity)))
+        if (!(::FNPCDailyRouteUtils::TryGetPreparedTarget(Context.PawnEntity, local_38)))
         {
             if (Context.PawnEntity.IsValid())
             {

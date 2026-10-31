@@ -1,4 +1,3 @@
-﻿
 enum ELevelObjectStatType
 {
     TreasureBox,
@@ -7,7 +6,6 @@ enum ELevelObjectStatType
     Teleporter,
     CollectionPrefab,
 }
-
 
 struct FLevelObjectStatConfig : FDataObject
 {
@@ -20,7 +18,6 @@ struct FLevelObjectStatConfig : FDataObject
     ELevelObjectStatType ObjectType;
     UPROPERTY()
     int CooldownDuration = 0;
-
 
     const TDataObjectPtr<FMapConfig> GetMapConfig() const property
     {

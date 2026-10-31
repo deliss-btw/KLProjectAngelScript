@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_EntityDialogPanel
 {
     const int ModelId = 0;

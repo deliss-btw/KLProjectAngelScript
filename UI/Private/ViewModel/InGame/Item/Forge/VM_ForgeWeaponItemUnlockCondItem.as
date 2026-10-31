@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ForgeWeaponItemUnlockCondItem
 {
     const int ModelId = 0;
@@ -72,7 +71,6 @@ struct __GeneratedProperties_FVM_ForgeWeaponItemUnlockCondItem
     bool CanSkip;
     UPROPERTY()
     TEUIModelRef<FVM_ForgeWeaponItemUnlockCondItem> Self;
-
 
 }
 

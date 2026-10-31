@@ -1,5 +1,3 @@
-﻿
-
 class UCustomParamComponent : UActorComponent
 {
     UPROPERTY()

@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_DynamicWidgetSelector_Helpers
 {
 UFUNCTION()

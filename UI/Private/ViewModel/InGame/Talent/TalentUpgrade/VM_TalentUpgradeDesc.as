@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TalentUpgradeDesc
 {
     const int ModelId = 0;

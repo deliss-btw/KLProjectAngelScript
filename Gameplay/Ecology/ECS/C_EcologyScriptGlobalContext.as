@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_EcologyConfigContext_NS
 {
     const TECSComponentDerivedPtr<FCS_EcologyConfigContext> DerivedPtr = TECSComponentDerivedPtr<FCS_EcologyConfigContext>();
@@ -37,7 +36,6 @@ struct FEcologyWorldState
     FGameplayTagContainer TimeGameplayTags;
     UPROPERTY()
     int TimeSegments = -1;
-
 
 }
 
@@ -80,7 +78,6 @@ struct FCS_EcologyScriptGlobalContext : FECSSingleton
     UPROPERTY()
     int EcologyGlobalRandomSeed;
 
-
 }
 
 struct FCS_EcologyWorldInfo : FECSSingleton
@@ -89,7 +86,6 @@ struct FCS_EcologyWorldInfo : FECSSingleton
     int BaseWorldMonsterLevel = 1;
     UPROPERTY()
     TDataObjectPtr<FEcologyLevelDataObject> EcologyLevelConfig;
-
 
 }
 
@@ -181,17 +177,17 @@ bool RemoveEcologyConfigContext(const FECSWorldPtr &inout World)
 }
 void __MonitorEcologyConfigContextLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_EcologyConfigContext, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_EcologyConfigContext, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyConfigContextActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_EcologyConfigContext, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_EcologyConfigContext, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyConfigContextModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_EcologyConfigContext, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_EcologyConfigContext, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_EcologyDataCacheContext
@@ -282,17 +278,17 @@ bool RemoveEcologyDataCacheContext(const FECSWorldPtr &inout World)
 }
 void __MonitorEcologyDataCacheContextLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_EcologyDataCacheContext, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_EcologyDataCacheContext, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyDataCacheContextActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_EcologyDataCacheContext, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_EcologyDataCacheContext, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyDataCacheContextModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_EcologyDataCacheContext, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_EcologyDataCacheContext, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_EcologyScriptGlobalContext
@@ -383,17 +379,17 @@ bool RemoveEcologyScriptGlobalContext(const FECSWorldPtr &inout World)
 }
 void __MonitorEcologyScriptGlobalContextLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_EcologyScriptGlobalContext, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_EcologyScriptGlobalContext, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyScriptGlobalContextActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_EcologyScriptGlobalContext, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_EcologyScriptGlobalContext, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyScriptGlobalContextModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_EcologyScriptGlobalContext, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_EcologyScriptGlobalContext, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_EcologyWorldInfo
@@ -484,16 +480,16 @@ bool RemoveEcologyWorldInfo(const FECSWorldPtr &inout World)
 }
 void __MonitorEcologyWorldInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_EcologyWorldInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_EcologyWorldInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyWorldInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_EcologyWorldInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_EcologyWorldInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyWorldInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_EcologyWorldInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_EcologyWorldInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

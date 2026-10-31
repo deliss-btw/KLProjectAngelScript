@@ -1,10 +1,7 @@
-﻿
-
 class US_InitialLevelLoadingPassSystem : UECSScriptSystem
 {
     UPROPERTY()
     float32 MaxDurationToWaitGroupReady = 1.0f;
-
 
     UFUNCTION()
     bool IsDisabled_Implementation() const

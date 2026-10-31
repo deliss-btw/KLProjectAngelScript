@@ -1,4 +1,3 @@
-﻿
 namespace FAppendantEntityUtils
 {
 FECSEntity SpawnAppendantEntityByParam(const FECSEntity &inout Owner, const TSubclassOf<AECSPrefab> &inout Prefab, const bool bPredictable, const FSpawnAppendantEntityParam &inout Params)

@@ -1,4 +1,3 @@
-﻿
 enum EPVXTeamIndex
 {
     PlayerTeam0,
@@ -67,7 +66,6 @@ struct FC_InitInfoPVX : FECSComponent
     UPROPERTY()
     int PlayerPrefabIdx = -1;
 
-
 }
 
 struct FC_PlayerInfoPVX : FECSComponent
@@ -90,11 +88,36 @@ struct FC_PlayerInfoPVX : FECSComponent
 
     FC_PlayerInfoPVX()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Faction = EFaction(1);
+        this.m_BossPrefabIdx = -1;
+        this.m_PlayerPrefabIdx = -1;
+        this.m_PlayerAvatarID = 0;
+        this.m_PlayerTeamID = -1;
+        this.m_PlayerInTeamIndex = -1;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_PlayerInfoPVX(const FC_PlayerInfoPVX &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_4;
+        this.__DirtyFlags = local_4;
+        this.m_Faction = EFaction(1);
+        this.m_BossPrefabIdx = -1;
+        this.m_PlayerPrefabIdx = -1;
+        this.m_PlayerAvatarID = 0;
+        this.m_PlayerTeamID = -1;
+        this.m_PlayerInTeamIndex = -1;
+        this.__InitDirtyFlags();
+        this.m_Faction = Other.m_Faction;
+        this.m_SpawnPoint = Other.m_SpawnPoint;
+        this.m_BossPrefabIdx = int(Other.m_BossPrefabIdx);
+        this.m_PlayerPrefabIdx = int(Other.m_PlayerPrefabIdx);
+        this.m_PlayerAvatarID = int(Other.m_PlayerAvatarID);
+        this.m_PlayerTeamID = int(Other.m_PlayerTeamID);
+        this.m_PlayerInTeamIndex = int(Other.m_PlayerInTeamIndex);
+        return;
     }
     FC_PlayerInfoPVX opAssign(const FC_PlayerInfoPVX &inout Other)
     {
@@ -230,7 +253,6 @@ struct FCE_PlayerEnterPVX : FECSEvent
     UPROPERTY()
     int PlayerPrefabIdx = -1;
 
-
 }
 
 struct FCE_PlayerSelectInfoPVX : FECSEvent
@@ -242,7 +264,6 @@ struct FCE_PlayerSelectInfoPVX : FECSEvent
     int PlayerMonsterIdx;
     UPROPERTY()
     bool bIsReady = false;
-
 
     bool Validate() const
     {
@@ -259,7 +280,6 @@ struct FCE_PlayerSelectChangePVX : FECSEvent
     int PlayerMonsterIdx;
     UPROPERTY()
     bool bIsReady = false;
-
 
 }
 
@@ -287,7 +307,6 @@ struct FCE_ChangeSelectedTeamPVX : FECSEvent
     UPROPERTY()
     int NewTeamID;
 
-
 }
 
 struct FPVX_MatchPlayerEntry
@@ -308,11 +327,33 @@ struct FPVX_MatchPlayerEntry
 
     FPVX_MatchPlayerEntry()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Uid = 0;
+        this.m_TeamId = -1;
+        this.m_PlayerInTeamIndex = -1;
+        this.m_Faction = EFaction(1);
+        this.m_BossPrefabIdx = -1;
+        this.m_PlayerPrefabIdx = -1;
+        return;
     }
     FPVX_MatchPlayerEntry(const FPVX_MatchPlayerEntry &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_4;
+        this.__DirtyFlags = local_4;
+        this.m_Uid = 0;
+        this.m_TeamId = -1;
+        this.m_PlayerInTeamIndex = -1;
+        this.m_Faction = EFaction(1);
+        this.m_BossPrefabIdx = -1;
+        this.m_PlayerPrefabIdx = -1;
+        this.m_Uid = int(Other.m_Uid);
+        this.m_TeamId = int(Other.m_TeamId);
+        this.m_PlayerInTeamIndex = int(Other.m_PlayerInTeamIndex);
+        this.m_Faction = Other.m_Faction;
+        this.m_BossPrefabIdx = int(Other.m_BossPrefabIdx);
+        this.m_PlayerPrefabIdx = int(Other.m_PlayerPrefabIdx);
+        return;
     }
     FPVX_MatchPlayerEntry opAssign(const FPVX_MatchPlayerEntry &inout Other)
     {
@@ -423,11 +464,15 @@ struct FCS_PVX_MatchData : FECSSingleton
 
     FCS_PVX_MatchData()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FCS_PVX_MatchData(const FCS_PVX_MatchData &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_PlayerEntries = Other.m_PlayerEntries;
         this.m_SelectRoleEndTime = Other.m_SelectRoleEndTime;
@@ -534,11 +579,34 @@ struct FCS_PVX_ScoreData : FECSSingleton
 
     FCS_PVX_ScoreData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bHasStarted = false;
+        this.m_WinnerTeamId = -1;
+        this.m_LoserTeamId = -1;
+        this.m_ExpMultiplier = 1.0f;
+        this.__InitDirtyFlags();
+        return;
     }
     FCS_PVX_ScoreData(const FCS_PVX_ScoreData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_4;
+        this.__DirtyFlags = local_4;
+        this.m_bHasStarted = false;
+        this.m_WinnerTeamId = -1;
+        this.m_LoserTeamId = -1;
+        this.m_ExpMultiplier = 1.0f;
+        this.__InitDirtyFlags();
+        this.m_PlayerInfoMap = Other.m_PlayerInfoMap;
+        this.m_MissionEndTime = Other.m_MissionEndTime;
+        this.m_MissionStartTime = Other.m_MissionStartTime;
+        this.m_bHasStarted = Other.m_bHasStarted;
+        this.m_WinnerTeamId = int(Other.m_WinnerTeamId);
+        this.m_LoserTeamId = int(Other.m_LoserTeamId);
+        this.m_HasTriggeredLevelProgressArray = Other.m_HasTriggeredLevelProgressArray;
+        this.m_ExpMultiplier = Other.m_ExpMultiplier;
+        this.m_MonsterPowerBuffConfig = Other.m_MonsterPowerBuffConfig;
+        return;
     }
     FCS_PVX_ScoreData opAssign(const FCS_PVX_ScoreData &inout Other)
     {
@@ -802,37 +870,37 @@ bool RemoveInitInfoPVX(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorInitInfoPVXOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_InitInfoPVX, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_InitInfoPVX, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorInitInfoPVXOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_InitInfoPVX, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_InitInfoPVX, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorInitInfoPVXOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_InitInfoPVX, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_InitInfoPVX, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorInitInfoPVXOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_InitInfoPVX, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_InitInfoPVX, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorInitInfoPVXOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_InitInfoPVX, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_InitInfoPVX, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorInitInfoPVXLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_InitInfoPVX, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_InitInfoPVX, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorInitInfoPVXActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_InitInfoPVX, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_InitInfoPVX, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorInitInfoPVXModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_InitInfoPVX, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_InitInfoPVX, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_PlayerInfoPVX
@@ -912,37 +980,37 @@ bool RemovePlayerInfoPVX(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPlayerInfoPVXOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerInfoPVX, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerInfoPVX, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerInfoPVXOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerInfoPVX, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerInfoPVX, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerInfoPVXOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerInfoPVX, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerInfoPVX, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerInfoPVXOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerInfoPVX, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerInfoPVX, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerInfoPVXOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerInfoPVX, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerInfoPVX, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPlayerInfoPVXLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PlayerInfoPVX, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PlayerInfoPVX, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerInfoPVXActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PlayerInfoPVX, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PlayerInfoPVX, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerInfoPVXModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PlayerInfoPVX, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PlayerInfoPVX, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_SelectedTeamIndexNeedInitPVXTag
@@ -1030,17 +1098,17 @@ bool RemoveSelectedTeamIndexNeedInitPVXTag(const FECSWorldPtr &inout World)
 }
 void __MonitorSelectedTeamIndexNeedInitPVXTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_SelectedTeamIndexNeedInitPVXTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_SelectedTeamIndexNeedInitPVXTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSelectedTeamIndexNeedInitPVXTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_SelectedTeamIndexNeedInitPVXTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_SelectedTeamIndexNeedInitPVXTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSelectedTeamIndexNeedInitPVXTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_SelectedTeamIndexNeedInitPVXTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_SelectedTeamIndexNeedInitPVXTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_PVX_MatchData
@@ -1128,17 +1196,17 @@ bool RemovePVX_MatchData(const FECSWorldPtr &inout World)
 }
 void __MonitorPVX_MatchDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_PVX_MatchData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_PVX_MatchData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVX_MatchDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_PVX_MatchData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_PVX_MatchData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVX_MatchDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_PVX_MatchData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_PVX_MatchData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_PVX_ScoreData
@@ -1226,17 +1294,17 @@ bool RemovePVX_ScoreData(const FECSWorldPtr &inout World)
 }
 void __MonitorPVX_ScoreDataLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_PVX_ScoreData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_PVX_ScoreData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVX_ScoreDataActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_PVX_ScoreData, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_PVX_ScoreData, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPVX_ScoreDataModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_PVX_ScoreData, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_PVX_ScoreData, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

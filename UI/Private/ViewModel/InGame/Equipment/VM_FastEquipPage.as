@@ -1,4 +1,3 @@
-﻿
 namespace FVM_FastEquipPage
 {
     const int ModelId = 0;
@@ -63,8 +62,7 @@ struct FVM_FastEquipPage : FEUIViewModel
             TEUIModelRef<FM_Equipment> local_24 = this.GetEquipment();
             if (::FEquipmentUtils::AvatarCanEquip(local_22, GetEquipmentConfig()))
             {
-                FEUIModelRef local_26;
-                this.GetModify_AvatarList().Add(local_26);
+                this.GetModify_AvatarList().Add(FEUIModelRef(::FVM_FastEquipPageItem::Create(this.GetContext().Manager, local_22)));
             }
         }
         return;
@@ -136,8 +134,7 @@ struct FVM_FastEquipPage : FEUIViewModel
     }
     void UpdateEquipmentSelectDetail()
     {
-        TEUIModelRef<FM_Equipment> local_2 = this.GetEquipment();
-        this.SetEquipmentSelectDetail(FEUIModelRef());
+        this.SetEquipmentSelectDetail(FEUIModelRef(::FVM_EquipmentSelectDetail::Create(this.GetContext().Manager, this.GetEquipment(), this.GetSelectedAvatarConfig())));
         return;
     }
     void CancelCompare()
@@ -311,7 +308,6 @@ struct __GeneratedProperties_FVM_FastEquipPage
     UPROPERTY()
     TEUIModelRef<FVM_FastEquipPage> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_FastEquipPageItem
@@ -403,7 +399,9 @@ void __OnPlayerEquipmentChanged(FVM_FastEquipPage &inout Model, const FECSEntity
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorDSPlayerAvatarInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorDSPlayerAvatarInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 FEUIModelRef __UIGetter_EquipmentSelectDetail(const FVM_FastEquipPage &inout Model)
 {

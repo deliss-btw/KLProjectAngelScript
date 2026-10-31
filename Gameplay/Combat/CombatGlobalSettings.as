@@ -1,5 +1,3 @@
-﻿
-
 class UCombatGlobalSettings : UCombatGlobalSettingsBase
 {
     UPROPERTY()
@@ -62,7 +60,6 @@ class UCombatGlobalSettings : UCombatGlobalSettingsBase
     FWeaponDrawSheatheConfig WeaponDrawSheatheConfig;
     UPROPERTY()
     TArray<UTexture2D> ArmWrestleResultTextures;
-
 
     UFUNCTION()
     AFXActor DoSurfaceTraceSpawnFx_Implementation(const FKLSpawnFxActorHelper &inout SpawnFxActorHelper, const FTransform &inout SpawnTransform) const

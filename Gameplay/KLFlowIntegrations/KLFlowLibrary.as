@@ -1,4 +1,3 @@
-﻿
 namespace KLFlowLibrary
 {
 bool GetEntityByECSEntityId(const FECSEntityId &inout EntityId, FECSEntity &out Entity)
@@ -25,8 +24,7 @@ bool GetEntityByLevelUnitRef(const FKLFlowLevelUnitRef &inout UnitRef, FECSEntit
     {
         return false;
     }
-    FECSEntityId local_15;
-    Entity = FECSEntity(local_15);
+    Entity = FECSEntity(local_12.FindChildEntityByGUID(UnitRef.Value));
     return Entity.IsValid();
 }
 void PostFlowEvent(const FName &inout EventTag, const FInstancedStruct &inout EventData)

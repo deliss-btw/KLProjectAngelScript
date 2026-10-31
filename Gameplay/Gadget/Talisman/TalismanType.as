@@ -1,4 +1,3 @@
-﻿
 enum ETalismanType
 {
     None,

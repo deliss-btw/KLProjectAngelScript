@@ -1,5 +1,3 @@
-﻿
-
 class US_EcosimAIV2FactSystem : UECSScriptSystem
 {
     FFPTime HitDamageMemoryLastTime = FFPTime(10.0);
@@ -115,15 +113,14 @@ class US_EcosimAIV2FactSystem : UECSScriptSystem
     UFUNCTION()
     void Job_RecordEcosimAIV2HitDamageTmpMemory(const FCE_DamageEvent &inout Event, const FCS_FixedTime &inout FixedTime) const
     {
+        int local_16 = 0;
         int local_26 = 0;
         FECSEntity local_4 = Event.Receiver;
         FECSEntity local_8 = Event.FinalDamageSource;
         if (local_4.MatchGameplayTag(GameplayTags::EcosimAIV2_Ability_RecordHitDamageMemory))
         {
-            ECS::GetContextTime();
-            ECS::GetContextTime();
-            FECSEntity local_18;
-            FFPTime local_24 = (local_18 + this.HitDamageMemoryLastTime);
+            local_16.HitDamageTmpMemory.Add(local_8, ECS::GetContextTime());
+            FFPTime local_24 = (ECS::GetContextTime() + this.HitDamageMemoryLastTime);
             local_26.HitDamageSource = local_8;
             ::FEcosimAIV2Utils::AddEntityRelation(local_8, local_4, EEcosimAIV2EntityRelation(5), false);
             ::FEcosimAIV2Utils::SendRelationChangeEvent(local_8, local_4, EEcosimAIV2EntityRelation(5), true);

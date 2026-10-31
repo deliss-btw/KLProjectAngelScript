@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ShowEcho_Helpers
 {
 UFUNCTION()

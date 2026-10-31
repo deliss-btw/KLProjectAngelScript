@@ -1,5 +1,3 @@
-﻿
-
 class UESMTransitFailedCallback_CombatHint : UESMTransitFailedCallback
 {
     UPROPERTY()

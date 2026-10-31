@@ -1,5 +1,3 @@
-﻿
-
 struct FPortalStateConfig
 {
     UPROPERTY()
@@ -100,13 +98,13 @@ struct FPortalStateConfig
             const FPortalStateData& local_22 = this.GetDataRaw(EPortalState(local_19));
             if (local_22.bFallBack)
             {
+                int local_14 = int(local_22.FallBack);
                 EPortalState local_23;
-                local_23 = local_22.FallBack;
-                EPortalState local_14 = local_22.FallBack;
-                FName local_11 = local_2.GetNameByValue(int(local_14));
+                local_23 = EPortalState(local_14);
+                FName local_11 = local_2.GetNameByValue(int(local_22.FallBack));
                 if (local_2.GetIndexByName(local_11, EGetByNameFlags(0)) < local_7)
                 {
-                    local_14 = local_22.FallBack;
+                    local_14 = int(local_22.FallBack);
                     this.CopyFallbackData(EPortalState(local_14), EPortalState(local_19));
                     continue;
                 }

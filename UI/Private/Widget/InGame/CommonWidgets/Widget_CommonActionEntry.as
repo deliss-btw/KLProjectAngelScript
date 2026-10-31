@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommonActionEntry
 {
     const int ViewID = 0;
@@ -224,6 +223,7 @@ namespace UWidget_CommonActionEntry
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonActionEntry;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnActionEntryBindingDataChanged"));
     return;
 }

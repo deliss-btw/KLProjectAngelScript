@@ -1,4 +1,3 @@
-﻿
 namespace FVM_BuffHoverDialogItem
 {
     const int ModelId = 0;
@@ -175,7 +174,8 @@ struct FVM_BuffHoverDialogItem : FEUIViewModel
             }
         }
         FFPTime local_20 = (local_2 - this.GetContext().Time);
-        this.GetModify_RemainingCounterDown().SetRemainedTimeWithPrecision(FFPTime(FMath::Max(local_20.ToSeconds(), 0.0)), EMWCounterDownPrecision(0));
+        float local_22 = FMath::Max(local_20.ToSeconds(), 0.0);
+        this.GetModify_RemainingCounterDown().SetRemainedTimeWithPrecision(FFPTime(local_22), EMWCounterDownPrecision(0));
         return;
     }
     FTimespan GetRemainingTime() const
@@ -350,36 +350,16 @@ struct FVM_BuffHoverDialogItem : FEUIViewModel
             Make local_482;
             this.GetModify_BuffAttrs().Add(local_482.opImplConv());
         }
-        int local_67_3 = this.GetCurStack();
-        int local_497 = this.GetMaxStack();
-        this.SetVM_StackCount1(FEUIModelRef());
-        int local_67_4 = this.GetCurStack();
-        int local_497_2 = this.GetMaxStack();
-        this.SetVM_StackCount2(FEUIModelRef());
-        int local_498 = this.GetCurStack();
-        int local_67_5 = this.GetMaxStack();
-        this.SetVM_StackCount3(FEUIModelRef());
-        int local_497_3 = this.GetCurStack();
-        int local_498_2 = this.GetMaxStack();
-        this.SetVM_StackCount4(FEUIModelRef());
-        int local_67_6 = this.GetCurStack();
-        int local_497_4 = this.GetMaxStack();
-        this.SetVM_StackCount5(FEUIModelRef());
-        int local_498_3 = this.GetCurStack();
-        int local_67_7 = this.GetMaxStack();
-        this.SetVM_StackCount6(FEUIModelRef());
-        int local_497_5 = this.GetCurStack();
-        int local_498_4 = this.GetMaxStack();
-        this.SetVM_StackCount7(FEUIModelRef());
-        int local_67_8 = this.GetCurStack();
-        int local_497_6 = this.GetMaxStack();
-        this.SetVM_StackCount8(FEUIModelRef());
-        int local_498_5 = this.GetCurStack();
-        int local_67_9 = this.GetMaxStack();
-        this.SetVM_StackCount9(FEUIModelRef());
-        int local_497_7 = this.GetCurStack();
-        int local_498_6 = this.GetMaxStack();
-        this.SetVM_StackCount10(FEUIModelRef());
+        this.SetVM_StackCount1(FEUIModelRef(::FVM_BuffHoverStackCount::Create(this.GetContext().Manager, 1, this.GetMaxStack(), this.GetCurStack())));
+        this.SetVM_StackCount2(FEUIModelRef(::FVM_BuffHoverStackCount::Create(this.GetContext().Manager, 2, this.GetMaxStack(), this.GetCurStack())));
+        this.SetVM_StackCount3(FEUIModelRef(::FVM_BuffHoverStackCount::Create(this.GetContext().Manager, 3, this.GetMaxStack(), this.GetCurStack())));
+        this.SetVM_StackCount4(FEUIModelRef(::FVM_BuffHoverStackCount::Create(this.GetContext().Manager, 4, this.GetMaxStack(), this.GetCurStack())));
+        this.SetVM_StackCount5(FEUIModelRef(::FVM_BuffHoverStackCount::Create(this.GetContext().Manager, 5, this.GetMaxStack(), this.GetCurStack())));
+        this.SetVM_StackCount6(FEUIModelRef(::FVM_BuffHoverStackCount::Create(this.GetContext().Manager, 6, this.GetMaxStack(), this.GetCurStack())));
+        this.SetVM_StackCount7(FEUIModelRef(::FVM_BuffHoverStackCount::Create(this.GetContext().Manager, 7, this.GetMaxStack(), this.GetCurStack())));
+        this.SetVM_StackCount8(FEUIModelRef(::FVM_BuffHoverStackCount::Create(this.GetContext().Manager, 8, this.GetMaxStack(), this.GetCurStack())));
+        this.SetVM_StackCount9(FEUIModelRef(::FVM_BuffHoverStackCount::Create(this.GetContext().Manager, 9, this.GetMaxStack(), this.GetCurStack())));
+        this.SetVM_StackCount10(FEUIModelRef(::FVM_BuffHoverStackCount::Create(this.GetContext().Manager, 10, this.GetMaxStack(), this.GetCurStack())));
         return;
     }
     void OnPlayerMetaBuffChanged(const FC_PlayerMetaBuffList &inout PlayerMetaBuffList)
@@ -790,7 +770,6 @@ struct __GeneratedProperties_FVM_BuffHoverDialogItem
     UPROPERTY()
     TEUIModelRef<FVM_BuffHoverDialogItem> Self;
 
-
 }
 
 namespace FVM_BuffHoverDialogItem
@@ -1012,7 +991,9 @@ void __OnPlayerMetaBuffChanged(FVM_BuffHoverDialogItem &inout Model, const FECSE
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorPlayerMetaBuffListLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerMetaBuffListModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TArray<FEUIModelContainer> __UIGetter_BuffAttrs(const FVM_BuffHoverDialogItem &inout Model)
 {

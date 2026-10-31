@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_PresentationTopLayerConduitCameraTag_NS
 {
     const TECSComponentDerivedPtr<FC_PresentationTopLayerConduitCameraTag> DerivedPtr = TECSComponentDerivedPtr<FC_PresentationTopLayerConduitCameraTag>();
@@ -13,7 +12,6 @@ struct FLayerConduitCamera : FCameraRuntimeDataBasic
 
     FLayerConduitCamera()
     {
-        super();
         return;
     }
     void UpdateCameraConfig(const FFPTime &inout WorldTime, const FCS_LocalPlayer &inout LocalPlayer)
@@ -58,13 +56,13 @@ struct FLayerConduitCamera : FCameraRuntimeDataBasic
         {
             return;
         }
-        int local_2 = 0;
+        float32 local_2 = 0.0f;
         FCameraBlendType local_40;
         if ((TDataObjectPtr<FTPCameraStateConfig>(this.CameraConfig)))
         {
             FTPCameraStateConfig local_66;
             TDataObjectPtr<FTPCameraStateConfig> local_64 = TDataObjectPtr<FTPCameraStateConfig>(this.CameraConfig);
-            local_2 = int(local_66.BlendInDuration);
+            local_2 = local_66.BlendInDuration;
             local_40 = local_66.BlendInEasing;
         }
         else
@@ -73,7 +71,7 @@ struct FLayerConduitCamera : FCameraRuntimeDataBasic
             {
                 FAnimCameraData local_92;
                 TDataObjectPtr<FAnimCameraData> local_90 = TDataObjectPtr<FAnimCameraData>(this.CameraConfig);
-                local_2 = int(local_92.FadeInDuration);
+                local_2 = local_92.FadeInDuration;
                 local_40 = local_92.FadeInType;
             }
         }
@@ -208,36 +206,36 @@ bool RemovePresentationTopLayerConduitCameraTag(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPresentationTopLayerConduitCameraTagOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PresentationTopLayerConduitCameraTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PresentationTopLayerConduitCameraTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPresentationTopLayerConduitCameraTagOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PresentationTopLayerConduitCameraTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PresentationTopLayerConduitCameraTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPresentationTopLayerConduitCameraTagOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PresentationTopLayerConduitCameraTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PresentationTopLayerConduitCameraTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPresentationTopLayerConduitCameraTagOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PresentationTopLayerConduitCameraTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PresentationTopLayerConduitCameraTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPresentationTopLayerConduitCameraTagOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PresentationTopLayerConduitCameraTag, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PresentationTopLayerConduitCameraTag, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPresentationTopLayerConduitCameraTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PresentationTopLayerConduitCameraTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PresentationTopLayerConduitCameraTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPresentationTopLayerConduitCameraTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PresentationTopLayerConduitCameraTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PresentationTopLayerConduitCameraTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPresentationTopLayerConduitCameraTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PresentationTopLayerConduitCameraTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PresentationTopLayerConduitCameraTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CameraLookAtTargetConfigOverride : UESMBPBaseSpanAction
 {
     UPROPERTY()

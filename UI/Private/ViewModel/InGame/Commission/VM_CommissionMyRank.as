@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommissionMyRank
 {
     const int ModelId = 0;
@@ -78,7 +77,7 @@ struct FVM_CommissionMyRank : FEUIViewModel
             return local_6;
         }
         FText::AsNumber(this.GetRank(), local_6);
-        return FText::Format(NSLOCTEXT("RankFormat", "з¬¬{0}еђЌ"), local_6);
+        return FText::Format(NSLOCTEXT("RankFormat", "第{0}名"), local_6);
     }
     FText GetBestCostTimeText() const
     {
@@ -322,7 +321,6 @@ struct __GeneratedProperties_FVM_CommissionMyRank
     bool HasTeam;
     UPROPERTY()
     TEUIModelRef<FVM_CommissionMyRank> Self;
-
 
 }
 

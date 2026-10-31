@@ -1,4 +1,3 @@
-﻿
 const FName DebugDrawKey_ViewportSelectTarget = n"ViewportSelectTarget";
 
 namespace TargetSelectSystem
@@ -9,7 +8,6 @@ struct FTargetScoreData
     FECSEntityId EntityId;
     UPROPERTY()
     float32 Score;
-
 
     void InsertTo(TArray<TargetSelectSystem::FTargetScoreData> &inout Array)
     {
@@ -212,7 +210,279 @@ class US_TargetSelectSystem : UECSScriptSystem
     UFUNCTION()
     void ClientJob_ViewportSelectTarget(const FECSEntity &inout Entity, FC_ViewportSelectTarget &inout ViewportSelectTarget) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_32 = 0;
+        const FViewportSelectTargetParams& local_68;
+        bool local_195;
+        bool local_224;
+        bool local_240;
+        bool local_241;
+        if ((ViewportSelectTarget.SelectDatas.Num()) == 0)
+        {
+            return;
+        }
+        FECSEntity local_8;
+        Get local_12;
+        const FC_ControlledByPlayer& local_14 = local_12.opCall();
+        if (local_14)
+        {
+            local_8 = FECSEntity(local_14.GetPlayerEntity());
+        }
+        if (!(local_8.IsValid()))
+        {
+            return;
+        }
+        FECSWorldPtr local_20 = this.GetECSWorld();
+        Get local_24;
+        AECSPlayerController local_26 = local_24.opCall().UEPlayerController;
+        if ((!((local_26 != nullptr))))
+        {
+            return;
+        }
+        if (!(local_32))
+        {
+            return;
+        }
+        ViewportSelectTarget.ChachedCameraFOV = local_32.GetFOV();
+        ViewportSelectTarget.ChachedCameraPos = local_32.GetPosition();
+        ViewportSelectTarget.ChachedCameraRot = local_32.GetRotation();
+        FVector2D local_42 = WorldUtils::GetViewportSize();
+        float32 local_33 = float32((local_42.X / local_42.Y));
+        FVector local_54;
+        FVector local_60;
+        local_26.DeprojectScreenPositionToWorld(float32((local_42.X / 2.0)), float32((local_42.Y / 2.0)), local_54, local_60);
+        float32 local_43 = float32(local_32.GetPosition().Distance(FVector()));
+        int local_65 = 0;
+        for (; local_65 < ViewportSelectTarget.SelectDatas.Num(); ++local_65)
+        {
+            FViewportSelectTargetEntityData& local_70 = ViewportSelectTarget.TargetDatas[local_65];
+            local_70.bTargetUpdated = false;
+            local_70.Entities.SetNum(int(local_68.TargetNum));
+            TArray<FECSEntity> local_74;
+            FECSEntityId local_75 = FECSEntityId(ENTITY_ID_NULL);
+            FVector local_82(local_32.GetRotation().GetForwardVector());
+            FCollisionQueryParams local_126;
+            local_126.bTraceComplex = false;
+            local_126.bIgnoreTouches = false;
+            local_126.AddIgnoredActor(Entity.GetActor());
+            FHitResult local_194;
+            FHitResult local_308;
+            FCollisionResponseParams local_216;
+            FVector local_88 = (local_82 * local_68.MaxDistance);
+            FVector local_202 = (local_54 + local_88);
+            local_88 = (local_82 * local_68.MinDistance);
+            FVector local_208 = (local_54 + local_88);
+            bool local_3 = FPhysicsUtils::LineTraceSingle(this.GetWorld(), EPhysicsTraceTag(29), local_194, local_208, local_202, ECollisionChannel(28), local_126, local_216);
+            if (local_3)
+            {
+                if (local_194.GetActor() != nullptr)
+                {
+                    float local_46_3 = (FVector(local_194.Location) - local_54).SizeSquared();
+                    float32 local_64 = float32(local_46_3);
+                    float32 local_63 = local_68.MinDistance * local_68.MinDistance;
+                    if (local_64 <= local_63)
+                    {
+                        local_195 = false;
+                    }
+                    else
+                    {
+                        local_63 = local_68.MaxDistance;
+                        local_63 = local_63 * local_68.MaxDistance;
+                        local_195 = (local_64 < local_63);
+                    }
+                    if (local_195)
+                    {
+                        FECSEntity local_18 = ECS::GetEntity(local_194.GetActor(), false);
+                        if (local_18.IsValid() && local_18.IsActive())
+                        {
+                            bool local_231;
+                            int local_237 = (int((::FASCommonUtils::GetEntityFactionRelationSplitSelf(Entity, local_18)))) & int(local_68.TargetRelation);
+                            local_231 = (local_237 != 0);
+                            if (local_231)
+                            {
+                                if (int(local_68.TargetTeammateType) != 0)
+                                {
+                                    local_195 = ::FTeamUtils::IsInSameTeam(Entity, local_18);
+                                    local_224 = local_195 && (int(local_68.TargetTeammateType) == 2);
+                                    if (local_224 || (!(local_195) && (int(local_68.TargetTeammateType) == 1)))
+                                    {
+                                        local_231 = false;
+                                    }
+                                }
+                            }
+                            if (local_231)
+                            {
+                                if (!(local_68.bIgnoreObstacleOnViewPath))
+                                {
+                                    local_240 = FPhysicsUtils::LineTraceSingle(this.GetWorld(), EPhysicsTraceTag(29), local_308, local_54, local_194.Location, ECollisionChannel(4), local_126, local_216);
+                                    if (local_240)
+                                    {
+                                        if (local_308.GetActor() != local_194.GetActor())
+                                        {
+                                            local_3 = false;
+                                        }
+                                    }
+                                }
+                                if (local_3)
+                                {
+                                    local_224 = !(local_68.IncludeTags.IsEmpty()) || !(local_68.ExcludeTags.IsEmpty());
+                                    if (local_224)
+                                    {
+                                        if (!(FGameplayTagsUtils::MatchAll(local_18, local_68.IncludeTags)) || FGameplayTagsUtils::MatchAny(local_18, local_68.ExcludeTags))
+                                        {
+                                            continue;
+                                        }
+                                    }
+                                    if (int(local_68.TargetNum) <= 1)
+                                    {
+                                        if (!((FECSEntity(local_70.Entities[0]) == local_18)))
+                                        {
+                                            local_70.Entities[0] = local_18;
+                                            local_240 = true;
+                                            local_70.bTargetUpdated = local_240;
+                                        }
+                                        continue;
+                                    }
+                                    local_74.Add(local_18);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            float32 local_223 = FMath::Tan(FMath::DegreesToRadians((local_32.GetFOV() / 2.0f)));
+            float32 local_311 = FMath::Atan(local_223 * local_68.VerticalRatio);
+            float32 local_64_2 = FMath::DegreesToRadians(local_32.GetFOV() / 2.0f);
+            float32 local_63_2 = FMath::Tan(local_64_2) * local_33;
+            local_64_2 = FMath::Tan(FMath::Atan(local_63_2));
+            float32 local_312 = FMath::Atan(local_64_2 * local_68.HorizontalRatio);
+            float32 local_313 = FMath::Tan(local_311) * (local_43 + local_68.MaxDistance);
+            float32 local_314 = FMath::Tan(local_312) * (local_43 + local_68.MaxDistance);
+            float32 local_315 = (local_68.MaxDistance - local_68.MinDistance) * 0.5f;
+            float local_46_4 = (local_68.MaxDistance + local_68.MinDistance);
+            local_88 = (local_82 * local_46_4);
+            local_202 = (local_88 * 0.5);
+            local_208 = (local_54 + local_202);
+            TArray<FOverlapResult> local_328;
+            FCollisionShape local_332;
+            local_332.SetBox(FVector3f(local_315, local_314, local_313));
+            local_240 = FPhysicsUtils::OverlapMulti(this.GetWorld(), EPhysicsTraceTag(29), local_328, local_208, local_32.GetRotation().Quaternion(), ECollisionChannel(28), local_332, local_126, local_216);
+            if (local_240)
+            {
+                float32 local_345 = 100000.0f;
+                TArray<TargetSelectSystem::FTargetScoreData> local_350;
+                local_350.Reserve(int(local_68.TargetNum));
+                for (auto& local_364 : local_328)
+                {
+                    if (!((local_364.GetActor() != nullptr)))
+                    {
+                        continue;
+                    }
+                    FECSEntity local_230 = ECS::GetEntity(local_364.GetActor(), false);
+                    local_224 = !(local_230.IsValid()) || !(local_230.IsActive());
+                    if (local_224)
+                    {
+                        continue;
+                    }
+                    int local_236 = (int((::FASCommonUtils::GetEntityFactionRelationSplitSelf(Entity, local_230))));
+                    if ((local_236 & int(local_68.TargetRelation)) == 0)
+                    {
+                        continue;
+                    }
+                    local_224 = !(local_68.IncludeTags.IsEmpty());
+                    if (local_224 || !(local_68.ExcludeTags.IsEmpty()))
+                    {
+                        local_224 = !(FGameplayTagsUtils::MatchAll(local_230, local_68.IncludeTags));
+                        if (local_224 || FGameplayTagsUtils::MatchAny(local_230, local_68.ExcludeTags))
+                        {
+                            continue;
+                        }
+                    }
+                    FVector local_324 = local_364.GetActor().GetActorLocation();
+                    local_202 = (local_324 - local_54);
+                    FRotator local_388 = local_202.ToOrientationRotator();
+                    local_46_4 = local_32.GetRotation().Pitch;
+                    local_388.Pitch = local_46_4;
+                    if (float32(FMath::Acos(local_388.GetForwardVector().DotProduct(local_82))) > local_312)
+                    {
+                        continue;
+                    }
+                    FRotator local_382 = local_202.ToOrientationRotator();
+                    local_382.Yaw = local_32.GetRotation().Yaw;
+                    if (float32(FMath::Acos(local_382.GetForwardVector().DotProduct(local_82))) > local_311)
+                    {
+                        continue;
+                    }
+                    if (!(local_68.bIgnoreObstacleOnViewPath))
+                    {
+                        FHitResult local_308;
+                        local_241 = FPhysicsUtils::LineTraceSingle(this.GetWorld(), EPhysicsTraceTag(29), local_308, local_54, local_324, ECollisionChannel(4), local_126, local_216);
+                        if (local_241)
+                        {
+                            if (local_308.GetActor() != local_364.GetActor())
+                            {
+                                continue;
+                            }
+                        }
+                    }
+                    float local_62 = (local_324 - local_32.GetPosition()).CrossProduct(local_60).Size();
+                    local_46_4 = FMath::Acos(local_202.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector).DotProduct(local_82));
+                    local_64_2 = float32(FMath::RadiansToDegrees(local_46_4));
+                    float32 local_389 = local_68.VerticalDistanceToCrosshairWeight.GetFloatValue(float32(local_62), 0.0f);
+                    float32 local_418 = ((local_68.DistanceWeight.GetFloatValue(float32(local_202.Size()), 0.0f)) + (local_68.AngleWeight.GetFloatValue(local_64_2, 0.0f))) + local_389;
+                    if (int(local_68.TargetNum) <= 1)
+                    {
+                        if (local_418 < local_345)
+                        {
+                            local_345 = local_418;
+                            local_75 = local_230.GetId();
+                        }
+                    }
+                    else
+                    {
+                        TargetSelectSystem::FTargetScoreData local_422;
+                        local_422.EntityId = local_230.GetId();
+                        local_422.Score = local_418;
+                        local_422.InsertTo(local_350);
+                        if (local_350.Num() > int(local_68.TargetNum))
+                        {
+                            local_350.RemoveAt((local_350.Num() - 1));
+                        }
+                    }
+                }
+                for (auto& local_436 : local_350)
+                {
+                    local_74.Add(FECSEntity(local_436.EntityId));
+                }
+            }
+            if (int(local_68.TargetNum) <= 1)
+            {
+                if (!((local_70.Entities[0].GetId() == local_75)))
+                {
+                    if ((local_75 == ENTITY_ID_NULL))
+                    {
+                        local_70.Entities.Reset(0);
+                    }
+                    else
+                    {
+                        local_70.Entities[0] = FECSEntity(local_75);
+                    }
+                    local_241 = true;
+                    local_70.bTargetUpdated = local_241;
+                }
+            }
+            else
+            {
+                TArray<FECSEntity> local_440;
+                local_440 = local_70.Entities;
+                if (!((local_440 == local_74)))
+                {
+                    local_70.Entities = local_74;
+                    local_241 = true;
+                    local_70.bTargetUpdated = local_241;
+                }
+            }
+        }
+        return;
     }
     UFUNCTION()
     void ClientJob_UploadTargetEntitiesByViewport(const FECSEntity &inout Entity, const FC_ViewportSelectTarget &inout ViewportSelectTarget) const
@@ -222,7 +492,7 @@ class US_TargetSelectSystem : UECSScriptSystem
             return;
         }
         int local_4 = 0;
-        while (local_4 < 0)
+        for (; local_4 < ViewportSelectTarget.SelectDatas.Num(); ++local_4)
         {
             const FViewportSelectTargetData& local_6 = ViewportSelectTarget.SelectDatas[local_4];
             const FViewportSelectTargetEntityData& local_8 = ViewportSelectTarget.TargetDatas[local_4];
@@ -234,7 +504,6 @@ class US_TargetSelectSystem : UECSScriptSystem
                 local_16.RequestName = local_6.Identifier.Name;
                 local_16.TargetEntityIds = local_8.Entities;
             }
-            ++local_4;
         }
         return;
     }
@@ -999,8 +1268,7 @@ class US_TargetSelectSystem : UECSScriptSystem
             }
             if (!(local_52.opCall()) == !(false))
             {
-                FString local_56 = "Timer job error: 'FC_LocalTag' included by job but not exist on ";
-                FString local_60 = local_32.ToString();
+                XLog(ELog(2), (FString("Timer job error: 'FC_LocalTag' included by job but not exist on ") + local_32.ToString()));
                 local_34 = true;
             }
             if (local_34)

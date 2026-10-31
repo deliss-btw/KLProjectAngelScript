@@ -1,4 +1,3 @@
-﻿
 enum EAIQuitCombatRule
 {
     BaseOnCombatArea,
@@ -12,7 +11,6 @@ enum EAIBackHomeWay
     Walk,
     Teleport,
 }
-
 
 struct FAIQuitCombatConfig : FDataObject
 {
@@ -31,7 +29,6 @@ struct FAIQuitCombatConfig : FDataObject
     EAIQuitCombatRule QuitCombatRule = EAIQuitCombatRule(0);
     UPROPERTY()
     EAIBackHomeWay BackHomeWay = EAIBackHomeWay(0);
-
 
 }
 

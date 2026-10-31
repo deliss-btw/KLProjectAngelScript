@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_Execute_InputPushProgress
 {
     const int ViewID = 0;
@@ -21,7 +20,6 @@ class UWidget_Execute_InputPushProgress : UEUIUserWidget
     FEUIModelWeakRef __InputPushProgressVM;
     UPROPERTY()
     FGetEUIModelRef InputPushProgressVMDelegate;
-
 
     UFUNCTION()
     void Construct_Implementation()
@@ -72,7 +70,7 @@ class UWidget_Execute_InputPushProgress : UEUIUserWidget
         }
         else
         {
-            if ((int(State) == 4 || (int(State) == 5)))
+            if (int(State) == 4 || (int(State) == 5))
             {
                 this.PlayAnimation(this.Anim_Failed, 0.0f, 1, EUMGSequencePlayMode(0), 1.0f, false);
             }
@@ -162,6 +160,7 @@ namespace UWidget_Execute_InputPushProgress
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_Execute_InputPushProgress;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnProgressRatioChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnStateChanged"));
     return;

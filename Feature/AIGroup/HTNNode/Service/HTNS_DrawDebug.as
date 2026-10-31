@@ -1,5 +1,3 @@
-﻿
-
 class UHTNS_DrawDebug : UHTNService_ECSScriptBase
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ class UHTNS_DrawDebug : UHTNService_ECSScriptBase
     FLinearColor DebugColor;
     UPROPERTY()
     float32 Radius = 50.0f;
-
 
     UFUNCTION()
     void OnPlanExecutionStarted_Implementation(const FHTNContext &inout Context)

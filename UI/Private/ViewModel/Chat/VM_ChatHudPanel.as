@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ChatHudPanel
 {
     const int ModelId = 0;
@@ -120,8 +119,8 @@ struct FVM_ChatHudPanel : FEUIViewModel
     }
     void TickExpireHudLines()
     {
-        ELevelType local_2 = ::FLevelUtils::GetCurrentLevelType();
-        if (int(local_2) != (int(this.GetCachedHudLevelType())))
+        int local_2 = int(::FLevelUtils::GetCurrentLevelType());
+        if (local_2 != (int(this.GetCachedHudLevelType())))
         {
             this.SetCachedHudLevelType(ELevelType(local_2));
             this.ClearHudQueue();
@@ -373,7 +372,6 @@ struct __GeneratedProperties_FVM_ChatHudPanel
     ESlateVisibility FriendApplyRedDotVisibility;
     UPROPERTY()
     TEUIModelRef<FVM_ChatHudPanel> Self;
-
 
 }
 

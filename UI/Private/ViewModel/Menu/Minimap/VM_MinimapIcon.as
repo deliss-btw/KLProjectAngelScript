@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MinimapIcon
 {
     const int ModelId = 0;
@@ -192,7 +191,41 @@ FVM_MinimapIcon CreateByManager(const UEUIManagerSubsystem Manager, const TEUIMo
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "MinimapIconConfig";
+    local_14.TypeName = "TDataObjectPtr<FMinimapIconConfig>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bIsSelected";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_MinimapIcon>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_MinimapIcon;
+    FEUIModelMetaPropertyModelRef local_19;
+    local_19.PropertyName = FName("Spot");
+    int local_2_2 = FM_Spot::ModelId;
+    Result.FunctionalPropertyModelRefs.Add(local_19);
+    FEUIModelMsgHandleDefine local_32;
+    local_32.FunctionName = "__HandleSelectionChanged";
+    local_32.MessageTypeName = "Msg_OnItemSelectionChanged";
+    local_32.SourcePropertyModelRefs = FBitSet64(-1);
+    Result.MessageHandleFunctions.Add(local_32);
+    local_32.FunctionName = "__HandleSpotChanged";
+    local_32.MessageTypeName = "Msg_SpotPresentationDataModified";
+    local_32.SourcePropertyModelRefs = FBitSet64(1);
+    Result.MessageHandleFunctions.Add(local_32);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

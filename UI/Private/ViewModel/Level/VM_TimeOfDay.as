@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TimeOfDay
 {
     const int ModelId = 0;
@@ -207,7 +206,6 @@ struct __GeneratedProperties_FVM_TimeOfDay
     UPROPERTY()
     TEUIModelRef<FVM_TimeOfDay> Self;
 
-
 }
 
 namespace FVM_TimeOfDay
@@ -282,7 +280,9 @@ void __OnTimeOfDayChanged(FVM_TimeOfDay &inout Model, const FECSEntity &inout En
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorTimeOfDayLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorTimeOfDayModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TDataObjectPtr<FTODStageConfig> __UIGetter_CurrentStage(const FVM_TimeOfDay &inout Model)
 {

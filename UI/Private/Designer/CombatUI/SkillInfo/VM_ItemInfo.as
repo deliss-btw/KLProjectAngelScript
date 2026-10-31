@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_ItemInfo
 {
     const int ModelId = 0;
@@ -81,16 +80,16 @@ struct FVMS_ItemInfo : FEUIViewModelSingleton
     }
     void PostConstruct()
     {
-        this.SetVM_LinkSkillButton(FEUIModelRef());
+        this.SetVM_LinkSkillButton(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
         Get local_6;
         local_6.opCall().SetSkillProgressType(ESkillProgressType(0));
-        this.SetVM_HealItemButton(FEUIModelRef());
+        this.SetVM_HealItemButton(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
         local_6.opCall().SetSkillProgressType(ESkillProgressType(3));
-        this.SetVM_CombatItemButton_1(FEUIModelRef());
+        this.SetVM_CombatItemButton_1(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
         local_6.opCall().SetSkillProgressType(ESkillProgressType(3));
-        this.SetVM_CombatItemButton_2(FEUIModelRef());
+        this.SetVM_CombatItemButton_2(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
         local_6.opCall().SetSkillProgressType(ESkillProgressType(3));
-        this.SetVM_CombatItemButton_Temp(FEUIModelRef());
+        this.SetVM_CombatItemButton_Temp(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
         local_6.opCall().SetSkillProgressType(ESkillProgressType(3));
         return;
     }

@@ -1,4 +1,3 @@
-﻿
 namespace TreasureBoxUtils
 {
 bool IsTreasureBoxCoolingDown(const FECSEntity &inout InPlayerEntity, const uint TreasureBoxId)
@@ -83,7 +82,69 @@ ETreasureBoxRecordState GetTreasureBoxRecordState(const FECSEntity &inout InPlay
 }
 void SetTreasureBoxRecordState(const FECSEntity &inout InPlayerEntity, const TDataObjectPtr<FLevelObjectStatConfig> &inout LevelObjectStatConfig, const ETreasureBoxRecordState RecordState, const bool bStampTime)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    int local_11 = 0;
+    int local_20 = 0;
+    int local_22 = 0;
+    if (!(FASCommonUtils::GetUniquePlayerEntity(InPlayerEntity).IsValid()) || !(LevelObjectStatConfig.IsSet()))
+    {
+        return;
+    }
+    int local_12 = local_11;
+    if (local_12 != 0)
+    {
+        return;
+    }
+    int local_21 = 0;
+    if (GetMapConfig().IsSet())
+    {
+        local_21 = local_22;
+    }
+    int local_23 = INDEX_NONE;
+    int local_24 = 0;
+    for (; local_24 < local_20.GetModify_LevelObjectStatInfoList().Num(); ++local_24)
+    {
+        local_22 = local_20.GetModify_LevelObjectStatInfoList()[local_24].GetMapConfigId();
+        if (local_22 == local_21)
+        {
+            local_23 = local_24;
+            break;
+        }
+    }
+    int local_13 = INDEX_NONE;
+    if (local_23 == local_13)
+    {
+        FLevelObjectStatInfo local_42;
+        local_42.SetMapConfigId(local_21);
+        local_20.GetModify_LevelObjectStatInfoList().Add(local_42);
+        local_23 = local_20.GetModify_LevelObjectStatInfoList().Num() - 1;
+    }
+    FLevelObjectStatInfo& local_44 = local_20.GetModify_LevelObjectStatInfoList()[local_23];
+    int local_45 = local_22;
+    local_22 = FDateTime::UtcNow().ToUnixTimestamp();
+    bool local_51 = false;
+    int local_24_2 = 0;
+    for (; local_24_2 < local_44.GetModify_TreasureBoxList().Num(); ++local_24_2)
+    {
+        if (local_44.GetModify_TreasureBoxList()[local_24_2].GetTreasureBoxId() == local_45)
+        {
+            local_44.GetModify_TreasureBoxList()[local_24_2].SetTreasureBoxState(int(RecordState));
+            if (bStampTime)
+            {
+                local_44.GetModify_TreasureBoxList()[local_24_2].SetTreasureBoxTime(local_22);
+            }
+            local_51 = true;
+            break;
+        }
+    }
+    if (!(local_51))
+    {
+        FTreasureBoxInfo local_56;
+        local_56.SetTreasureBoxId(local_45);
+        local_56.SetTreasureBoxState(int(RecordState));
+        local_56.SetTreasureBoxTime((bStampTime ? local_22 : 0));
+        local_44.GetModify_TreasureBoxList().Add(local_56);
+    }
+    return;
 }
 bool CanOpenTreasureBox(const FECSEntity &inout InPlayerEntity, const uint TreasureBoxId)
 {

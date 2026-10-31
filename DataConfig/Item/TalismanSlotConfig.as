@@ -1,5 +1,3 @@
-﻿
-
 struct FTalismanSlotConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -9,7 +7,6 @@ struct FTalismanSlotConfig : FDataObject
     uint SlotCount;
     UPROPERTY()
     TArray<FDataObjectPtr> m_UnlockCondition;
-
 
     const TArray<TDataObjectPtr<FServerConditionConfigBase>> GetUnlockCondition() const property
     {

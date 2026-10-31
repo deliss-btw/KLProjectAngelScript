@@ -1,5 +1,3 @@
-﻿
-
 struct FProgressOperationConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -37,7 +35,6 @@ struct FProgressOperationConfig : FDataObject
     TArray<FProgressOperationInputAction> InputActions;
     UPROPERTY()
     TSoftClassPtr<UEUIUserWidget> UISoftWidgetClass;
-
 
 }
 

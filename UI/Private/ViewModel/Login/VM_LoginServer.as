@@ -1,4 +1,3 @@
-﻿
 namespace FVM_LoginServer
 {
     const int ModelId = 0;

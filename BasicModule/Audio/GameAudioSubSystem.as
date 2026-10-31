@@ -1,5 +1,3 @@
-﻿
-
 class UASGameAudioSubSystem : UGameAudioSubSystem
 {
     UPROPERTY()
@@ -22,7 +20,6 @@ class UASGameAudioSubSystem : UGameAudioSubSystem
     FString PendingUnloadWorldAssetName;
     UPROPERTY()
     bool bHasPendingUnloadAudioSet = false;
-
 
     UFUNCTION()
     void Initialize_Implementation()
@@ -76,8 +73,7 @@ class UASGameAudioSubSystem : UGameAudioSubSystem
             this.PendingUnloadWorldAssetName = "";
             this.PendingUnloadAudioSet = FAudioActionData();
         }
-        FString local_424 = "----------------UASGameAudioSubSystem HandlePostLoadMapWithWorld--------------";
-        FString local_16 = InWorld.GetFullName(nullptr);
+        XDisplay(ELog(0), (FString("----------------UASGameAudioSubSystem HandlePostLoadMapWithWorld--------------") + InWorld.GetFullName(nullptr)));
         this.PlayAudioWhenMapLoaded(TSoftObjectPtr<UWorld>(InWorld), local_24);
         return;
     }
@@ -88,8 +84,7 @@ class UASGameAudioSubSystem : UGameAudioSubSystem
         {
             return;
         }
-        FString local_10 = "----------------UASGameAudioSubSystem HandleWorldBeginTearDown--------------";
-        FString local_6 = InWorld.GetFullName(nullptr);
+        XDisplay(ELog(0), (FString("----------------UASGameAudioSubSystem HandleWorldBeginTearDown--------------") + InWorld.GetFullName(nullptr)));
         this.PlayAudioWhenMapUnLoaded(TSoftObjectPtr<UWorld>(InWorld));
         return;
     }
@@ -239,7 +234,7 @@ class UASGameAudioSubSystem : UGameAudioSubSystem
         {
             return false;
         }
-        return (0 != 0);
+        return false;
     }
     UFUNCTION()
     bool IsFXAssetPreloaded(const TSoftClassPtr<AFXActor> &inout Asset)
@@ -248,14 +243,15 @@ class UASGameAudioSubSystem : UGameAudioSubSystem
         {
             return false;
         }
+        bool local_2 = false;
         UClass local_6 = Asset.Get();
-        return (0 != 0);
+        return local_2;
     }
     UFUNCTION()
     bool IsBankPreloaded(const FName &inout BankName)
     {
-        int local_2 = 0;
-        return this.BankPreloadState.Find(BankName, local_2);
+        bool local_1 = false;
+        return this.BankPreloadState.Find(BankName, local_1);
     }
     UFUNCTION()
     void PlayAudioWhenMapLoaded(const TSoftObjectPtr<UWorld> &inout WorldSoftPtr, const FString &inout PreserveMusicKey)
@@ -483,7 +479,18 @@ class UASGameAudioSubSystem : UGameAudioSubSystem
     }
     void FinishFxPreload(const FSoftObjectPath &inout AssetPath)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FFXPreloadContext local_18;
+        if (!(this.CurrentFxPreloadContext.Find(AssetPath, local_18)))
+        {
+            return;
+        }
+        if (ECS::GetECSWorldOfObject(this.GetWorld()).IsValid())
+        {
+            this.SetFXAssetLoaded(local_18.LoadedClass, true);
+            XLogIf(FFXUtils::CVar_Fx_LoadDebug.GetBool(), ELog(1), FString().Append("FX Resource PreLoadAsync End, FX: ").Append(local_18.LoadedClass.GetName()));
+        }
+        local_18.LoadedCallBack.ExecuteIfBound(local_18.LoadedClass);
+        return;
     }
     void TryFinishPendingFxPreloads()
     {
@@ -563,7 +570,20 @@ class UASGameAudioSubSystem : UGameAudioSubSystem
     UFUNCTION()
     void OnFxPreLoadCallBack(const UClass LoadedClass)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        if (LoadedClass == nullptr)
+        {
+            XLogIf(FFXUtils::CVar_Fx_LoadDebug.GetBool(), ELog(1), FString().Append("OnFxPreLoadCallBack FX Resource PreLoadAsync End, FX Class is nullptr!"));
+            return;
+        }
+        FSoftObjectPath local_24 = FSoftObjectPath(LoadedClass);
+        FFXPreloadContext local_42;
+        if (this.CurrentFxPreloadContext.Find(local_24, local_42))
+        {
+            FFXPreloadContext& local_44 = this.CurrentFxPreloadContext.FindOrAdd(local_24);
+            this.PreloadFxActorAudioEvents(LoadedClass, local_44);
+            this.TryFinishPendingFxPreloads();
+        }
+        return;
     }
 }
 

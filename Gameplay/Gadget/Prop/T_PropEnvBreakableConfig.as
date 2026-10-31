@@ -1,5 +1,3 @@
-﻿
-
 struct FT_PropEnvBreakableConfig : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -18,13 +16,13 @@ struct FT_PropEnvBreakableConfig : FECSTrait
         {
             FString local_6 = Prefab.GetPathName(nullptr);
             FString local_10 = FString();
-            return local_10.Append("Prefab [").Append(local_6).Append("] ValidateConfig Fail: PropEnvBreakableConfig BreakPhasesжІЎжњ‰й™ЌеєЏжЋ’е€—пјЃ");
+            return local_10.Append("Prefab [").Append(local_6).Append("] ValidateConfig Fail: PropEnvBreakableConfig BreakPhases没有降序排列！");
         }
         if (this.Config_FC_PropEnvBreakableConfig.BreakPhases.Num() > 5)
         {
             FString local_10_2 = Prefab.GetPathName(nullptr);
             FString local_6_2 = FString();
-            return local_6_2.Append("Prefab [").Append(local_10_2).Append("] ValidateConfig Fail: PropEnvBreakableConfig BreakPhasesз›®е‰Ќд»…ж”ЇжЊЃе°ЏдєЋз­‰дєЋ5дёЄпјЃ");
+            return local_6_2.Append("Prefab [").Append(local_10_2).Append("] ValidateConfig Fail: PropEnvBreakableConfig BreakPhases目前仅支持小于等于5个！");
         }
         return "";
     }

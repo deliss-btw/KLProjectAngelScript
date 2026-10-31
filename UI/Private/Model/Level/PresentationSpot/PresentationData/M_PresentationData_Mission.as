@@ -1,5 +1,3 @@
-﻿
-
 struct FMissionPresentationData
 {
     UPROPERTY()
@@ -45,8 +43,7 @@ void AddMissionData(FM_Spot &inout Spot, const FMissionPresentationData &inout I
 {
     bool local_9 = PresentationSpotUtils::GetDefaulted(Spot.GetManager(), Registry).HasPresentationData((TEUIModelRef<FM_Spot>(Spot)), EPresentationDataType(9));
     PresentationDataUtils::RemovePresentationData(Spot, EPresentationDataType(9), Registry);
-    EPresentationDataType local_14;
-    FInstancedStruct::Make(local_14);
+    PresentationDataUtils::AddPresentationData(Spot, EPresentationDataType(9), FInstancedStruct::Make(InMissionPresentationData), Registry);
     if (!(local_9))
     {
         Spot.AddDisplayScope(EPresentationSpotDisplayScope(0), EPresentationSpotDisplayScopeSource(0));

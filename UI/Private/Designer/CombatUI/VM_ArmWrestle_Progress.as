@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ArmWrestle_Progress
 {
     const int ModelId = 0;

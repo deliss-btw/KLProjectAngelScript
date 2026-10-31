@@ -1,5 +1,3 @@
-﻿
-
 struct FConfigVM_CommonHoverProvider : FConfigEUIModelBase
 {
     UPROPERTY()
@@ -16,7 +14,6 @@ struct FConfigVM_CommonHoverProvider : FConfigEUIModelBase
     bool bClickOpenPinnedPassThrough = false;
     UPROPERTY()
     bool bResponsibleForClick = true;
-
 
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 class UHTNTask_Plan_GetFloatDivideResult : UHTNTask_ECSScriptBase
 {
     UPROPERTY()

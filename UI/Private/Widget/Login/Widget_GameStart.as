@@ -1,4 +1,3 @@
-﻿
 enum EGameStartSequenceState
 {
     Idle,
@@ -34,7 +33,6 @@ class UWidget_GameStart : UEUIUserWidget
     float32 CurrentFadeOutSeconds = 0.0f;
     TArray<int> ActiveSlotOrder;
     int OrderCursor = 0;
-
 
     UFUNCTION()
     void Construct_Implementation()
@@ -223,7 +221,7 @@ class UWidget_GameStart : UEUIUserWidget
     void OnFinish()
     {
         this.ClosePage(false);
-        ULocalPlayer local_10 = this.GetOwningLocalPlayer();
+        FEUIModelRef local_12 = FEUIModelRef(::FMS_Login::Get(this.GetOwningLocalPlayer()));
         FEUIMessageBus::Publish(EUIMessageBus);
         FMsg_LoginNextPhase local_4;
         local_4.NextPhase = ELoginShowPhase(1);
@@ -235,6 +233,7 @@ namespace UWidget_GameStart
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_GameStart;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

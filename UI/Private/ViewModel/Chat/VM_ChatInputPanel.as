@@ -1,4 +1,3 @@
-﻿
 namespace FVM_ChatInputPanel
 {
     const int ModelId = 0;
@@ -77,7 +76,9 @@ struct FVM_ChatInputPanel : FEUIViewModel
     }
     void OnChatInputDeferredWeakTips(const FMsg_ChatInputDeferredWeakTips &inout Msg)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FCommonTipsParam local_4;
+        ::CommonPopup::WeakTips(Msg.Content, local_4);
+        return;
     }
     void OnChatChannelChanged()
     {
@@ -498,7 +499,64 @@ FVM_ChatInputPanel CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "InputStateIndex";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "BanTipsText";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_ChatInputPanel>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_ChatInputPanel;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(9);
+    local_22.AddRefPropertyDirty(0, 0, FMS_ChatRuntimeData::__IndexOf_SelectChannelTab());
+    local_22.AddRefPropertyDirty(1, 0, FMS_ChatRuntimeData::__IndexOf_SelectedPrivateChatPeerUid());
+    local_22.AddRefPropertyDirty(2, 0, FMS_ChatRuntimeData::__IndexOf_SelectMainTab());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("ChatRuntimeData");
+    int local_2_2 = FMS_ChatRuntimeData::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FMS_ChatRuntimeData::__IndexOf_SelectChannelTab(), true);
+    local_30.RelatedDirtyMask.SetBit(FMS_ChatRuntimeData::__IndexOf_SelectedPrivateChatPeerUid(), true);
+    local_30.RelatedDirtyMask.SetBit(FMS_ChatRuntimeData::__IndexOf_SelectMainTab(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelMsgHandleDefine local_42;
+    local_42.FunctionName = "__OnChatInputDeferredWeakTips";
+    local_42.MessageTypeName = "Msg_ChatInputDeferredWeakTips";
+    local_42.SourcePropertyModelRefs = FBitSet64(-1);
+    Result.MessageHandleFunctions.Add(local_42);
+    FEUIModelDirtyDefine local_54;
+    local_54.FunctionName = "__OnChatChannelChanged";
+    local_54.DirtyFlags.Set(FVM_ChatInputPanel::__IndexOf_ChatRuntimeData());
+    local_54.DirtyFlags.Set(local_22.GetMappingDirtyIndex(2));
+    local_54.DirtyFlags.Set(FVM_ChatInputPanel::__IndexOf_ChatRuntimeData());
+    local_54.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_54);
+    local_54.FunctionName = "__OnPrivatePeerChangedForInputDraft";
+    local_54.DirtyFlags.Set(FVM_ChatInputPanel::__IndexOf_ChatRuntimeData());
+    local_54.DirtyFlags.Set(local_22.GetMappingDirtyIndex(1));
+    Result.DirtyFunctions.Add(local_54);
+    FEUIModelMonitorDefine local_64;
+    local_64.FunctionName = "__OnPlayerInTeamChanged";
+    local_64.ComponentType = FC_PlayerInTeam;
+    Result.MonitorFunctions.Add(local_64);
+    local_64.FunctionName = "__OnPlayerSocialTeamChanged";
+    local_64.ComponentType = FC_DSPlayerInfo;
+    Result.MonitorFunctions.Add(local_64);
+    return;
 }
 UScriptStruct GetModelStruct()
 {
@@ -531,7 +589,11 @@ void __OnPlayerSocialTeamChanged(FVM_ChatInputPanel &inout Model, const FECSEnti
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorPlayerInTeamLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerInTeamModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorDSPlayerInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorDSPlayerInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __UIGetter_InputStateIndex(const FVM_ChatInputPanel &inout Model)
 {

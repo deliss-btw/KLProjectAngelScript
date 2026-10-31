@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_LevelAreaEvent_Helpers
 {
 UFUNCTION()

@@ -1,5 +1,3 @@
-﻿
-
 struct FT_OculusConfig : FECSTrait
 {
     FECSTrait _base_FECSTrait;

@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_MenuBarEntry
 {
     const int ViewID = 0;
@@ -55,6 +54,7 @@ namespace UWidget_MenuBarEntry
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MenuBarEntry;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

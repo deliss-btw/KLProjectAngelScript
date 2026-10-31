@@ -1,5 +1,3 @@
-﻿
-
 struct FMinimapBorderInfo
 {
     UPROPERTY()
@@ -8,7 +6,6 @@ struct FMinimapBorderInfo
     UTexture2D BorderMask = nullptr;
     UPROPERTY()
     FBox2D BorderWorldPosition;
-
 
     bool IsValid() const
     {

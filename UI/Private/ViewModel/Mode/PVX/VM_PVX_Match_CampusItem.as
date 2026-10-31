@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PVX_Match_CampusItem
 {
     const int ModelId = 0;

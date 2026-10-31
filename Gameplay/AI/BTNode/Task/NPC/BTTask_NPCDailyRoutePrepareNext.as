@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_NPCDailyRoutePrepareNext : UBTTask_ECSScriptBase
 {
     default SetNodeName("NPC Daily Route Prepare Next");

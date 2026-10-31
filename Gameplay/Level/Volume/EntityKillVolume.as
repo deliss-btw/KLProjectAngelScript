@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: AEntityKillVolume (default scalar field AECSVolumeBase.bServerOnly has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FEntityKillVolumeUnitConfig : FSceneUnitConfigWithJsonData
 {
     FSceneUnitConfigWithJsonData _base_FSceneUnitConfigWithJsonData;
@@ -19,7 +14,6 @@ class AEntityKillVolume : AECSRegionVolumeBase
     float32 OverridKillZoneDeathDelay = -1.0f;
     UPROPERTY()
     bool bTeleportPlayerToSafePoint = false;
-
 
     UFUNCTION()
     void OnEntityBeginOverlap_Implementation(const FECSContext &inout Context, const FECSEntity &inout Entity)

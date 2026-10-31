@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::API::WidgetAPI
 {
 bool IsVisible(const FString &inout ClassName)
@@ -502,23 +501,28 @@ void Chat_Send(const FString &inout Channel, const FString &inout Text)
 }
 void CloseUIPageByLayer(const FString &inout PageName)
 {
-    int local_3 = 0;
+    int local_1;
     int local_12 = 0;
     if ((PageName == "Window"))
     {
+        int local_3;
         local_3 = 4;
+        local_1 = local_3;
     }
     else
     {
+        int local_3;
         if ((PageName == "HUD"))
         {
             local_3 = 3;
+            local_1 = local_3;
         }
         else
         {
             if ((PageName == "Message"))
             {
                 local_3 = 5;
+                local_1 = local_3;
             }
             else
             {
@@ -527,7 +531,7 @@ void CloseUIPageByLayer(const FString &inout PageName)
         }
     }
     FECSWorldPtr local_6 = ECS::GetECSWorld();
-    FEUIWidget::RemoveLayoutWidgets(local_12.UEPlayerController.GetLocalPlayer());
+    FEUIWidget::RemoveLayoutWidgets(local_12.UEPlayerController.GetLocalPlayer(), EEUILayoutLayer(local_1));
     return;
 }
 TArray<FString> GetCurrentSmallSideHintMessages()

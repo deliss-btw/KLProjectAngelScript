@@ -1,5 +1,3 @@
-﻿
-
 class US_ProjectileTimelineSystem : UECSScriptSystem
 {
     US_ProjectileTimelineSystem()

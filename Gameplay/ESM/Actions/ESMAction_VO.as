@@ -1,4 +1,3 @@
-﻿
 enum EVoSoundSourceType
 {
     Root,
@@ -19,14 +18,12 @@ struct FVoSoundSourceConfig
     UPROPERTY()
     FName Socket;
 
-
 }
 
 struct FEsmAudioVoInstanceData
 {
     UPROPERTY()
     int VoRuntimeId = 0;
-
 
 }
 
@@ -40,7 +37,6 @@ class UESMAction_InstantVO : UESMSFXBaseSpanAction
     bool bOnSpanEntry = false;
     UPROPERTY()
     bool bClearOnExit = false;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetViewInstanceDataInfo_Implementation() const
@@ -196,7 +192,6 @@ class UESMAction_InstantVoEvent : UESMSFXBaseSpanAction
     UPROPERTY()
     bool bOnSpanEntry = false;
 
-
     UFUNCTION()
     EESMAssetWorkflow GetWorkflow_Implementation() const
     {
@@ -216,7 +211,7 @@ class UESMAction_InstantVoEvent : UESMSFXBaseSpanAction
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const
     {
-        return FString().Append("ж’­ж”ѕVo: ").Append(this.Event.GetAssetName());
+        return FString().Append("播放Vo: ").Append(this.Event.GetAssetName());
     }
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const
@@ -309,7 +304,6 @@ class UESMAction_DurationalVoEvent : UESMSFXBaseSpanAction
     UPROPERTY()
     bool bSelfOnly = false;
 
-
     UFUNCTION()
     EESMAssetWorkflow GetWorkflow_Implementation() const
     {
@@ -323,7 +317,7 @@ class UESMAction_DurationalVoEvent : UESMSFXBaseSpanAction
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const
     {
-        return FString().Append("ж’­ж”ѕVo:Enter: ").Append(this.EnterEvent.GetAssetName()).Append(", Exit: ").Append(this.ExitEvent.GetAssetName());
+        return FString().Append("播放Vo:Enter: ").Append(this.EnterEvent.GetAssetName()).Append(", Exit: ").Append(this.ExitEvent.GetAssetName());
     }
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const
@@ -425,10 +419,20 @@ namespace FVoSoundSourceConfig
 {
 void PostEvent(const FECSEntity &inout Entity, const TSoftObjectPtr<UAkAudioEvent> &inout Event, const FVoSoundSourceConfig &inout Source, const bool bIsLoop, const bool bLoopEnd, const UWorld WorldContext)
 {
+    int local_3;
     FGameAudioEventFollowOption local_1;
     bool local_2 = Source.bFollow || bIsLoop;
     local_1.SetbFollow(local_2);
-    local_1.SetbStartLoopEvent(bIsLoop && !(bLoopEnd));
+    if (!(bIsLoop))
+    {
+        local_3 = 0;
+    }
+    else
+    {
+        local_2 = !(bLoopEnd);
+        local_3 = local_2;
+    }
+    local_1.SetbStartLoopEvent((local_3 != 0));
     local_2 = bIsLoop && bLoopEnd;
     local_1.SetbStopLoopEvent(local_2);
     if (int(Source.SourceType) == 1)

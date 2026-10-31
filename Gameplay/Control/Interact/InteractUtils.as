@@ -1,4 +1,3 @@
-﻿
 namespace FInteractUtils
 {
     const float32 InteractSelectScoreDistanceOffset = 100f;
@@ -206,7 +205,8 @@ bool GetCurrentInteractProgressInfoForUI(const FECSEntity &inout Entity, FVector
     HUDDisplayLocation = local_6;
     InteractProgressPct = 0.0f;
     InteractProgressContent = FText();
-    int local_13 = false;
+    int local_14 = 0;
+    int local_13 = local_14;
     FASCommonUtils::GetRiderEntity(Entity);
     Get local_26;
     const FC_InteractionInfoForESM& local_28 = local_26.opCall();
@@ -222,7 +222,16 @@ bool GetCurrentInteractProgressInfoForUI(const FECSEntity &inout Entity, FVector
                 int local_37;
                 local_37 = local_28.GetTargetPointAndBehaviorIndex().GetPointIndex();
                 UInteractionBehaviorBase local_42 = FInteractUtils::GetInteractionBehaviorFromEntity(local_30, local_28.GetTargetPointAndBehaviorIndex());
-                if (local_37 >= 0 && (local_37 < local_36.InteractionPoints.Num()))
+                if (local_37 < 0)
+                {
+                    local_14 = 0;
+                }
+                else
+                {
+                    bool local_43 = (local_37 < local_36.InteractionPoints.Num());
+                    local_14 = local_43;
+                }
+                if (local_14 != 0)
                 {
                     const FInteractionPoint& local_46 = local_36.InteractionPoints[local_37];
                     FVector local_52;
@@ -234,10 +243,18 @@ bool GetCurrentInteractProgressInfoForUI(const FECSEntity &inout Entity, FVector
                     const FC_LocalInteractProgress& local_82 = local_80.opCall();
                     if (local_82)
                     {
-                        if (local_82.ProgressValue > 0.0f && (local_82.MaxProgressValue > 0.0f))
+                        if (local_82.ProgressValue <= 0.0f)
+                        {
+                            local_14 = 0;
+                        }
+                        else
+                        {
+                            local_14 = (local_82.MaxProgressValue > 0.0f);
+                        }
+                        if (local_14 != 0)
                         {
                             InteractProgressPct = (local_82.ProgressValue / local_82.MaxProgressValue);
-                            local_13 = local_42.bShowInteractProgress;
+                            local_13 = int(local_42.bShowInteractProgress);
                         }
                     }
                 }
@@ -307,7 +324,7 @@ void SetEntityInteractTargetPointEnabled(const FECSEntity &inout Entity, const i
 }
 TArray<FECSEntity> GetInteractingEntitiesAtPointWithBehavior(const FECSEntity &inout InteractTargetEntity, const int PointIndex, const int BehaviorIdx)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    // body not fully recovered — stub [opcode-uncovered]
     TArray<FECSEntity> __r; return __r;
 }
 TArray<FECSEntity> GetInteractingEntitiesWithBehavior(const FECSEntity &inout InteractTargetEntity, const int BehaviorIdx)
@@ -1024,7 +1041,7 @@ bool EvaluateAutoInteractConditions(const FECSEntity &inout SourceEntity)
     {
         if (local_6.AutoInteractBehavior.IsValid())
         {
-            int local_15;
+            bool local_15;
             UInteractionBehaviorBase local_12 = local_6.AutoInteractBehavior.GetDefaultObject();
             int local_13 = -1;
             local_15 = false;

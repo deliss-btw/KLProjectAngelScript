@@ -1,5 +1,3 @@
-﻿
-
 class UAS_Ability_Test_1 : UEASAbility
 {
     UPROPERTY()
@@ -14,14 +12,13 @@ class UAS_Ability_Test_1 : UEASAbility
     UFUNCTION()
     void OnAdd_Implementation()
     {
-        ELog local_12;
         this.TestInt0 = (this.GetOwnerEntity().GetIdValue() * 10000);
         if (this.GetIsServer())
         {
-            FString::Format("Server", "[{0}] Test debug {1}", local_12);
+            XError(ELog(0), FString::Format("[{0}] Test debug {1}", "Server", this.TestInt0));
             return;
         }
-        FString::Format("Client", "[{0}] Test debug {1}", local_12);
+        XWarning(ELog(0), FString::Format("[{0}] Test debug {1}", "Client", this.TestInt0));
         return;
     }
     UFUNCTION()

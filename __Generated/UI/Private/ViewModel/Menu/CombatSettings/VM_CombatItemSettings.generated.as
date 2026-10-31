@@ -1,5 +1,3 @@
-﻿
-
 struct FConfigVM_CombatItemSettings : FConfigEUIModelBase
 {
     UPROPERTY()

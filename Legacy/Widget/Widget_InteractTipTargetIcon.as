@@ -1,5 +1,3 @@
-﻿
-
 class UWidget_InteractTipTargetIcon : UASUserWidget
 {
     UPROPERTY()

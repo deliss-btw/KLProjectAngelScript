@@ -1,4 +1,3 @@
-﻿
 namespace FSkillPresentationOverrideUtils
 {
 void ApplyOverride(const FECSEntity &inout Entity, const TDataObjectPtr<FSkillPresentationOverrideConfig> &inout Config, const bool bEnable)
@@ -25,14 +24,13 @@ void ApplyOverride(const FECSEntity &inout Entity, const TDataObjectPtr<FSkillPr
     else
     {
         int local_71 = 0;
-        while (local_71 < 0)
+        for (; local_71 < local_12.ActiveEntries.Num(); ++local_71)
         {
             if (local_12.ActiveEntries[local_71].Config && (local_18 == local_17))
             {
                 local_12.ActiveEntries.RemoveAt(local_71);
                 break;
             }
-            ++local_71;
         }
     }
     FSkillPresentationOverrideUtils::Reconcile(local_10, Entity, local_12);
@@ -56,19 +54,16 @@ void Reconcile(const FECSEntity &inout PC, const FECSEntity &inout Owner, FC_Ski
     USkillConfig local_78;
     int local_1 = -1;
     int local_3 = 0;
-    while (local_3 < local_4)
+    for (; local_3 < Comp.ActiveEntries.Num(); ++local_3)
     {
         if (!(Comp.ActiveEntries[local_3].Config))
         {
+            continue;
         }
-        else
+        if (local_1 < 0 || (local_4 > local_6) || (local_4 == local_6 && (Comp.ActiveEntries[local_3].Serial < Comp.ActiveEntries[local_1].Serial)))
         {
-            if (local_1 < 0 || (local_4 > local_6) || (local_4 == local_6 && (Comp.ActiveEntries[local_3].Serial < Comp.ActiveEntries[local_1].Serial)))
-            {
-                local_1 = local_3;
-            }
+            local_1 = local_3;
         }
-        ++local_3;
     }
     int local_10 = local_1 >= 0 ? local_11 : 0;
     if (local_10 == int(Comp.AppliedDataId))

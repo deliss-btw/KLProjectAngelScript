@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ChatInput
 {
     const int ViewID = 0;
@@ -27,7 +26,6 @@ class UWidget_ChatInput : UEUIUserWidget
     FEUIModelWeakRef __ChatInputPanel;
     UPROPERTY()
     FGetEUIModelRef ChatInputPanelDelegate;
-
 
     UFUNCTION()
     void OnViewBind_Implementation()
@@ -178,7 +176,7 @@ class UWidget_ChatInput : UEUIUserWidget
             {
                 return;
             }
-            bool local_1_4 = this.ChatInputPanel.opArrow().TryCommitInputText();
+            bool local_1_4 = this.ChatInputPanel.opArrow().TryCommitInputText(ETextCommit(CommitMethod));
             if (local_1_4)
             {
                 this.LastChatSubmitSuccessGameTime = local_36;
@@ -385,6 +383,7 @@ namespace UWidget_ChatInput
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ChatInput;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnInputStateIndexChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnChatInputFocusRequested"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnAlreadyInputTextChanged"));

@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_GameModeDataTrack_NS
 {
     const TECSComponentDerivedPtr<FCS_GameModeDataTrack> DerivedPtr = TECSComponentDerivedPtr<FCS_GameModeDataTrack>();
@@ -9,7 +8,6 @@ struct FCS_GameModeDataTrack : FECSSingleton
 {
     UPROPERTY()
     int PlayerNumWhenGameModeStart = 0;
-
 
 }
 
@@ -98,16 +96,16 @@ bool RemoveGameModeDataTrack(const FECSWorldPtr &inout World)
 }
 void __MonitorGameModeDataTrackLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_GameModeDataTrack, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_GameModeDataTrack, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameModeDataTrackActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_GameModeDataTrack, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_GameModeDataTrack, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGameModeDataTrackModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_GameModeDataTrack, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_GameModeDataTrack, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

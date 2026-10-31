@@ -1,4 +1,3 @@
-﻿
 namespace FEcologySensorUtils
 {
 bool UpdateDOTSensorUnit(const FECSEntity &inout Entity, FC_EcologyDOTSensor &inout DOTSensor, FEcologyDOTSensorUnit &inout UnitRef, const FEcologyConditionWorldContext &inout WorldContext, FCS_EcologyDataCacheContext &inout CacheContext = FEcologyUtils::ModifyDataCacheContext())
@@ -30,8 +29,7 @@ void UpdateAllDOTSensorUnit(const FECSEntity &inout Entity, FC_EcologyDOTSensor 
         bool local_37 = FEcologySensorUtils::UpdateDOTSensorUnit(Entity, DOTSensor, local_42, WorldContext, CacheContext);
         if (local_37)
         {
-            Entity.GetEntityName();
-            FString local_48 = FString();
+            XLog(ELog(22), FString().Append("Sensor Unit Change   ").Append(local_42.SensorName).Append(" ").Append(Entity.GetEntityName()).Append(" ").Append(WorldContext.TimeSegments).Append(", ").Append(WorldContext.WeatherName));
             local_43 = local_42.bIsEnter;
             local_20.FindOrAdd(local_42.SensorName) = local_43;
         }

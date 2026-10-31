@@ -1,4 +1,3 @@
-﻿
 namespace FESMPerformanceEditorTool
 {
 UFUNCTION()
@@ -16,7 +15,7 @@ void DisableAllFxAction(const UESMData Param)
 UFUNCTION()
 void PasteWwiseAudioFromClipboard(const UESMData Param)
 {
-    XLog(ELog(1), "PasteWwiseAudioFromClipboard ж‰§иЎЊе®Њж€ђ");
+    XLog(ELog(1), "PasteWwiseAudioFromClipboard 执行完成");
     return;
 }
 UFUNCTION()
@@ -54,7 +53,7 @@ void StopAllSound(const UESMData Param)
 UFUNCTION()
 void CreateVOFromSFX(const UESMData Param)
 {
-    XLog(ELog(1), "CreateVOFromSFX ж‰§иЎЊе®Њж€ђ");
+    XLog(ELog(1), "CreateVOFromSFX 执行完成");
     return;
 }
 FName GetNextVOInstantName(const UESMState State)

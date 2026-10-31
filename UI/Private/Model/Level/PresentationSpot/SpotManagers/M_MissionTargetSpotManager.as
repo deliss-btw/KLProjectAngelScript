@@ -1,4 +1,3 @@
-﻿
 namespace FMS_MissionTargetSpotManager
 {
     const int ModelId = 0;
@@ -15,7 +14,8 @@ struct FGuideMinimapIconUserData
     }
     FGuideMinimapIconUserData(const TDataObjectPtr<FGuidePresentationConfig> &inout InGuidePresentationConfig)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.GuidePresentationConfig = InGuidePresentationConfig;
+        return;
     }
 }
 
@@ -376,21 +376,18 @@ struct FMS_MissionTargetSpotManager : FEUIModelSingleton
         }
         TArray<int> local_46;
         int local_47 = 0;
-        while (local_47 < 0)
+        for (; local_47 < SpotInfo.MiniMapSpots.Num(); ++local_47)
         {
             if (!(SpotInfo.MiniMapSpots[local_47].IsValid()))
             {
                 local_46.Add(local_47);
+                continue;
             }
-            else
+            FECSEntityId local_41 = ::GetOwnerEntityId(SpotInfo.MiniMapSpots[local_47].opArrow());
+            if (!((local_41 == ENTITY_ID_NULL)) && !(local_20.Contains(local_41)))
             {
-                FECSEntityId local_41 = ::GetOwnerEntityId(SpotInfo.MiniMapSpots[local_47].opArrow());
-                if (!((local_41 == ENTITY_ID_NULL)) && !(local_20.Contains(local_41)))
-                {
-                    local_46.Add(local_47);
-                }
+                local_46.Add(local_47);
             }
-            ++local_47;
         }
         int local_52 = local_46.Num() - 1;
         for (; local_52 >= 0; )
@@ -446,6 +443,7 @@ struct FMS_MissionTargetSpotManager : FEUIModelSingleton
     void RemoveMissionTargetSpot(const TEUIModelRef<FM_Spot> &inout Spot)
     {
         AActor local_230;
+        int local_239;
         if (this.GetGuideMinimapIconHandleLists().Contains(Spot))
         {
             const FGuideMinimapIconHandleList& local_4 = this.GetGuideMinimapIconHandleLists()[Spot];
@@ -469,8 +467,18 @@ struct FMS_MissionTargetSpotManager : FEUIModelSingleton
         if (local_230 != nullptr)
         {
             float32 local_233 = 0.0f;
+            bool local_1 = this.GetGuideFXSpawnTimes().Find(Spot, local_233);
             UWorld local_238 = local_230.GetWorld();
-            if ((this.GetGuideFXSpawnTimes().Find(Spot, local_233) && (local_238 != nullptr)))
+            if (!(local_1))
+            {
+                local_239 = 0;
+            }
+            else
+            {
+                bool local_234 = (local_238 != nullptr);
+                local_239 = local_234;
+            }
+            if (local_239 != 0)
             {
                 float32 local_25 = (float32(local_238.GetTimeSeconds()) - local_233);
                 TArray<UNiagaraComponent> local_250 = local_230.GetComponentsByClass(UNiagaraComponent);
@@ -676,7 +684,11 @@ void __OnCommissionInfoModify(FMS_MissionTargetSpotManager &inout Model, const F
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorGuidingInfoListLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorGuidingInfoListModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorCommissionInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorCommissionInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_MissionTargetSpots()
 {

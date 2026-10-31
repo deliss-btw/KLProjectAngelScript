@@ -1,4 +1,3 @@
-﻿
 namespace FVM_EquipmentCompare
 {
     const int ModelId = 0;
@@ -49,8 +48,9 @@ struct FVM_EquipmentCompare : FEUIViewModel
     void PostConstruct()
     {
         const UAvatarBuildSettings local_2;
+        int local_100;
+        int local_101;
         GetGameplaySettings<UAvatarBuildSettings> local_4;
-        int local_101 = 0;
         local_2 = local_4;
         TEUIModelRef<FM_Equipment> local_8 = this.GetEquipment();
         TDataObjectPtr<FEquipmentConfig> local_32 = GetEquipmentConfig();
@@ -65,19 +65,22 @@ struct FVM_EquipmentCompare : FEUIViewModel
             if (local_98 > local_97)
             {
                 local_101 = 1;
+                local_100 = local_101;
             }
             else
             {
                 if (local_98 < local_97)
                 {
                     local_101 = 2;
+                    local_100 = local_101;
                 }
                 else
                 {
                     local_101 = 0;
+                    local_100 = local_101;
                 }
             }
-            this.GetModify_CompareAttributes().Add(FEUIModelRef(::FVM_AttributeCompare::Create(this.GetContext().Manager)));
+            this.GetModify_CompareAttributes().Add(FEUIModelRef(::FVM_AttributeCompare::Create(this.GetContext().Manager, EAttributeCompareResult(local_100))));
         }
         return;
     }

@@ -1,17 +1,14 @@
-﻿
 enum ETextArgAttributeProperty
 {
     AttributeName,
     AttributeRichTextIcon,
 }
 
-
 struct FTextArgConfig_Attribute : FTextArgConfig
 {
     FTextArgConfig _base_FTextArgConfig;
     UPROPERTY()
     ETextArgAttributeProperty Property;
-
 
 }
 

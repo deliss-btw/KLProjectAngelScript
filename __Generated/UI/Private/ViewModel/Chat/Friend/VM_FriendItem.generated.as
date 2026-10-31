@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_FriendItem_Helpers
 {
 UFUNCTION()

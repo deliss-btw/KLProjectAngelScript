@@ -1,5 +1,3 @@
-﻿
-
 class US_GuideSystem : UECSScriptSystem
 {
     US_GuideSystem()

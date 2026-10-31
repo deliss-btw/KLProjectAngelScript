@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FConditionPlayerEnterRegionConfig (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
-
 class UConditionPlayerEnterRegion : ULocalConditionTypeDefineBase
 {
     UConditionPlayerEnterRegion()
@@ -65,9 +60,10 @@ struct FConditionPlayerEnterRegionConfig : FLocalConditionTypeDefineConfigBase
     UPROPERTY()
     float32 RegionRadius;
 
+    default _base_FLocalConditionTypeDefineConfigBase = UConditionPlayerEnterRegion;
+
     FConditionPlayerEnterRegionConfig()
     {
-        super();
         this.RegionRadius = 0.0f;
         this.__InitDefaults();
         return;

@@ -1,5 +1,3 @@
-﻿
-
 struct FWeatherAudioConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -67,7 +65,6 @@ struct FInstrumentAudioConfig : FDataObject
     bool bPreloadKeySwitches = true;
     UPROPERTY()
     bool bUseStopEvent = true;
-
 
 }
 

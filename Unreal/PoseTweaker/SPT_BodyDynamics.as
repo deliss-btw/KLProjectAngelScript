@@ -1,5 +1,3 @@
-﻿
-
 struct FStretchTransform
 {
     UPROPERTY()
@@ -47,7 +45,6 @@ struct FBodyWrapTransform
     UPROPERTY()
     float32 ScaleAxisX = 1.0f;
 
-
     FVector ProjectPoint(const int skirtChainIndex, const FTransform &inout bodyTM, const FVector &inout leftLegPos, const FVector &inout rightLegPos)
     {
         FVector local_22 = ((leftLegPos - rightLegPos) / this.ReferenceLegDistance);
@@ -64,8 +61,8 @@ struct FBodyWrapTransform
     void Init(const FTransform &inout spineTM, const FTransform &inout pelvisTM, const FVector &inout leftLegPos, const FVector &inout rightLegPos, TArray<FPT_BoneChainRef> &inout boneChains)
     {
         this.ReferenceLegDistance = float32(((leftLegPos - rightLegPos).Size()));
-        ::KLBodyWrapper_ComputeBodyTransform(spineTM.GetRotation().GetAxisZ().opNeg(), pelvisTM.GetLocation(), leftLegPos, rightLegPos, this.ReferenceLegDistance);
-        FPlane local_72 = FPlane(this.GetLocation(), this.GetRotation().GetAxisZ());
+        this.ReferenceTM = ::KLBodyWrapper_ComputeBodyTransform(spineTM.GetRotation().GetAxisZ().opNeg(), pelvisTM.GetLocation(), leftLegPos, rightLegPos, this.ReferenceLegDistance).rigidTM;
+        FPlane local_72 = FPlane(this.ReferenceTM.GetLocation(), this.ReferenceTM.GetRotation().GetAxisZ());
         int local_73 = boneChains.Num();
         this.SkirtTargetRefLclPts.SetNum(local_73);
         TArray<FVector> local_78;
@@ -77,7 +74,7 @@ struct FBodyWrapTransform
             FVector local_142(boneChains[local_80].GetRefPoseTransform(0).GetLocation());
             FVector local_32 = FMath::RayPlaneIntersection(local_142, (FVector(boneChains[local_80].GetRefPoseTransform((boneChains[local_80].GetBoneNum() - 1)).GetLocation()) - local_142).GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector), local_72);
             local_78[local_80] = local_32;
-            this.SkirtTargetRefLclPts[local_80] = this.InverseTransformPosition(local_32);
+            this.SkirtTargetRefLclPts[local_80] = this.ReferenceTM.InverseTransformPosition(local_32);
             this.SkirtTargetRefLclPts[local_80].X = (this.SkirtTargetRefLclPts[local_80].X / this.ScaleAxisX);
             ++local_80;
         }
@@ -212,11 +209,8 @@ class USPT_SkirtDynamicBonesBase : USkeletalPoseTweaker
                 {
                     local_114 = this.SkirtChains[local_113].GetBoneNum();
                     FTransform local_164 = this.SkirtChains[local_113].GetTransform(0);
-                    FVector local_56 = local_164.GetLocation();
-                    FVector local_170 = local_56;
-                    int local_115 = local_114 - 1;
-                    this.SkirtChains[local_113].GetTransform(local_56).GetLocation();
-                    local_164.SetRotation(((FQuat::FindBetween((FVector(local_56) - local_170), (this.PelvisWrapper.ProjectPoint(local_113, local_108.rigidTM, this.Bn_L_thigh.GetLocation(), this.Bn_R_thigh.GetLocation()) - local_170))) * local_164.GetRotation()));
+                    FVector local_170(local_164.GetLocation());
+                    local_164.SetRotation(((FQuat::FindBetween((FVector(this.SkirtChains[local_113].GetTransform((local_114 - 1)).GetLocation()) - local_170), (this.PelvisWrapper.ProjectPoint(local_113, local_108.rigidTM, this.Bn_L_thigh.GetLocation(), this.Bn_R_thigh.GetLocation()) - local_170))) * local_164.GetRotation()));
                     this.SkirtChains[local_113].SetTransform(0, local_164);
                     ++local_113;
                 }
@@ -263,9 +257,9 @@ class USPT_SkirtDynamicBonesBase : USkeletalPoseTweaker
                 {
                     break;
                 }
-                float local_114 = float(int(this.BoneChainModConfigs[local_127].pr));
+                float local_114 = float(this.BoneChainModConfigs[local_127].pr);
                 local_36 = this.SkirtChains[local_7].GetTransform(local_127);
-                local_36.SetRotation(((FQuat::Slerp(FQuat::Identity, local_112, FMath::Lerp(float(int(this.BoneChainModConfigs[local_127].nr)), local_114, local_116))) * local_36.GetRotation()));
+                local_36.SetRotation(((FQuat::Slerp(FQuat::Identity, local_112, FMath::Lerp(float(this.BoneChainModConfigs[local_127].nr), local_114, local_116))) * local_36.GetRotation()));
                 this.SkirtChains[local_7].SetTransform(local_127, local_36);
                 ++local_127;
             }
@@ -305,7 +299,7 @@ class USPT_SkirtDynamicBonesBase : USkeletalPoseTweaker
             }
             if (this.bWantKawaii)
             {
-                this.KawaiiChains[local_7_2].Update(int(this.CurrentDeltaSeconds), this.SharedKawaiiPhysicsSettings, local_264);
+                this.KawaiiChains[local_7_2].Update(this.CurrentDeltaSeconds, this.SharedKawaiiPhysicsSettings, local_264);
             }
         }
         return;

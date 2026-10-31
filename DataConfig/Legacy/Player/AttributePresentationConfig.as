@@ -1,5 +1,3 @@
-﻿
-
 struct FAttributePresentationConfig : FDataObject
 {
     FDataObject _base_FDataObject;

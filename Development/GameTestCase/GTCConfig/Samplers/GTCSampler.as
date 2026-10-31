@@ -1,12 +1,9 @@
-﻿
-
 struct FGTCSampleResult
 {
     UPROPERTY()
     int ActionID;
     UPROPERTY()
     bool bIsValid = true;
-
 
 }
 
@@ -18,7 +15,6 @@ struct FGTCRecordTimeStamp
     int FixedFrame;
     UPROPERTY()
     int LocalFrame;
-
 
 }
 
@@ -38,7 +34,6 @@ struct FGTCSampler : FGTCAction
     FGTCAction _base_FGTCAction;
     UPROPERTY()
     bool bNeedValidation;
-
 
     FGTCRecordTimeStamp GetCurTimeStamp(const FGTCActionContext &inout Context)
     {

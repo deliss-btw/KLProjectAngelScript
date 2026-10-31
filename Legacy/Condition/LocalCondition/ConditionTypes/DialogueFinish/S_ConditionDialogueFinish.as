@@ -1,5 +1,3 @@
-﻿
-
 class US_ConditionDialogueFinish : UECSScriptSystem
 {
     US_ConditionDialogueFinish()
@@ -109,8 +107,7 @@ class US_ConditionDialogueFinish : UECSScriptSystem
             FECSEntityScopeCycleCounter local_71 = FECSEntityScopeCycleCounter(local_70.Sender);
             if (!(local_70.Validate()) == !(false))
             {
-                FString local_80 = "Validate Failed: FCE_DialogueRequestEnd, sender";
-                FString local_76 = local_70.Sender.ToString();
+                XError(ELog(3), (FString("Validate Failed: FCE_DialogueRequestEnd, sender") + local_70.Sender.ToString()));
                 continue;
             }
             ECSInternal::PushContextTime(local_70.GetHandleTime());

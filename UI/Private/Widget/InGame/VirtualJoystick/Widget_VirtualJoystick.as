@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_VirtualJoystick
 {
     const int ViewID = 0;
@@ -261,6 +260,7 @@ namespace UWidget_VirtualJoystick
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_VirtualJoystick;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

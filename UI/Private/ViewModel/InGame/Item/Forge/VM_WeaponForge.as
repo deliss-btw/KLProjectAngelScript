@@ -1,4 +1,3 @@
-﻿
 namespace FVM_WeaponForge
 {
     const int ModelId = 0;
@@ -241,18 +240,37 @@ struct FVM_WeaponForge : FEUIViewModel
     }
     int ResolveDefaultCategoryIndex()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        int local_9 = 0;
+        TEUIModelRef<FMS_Forge> local_4 = this.GetForgeModel();
+        int local_1 = GetLastSelectedCategoryIndex();
+        if (this.GetWeaponTypes().IsValidIndex(local_1))
+        {
+            return local_1;
+        }
+        FMS_PlayerAvatarData& local_8 = ::FMS_PlayerAvatarData::Get(this.GetContext().Manager);
+        if (local_8.GetCurrentAvatars().Num() > 0 && local_8.GetCurrentAvatars()[0].IsValid())
+        {
+            TDataObjectPtr<FAvatarPrefabConfig> local_34 = GetAvatarConfig();
+            if (local_34)
+            {
+                if (local_9 != INDEX_NONE)
+                {
+                    return local_9;
+                }
+            }
+        }
+        XLog(ELog(67), "[VM_WeaponForge]ResolveDefaultCategoryIndex: fallback to first category.");
+        return 0;
     }
     void UpdateListDisplay()
     {
         this.GetModify_CurrentWeaponTitleList().Reset(0);
         this.GetModify_CurrentWeaponFormulaTreeList().Reset(0);
         this.GetModify_CurrentTreeMap().Reset();
-        int local_9 = int(this.GetCurSelectedWeaponType());
+        EWeaponType local_9 = this.GetCurSelectedWeaponType();
         TEUIModelRef<FMS_Forge> local_8 = this.GetForgeModel();
         TArray<TEUIModelWeakRef<FM_ForgeTree>> local_14;
-        local_14.GetForgeTreeListByWeaponType();
+        local_14.GetForgeTreeListByWeaponType(local_9);
         int local_17 = 0;
         for (; local_17 < local_14.Num(); ++local_17)
         {
@@ -277,7 +295,7 @@ struct FVM_WeaponForge : FEUIViewModel
                 {
                     local_124 = local_22.ForgeTreeHiddenImage;
                 }
-                float32 local_127 = ::ForgeCommonUtil::GetForgeTreeBranchWidth(EForgeTreeBranchType(GetBranchType()));
+                float32 local_127 = ::ForgeCommonUtil::GetForgeTreeBranchWidth(GetBranchType());
                 this.GetModify_CurrentWeaponTitleList().Add(TEUIModelRef<FVM_ForgeWeaponTitle>(::FVM_ForgeWeaponTitle::Create(this.GetContext().Manager, (int(GetBranchType()) - 1), local_124, local_34, local_127)));
                 TEUIModelWeakRef<FM_ForgeTree> local_132;
                 TEUIModelRef<FVM_ForgeWeaponFormulaTree> local_136 = TEUIModelRef<FVM_ForgeWeaponFormulaTree>(::FVM_ForgeWeaponFormulaTree::Create(this.GetContext().Manager, (TEUIModelWeakRef<FVM_WeaponForge>(this)), local_132, local_17, local_127));
@@ -1031,7 +1049,6 @@ struct __GeneratedProperties_FVM_WeaponForge
     ESlateVisibility CurrentWeaponDetailMaskBgVisibility;
     UPROPERTY()
     TEUIModelRef<FVM_WeaponForge> Self;
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_LevelUpBanner
 {
     const int ModelId = 0;
@@ -222,7 +221,7 @@ struct FVM_LevelUpBanner : FEUIViewModel
     }
     FText GetDisplayExpGrowth() const
     {
-        return FText::Format(NSLOCTEXT("ExpGrowth", "<Beige18>зїјз—•з»ЏйЄЊ</> +{0}"), this.GetExpGrowth());
+        return FText::Format(NSLOCTEXT("ExpGrowth", "<Beige18>翼痕经验</> +{0}"), this.GetExpGrowth());
     }
     FText GetDisplayAttributeGrowth() const
     {
@@ -244,11 +243,11 @@ struct FVM_LevelUpBanner : FEUIViewModel
     {
         if (!(this.GetbIsBreakthroughLevel()))
         {
-            return NSLOCTEXT("ServerLevelLimitTips", "е·Іиѕѕе€°жњЌеЉЎе™Ёз­‰зє§дёЉй™ђ");
+            return NSLOCTEXT("ServerLevelLimitTips", "已达到服务器等级上限");
         }
         else
         {
-            return NSLOCTEXT("BreakthroughLevelLimitTips", "е·Іиѕѕе€°з­‰зє§дёЉй™ђпјЊиЇ·е‰ЌеѕЂзЄЃз ґ");
+            return NSLOCTEXT("BreakthroughLevelLimitTips", "已达到等级上限，请前往突破");
         }
     }
     float32 CalculateExpBarProgress(const int Exp, const int StartExp, const int EndExp)
@@ -698,7 +697,6 @@ struct __GeneratedProperties_FVM_LevelUpBanner
     FText LevelLimitTips;
     UPROPERTY()
     TEUIModelRef<FVM_LevelUpBanner> Self;
-
 
 }
 

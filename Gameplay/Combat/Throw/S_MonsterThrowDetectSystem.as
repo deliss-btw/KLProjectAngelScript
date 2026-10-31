@@ -1,4 +1,3 @@
-﻿
 namespace MonsterThrowDetectUtils
 {
     const FName MonsterCatchSuccBBVar = n"bMonsterCatchSucc";

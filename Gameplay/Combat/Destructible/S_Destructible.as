@@ -1,4 +1,3 @@
-﻿
 namespace DestructibleUtils
 {
     const FConsoleVariable CVar_Debug_BrokenDestructible_DrawDetectShape = FConsoleVariable();
@@ -24,7 +23,79 @@ class US_Destructible : UECSScriptSystem
     UFUNCTION()
     void ServerJob_MoveDestructibleHitTest(const FECSEntity &inout Entity, const FC_DestructibleDamageDefaultConfig &inout DefaultConfig, const FC_Transform &inout Transform, const FC_Rigidbody &inout Rigidbody, const FCS_FixedTime &inout FixedTime) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argint]
+        int local_2 = int(::DestructibleUtils::GetEffectiveMovementDamageLevel(Entity, DefaultConfig));
+        if (local_2 == 0)
+        {
+            return;
+        }
+        if (int(DefaultConfig.DefaultMoveDestructibleDetect.MoveDestructibleDetectShape.GetShapeType()) == 0)
+        {
+            return;
+        }
+        if (Rigidbody.GetVelocity().IsNearlyZero(9.999999747378752e-5))
+        {
+            return;
+        }
+        FCollisionObjectQueryParams local_10;
+        local_10.AddObjectTypesToQuery(ECollisionChannel(7));
+        FCollisionQueryParams local_50;
+        local_50.bTraceComplex = (false != 0);
+        FTransform local_100 = Transform.ToFTransform();
+        float32 local_101 = 1.0f;
+        Get local_106;
+        const FC_Scale& local_108 = local_106.opCall();
+        if (local_108)
+        {
+            local_101 = local_108.GetUniformScale();
+        }
+        FMoveDestructibleDetect local_110 = DefaultConfig.DefaultMoveDestructibleDetect;
+        FCollisionShape local_118 = local_110.MoveDestructibleDetectShape.GetAsShape(local_101);
+        FVector local_152 = (local_100.GetLocation() + local_100.GetRotation().RotateVector(local_110.MoveDestructibleDetectShapeOffsetToCenter));
+        FVector local_130 = (local_152 + (FVector(Rigidbody.GetVelocity()) * FixedTime.DeltaTime.ToSeconds()));
+        FQuat local_184 = (local_100.GetRotation() * local_110.MoveDestructibleDetectShapeRotation.Quaternion());
+        TArray<FHitResult> local_188;
+        FPhysicsUtils::SweepMulti(Entity, false, EPhysicsTraceTag(37), local_188, local_152, local_130, local_184, local_10, local_118, local_50);
+        for (auto& local_204 : local_188)
+        {
+            FECSEntity local_208 = FECSEntity(int(local_204.ECSEntityId));
+            if (!(local_208.IsValid()))
+            {
+                FSimpleDestructibleBreakResult local_246;
+                int local_247 = int(local_110.ImpactStrength);
+                int local_248 = int(local_110.ImpactType);
+                UPrimitiveComponent local_250;
+                bool local_5 = ::SimpleDestructibleUtils::ServerTryBreakFromHitResult(Entity, local_250, int(local_204.Item), EDestructibleClassLevel(local_2), false, EImpactType(local_248), EImpactStrength(local_247), Rigidbody.GetVelocity().GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector), local_246);
+                if (local_5)
+                {
+                    if (local_246.bWasAlreadyDestroyed)
+                    {
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                Has local_254;
+                bool local_5_2 = local_254.opCall();
+                if (local_5_2)
+                {
+                    int local_247_2 = int(local_110.ImpactStrength);
+                    int local_248_2 = int(local_110.ImpactType);
+                    Get local_258;
+                    ::DestructibleUtils::BrokenDestructiale(Entity, local_208, local_258.opCall(), EDestructibleClassLevel(local_2), EImpactType(local_248_2), EImpactStrength(local_247_2), Rigidbody.GetVelocity().GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector));
+                }
+                else
+                {
+                    Get local_262;
+                    const FC_PropEnvBreakableConfig& local_264 = local_262.opCall();
+                    if (local_264)
+                    {
+                        ::FDamageUtils::DirectDamagePropEnvBreakable(local_208, Entity, local_264, FixedTime.Time, 0.0f, EDestructibleClassLevel(local_2));
+                    }
+                }
+            }
+        }
+        return;
     }
     UFUNCTION()
     void ClientJob_DebugMoveDestructibleHitTest(const FECSEntity &inout Entity, const FC_Transform &inout Transform, const FC_DestructibleDamageDefaultConfig &inout DefaultConfig) const

@@ -1,4 +1,3 @@
-﻿
 namespace FPrologDeclare
 {
     const FEcoFunctorDeclare activitygroup_entity_in_dynamic_point_area = FEcoFunctorDeclare();

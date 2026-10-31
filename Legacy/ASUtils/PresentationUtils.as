@@ -1,4 +1,3 @@
-﻿
 namespace FPresentationUtils
 {
 UFUNCTION()

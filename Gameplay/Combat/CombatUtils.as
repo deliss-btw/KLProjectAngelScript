@@ -1,5 +1,3 @@
-﻿
-
 struct __Lambda_Gameplay_Combat_CombatUtils_783
 {
     UPROPERTY()
@@ -11,7 +9,8 @@ struct __Lambda_Gameplay_Combat_CombatUtils_783
     }
     __Lambda_Gameplay_Combat_CombatUtils_783(const FVector &inout _InSelfEntityLocation)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.__SelfEntityLocation = _InSelfEntityLocation;
+        return;
     }
     FVector GetSelfEntityLocation() property
     {
@@ -124,7 +123,7 @@ FHitTestCheckResult CheckHitTestResult(const FECSEntity &inout HitCaster, const 
 {
     FHitTestCheckResult local_2;
     int local_68 = 0;
-    local_2.Relation = EFactionRelationSplitSelf(EFactionRelationSplitSelf(1));
+    local_2.Relation = EFactionRelationSplitSelf(1);
     local_2.CheckResult = EHitTestCheckResult(1);
     FECSEntity local_8 = FECSEntity(Result.HitEntity);
     if (!(local_8.IsValid()))
@@ -145,8 +144,8 @@ FHitTestCheckResult CheckHitTestResult(const FECSEntity &inout HitCaster, const 
         local_2.CheckResult = EHitTestCheckResult(10);
         return local_2;
     }
-    EFactionRelationSplitSelf local_3_2 = FCombatUtils::GetHitCheckEntityFactionRelation(HitCaster, local_8);
-    local_2.Relation = EFactionRelationSplitSelf(local_3_2);
+    int local_3 = int(FCombatUtils::GetHitCheckEntityFactionRelation(HitCaster, local_8));
+    local_2.Relation = EFactionRelationSplitSelf(local_3);
     Get local_24;
     const FC_HittableConfig& local_26 = local_24.opCall();
     if (local_26)
@@ -156,7 +155,7 @@ FHitTestCheckResult CheckHitTestResult(const FECSEntity &inout HitCaster, const 
         int local_28 = 0;
         for (auto& local_44 : local_26.ConditionalResolveOptions)
         {
-            local_27 = FCombatUtils::HitCheckCondition(EFactionRelationSplitSelf(local_3_2), uint8(AffectFactionRelationBitMask), AttackDataPtr, local_44.Condition);
+            local_27 = FCombatUtils::HitCheckCondition(EFactionRelationSplitSelf(local_3), uint8(AffectFactionRelationBitMask), AttackDataPtr, local_44.Condition);
             if (local_27)
             {
                 local_2.CheckResult = EHitTestCheckResult(0);
@@ -167,7 +166,7 @@ FHitTestCheckResult CheckHitTestResult(const FECSEntity &inout HitCaster, const 
         }
         if (!(local_27))
         {
-            if (!(FCombatUtils::HitCheckCondition(EFactionRelationSplitSelf(local_3_2), uint8(AffectFactionRelationBitMask), AttackDataPtr, local_26.DefaultCondition)))
+            if (!(FCombatUtils::HitCheckCondition(EFactionRelationSplitSelf(local_3), uint8(AffectFactionRelationBitMask), AttackDataPtr, local_26.DefaultCondition)))
             {
                 local_2.CheckResult = EHitTestCheckResult(3);
                 return local_2;
@@ -176,8 +175,8 @@ FHitTestCheckResult CheckHitTestResult(const FECSEntity &inout HitCaster, const 
     }
     else
     {
-        int local_29 = int(local_3_2);
-        if ((local_29 & AffectFactionRelationBitMask) == 0)
+        int local_47 = local_3 & AffectFactionRelationBitMask;
+        if (local_47 == 0)
         {
             local_2.CheckResult = EHitTestCheckResult(3);
             return local_2;
@@ -570,32 +569,31 @@ void ShowDamageNumber(const FECSEntity &inout Sender, const FECSEntity &inout Re
 void TriggerEntitySimpleSkill(const FECSEntity &inout Entity, const int SkillIndex, const float32 ValidateTime = 0.1)
 {
     Modify local_4;
-    if (local_4.opCall())
+    FC_ESMTrigger& local_6 = local_4.opCall();
+    if (local_6)
     {
-        FFPTime local_10 = ECS::GetContextTime();
+        ECS::GetContextTime();
         FNameHandle_EntityBBVarInt local_14;
         local_14;
-        FFPTime local_10_2 = FFPTime(ValidateTime);
-        ECS::GetContextTime();
+        FESMTriggerUtils::ActivateTrigger(Entity, local_6.Storage, n"SkillTrigger", ECS::GetContextTime(), FFPTime(ValidateTime), 0);
     }
     return;
 }
 void TriggerEntitySkill(const FECSEntity &inout Entity, const USkillConfig SkillConfig, const float32 ValidateTime = 0.1)
 {
-    FFPTime local_2 = FFPTime(ValidateTime);
-    ECS::GetContextTime();
+    FESMTriggerUtils::ActivateESMTrigger(Entity, SkillConfig.ESMTriggerUsedForTransit, ECS::GetContextTime(), FFPTime(ValidateTime), 0);
     return;
 }
 void TriggerEntityPhaseChange(const FECSEntity &inout Entity, const int PhaseIndex, const float32 ValidateTime = 0.1)
 {
     Modify local_4;
-    if (local_4.opCall())
+    FC_ESMTrigger& local_6 = local_4.opCall();
+    if (local_6)
     {
-        FFPTime local_10 = ECS::GetContextTime();
+        ECS::GetContextTime();
         FNameHandle_EntityBBVarInt local_14;
         local_14;
-        FFPTime local_10_2 = FFPTime(ValidateTime);
-        ECS::GetContextTime();
+        FESMTriggerUtils::ActivateTrigger(Entity, local_6.Storage, n"PhaseChangeTrigger", ECS::GetContextTime(), FFPTime(ValidateTime), 0);
     }
     return;
 }
@@ -682,8 +680,9 @@ int AddPotentialDamage(const FECSEntity &inout Casuer, const FECSEntity &inout T
     local_54.SetAttackData(AttackDataPtr);
     local_54.SetDamagerCasuer(Casuer);
     local_54.SetExpireTime(ExpireTime);
+    bool local_2 = FDamageUtils::IsDamageToAvatar(Target);
     FAttackData local_56;
-    local_54.SetBaseDamage(FDamageUtils::CalcAttackBaseDamageValue(Casuer, local_56, Time, FDamageUtils::IsDamageToAvatar(Target), ContextCapabilityId));
+    local_54.SetBaseDamage(FDamageUtils::CalcAttackBaseDamageValue(Casuer, local_56, Time, local_2, ContextCapabilityId));
     local_54.SetDamageProcedureType(EDamageProcedureType(1));
     local_12.GetModify_DataByIndex().Add(local_12.GetIndexAcc(), local_54);
     return local_12.GetIndexAcc();
@@ -902,7 +901,7 @@ void DissolveEntityFromItsTeamInternal(const FTargetEntity &inout Entity, const 
     {
         Remove local_26;
         FString local_16 = FASCommonUtils::GetEntityShowName(Entity.GetEntity());
-        XLog(ELog(30), FString().Append("DissolveEntityFromItsTeam: йЂ’еЅ’ж·±еє¦и¶…й™ђпјЊEntity= ").Append(local_16).Append(" EntityеЏЇиѓЅе­ењЁеѕЄзЋЇеј•з”Ё"));
+        XLog(ELog(30), FString().Append("DissolveEntityFromItsTeam: 递归深度超限，Entity= ").Append(local_16).Append(" Entity可能存在循环引用"));
         FECSEntity local_12 = Entity.GetEntity();
         if (local_22.opCall())
         {

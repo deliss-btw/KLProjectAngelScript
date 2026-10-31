@@ -1,4 +1,3 @@
-﻿
 namespace EcoCollectableUtils
 {
 FName GetWeatherName(const FECSEntity &inout NonSyncedEntity)

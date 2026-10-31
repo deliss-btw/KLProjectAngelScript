@@ -1,4 +1,3 @@
-﻿
 enum EPendingConfirmFeature
 {
     AddFriend,
@@ -34,7 +33,6 @@ enum EPendingConfirmScenePersistence
     Clear,
 }
 
-
 struct FPendingConfirmHintConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -56,7 +54,6 @@ struct FPendingConfirmHintConfig : FDataObject
     FSoftBrush TitleImage;
     UPROPERTY()
     FText Content;
-
 
 }
 

@@ -1,5 +1,3 @@
-﻿
-
 class US_EcosimAIV2GOAPSystem : UECSScriptSystem
 {
     US_EcosimAIV2GOAPSystem()

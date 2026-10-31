@@ -1,5 +1,3 @@
-﻿
-
 struct FM_SpotFilterConfigDefault : FConfigEUIModelDefaultBase
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ struct FM_SpotFilterConfigDefault : FConfigEUIModelDefaultBase
     float32 FarDemotionMultiplier = 1.25f;
     UPROPERTY()
     float32 TeleportThreshold = 5000.0f;
-
 
 }
 

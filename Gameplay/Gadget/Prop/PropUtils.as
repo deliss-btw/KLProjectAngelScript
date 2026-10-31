@@ -1,4 +1,3 @@
-﻿
 namespace PropUtils
 {
 UFUNCTION()

@@ -1,4 +1,3 @@
-﻿
 enum EAutoInteractResponseType
 {
     None,
@@ -14,7 +13,6 @@ enum EInteractCustomConditionType
     FailAndShowContent,
 }
 
-
 struct FInteractProgressConfig
 {
     UPROPERTY()
@@ -25,7 +23,6 @@ struct FInteractProgressConfig
     bool bKeepProgressWhenInterrupt = false;
     UPROPERTY()
     FGameAttributeRef SourceEntityProgressRatio;
-
 
     float32 GetMultiInteractorProgressScaler(const TArray<FECSEntity> &inout PlayerList, const FFPTime &inout Time) const
     {
@@ -67,7 +64,6 @@ struct FSecondaryInteractTargetConfig
     bool bCheckSecondaryInteractSubType = true;
     UPROPERTY()
     EInteractionSubTypeForESM SecondaryInteractSubType;
-
 
 }
 
@@ -146,7 +142,6 @@ class UInteractionBehaviorBase : UObject
     EEcosimAIV2EntityRelation NPCPostInteractRelation = EEcosimAIV2EntityRelation(0);
     UPROPERTY()
     FGameplayTagContainer NPCSuccessGameplayTags;
-
 
     bool CheckBehaviorConditions(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget) const
     {
@@ -459,7 +454,6 @@ class UInteractionBehavior_Collect : UInteractionBehaviorBase
     float32 RewardPopupDelaySeconds = 0.0f;
 
     default InteractType = EInteractType(4);
-
 
     void OnInteractSuccess(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
@@ -792,7 +786,6 @@ class UInteractionBehavior_TeammateRescueLieDown : UInteractionBehavior_Custom
 
     default InteractType = EInteractType(18);
 
-
     void OnInteractSuccess(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
         if (ECS::GetRuntimeInfo().IsClient)
@@ -941,9 +934,8 @@ class UInteractionBehavior_Execute : UInteractionBehaviorBase
             local_12.ExecuteTarget = InteractTarget;
         }
         Get local_16;
-        int local_17 = int(local_16.opCall().GetExecutedPreType());
         Modify local_22;
-        local_22.opCall().SetExecutePreType();
+        local_22.opCall().SetExecutePreType(local_16.opCall().GetExecutedPreType());
         return;
     }
 }
@@ -955,7 +947,6 @@ class UInteractionBehavior_RideAsPassenger : UInteractionBehaviorBase
     int SeatIndex = -1;
 
     default InteractType = EInteractType(9);
-
 
     bool CheckBehaviorConditions(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget) const
     {
@@ -1013,7 +1004,7 @@ class UInteractionBehavior_DrivePublicMount : UInteractionBehaviorBase
 UCLASS(Abstract)
 class UInteractionBehavior_TeamFlagLink : UInteractionBehaviorBase
 {
-    FText TeamLeaderText = NSLOCTEXT("TeamFlag", "TeamLeader", "йџй•ї");
+    FText TeamLeaderText = NSLOCTEXT("TeamFlag", "TeamLeader", "队长");
 
     default InteractType = EInteractType(11);
 
@@ -1100,7 +1091,7 @@ class UInteractionBehavior_TeamFlagLink : UInteractionBehaviorBase
             FString local_42 = (local_8.ToString() + " [");
             FString local_42_2 = ((local_42 + local_21) + "/4]  ");
             FString local_38_2 = (local_42_2 + this.TeamLeaderText);
-            FString local_42_3 = (local_38_2 + "пјљ");
+            FString local_42_3 = (local_38_2 + "：");
             local_8 = FText::FromString((local_42_3 + local_32.opCall().GetNickName()));
         }
         return local_8;

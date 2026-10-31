@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_LevelActiveDataLayers_NS
 {
     const TECSComponentDerivedPtr<FCS_LevelActiveDataLayers> DerivedPtr = TECSComponentDerivedPtr<FCS_LevelActiveDataLayers>();
@@ -37,11 +36,22 @@ struct FCS_LevelActiveDataLayers : FECSSingleton
 
     FCS_LevelActiveDataLayers()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_ModifyFlag = 0;
+        this.__InitDirtyFlags();
+        return;
     }
     FCS_LevelActiveDataLayers(const FCS_LevelActiveDataLayers &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_ModifyFlag = 0;
+        this.__InitDirtyFlags();
+        this.m_ActiveDataLayers = Other.m_ActiveDataLayers;
+        this.m_EffectiveActiveDataLayers = Other.m_EffectiveActiveDataLayers;
+        this.m_ModifyFlag = int(Other.m_ModifyFlag);
+        return;
     }
     FCS_LevelActiveDataLayers opAssign(const FCS_LevelActiveDataLayers &inout Other)
     {
@@ -124,7 +134,6 @@ struct FCS_LevelActiveDataLayersClientModifyFlag : FECSSingleton
     UPROPERTY()
     uint ModifyFlag = 0;
 
-
 }
 
 struct FCS_ClientPendingUpdateLevelGroupsTag : FECSSingleton
@@ -144,12 +153,16 @@ struct FCS_TestMonitor : FECSSingleton
     FCS_TestMonitor()
     {
         this.m_Value = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         return;
     }
     FCS_TestMonitor(const FCS_TestMonitor &inout Other)
     {
         this.m_Value = 0;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.__InitDirtyFlags();
         this.m_Value = int(Other.m_Value);
         return;
@@ -262,17 +275,17 @@ bool RemoveLevelActiveDataLayers(const FECSWorldPtr &inout World)
 }
 void __MonitorLevelActiveDataLayersLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_LevelActiveDataLayers, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_LevelActiveDataLayers, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelActiveDataLayersActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_LevelActiveDataLayers, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_LevelActiveDataLayers, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelActiveDataLayersModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_LevelActiveDataLayers, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_LevelActiveDataLayers, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_ServerPendingUpdateLevelGroupsTag
@@ -360,17 +373,17 @@ bool RemoveServerPendingUpdateLevelGroupsTag(const FECSWorldPtr &inout World)
 }
 void __MonitorServerPendingUpdateLevelGroupsTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_ServerPendingUpdateLevelGroupsTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_ServerPendingUpdateLevelGroupsTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorServerPendingUpdateLevelGroupsTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_ServerPendingUpdateLevelGroupsTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_ServerPendingUpdateLevelGroupsTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorServerPendingUpdateLevelGroupsTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_ServerPendingUpdateLevelGroupsTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_ServerPendingUpdateLevelGroupsTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_LevelActiveDataLayersClientModifyFlag
@@ -458,17 +471,17 @@ bool RemoveLevelActiveDataLayersClientModifyFlag(const FECSWorldPtr &inout World
 }
 void __MonitorLevelActiveDataLayersClientModifyFlagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_LevelActiveDataLayersClientModifyFlag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_LevelActiveDataLayersClientModifyFlag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelActiveDataLayersClientModifyFlagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_LevelActiveDataLayersClientModifyFlag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_LevelActiveDataLayersClientModifyFlag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelActiveDataLayersClientModifyFlagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_LevelActiveDataLayersClientModifyFlag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_LevelActiveDataLayersClientModifyFlag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_ClientPendingUpdateLevelGroupsTag
@@ -556,17 +569,17 @@ bool RemoveClientPendingUpdateLevelGroupsTag(const FECSWorldPtr &inout World)
 }
 void __MonitorClientPendingUpdateLevelGroupsTagLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_ClientPendingUpdateLevelGroupsTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_ClientPendingUpdateLevelGroupsTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorClientPendingUpdateLevelGroupsTagActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_ClientPendingUpdateLevelGroupsTag, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_ClientPendingUpdateLevelGroupsTag, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorClientPendingUpdateLevelGroupsTagModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_ClientPendingUpdateLevelGroupsTag, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_ClientPendingUpdateLevelGroupsTag, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FCS_TestMonitor
@@ -654,17 +667,17 @@ bool RemoveTestMonitor(const FECSWorldPtr &inout World)
 }
 void __MonitorTestMonitorLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_TestMonitor, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_TestMonitor, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestMonitorActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_TestMonitor, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_TestMonitor, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorTestMonitorModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_TestMonitor, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_TestMonitor, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

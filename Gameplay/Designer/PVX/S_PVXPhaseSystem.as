@@ -1,5 +1,3 @@
-﻿
-
 class US_PVXPhaseSystem : UECSScriptSystem
 {
     US_PVXPhaseSystem()

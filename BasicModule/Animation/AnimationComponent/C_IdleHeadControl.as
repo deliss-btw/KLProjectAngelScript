@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_AnimUseIdleHeadControlConfig_NS
 {
     const TECSComponentDerivedPtr<FC_AnimUseIdleHeadControlConfig> DerivedPtr = TECSComponentDerivedPtr<FC_AnimUseIdleHeadControlConfig>();
@@ -36,11 +35,41 @@ struct FC_AnimUseIdleHeadControlConfig : FECSComponent
 
     FC_AnimUseIdleHeadControlConfig()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_EnableMaxHorizontalAngle = 120.0f;
+        this.m_EnableMaxVerticalAngle = 90.0f;
+        this.m_ClampMaxHorizontalAngle = 60.0f;
+        this.m_ClampMaxVerticalAngle = 60.0f;
+        this.m_HorizontalAngleSignedScale = 1.0f;
+        this.m_VerticalAngleSignedScale = 1.0f;
+        this.m_BlendInTime = 1.0f;
+        this.m_BlendOutTime = 1.2f;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_AnimUseIdleHeadControlConfig(const FC_AnimUseIdleHeadControlConfig &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_EnableMaxHorizontalAngle = 120.0f;
+        this.m_EnableMaxVerticalAngle = 90.0f;
+        this.m_ClampMaxHorizontalAngle = 60.0f;
+        this.m_ClampMaxVerticalAngle = 60.0f;
+        this.m_HorizontalAngleSignedScale = 1.0f;
+        this.m_VerticalAngleSignedScale = 1.0f;
+        this.m_BlendInTime = 1.0f;
+        this.m_BlendOutTime = 1.2f;
+        this.__InitDirtyFlags();
+        this.m_EnableMaxHorizontalAngle = Other.m_EnableMaxHorizontalAngle;
+        this.m_EnableMaxVerticalAngle = Other.m_EnableMaxVerticalAngle;
+        this.m_ClampMaxHorizontalAngle = Other.m_ClampMaxHorizontalAngle;
+        this.m_ClampMaxVerticalAngle = Other.m_ClampMaxVerticalAngle;
+        this.m_HorizontalAngleSignedScale = Other.m_HorizontalAngleSignedScale;
+        this.m_VerticalAngleSignedScale = Other.m_VerticalAngleSignedScale;
+        this.m_BlendInTime = Other.m_BlendInTime;
+        this.m_BlendOutTime = Other.m_BlendOutTime;
+        return;
     }
     FC_AnimUseIdleHeadControlConfig opAssign(const FC_AnimUseIdleHeadControlConfig &inout Other)
     {
@@ -186,7 +215,6 @@ struct FC_AnimIdleHeadControl : FECSComponent
     UPROPERTY()
     float32 BlendOutTime = 1.2f;
 
-
     void Clear()
     {
         this.Weight = 0.0f;
@@ -216,7 +244,6 @@ class UESMAction_IdleHeadControl : UESMBPBaseSpanTickAction
     float32 BlendInTime = 1.0f;
     UPROPERTY()
     float32 BlendOutTime = 1.2f;
-
 
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
@@ -339,37 +366,37 @@ bool RemoveAnimUseIdleHeadControlConfig(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAnimUseIdleHeadControlConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimUseIdleHeadControlConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimUseIdleHeadControlConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimUseIdleHeadControlConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimUseIdleHeadControlConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimUseIdleHeadControlConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimUseIdleHeadControlConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimUseIdleHeadControlConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimUseIdleHeadControlConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimUseIdleHeadControlConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimUseIdleHeadControlConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimUseIdleHeadControlConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimUseIdleHeadControlConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimUseIdleHeadControlConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimUseIdleHeadControlConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAnimUseIdleHeadControlConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AnimUseIdleHeadControlConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AnimUseIdleHeadControlConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimUseIdleHeadControlConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AnimUseIdleHeadControlConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AnimUseIdleHeadControlConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimUseIdleHeadControlConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AnimUseIdleHeadControlConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AnimUseIdleHeadControlConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_AnimIdleHeadControl
@@ -449,37 +476,37 @@ bool RemoveAnimIdleHeadControl(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAnimIdleHeadControlOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimIdleHeadControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimIdleHeadControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimIdleHeadControlOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimIdleHeadControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimIdleHeadControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimIdleHeadControlOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimIdleHeadControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimIdleHeadControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimIdleHeadControlOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimIdleHeadControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimIdleHeadControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimIdleHeadControlOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimIdleHeadControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimIdleHeadControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAnimIdleHeadControlLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AnimIdleHeadControl, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AnimIdleHeadControl, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimIdleHeadControlActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AnimIdleHeadControl, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AnimIdleHeadControl, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimIdleHeadControlModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AnimIdleHeadControl, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AnimIdleHeadControl, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

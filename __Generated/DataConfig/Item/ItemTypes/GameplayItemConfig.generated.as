@@ -1,4 +1,3 @@
-﻿
 namespace __FGameplayItemConfigFunctions
 {
 UFUNCTION()
@@ -13,14 +12,32 @@ namespace __FCombatItemConfigFunctions
 UFUNCTION()
 const USkillConfig __FCombatItemConfig_GetItemSkillConfig(const TDataObjectPtr<FCombatItemConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    return nullptr;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'ItemSkillConfig' from a null 'FCombatItemConfig' DataObject!");
+        }
+        FCombatItemConfig local_216;
+        return local_216.ItemSkillConfig;
+    }
+    USkillConfig local_218;
+    return local_218;
 }
 UFUNCTION()
 FBuffConfigRef __FCombatItemConfig_GetItemBuffConfig(const TDataObjectPtr<FCombatItemConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FBuffConfigRef __r; return __r;
+    FBuffConfigRef __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'ItemBuffConfig' from a null 'FCombatItemConfig' DataObject!");
+        }
+        FCombatItemConfig local_216;
+        return local_216.ItemBuffConfig;
+    }
+    return __r;
 }
 UFUNCTION()
 FCombatItemConfig CastToFCombatItemConfig(const TDataObjectPtr<FCombatItemConfig> &inout DataObject)

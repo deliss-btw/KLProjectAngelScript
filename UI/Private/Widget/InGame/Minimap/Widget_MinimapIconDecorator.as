@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_MinimapIconDecorator
 {
     const int ViewID = 0;
@@ -280,6 +279,7 @@ namespace UWidget_MinimapIconDecorator
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MinimapIconDecorator;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnDecoratorTypeChanged"));
     return;
 }
@@ -296,6 +296,7 @@ namespace UWidget_MinimapIconDecoratorPanel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MinimapIconDecoratorPanel;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

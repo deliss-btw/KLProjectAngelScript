@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_Mount : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ class UESMAction_Mount : UESMBPBaseSpanAction
     float32 BlendDuration = 0.2f;
     UPROPERTY()
     FGameplayTag TagFlagIsPrivateMount;
-
 
     UFUNCTION()
     EESMActionType GetActionType_Implementation() const

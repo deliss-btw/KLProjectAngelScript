@@ -1,4 +1,3 @@
-﻿
 namespace FThrowUtils
 {
 FECSEntity GetThrowTargetEntity(const FECSEntity &inout PawnEntity, const EAttachTargetType AttachTargetType, const FNameHandle_EntityBBVarEntity &inout AttachTargetEntityBBVar)
@@ -121,13 +120,87 @@ bool GetMatchedThrowTargetInfo(const FECSEntity &inout PropEntity, FThrowTargetI
 }
 bool GetThrowSocketTransform(const FThrowTargetInfo &inout ThrowTargetInfo, const FName &inout SocketName, const FFPTime &inout WorldTime, FTransform &inout OutSocketTransform, const bool bForPresentation = false)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    bool __r; return __r;
+    const AActor local_14;
+    USkeletalMeshComponent local_20;
+    FECSEntity local_8 = FECSEntity(ThrowTargetInfo.GetOwnerId());
+    if (!(local_8.IsValid()))
+    {
+        return false;
+    }
+    bool local_10 = false;
+    if (bForPresentation)
+    {
+        local_14 = local_8.GetActor();
+        if (local_14 != nullptr)
+        {
+            local_20 = (Cast<USkeletalMeshComponent>(local_14.GetDefaultAttachComponent()));
+            if (local_20 != nullptr)
+            {
+                bool local_21;
+                local_10 = true;
+                local_21 = false;
+                Get local_26;
+                const FC_ThrowPredictPathData& local_28 = local_26.opCall();
+                if (local_28)
+                {
+                    FThrowPredictPathData local_104;
+                    if (local_28.ThrowPathDataMap.Find(ThrowTargetInfo, local_104))
+                    {
+                        local_21 = true;
+                        FName local_106(n"Root");
+                        FTransform local_160 = local_20.GetSocketTransform(local_106, ERelativeTransformSpace(0));
+                        OutSocketTransform = (local_104.SocketRelativeTransform * local_160);
+                    }
+                }
+                if (!(local_21))
+                {
+                    OutSocketTransform = local_20.GetSocketTransform(SocketName, ERelativeTransformSpace(0));
+                }
+            }
+        }
+    }
+    else
+    {
+        OutSocketTransform = FTransformUtils::GetSocketTransformInGameMesh(local_8, SocketName, WorldTime, local_10, FDownsampleConfig());
+    }
+    return local_10;
 }
 FVector GetPropThrowVelocity(const FECSEntity &inout PropEntity, const FFPTime &inout WorldTime, const FThrowTargetInfo &inout InTargetInfo)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    FVector __r; return __r;
+    FVector local_6(FVector::ZeroVector);
+    FECSEntity local_14 = FECSEntity(InTargetInfo.GetOwnerId());
+    if (local_14.IsValid())
+    {
+        FECSEntity local_20 = local_14;
+        Get local_24;
+        const FC_PawnRiddingMount& local_26 = local_24.opCall();
+        if (local_26)
+        {
+            if (!((FECSEntity(local_26.GetMountEntity()) == ENTITY_ID_NULL)) && local_26.IsDriver())
+            {
+                local_20 = local_26.GetMountEntity();
+            }
+        }
+        FRotator local_40 = FCharacterInputUtils::GetViewInputDir(local_20, WorldTime);
+        Get local_44;
+        const FC_ThrowPredictPathData& local_46 = local_44.opCall();
+        if (local_46)
+        {
+            FThrowPredictPathData local_124;
+            if (local_46.ThrowPathDataMap.Find(InTargetInfo, local_124))
+            {
+                local_40.Pitch = local_124.PitchMappingCurve.GetFloatValue(float32(local_40.Pitch), float32(local_40.Pitch));
+            }
+        }
+        FQuat local_148 = local_40.Quaternion();
+        Get local_152;
+        const FC_ThrowMovementConfig& local_154 = local_152.opCall();
+        if (local_154)
+        {
+            local_6 = (local_148.GetForwardVector() * local_154.Data.GetInitSpeed());
+        }
+    }
+    return local_6;
 }
 FVector GetPropThrowVelocity(const FECSEntity &inout PropEntity, const FFPTime &inout WorldTime)
 {

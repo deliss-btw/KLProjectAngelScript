@@ -1,5 +1,3 @@
-﻿
-
 class US_BodyPartSystem : UECSScriptSystem
 {
     US_BodyPartSystem()
@@ -9,14 +7,13 @@ class US_BodyPartSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_BodyPartsConfigActive(const FECSEntity &inout Entity, const FC_BodyPartsConfig &inout BodyPartsConfig) const
     {
-        bool local_3 = false;
         int local_10 = 0;
         if (BodyPartsConfig.BodyPartData != nullptr)
         {
             for (auto& local_28 : BodyPartsConfig.BodyPartData.BodyParts)
             {
                 FCharacterBodyPartRuntimeData local_30;
-                local_30.SetbCanDestroy(local_3);
+                local_30.SetbCanDestroy((0 != 0));
                 local_10.GetModify_BodyPartDatas().Add(local_28.GetKey(), local_30);
             }
         }

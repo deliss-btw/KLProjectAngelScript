@@ -1,5 +1,3 @@
-﻿
-
 struct FDialogueGraphScriptBase : FDialogueGraphBase
 {
     FDialogueGraphBase _base_FDialogueGraphBase;
@@ -12,7 +10,7 @@ struct FDialogueGraphScriptBase : FDialogueGraphBase
     }
     FInstancedStruct GetNode(const uint InNodeId) const
     {
-        for (auto& local_16 : this)
+        for (auto& local_16 : this._base_FDialogueGraphBase)
         {
             if (FInstancedStruct::GetPtr(local_16).opCall() && (0 == InNodeId))
             {
@@ -23,7 +21,7 @@ struct FDialogueGraphScriptBase : FDialogueGraphBase
     }
     TConstRawPtr<FDialogueNodeBase> GetNodePtr(const uint InNodeId) const
     {
-        for (auto& local_16 : this)
+        for (auto& local_16 : this._base_FDialogueGraphBase)
         {
             TConstRawPtr<FDialogueNodeBase> local_22 = FInstancedStruct::GetPtr(local_16).opCall();
             if ((local_22 && (0 == InNodeId)))
@@ -72,7 +70,7 @@ struct FDialogueGraphScriptBase : FDialogueGraphBase
     TDataObjectPtr<FDialogueLineConfig> FindFirstSpeakerLine() const
     {
         TArrayConstIterator<TDataObjectPtr<FDialogueLineConfig>> local_30;
-        for (auto& local_16 : this)
+        for (auto& local_16 : this._base_FDialogueGraphBase)
         {
             if ((FInstancedStruct::GetPtr(local_16).opCall() == nullptr))
             {
@@ -92,7 +90,7 @@ struct FDialogueGraphScriptBase : FDialogueGraphBase
     TDataObjectPtr<FNPCMainConfig> FindFirstSpeakerNPC() const
     {
         TArrayConstIterator<TDataObjectPtr<FDialogueLineConfig>> local_30;
-        for (auto& local_16 : this)
+        for (auto& local_16 : this._base_FDialogueGraphBase)
         {
             if ((FInstancedStruct::GetPtr(local_16).opCall() == nullptr))
             {
@@ -112,7 +110,7 @@ struct FDialogueGraphScriptBase : FDialogueGraphBase
     bool HasAttachPoint() const
     {
         bool local_13 = false;
-        for (auto& local_16 : this)
+        for (auto& local_16 : this._base_FDialogueGraphBase)
         {
             if (FInstancedStruct::GetPtr(local_16).opCall() && local_13)
             {

@@ -1,4 +1,3 @@
-﻿
 namespace FAttachmentUtils
 {
 UFUNCTION()

@@ -1,5 +1,3 @@
-﻿
-
 struct FGameplayTagBitContainer
 {
     UPROPERTY()
@@ -11,12 +9,11 @@ struct FGameplayTagBitContainer
     }
     bool MatchesQuery(const FKLGameplayTagQuery &inout Query)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
-        bool __r; return __r;
+        return this.Container.MatchesQuery(Query);
     }
     void Append(const FGameplayTagContainer &inout Other)
     {
-        this.AppendTags(Other);
+        this.Container.AppendTags(Other);
         return;
     }
 }
@@ -38,6 +35,7 @@ struct FEcologySpawnerRatioCacheKey
     }
     FEcologySpawnerRatioCacheKey(const TDataObjectPtr<FCreatureDefinitionRow> &inout InCreature, const TDataObjectPtr<FEcologyResourceDefinitionRow> &inout InResource, const FName &inout InWeatherName, const int InTimeSegments)
     {
+        this.Creature = InCreature;
         this.Resource = InResource;
         this.WeatherName = InWeatherName;
         this.TimeSegments = InTimeSegments;
@@ -45,11 +43,11 @@ struct FEcologySpawnerRatioCacheKey
     }
     uint Hash() const
     {
-        int local_4 = this.GetUniqueID() & 4294967295;
+        int local_4 = this.Creature.GetUniqueID() & 4294967295;
         int local_2 = local_4;
         int local_1 = HashCombine(0, local_2);
         int local_7 = 32;
-        int local_2_2 = (this.GetUniqueID() >> local_7 & 4294967295);
+        int local_2_2 = (this.Creature.GetUniqueID() >> local_7 & 4294967295);
         local_1 = HashCombine(local_1, local_2_2);
         local_1 = HashCombine(local_1, (this.Resource.GetUniqueID() & 4294967295));
         int local_2_3 = 32;

@@ -1,10 +1,7 @@
-﻿
-
 struct FConfigVM_RedDot : FConfigEUIModelBase
 {
     UPROPERTY()
     int LimitDisplayCount = 99;
-
 
 }
 

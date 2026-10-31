@@ -1,5 +1,3 @@
-﻿
-
 class APVX_Level_AutoSpawnMonster : AKLLevelScriptBaseActor
 {
     UPROPERTY()
@@ -35,7 +33,6 @@ class APVX_Level_AutoSpawnMonster : AKLLevelScriptBaseActor
     bool bIsSpawned = false;
     TArray<FECSEntity> SpawnedMonsters;
 
-
     UFUNCTION()
     void PreLevelBeginPlay_Implementation()
     {
@@ -50,12 +47,53 @@ class APVX_Level_AutoSpawnMonster : AKLLevelScriptBaseActor
     UFUNCTION()
     void OnLevelCustomEvent(const FCE_CustomLevelEvent &inout Event)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        bool local_1 = !(this.bAutoSpawn);
+        bool local_2 = !(false);
+        local_1 = local_1 == local_2 && (Event.CustomName == this.SpawnOnCustomEvent);
+        if (local_1)
+        {
+            this.StartSpawn();
+        }
+        if ((Event.CustomName == n"PVX_EXP_MULTIPLIER_UPDATE"))
+        {
+            FBuffConfigRef local_56 = ::FGameModeDataBridge::GetPVXMonsterPowerBuffConfig(this.LevelScriptEntity.GetWorld());
+            FBuffConfigRef local_80;
+            if (this.SpawnBuffs.Num() > 0)
+            {
+                local_80 = this.SpawnBuffs[0];
+            }
+            this.SpawnBuffs.Empty(0);
+            this.SpawnBuffs.Add(local_56);
+            if (this.bIsSpawned)
+            {
+                if ((this.SpawnCount <= 0 && this.bIsLoopSpawn))
+                {
+                    this.StartSpawn();
+                }
+                else
+                {
+                    if (this.bUseBuff)
+                    {
+                        for (auto& local_96 : this.SpawnedMonsters)
+                        {
+                            ::BlueprintFunctions_Common::RemoveBuffByConfig(FECSEntityAdapter(local_96), local_80);
+                            ::BlueprintFunctions_Common::AddBuff(FECSEntityAdapter(this.LevelScriptEntity), FECSEntityAdapter(local_96), local_56, -1.0f, 1);
+                        }
+                    }
+                }
+            }
+        }
+        return;
     }
     UFUNCTION()
     void TurnOnMinimapIcon()
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        if (!(this.IconSettings))
+        {
+            return;
+        }
+        ::EntityLevelSpotUtils::AddSpotData(this.LevelScriptEntity, ELevelSpotDataSource(4), ::FLevelSpotData::CreateMinimapIconOverride(this.IconSettings));
+        return;
     }
     FECSEntity ResolveSpawnerFromSoftPtr(const TSoftObjectPtr<AGenericSpawnerECSPrefab> &inout Prefab)
     {
@@ -249,10 +287,10 @@ class APVX_Level_AutoSpawnMonster : AKLLevelScriptBaseActor
             Has local_10;
             local_5 = local_10.opCall();
         }
-        Get local_16;
         if (local_5)
         {
             Get local_20;
+            Get local_16;
             if ((local_16.opCall().GetOwnerDataLayerName() == local_20.opCall().DataLayerName))
             {
                 --this.SpawnCount;

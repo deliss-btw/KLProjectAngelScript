@@ -1,4 +1,3 @@
-﻿
 const TArray<FName> EntityType_Ecology_CompCategory = TArray<FName>();
 namespace FECSEntityType
 {

@@ -1,4 +1,3 @@
-﻿
 namespace FMS_CommonSpotViews
 {
     const int ModelId = 0;

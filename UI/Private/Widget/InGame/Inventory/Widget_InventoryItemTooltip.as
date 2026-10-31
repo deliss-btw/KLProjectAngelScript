@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_InventoryItemTooltip
 {
     const int ViewID = 0;
@@ -45,6 +44,7 @@ namespace UWidget_InventoryItemTooltip
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_InventoryItemTooltip;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

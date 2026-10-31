@@ -1,5 +1,3 @@
-﻿
-
 class US_LevelObjectiveSystem : UECSScriptSystem
 {
     US_LevelObjectiveSystem()

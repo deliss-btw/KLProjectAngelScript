@@ -1,4 +1,3 @@
-﻿
 namespace FMS_Mission
 {
     const int ModelId = 0;
@@ -208,7 +207,7 @@ struct FMS_Mission : FEUIModelSingleton
             {
                 return;
             }
-            this.PerformMissionHint(local_116, local_154, EMissionStatus(TransInfo.GetNewStatus()));
+            this.PerformMissionHint(local_116, local_154, TransInfo.GetNewStatus());
             return;
         }
         if (local_123)
@@ -221,11 +220,10 @@ struct FMS_Mission : FEUIModelSingleton
             }
             if (LastMissionPhaseId == local_235 && (int(TransInfo.GetNewStatus()) == 1))
             {
-                this.PerformMissionHint(local_116, local_154, EMissionStatus(EMissionStatus(1)));
+                this.PerformMissionHint(local_116, local_154, EMissionStatus(1));
             }
         }
-        EMissionStatus local_234_3 = TransInfo.GetNewStatus();
-        this.PerformMissionPhaseHint(local_116, local_154, TransInfo.GetMissionPhaseId());
+        this.PerformMissionPhaseHint(local_116, local_154, TransInfo.GetMissionPhaseId(), TransInfo.GetNewStatus());
         return;
     }
 }

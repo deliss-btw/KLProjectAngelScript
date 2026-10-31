@@ -1,4 +1,3 @@
-﻿
 namespace FVM_StoryDialogOption
 {
     const int ModelId = 0;

@@ -1,5 +1,3 @@
-﻿
-
 class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
 {
     uint DSRegisterLevelKey = 0;
@@ -43,7 +41,6 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
     FProtoRspWithUidDelegate AllAvatarFashionNotifyDelegate;
     FProtoRspDelegate GSDeadNotifyDelegate;
     FProtoRspWithUidDelegate AssembleTravelInDsNotifyDelegate;
-
 
     UFUNCTION()
     void OnInitialize_Implementation()
@@ -423,6 +420,7 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
     UFUNCTION()
     void OnKickPlayerDSReq(const FProtoWrapper &in ProtoWrapper, const uint Uid)
     {
+        int local_30;
         FPbKickPlayerDSReq local_8 = FPbKickPlayerDSReq::FromWrapper(ProtoWrapper);
         int local_10 = this.GetPlayerEntityIdByUid(Uid);
         FECSEntity local_18 = FECSEntity(local_10);
@@ -430,7 +428,25 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
         XLog(ELog(27), FString().Append("[KFlow:").Append(Uid).Append("] RecvPacket OnKickPlayerDSReq DsId=").Append(local_8.GetDsId()).Append(" Reason=").Append(local_8.GetReason()).Append("(").Append(local_26).Append(")"));
         if (local_18.IsValid())
         {
-            if (local_8.GetReason() == 2 || (local_8.GetReason() == 4) || (local_8.GetReason() == 3))
+            if (local_8.GetReason() == 2)
+            {
+                local_30 = 1;
+            }
+            else
+            {
+                bool local_32 = (local_8.GetReason() == 4);
+                local_30 = local_32;
+            }
+            if (local_30 != 0)
+            {
+                local_30 = 1;
+            }
+            else
+            {
+                bool local_32_2 = (local_8.GetReason() == 3);
+                local_30 = local_32_2;
+            }
+            if (local_30 != 0)
             {
                 ::FGameConnectionUtils::DisconnectPlayer(local_18, EDisconnectReason(3));
             }
@@ -1852,7 +1868,7 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
         FCE_DSDispatchChat local_20;
         local_20.DispatchKind = EChatDSDispatchKind(0);
         local_20.SendChat = ::ChatSystemUtil::MakeSnapshotFromPbBroadcast(local_8);
-        local_8.GetSender().GetPlayerBriefInfo();
+        ::ChatSystemUtil::ApplyFromPbBrief(local_20.SenderBrief, local_8.GetSender().GetPlayerBriefInfo());
         XLog(ELog(27), FString().Append("OnServerBroadcastChatMsgNotify dispatch ChannelType=").Append(local_8.GetChannelType()).Append(" SenderUid=").Append(local_20.SenderBrief.GetUid()));
         return;
     }
@@ -2504,15 +2520,15 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
     void OnChangeDivineSkillReq(const FProtoWrapper &in ProtoWrapper, const uint PlayerUid)
     {
         FPbChangeDivineSkillReq local_4 = FPbChangeDivineSkillReq::FromWrapper(ProtoWrapper);
-        if (FECSEntity(this.GetPlayerEntityIdByUid(PlayerUid)).IsValid())
+        FECSEntity local_14 = FECSEntity(this.GetPlayerEntityIdByUid(PlayerUid));
+        if (local_14.IsValid())
         {
             FCE_OnChangeDivineSkillReq local_30;
             FFPTime local_26 = FFPTime(-1);
             int local_9 = local_4.GetDivineSkillId();
             GetDataObjectByGSDataId<FDivineSkillConfig> local_54;
             local_30.DivineSkillData.SetSkillConfig(this.GetValidatedDivineSkill(local_54.opImplConv()));
-            local_30.DivineSkillData.GetSkillConfig().GetDataName();
-            FString local_130 = FString();
+            XLog(ELog(27), FString().Append("[PVXTEST] OnChangeDivineSkillReq PlayerEntity=").Append(local_14).Append(" Uid=").Append(PlayerUid).Append(" Event.DivineSkillData.SkillConfig=").Append(local_30.DivineSkillData.GetSkillConfig().GetDataName()));
             local_30.bNeedReply = true;
         }
         return;

@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ItemQuickSlot
 {
     const int ViewID = 0;
@@ -387,6 +386,7 @@ namespace UWidget_ItemQuickSlot
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ItemQuickSlot;
     Result.ObservedModelChangesSubscriberNames.Add(FString("SetupOwnerUserWidget"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("SetupItem"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("SetupDisplayItem"));

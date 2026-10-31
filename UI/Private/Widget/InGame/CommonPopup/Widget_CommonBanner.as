@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommonBanner
 {
     const int ViewID = 0;
@@ -13,7 +12,6 @@ class UWidget_CommonBanner : UEUIUserWidget
     bool bHasEnd = false;
     UPROPERTY()
     FGetEUIModelRef BannerDelegate;
-
 
     UFUNCTION()
     void OnViewBind_Implementation()
@@ -58,6 +56,7 @@ namespace UWidget_CommonBanner
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommonBanner;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

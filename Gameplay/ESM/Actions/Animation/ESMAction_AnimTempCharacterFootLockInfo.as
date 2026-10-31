@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CharacterFootLockInfo : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -22,7 +20,6 @@ class UESMAction_CharacterFootLockInfo : UESMBPBaseSpanAction
     float32 StopStartTransitionRecoverSpeed = 5.0f;
     UPROPERTY()
     float32 StopStartTransitionDuration = 0.3f;
-
 
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const

@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::CommissionRandomPolicyUtils
 {
 TArray<TDataObjectPtr<FDataObject>> GetAllRandomFactorConfigsByRandomFactorType(const ERandomFactorType RandomFactorType, const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig)

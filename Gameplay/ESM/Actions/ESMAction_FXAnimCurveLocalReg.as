@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: UESMAction_FXAnimCurveLocalReg (default scalar field UESMAction.ActionFilterType has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
-
 struct FESMFXAnimCurveInterpoLocalRegInstanceData
 {
     UPROPERTY()
@@ -24,7 +19,6 @@ class UESMAction_FXAnimCurveLocalReg : UESMBPBaseSpanTickAction
     FFXAnimCurve FxAnimCurve;
     UPROPERTY()
     FName TagName;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetViewInstanceDataInfo_Implementation() const

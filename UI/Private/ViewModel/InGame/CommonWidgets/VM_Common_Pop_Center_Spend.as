@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonPopCenterSpendItem
 {
     const int ModelId = 0;
@@ -326,7 +325,6 @@ struct __GeneratedProperties_FVM_Common_Pop_Center_Spend
     bool HasSpendItems;
     UPROPERTY()
     TEUIModelRef<FVM_Common_Pop_Center_Spend> Self;
-
 
 }
 

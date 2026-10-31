@@ -1,4 +1,3 @@
-﻿
 enum EPlayerStatsCountType
 {
     Self,
@@ -6,18 +5,15 @@ enum EPlayerStatsCountType
     AllPlayers,
 }
 
-
-// NOTE: class defaults are not authored in this module: FConditionPlayerStatsConfig (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
-
 class UConditionPlayerStats : ULocalConditionTypeDefineBase
 {
     int EventNameParamIndex = 1;
 
-
     void OnConditionRegistered(const FLocalConditionInstance &inout ConditionInstance) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FECSWorldPtr local_2 = ECS::GetECSWorld();
+        0.MonitoredStats.FindOrAdd(this.GetPlayerStatsType(GetConditionConfig())).ConditionInstances.Add(ConditionInstance.GetHandle());
+        return;
     }
     void OnConditionUnregistered(const FLocalConditionInstance &inout ConditionInstance) const
     {
@@ -83,9 +79,10 @@ struct FConditionPlayerStatsConfig : FLocalConditionTypeDefineConfigBase
     UPROPERTY()
     ECommissionPlayerStatsType PlayerStatsType;
 
+    default _base_FLocalConditionTypeDefineConfigBase = UConditionPlayerStats;
+
     FConditionPlayerStatsConfig()
     {
-        super();
         this.PlayerStatsType = ECommissionPlayerStatsType(0);
         this.PlayerStatsCountType = EPlayerStatsCountType(2);
         this.__InitDefaults();

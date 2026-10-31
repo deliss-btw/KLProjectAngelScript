@@ -1,5 +1,3 @@
-﻿
-
 class AGameCharacterActor : AGameCharacter
 {
     UPROPERTY()

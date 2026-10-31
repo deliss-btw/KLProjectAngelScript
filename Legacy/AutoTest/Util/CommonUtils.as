@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::CommonUtils
 {
 FECSEntity GetLocalAvatarEntity()

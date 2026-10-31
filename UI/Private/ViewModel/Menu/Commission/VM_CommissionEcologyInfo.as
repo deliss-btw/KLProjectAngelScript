@@ -1,4 +1,3 @@
-﻿
 enum EEcologyElementType
 {
     Weather,
@@ -106,7 +105,7 @@ struct FVM_CommissionEcologyInfo : FEUIViewModel
         {
             TEUIModelWeakRef<FVM_CommissionEcologyInfo> local_32 = TEUIModelWeakRef<FVM_CommissionEcologyInfo>(this);
             UEUIManagerSubsystem local_34 = this.GetManager();
-            local_40.SetIsUnknown(true, NSLOCTEXT("CommissionEcologyInfo", "UnknownWeatherDescription", "е±Ђе†…з¬¬дєЊй¶ж®µдјље€‡жЌўйљЏжњєе¤©ж°”"));
+            local_40.SetIsUnknown(true, NSLOCTEXT("CommissionEcologyInfo", "UnknownWeatherDescription", "局内第二阶段会切换随机天气"));
             TEUIModelRef<FVM_CommissionEcologyElement> local_36_2 = TEUIModelRef<FVM_CommissionEcologyElement>(local_40);
             this.GetModify_EcologyElementList().Add(local_36_2);
         }
@@ -194,7 +193,6 @@ struct __GeneratedProperties_FVM_CommissionEcologyInfo
     UPROPERTY()
     TEUIModelRef<FVM_CommissionEcologyInfo> Self;
 
-
 }
 
 namespace FVM_CommissionEcologyInfo
@@ -211,7 +209,62 @@ FVM_CommissionEcologyInfo CreateByManager(const UEUIManagerSubsystem Manager, co
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "EcologyElementList";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_CommissionEcologyElement>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectedEcologyElement";
+    local_14.TypeName = "TEUIModelRef<FVM_CommissionEcologyElement>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TODStage";
+    local_14.TypeName = "TDataObjectPtr<FTODStageConfig>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TODStageIcon";
+    local_14.TypeName = "FSoftBrush";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsBadWeather";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasAnyEcologyElement";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_CommissionEcologyInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_CommissionEcologyInfo;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(3);
+    local_22.AddRefPropertyDirty(0, 0, FM_Commission::__IndexOf_InstanceData());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("CommissionModel");
+    int local_2_2 = FM_Commission::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FM_Commission::__IndexOf_InstanceData(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnCommissionModelInstanceDataChanged";
+    local_40.DirtyFlags.Set(FVM_CommissionEcologyInfo::__IndexOf_CommissionModel());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

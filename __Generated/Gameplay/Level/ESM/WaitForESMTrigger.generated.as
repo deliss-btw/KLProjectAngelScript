@@ -1,5 +1,3 @@
-﻿
-
 class UASWaitForESMTriggerWrapper : UECSAsyncActionBase
 {
     UPROPERTY()

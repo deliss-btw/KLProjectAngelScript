@@ -1,12 +1,8 @@
-﻿
 namespace FGameConnectionUtils
 {
 uint GetCurrentProtoLanguageType()
 {
-    ESearchCase local_8;
-    Internationalization::GetCurrentLanguage();
-    FString local_14;
-    local_14.ToLower();
+    FString local_8 = Internationalization::GetCurrentLanguage().Replace("_", "-", ESearchCase(1)).ToLower();
     if (local_8.StartsWith("zh-hant", ESearchCase(1)) || local_8.StartsWith("zh-tw", ESearchCase(1)) || local_8.StartsWith("zh-hk", ESearchCase(1)) || local_8.StartsWith("zh-mo", ESearchCase(1)) || (local_8 == "tc"))
     {
         return 3;
@@ -201,7 +197,7 @@ bool UICheckTeleportAllowed(const FECSEntity &inout PlayerPawnEntity, const bool
         if (bShowTips)
         {
             FCommonTipsParam local_10;
-            CommonPopup::Tips(NSLOCTEXT("GameConnectionUtils", "TeleportNotAllowedTips", "еЅ“е‰ЌзЉ¶жЂЃж— жі•дј йЂЃ"), local_10);
+            CommonPopup::Tips(NSLOCTEXT("GameConnectionUtils", "TeleportNotAllowedTips", "当前状态无法传送"), local_10);
         }
         return false;
     }
@@ -329,42 +325,42 @@ FText GetDSDisconnectReasonText(const EDisconnectReason Reason)
     {
     case 0:
     {
-        return NSLOCTEXT("Disconnect", "None", "иїћжЋҐе·Іж–­ејЂ");
+        return NSLOCTEXT("Disconnect", "None", "连接已断开");
     }
     case 1:
     {
-        return NSLOCTEXT("Disconnect", "TokenError", "з™»еЅ•е‡­иЇЃеј‚еёёпјЊиЇ·й‡Ќж–°з™»еЅ•");
+        return NSLOCTEXT("Disconnect", "TokenError", "登录凭证异常，请重新登录");
     }
     case 2:
     {
-        return NSLOCTEXT("Disconnect", "VersionError", "е®ўж€·з«Їз‰€жњ¬дёЌеЊ№й…ЌпјЊиЇ·ж›ґж–°е®ўж€·з«Ї");
+        return NSLOCTEXT("Disconnect", "VersionError", "客户端版本不匹配，请更新客户端");
     }
     case 3:
     {
-        return NSLOCTEXT("Disconnect", "GSKickPlayer", "ж‚Ёе·Іиў«иёўе‡єжёёж€Џ");
+        return NSLOCTEXT("Disconnect", "GSKickPlayer", "您已被踢出游戏");
     }
     case 4:
     {
-        return NSLOCTEXT("Disconnect", "DSKickPlayer", "ж‚Ёе·Іиў«жњЌеЉЎе™Ёиёўе‡є");
+        return NSLOCTEXT("Disconnect", "DSKickPlayer", "您已被服务器踢出");
     }
     case 5:
     {
-        return NSLOCTEXT("Disconnect", "PlayerDSTravel", "ж­ЈењЁе€‡жЌўжњЌеЉЎе™Ё");
+        return NSLOCTEXT("Disconnect", "PlayerDSTravel", "正在切换服务器");
     }
     case 6:
     {
-        return NSLOCTEXT("Disconnect", "PlayerQuitGame", "зЋ©е®¶йЂЂе‡єжёёж€Џ");
+        return NSLOCTEXT("Disconnect", "PlayerQuitGame", "玩家退出游戏");
     }
     case 7:
     {
-        return NSLOCTEXT("Disconnect", "XmitDeadLink", "зЅ‘з»њиїћжЋҐе·Іж–­ејЂ");
+        return NSLOCTEXT("Disconnect", "XmitDeadLink", "网络连接已断开");
     }
     case 8:
     {
-        return NSLOCTEXT("Disconnect", "RecvTimeout", "зЅ‘з»њиїћжЋҐи¶…ж—¶");
+        return NSLOCTEXT("Disconnect", "RecvTimeout", "网络连接超时");
     }
     }
-    return NSLOCTEXT("Disconnect", "Unknown", "иїћжЋҐе·Іж–­ејЂ");
+    return NSLOCTEXT("Disconnect", "Unknown", "连接已断开");
 }
 FText GetKickoutErrorCodeText(const int ErrorCode)
 {
@@ -379,6 +375,6 @@ FText GetKickoutErrorCodeText(const int ErrorCode)
             return local_12;
         }
     }
-    return NSLOCTEXT("Disconnect", "Unknown", "иїћжЋҐе·Іж–­ејЂ");
+    return NSLOCTEXT("Disconnect", "Unknown", "连接已断开");
 }
 }

@@ -1,5 +1,3 @@
-﻿
-
 struct FTreasureBoxStateConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -20,12 +18,12 @@ struct FTreasureBoxStateConfig : FDataObject
     }
     const FTreasureBoxStateData GetDataRaw(const ETreasureBoxState Value) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         const FTreasureBoxStateData __r; return __r;
     }
     FTreasureBoxStateData ModifyDataRaw(const ETreasureBoxState Value)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         FTreasureBoxStateData __r; return __r;
     }
     const FTreasureBoxStateData GetDataRawByName(const FName &inout EnumName) const
@@ -96,13 +94,13 @@ struct FTreasureBoxStateConfig : FDataObject
             const FTreasureBoxStateData& local_22 = this.GetDataRaw(ETreasureBoxState(local_19));
             if (local_22.bFallBack)
             {
+                int local_14 = int(local_22.FallBack);
                 ETreasureBoxState local_23;
-                local_23 = local_22.FallBack;
-                ETreasureBoxState local_14 = local_22.FallBack;
-                FName local_11 = local_2.GetNameByValue(int(local_14));
+                local_23 = ETreasureBoxState(local_14);
+                FName local_11 = local_2.GetNameByValue(int(local_22.FallBack));
                 if (local_2.GetIndexByName(local_11, EGetByNameFlags(0)) < local_7)
                 {
-                    local_14 = local_22.FallBack;
+                    local_14 = int(local_22.FallBack);
                     this.CopyFallbackData(ETreasureBoxState(local_14), ETreasureBoxState(local_19));
                     continue;
                 }

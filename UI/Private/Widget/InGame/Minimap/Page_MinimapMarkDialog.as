@@ -1,4 +1,3 @@
-﻿
 namespace UPage_MinimapMarkDialog
 {
     const int ViewID = 0;
@@ -239,7 +238,7 @@ class UWidget_MinimapMarkHover : UEUIUserWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        // body not fully recovered вЂ” stub [unresolved-operand]
+        // body not fully recovered — stub [unresolved-operand]
     }
     UFUNCTION()
     void Destruct_Implementation()
@@ -250,7 +249,19 @@ class UWidget_MinimapMarkHover : UEUIUserWidget
     UFUNCTION()
     void OnSelectedIndexChanged(const int InSelectedIndex)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        FVM_MinimapMarkDialog& local_2;
+        if ((!((FECSEntityId(local_2.GetMarkEntityID()) == ENTITY_ID_NULL))))
+        {
+            return;
+        }
+        ::MinimapUtils::UnregisterIcon(this.DisplayingIconHandle);
+        if (InSelectedIndex != INDEX_NONE)
+        {
+            FMinimapIconInfo local_72 = ::MarkUtil::BuildIconInfoFromMarkConfigForUIDisplay(::MarkUtil::GetUserSelectableMinimapMarkAt(InSelectedIndex), this.DisplayIconWidget);
+            local_72.WorldPosition = local_2.GetMarkWorldPosition();
+            this.DisplayingIconHandle = ::MinimapUtils::AddSystemIcon(local_72);
+        }
+        return;
     }
     UFUNCTION()
     TArray<FEUIModelWeakRef> MinimapMarkDialog_Options() const
@@ -422,7 +433,7 @@ class UWidget_MinimapMarkTips : UEUIUserWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        // body not fully recovered вЂ” stub [unresolved-operand]
+        // body not fully recovered — stub [unresolved-operand]
     }
     UFUNCTION()
     TArray<FEUIModelWeakRef> MinimapMarkDialog_Options() const
@@ -599,6 +610,7 @@ namespace UPage_MinimapMarkDialog
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UPage_MinimapMarkDialog;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnPendingClose"));
     return;
 }
@@ -615,6 +627,7 @@ namespace UWidget_MinimapMarkHover
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MinimapMarkHover;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedIndexChanged"));
     return;
 }
@@ -631,6 +644,7 @@ namespace UWidget_MinimapMarkTips
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MinimapMarkTips;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -646,6 +660,7 @@ namespace UWidget_MinimapMarkDialogOption
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_MinimapMarkDialogOption;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

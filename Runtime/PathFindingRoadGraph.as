@@ -1,5 +1,3 @@
-﻿
-
 class AKLRoad : AActor
 {
     UPROPERTY()
@@ -20,14 +18,13 @@ class AKLRoad : AActor
 struct FKLConjunctionEntry
 {
     UPROPERTY()
-    AKLRoad RoadActor;
+    AKLRoad RoadActor = nullptr;
     UPROPERTY()
     FVector CurvePoint = FVector::ZeroVector;
     UPROPERTY()
     int PointIndex = -1;
     UPROPERTY()
     FVector Direction = FVector::ZeroVector;
-
 
 }
 
@@ -37,7 +34,6 @@ class UKLGraphRoadConnectionInfo : UAssetUserData
     int EntryA = -1;
     UPROPERTY()
     int EntryB = -1;
-
 
 }
 

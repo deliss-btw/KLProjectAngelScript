@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_BreakthroughLevelInfo_Helpers
 {
 UFUNCTION()

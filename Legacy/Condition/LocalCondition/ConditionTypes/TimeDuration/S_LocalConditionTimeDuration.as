@@ -1,5 +1,3 @@
-﻿
-
 class US_LocalConditionTimeDuration : UECSScriptSystem
 {
     US_LocalConditionTimeDuration()

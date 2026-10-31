@@ -1,4 +1,3 @@
-﻿
 namespace FEcosimAIV2Utils
 {
 void RunGOAP(const FECSEntity &inout Entity, const TSubclassOf<UECSGOAPEcosimAIV2InstanceBase> &inout InstanceClass, const FName &inout GoalName)
@@ -17,10 +16,9 @@ void RunGOAP(const FECSEntity &inout Entity, const TSubclassOf<UECSGOAPEcosimAIV
     }
     local_6.Instance.Entity = Entity;
     FGOAP_PlanContext local_34;
-    bool local_7 = false;
-    FGOAP_PlanContext local_35 = local_7;
+    bool local_35 = false;
     local_6.Instance.TryPlanToGoal(GoalName, local_34, local_35, false);
-    if (local_35 != 0)
+    if (local_35)
     {
         local_6.Instance.ExecutePlannedActions(local_34, FOnActionFinished__GOAP_InstanceBase());
     }

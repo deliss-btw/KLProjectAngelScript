@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_AnimParamRigidBodyPhysicsControl_NS
 {
     const TECSComponentDerivedPtr<FC_AnimParamRigidBodyPhysicsControl> DerivedPtr = TECSComponentDerivedPtr<FC_AnimParamRigidBodyPhysicsControl>();
@@ -17,11 +16,20 @@ struct FC_AnimParamRigidBodyPhysicsControl : FECSComponent
 
     FC_AnimParamRigidBodyPhysicsControl()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bIsEnabled = false;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_AnimParamRigidBodyPhysicsControl(const FC_AnimParamRigidBodyPhysicsControl &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bIsEnabled = false;
+        this.__InitDirtyFlags();
+        this.m_bIsEnabled = Other.m_bIsEnabled;
+        return;
     }
     FC_AnimParamRigidBodyPhysicsControl opAssign(const FC_AnimParamRigidBodyPhysicsControl &inout Other)
     {
@@ -151,37 +159,37 @@ bool RemoveAnimParamRigidBodyPhysicsControl(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorAnimParamRigidBodyPhysicsControlOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimParamRigidBodyPhysicsControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_AnimParamRigidBodyPhysicsControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimParamRigidBodyPhysicsControlOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimParamRigidBodyPhysicsControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_AnimParamRigidBodyPhysicsControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimParamRigidBodyPhysicsControlOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimParamRigidBodyPhysicsControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_AnimParamRigidBodyPhysicsControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimParamRigidBodyPhysicsControlOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimParamRigidBodyPhysicsControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_AnimParamRigidBodyPhysicsControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorAnimParamRigidBodyPhysicsControlOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimParamRigidBodyPhysicsControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_AnimParamRigidBodyPhysicsControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorAnimParamRigidBodyPhysicsControlLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_AnimParamRigidBodyPhysicsControl, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_AnimParamRigidBodyPhysicsControl, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimParamRigidBodyPhysicsControlActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_AnimParamRigidBodyPhysicsControl, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_AnimParamRigidBodyPhysicsControl, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorAnimParamRigidBodyPhysicsControlModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_AnimParamRigidBodyPhysicsControl, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_AnimParamRigidBodyPhysicsControl, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

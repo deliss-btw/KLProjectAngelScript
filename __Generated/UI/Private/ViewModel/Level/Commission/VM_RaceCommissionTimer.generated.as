@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_RaceCommissionTimer_Helpers
 {
 UFUNCTION()

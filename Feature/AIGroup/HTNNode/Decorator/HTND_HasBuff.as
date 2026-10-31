@@ -1,5 +1,3 @@
-﻿
-
 class UHTND_HasBuff : UHTNDecorator_ECSScriptBase
 {
     UPROPERTY()

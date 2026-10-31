@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_DebugServerConsoleCommandEvent_NS
 {
     const TECSEventDerivedPtr<FCE_DebugServerConsoleCommandEvent> DerivedPtr = TECSEventDerivedPtr<FCE_DebugServerConsoleCommandEvent>();

@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FConditionCombatItemUseConfig (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
-
 class UConditionCombatItemUse : ULocalConditionTypeDefineBase
 {
     UConditionCombatItemUse()
@@ -57,9 +52,10 @@ struct FConditionCombatItemUseConfig : FLocalConditionTypeDefineConfigBase
     UPROPERTY()
     TDataObjectPtr<FCombatItemConfig> CombatItemConfig;
 
+    default _base_FLocalConditionTypeDefineConfigBase = UConditionCombatItemUse;
+
     FConditionCombatItemUseConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }

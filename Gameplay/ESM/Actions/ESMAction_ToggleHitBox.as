@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_ToggleHitBox : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -24,7 +22,7 @@ class UESMAction_ToggleHitBox : UESMBPBaseSpanAction
     {
         for (auto& local_16 : this.HitBoxList)
         {
-            this.SetColiderDisabled(Context.GetEntity(), local_16.ColliderName, Time.WorldTime, local_16.bColliderEnabled);
+            this.SetColiderDisabled(Context.GetEntity(), local_16.ColliderName, Time.WorldTime, (int(local_16.bColliderEnabled) != 0));
         }
         return;
     }

@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class AGhostTrailActor : AActor
 {
@@ -29,7 +27,29 @@ class US_GhostTrail : UECSScriptSystem
     UFUNCTION()
     void Job_HandleSpawnGhostTrailActor(const FCE_SpawnGhostTrailActor &inout SpawnGhostTrailActor) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        UObject local_30;
+        AGhostTrailActor local_58;
+        int local_64 = 0;
+        FECSEntity local_4 = SpawnGhostTrailActor.Receiver;
+        if (local_4.GetActor() != nullptr)
+        {
+        }
+        else
+        {
+        }
+        USkeletalMeshComponent local_14;
+        USkeletalMeshComponent local_16 = local_14;
+        if (((local_4 && (local_16 != nullptr)) && !((SpawnGhostTrailActor.GhostClass == nullptr))))
+        {
+            local_30 = SpawnGhostTrailActor.GhostClass.ToSoftObjectPath().TryLoad();
+            if (local_30 != nullptr)
+            {
+                local_58 = Cast<AGhostTrailActor>(SpawnActor(SpawnGhostTrailActor.GhostClass.Get(), local_16.GetWorldLocation(), local_16.GetWorldRotation(), NAME_None, false, nullptr, nullptr));
+                local_58.WhenSpawned(local_16);
+                local_64.Ghosts.Add(local_58);
+            }
+        }
+        return;
     }
     UFUNCTION()
     void Job_HandleClearGhostTrailActor(const FCE_ClearGhostTrailActor &inout SpawnGhostTrailActor) const

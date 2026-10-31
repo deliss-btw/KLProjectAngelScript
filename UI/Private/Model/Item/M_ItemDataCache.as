@@ -1,4 +1,3 @@
-﻿
 namespace FMS_ItemDataCache
 {
     const int ModelId = 0;

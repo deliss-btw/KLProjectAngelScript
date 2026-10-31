@@ -1,5 +1,3 @@
-﻿
-
 class US_CommonTips : UECSScriptSystem
 {
     US_CommonTips()

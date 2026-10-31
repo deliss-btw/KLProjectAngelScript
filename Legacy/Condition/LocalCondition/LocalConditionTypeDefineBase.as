@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class ULocalConditionTypeDefineBase : UObject
 {
@@ -66,7 +64,7 @@ class ULocalConditionTypeDefineBase : UObject
 struct FLocalConditionTypeDefineConfigBase
 {
     UPROPERTY()
-    TSubclassOf<ULocalConditionTypeDefineBase> ConditionType;
+    TSubclassOf<ULocalConditionTypeDefineBase> ConditionType = ULocalConditionTypeDefineBase;
 
     FLocalConditionTypeDefineConfigBase()
     {

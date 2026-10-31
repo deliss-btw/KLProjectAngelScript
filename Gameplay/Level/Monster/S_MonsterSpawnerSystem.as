@@ -1,5 +1,3 @@
-﻿
-
 class US_MonsterSpawnerSystem : UECSScriptSystem
 {
     US_MonsterSpawnerSystem()

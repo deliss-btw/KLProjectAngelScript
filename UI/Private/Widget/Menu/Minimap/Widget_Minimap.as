@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_Minimap
 {
     const int ViewID = 0;
@@ -34,7 +33,6 @@ class UWidget_Minimap : UEUIActivatableWidget
     bool bRequestingInitMapScaleAndPosition = false;
     UPROPERTY()
     FGetEUIModelRef MinimapDelegate;
-
 
     UFUNCTION()
     FEventReply OnAnalogValueChanged_Implementation(const FGeometry &inout MyGeometry, const FAnalogInputEvent &inout InAnalogInputEvent)
@@ -318,6 +316,7 @@ class UWidget_Minimap : UEUIActivatableWidget
         {
             return;
         }
+        this.MinimapWidget.SetRetainerMaterialVectorParameter(n"Transform", ::MinimapBorderUtils::CalculateMaskTransformParameters(this.MinimapWidget, local_12, this.Minimap.opArrow().GetMinimapDisplayConfig().opArrow().DSBoundaryMaskWorldPosition));
         this.MinimapWidget.SetRetainerMaterialTextureParameter(n"Mask", local_4);
         FLinearColor local_27;
         local_27.R = (local_12.X / local_4.Blueprint_GetSizeX());
@@ -436,6 +435,7 @@ namespace UWidget_Minimap
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_Minimap;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

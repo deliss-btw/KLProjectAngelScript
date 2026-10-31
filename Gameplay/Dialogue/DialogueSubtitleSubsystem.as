@@ -1,10 +1,8 @@
-﻿
 enum EDialogueVoiceType
 {
     Voice2D,
     Voice3D,
 }
-
 
 struct FDialogueSubtitleDisplayConfig
 {
@@ -13,20 +11,17 @@ struct FDialogueSubtitleDisplayConfig
     UPROPERTY()
     EDialogueVoiceType VoiceType;
     UPROPERTY()
-    bool bHideWhenFinished;
+    bool bHideWhenFinished = false;
     UPROPERTY()
-    bool bKeepDisplayUntilFinish;
+    bool bKeepDisplayUntilFinish = false;
 
-    FDialogueSubtitleDisplayConfig()
-    {
-        this.VoiceType = EDialogueVoiceType(0);
-        this.bHideWhenFinished = false;
-        this.bKeepDisplayUntilFinish = false;
-        return;
-    }
     FDialogueSubtitleDisplayConfig(const FDialogueSubtitle &inout InSubtitle, const EDialogueVoiceType InVoiceType = EDialogueVoiceType::Voice2D, const bool InbHideWhenFinished = false, const bool InbKeepDisplayUntilFinish = false)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.Subtitle = InSubtitle;
+        this.VoiceType = InVoiceType;
+        this.bHideWhenFinished = InbHideWhenFinished;
+        this.bKeepDisplayUntilFinish = InbKeepDisplayUntilFinish;
+        return;
     }
 }
 
@@ -43,7 +38,6 @@ class UDialogueSubtitleSubsystem : UScriptWorldSubsystem
     int NarrationCurrentIndex = -1;
     float32 NarrationSubtitleInterval = 1.0f;
     FName NarrationDialogueName;
-
 
     UFUNCTION()
     void Tick_Implementation(const float32 DeltaTime)
@@ -227,8 +221,30 @@ class UDialogueSubtitleSubsystem : UScriptWorldSubsystem
     }
     int PlayDialogueVoice(const FECSEntity &inout Entity, const FString &inout VOFile, const EDialogueVoiceType VoiceType)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        int local_3;
+        this.StopDialogueVoice(Entity);
+        if (VOFile.IsEmpty())
+        {
+            return INDEX_NONE;
+        }
+        if (int(VoiceType) == 0)
+        {
+            XLog(ELog(64), FString().Append("Play Voice(2D): ").Append(Entity.GetEntityName()).Append(" => ").Append(VOFile));
+            local_3 = FGameDialogueUtils::PlayDialogue2D(Entity, VOFile, false, FOnDialogueFinished(this, n"OnDialogueVoiceEnd"));
+        }
+        else
+        {
+            XLog(ELog(64), FString().Append("Play Voice(3D): ").Append(Entity.GetEntityName()).Append(" => ").Append(VOFile));
+            local_3 = FGameDialogueUtils::PlayDialogue(Entity, VOFile, false, FOnDialogueFinished(this, n"OnDialogueVoiceEnd"));
+        }
+        int local_2 = INDEX_NONE;
+        if (local_3 == local_2)
+        {
+            return INDEX_NONE;
+        }
+        this.SoundIdEntityMap.Add(local_3, Entity);
+        this.EntitySoundIdMap.Add(Entity, local_3);
+        return local_3;
     }
     UFUNCTION()
     void OnDialogueVoiceEnd(const int SoundId)

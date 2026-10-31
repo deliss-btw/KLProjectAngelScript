@@ -1,4 +1,3 @@
-﻿
 void AppendSet(TArray<FECSEntity> &inout This, const TSet<FECSEntity> &inout Other)
 {
     for (auto& local_20 : Other)

@@ -1,4 +1,3 @@
-﻿
 enum ESpawnFXTranformMode
 {
     World,
@@ -34,7 +33,6 @@ struct FSpawnFXParam
     UPROPERTY()
     float32 MaxDropDownDistance = 1000.0f;
 
-
 }
 
 struct FC_SpawnInstantFXPeriod : FECSComponent
@@ -43,7 +41,6 @@ struct FC_SpawnInstantFXPeriod : FECSComponent
     TArray<FSpawnFXParam> SpawnFXParams;
     UPROPERTY()
     float32 SpawnPeriod = 0.2f;
-
 
 }
 
@@ -127,36 +124,36 @@ bool RemoveSpawnInstantFXPeriod(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorSpawnInstantFXPeriodOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_SpawnInstantFXPeriod, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_SpawnInstantFXPeriod, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSpawnInstantFXPeriodOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_SpawnInstantFXPeriod, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_SpawnInstantFXPeriod, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSpawnInstantFXPeriodOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_SpawnInstantFXPeriod, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_SpawnInstantFXPeriod, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSpawnInstantFXPeriodOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_SpawnInstantFXPeriod, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_SpawnInstantFXPeriod, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSpawnInstantFXPeriodOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_SpawnInstantFXPeriod, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_SpawnInstantFXPeriod, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorSpawnInstantFXPeriodLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_SpawnInstantFXPeriod, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_SpawnInstantFXPeriod, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSpawnInstantFXPeriodActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_SpawnInstantFXPeriod, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_SpawnInstantFXPeriod, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSpawnInstantFXPeriodModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_SpawnInstantFXPeriod, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_SpawnInstantFXPeriod, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

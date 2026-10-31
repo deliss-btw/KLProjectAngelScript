@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_SelectServer
 {
     const int ViewID = 0;
@@ -94,6 +93,7 @@ namespace UWidget_SelectServer
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SelectServer;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnNeedCloseChanged"));
     return;
 }

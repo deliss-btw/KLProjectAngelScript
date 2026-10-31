@@ -1,5 +1,3 @@
-﻿
-
 class US_ClothTelemetrySystem : UECSScriptSystem
 {
     US_ClothTelemetrySystem()

@@ -1,5 +1,3 @@
-﻿
-
 class UStringValidatorConfig : UDataAsset
 {
     UPROPERTY()

@@ -1,5 +1,3 @@
-﻿
-
 class USPT_ArcheryAim_StdF_Common : USPT_ArcheryAim
 {
     UPROPERTY()

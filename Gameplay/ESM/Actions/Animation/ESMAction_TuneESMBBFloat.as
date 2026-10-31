@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_TuneESMBBFloat : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -19,7 +17,7 @@ class UESMAction_TuneESMBBFloat : UESMBPBaseSpanAction
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const
     {
-        FString local_8 = FString().Append("ESMBBеЏ‚ж•°и°ѓиЉ‚[").Append(::TuneESMBBFloatNames::GetSourceVariableName(this.TargetFloat.Name)).Append("] е№іж»‘ж—¶й—ґ=").Append(this.TuneConfig.GetSmoothTime()).Append("s");
+        FString local_8 = FString().Append("ESMBB参数调节[").Append(::TuneESMBBFloatNames::GetSourceVariableName(this.TargetFloat.Name)).Append("] 平滑时间=").Append(this.TuneConfig.GetSmoothTime()).Append("s");
         if (this.TuneConfig.GetbUseBlendInDuration())
         {
             local_8 += FString().Append(" BlendIn=").Append(this.TuneConfig.GetBlendInDuration()).Append("s");
@@ -35,23 +33,23 @@ class UESMAction_TuneESMBBFloat : UESMBPBaseSpanAction
     {
         if (this.TargetFloat.Name.IsNone())
         {
-            Info.AddDataInvalidComment(EESMDataValidType(2), "еЏй‡ЏеђЌжњЄи®ѕзЅ®");
+            Info.AddDataInvalidComment(EESMDataValidType(2), "变量名未设置");
         }
         if (this.TuneConfig.GetSmoothTime() < 0.0f)
         {
-            Info.AddDataInvalidComment(EESMDataValidType(1), "е№іж»‘ж—¶й—ґдёЌиѓЅе°ЏдєЋ0");
+            Info.AddDataInvalidComment(EESMDataValidType(1), "平滑时间不能小于0");
         }
         if (this.TuneConfig.GetbUseBlendInDuration() && (this.TuneConfig.GetBlendInDuration() <= 0.0f))
         {
-            Info.AddDataInvalidComment(EESMDataValidType(1), "BlendInж—¶й•їеї…йЎ»е¤§дєЋ0");
+            Info.AddDataInvalidComment(EESMDataValidType(1), "BlendIn时长必须大于0");
         }
         if (this.TuneConfig.GetbUseBlendOutDuration() && (this.TuneConfig.GetBlendOutDuration() <= 0.0f))
         {
-            Info.AddDataInvalidComment(EESMDataValidType(1), "BlendOutж—¶й•їеї…йЎ»е¤§дєЋ0");
+            Info.AddDataInvalidComment(EESMDataValidType(1), "BlendOut时长必须大于0");
         }
         if (!(this.TargetFloat.Name.ToString().StartsWith("TuneESMBBFloat.fTuned", ESearchCase(1))))
         {
-            Info.AddDataInvalidComment(EESMDataValidType(2), FString().Append("дёЌж”ЇжЊЃ").Append(this.TargetFloat.Name).Append("пјЊйЎ»дЅїз”ЁTuneESMBBFloatдё‹TunedејЂе¤ґзљ„еЏй‡ЏпјЊж›ґе¤љеЏй‡ЏиЇ·иЃ”зі»зЁ‹еєЏж·»еЉ "));
+            Info.AddDataInvalidComment(EESMDataValidType(2), FString().Append("不支持").Append(this.TargetFloat.Name).Append("，须使用TuneESMBBFloat下Tuned开头的变量，更多变量请联系程序添加"));
         }
         return;
     }

@@ -1,4 +1,3 @@
-﻿
 namespace FVMS_LockTarget
 {
     const int ModelId = 0;

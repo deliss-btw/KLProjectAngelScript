@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: UESMAction_InstantSFXLocalReg (default scalar field UESMAction.ActionFilterType has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
-
 class UESMAction_InstantSFXLocalReg : UESMAction_InstantSFX
 {
     UESMAction_InstantSFXLocalReg()
@@ -13,7 +8,7 @@ class UESMAction_InstantSFXLocalReg : UESMAction_InstantSFX
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const
     {
-        return FString().Append("ж’­ж”ѕйџіж•€(йЂ‚з”ЁдєЋAccountExclusiveProp): ").Append(this.Event.GetAssetName());
+        return FString().Append("播放音效(适用于AccountExclusiveProp): ").Append(this.Event.GetAssetName());
     }
     UFUNCTION()
     void ViewEnter_Implementation(const FESMViewContext &inout Context, const FESMActionTime &inout Time) const
@@ -52,7 +47,7 @@ class UESMAction_DurationalSFXLocalReg : UESMAction_DurationalSFX
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const
     {
-        return FString().Append("ж’­ж”ѕйџіж•€(йЂ‚з”ЁдєЋAccountExclusiveProp):Enter: ").Append(this.EnterEvent.GetAssetName()).Append(", Exit: ").Append(this.ExitEvent.GetAssetName());
+        return FString().Append("播放音效(适用于AccountExclusiveProp):Enter: ").Append(this.EnterEvent.GetAssetName()).Append(", Exit: ").Append(this.ExitEvent.GetAssetName());
     }
     UFUNCTION()
     void ViewEnter_Implementation(const FESMViewContext &inout Context, const FESMActionTime &inout Time) const

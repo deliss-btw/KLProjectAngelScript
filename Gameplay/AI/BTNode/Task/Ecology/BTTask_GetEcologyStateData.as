@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_GetEcologyStateData : UBTTask_ECSScriptBase
 {
     UPROPERTY()

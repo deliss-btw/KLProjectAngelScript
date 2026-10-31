@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_LevelCustomValueEventConditionManager_NS
 {
     const TECSComponentDerivedPtr<FCS_LevelCustomValueEventConditionManager> DerivedPtr = TECSComponentDerivedPtr<FCS_LevelCustomValueEventConditionManager>();
@@ -115,16 +114,16 @@ bool RemoveLevelCustomValueEventConditionManager(const FECSWorldPtr &inout World
 }
 void __MonitorLevelCustomValueEventConditionManagerLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_LevelCustomValueEventConditionManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_LevelCustomValueEventConditionManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelCustomValueEventConditionManagerActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_LevelCustomValueEventConditionManager, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_LevelCustomValueEventConditionManager, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelCustomValueEventConditionManagerModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_LevelCustomValueEventConditionManager, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_LevelCustomValueEventConditionManager, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommissionMonsterInfo
 {
     const int ViewID = 0;
@@ -86,6 +85,7 @@ namespace UWidget_CommissionMonsterInfo
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionMonsterInfo;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

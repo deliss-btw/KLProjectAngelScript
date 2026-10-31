@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_TalentUpgradeDesc_Helpers
 {
 UFUNCTION()

@@ -1,4 +1,3 @@
-﻿
 namespace UPageWidget_MiniHpBarV2Panel
 {
     const int ViewID = 0;
@@ -61,6 +60,7 @@ namespace UPageWidget_MiniHpBarV2Panel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UPageWidget_MiniHpBarV2Panel;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

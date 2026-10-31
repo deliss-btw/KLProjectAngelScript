@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_CheckTargetInExecuting : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
@@ -16,7 +14,7 @@ class UESMAction_CheckTargetInExecuting : UESMBPBaseSpanTickAction
     {
         if (!(this.TriggerWhenCheckFailed.IsNone()) && !(this.CheckTargetInExecuting(Context)))
         {
-            XWarning(ELog(42), FString().Append("[CheckTargetInExecuting] Entity[").Append(Context.GetEntity().GetIdValue()).Append("] з›®ж ‡е·ІйЂЂе‡єе¤„е†ізЉ¶жЂЃпјЊејєе€¶и§¦еЏ‘йЂЂе‡є Trigger=").Append(this.TriggerWhenCheckFailed));
+            XWarning(ELog(42), FString().Append("[CheckTargetInExecuting] Entity[").Append(Context.GetEntity().GetIdValue()).Append("] 目标已退出处决状态，强制触发退出 Trigger=").Append(this.TriggerWhenCheckFailed));
             FESMTriggerUtils::ActivateESMTrigger(Context.GetEntity(), this.TriggerWhenCheckFailed, Time.WorldTime, FFPTime(0.1), 0);
         }
         return;

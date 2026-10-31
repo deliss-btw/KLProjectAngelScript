@@ -1,5 +1,3 @@
-﻿
-
 struct FT_HookPoint : FECSTrait
 {
     FECSTrait _base_FECSTrait;

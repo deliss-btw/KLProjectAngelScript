@@ -1,5 +1,3 @@
-﻿
-
 struct FShopCategoryConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -9,7 +7,6 @@ struct FShopCategoryConfig : FDataObject
     FText DisplayName;
     UPROPERTY()
     int DisplayPriority;
-
 
 }
 

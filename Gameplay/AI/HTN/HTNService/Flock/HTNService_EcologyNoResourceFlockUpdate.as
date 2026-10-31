@@ -1,5 +1,3 @@
-﻿
-
 class UHTNService_EcologyNoResourceFlockUpdate : UHTNService_ECSScriptBase
 {
     UHTNService_EcologyNoResourceFlockUpdate()

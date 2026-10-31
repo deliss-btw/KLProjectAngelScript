@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_LevelEventInstant : UESMBPBaseInstantAction
 {
     UPROPERTY()
@@ -43,9 +41,9 @@ class UESMAction_LevelEventInstant : UESMBPBaseInstantAction
     {
         if ((this.EventName == NAME_None))
         {
-            return "е…іеЌЎдє‹д»¶(жњЄй…ЌзЅ®)";
+            return "关卡事件(未配置)";
         }
-        return (FString("е…іеЌЎдє‹д»¶: ") + this.EventName.ToString());
+        return (FString("关卡事件: ") + this.EventName.ToString());
     }
 }
 
@@ -111,9 +109,9 @@ class UESMAction_LevelEventSpan : UESMBPBaseSpanAction
     {
         if ((this.EventName == NAME_None))
         {
-            return "е…іеЌЎдє‹д»¶ж®µ(жњЄй…ЌзЅ®)";
+            return "关卡事件段(未配置)";
         }
-        return (FString("е…іеЌЎдє‹д»¶ж®µ: ") + this.EventName.ToString());
+        return (FString("关卡事件段: ") + this.EventName.ToString());
     }
 }
 

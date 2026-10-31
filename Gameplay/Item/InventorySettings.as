@@ -1,5 +1,3 @@
-﻿
-
 struct FInventoryCategoryConfig
 {
     UPROPERTY()
@@ -125,9 +123,9 @@ class UInventorySettings : UGameplaySettingsBase
         if (this.CategorySpecifiedFilters.Contains(CurrentCategory))
         {
             int local_1 = Index - this.CommonFilters.Num();
-            if (this.CategorySpecifiedFilters[CurrentCategory].Filters.IsValidIndex())
+            if (this.CategorySpecifiedFilters[CurrentCategory].Filters.IsValidIndex(local_1))
             {
-                return TOptional<FInventoryItemFilterConfig>(this.CategorySpecifiedFilters[CurrentCategory].Filters[]);
+                return TOptional<FInventoryItemFilterConfig>(this.CategorySpecifiedFilters[CurrentCategory].Filters[local_1]);
             }
         }
         return TOptional<FInventoryItemFilterConfig>();
@@ -154,9 +152,9 @@ class UInventorySettings : UGameplaySettingsBase
         if (this.CategorySpecifiedSorters.Contains(CurrentCategory))
         {
             int local_1 = Index - this.CommonSorters.Num();
-            if (this.CategorySpecifiedSorters[CurrentCategory].Sorters.IsValidIndex())
+            if (this.CategorySpecifiedSorters[CurrentCategory].Sorters.IsValidIndex(local_1))
             {
-                return TOptional<FInventoryItemSorterConfig>(this.CategorySpecifiedSorters[CurrentCategory].Sorters[]);
+                return TOptional<FInventoryItemSorterConfig>(this.CategorySpecifiedSorters[CurrentCategory].Sorters[local_1]);
             }
         }
         return TOptional<FInventoryItemSorterConfig>();

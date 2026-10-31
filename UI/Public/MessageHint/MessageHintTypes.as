@@ -1,10 +1,8 @@
-﻿
 enum EMessageHintIconSource
 {
     DirectSet,
     FromTextArgument,
 }
-
 
 struct FMessageHintIcon
 {
@@ -14,7 +12,6 @@ struct FMessageHintIcon
     FSoftBrush IconBrush;
     UPROPERTY()
     int ArgPosition;
-
 
 }
 
@@ -54,7 +51,8 @@ struct FShowMessageHintParams
     }
     void SetConfig(const TDataObjectPtr<FMessageHintConfig> &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Config = __Value;
+        return;
     }
     const TArray<FTextArgument> GetArguments() const property
     {

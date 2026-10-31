@@ -1,4 +1,3 @@
-﻿
 enum EECSQueryTargetType
 {
     Any,
@@ -7,7 +6,6 @@ enum EECSQueryTargetType
     Monster,
     Prop,
 }
-
 
 struct FECSQueryParam
 {
@@ -21,7 +19,6 @@ struct FECSQueryParam
     bool bFilterByFaction = false;
     UPROPERTY()
     int FactionRelation;
-
 
 }
 

@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonRewardDialog
 {
     const int ModelId = 0;
@@ -281,7 +280,6 @@ struct __GeneratedProperties_FVM_CommonRewardDialog
     TArray<TEUIModelRef<FVM_CommonRewardItem>> Rewards;
     UPROPERTY()
     TEUIModelRef<FVM_CommonRewardDialog> Self;
-
 
 }
 

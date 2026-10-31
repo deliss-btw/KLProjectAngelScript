@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::BTTaskUtils
 {
 void SetBTTaskFinishMark(const bool bFinish)

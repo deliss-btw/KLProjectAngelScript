@@ -1,4 +1,3 @@
-﻿
 namespace EventToESMTriggerUtils
 {
 FName GetWeatherName(const FECSEntity &inout Entity)

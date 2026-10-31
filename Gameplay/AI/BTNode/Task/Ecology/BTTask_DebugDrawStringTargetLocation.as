@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_DebugDrawStringTargetLocation : UBTTask_ECSScriptBase
 {
     UPROPERTY()

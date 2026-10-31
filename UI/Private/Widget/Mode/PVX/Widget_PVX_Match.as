@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PVX_Match
 {
     const int ViewID = 0;
@@ -243,6 +242,7 @@ namespace UWidget_PVX_Match
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PVX_Match;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandlePVXMatchChage"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandlePVXOpenPeriodChange"));
     return;

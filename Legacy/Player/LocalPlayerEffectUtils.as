@@ -1,4 +1,3 @@
-﻿
 namespace LocalPlayerEffectUtils
 {
 void LocalPlayForceFeedback(const UForceFeedbackEffect ForceFeedbackEffect, const FName &inout Tag, const bool bLooping, const bool bIgnoreTimeDilation, const bool bPlayWhilePaused)

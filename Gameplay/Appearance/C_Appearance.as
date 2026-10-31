@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_FashionState_NS
 {
     const TECSComponentDerivedPtr<FC_FashionState> DerivedPtr = TECSComponentDerivedPtr<FC_FashionState>();
@@ -44,11 +43,20 @@ struct FRuntimeFashionInfo
 
     FRuntimeFashionInfo()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bUseBathrobe = false;
+        return;
     }
     FRuntimeFashionInfo(const FRuntimeFashionInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_bUseBathrobe = false;
+        this.m_FashionIds = Other.m_FashionIds;
+        this.m_bUseBathrobe = Other.m_bUseBathrobe;
+        this.m_DecoAttachOffsets = Other.m_DecoAttachOffsets;
+        return;
     }
     FRuntimeFashionInfo opAssign(const FRuntimeFashionInfo &inout Other)
     {
@@ -126,11 +134,15 @@ struct FC_FashionState : FECSComponent
 
     FC_FashionState()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_FashionState(const FC_FashionState &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_FashionInfo = Other.m_FashionInfo;
         return;
@@ -202,11 +214,15 @@ struct FC_PlayerFashionState : FECSComponent
 
     FC_PlayerFashionState()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_PlayerFashionState(const FC_PlayerFashionState &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_FashionIds = Other.m_FashionIds;
         return;
@@ -272,11 +288,26 @@ struct FAvatarFashionDecoNotifyData
 
     FAvatarFashionDecoNotifyData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_SlotType = 0;
+        this.m_FashionId = 0;
+        this.m_AttachScale = 1.0f;
+        return;
     }
     FAvatarFashionDecoNotifyData(const FAvatarFashionDecoNotifyData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_SlotType = 0;
+        this.m_FashionId = 0;
+        this.m_AttachScale = 1.0f;
+        this.m_SlotType = int(Other.m_SlotType);
+        this.m_FashionId = int(Other.m_FashionId);
+        this.m_AttachOffset = Other.m_AttachOffset;
+        this.m_AttachRotation = Other.m_AttachRotation;
+        this.m_AttachScale = Other.m_AttachScale;
+        return;
     }
     FAvatarFashionDecoNotifyData opAssign(const FAvatarFashionDecoNotifyData &inout Other)
     {
@@ -398,11 +429,37 @@ struct FAvatarFashionNotifyData
 
     FAvatarFashionNotifyData()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags16 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_AvatarId = 0;
+        this.m_HairId = 0;
+        this.m_TopId = 0;
+        this.m_BottomId = 0;
+        this.m_SuitId = 0;
+        this.m_BathrobeTopId = 0;
+        this.m_BathrobeBottomId = 0;
+        return;
     }
     FAvatarFashionNotifyData(const FAvatarFashionNotifyData &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_AvatarId = 0;
+        this.m_HairId = 0;
+        this.m_TopId = 0;
+        this.m_BottomId = 0;
+        this.m_SuitId = 0;
+        this.m_BathrobeTopId = 0;
+        this.m_BathrobeBottomId = 0;
+        this.m_AvatarId = int(Other.m_AvatarId);
+        this.m_HairId = int(Other.m_HairId);
+        this.m_TopId = int(Other.m_TopId);
+        this.m_BottomId = int(Other.m_BottomId);
+        this.m_SuitId = int(Other.m_SuitId);
+        this.m_BathrobeTopId = int(Other.m_BathrobeTopId);
+        this.m_BathrobeBottomId = int(Other.m_BathrobeBottomId);
+        this.m_Decos = Other.m_Decos;
+        return;
     }
     FAvatarFashionNotifyData opAssign(const FAvatarFashionNotifyData &inout Other)
     {
@@ -553,11 +610,25 @@ struct FPlayerFashionNotifySnapshot
 
     FPlayerFashionNotifySnapshot()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_MountId = 0;
+        this.m_MountDecoId = 0;
+        this.m_FacePresetId = 0;
+        return;
     }
     FPlayerFashionNotifySnapshot(const FPlayerFashionNotifySnapshot &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_MountId = 0;
+        this.m_MountDecoId = 0;
+        this.m_FacePresetId = 0;
+        this.m_AvatarFashions = Other.m_AvatarFashions;
+        this.m_MountId = int(Other.m_MountId);
+        this.m_MountDecoId = int(Other.m_MountDecoId);
+        this.m_FacePresetId = int(Other.m_FacePresetId);
+        return;
     }
     FPlayerFashionNotifySnapshot opAssign(const FPlayerFashionNotifySnapshot &inout Other)
     {
@@ -678,11 +749,20 @@ struct FC_FacePresetState : FECSComponent
 
     FC_FacePresetState()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_FacePresetId = 0;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_FacePresetState(const FC_FacePresetState &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_FacePresetId = 0;
+        this.__InitDirtyFlags();
+        this.m_FacePresetId = int(Other.m_FacePresetId);
+        return;
     }
     FC_FacePresetState opAssign(const FC_FacePresetState &inout Other)
     {
@@ -728,7 +808,6 @@ struct FC_ViewEntityAppearance : FECSComponent
     uint AvatarId = 0;
     UPROPERTY()
     FRuntimeFashionInfo FashionInfo;
-
 
 }
 
@@ -809,37 +888,37 @@ bool RemoveFashionState(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorFashionStateOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_FashionState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_FashionState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFashionStateOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_FashionState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_FashionState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFashionStateOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_FashionState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_FashionState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFashionStateOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_FashionState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_FashionState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFashionStateOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_FashionState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_FashionState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorFashionStateLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_FashionState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_FashionState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFashionStateActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_FashionState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_FashionState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFashionStateModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_FashionState, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_FashionState, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_PlayerFashionState
@@ -919,37 +998,37 @@ bool RemovePlayerFashionState(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPlayerFashionStateOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerFashionState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PlayerFashionState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerFashionStateOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerFashionState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PlayerFashionState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerFashionStateOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerFashionState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PlayerFashionState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerFashionStateOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerFashionState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PlayerFashionState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPlayerFashionStateOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerFashionState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PlayerFashionState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPlayerFashionStateLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PlayerFashionState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PlayerFashionState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerFashionStateActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PlayerFashionState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PlayerFashionState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPlayerFashionStateModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PlayerFashionState, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PlayerFashionState, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_FacePresetState
@@ -1029,37 +1108,37 @@ bool RemoveFacePresetState(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorFacePresetStateOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_FacePresetState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_FacePresetState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFacePresetStateOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_FacePresetState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_FacePresetState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFacePresetStateOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_FacePresetState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_FacePresetState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFacePresetStateOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_FacePresetState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_FacePresetState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFacePresetStateOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_FacePresetState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_FacePresetState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorFacePresetStateLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_FacePresetState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_FacePresetState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFacePresetStateActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_FacePresetState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_FacePresetState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFacePresetStateModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_FacePresetState, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_FacePresetState, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ViewEntityAppearance
@@ -1142,37 +1221,37 @@ bool RemoveViewEntityAppearance(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorViewEntityAppearanceOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ViewEntityAppearance, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ViewEntityAppearance, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorViewEntityAppearanceOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ViewEntityAppearance, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ViewEntityAppearance, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorViewEntityAppearanceOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ViewEntityAppearance, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ViewEntityAppearance, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorViewEntityAppearanceOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ViewEntityAppearance, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ViewEntityAppearance, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorViewEntityAppearanceOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ViewEntityAppearance, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ViewEntityAppearance, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorViewEntityAppearanceLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ViewEntityAppearance, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ViewEntityAppearance, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorViewEntityAppearanceActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ViewEntityAppearance, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ViewEntityAppearance, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorViewEntityAppearanceModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ViewEntityAppearance, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ViewEntityAppearance, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

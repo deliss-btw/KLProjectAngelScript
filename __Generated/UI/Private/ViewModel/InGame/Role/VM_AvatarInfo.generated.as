@@ -1,12 +1,9 @@
-﻿
-
 struct FOnHoverCommonChanged : FEUIModelDelegate
 {
-    FEUIModelDelegate _base_FEUIModelDelegate;
+    FEUIModelDelegate _base_FEUIModelDelegate = FEUIModelDelegate("bool", "bool");
 
     FOnHoverCommonChanged()
     {
-        FEUIModelDelegate local_26 = FEUIModelDelegate("bool", "bool");
         return;
     }
     bool Execute(const bool Arg0) const

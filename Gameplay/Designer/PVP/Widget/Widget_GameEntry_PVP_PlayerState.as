@@ -1,5 +1,3 @@
-﻿
-
 class UPVP_PlayerListItemData : UObject
 {
     UPROPERTY()
@@ -14,7 +12,6 @@ class UPVP_PlayerListItemData : UObject
     bool bOccupied = false;
     UPROPERTY()
     bool bIsBot = false;
-
 
 }
 

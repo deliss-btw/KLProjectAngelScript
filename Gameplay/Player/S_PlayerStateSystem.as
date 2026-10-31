@@ -1,5 +1,3 @@
-﻿
-
 class US_PlayeLevelSystem : UECSScriptSystem
 {
     US_PlayeLevelSystem()
@@ -128,12 +126,12 @@ class US_PlayeLevelSystem : UECSScriptSystem
                 float32 local_31 = local_30.HPMax;
                 if (local_31 != 0.0f)
                 {
-                    FGameAttributeUtils::AddModifyShared(Entity, Attribute::HPMax, EGameAttributeModifyType(1), int(local_30.HPMax), this.GetECSWorld().GetFixedTime().Time);
+                    FGameAttributeUtils::AddModifyShared(Entity, Attribute::HPMax, EGameAttributeModifyType(1), local_30.HPMax, this.GetECSWorld().GetFixedTime().Time);
                 }
                 local_31 = local_30.StaminaMax;
                 if (local_31 != 0.0f)
                 {
-                    FGameAttributeUtils::RemoveModifyShared(Entity, Attribute::StaminaMax, EGameAttributeModifyType(1), int(local_30.StaminaMax), this.GetECSWorld().GetFixedTime().Time);
+                    FGameAttributeUtils::RemoveModifyShared(Entity, Attribute::StaminaMax, EGameAttributeModifyType(1), local_30.StaminaMax, this.GetECSWorld().GetFixedTime().Time);
                 }
             }
         }

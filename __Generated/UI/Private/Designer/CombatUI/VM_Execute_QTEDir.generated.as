@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_Execute_QTEDir_Helpers
 {
 UFUNCTION()

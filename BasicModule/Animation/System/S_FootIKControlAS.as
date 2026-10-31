@@ -1,10 +1,7 @@
-﻿
-
 class US_FootIKControlAS : UECSScriptSystem
 {
     float32 BodyPivotControlLerpSpeed = 0.2f;
     float32 LegFollowBodyRotationWeightLerpSpeed = 0.2f;
-
 
     UFUNCTION()
     bool IsDisabled_Implementation() const

@@ -1,4 +1,3 @@
-﻿
 namespace FPlayerInventoryItem
 {
     const FPlayerInventoryItem Invalid = FPlayerInventoryItem();
@@ -68,7 +67,6 @@ struct FPlayerInventoryItemRawData
     int ItemNum;
     UPROPERTY()
     int64 LastModifiedTimestamp;
-
 
 }
 
@@ -626,8 +624,41 @@ struct FMS_PlayerInventory : FEUIModelSingleton
     }
     int FindRootCategoryIndexForItem(const TDataObjectPtr<FItemConfig> &inout ItemConfig) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        const UInventorySettings local_56;
+        if (!(ItemConfig))
+        {
+            return INDEX_NONE;
+        }
+        CastTo local_6;
+        TDataObjectPtr<FInventoryItemConfig> local_30 = local_6.opCall();
+        if (!(local_30))
+        {
+            return INDEX_NONE;
+        }
+        GetGameplaySettings<UInventorySettings> local_58;
+        local_56 = local_58;
+        FGameplayTag local_64 = local_30.opArrow().ItemCategory.AsGameplayTag();
+        int local_65 = 0;
+        for (; local_65 < local_56.Categories.Num(); ++local_65)
+        {
+            for (auto& local_80 : local_56.Categories[local_65].Categories)
+            {
+                TRawPtr<FInventoryPureDisplayCategoryConfig> local_82 = local_56.PureDisplayCategories.Find(local_80);
+                if (local_82)
+                {
+                    if (local_30.opArrow().ItemTags.HasAny(local_82.opArrow().ItemTags))
+                    {
+                        return local_65;
+                    }
+                    continue;
+                }
+                if (local_64.MatchesTag(local_80))
+                {
+                    return local_65;
+                }
+            }
+        }
+        return INDEX_NONE;
     }
     void GS_RequestDestroyItem(const TDataObjectPtr<FItemConfig> &inout ItemConfig, const int ItemNum)
     {
@@ -639,7 +670,96 @@ struct FMS_PlayerInventory : FEUIModelSingleton
     }
     void MonitorGameplayInventoryChange(const FC_GameplayInventory &inout GameplayInventory)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        FPlayerInventoryItem& local_46;
+        if (!(GameplayInventory))
+        {
+            return;
+        }
+        TSet<TDataObjectPtr<FItemConfig>> local_22;
+        for (auto& local_40 : this.GetModify_OwnedItems())
+        {
+            if (!(::GameplayInventoryUtils::ShouldAddToGameplayInventory(local_40.GetKey())))
+            {
+                continue;
+            }
+            int local_44 = 0 - 1;
+            for (; local_44 >= 0; --local_44)
+            {
+                if (!(this.EnsureIsGameplayInventoryItemUid(local_46.GetItemUid())))
+                {
+                    continue;
+                }
+                if (!(GameplayInventory.GetItems().Contains(local_46.GetItemUid())))
+                {
+                    local_22.Add(local_40.GetKey());
+                    this.ConsumeRootCategoryRedDot(local_46.GetItemUid(), local_40.GetKey());
+                    this.GetItemDataCache().opArrow().RequireItemData(local_46.GetItemUid()).opArrow().SetNum(0);
+                    continue;
+                }
+                TEUIModelRef<FM_ItemData> local_52 = this.GetItemDataCache().opArrow().RequireItemData(local_46.GetItemUid());
+                const FGameplayInventoryItemData& local_56 = GameplayInventory.GetItems()[local_46.GetItemUid()];
+                bool local_1 = (local_56.GetNum() > local_52.opArrow().GetNum());
+                if (local_56.GetNum() != local_52.opArrow().GetNum())
+                {
+                    local_22.Add(local_40.GetKey());
+                    local_52.opArrow().SetNum(local_56.GetNum());
+                }
+                if (local_1)
+                {
+                    local_46.LastModifiedTimestamp = local_56.GetLastModifiedTimestamp();
+                }
+            }
+        }
+        for (auto& local_78 : GameplayInventory.GetItems())
+        {
+            if (!(this.GetItemDataCache().opArrow().HasItemData(local_78.GetKey())) || (this.GetItemDataCache().opArrow().RequireItemData(local_78.GetKey()).opArrow().GetNum() == 0 && (GetNum() > 0)))
+            {
+                int local_82;
+                if (!(this.EnsureIsGameplayInventoryItemUid(local_78.GetKey())))
+                {
+                    continue;
+                }
+                local_22.Add(GetConfig());
+                local_82 = local_78.GetKey();
+                const TDataObjectPtr<FItemConfig>& local_84 = GetConfig();
+                if (!(this.bGameplayInventoryInitialized))
+                {
+                    FMS_RedDotSystem& local_86 = ::FMS_RedDotSystem::Get(this.GetContext().Manager);
+                    int64 local_48 = this.FindRootCategoryIndexForItem(local_84);
+                    if (local_48 != INDEX_NONE)
+                    {
+                        local_86.GenerateSpecificRedDot(GameplayTags::RedDotSystem_Inventory_NewItem, local_82, 1, false);
+                        if (local_86.TryFindOrAddRedDotNode(FRedDotNodeData(GameplayTags::RedDotSystem_Inventory_Menu, local_48)).IsValid())
+                        {
+                            local_86.GenerateSpecificRedDot(GameplayTags::RedDotSystem_Inventory_Menu, local_48, 1, false);
+                            if (local_86.TryFindOrAddRedDotNode(FRedDotNodeData(GameplayTags::RedDotSystem_Inventory_Entrance, 0)).IsValid())
+                            {
+                                FRedDotNodeData(GameplayTags::RedDotSystem_Inventory_Menu, local_48).AddChildNodeData();
+                                local_86.GenerateSpecificRedDot(GameplayTags::RedDotSystem_Inventory_Entrance, 0, 1, false);
+                            }
+                            FRedDotNodeData(GameplayTags::RedDotSystem_Inventory_NewItem, local_82).AddChildNodeData();
+                        }
+                    }
+                    local_86.GenerateSpecificRedDot(GameplayTags::RedDotSystem_Inventory_NewItem, local_82, 1, false);
+                }
+                TEUIModelRef<FM_ItemData> local_54 = this.GetItemDataCache().opArrow().RequireItemData(local_78.GetKey());
+                local_54.opArrow().SetConfig(GetConfig());
+                local_54.opArrow().SetNum(GetNum());
+                this.GetModify_OwnedItems().FindOrAdd(GetConfig()).Items.Add(FPlayerInventoryItem(local_78.GetKey(), GetLastModifiedTimestamp()));
+            }
+        }
+        if (this.bGameplayInventoryInitialized)
+        {
+            this.bGameplayInventoryInitialized = false;
+        }
+        auto local_110 = local_22.Iterator();
+        for (; local_110.CanProceed;)
+        {
+            this.UpdateSumItem(local_110.Proceed());
+        }
+        FEUIModelRef local_124 = FEUIModelRef(this);
+        FEUIMessageBus::PublishOrPatch(EUIMessageBus).opCall(local_124);
+        return;
     }
     void OnGameplayInventoryItemAddedNotify(const FCE_GameplayInventoryItemAddedNotify &inout Event)
     {
@@ -702,7 +822,38 @@ struct FMS_PlayerInventory : FEUIModelSingleton
     }
     void RemoveItemData(const TArray<uint64> &inout ItemUidList)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        TArray<TDataObjectPtr<FItemConfig>> local_4;
+        for (auto local_20 : ItemUidList)
+        {
+            TEUIModelRef<FM_ItemData> local_26 = this.GetItemDataCache().opArrow().RequireItemData(local_20);
+            local_26.opArrow().SetNum(0);
+            TDataObjectPtr<FItemConfig> local_54 = local_26.opArrow().GetConfig();
+            if (!(local_54))
+            {
+                XError(ELog(59), FString().Append("Received del item notify with invalid item uid ").Append(local_20));
+                continue;
+            }
+            if (this.GetOwnedItems().Contains(local_54))
+            {
+                int local_24 = local_20;
+                __Lambda_UI_Private_Model_Inventory_M_PlayerInventory_861 local_86;
+                int local_29 = this.GetModify_OwnedItems()[local_54].Items.FindLastByPredicate(local_86);
+                if (local_29 != INDEX_NONE)
+                {
+                    local_24 = local_20;
+                    this.ConsumeRootCategoryRedDot(local_24, local_54);
+                    this.GetModify_OwnedItems()[local_54].Items.RemoveAt(local_29);
+                }
+            }
+            local_4.Add(local_54);
+        }
+        for (auto& local_102 : local_4)
+        {
+            this.UpdateSumItem(local_102);
+        }
+        FEUIModelRef local_108 = FEUIModelRef(this);
+        FEUIMessageBus::PublishOrPatch(EUIMessageBus).opCall(local_108);
+        return;
     }
     void UpdateItemData(const TArray<FPlayerInventoryItemRawData> &inout ItemRawDataList)
     {
@@ -711,7 +862,39 @@ struct FMS_PlayerInventory : FEUIModelSingleton
     }
     void ConsumeRootCategoryRedDot(const uint64 ItemUid, const TDataObjectPtr<FItemConfig> &inout ItemConfig) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        FMS_RedDotSystem& local_2 = ::FMS_RedDotSystem::Get(this.GetContext().Manager);
+        local_2.ConsumeRedDot(FRedDotNodeData(GameplayTags::RedDotSystem_Inventory_NewItem, ItemUid));
+        int local_7 = this.FindRootCategoryIndexForItem(ItemConfig);
+        if (local_7 != INDEX_NONE)
+        {
+            int64 local_14 = local_7;
+            TEUIModelWeakRef<FM_RedDotNode> local_18 = local_2.TryGetRedDotNodeModel(FRedDotNodeData(GameplayTags::RedDotSystem_Inventory_Entrance, 0));
+            if ((local_2.TryGetRedDotNodeModel(FRedDotNodeData(GameplayTags::RedDotSystem_Inventory_Menu, local_14))).IsValid())
+            {
+                FRedDotNodeData(GameplayTags::RedDotSystem_Inventory_NewItem, ItemUid).RemoveChildNodeData();
+                if (!(HasChildActivation()))
+                {
+                    int local_8 = GetCount();
+                    local_8.DecreaseCount();
+                    local_2.ConsumeRedDot(FRedDotNodeData(GameplayTags::RedDotSystem_Inventory_Menu, local_14));
+                    if (local_18.IsValid())
+                    {
+                        FRedDotNodeData(GameplayTags::RedDotSystem_Inventory_Menu, local_14).RemoveChildNodeData();
+                        if (!(HasChildActivation()))
+                        {
+                            local_8 = GetCount();
+                            local_8.DecreaseCount();
+                            local_2.ConsumeRedDot(FRedDotNodeData(GameplayTags::RedDotSystem_Inventory_Entrance, 0));
+                        }
+                    }
+                }
+                else
+                {
+                    1.IncreaseCount();
+                }
+            }
+        }
+        return;
     }
     void InitItemData(const TArray<FPlayerInventoryItemRawData> &inout ItemRawDataList, const bool bIsFromGameplayInventory)
     {
@@ -753,7 +936,67 @@ struct FMS_PlayerInventory : FEUIModelSingleton
     }
     void UpdateItemDataInternal(const TArray<FPlayerInventoryItemRawData> &inout ItemRawDataList, const bool bNotifyChange, const bool bGenerateRedDot = false)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_22;
+        TArray<FPlayerInventoryItem> local_36;
+        TArray<TDataObjectPtr<FItemConfig>> local_4;
+        for (auto& local_20 : ItemRawDataList)
+        {
+            int64 local_24 = local_20.ItemUid;
+            local_22 = local_24;
+            TEUIModelRef<FM_ItemData> local_28 = this.GetItemDataCache().opArrow().RequireItemData(local_22);
+            bool local_17 = (int(local_20.ItemNum) > local_28.opArrow().GetNum());
+            if (bNotifyChange)
+            {
+                if (local_17)
+                {
+                    this.OnInventoryItemIncrease(local_20.ItemConfig, (int(local_20.ItemNum) - local_28.opArrow().GetNum()));
+                }
+            }
+            local_28.opArrow().SetConfig(local_20.ItemConfig);
+            local_28.opArrow().SetNum(int(local_20.ItemNum));
+            __Lambda_UI_Private_Model_Inventory_M_PlayerInventory_997 local_38;
+            int local_33_2 = local_36.FindLastByPredicate(local_38);
+            if (local_33_2 != INDEX_NONE)
+            {
+                if (local_17)
+                {
+                    local_36[local_33_2].LastModifiedTimestamp = local_20.LastModifiedTimestamp;
+                }
+            }
+            else
+            {
+                local_36.Add(FPlayerInventoryItem(local_22, local_20.LastModifiedTimestamp));
+                if (bGenerateRedDot)
+                {
+                    FMS_RedDotSystem& local_48 = ::FMS_RedDotSystem::Get(this.GetContext().Manager);
+                    local_24 = this.FindRootCategoryIndexForItem(local_28.opArrow().GetConfig());
+                    if (local_24 != INDEX_NONE)
+                    {
+                        local_48.GenerateSpecificRedDot(GameplayTags::RedDotSystem_Inventory_NewItem, local_22, 1, false);
+                        TEUIModelWeakRef<FM_RedDotNode> local_58 = local_48.TryFindOrAddRedDotNode(FRedDotNodeData(GameplayTags::RedDotSystem_Inventory_Entrance, 0));
+                        if ((local_48.TryFindOrAddRedDotNode(FRedDotNodeData(GameplayTags::RedDotSystem_Inventory_Menu, local_24))).IsValid())
+                        {
+                            local_48.GenerateSpecificRedDot(GameplayTags::RedDotSystem_Inventory_Menu, local_24, 1, false);
+                            if (local_58.IsValid())
+                            {
+                                FRedDotNodeData(GameplayTags::RedDotSystem_Inventory_Menu, local_24).AddChildNodeData();
+                                local_48.GenerateSpecificRedDot(GameplayTags::RedDotSystem_Inventory_Entrance, 0, 1, false);
+                            }
+                            FRedDotNodeData(GameplayTags::RedDotSystem_Inventory_NewItem, local_22).AddChildNodeData();
+                        }
+                    }
+                    local_48.GenerateSpecificRedDot(GameplayTags::RedDotSystem_Inventory_NewItem, local_22, 1, false);
+                }
+            }
+            local_4.Add(local_28.opArrow().GetConfig());
+        }
+        for (auto& local_74 : local_4)
+        {
+            this.UpdateSumItem(local_74);
+        }
+        FEUIModelRef local_80 = FEUIModelRef(this);
+        FEUIMessageBus::PublishOrPatch(EUIMessageBus).opCall(local_80);
+        return;
     }
     int GetPbItemNum(const FPbItem &inout PbItem) const
     {
@@ -1046,7 +1289,24 @@ FM_PlayerInventoryExternalItemProxy CreateByManager(const UEUIManagerSubsystem M
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    FEUIModelRefPropertyDirtyIndexer local_10 = FEUIModelRefPropertyDirtyIndexer(2);
+    local_10.AddRefPropertyDirty(0, 0, FM_ItemData::__IndexOf_Num());
+    local_10.ApplySort();
+    FEUIModelRefPropertyDirty local_18;
+    local_18.PropertyName = FName("ExternalItemData");
+    int local_2_2 = FM_ItemData::ModelId;
+    int local_2_3 = local_10.GetMappingDirtyOffset(0);
+    local_18.RelatedDirtyMask.SetBit(FM_ItemData::__IndexOf_Num(), true);
+    Result.ListeningModelRefDirties.Add(local_18);
+    FEUIModelDirtyDefine local_28;
+    local_28.FunctionName = "__OnExternalItemNumChanged";
+    local_28.DirtyFlags.Set(FM_PlayerInventoryExternalItemProxy::__IndexOf_ExternalItemData());
+    local_28.DirtyFlags.Set(local_10.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_28);
+    return;
 }
 UScriptStruct GetModelStruct()
 {
@@ -1145,7 +1405,9 @@ void __GS_OnInventoryItemRemoved(FMS_PlayerInventory &inout Model, const FProtoW
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorGameplayInventoryLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorGameplayInventoryModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_OwnedItems()
 {

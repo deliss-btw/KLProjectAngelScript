@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_ItemAction_NS
 {
     const TECSComponentDerivedPtr<FC_ItemAction> DerivedPtr = TECSComponentDerivedPtr<FC_ItemAction>();
@@ -30,6 +29,8 @@ struct FC_ItemAction : FECSComponent
     {
         this.m_NextInstanceID = 0;
         this.m_bNeedClear = false;
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
         this.__InitDirtyFlags();
         return;
     }
@@ -37,6 +38,8 @@ struct FC_ItemAction : FECSComponent
     {
         this.m_NextInstanceID = 0;
         this.m_bNeedClear = false;
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
         this.__InitDirtyFlags();
         this.m_RunningItemActions = Other.m_RunningItemActions;
         this.m_ExecutingItemActionIndexStack = Other.m_ExecutingItemActionIndexStack;
@@ -66,8 +69,15 @@ struct FC_ItemAction : FECSComponent
     }
     int FindRunningActionIndex(const FItemActionConfigPtr &inout ConfigPtr) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        int local_1 = 0;
+        for (; local_1 < this.GetRunningItemActions().Num(); ++local_1)
+        {
+            if ((this.GetRunningItemActions()[local_1].GetActionConfigPtr() == ConfigPtr))
+            {
+                return local_1;
+            }
+        }
+        return INDEX_NONE;
     }
     FItemActionConfigPtr FindRunningActionByInstanceID(const int InstanceID) const
     {
@@ -91,13 +101,35 @@ struct FC_ItemAction : FECSComponent
     }
     int FindRunningActionIndexByInstanceID(const int InstanceID) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        if (InstanceID < 0)
+        {
+            return INDEX_NONE;
+        }
+        int local_3 = 0;
+        for (; local_3 < this.GetRunningItemActions().Num(); ++local_3)
+        {
+            if (this.GetRunningItemActions()[local_3].GetInstanceID() == InstanceID)
+            {
+                return local_3;
+            }
+        }
+        return INDEX_NONE;
     }
     int ExecuteNewAction(const FItemActionSource &inout ActionSource, const FItemActionConfigPtr &inout ActionConfigPtr)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        UItemActionConfigBase local_56;
+        if (!(IsValid(local_56)))
+        {
+            return INDEX_NONE;
+        }
+        int local_58 = this.BeginExecuteNewInstance(ActionConfigPtr, ActionSource);
+        local_56.ExecuteAction(this.GetExecutingInstance().GetRuntimeInfo());
+        if (this.EndExecuteNewInstance())
+        {
+            XLog(ELog(47), FString().Append("Start running item action ").Append(ActionConfigPtr));
+            return local_58;
+        }
+        return INDEX_NONE;
     }
     void TickRunningActions()
     {
@@ -288,11 +320,28 @@ struct FC_ItemActionESM : FECSComponent
 
     FC_ItemActionESM()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_bHasPayCost = false;
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_RunningESMActionIndexID = INDEX_NONE;
+        this.m_PendingESMActionIndexID = INDEX_NONE;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_ItemActionESM(const FC_ItemActionESM &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_bHasPayCost = false;
+        FRootDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_RunningESMActionIndexID = INDEX_NONE;
+        this.m_PendingESMActionIndexID = INDEX_NONE;
+        this.__InitDirtyFlags();
+        this.m_ItemActionTag = Other.m_ItemActionTag;
+        this.m_bHasPayCost = Other.m_bHasPayCost;
+        this.m_RunningESMActionIndexID = int(Other.m_RunningESMActionIndexID);
+        this.m_PendingESMActionIndexID = int(Other.m_PendingESMActionIndexID);
+        this.m_OwnerEntity = Other.m_OwnerEntity;
+        return;
     }
     FC_ItemActionESM opAssign(const FC_ItemActionESM &inout Other)
     {
@@ -306,29 +355,99 @@ struct FC_ItemActionESM : FECSComponent
     }
     void NotifyEnterESMAction()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_8 = 0;
+        XWarningIf((this.GetPendingESMActionIndexID() == INDEX_NONE), ELog(47), "Pending item action not found, may need longer Action Timeout in item action config.");
+        this.SetRunningESMActionIndexID(this.GetPendingESMActionIndexID());
+        this.SetPendingESMActionIndexID(INDEX_NONE);
+        int local_1 = this.GetRunningESMActionIndex();
+        if (local_1 == INDEX_NONE)
+        {
+            return;
+        }
+        local_8.BeginExecute(local_1);
+        this.GetExecutingESMActionConfig().NotifyEnter(local_8.GetExecutingInstance().GetRuntimeInfo());
+        local_8.EndExecute();
+        return;
     }
     void NotifyExitESMAction()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_6 = 0;
+        int local_2 = this.GetRunningESMActionIndex();
+        if (local_2 == INDEX_NONE)
+        {
+            return;
+        }
+        local_6.BeginExecute(local_2);
+        this.GetExecutingESMActionConfig().NotifyExit(local_6.GetExecutingInstance().GetRuntimeInfo());
+        local_6.EndExecute();
+        this.SetRunningESMActionIndexID(INDEX_NONE);
+        return;
     }
     void NotifyESMActionPayCost()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_6 = 0;
+        int local_2 = this.GetRunningESMActionIndex();
+        if (local_2 == INDEX_NONE)
+        {
+            return;
+        }
+        local_6.BeginExecute(local_2);
+        this.SetbHasPayCost(local_6.GetExecutingInstance().GetActionConfig().ExecutePayCost(local_6.GetExecutingInstance().GetRuntimeInfo()));
+        local_6.EndExecute();
+        return;
     }
     void NotifyESMActionCustomTrigger(const FGameplayTag &inout CustomTrigger)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_6 = 0;
+        int local_2 = this.GetRunningESMActionIndex();
+        if (local_2 == INDEX_NONE)
+        {
+            return;
+        }
+        local_6.BeginExecute(local_2);
+        this.GetExecutingESMActionConfig().NotifyCustomTrigger(local_6.GetExecutingInstance().GetRuntimeInfo(), CustomTrigger);
+        local_6.EndExecute();
+        return;
     }
     bool RegisterPendingESMAction()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        bool __r; return __r;
+        int local_10 = 0;
+        int local_18 = 0;
+        if (this.GetRunningESMActionIndexID() != INDEX_NONE)
+        {
+            return false;
+        }
+        if (this.GetPendingESMActionIndexID() != INDEX_NONE)
+        {
+            Get local_8;
+            int local_1 = local_8.opCall().FindRunningActionIndexByInstanceID(this.GetPendingESMActionIndexID());
+            if (local_1 != INDEX_NONE)
+            {
+                local_10.BeginExecute(local_1);
+                local_10.GetExecutingInstance().GetActionConfig().ExecuteFail(local_10.GetExecutingInstance().GetRuntimeInfo());
+                local_10.EndExecute();
+            }
+        }
+        this.SetPendingESMActionIndexID(local_18.GetInstanceID());
+        this.SetItemActionTag(Cast<UItemActionConfig_ESMAction>(local_18.GetActionConfig()).ItemActionTag.GetTagName());
+        this.SetbHasPayCost(false);
+        return true;
     }
     int GetRunningESMActionIndex() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        if (this.GetRunningESMActionIndexID() == INDEX_NONE)
+        {
+            XError(ELog(47), "No running ESM item action exist.");
+            return INDEX_NONE;
+        }
+        Get local_10;
+        int local_1 = local_10.opCall().FindRunningActionIndexByInstanceID(this.GetRunningESMActionIndexID());
+        if (local_1 == INDEX_NONE)
+        {
+            XError(ELog(47), FString().Append("Failed to find instance of ESMAction ").Append(this.GetRunningESMActionIndexID()));
+            return INDEX_NONE;
+        }
+        return local_1;
     }
     UItemActionConfig_ESMAction GetExecutingESMActionConfig()
     {
@@ -506,37 +625,37 @@ bool RemoveItemAction(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorItemActionOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ItemAction, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ItemAction, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorItemActionOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ItemAction, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ItemAction, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorItemActionOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ItemAction, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ItemAction, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorItemActionOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ItemAction, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ItemAction, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorItemActionOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ItemAction, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ItemAction, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorItemActionLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ItemAction, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ItemAction, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorItemActionActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ItemAction, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ItemAction, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorItemActionModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ItemAction, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ItemAction, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ItemActionESM
@@ -616,37 +735,37 @@ bool RemoveItemActionESM(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorItemActionESMOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ItemActionESM, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ItemActionESM, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorItemActionESMOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ItemActionESM, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ItemActionESM, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorItemActionESMOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ItemActionESM, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ItemActionESM, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorItemActionESMOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ItemActionESM, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ItemActionESM, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorItemActionESMOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ItemActionESM, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ItemActionESM, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorItemActionESMLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ItemActionESM, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ItemActionESM, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorItemActionESMActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ItemActionESM, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ItemActionESM, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorItemActionESMModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ItemActionESM, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ItemActionESM, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace EntityBB

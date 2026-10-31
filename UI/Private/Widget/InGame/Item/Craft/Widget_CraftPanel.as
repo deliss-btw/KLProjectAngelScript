@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CraftableItem
 {
     const int ViewID = 0;
@@ -530,6 +529,7 @@ namespace UWidget_CraftableItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CraftableItem;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -545,6 +545,7 @@ namespace UWidget_CraftPanel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CraftPanel;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedCraftTypeIndexChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("RefreshCraftConfirmAction"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("RefreshGamepadConfirmAction"));

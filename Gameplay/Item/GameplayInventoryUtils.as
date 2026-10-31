@@ -1,4 +1,3 @@
-﻿
 namespace GameplayInventoryUtils
 {
     const uint64 InvalidUid = 0;
@@ -21,7 +20,8 @@ struct __Lambda_Gameplay_Item_GameplayInventoryUtils_503
     }
     __Lambda_Gameplay_Item_GameplayInventoryUtils_503(const FECSEntity &inout _InPlayer)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.__Player = _InPlayer;
+        return;
     }
     FECSEntity GetPlayer() property
     {
@@ -395,7 +395,7 @@ void InitGameplayInventory(const FECSEntity &inout Player)
                 {
                     if (local_260.GetModify_Items().Contains(local_130_2))
                     {
-                        XError(ELog(61), FString().Append("д»“еє“е­жЎЈй”™иЇЇпјЊе‡єзЋ°е¤љдёЄй‡Ќе¤Ќз‰©е“ЃпјЊuid = ").Append(local_90.GetId()));
+                        XError(ELog(61), FString().Append("仓库存档错误，出现多个重复物品，uid = ").Append(local_90.GetId()));
                         continue;
                     }
                     local_260.GetModify_Items().Add(local_130_2, NumericUtils::AsInt32(local_90.GetStackableItem().GetCount()));
@@ -527,8 +527,21 @@ uint64 FindLatestModifiedGameplayItemUid(const FECSEntity &inout Player, const T
 }
 bool FindGameplayItemUids(const FECSEntity &inout Player, const TDataObjectPtr<FItemConfig> &inout Config, TArray<uint64> &inout OutItems)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    bool __r; return __r;
+    Get local_4;
+    const FC_GameplayInventoryCache& local_6 = local_4.opCall();
+    if (local_6)
+    {
+        FItemUidList local_12;
+        if (local_6.ConfigToUidList.Find(Config, local_12))
+        {
+            if (!(local_12.GetUids().IsEmpty()))
+            {
+                OutItems = local_12.GetUids();
+                return true;
+            }
+        }
+    }
+    return false;
 }
 int GetGameplayItemUidNum(const FECSEntity &inout Player, const TDataObjectPtr<FItemConfig> &inout Config)
 {

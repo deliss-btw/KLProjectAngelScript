@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AvatarInfo
 {
     const int ModelId = 0;
@@ -85,15 +84,51 @@ struct FVM_AvatarInfo : FEUIViewModel
 
     FVM_AvatarInfo()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_Illustrate = EAvatarIllustrate(0);
+        this.m_SlotIndex = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        XError(ELog(17), "Should not construct model'FVM_AvatarInfo' by default constructor.");
+        return;
     }
     FVM_AvatarInfo(const FVM_AvatarInfo &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_Illustrate = EAvatarIllustrate(0);
+        this.m_SlotIndex = INDEX_NONE;
+        this.m_Avatar = Other.m_Avatar;
+        this.m_SlotIndex = int(Other.m_SlotIndex);
+        this.m_AvatarEquipment = Other.m_AvatarEquipment;
+        this.m_TalismanEquipments = Other.m_TalismanEquipments;
+        this.m_FoundationNode = Other.m_FoundationNode;
+        this.m_AvatarConfig = Other.m_AvatarConfig;
+        this.m_DisplayIconLarge = Other.m_DisplayIconLarge;
+        this.m_UnlockedDisplayIconLarge = Other.m_UnlockedDisplayIconLarge;
+        this.m_Illustrate = Other.m_Illustrate;
+        this.m_IllustrateIcon = Other.m_IllustrateIcon;
+        this.m_IllustrateDisplayName = Other.m_IllustrateDisplayName;
+        this.m_IllustrateBackgroundIcon = Other.m_IllustrateBackgroundIcon;
+        this.m_IllustrateBackgroundActiveIcon = Other.m_IllustrateBackgroundActiveIcon;
+        this.m_ClassIcon = Other.m_ClassIcon;
+        this.m_DamageTypeIcon = Other.m_DamageTypeIcon;
+        this.m_WeaponTypeIcon = Other.m_WeaponTypeIcon;
+        this.m_WeaponTypeDisplayName = Other.m_WeaponTypeDisplayName;
+        this.m_NickName = Other.m_NickName;
+        this.m_PlayerAvatarData = Other.m_PlayerAvatarData;
+        this.m_CombatSettingData = Other.m_CombatSettingData;
+        return;
     }
     FVM_AvatarInfo(const TEUIModelRef<FM_Avatar> &inout InAvatar)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_Illustrate = EAvatarIllustrate(0);
+        this.m_SlotIndex = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        this.SetAvatar(InAvatar);
+        return;
     }
     FVM_AvatarInfo& opAssign(const FVM_AvatarInfo &inout Other)
     {
@@ -166,7 +201,7 @@ struct FVM_AvatarInfo : FEUIViewModel
     }
     FText GetAvatarBackgroundDesc() const
     {
-        // body not fully recovered вЂ” stub [no-return]
+        // body not fully recovered — stub [no-return]
         FText __r; return __r;
     }
     bool GetIsUnLocked() const
@@ -175,8 +210,16 @@ struct FVM_AvatarInfo : FEUIViewModel
     }
     FText GetSlotIndexDisplayText() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        FText __r; return __r;
+        FText local_20;
+        if (this.GetSlotIndex() == INDEX_NONE)
+        {
+            local_20 = FText();
+        }
+        else
+        {
+            local_20 = FText::Format(NSLOCTEXT("Avatar", "AvatarSlotIndex", "{0}."), (this.GetSlotIndex() + 1));
+        }
+        return local_20;
     }
     FText GetDisplayName() const
     {
@@ -196,8 +239,8 @@ struct FVM_AvatarInfo : FEUIViewModel
     }
     bool IsCombatAvatar() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        bool __r; return __r;
+        int local_2 = INDEX_NONE;
+        return (this.GetSlotIndex() != local_2);
     }
     int GetCombatIndex() const
     {
@@ -237,7 +280,75 @@ struct FVM_AvatarInfo : FEUIViewModel
     }
     void ChangeToSpecialty(const bool bForceChangeRole = false)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_12 = 0;
+        int local_16 = 0;
+        TEUIModelRef<FM_Avatar> local_2 = this.GetAvatar();
+        bool local_3 = local_2.IsNull();
+        if (local_3)
+        {
+            local_3 = true;
+        }
+        else
+        {
+            TEUIModelRef<FM_Avatar> local_2_2 = this.GetAvatar();
+            local_3 = !(GetAvatarConfig().IsSet());
+        }
+        if (local_3)
+        {
+            return;
+        }
+        bool local_4 = false;
+        bool local_5 = local_4;
+        int local_7 = INDEX_NONE;
+        int local_6 = local_7;
+        TEUIModelRef<FMS_PlayerAvatarData> local_10 = this.GetPlayerAvatarData();
+        int local_13 = 0;
+        for (; local_13 < local_12.Num(); ++local_13)
+        {
+            if (local_12[local_13].IsValid() && GetAvatarConfig().IsSet())
+            {
+                if (local_4)
+                {
+                    local_5 = true;
+                    local_6 = local_13;
+                    break;
+                }
+            }
+        }
+        TEUIModelRef<FM_Avatar> local_2_3 = this.GetAvatar();
+        int local_15 = local_16;
+        if (::FMS_PlayerData::Get(this.GetManager()).GetLocalPlayerData().IsNull())
+        {
+            return;
+        }
+        local_16 = GetPlayerSpecialtyID();
+        if (local_5)
+        {
+            if (this.GetContext().GetLocalPlayer().IsValid())
+            {
+                FCE_ClientToServerChangeRole local_36;
+                FFPTime local_34 = FFPTime(-1);
+                FECSEntity local_28 = this.GetContext().GetLocalPlayer();
+                local_36.SlotIndex = local_6;
+                local_36.AvatarId = local_15;
+                local_36.bForceChangeRole = bForceChangeRole;
+            }
+        }
+        UGameClientConnectionSubsystem local_40 = ::UGameClientConnectionSubsystem::Get();
+        if (!((local_40 != nullptr)) || !(local_40.IsConnectedToGameServer()))
+        {
+            FCE_ClientChangeSpecialty local_46;
+            FFPTime local_34_2 = FFPTime(-1);
+            FECSEntity local_28_2 = this.GetContext().GetLocalPlayer();
+            local_46.FromAvatarId = local_16;
+            local_46.ToAvatarId = local_15;
+        }
+        if (this.GetCombatSettingData().IsValid())
+        {
+            TEUIModelRef<FMS_CombatSettingData> local_48 = this.GetCombatSettingData();
+            local_16.GS_RequestSaveChangeMainAvatarSpecialty(local_15);
+        }
+        return;
     }
     void RefreshAvatarIllustrateInfo()
     {
@@ -332,16 +443,18 @@ struct FVM_AvatarInfo : FEUIViewModel
     {
         int local_14 = 0;
         int local_17 = 0;
-        this.GetAvatar();
-        this.SetAvatarEquipment(TEUIModelRef<FVM_AvatarEquipment>());
+        TEUIModelRef<FVM_AvatarEquipment> local_6 = TEUIModelRef<FVM_AvatarEquipment>(::FVM_AvatarEquipment::Create(this.GetContext().Manager, EEquipSlotType(1), this.GetAvatar()));
+        this.SetAvatarEquipment(local_6);
         int local_7 = 2;
         int local_9 = 5;
         this.GetModify_TalismanEquipments().Empty(0);
         int local_10 = local_7;
         for (; local_10 <= local_9; )
         {
-            this.GetAvatar();
-            this.GetModify_TalismanEquipments().Add(TEUIModelRef<FVM_AvatarEquipment>(local_14));
+            TEUIModelRef<FM_Avatar> local_2 = this.GetAvatar();
+            int local_3 = local_10;
+            TEUIModelRef<FVM_AvatarEquipment> local_6_2 = TEUIModelRef<FVM_AvatarEquipment>(local_14);
+            this.GetModify_TalismanEquipments().Add(local_6_2);
             ++local_10;
         }
         this.SetFoundationNode(::FMS_Talent::Get(this.GetManager()).GetFoundationNodeByAvatarID(local_17));
@@ -896,9 +1009,9 @@ struct FVM_AvatarSpecialtyInfo : FEUIViewModel
         int local_2 = 0;
         if (this.GetAvatarConfig().IsSet())
         {
-            bool local_1 = false;
-            this.SetbIsHover(local_1);
-            this.SetbIsMainPlayer(local_1);
+            int local_1 = 0;
+            this.SetbIsHover((local_1 != 0));
+            this.SetbIsMainPlayer((local_1 != 0));
             this.SetWeaponTypeIcon(::FASCommonUtils::GetWeaponTypeDisplayBrush(EWeaponType(local_2)));
         }
         return;
@@ -1262,14 +1375,12 @@ struct FMsg_AvatarDetailInfoChanged : FEUIMessage
     UPROPERTY()
     bool bDisplayAttributeOrSkill = false;
 
-
 }
 
 struct FMsg_AvatarDetailPopInfo : FEUIMessage
 {
     UPROPERTY()
     bool bIsOpen = false;
-
 
 }
 
@@ -1342,11 +1453,11 @@ struct FVM_AvatarDetailPopInfo : FEUIViewModel
         }
         if (this.GetPopIndex() == 1)
         {
-            return NSLOCTEXT("Avatar", "AvatarDetailPopInfoSkill", "е±ћжЂ§иЇ¦жѓ…");
+            return NSLOCTEXT("Avatar", "AvatarDetailPopInfoSkill", "属性详情");
         }
         if (this.GetPopIndex() == 2)
         {
-            return NSLOCTEXT("Avatar", "AvatarDetailPopInfoTrait", "иЇЌжќЎиЇ¦жѓ…");
+            return NSLOCTEXT("Avatar", "AvatarDetailPopInfoTrait", "词条详情");
         }
         return local_10;
     }
@@ -1500,7 +1611,7 @@ struct FVM_AvatarDetailInfo : FEUIViewModel
             this.SetSelectSkillInfo(local_88);
             int local_84 = int(SkillItem.GetSkillButtonSlot());
             TEUIModelRef<FVM_TalentSkillInfoItem> local_88_2 = this.GetSelectSkillInfo();
-            SetEnterButtonSlot();
+            local_84.SetEnterButtonSlot();
             if (SkillItem.GetForceSetSkillInitConfig().IsSet())
             {
                 TEUIModelRef<FVM_TalentSkillInfoItem> local_88_3 = this.GetSelectSkillInfo();
@@ -1782,15 +1893,19 @@ struct FVM_AvatarDetailInfo : FEUIViewModel
             TEUIModelWeakRef<FM_TalentNode> local_252;
             if (local_197)
             {
-                if (int(local_249) == 1 || (int(local_249) == 2))
+                int local_76 = local_249;
+                if (local_76 == 1 || (local_249 == 2))
                 {
-                    if (int(local_249) == 1)
+                    local_76 = local_249;
+                    if (local_76 == 1)
                     {
-                        local_254 = ESkillType(3);
+                        int local_255 = 3;
+                        local_254 = local_255;
                     }
                     else
                     {
-                        local_254 = ESkillType(4);
+                        int local_255_2 = 4;
+                        local_254 = local_255_2;
                     }
                     TArray<TEUIModelRef<FM_TalentNode>> local_260 = local_144.GetActiveTalentNodeListByType(local_172, ESkillType(local_254));
                     for (auto& local_278 : local_260)
@@ -1816,7 +1931,8 @@ struct FVM_AvatarDetailInfo : FEUIViewModel
                 }
                 else
                 {
-                    int local_309 = int(local_249);
+                    local_76 = local_249;
+                    int local_309 = local_76;
                     if (local_226.SlotToTalentId.Contains(local_309))
                     {
                         local_252 = local_144.GetNodeByTalentId(local_226.SlotToTalentId[local_309]);
@@ -1827,9 +1943,9 @@ struct FVM_AvatarDetailInfo : FEUIViewModel
             {
                 local_252 = local_144.GetPreviewTalentNodeBySlot(local_28, ESkillSlot(local_249));
             }
-            TEUIModelRef<FVM_TalentEditSkillBtn> local_312 = TEUIModelRef<FVM_TalentEditSkillBtn>(::FVM_TalentEditSkillBtn::Create(this.GetContext().Manager, local_28, local_252));
+            TEUIModelRef<FVM_TalentEditSkillBtn> local_312 = TEUIModelRef<FVM_TalentEditSkillBtn>(::FVM_TalentEditSkillBtn::Create(this.GetContext().Manager, local_28, local_252, ESkillSlot(local_249)));
             TDataObjectPtr<FSkillInitConfig> local_338;
-            if (!(local_74.Find(local_249, local_338)))
+            if (!(local_74.Find(ESkillSlot(local_249), local_338)))
             {
                 local_77 = false;
             }
@@ -1843,10 +1959,10 @@ struct FVM_AvatarDetailInfo : FEUIViewModel
             }
             if (local_197 && local_252.IsValid())
             {
-                ESkillType local_255 = GetEffectiveSkillType();
-                if (int(local_255) != 0)
+                int local_255_3 = int(GetEffectiveSkillType());
+                if (local_255_3 != 0)
                 {
-                    (local_144.GetActiveTalentNodeListByType(local_172, ESkillType(local_255)).Num() > 1).SetbCanChange();
+                    (local_144.GetActiveTalentNodeListByType(local_172, ESkillType(local_255_3)).Num() > 1).SetbCanChange();
                 }
             }
             else
@@ -2299,6 +2415,7 @@ struct FVMS_PlayerOwnedAvatarInfo : FEUIViewModelSingleton
     }
     void InitAllAvatars()
     {
+        int local_41;
         TEUIModelRef<FM_Avatar> local_96;
         TArray<FAvatarPrefabConfig> local_8 = ::FAvatarPrefabConfig::GetAll();
         ::FMS_PlayerData::Get(this.GetManager()).GetLocalPlayerData();
@@ -2310,7 +2427,15 @@ struct FVMS_PlayerOwnedAvatarInfo : FEUIViewModelSingleton
             {
                 continue;
             }
-            if (local_36.bIsMainPlayer && (int(local_36.GenderType) != int(this.GetGender())))
+            if (int(local_36.bIsMainPlayer) == 0)
+            {
+                local_41 = 0;
+            }
+            else
+            {
+                local_41 = (int(local_36.GenderType) != int(this.GetGender()));
+            }
+            if (local_41 != 0)
             {
                 continue;
             }
@@ -2324,7 +2449,7 @@ struct FVMS_PlayerOwnedAvatarInfo : FEUIViewModelSingleton
             else
             {
                 TEUIModelRef<FM_Avatar> local_100 = TEUIModelRef<FM_Avatar>(::FM_Avatar::Create(this.GetManager(), local_90));
-                false.SetbIsUnlocked();
+                0.SetbIsUnlocked();
                 local_20.Add(TEUIModelRef<FVM_AvatarInfo>(::FVM_AvatarInfo::Create(this.GetManager(), local_100)));
             }
         }
@@ -2376,6 +2501,9 @@ struct FVMS_PlayerOwnedAvatarInfo : FEUIViewModelSingleton
         local_90.InputActionListConstructParamItems.Add(FInputActionListConstructParamItem(FEUIInputAction(local_4.UnlockNewAvatarTipsConfirmAction), local_86));
         FCommonHintParam local_220;
         local_220.LifetimeOverride = local_4.UnlockNewAvatarTipsTimeDuration;
+        FSoftBrush local_56;
+        FText local_64;
+        ::CommonPopup::LargeHintWithAction(local_56, local_4.UnlockNewAvatarTipsTitle, local_64, local_90, local_220, 0);
         return;
     }
     TEUIModelRef<FVMS_PlayerOwnedAvatarInfo> GetInstance() const property
@@ -2557,7 +2685,6 @@ struct __GeneratedProperties_FVM_AvatarInfo
     bool IsSpecialtyActive;
     UPROPERTY()
     TEUIModelRef<FVM_AvatarInfo> Self;
-
 
 }
 
@@ -2825,7 +2952,9 @@ void __RefreshSlotIndexByMsg(FVM_AvatarInfo &inout Model, const FMsg_CombatSetti
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorDSPlayerAvatarInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorDSPlayerAvatarInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TDataObjectPtr<FAvatarPrefabConfig> __UIGetter_AvatarConfig(const FVM_AvatarInfo &inout Model)
 {
@@ -3431,7 +3560,103 @@ FVM_AvatarDetailInfo CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "AvatarTraitList";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_TraitInfo>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TraitHoverList";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_TraitInfoHover>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AvatarAttributeList";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_AttributeDisplay>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AvatarAllAttributeList";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_AttributeDisplay>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AvatarSkillInfoList";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_AvatarDetailSkillSelect>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectSkillInfo";
+    local_14.TypeName = "TEUIModelRef<FVM_TalentSkillInfoItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bCanDisplayAttribute";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bCanDisplayTrait";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bDisplayAttributeOrSkill";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bHasHoverSkill";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "PvpEquipedDivineSkill";
+    local_14.TypeName = "TEUIModelRef<FVM_DivineSkillInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_AvatarDetailInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_AvatarDetailInfo;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(13);
+    local_22.AddRefPropertyDirty(0, 6, FVM_AvatarDetailInfo_SkillSelect::__IndexOf_SkillInfo());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("SelectInfoVM");
+    int local_2_2 = FVM_AvatarDetailInfo_SkillSelect::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(6);
+    local_30.RelatedDirtyMask.SetBit(FVM_AvatarDetailInfo_SkillSelect::__IndexOf_SkillInfo(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__RefreshSelectSkill";
+    local_40.DirtyFlags.Set(FVM_AvatarDetailInfo::__IndexOf_SelectInfoVM());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    FEUIModelMsgHandleDefine local_50;
+    local_50.FunctionName = "__OnAvatarSkillChanged";
+    local_50.MessageTypeName = "Msg_AvatarEquipmentChanged";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    FEUIModelMonitorDefine local_64;
+    local_64.FunctionName = "__Monitor_OnPlayerSkillChange";
+    local_64.ComponentType = FC_Skill;
+    Result.MonitorFunctions.Add(local_64);
+    local_40.FunctionName = "__DoRefresh";
+    local_40.DirtyFlags.Set(FVM_AvatarDetailInfo::__IndexOf_CurrentAvatar());
+    Result.DirtyFunctions.Add(local_40);
+    local_50.FunctionName = "__OnTalentDataUpdated";
+    local_50.MessageTypeName = "Msg_TalentTreeDataUpdate";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    return;
 }
 UScriptStruct GetModelStruct()
 {
@@ -3464,7 +3689,9 @@ void __OnTalentDataUpdated(FVM_AvatarDetailInfo &inout Model, const FMsg_TalentT
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    ECSWorld.__MonitorSkillLifetime(EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    ECSWorld.__MonitorSkillModification(EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TArray<TEUIModelRef<FVM_TraitInfo>> __UIGetter_AvatarTraitList(const FVM_AvatarDetailInfo &inout Model)
 {
@@ -3589,7 +3816,68 @@ FVMS_PlayerOwnedAvatarInfo GetByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "UnLockAvatarList";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_AvatarInfo>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurrentTeamAvatars";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_AvatarInfo>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AllConfigAvatars";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_AvatarInfo>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Gender";
+    local_14.TypeName = "EGenderType";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVMS_PlayerOwnedAvatarInfo>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVMS_PlayerOwnedAvatarInfo;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(7);
+    local_22.AddRefPropertyDirty(0, 4, FMS_PlayerAvatarData::__IndexOf_CurrentAvatars());
+    local_22.AddRefPropertyDirty(1, 4, FMS_PlayerAvatarData::__IndexOf_OwnedAvatars());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("PlayerAvatarData");
+    int local_2_2 = FMS_PlayerAvatarData::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(4);
+    local_30.RelatedDirtyMask.SetBit(FMS_PlayerAvatarData::__IndexOf_CurrentAvatars(), true);
+    local_30.RelatedDirtyMask.SetBit(FMS_PlayerAvatarData::__IndexOf_OwnedAvatars(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelMonitorDefine local_42;
+    local_42.FunctionName = "__OnDSPlayerInfoChanged";
+    local_42.ComponentType = FC_DSPlayerInfo;
+    Result.MonitorFunctions.Add(local_42);
+    FEUIModelDirtyDefine local_52;
+    local_52.FunctionName = "__UpdateAvatarList";
+    local_52.DirtyFlags.Set(FVMS_PlayerOwnedAvatarInfo::__IndexOf_PlayerAvatarData());
+    local_52.DirtyFlags.Set(local_22.GetMappingDirtyIndex(1));
+    local_52.DirtyFlags.Set(FVMS_PlayerOwnedAvatarInfo::__IndexOf_AllConfigAvatars());
+    Result.DirtyFunctions.Add(local_52);
+    local_52.FunctionName = "__UpdateTeamAvatars";
+    local_52.DirtyFlags.Set(FVMS_PlayerOwnedAvatarInfo::__IndexOf_PlayerAvatarData());
+    local_52.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_52);
+    FEUIModelMsgHandleDefine local_62;
+    local_62.FunctionName = "__OnUnlockAvatar";
+    local_62.MessageTypeName = "Msg_UnlockAvatar";
+    local_62.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_62);
+    return;
 }
 UScriptStruct GetModelStruct()
 {
@@ -3617,7 +3905,9 @@ void __OnUnlockAvatar(FVMS_PlayerOwnedAvatarInfo &inout Model, const FMsg_Unlock
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorDSPlayerInfoLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorDSPlayerInfoModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TArray<TEUIModelRef<FVM_AvatarInfo>> __UIGetter_UnLockAvatarList(const FVMS_PlayerOwnedAvatarInfo &inout Model)
 {

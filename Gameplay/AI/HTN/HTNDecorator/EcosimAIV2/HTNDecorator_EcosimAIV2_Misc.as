@@ -1,4 +1,3 @@
-﻿
 enum EEcosimAIV2HTNCompareType
 {
     LessThan,
@@ -6,7 +5,6 @@ enum EEcosimAIV2HTNCompareType
     GreaterThan,
     GreaterThanOrEqual,
 }
-
 
 class UHTNDecorator_EcosimAIV2_HasTeam : UHTNDecorator_ECSScriptBase
 {
@@ -32,7 +30,6 @@ class UHTNDecorator_EcosimAIV2_PlayerBlockingTheWay : UHTNDecorator_ECSScriptBas
     UPROPERTY()
     float32 CheckBlockingAngleOffset = 30.0f;
 
-
     UFUNCTION()
     bool PerformConditionCheck_Implementation(const FHTNContext &inout Context, const EHTNDecoratorConditionCheckType CheckType) const
     {
@@ -54,7 +51,7 @@ class UHTNDecorator_EcosimAIV2_PlayerBlockingTheWay : UHTNDecorator_ECSScriptBas
                     float local_72 = local_38.GetPosition().DistSquared2D(local_40.GetPosition());
                     if ((local_72 < (this.CheckBlockingDistance * this.CheckBlockingDistance) && (local_75 < this.CheckBlockingAngleOffset)))
                     {
-                        local_24.GetEntity().GetId();
+                        HTNNode::SetWorldStateValueAsEntityId(Context, this.OutBlockingTheWayEntityID, local_24.GetEntity().GetId());
                         return true;
                     }
                 }
@@ -82,7 +79,6 @@ class UHTNDecorator_EcosimAIV2_EntityRelationWithTarget : UHTNDecorator_ECSScrip
     EEcosimAIV2HTNPlanOperator Operator;
     UPROPERTY()
     bool bExcludeSelf = false;
-
 
     UFUNCTION()
     bool PerformConditionCheck_Implementation(const FHTNContext &inout Context, const EHTNDecoratorConditionCheckType CheckType) const
@@ -145,7 +141,6 @@ class UHTNDecorator_EcosimAIV2_EntityRelationPath : UHTNDecorator_ECSScriptBase
     bool bPrefixMustExist = false;
     UPROPERTY()
     bool bExcludeSelf = false;
-
 
     UFUNCTION()
     bool PerformConditionCheck_Implementation(const FHTNContext &inout Context, const EHTNDecoratorConditionCheckType CheckType) const
@@ -233,7 +228,6 @@ class UHTNDecorator_EcosimAIV2_CheckEntityTeamInfo : UHTNDecorator_ECSScriptBase
     UPROPERTY()
     bool bCheckHasTeam = true;
 
-
     UFUNCTION()
     bool PerformConditionCheck_Implementation(const FHTNContext &inout Context, const EHTNDecoratorConditionCheckType CheckType) const
     {
@@ -267,7 +261,6 @@ class UHTNDecorator_EcosimAIV2_CheckDistanceToTarget : UHTNDecorator_ECSScriptBa
     bool bCompareBy2D = true;
     UPROPERTY()
     FAISmart_Float CompareValue;
-
 
     UFUNCTION()
     bool PerformConditionCheck_Implementation(const FHTNContext &inout Context, const EHTNDecoratorConditionCheckType CheckType) const
@@ -359,7 +352,7 @@ class UHTNDecorator_EcosimAIV2_EntityInteractingWithTarget : UHTNDecorator_ECSSc
         FECSEntity local_4 = FECSEntity(this.TargetEntityID.GetValue(Context.opImplConv()));
         FAISmartValueContext local_6 = Context.opImplConv();
         FAISmartValueContext local_6_2 = Context.opImplConv();
-        return ::FEcosimAIV2Utils::IsEntityInteractingWithTarget(local_12, this.bIsTargetEntityIDVar, local_4, this.bByIndex, this.InteractBehaviorClass, local_18, local_17);
+        return ::FEcosimAIV2Utils::IsEntityInteractingWithTarget(local_12, (this.bIsTargetEntityIDVar), local_4, (this.bByIndex), this.InteractBehaviorClass, local_18, local_17);
     }
 }
 
@@ -383,7 +376,6 @@ class UHTNDecorator_EcosimAIV2_EntityCanInteractWithTarget : UHTNDecorator_ECSSc
     bool bExcludeSourceEntityPlan = true;
     UPROPERTY()
     bool bCheckBehaviorConditions = true;
-
 
     UFUNCTION()
     bool PerformConditionCheck_Implementation(const FHTNContext &inout Context, const EHTNDecoratorConditionCheckType CheckType) const
@@ -519,7 +511,6 @@ class UHTNDecorator_EcosimAIV2_NPCCheckTraceDistanceToTarget : UHTNDecorator_ECS
     UPROPERTY()
     FAISmart_Float ExitRange;
 
-
     UFUNCTION()
     bool PerformConditionCheck_Implementation(const FHTNContext &inout Context, const EHTNDecoratorConditionCheckType CheckType) const
     {
@@ -539,7 +530,7 @@ class UHTNDecorator_EcosimAIV2_NPCCheckTraceDistanceToTarget : UHTNDecorator_ECS
             GetDefaulted local_24;
             FVector local_20 = local_24.opCall().GetPosition();
             FECSEntity local_8 = FECSEntity(this.TargetEntityID.GetValue(Context.opImplConv()));
-            FTargetEntity(local_8).GetEntity();
+            FECSEntity local_28 = FECSEntity(FTargetEntity(local_8).GetEntity());
             FVector local_40 = local_24.opCall().GetPosition();
             if (this.bCompareBy2D)
             {
@@ -623,7 +614,6 @@ class UHTNDecorator_EcosimAIV2_CheckFactionRelation : UHTNDecorator_ECSScriptBas
     FAISmart_EntityId EntityB;
     UPROPERTY()
     uint8 AcceptedRelations = (2 != 0);
-
 
     UFUNCTION()
     bool PerformConditionCheck_Implementation(const FHTNContext &inout Context, const EHTNDecoratorConditionCheckType CheckType) const

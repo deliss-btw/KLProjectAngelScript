@@ -1,4 +1,3 @@
-﻿
 enum ECommissionObjAnimState
 {
     Normal,
@@ -23,7 +22,6 @@ struct FCommissionObjItemModelData
     bool SubObj;
     UPROPERTY()
     FText DefaultText;
-
 
 }
 
@@ -117,8 +115,8 @@ struct FVM_CommissionObjItemModel : FEUIViewModel
                 local_3 = ::ConditionUtils::GetTargetValue(GetFinishCondition());
                 if ((local_3 > 20 || (local_3 < 0)))
                 {
-                    ELog local_12;
-                    FString::Format(local_3, "CommissionObjItem: SegmentProgress TargetValue out of range: {0}, ConfigId: {1}", local_12);
+                    FString local_12;
+                    XWarning(ELog(16), local_12);
                     local_3 = FMath::Clamp(local_3, 0, 20);
                 }
                 if (this.IsReverseProgress())
@@ -212,7 +210,7 @@ struct FVM_CommissionObjItemModel : FEUIViewModel
     FText GetObjectProgressNumber() const
     {
         int local_19 = 0;
-        ELog local_92;
+        FString local_92;
         int local_126;
         if (this.IsMonsterHPBar())
         {
@@ -238,17 +236,17 @@ struct FVM_CommissionObjItemModel : FEUIViewModel
                         {
                             if (!(IsPoint()) && ::FASCommonUtils::GetEntityLocation(local_34).IsInRegion())
                             {
-                                return FText(NSLOCTEXT("CommissionObjItem", "GuideObjHasInRegion", "е·Іиї›е…Ґд»»еЉЎеЊєеџџ"));
+                                return FText(NSLOCTEXT("CommissionObjItem", "GuideObjHasInRegion", "已进入任务区域"));
                             }
                         }
                         local_18 = FText::AsNumber(FMath::FloorToInt(local_40 / 100.0), FNumberFormattingOptions::DefaultNoGrouping());
                         return FText::Format(INVTEXT("{0}m"), local_18);
                     }
-                    FString::Format("CommissionObjItem: TryCalculateGuideDistance failed, ObjectiveId:{0}", local_92);
+                    XWarning(ELog(16), local_92);
                 }
                 else
                 {
-                    FString::Format("CommissionObjItem: ProgressTextType is Distance but GuideDataList is empty, ObjectiveId:{0}", local_92);
+                    XWarning(ELog(16), local_92);
                 }
                 return local_18;
             }
@@ -312,7 +310,7 @@ struct FVM_CommissionObjItemModel : FEUIViewModel
             local_24.Add("FailRemainValue", FFormatArgumentValue(FMath::Max(0, local_2 - this.GetProgress().GetFailedProgressValue())));
             if (this.GetSubObj())
             {
-                local_42 = FText::Format(NSLOCTEXT("CommissionObjItem", "SubObjPreText", "[еЏЇйЂ‰]{0}"), local_42);
+                local_42 = FText::Format(NSLOCTEXT("CommissionObjItem", "SubObjPreText", "[可选]{0}"), local_42);
             }
             return local_42;
         }
@@ -546,15 +544,13 @@ struct __GeneratedProperties_FVM_CommissionObjItemModel
     UPROPERTY()
     TEUIModelRef<FVM_CommissionObjItemModel> Self;
 
-
 }
 
 namespace FVM_CommissionObjItemModel
 {
-FVM_CommissionObjItemModel Create(const UObject ContextObject, const TDataObjectPtr<FObjectiveSingleConfig> &inout SingleObjectiveConfig, const EObjectiveItemUIState UIState, const FCommissionTargetProgress &inout Progress, const bool SubObj, const FText &inout DefaultText)
+FVM_CommissionObjItemModel& Create(const UObject ContextObject, const TDataObjectPtr<FObjectiveSingleConfig> &inout SingleObjectiveConfig, const EObjectiveItemUIState UIState, const FCommissionTargetProgress &inout Progress, const bool SubObj, const FText &inout DefaultText)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    FVM_CommissionObjItemModel __r; return __r;
+    return FVM_CommissionObjItemModel::CreateByManager(EUIInternal::GetContextManager(ContextObject), SingleObjectiveConfig, EObjectiveItemUIState(UIState), Progress, SubObj, DefaultText);
 }
 FVM_CommissionObjItemModel CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FObjectiveSingleConfig> &inout SingleObjectiveConfig, const EObjectiveItemUIState UIState, const FCommissionTargetProgress &inout Progress, const bool SubObj, const FText &inout DefaultText)
 {

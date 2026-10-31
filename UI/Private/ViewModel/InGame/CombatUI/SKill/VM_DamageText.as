@@ -1,4 +1,3 @@
-﻿
 namespace FVM_DmageText
 {
     const int ModelId = 0;
@@ -32,7 +31,6 @@ struct FDmageTextData
     float32 DamageNumberRandomRatio = 1.0f;
     UPROPERTY()
     FFPTime EndTime;
-
 
 }
 
@@ -379,8 +377,23 @@ struct FVM_DmageTextPanel : FEUIViewModel
     }
     FVector GetAdjustPresentationHitPos(const FCE_ShowDamageNumber &inout Event)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
-        FVector __r; return __r;
+        int local_46 = 0;
+        FVector local_6 = Event.HitPosition;
+        FECSEntity local_10 = Event.Receiver;
+        FHitPresentationData local_38;
+        bool local_39 = false;
+        Has local_44;
+        bool local_40 = local_44.opCall();
+        if (local_40)
+        {
+            local_39 = local_46.GetHitPresentationDataFromCache(Event.StrikeKey, local_10, Event.HitTime, local_38);
+            local_6 = local_38.HitLocation;
+        }
+        if (!(local_39))
+        {
+            local_6 = Event.HitPosition;
+        }
+        return local_6;
     }
     const TArray<TEUIModelRef<FVM_DmageText>> GetDamageTextList() const property
     {
@@ -452,7 +465,6 @@ struct __GeneratedProperties_FVM_DmageText
     float32 DamageTextAnimDuration;
     UPROPERTY()
     TEUIModelRef<FVM_DmageText> Self;
-
 
 }
 

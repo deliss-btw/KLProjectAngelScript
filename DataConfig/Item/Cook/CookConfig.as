@@ -1,4 +1,3 @@
-﻿
 enum ECookStatType
 {
     HP,
@@ -6,14 +5,12 @@ enum ECookStatType
     ATK,
 }
 
-
 struct FCookIngredientAttribute
 {
     UPROPERTY()
     ECookStatType StatType = ECookStatType(0);
     UPROPERTY()
     int Value = 0;
-
 
 }
 
@@ -31,7 +28,6 @@ struct FCookEnergyThresholdConfig : FDataObject
     UPROPERTY()
     FText Description;
 
-
 }
 
 struct FCookStatModifierLadderConfig : FDataObject
@@ -45,7 +41,6 @@ struct FCookStatModifierLadderConfig : FDataObject
     int LookupValue = 0;
     UPROPERTY()
     FDataObjectPtr m_Modifier;
-
 
     const TDataObjectPtr<FGameplayModifierConfig> GetModifier() const property
     {
@@ -67,22 +62,15 @@ struct FFoodCostConfig
     UPROPERTY()
     int Num = 1;
 
-
 }
 
 struct FFoodCostTagConfig
 {
     UPROPERTY()
-    FGameplayTag FoodTag;
+    FGameplayTag FoodTag = FGameplayTag::RequestGameplayTag(n"ItemCategory.Material.Cook", true);
     UPROPERTY()
-    int Num;
+    int Num = 1;
 
-    FFoodCostTagConfig()
-    {
-        FGameplayTag::RequestGameplayTag(n"ItemCategory.Material.Cook", true);
-        this.Num = 1;
-        return;
-    }
 }
 
 struct FFoodProductConfig : FDataObject
@@ -102,7 +90,6 @@ struct FFoodProductConfig : FDataObject
     FText ProductDescription;
     UPROPERTY()
     FDataObjectPtr m_MetaBuffConfig;
-
 
     const TDataObjectPtr<FMetaBuffConfig> GetMetaBuffConfig() const property
     {
@@ -128,7 +115,6 @@ struct FFoodCraftConfig : FDataObject
     TMap<FGameplayTag, int> RequiredCookTagSums;
     UPROPERTY()
     FDataObjectPtr m_ProductFood;
-
 
     bool Match(const TMap<FGameplayTag, int> &inout InvestedTagSums) const
     {
@@ -198,7 +184,6 @@ class UCookSettings : UGameplaySettingsBase
     float32 DelayFinishedEventTime = 6.0f;
     UPROPERTY()
     float32 DelayAddMetaBuffAndReset = 10.0f;
-
 
     FCookBuffModifierConfig GetCookModifier(const TDataObjectPtr<FItemConfig> &inout Item, const EItemRarity Rarity)
     {

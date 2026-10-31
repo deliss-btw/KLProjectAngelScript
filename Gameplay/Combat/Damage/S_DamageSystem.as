@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Damage_Print = FConsoleVariable();
 const FConsoleVariable CVar_Damage_Statistic = FConsoleVariable();
 const FConsoleVariable CVar_Damage_HitNoBreakProtect = FConsoleVariable();
@@ -9,7 +8,6 @@ struct FHitCountReduceRate
     int HitCount = 0;
     UPROPERTY()
     float32 Rate = 1.0f;
-
 
 }
 
@@ -44,7 +42,6 @@ class US_DamageSystem : UECSScriptSystem
     USpecialHitTypeToESMStateAsset SpecialHitTypeToESMState;
     UPROPERTY()
     float32 DelayShowDamageNumberRatio = 0.8f;
-
 
     TDataObjectPtr<FAttackData> GetAttackDataFromDamageEventId(const int DamageEventId) const
     {
@@ -129,7 +126,575 @@ class US_DamageSystem : UECSScriptSystem
     UFUNCTION()
     void Job_DamageCalculation(FCS_DamageToCalculateFrame &inout DamageToCalculate) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_30 = 0;
+        bool local_31;
+        bool local_32;
+        bool local_33;
+        bool local_34;
+        bool local_35;
+        bool local_36;
+        bool local_37;
+        bool local_41;
+        bool local_333;
+        bool local_334;
+        float32 local_355;
+        float32 local_356;
+        float32 local_357;
+        bool local_369;
+        int local_387 = 0;
+        int local_448 = 0;
+        int local_526 = 0;
+        int local_1020 = 0;
+        for (auto& local_16 : DamageToCalculate.DamageDatas)
+        {
+            FECSEntity local_20 = FECSEntity(local_16.DamageTarget);
+            bool local_13 = !(ECS::IsAuthorityOrPrediction(local_20));
+            if (local_13)
+            {
+                continue;
+            }
+            FECSEntity local_24 = local_16.AttackerAttributeProvider;
+            local_13 = !(local_30);
+            if (local_13)
+            {
+                continue;
+            }
+            local_31 = false;
+            local_32 = false;
+            local_33 = false;
+            local_34 = false;
+            local_35 = false;
+            local_36 = false;
+            local_37 = false;
+            switch (int(local_16.DamageCalculationType))
+            {
+            case 0:
+            {
+                local_31 = true;
+                local_32 = true;
+                local_33 = true;
+                local_34 = true;
+                local_35 = true;
+                local_36 = true;
+                local_37 = true;
+                break;
+            }
+            case 1:
+            {
+                local_33 = true;
+                local_34 = true;
+                local_35 = true;
+                local_36 = true;
+                break;
+            }
+            case 2:
+            {
+                local_33 = true;
+                local_34 = true;
+                break;
+            }
+            case 3:
+            {
+                break;
+            }
+            case 4:
+            {
+                break;
+            }
+            }
+            local_41 = false;
+            if (int(local_16.DamageProcedureType) == 0)
+            {
+                local_41 = true;
+            }
+            else
+            {
+                local_35 = false;
+                local_36 = false;
+            }
+            local_13 = local_20.MatchGameplayTag(GameplayTags::CombatState_Invincible);
+            if (local_13)
+            {
+                local_31 = false;
+                local_32 = false;
+                local_33 = false;
+                local_34 = false;
+                local_35 = false;
+                local_36 = false;
+            }
+            FDamageApplyData local_164;
+            bool local_43 = local_31 || local_32 || local_33 || local_34 || local_35 || local_37 || local_41;
+            if (local_43)
+            {
+                FGameplayTagBisSetWrapper local_228 = FGameplayTagBisSetWrapper::FromEntity(local_16.DamageTarget);
+                if (local_31)
+                {
+                    FDamageAttributeModData local_302;
+                    FGameAttributeModificationValue local_322;
+                    FGameAttributeModificationValue local_332;
+                    FGameAttributeModificationValue local_312;
+                    FGameAttributeModificationValue local_368;
+                    local_43 = local_16.AttributeModifications.Find(Attribute::DamageAddRatio, local_302);
+                    if (local_43)
+                    {
+                        local_312 = local_302.ModValue;
+                    }
+                    local_333 = local_16.AttributeModifications.Find(::FDamageUtils::GetAttackerAttributeByDamageType(EDamageType(local_16.DamageType)), local_302);
+                    if (local_333)
+                    {
+                        local_322 = local_302.ModValue;
+                    }
+                    local_334 = local_16.AttributeModifications.Find(Attribute::TeamDamageAddRatio, local_302);
+                    if (local_334)
+                    {
+                        local_332 = local_302.ModValue;
+                    }
+                    FAttackerDamageAccumulation local_354 = local_164.AttackerAccumulationValues;
+                    if (local_16.bLatencyCompensation)
+                    {
+                        local_354.DamageAddRatio = FGameAttributeUtils::GetAttributeHistoryValueConditionalTags(local_24, Attribute::DamageAddRatio, local_16.Time, local_16.AttackTags, local_228, true, 0.0f, local_43, local_312);
+                        local_355 = FGameAttributeUtils::GetAttributeHistoryValueConditionalTags(local_24, ::FDamageUtils::GetAttackerAttributeByDamageType(EDamageType(local_16.DamageType)), local_16.Time, local_16.AttackTags, local_228, true, 0.0f, local_333, local_322);
+                        local_354.DamageTypeAddRatio = local_355;
+                        local_355 = FGameAttributeUtils::GetAttributeHistoryValue(local_24, Attribute::TeamDamageAddRatio, local_16.Time, true, 0.0f, local_334, local_332);
+                        local_354.TeamDamageAddRatio = local_355;
+                    }
+                    else
+                    {
+                        local_355 = FGameAttributeUtils::GetAttributeValueConditionalTags(local_24, Attribute::DamageAddRatio, local_16.Time, local_16.AttackTags, local_228, true, 0.0f, local_43, local_312);
+                        local_354.DamageAddRatio = local_355;
+                        local_354.DamageTypeAddRatio = FGameAttributeUtils::GetAttributeValueConditionalTags(local_24, ::FDamageUtils::GetAttackerAttributeByDamageType(EDamageType(local_16.DamageType)), local_16.Time, local_16.AttackTags, local_228, true, 0.0f, local_333, local_322);
+                        local_354.TeamDamageAddRatio = FGameAttributeUtils::GetAttributeValue(local_24, Attribute::TeamDamageAddRatio, local_16.Time, true, 0.0f, local_334, local_332);
+                    }
+                }
+                if (local_32)
+                {
+                }
+                if (local_33)
+                {
+                    FDamageAttributeModData local_302;
+                    FGameAttributeModificationValue local_332;
+                    FGameAttributeModificationValue local_312;
+                    bool local_351 = local_16.AttributeModifications.Find(Attribute::Vulnerable, local_302);
+                    if (local_351)
+                    {
+                        local_332 = local_302.ModValue;
+                    }
+                    local_334 = local_16.AttributeModifications.Find(Attribute::TeamVulnerable, local_302);
+                    if (local_334)
+                    {
+                        local_312 = local_302.ModValue;
+                    }
+                    local_164.DefenderAccumulationValues.VulnerableRatio = FMath::Max(-1.0f, FGameAttributeUtils::GetAttributeValueConditionalTags(local_20, Attribute::Vulnerable, local_16.Time, local_228, local_16.AttackTags, true, 0.0f, local_351, local_332));
+                    local_355 = FGameAttributeUtils::GetAttributeValue(local_20, Attribute::TeamVulnerable, local_16.Time, true, 0.0f, local_334, local_312);
+                    local_164.DefenderAccumulationValues.TeamVulnerableRatio = FMath::Max(-1.0f, local_355);
+                }
+                if (local_34)
+                {
+                    FDamageAttributeModData local_302;
+                    FGameAttributeModificationValue local_322;
+                    FGameAttributeModificationValue local_332;
+                    FGameAttributeModificationValue local_312;
+                    local_43 = local_16.AttributeModifications.Find(Attribute::TakeDamageReduceRatio, local_302);
+                    if (local_43)
+                    {
+                        local_322 = local_302.ModValue;
+                    }
+                    bool local_351_2 = local_16.AttributeModifications.Find(::FDamageUtils::GetDefenderAttributeByDamageType(EDamageType(local_16.DamageType)), local_302);
+                    if (local_351_2)
+                    {
+                        local_332 = local_302.ModValue;
+                    }
+                    local_334 = local_16.AttributeModifications.Find(Attribute::InnateDamageReduceRatio, local_302);
+                    if (local_334)
+                    {
+                        local_312 = local_302.ModValue;
+                    }
+                    local_333 = local_16.AttributeModifications.Find(Attribute::IndependentTakeDamageRatio, local_302);
+                    if (local_333)
+                    {
+                        local_368 = local_302.ModValue;
+                    }
+                    local_164.DefenderMultiplicationValues.DamageRatio = FGameAttributeUtils::GetAttributeValueConditionalTags(local_20, Attribute::TakeDamageReduceRatio, local_16.Time, local_16.AttackTags, local_228, true, 0.0f, local_43, local_322);
+                    local_164.DefenderMultiplicationValues.DamageTypeRatio = FGameAttributeUtils::GetAttributeValueConditionalTags(local_20, ::FDamageUtils::GetDefenderAttributeByDamageType(EDamageType(local_16.DamageType)), local_16.Time, local_16.AttackTags, local_228, true, 0.0f, local_351_2, local_332);
+                    local_164.DefenderMultiplicationValues.InnateDamageReduceRatio = FGameAttributeUtils::GetAttributeValueConditionalTags(local_20, Attribute::InnateDamageReduceRatio, local_16.Time, local_16.AttackTags, local_228, true, 0.0f, local_334, local_312);
+                    local_164.DefenderMultiplicationValues.IndependentDamageRatio = FGameAttributeUtils::GetAttributeValueConditionalTags(local_20, Attribute::IndependentTakeDamageRatio, local_16.Time, local_16.AttackTags, local_228, true, 1.0f, local_333, local_368);
+                    local_357 = local_164.DefenderMultiplicationValues.DamageRatio;
+                    local_357 = -local_357;
+                    local_355 = FMath::Max(-1.0f, local_357);
+                    local_164.DefenderMultiplicationValues.DamageRatio = (local_355 + 1.0f);
+                    float32 local_370 = FMath::Max(-1.0f, local_164.DefenderMultiplicationValues.DamageTypeRatio);
+                    local_164.DefenderMultiplicationValues.DamageTypeRatio = (local_370 + 1.0f);
+                    local_370 = local_164.DefenderMultiplicationValues.InnateDamageReduceRatio;
+                    local_370 = -local_370;
+                    local_356 = FMath::Max(-1.0f, local_370);
+                    local_164.DefenderMultiplicationValues.InnateDamageReduceRatio = (local_356 + 1.0f);
+                    local_355 = FMath::Max(0.0f, local_164.DefenderMultiplicationValues.IndependentDamageRatio);
+                    local_164.DefenderMultiplicationValues.IndependentDamageRatio = local_355;
+                    local_369 = !(local_16.DamageBodyPart.IsNone());
+                    if (local_369)
+                    {
+                        Get local_374;
+                        const FC_BodyPartsConfig& local_376 = local_374.opCall();
+                        if (local_376)
+                        {
+                            if (local_376.BodyPartData.BodyParts.Contains(local_16.DamageBodyPart))
+                            {
+                                FCharacterBodyPartConfig& local_378 = local_376.BodyPartData.BodyParts[local_16.DamageBodyPart];
+                                local_355 = local_378.DamageTypeRatio.GetDamageRatio(EDamageType(local_16.DamageType));
+                                local_370 = local_355 * local_378.DamageRatio;
+                                local_355 = FMath::Max(0.0f, local_370);
+                                local_164.DefenderMultiplicationValues.BodyPartRatio = local_355;
+                            }
+                        }
+                    }
+                }
+                if (local_35)
+                {
+                    FDamageAttributeModData local_302;
+                    FGameAttributeModificationValue local_368;
+                    local_369 = local_16.AttributeModifications.Find(Attribute::Defense, local_302);
+                    if (local_369)
+                    {
+                        local_368 = local_302.ModValue;
+                    }
+                    float32 local_370_2 = FGameAttributeUtils::GetAttributeValueConditionalTags(local_20, Attribute::Defense, local_16.Time, local_16.AttackTags, local_228, true, 0.0f, local_369, local_368);
+                    local_355 = ::FDamageUtils::CalcDefenseRatio(local_370_2) + 1.0f;
+                    local_164.DefenderMultiplicationValues.DefenseValueRatio = local_355;
+                }
+                if (local_36)
+                {
+                    Get local_384;
+                    const FC_DefenseHit& local_386 = local_384.opCall();
+                    if (local_386)
+                    {
+                        if (local_16.AttackData && ::FDamageUtils::CanDefense(EAttackType(local_387)))
+                        {
+                            const FDefenseHitData& local_390 = local_386.GetDefenseHitDatas()[int(local_16.HitBreakLevel)];
+                            if (local_390.GetbCanDefense())
+                            {
+                                local_164.bDefenseSuccess = true;
+                                local_164.DefenderMultiplicationValues.DefenseStateRatio = local_390.GetDefenseSuccessDamageRatio();
+                            }
+                            else
+                            {
+                                local_164.bDefenseSuccess = false;
+                                local_164.DefenderMultiplicationValues.DefenseStateRatio = local_390.GetDefenseFailedDamageRatio();
+                            }
+                            FDamageAttributeModData local_302;
+                            FGameAttributeModificationValue local_312;
+                            local_333 = local_16.AttributeModifications.Find(Attribute::GuardStateDamageRatio, local_302);
+                            if (local_333)
+                            {
+                                local_312 = local_302.ModValue;
+                            }
+                            float32 local_370_3 = FMath::Max(-1.0f, FGameAttributeUtils::GetAttributeValueConditionalTags(local_20, Attribute::GuardStateDamageRatio, local_16.Time, local_228, local_16.AttackTags, true, 0.0f, local_333, local_312));
+                            float32 local_379 = local_370_3 + 1.0f;
+                            local_370_3 = local_164.DefenderMultiplicationValues.DefenseStateRatio * local_379;
+                            local_164.DefenderMultiplicationValues.DefenseStateRatio = local_370_3;
+                        }
+                    }
+                }
+                if (local_41)
+                {
+                    FDamageAttributeModData local_302;
+                    FGameAttributeModificationValue local_322;
+                    FGameAttributeModificationValue local_368;
+                    FGameAttributeModificationValue local_332;
+                    local_43 = local_16.AttributeModifications.Find(Attribute::PostureDamageAddRatio, local_302);
+                    if (local_43)
+                    {
+                        local_322 = local_302.ModValue;
+                    }
+                    local_369 = local_16.AttributeModifications.Find(Attribute::TakePostureDamageReduceRatio, local_302);
+                    if (local_369)
+                    {
+                        local_368 = local_302.ModValue;
+                    }
+                    local_334 = local_16.AttributeModifications.Find(Attribute::TakePostureDamageAddRatio, local_302);
+                    if (local_334)
+                    {
+                        local_332 = local_302.ModValue;
+                    }
+                    if (local_16.bLatencyCompensation)
+                    {
+                        local_164.DealPostureDamageRatio = FGameAttributeUtils::GetAttributeHistoryValueConditionalTags(local_24, Attribute::PostureDamageAddRatio, local_16.Time, local_16.AttackTags, local_228, true, 0.0f, local_43, local_322);
+                    }
+                    else
+                    {
+                        local_164.DealPostureDamageRatio = FGameAttributeUtils::GetAttributeValueConditionalTags(local_24, Attribute::PostureDamageAddRatio, local_16.Time, local_16.AttackTags, local_228, true, 0.0f, local_43, local_322);
+                    }
+                    float32 local_379_2 = FMath::Max(-1.0f, local_164.DealPostureDamageRatio);
+                    local_164.DealPostureDamageRatio = (local_379_2 + 1.0f);
+                    local_355 = FGameAttributeUtils::GetAttributeValueConditionalTags(local_20, Attribute::TakePostureDamageReduceRatio, local_16.Time, local_228, local_16.AttackTags, true, 0.0f, local_369, local_368);
+                    local_356 = FGameAttributeUtils::GetAttributeValueConditionalTags(local_20, Attribute::TakePostureDamageAddRatio, local_16.Time, local_228, local_16.AttackTags, true, 0.0f, local_334, local_332);
+                    local_357 = local_355;
+                    local_357 = -local_357;
+                    local_355 = FMath::Clamp(local_357, -1.0f, 0.0f);
+                    local_356 = FMath::Max(0.0f, local_356);
+                    local_379_2 = local_355 + 1.0f;
+                    float32 local_392 = local_356 + 1.0f;
+                    local_164.TakePostureDamageRatio = (local_379_2 * local_392);
+                }
+                if (local_37)
+                {
+                    bool local_388;
+                    FDamageAttributeModData local_302;
+                    FGameAttributeModificationValue local_312;
+                    FGameAttributeModificationValue local_322;
+                    local_388 = local_16.AttributeModifications.Find(Attribute::CriticalRating, local_302);
+                    if (local_388)
+                    {
+                        local_312 = local_302.ModValue;
+                    }
+                    local_333 = local_16.AttributeModifications.Find(Attribute::CriticalDamage, local_302);
+                    if (local_333)
+                    {
+                        local_322 = local_302.ModValue;
+                    }
+                    if (local_16.bLatencyCompensation)
+                    {
+                        float32 local_370_4 = FGameAttributeUtils::GetAttributeHistoryValueConditionalTags(local_24, Attribute::CriticalRating, local_16.Time, local_16.AttackTags, local_228, true, 0.0f, local_388, local_312);
+                        local_164.CriticalRating = local_370_4;
+                        local_370_4 = FGameAttributeUtils::GetAttributeHistoryValueConditionalTags(local_24, Attribute::CriticalDamage, local_16.Time, local_16.AttackTags, local_228, true, 0.0f, local_333, local_322);
+                        local_164.CriticalDamage = local_370_4;
+                    }
+                    else
+                    {
+                        float32 local_370_5 = FGameAttributeUtils::GetAttributeValueConditionalTags(local_24, Attribute::CriticalRating, local_16.Time, local_16.AttackTags, local_228, true, 0.0f, local_388, local_312);
+                        local_164.CriticalRating = local_370_5;
+                        local_370_5 = FGameAttributeUtils::GetAttributeValueConditionalTags(local_24, Attribute::CriticalDamage, local_16.Time, local_16.AttackTags, local_228, true, 0.0f, local_333, local_322);
+                        local_164.CriticalDamage = local_370_5;
+                    }
+                    float32 local_392_2 = local_164.CriticalRating;
+                    local_164.CriticalRating = FMath::Max(0.0f, local_392_2);
+                    float32 local_370_6 = FMath::Max(-1.0f, local_164.CriticalDamage);
+                    local_164.CriticalDamage = (local_370_6 + 1.0f);
+                }
+            }
+            if (int(local_16.DamageProcedureType) != 0)
+            {
+                local_43 = false;
+            }
+            else
+            {
+                local_43 = local_16.AttackData;
+            }
+            if (local_43)
+            {
+                TDataObjectPtr<FComboHitDamageReduction> local_416 = GetComboDamageReduction();
+                if (local_416)
+                {
+                    const FComboHitDamageReduction& local_442;
+                    FComboHitReductionKey local_476;
+                    local_476.SetComboHitConfig(TDataObjectPtr<FComboHitDamageReduction>(local_442));
+                    local_476.SetDamageCaster(local_24);
+                    FComboHitReductionInfo local_504;
+                    local_369 = true;
+                    if (local_448.GetHitRecord().Find(local_476, local_504))
+                    {
+                        FFPTime local_506 = FFPTime(local_504.GetLastHitTime());
+                        float32 local_370_7 = local_442.Duration;
+                        FFPTime local_512 = (local_506 + FFPTime(local_370_7));
+                        if (local_512.opCmp(local_16.Time) >= 0)
+                        {
+                            local_369 = false;
+                            local_370_7 = 1.0f;
+                            float32 local_392_3 = local_504.GetComboCount();
+                            float32 local_379_3 = local_370_7 - (local_392_3 * local_442.ReduceRatio);
+                            local_355 = FMath::Max(0.0f, FMath::Max(local_379_3, local_442.MinDamageRatio));
+                            local_164.ComboDamageReductionRatio = local_355;
+                        }
+                    }
+                    else
+                    {
+                        local_448.GetModify_HitRecord().Add(local_476, local_504);
+                    }
+                    if (local_369)
+                    {
+                        local_504.SetComboCount(1);
+                    }
+                    else
+                    {
+                        local_504.SetComboCount((local_504.GetComboCount() + 1));
+                    }
+                    local_504.SetLastHitTime(local_16.Time);
+                }
+            }
+            if (CVar_Damage_HitNoBreakProtect.GetBool())
+            {
+                local_43 = int(local_16.DamageProcedureType) == 0 && ((this.HitProtectDataAsset != nullptr));
+                if (!(local_43))
+                {
+                    local_43 = false;
+                }
+                else
+                {
+                    Has local_520;
+                    local_43 = local_520.opCall();
+                }
+                if (local_43)
+                {
+                    FFPTime local_512_2 = (FFPTime(local_526.GetLastHitProtectTime()) + this.HitProtectDataAsset.HitDamageReduceRefreshTime);
+                    if (local_512_2.opCmp(local_16.Time) > 0)
+                    {
+                        local_526.SetHitProtectCount((local_526.GetHitProtectCount() + 1));
+                        for (auto& local_540 : this.HitProtectDataAsset.HitCountReduceRate)
+                        {
+                            if (int(local_540.HitCount) > local_526.GetHitProtectCount())
+                            {
+                                break;
+                            }
+                            local_355 = local_540.Rate;
+                            local_164.ContinuouslyHitProtectRatio = local_355;
+                        }
+                    }
+                    else
+                    {
+                        local_526.SetHitProtectCount(1);
+                        local_526.SetLastHitProtectTime(local_16.Time);
+                    }
+                }
+            }
+            float32 local_379_4 = ::FDamageUtils::GetGameModeCoefficient(local_24, local_20);
+            local_164.GameModeCoefficient = local_379_4;
+            float32 local_392_4 = local_16.ExternalCoefficient;
+            local_164.ExternalCoefficient = local_392_4;
+            local_164.FinalDamageSource = local_16.FinalDamageSource;
+            local_164.DirectDamageCauser = local_16.DirectDamageSource;
+            local_164.DamageProcedureType = EDamageProcedureType(local_16.DamageProcedureType);
+            local_164.DamageCalculationType = EDamageCalculationType(local_16.DamageCalculationType);
+            if (int(local_16.DamageProcedureType) == 0)
+            {
+                local_164.HitData.HitBreakLevel = EHitBreakLevel(local_16.HitBreakLevel);
+                local_164.HitData.HitType = EHitRecordType(local_16.HitType);
+                local_164.HitData.Position = local_16.Position;
+                local_164.HitData.AttackFromPosition = local_16.AttackFromPosition;
+                local_164.HitData.Direction = local_16.Direction;
+                local_164.HitData.StrikeKey = local_16.StrikeKey;
+                local_164.HitData.HitBodyPart = local_16.DamageBodyPart;
+                local_164.HitData.bHitWeakness = local_16.bIsWeakness;
+                local_164.HitData.bAttenuated = local_16.bIsAttenuated;
+            }
+            local_164.DamageType = EDamageType(local_16.DamageType);
+            local_164.AttackData = local_16.AttackData;
+            FDamageFinalValues local_568 = local_164.BaseDamage = local_16.BaseDamage;
+            if (local_37)
+            {
+                if (local_164.CriticalRating > 0.0f)
+                {
+                    local_357 = 0.0f;
+                    Get local_572;
+                    const FC_RandomSeed& local_574 = local_572.opCall();
+                    if (local_574)
+                    {
+                        local_357 = local_574.Rand(FCS_DamageToCalculateFrame, local_16.Time, 0);
+                    }
+                    else
+                    {
+                        Get local_582;
+                        const FC_RandomSeed& local_584 = local_582.opCall();
+                        if (local_584)
+                        {
+                            local_357 = local_584.Rand(FCS_DamageToCalculateFrame, local_16.Time, 0);
+                        }
+                    }
+                    if (local_357 < local_164.CriticalRating)
+                    {
+                        local_568.bCritical = true;
+                    }
+                }
+            }
+            local_568.bHitWeakness = local_16.bIsWeakness;
+            bool local_351_4 = this.CheckUseEcologyPosture(local_24, local_20);
+            local_568.bUseEcologyPosture = local_351_4;
+            if (local_568.bUseEcologyPosture)
+            {
+                local_568.PostureDamage = local_16.BaseDamage.GetEcologyPostureDamage();
+                Has local_588;
+                local_43 = local_588.opCall();
+                if (local_43)
+                {
+                    float32 local_370_8 = ::DamageSettings::Get().EcologyPostureProtectTakeRatio;
+                    local_392_4 = local_568.PostureDamage * local_370_8;
+                    local_568.PostureDamage = local_392_4;
+                }
+            }
+            else
+            {
+                float32 local_370_9 = local_16.BaseDamage.GetPostureDamage();
+                local_568.PostureDamage = local_370_9;
+                local_355 = local_568.PostureDamage;
+                local_392_4 = local_355 * local_164.DealPostureDamageRatio;
+                local_568.PostureDamage = local_392_4;
+                local_370_9 = local_568.PostureDamage;
+                local_355 = local_370_9 * local_164.TakePostureDamageRatio;
+                local_568.PostureDamage = local_355;
+                local_392_4 = local_568.PostureDamage;
+                local_370_9 = local_392_4 * local_164.ExternalCoefficient;
+                local_568.PostureDamage = local_370_9;
+            }
+            if (!(local_13))
+            {
+                local_355 = local_164.BaseDamage.GetHPDamage();
+                float32 local_370_10 = local_30.GetAttributeValue(Attribute::HPMax, local_16.Time);
+                local_379_4 = local_164.BaseDamage.GetHPDamage_MaxPercent();
+                local_392_4 = local_370_10 * local_379_4;
+                local_370_10 = local_355 + local_392_4;
+                local_392_4 = local_164.AttackerAccumulationValues.GetTotalDamageAddRatio();
+                local_355 = local_370_10 * local_392_4;
+                local_392_4 = local_164.AttackerMultiplicationValues.GetTotalDamageMultiplication();
+                local_370_10 = local_355 * local_392_4;
+                local_392_4 = local_164.DefenderAccumulationValues.GetTotalVulnerableRatio();
+                local_355 = local_370_10 * local_392_4;
+                local_392_4 = local_164.DefenderMultiplicationValues.GetTotalDamageMultiplication();
+                local_370_10 = local_355 * local_392_4;
+                local_392_4 = local_370_10 * local_164.ComboDamageReductionRatio;
+                local_568.HPDamage = (((local_392_4 * local_164.ContinuouslyHitProtectRatio) * local_164.GameModeCoefficient) * local_164.ExternalCoefficient);
+            }
+            if (local_568.bCritical)
+            {
+                local_568.HPDamage = (local_568.HPDamage * local_164.CriticalDamage);
+            }
+            local_43 = int(local_16.DamageProcedureType) == 0 && (int(local_16.AbnormalState) != 0);
+            if (local_43)
+            {
+                local_334 = false;
+                FAbnormalStateConfig local_994;
+                if (this.AbnormalData.AbnormalStateGlobalConfig.Find(local_16.AbnormalState, local_994))
+                {
+                    local_43 = local_994.AccumulationAttribute.IsValid() && local_994.AccumulationAttributeMax.IsValid() && local_994.StateTag.IsValid();
+                    local_333 = local_30.HasAttribute(local_994.AccumulationAttribute) && local_30.HasAttribute(local_994.AccumulationAttributeMax);
+                    local_351_4 = local_43 && local_333;
+                    local_334 = local_351_4;
+                }
+                if (local_334)
+                {
+                    local_568.AbnormalState = EAbnormalState(local_16.AbnormalState);
+                    local_568.AbnormalStateAccumulation = (local_16.BaseDamage.GetAbnormalStateAccumulation() * local_164.ComboDamageReductionRatio);
+                }
+                if (local_16.AttackData)
+                {
+                    local_568.bAbnormalEnhanced = local_351_4;
+                }
+            }
+            if (local_16.AttackData)
+            {
+                local_392_4 = GetEnvBreakDamageValue();
+                local_568.EnvBreakDamage = local_392_4;
+            }
+            local_568.DamageBodyPart = local_16.DamageBodyPart;
+            local_164.RecoverAttributeValues = local_16.RecoverEnergyValue.GetRecoverAttributeValues();
+            local_1020.Datas.Add(local_164);
+            if (ECS::IsAuthorityOrPrediction(local_24))
+            {
+                FDealDamageToApplyData local_1026;
+                local_1026.DamageTarget = local_20;
+                local_1026.DamageToApplyIndex = (local_1020.Datas.Num() - 1);
+                ModifyOrAdd local_1030;
+                local_1030.opCall().DamageToApply.Add(local_1026);
+            }
+        }
+        return;
     }
     UFUNCTION()
     void Job_MarkUseNewHitStateTransit(const FECSEntity &inout Entity, const FC_HitReactionConfig &inout HitReactionConfig) const
@@ -644,39 +1209,39 @@ class US_DamageSystem : UECSScriptSystem
                 local_434 += FString().Append("\n[DamageData] From entity ").Append(local_52.FinalDamageSource.GetEntityName()).Append(", To entity ").Append(Entity.GetEntityName());
                 local_434 += FString().Append("\n[DamageData] AttackData: ").Append(local_52.AttackData.GetDataName());
                 local_434 += FString().Append("\n[DamageData] DamageType: ").Append(local_52.DamageType);
-                local_434 += FString().Append("\n[DamageData] =============== дј¤е®іжњЂз»€еЂј =============== ");
-                local_434 += FString().Append("\n[DamageData] TotalDamageToHP(йќўжќїжЂ»HPдј¤е®і): ").Append(local_58);
-                local_434 += FString().Append("\n[DamageData] ActualDamageToHP(е®ћй™…HPдј¤е®і): ").Append(local_61);
-                local_434 += FString().Append("\n[DamageData] DamageToShield(еЇ№жЉ¤з›ѕдј¤е®і): ").Append(local_62);
-                local_434 += FString().Append("\n[DamageData] DamageToPosture(йџ§жЂ§дј¤е®і): ").Append(local_63);
-                local_434 += FString().Append("\n[DamageData] AbnormalValue(еј‚еёёзґЇз§ЇеЂј): ").Append(local_64);
-                local_434 += FString().Append("\n[DamageData] Critical(жЇеђ¦жљґе‡»): ").Append(local_52.FinalValues.bCritical);
-                local_434 += FString().Append("\n[DamageData] DamageBodyPart(дј¤е®ійѓЁдЅЌ): ").Append(local_52.FinalValues.DamageBodyPart.ToString());
-                local_434 += FString().Append("\n[DamageData] =============== дј¤е®іеџєзЎЂеЂј =============== ");
-                local_434 += FString().Append("\n[DamageData] BaseDamage(дј¤е®іеџєзЎЂеЂј): ").Append(local_52.BaseDamage.GetHPDamage());
-                local_434 += FString().Append("\n[DamageData] PercentDamage(дј¤е®іHPз™ѕе€†жЇ”еЂј): ").Append(local_52.BaseDamage.GetHPDamage_MaxPercent());
-                local_434 += FString().Append("\n[DamageData] =============== ж”»е‡»ж–№ж•°еЂј =============== ");
-                local_434 += FString().Append("\n[DamageData] DamageAddRatio(йЂ ж€ђдј¤е®іеўћеЉ ): ").Append(local_52.AttackerAccumulationValues.DamageAddRatio);
-                local_434 += FString().Append("\n[DamageData] DamageTypeAddRatio(йЂ ж€ђе±ћжЂ§дј¤е®іеўћеЉ ): ").Append(local_52.AttackerAccumulationValues.DamageTypeAddRatio);
-                local_434 += FString().Append("\n[DamageData] TeamDamageAddRatio(е›ўйџеўћдј¤): ").Append(local_52.AttackerAccumulationValues.TeamDamageAddRatio);
-                local_434 += FString().Append("\n[DamageData] FinalDamageRatio(жњЂз»€дј¤е®іеЂЌзЋ‡): ").Append(local_52.AttackerMultiplicationValues.FinalDamageRatio);
-                local_434 += FString().Append("\n[DamageData] =============== йІеѕЎж–№ж•°еЂј =============== ");
-                local_434 += FString().Append("\n[DamageData] VulnerableRatio(ж“дј¤еўћдј¤): ").Append(local_52.DefenderAccumulationValues.VulnerableRatio);
-                local_434 += FString().Append("\n[DamageData] TeamVulnerableRatio(е›ўйџж“дј¤еўћдј¤): ").Append(local_52.DefenderAccumulationValues.TeamVulnerableRatio);
-                local_434 += FString().Append("\n[DamageData] DamageRatio(еЏ—е€°дј¤е®іеЂЌзЋ‡): ").Append(local_52.DefenderMultiplicationValues.DamageRatio);
-                local_434 += FString().Append("\n[DamageData] DamageTypeRatio(еЏ—е€°е±ћжЂ§дј¤е®іеЂЌзЋ‡): ").Append(local_52.DefenderMultiplicationValues.DamageTypeRatio);
-                local_434 += FString().Append("\n[DamageData] InnateDamageReduceRatio(е…€е¤©е‡Џдј¤еЂЌзЋ‡): ").Append(local_52.DefenderMultiplicationValues.InnateDamageReduceRatio);
-                local_434 += FString().Append("\n[DamageData] IndependentDamageRatio(з‹¬з«‹е‡Џдј¤еЂЌзЋ‡): ").Append(local_52.DefenderMultiplicationValues.IndependentDamageRatio);
-                local_434 += FString().Append("\n[DamageData] DefenseValueRatio(йІеѕЎеЉ›дї®ж­ЈеЂЌзЋ‡): ").Append(local_52.DefenderMultiplicationValues.DefenseValueRatio);
-                local_434 += FString().Append("\n[DamageData] DefenseStateRatio(йІеѕЎзЉ¶жЂЃеЂЌзЋ‡): ").Append(local_52.DefenderMultiplicationValues.DefenseStateRatio);
-                local_434 += FString().Append("\n[DamageData] BodyPartName(йѓЁдЅЌеђЌ): ").Append(local_52.FinalValues.DamageBodyPart);
-                local_434 += FString().Append("\n[DamageData] BodyPartRatio(йѓЁдЅЌеЂЌзЋ‡): ").Append(local_52.DefenderMultiplicationValues.BodyPartRatio);
-                local_434 += FString().Append("\n[DamageData] =============== е…¶д»–дї®ж­Ј =============== ");
-                local_434 += FString().Append("\n[DamageData] ComboDamageReductionRatio(иїћз»­е‘Ѕдё­дј¤е®іиЎ°е‡Џ): ").Append(local_52.ComboDamageReductionRatio);
-                local_434 += FString().Append("\n[DamageData] ContinuouslyHitProtectRatio(иїћз»­е‘Ѕдё­дїќжЉ¤дј¤е®іиЎ°е‡Џ): ").Append(local_52.ContinuouslyHitProtectRatio);
-                local_434 += FString().Append("\n[DamageData] GameModeCoefficient(жёёж€ЏжЁЎејЏзі»ж•°): ").Append(local_52.GameModeCoefficient);
-                local_434 += FString().Append("\n[DamageData] ExternalCoefficient(е¤–йѓЁзі»ж•°): ").Append(local_52.ExternalCoefficient);
-                local_434 += FString().Append("\n[DamageData] DefenseSuccess(жЇеђ¦йІеѕЎж€ђеЉџ): ").Append(local_52.bDefenseSuccess);
+                local_434 += FString().Append("\n[DamageData] =============== 伤害最终值 =============== ");
+                local_434 += FString().Append("\n[DamageData] TotalDamageToHP(面板总HP伤害): ").Append(local_58);
+                local_434 += FString().Append("\n[DamageData] ActualDamageToHP(实际HP伤害): ").Append(local_61);
+                local_434 += FString().Append("\n[DamageData] DamageToShield(对护盾伤害): ").Append(local_62);
+                local_434 += FString().Append("\n[DamageData] DamageToPosture(韧性伤害): ").Append(local_63);
+                local_434 += FString().Append("\n[DamageData] AbnormalValue(异常累积值): ").Append(local_64);
+                local_434 += FString().Append("\n[DamageData] Critical(是否暴击): ").Append(local_52.FinalValues.bCritical);
+                local_434 += FString().Append("\n[DamageData] DamageBodyPart(伤害部位): ").Append(local_52.FinalValues.DamageBodyPart.ToString());
+                local_434 += FString().Append("\n[DamageData] =============== 伤害基础值 =============== ");
+                local_434 += FString().Append("\n[DamageData] BaseDamage(伤害基础值): ").Append(local_52.BaseDamage.GetHPDamage());
+                local_434 += FString().Append("\n[DamageData] PercentDamage(伤害HP百分比值): ").Append(local_52.BaseDamage.GetHPDamage_MaxPercent());
+                local_434 += FString().Append("\n[DamageData] =============== 攻击方数值 =============== ");
+                local_434 += FString().Append("\n[DamageData] DamageAddRatio(造成伤害增加): ").Append(local_52.AttackerAccumulationValues.DamageAddRatio);
+                local_434 += FString().Append("\n[DamageData] DamageTypeAddRatio(造成属性伤害增加): ").Append(local_52.AttackerAccumulationValues.DamageTypeAddRatio);
+                local_434 += FString().Append("\n[DamageData] TeamDamageAddRatio(团队增伤): ").Append(local_52.AttackerAccumulationValues.TeamDamageAddRatio);
+                local_434 += FString().Append("\n[DamageData] FinalDamageRatio(最终伤害倍率): ").Append(local_52.AttackerMultiplicationValues.FinalDamageRatio);
+                local_434 += FString().Append("\n[DamageData] =============== 防御方数值 =============== ");
+                local_434 += FString().Append("\n[DamageData] VulnerableRatio(易伤增伤): ").Append(local_52.DefenderAccumulationValues.VulnerableRatio);
+                local_434 += FString().Append("\n[DamageData] TeamVulnerableRatio(团队易伤增伤): ").Append(local_52.DefenderAccumulationValues.TeamVulnerableRatio);
+                local_434 += FString().Append("\n[DamageData] DamageRatio(受到伤害倍率): ").Append(local_52.DefenderMultiplicationValues.DamageRatio);
+                local_434 += FString().Append("\n[DamageData] DamageTypeRatio(受到属性伤害倍率): ").Append(local_52.DefenderMultiplicationValues.DamageTypeRatio);
+                local_434 += FString().Append("\n[DamageData] InnateDamageReduceRatio(先天减伤倍率): ").Append(local_52.DefenderMultiplicationValues.InnateDamageReduceRatio);
+                local_434 += FString().Append("\n[DamageData] IndependentDamageRatio(独立减伤倍率): ").Append(local_52.DefenderMultiplicationValues.IndependentDamageRatio);
+                local_434 += FString().Append("\n[DamageData] DefenseValueRatio(防御力修正倍率): ").Append(local_52.DefenderMultiplicationValues.DefenseValueRatio);
+                local_434 += FString().Append("\n[DamageData] DefenseStateRatio(防御状态倍率): ").Append(local_52.DefenderMultiplicationValues.DefenseStateRatio);
+                local_434 += FString().Append("\n[DamageData] BodyPartName(部位名): ").Append(local_52.FinalValues.DamageBodyPart);
+                local_434 += FString().Append("\n[DamageData] BodyPartRatio(部位倍率): ").Append(local_52.DefenderMultiplicationValues.BodyPartRatio);
+                local_434 += FString().Append("\n[DamageData] =============== 其他修正 =============== ");
+                local_434 += FString().Append("\n[DamageData] ComboDamageReductionRatio(连续命中伤害衰减): ").Append(local_52.ComboDamageReductionRatio);
+                local_434 += FString().Append("\n[DamageData] ContinuouslyHitProtectRatio(连续命中保护伤害衰减): ").Append(local_52.ContinuouslyHitProtectRatio);
+                local_434 += FString().Append("\n[DamageData] GameModeCoefficient(游戏模式系数): ").Append(local_52.GameModeCoefficient);
+                local_434 += FString().Append("\n[DamageData] ExternalCoefficient(外部系数): ").Append(local_52.ExternalCoefficient);
+                local_434 += FString().Append("\n[DamageData] DefenseSuccess(是否防御成功): ").Append(local_52.bDefenseSuccess);
                 local_434 += FString().Append("\n------------------------------------------------------");
                 Print(local_434, 5.0f, FLinearColor::LucBlue);
             }
@@ -1210,7 +1775,214 @@ class US_DamageSystem : UECSScriptSystem
     UFUNCTION()
     void Job_PostureChange(const FECSEntity &inout Entity, const FC_PosturePreChange &inout PosturePreChange, const FC_HitReactionConfig &inout HitReactionConfig, FC_HitReaction &inout HitReactionComp, const FCS_FixedTime &inout FixedTime) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        bool local_17;
+        int local_26 = 0;
+        bool local_27;
+        bool local_107;
+        ModifyOrAdd local_112;
+        int local_142 = 0;
+        FCE_DamageEvent local_160;
+        if (PosturePreChange.Changes.IsEmpty())
+        {
+            return;
+        }
+        FECSEntity local_6 = Entity;
+        Get local_10;
+        const FC_DamageReceiverTransfer& local_12 = local_10.opCall();
+        if (local_12)
+        {
+            if (!(local_12.GetbTransferDamageToPosture()))
+            {
+                local_17 = false;
+            }
+            else
+            {
+                Has local_16;
+                local_17 = local_16.opCall();
+            }
+            if (local_17)
+            {
+                local_6 = local_12.GetDamageValueToEntity();
+            }
+        }
+        if (!(ECS::IsAuthorityOrPrediction(local_6)))
+        {
+            return;
+        }
+        if (int(HitReactionComp.GetCurrentHitState()) == 9 || (int(HitReactionComp.GetCurrentHitState()) == 10) || (int(HitReactionComp.GetCurrentHitState()) == 11))
+        {
+            return;
+        }
+        if (!(local_26.HasAttribute(Attribute::Posture)))
+        {
+            return;
+        }
+        local_17 = Entity.MatchGameplayTag(GameplayTags::CombatState_Special_MutePosture);
+        bool local_1 = Entity.MatchGameplayTag(GameplayTags::ESM_HitState_SpecialHit);
+        float32 local_30 = local_26.GetAttributeValue(Attribute::Posture, FixedTime.Time);
+        float32 local_29 = local_26.GetAttributeValue(Attribute::PostureMax, FixedTime.Time);
+        float32 local_31 = local_26.GetAttributeValue(Attribute::TempPosture, FixedTime.Time);
+        float32 local_33 = -1.0f;
+        float32 local_34 = 0.0f;
+        float32 local_35 = 0.0f;
+        int local_36 = 0;
+        for (auto& local_50 : PosturePreChange.Changes)
+        {
+            TDataObjectPtr<FAttackData> local_74 = this.GetAttackDataFromDamageEventId(int(local_50.DamageEventId));
+            local_27 = !(local_50.bUseEcologyPosture);
+            if (local_27)
+            {
+                local_34 = local_34 + local_50.DeltaValue;
+                if (((local_30 + local_31) + local_34) <= 0.0f)
+                {
+                    if (PosturePreChange.bLockBreak)
+                    {
+                        float32 local_99 = -local_30;
+                        local_34 = (local_99 - local_31) + 1.0f;
+                    }
+                    else
+                    {
+                        if (int(HitReactionConfig.HitReactionType) == 1)
+                        {
+                            local_107 = true;
+                        }
+                        else
+                        {
+                            if (!(HitReactionComp.GetHitBreakResistance().CanBreak(EHitBreakLevel(local_50.HitBreakLevel))))
+                            {
+                                local_27 = false;
+                            }
+                            else
+                            {
+                                int local_19 = int(HitReactionConfig.DefaultHitBreakResistanceLevel);
+                                local_27 = (local_19 <= int(local_50.HitBreakLevel));
+                            }
+                            local_107 = local_27;
+                        }
+                        if (local_107)
+                        {
+                            HitReactionComp.SetbToBreakCurFrame(true);
+                            if (int(HitReactionConfig.HitReactionType) == 1)
+                            {
+                                local_112.opCall().TrySetHitState(Entity, this.HitBreakState, local_74, false, 0);
+                            }
+                            FFPTime local_118 = FFPTime(FixedTime.Time);
+                            ModifyOrAdd local_124;
+                            local_124.opCall().SetRecoverTime((local_118 + FFPTime(HitReactionConfig.BreakTime)));
+                            HitReactionComp.SetBreakStartTime(FixedTime.Time);
+                            Modify local_128;
+                            FC_ExecutedInfo& local_130 = local_128.opCall();
+                            if (local_130)
+                            {
+                                local_130.GetModify_ExecuteEntityArray().Empty(0);
+                                local_130.GetModify_AddBuffEntityArray().Empty(0);
+                                local_130.SetExecutionState(EExecutionState(1));
+                                local_130.SetExecuteTeamEntity(ENTITY_NULL);
+                                SendEvent local_136;
+                                local_136.opCall(FixedTime.Time);
+                                local_107 = ECS::GetRuntimeInfo().IsServer;
+                                bool local_28 = local_107 && (int(HitReactionConfig.HitReactionType) == 1);
+                                if (!(local_28))
+                                {
+                                    local_107 = false;
+                                }
+                                else
+                                {
+                                    local_107 = local_142;
+                                }
+                                if (!(local_107))
+                                {
+                                    local_28 = false;
+                                }
+                                else
+                                {
+                                    local_28 = local_142.ExecutionConfigData;
+                                }
+                                if (local_28)
+                                {
+                                    FFPTime local_120 = FFPTime(-1);
+                                    FECSWorldPtr local_146 = this.GetECSWorld();
+                                    FCE_ClientConditionTriggerReason local_152;
+                                    local_152.Reason = EClientConditionTriggerReason(1);
+                                }
+                            }
+                            if (int(local_50.DamageEventId) >= 0)
+                            {
+                                int local_106 = int(local_50.DamageEventId);
+                                FECSWorldPtr local_146_2 = ECS::GetECSWorld();
+                                FECSWorldPtr::PatchEvent(local_146_2);
+                                local_160.bMakeTargetPostureBreak = true;
+                            }
+                            break;
+                        }
+                    }
+                }
+                if (int(HitReactionConfig.HitReactionType) == 1 && !(local_17))
+                {
+                    for (auto local_174 : HitReactionConfig.PosturePhaseList)
+                    {
+                        float32 local_100 = local_29 * (1.0f - local_174);
+                        if (local_30 <= local_100)
+                        {
+                            continue;
+                        }
+                        if (local_30 > local_100 && ((local_30 + local_34) <= local_100))
+                        {
+                            if (PosturePreChange.bLockStagger || local_1)
+                            {
+                                local_34 = (local_100 - local_30) + 1.0f;
+                                break;
+                            }
+                            ++local_36;
+                            if ((!(HitReactionComp.GetbToBreakCurFrame()) && !(Entity.MatchGameplayTag(GameplayTags::CombatState_Special_MuteHitStagger))) && !(Entity.MatchGameplayTag(GameplayTags::CombatState_BlockAllHitReaction)))
+                            {
+                                local_112.opCall().TrySetHitState(Entity, this.HitStaggerState, local_74, false, 0);
+                                HitReactionComp.SetStaggerCount(local_36);
+                                if (int(local_50.DamageEventId) >= 0)
+                                {
+                                    int local_106_2 = int(local_50.DamageEventId);
+                                    FECSWorldPtr local_146_3 = ECS::GetECSWorld();
+                                    FECSWorldPtr::PatchEvent(local_146_3);
+                                    local_160.bMakeTargetPostureStagger = true;
+                                }
+                            }
+                            continue;
+                        }
+                        break;
+                    }
+                }
+                continue;
+            }
+            local_35 = local_35 + local_50.DeltaValue;
+            if (local_35 < 0.0f)
+            {
+                if (local_33 < 0.0f)
+                {
+                    local_33 = local_26.GetAttributeValue(Attribute::EcologyPosture, FixedTime.Time);
+                }
+                if ((local_33 + local_35) <= 0.0f)
+                {
+                    local_112.opCall().TrySetHitState(Entity, this.HitStaggerState, local_74, false, 0);
+                }
+            }
+        }
+        if (local_34 < 0.0f)
+        {
+            FGameAttributeUtils::Consume(local_6, Attribute::Posture, FixedTime.Time, -local_34);
+            if (HitReactionComp.GetbToBreakCurFrame())
+            {
+                FGameAttributeUtils::Recover(local_6, Attribute::Posture, FixedTime.Time, local_29, -1.0f);
+            }
+        }
+        if (local_35 < 0.0f)
+        {
+            FGameAttributeUtils::Consume(local_6, Attribute::EcologyPosture, FixedTime.Time, -local_35);
+            if (FGameAttributeUtils::GetAttributeValue(local_6, Attribute::EcologyPosture, FixedTime.Time, false, 0.0f, false, FGameAttributeModificationValue()) <= 0.0f)
+            {
+                FGameAttributeUtils::Recover(local_6, Attribute::EcologyPosture, FixedTime.Time, local_26.GetAttributeValue(Attribute::EcologyPostureMax, FixedTime.Time), -1.0f);
+            }
+        }
+        return;
     }
     UFUNCTION()
     void Job_ClearPosturePreChange(const FECSEntity &inout Entity) const
@@ -1222,7 +1994,67 @@ class US_DamageSystem : UECSScriptSystem
     UFUNCTION()
     void Job_BodyPartDestroy(const FECSEntity &inout Entity, const FC_BodyPartPreChange &inout BodyPartPreChange, const FC_BodyPartsConfig &inout BodyPartsConfig, FC_BodyParts &inout BodyParts, const FCS_FixedTime &inout FixedTime) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_28 = 0;
+        int local_90 = 0;
+        if (BodyPartPreChange.Changes.IsEmpty())
+        {
+            return;
+        }
+        for (auto& local_16 : BodyPartPreChange.Changes)
+        {
+            FCharacterBodyPartConfig& local_18 = BodyPartsConfig.BodyPartData.BodyParts[local_16.BodyPartName];
+            if (local_18.bCanDestroy)
+            {
+                float32 local_21;
+                FCharacterBodyPartRuntimeData& local_20 = BodyParts.GetModify_BodyPartDatas()[local_16.BodyPartName];
+                if (!(local_20.GetbCanDestroy()))
+                {
+                    continue;
+                }
+                local_21 = 0.0f;
+                if (local_18.bUseEnvBreakDamage)
+                {
+                    local_21 = local_18.EnvBreakBodyPartHP;
+                }
+                else
+                {
+                    if (local_28)
+                    {
+                        local_21 = local_18.DestroyHpRatio * local_28.GetAttributeValue(Attribute::HP, FixedTime.Time);
+                    }
+                }
+                float32 local_22 = local_20.GetAccumulatedDamage() + local_16.Damage;
+                local_20.SetAccumulatedDamage(local_22);
+                if (local_20.GetAccumulatedDamage() >= local_21)
+                {
+                    if (BodyPartPreChange.bLock || BodyParts.GetLockOneMutedBodyParts().Contains(local_16.BodyPartName))
+                    {
+                        local_22 = local_21 - 1.0f;
+                        local_20.SetAccumulatedDamage(local_22);
+                        continue;
+                    }
+                    TDataObjectPtr<FAttackData> local_56 = this.GetAttackDataFromDamageEventId(int(local_16.DamageEventId));
+                    ModifyOrAdd local_84;
+                    local_84.opCall().TrySetHitState(Entity, local_18.DestroyHitState, local_56, true, 0);
+                    local_20.SetbCanDestroy(false);
+                    local_90.BodyPart = local_16.BodyPartName;
+                    local_90.AttackData = local_56;
+                    local_90.DestroyedByEntity = local_16.SourceEntity;
+                    for (auto& local_104 : local_18.DestroyEnergyBallDrops)
+                    {
+                        ::EnergyBallUtils::SpawnEnergyBallInSphere(Entity, local_104.Prefab, FixedTime.Time, local_18.EnergyBallDetectRadius, int(local_104.Number), EEnergyBallSpawnDirection(0));
+                    }
+                    if (int(local_16.DamageEventId) >= 0)
+                    {
+                        FECSWorldPtr local_108 = ECS::GetECSWorld();
+                        FECSWorldPtr::PatchEvent(local_108);
+                        FCE_DamageEvent local_114;
+                        local_114.bMakeTargetBodyPartDestroy = true;
+                    }
+                }
+            }
+        }
+        return;
     }
     UFUNCTION()
     void Job_ClearBodyPartPreChange(const FECSEntity &inout Entity) const
@@ -1492,8 +2324,7 @@ class US_DamageSystem : UECSScriptSystem
         if (!(local_40.bUseNewHitStateTransit))
         {
             const FAttackData& local_34;
-            int local_41 = int(local_34.HitLevel);
-            this.Legacy_HitState_Transition(local_10, local_40, TDataObjectPtr<FAttackData>(), local_22, local_16, EAttackDataHitState(local_41));
+            this.Legacy_HitState_Transition(local_10, local_40, TDataObjectPtr<FAttackData>(local_34), local_22, local_16, EAttackDataHitState(local_34.HitLevel));
         }
         bool local_67 = false;
         local_68 = false;
@@ -1916,11 +2747,8 @@ class US_DamageSystem : UECSScriptSystem
             TDataObjectPtr<FAttackData> local_126 = TDataObjectPtr<FAttackData>(nullptr);
             this.Legacy_HitState_Transition(Entity, local_8, local_126, local_14, local_78, EAttackDataHitState(SimulateHit.HitLevel));
         }
-        int local_39 = SimulateHit.HitBreakLevel;
         int local_151 = SimulateHit.HitLevel;
-        FName local_163 = local_8.GetToStateName();
-        FHitLevelESMTransitInfo local_172;
-        local_8.SetHitStateByHitLevelESMTransitInfo(local_172);
+        local_8.SetHitStateByHitLevelESMTransitInfo(::FDamageUtils::PostProcessESMTransitHitStateName(local_8.GetToStateName(), EAttackDataHitState(local_151), EHitBreakLevel(SimulateHit.HitBreakLevel), Entity, local_78));
         FFPTime local_180 = FFPTime(-1);
         float32 local_49_2 = SimulateHit.HitImpulseX;
         int local_151_2 = SimulateHit.HitLevel;
@@ -1937,10 +2765,10 @@ class US_DamageSystem : UECSScriptSystem
             local_41_3 = float32(local_32.UnrotateVector(local_48_2).Rotation().Pitch);
             local_190.SetBeHitPushPitchRelative(local_41_3);
         }
-        FName local_163_2 = local_8.GetToStateName();
-        if (!(local_163_2.IsNone()))
+        FName local_163 = local_8.GetToStateName();
+        if (!(local_163.IsNone()))
         {
-            FESMExternalTransitHandle local_206 = Entity.ESMExternalTransitMainSM(local_163_2, NAME_None);
+            FESMExternalTransitHandle local_206 = Entity.ESMExternalTransitMainSM(local_163, NAME_None);
             bool local_2_2 = ECS::GetRuntimeInfo().IsClient;
             if (local_2_2)
             {
@@ -2037,10 +2865,10 @@ class US_DamageSystem : UECSScriptSystem
                             local_13 = local_16.bHitWeakness;
                             int local_134 = int(local_16.DamageType);
                             int local_135 = int(local_90.AttackType);
-                            bool local_136 = local_16.bAdjustPresentationHitPos;
+                            int local_136 = int(local_16.bAdjustPresentationHitPos);
                             float32 local_137 = local_16.DamageValue;
                             FFPTime local_130 = FFPTime(FixedTime.Time);
-                            ::FCombatUtils::ShowDamageNumber(local_122, Entity, FixedTime.Time, (local_130 + FFPTime((local_90.FreezeFrameTime * this.DelayShowDamageNumberRatio))), local_137, local_16.StrikeKey, local_136, local_16.Position, EAttackType(local_135), EDamageType(local_134), local_13, local_16.bAttenuated, local_35, local_90.DamageNumberRandomRatio, local_90.GetSpecialDamageTextConfig());
+                            ::FCombatUtils::ShowDamageNumber(local_122, Entity, FixedTime.Time, (local_130 + FFPTime((local_90.FreezeFrameTime * this.DelayShowDamageNumberRatio))), local_137, local_16.StrikeKey, (local_136 != 0), local_16.Position, EAttackType(local_135), EDamageType(local_134), local_13, local_16.bAttenuated, local_35, local_90.DamageNumberRandomRatio, local_90.GetSpecialDamageTextConfig());
                         }
                     }
                     else
@@ -2049,11 +2877,11 @@ class US_DamageSystem : UECSScriptSystem
                         local_35 = local_16.bCritical;
                         int local_134_2 = int(local_16.DamageType);
                         int local_135_2 = int(local_90.AttackType);
-                        bool local_136_2 = local_16.bAdjustPresentationHitPos;
+                        int local_136_2 = int(local_16.bAdjustPresentationHitPos);
                         float32 local_138 = local_16.DamageValue;
                         FFPTime local_130_2 = FFPTime(FixedTime.Time);
                         float32 local_123_2 = local_90.FreezeFrameTime;
-                        ::FCombatUtils::ShowDamageNumber(local_28, Entity, local_16.DamageTime, (local_130_2 + FFPTime((local_123_2 * this.DelayShowDamageNumberRatio))), local_138, local_16.StrikeKey, local_136_2, local_16.Position, EAttackType(local_135_2), EDamageType(local_134_2), local_16.bHitWeakness, local_16.bAttenuated, local_35, local_137_2, local_90.GetSpecialDamageTextConfig());
+                        ::FCombatUtils::ShowDamageNumber(local_28, Entity, local_16.DamageTime, (local_130_2 + FFPTime((local_123_2 * this.DelayShowDamageNumberRatio))), local_138, local_16.StrikeKey, (local_136_2 != 0), local_16.Position, EAttackType(local_135_2), EDamageType(local_134_2), local_16.bHitWeakness, local_16.bAttenuated, local_35, local_137_2, local_90.GetSpecialDamageTextConfig());
                         if (int(local_90.DamageCalculationType) == 3)
                         {
                             Modify local_144;
@@ -2073,7 +2901,7 @@ class US_DamageSystem : UECSScriptSystem
                                     {
                                         local_123_2 = local_90.DamageNumberRandomRatio;
                                         local_35 = local_16.bAttenuated;
-                                        ::FCombatUtils::ShowDamageNumber(local_122, Entity, FixedTime.Time, FixedTime.Time, local_16.DamageValue, local_16.StrikeKey, local_16.bAdjustPresentationHitPos, local_16.Position, EAttackType(local_90.AttackType), EDamageType(local_16.DamageType), local_16.bHitWeakness, local_35, local_16.bCritical, local_123_2, local_90.GetSpecialDamageTextConfig());
+                                        ::FCombatUtils::ShowDamageNumber(local_122, Entity, FixedTime.Time, FixedTime.Time, local_16.DamageValue, local_16.StrikeKey, (int(local_16.bAdjustPresentationHitPos) != 0), local_16.Position, EAttackType(local_90.AttackType), EDamageType(local_16.DamageType), local_16.bHitWeakness, local_35, local_16.bCritical, local_123_2, local_90.GetSpecialDamageTextConfig());
                                     }
                                 }
                             }
@@ -2083,7 +2911,7 @@ class US_DamageSystem : UECSScriptSystem
                 else
                 {
                     local_35 = local_16.bAttenuated;
-                    ::FCombatUtils::ShowDamageNumber(local_28, Entity, FixedTime.Time, FixedTime.Time, local_16.DamageValue, local_16.StrikeKey, local_16.bAdjustPresentationHitPos, local_16.Position, EAttackType(0), EDamageType(local_16.DamageType), local_16.bHitWeakness, local_35, local_16.bCritical, 1.0f, TDataObjectPtr<FSpecialDamageTextConfig>(nullptr));
+                    ::FCombatUtils::ShowDamageNumber(local_28, Entity, FixedTime.Time, FixedTime.Time, local_16.DamageValue, local_16.StrikeKey, (int(local_16.bAdjustPresentationHitPos) != 0), local_16.Position, EAttackType(0), EDamageType(local_16.DamageType), local_16.bHitWeakness, local_35, local_16.bCritical, 1.0f, TDataObjectPtr<FSpecialDamageTextConfig>(nullptr));
                 }
             }
         }
@@ -2241,7 +3069,51 @@ class US_DamageSystem : UECSScriptSystem
     UFUNCTION()
     void Job_OnRemovedAbnormalState(const FECSEntity &inout Entity, FC_BeRemovedAbnormalStates &inout BeRemovedAbnormalStates, const FCS_FixedTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        TArray<FECSEntity> local_4;
+        ::FASCommonUtils::GetEntityAllPlayerPawnEntities(Entity, local_4);
+        for (auto local_18 : BeRemovedAbnormalStates.GetToBeRemovedAbnormalStates())
+        {
+            FAbnormalStateConfig local_420;
+            if (!(this.AbnormalData.AbnormalStateGlobalConfig.Find(local_18, local_420)))
+            {
+                continue;
+            }
+            FGameAttributeRef local_434 = local_420.AccumulationAttribute;
+            FGameAttributeRef local_448 = local_420.AccumulationAttributeMax;
+            for (auto& local_462 : local_4)
+            {
+                Get local_466;
+                const FC_GameAttribute& local_468 = local_466.opCall();
+                if (local_468)
+                {
+                    if (local_468.HasAttribute(local_434) && local_468.HasAttribute(local_448))
+                    {
+                        FGameAttributeUtils::ChangeConsumeValue(local_462, local_434, Time.Time, local_468.GetAttributeMaxValue(local_448, Time.Time), -1.0f);
+                    }
+                }
+            }
+        }
+        Modify local_478;
+        FC_AbnormalState& local_474 = local_478.opCall();
+        if (local_474)
+        {
+            int local_482 = local_474.GetAbnormalStates().Num() - 1;
+            for (; local_482 >= 0; --local_482)
+            {
+                if (BeRemovedAbnormalStates.GetToBeRemovedAbnormalStates().Contains(local_474.GetAbnormalStates()[local_482].GetAbnormalStateType()))
+                {
+                    for (auto& local_462 : local_4)
+                    {
+                        local_474.GetAbnormalStates()[local_482].RemoveBuffFromPawn(local_462, Time.Time);
+                    }
+                    local_474.GetModify_AbnormalStates().RemoveAt(local_482);
+                }
+            }
+        }
+        BeRemovedAbnormalStates.GetModify_ToBeRemovedAbnormalStates().Empty(0);
+        Remove local_486;
+        local_486.opCall();
+        return;
     }
     UFUNCTION()
     void Job_OnClearAbnormalState(const FECSEntity &inout Entity, const FCS_FixedTime &inout Time) const
@@ -2811,8 +3683,7 @@ class US_DamageSystem : UECSScriptSystem
             }
             if (!(local_52.opCall()) == !(false))
             {
-                FString local_56 = "Timer job error: 'FC_LocalTag' included by job but not exist on ";
-                FString local_60 = local_32.ToString();
+                XLog(ELog(2), (FString("Timer job error: 'FC_LocalTag' included by job but not exist on ") + local_32.ToString()));
                 local_34 = true;
             }
             if (local_34)
@@ -4684,8 +5555,7 @@ class US_DamageSystem : UECSScriptSystem
             }
             if (!(local_52.opCall()) == !(false))
             {
-                FString local_56 = "Timer job error: 'FC_LocalTag' included by job but not exist on ";
-                FString local_60 = local_32.ToString();
+                XLog(ELog(2), (FString("Timer job error: 'FC_LocalTag' included by job but not exist on ") + local_32.ToString()));
                 local_34 = true;
             }
             if (local_34)
@@ -4856,8 +5726,7 @@ class US_DamageSystem : UECSScriptSystem
             }
             if (!(local_52.opCall()) == !(false))
             {
-                FString local_56 = "Timer job error: 'FC_LocalTag' included by job but not exist on ";
-                FString local_60 = local_32.ToString();
+                XLog(ELog(2), (FString("Timer job error: 'FC_LocalTag' included by job but not exist on ") + local_32.ToString()));
                 local_34 = true;
             }
             if (local_34)

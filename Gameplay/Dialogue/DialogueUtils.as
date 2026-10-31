@@ -1,4 +1,3 @@
-﻿
 namespace DialogueUtils
 {
 bool IsPlayingDialogue(const FECSEntity &inout DialogueEntity)
@@ -114,7 +113,6 @@ bool TryFindDialogueEntity(const TDataObjectPtr<FDialogueConfig> &inout Dialogue
     FECSEntity local_4;
     int local_184 = 0;
     int local_238;
-    FString local_254;
     DialogueEntity = local_4;
     GetGameplaySettings<UDialogueSettings> local_8;
     local_6 = local_8;
@@ -138,15 +136,13 @@ bool TryFindDialogueEntity(const TDataObjectPtr<FDialogueConfig> &inout Dialogue
             }
             for (auto& local_252 : local_238.InteractionPoints)
             {
-                local_252.PointType.GetDataName();
-                if ((local_254 == local_6.DialogueInteractionPointName))
+                if ((local_252.PointType.GetDataName() == local_6.DialogueInteractionPointName))
                 {
                     DialogueEntity = local_178;
                     return true;
                 }
             }
-            local_178.GetEntityName();
-            FString local_258 = local_254;
+            XWarning(ELog(64), FString().Append("[Dialogue] NPC entity found but no `").Append(local_6.DialogueInteractionPointName).Append("` interaction point on ").Append(local_178.GetEntityName()));
         }
     }
     return false;

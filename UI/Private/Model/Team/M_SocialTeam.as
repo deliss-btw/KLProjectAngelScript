@@ -1,4 +1,3 @@
-﻿
 namespace FM_SocialTeam
 {
     const int ModelId = 0;

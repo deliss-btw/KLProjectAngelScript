@@ -1,5 +1,3 @@
-﻿
-
 class UEQT_InCurrentCombatArea : UEnvQueryTest_ECS_BlueprintBase
 {
     UPROPERTY()
@@ -13,7 +11,6 @@ class UEQT_InCurrentCombatArea : UEnvQueryTest_ECS_BlueprintBase
 
     default SetWorkOnBool(true);
     default SetValidItemType(UEnvQueryItemType_VectorBase);
-
 
     UFUNCTION()
     void PrepareRunTest_Implementation(FEnvQueryTest_ECSContext &inout Context)

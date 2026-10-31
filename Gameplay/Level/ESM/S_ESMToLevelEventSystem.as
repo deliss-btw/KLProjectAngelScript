@@ -1,5 +1,3 @@
-﻿
-
 class US_ESMToLevelEventSystem : UECSScriptSystem
 {
     US_ESMToLevelEventSystem()

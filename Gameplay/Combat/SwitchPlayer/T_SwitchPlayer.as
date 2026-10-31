@@ -1,5 +1,3 @@
-﻿
-
 struct FT_SwitchPlayerAvatarConfig : FECSTrait
 {
     FECSTrait _base_FECSTrait;

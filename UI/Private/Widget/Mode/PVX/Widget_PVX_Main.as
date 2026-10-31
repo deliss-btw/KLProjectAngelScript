@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_PVX_Main
 {
     const int ViewID = 0;
@@ -42,8 +41,7 @@ class UWidget_PVX_Main : UEUIActivatableWidget
     {
         if (this.EUI_List != nullptr)
         {
-            int local_5 = GetMenuCategoryKeys().Num() - 1;
-            this.EUI_List.SetSelectedIndex(FMath::Min((GetCurrentMenuIndex() + 1)));
+            this.EUI_List.SetSelectedIndex(FMath::Min((GetCurrentMenuIndex() + 1), (GetMenuCategoryKeys().Num() - 1)));
         }
         return;
     }
@@ -152,6 +150,7 @@ namespace UWidget_PVX_Main
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_PVX_Main;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnDynamicWidgetChanged"));
     return;
 }

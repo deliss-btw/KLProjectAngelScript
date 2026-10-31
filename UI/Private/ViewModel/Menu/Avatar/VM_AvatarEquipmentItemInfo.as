@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AvatarEquipmentItemInfo
 {
     const int ModelId = 0;
@@ -88,7 +87,7 @@ struct FVM_AvatarEquipmentItemInfo : FEUIViewModel
             TEUIModelRef<FVM_EquipmentInfo> local_8 = this.GetEquipmentInfo();
             TEUIModelRef<FM_Equipment> local_10;
             local_10.GetEquipment();
-            EEquipSlotType local_2 = this.GetEquipSlot();
+            ::AvatarEquipmentMainUtil::GotoPage(this.GetContext().UELocalPlayer, this.GetEquipSlot(), GetEquiptingAvatar());
         }
         return;
     }

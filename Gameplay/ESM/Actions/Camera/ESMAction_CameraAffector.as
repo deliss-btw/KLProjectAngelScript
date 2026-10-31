@@ -1,12 +1,9 @@
-﻿
-
 class UESMAction_CameraAffector : UESMBPBaseSpanAction
 {
     UPROPERTY()
     FCameraAffectorItem AffectorItem;
     UPROPERTY()
     bool bSuppressWarningWithoutValidAffector = false;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const
@@ -31,7 +28,17 @@ class UESMAction_CameraAffector : UESMBPBaseSpanAction
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        Modify local_4;
+        FC_CameraAffector& local_6 = local_4.opCall();
+        if (local_6)
+        {
+            local_6.PushOverride(this.AffectorItem, this.GetDataPathName());
+            return;
+        }
+        if (this.bSuppressWarningWithoutValidAffector)
+        {
+        }
+        return;
     }
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const

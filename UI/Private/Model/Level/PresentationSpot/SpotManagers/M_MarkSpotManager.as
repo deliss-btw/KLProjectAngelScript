@@ -1,4 +1,3 @@
-﻿
 namespace FM_PlayerMarkSpotManager
 {
     const int ModelId = 0;
@@ -403,7 +402,26 @@ FM_PlayerMarkSpotManager CreateByManager(const UEUIManagerSubsystem Manager, con
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasBeginDestroy(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    FEUIModelMetaPropertyModelRef local_6;
+    local_6.PropertyName = FName("Player");
+    int local_2_2 = FM_Player::ModelId;
+    Result.FunctionalPropertyModelRefs.Add(local_6);
+    FEUIModelMsgHandleDefine local_18;
+    local_18.FunctionName = "__OnPlayerEntityChanged";
+    local_18.MessageTypeName = "Msg_PlayerEntityChanged";
+    local_18.SourcePropertyModelRefs = FBitSet64(1);
+    Result.MessageHandleFunctions.Add(local_18);
+    FEUIModelMonitorDefine local_32;
+    local_32.FunctionName = "__OnPlayerMarksChanged";
+    local_32.ComponentType = FC_PlayerMarks;
+    local_32.MonitorPropertyName = FName("PlayerEntity");
+    int local_2_3 = FM_PlayerMarkSpotManager::__IndexOf_PlayerEntity();
+    Result.MonitorFunctions.Add(local_32);
+    return;
 }
 UScriptStruct GetModelStruct()
 {
@@ -421,7 +439,9 @@ void __OnPlayerMarksChanged(FM_PlayerMarkSpotManager &inout Model, const FECSEnt
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorPlayerMarksLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerMarksModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_Player()
 {

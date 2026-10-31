@@ -1,4 +1,3 @@
-﻿
 namespace FVM_FriendNumInfo
 {
     const int ModelId = 0;

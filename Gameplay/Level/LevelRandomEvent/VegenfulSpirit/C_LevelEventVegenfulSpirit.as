@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCS_LevelEventVegenfulSpirit_NS
 {
     const TECSComponentDerivedPtr<FCS_LevelEventVegenfulSpirit> DerivedPtr = TECSComponentDerivedPtr<FCS_LevelEventVegenfulSpirit>();
@@ -15,11 +14,15 @@ struct FCS_LevelEventVegenfulSpirit : FECSSingleton
 
     FCS_LevelEventVegenfulSpirit()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FCS_LevelEventVegenfulSpirit(const FCS_LevelEventVegenfulSpirit &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_VegenfulSpiritEntity = Other.m_VegenfulSpiritEntity;
         this.m_DisplayName = Other.m_DisplayName;
@@ -155,17 +158,17 @@ bool RemoveLevelEventVegenfulSpirit(const FECSWorldPtr &inout World)
 }
 void __MonitorLevelEventVegenfulSpiritLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FCS_LevelEventVegenfulSpirit, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FCS_LevelEventVegenfulSpirit, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelEventVegenfulSpiritActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FCS_LevelEventVegenfulSpirit, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FCS_LevelEventVegenfulSpirit, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorLevelEventVegenfulSpiritModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FCS_LevelEventVegenfulSpirit, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FCS_LevelEventVegenfulSpirit, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

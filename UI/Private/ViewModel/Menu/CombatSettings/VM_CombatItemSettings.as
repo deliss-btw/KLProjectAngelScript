@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CombatItemSettings
 {
     const int ModelId = 0;

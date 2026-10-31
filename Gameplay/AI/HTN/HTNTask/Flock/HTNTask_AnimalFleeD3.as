@@ -1,5 +1,3 @@
-﻿
-
 class UHTNTask_D3FindScaredSource : UHTNTask_ECSScriptBase
 {
     UPROPERTY()
@@ -18,7 +16,6 @@ class UHTNTask_D3FindScaredSource : UHTNTask_ECSScriptBase
     float32 SearchRadius = 5000.0f;
 
     default SetNodeName("D3Demo_FindScaredSource");
-
 
     UFUNCTION()
     void CreatePlanSteps_Implementation(const FHTNContext &inout Context) const
@@ -86,7 +83,7 @@ class UHTNTask_D3FindScaredSource : UHTNTask_ECSScriptBase
                             }
                         }
                         Context.SetWorldStateAsName(this.OutReactionName, local_30);
-                        local_156.GetId();
+                        Context.SetWorldStateAsEntityId(this.OutSourceEntityId, local_156.GetId());
                         Context.SetWorldStateAsVector(this.OutSourcePosition, local_166.GetPosition());
                         Context.SetWorldStateAsBool(this.ReactionValidMark, true);
                         this.SubmitPlanStep(100, "");
@@ -156,10 +153,9 @@ class UHTNTask_D3MakeChangeAreaRequestByFlee : UHTNTask_ECSScriptBase
         FResourceSearchRequest local_112;
         this.ResourceRequest.MakeRequest(local_12, local_112);
         TArray<FEntitySearchResult> local_116 = ::FEcologySceneInfoUtils::RequestResource(local_112);
-        FAISmartValueContext local_132;
-        FInstancedStruct::Make(local_132);
-        FName local_136 = this.ResultSaveKey.GetValue(Context.opImplConv());
-        FECSEntity local_22 = Context.GetControllerEntity();
+        FEntitySearchResultList local_128;
+        FInstancedStruct local_132 = FInstancedStruct::Make(local_128);
+        ::SetEcologyBlob(Context.GetControllerEntity(), this.ResultSaveKey.GetValue(Context.opImplConv()), local_132);
         return (local_116.Num() > 0);
     }
 }

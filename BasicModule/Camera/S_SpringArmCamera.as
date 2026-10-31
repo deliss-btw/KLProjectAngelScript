@@ -1,9 +1,6 @@
-﻿
-
 class US_SpringArmCameraSystem : UECSScriptSystem
 {
     float32 DamperMagicNumber = 26.0f;
-
 
     void CalculateSpringArmPosition(const FVector &inout FollowTargetLocation, const FQuat &inout CameraRotation, const FVector &inout TargetOffset, const FVector &inout SocketOffset, FVector3f &inout OutPosition) const
     {
@@ -25,8 +22,29 @@ class US_SpringArmCameraSystem : UECSScriptSystem
     }
     bool SweepCamera(const UWorld UEWorld, const FVector &inout Start, const FVector &inout End, const float32 ProbeSize, const FVector &inout OriginFollowPos, const float32 MuteCollisionDistance, FHitResult &inout OutHit) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
-        bool __r; return __r;
+        FCollisionQueryParams local_38;
+        local_38.AddIgnoredActors(TArray<AActor>());
+        TArray<FHitResult> local_46;
+        FCollisionResponseParams local_59;
+        FPhysicsUtils::SweepMulti(UEWorld, EPhysicsTraceTag(1), local_46, Start, End, FQuat::Identity, ECollisionChannel(4), FCollisionShape::MakeSphere(ProbeSize + 1.0f), local_38, local_59);
+        int local_63 = 0;
+        for (; local_63 < local_46.Num(); ++local_63)
+        {
+            if (MuteCollisionDistance > 0.0f)
+            {
+                if (float32(((FVector(local_46[local_63].Location) - OriginFollowPos).SizeSquared())) < (MuteCollisionDistance * MuteCollisionDistance))
+                {
+                    continue;
+                }
+            }
+            if (!(local_46[local_63].GetbBlockingHit()))
+            {
+                continue;
+            }
+            OutHit = local_46[local_63];
+            return true;
+        }
+        return false;
     }
     void CollisionSpringIteration(const UWorld UEWorld, const FVector &inout FollowTargetPosition, const FTransform &inout TransformToSpring, const FVector &inout CamTargetPos, const float32 TargetOffsetRatio, const float32 SocketOffsetRatio, const float32 MuteCollisionDistance, float32 &inout OutTargetOffsetRatio, float32 &inout OutSocketOffsetRatio, FVector &inout OutFinalPosition) const
     {
@@ -185,11 +203,11 @@ class US_SpringArmCameraSystem : UECSScriptSystem
     }
     void BlendToSpringArmCamera(const FSpringArmCameraData &inout SpringArmCamera, FCameraInstancedData &inout LastCameraData, FCameraInstancedData &inout CurrentCameraData, const float32 CameraWeight) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     void BlendToSpringArmCamera(const FSpringArmCameraPresentationData &inout SpringArmCamera, FCameraInstancedData &inout LastCameraData, FCameraInstancedData &inout CurrentCameraData, const float32 CameraWeight) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     void TryPreBlendCameraParams(FTPCameraStateParams &inout OutStateParams, const FTPCameraStateConfig &inout Config, FCameraInstancedData &inout LastCameraData, const float32 BlendWeightTowardCurrent) const
     {
@@ -213,7 +231,7 @@ class US_SpringArmCameraSystem : UECSScriptSystem
     {
         int local_22 = 0;
         int local_36 = 0;
-        float32 local_52 = 0.0f;
+        int local_52 = 0;
         int local_60 = 0;
         int local_78 = 0;
         if (!(LocalPlayer.PlayerEntity.IsValid()) || !((Entity == LocalPlayer.PlayerEntity)))
@@ -375,7 +393,7 @@ class US_SpringArmCameraSystem : UECSScriptSystem
     UFUNCTION()
     void ClientJob_BlendSpringArmCamera(const FECSEntity &inout Entity, const FCS_LocalPlayer &inout LocalPlayer) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     UFUNCTION()
     void Run_ClientJob_ApplySpringArmCameraModification_LookAt() const

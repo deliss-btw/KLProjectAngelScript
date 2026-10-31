@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ForgeWeaponInfo_Helpers
 {
 UFUNCTION()

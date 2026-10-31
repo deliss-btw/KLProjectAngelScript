@@ -1,5 +1,3 @@
-﻿
-
 struct FAimPoseCompensatorConfig
 {
     UPROPERTY()
@@ -25,7 +23,6 @@ struct FAimPoseCompensatorConfig
     UPROPERTY()
     bool bEnableDebugDraw = false;
 
-
 }
 
 struct FAimPoseCompensatorOverride
@@ -44,11 +41,28 @@ struct FAimPoseCompensatorOverride
 
     FAimPoseCompensatorOverride()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bOverrideEnabled = false;
+        this.m_bEnabled = true;
+        this.m_bOverrideWeight = false;
+        this.m_Weight = 1.0f;
+        return;
     }
     FAimPoseCompensatorOverride(const FAimPoseCompensatorOverride &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_bOverrideEnabled = false;
+        this.m_bEnabled = true;
+        this.m_bOverrideWeight = false;
+        this.m_Weight = 1.0f;
+        this.m_Name = Other.m_Name;
+        this.m_bOverrideEnabled = Other.m_bOverrideEnabled;
+        this.m_bEnabled = Other.m_bEnabled;
+        this.m_bOverrideWeight = Other.m_bOverrideWeight;
+        this.m_Weight = Other.m_Weight;
+        return;
     }
     FAimPoseCompensatorOverride opAssign(const FAimPoseCompensatorOverride &inout Other)
     {

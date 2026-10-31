@@ -1,5 +1,3 @@
-﻿
-
 class US_LevelSpotSystem : UECSScriptSystem
 {
     US_LevelSpotSystem()
@@ -97,7 +95,30 @@ class US_LevelSpotSystem : UECSScriptSystem
     UFUNCTION()
     void Job_OnCreatureMetaChangedDefer(const FECSEntity &inout Entity) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        bool local_5;
+        int local_12 = 0;
+        Remove local_4;
+        local_4.opCall();
+        if (!(local_12))
+        {
+            local_5 = true;
+        }
+        else
+        {
+            Has local_16;
+            local_5 = local_16.opCall();
+        }
+        if (local_5)
+        {
+            ::EntityLevelSpotUtils::RemoveSpotData(Entity, ELevelSpotDataSource(6));
+            return;
+        }
+        FLevelSpotData local_144 = this.GetLevelSpotDataFromCreatureMeta(local_12);
+        if (local_144)
+        {
+            ::EntityLevelSpotUtils::AddSpotData(Entity, ELevelSpotDataSource(6), local_144);
+        }
+        return;
     }
     UFUNCTION()
     void Monitor_OnEntityWithLevelSpotAdded(const FECSEntity &inout Entity, const FC_LevelSpot &inout C_LevelSpot) const
@@ -115,12 +136,33 @@ class US_LevelSpotSystem : UECSScriptSystem
     UFUNCTION()
     void Job_InitLevelSpotConfig(const FECSEntity &inout Entity, const FC_LevelSpotConfig &inout C_LevelSpotConfig) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FLevelSpotData local_126 = FLevelSpotData(C_LevelSpotConfig.PresentationConfig, C_LevelSpotConfig.PresentationRuleConfig);
+        if (C_LevelSpotConfig.bSyncViewersToEntityNetRelevance)
+        {
+            ::EntityLevelSpotUtils::AddSpotDataForViewers(Entity, ELevelSpotDataSource(5), local_126, ::LevelSpotViewerUtils::GetNetRelevantViewers(Entity));
+        }
+        else
+        {
+            ::EntityLevelSpotUtils::AddSpotData(Entity, ELevelSpotDataSource(5), local_126);
+        }
+        Remove local_178;
+        local_178.opCall();
+        return;
     }
     UFUNCTION()
     void Job_SyncLevelSpotViewersToNetRelevance(const FECSEntity &inout Entity, const FC_LevelSpotConfig &inout C_LevelSpotConfig) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_8 = 0;
+        if (!(C_LevelSpotConfig.bSyncViewersToEntityNetRelevance))
+        {
+            return;
+        }
+        if (!(local_8) || !(local_8.GetLevelSpotInfo().HasOverride(ELevelSpotDataSource(5))))
+        {
+            return;
+        }
+        ::EntityLevelSpotUtils::ChangeSpotDataViewers(Entity, ELevelSpotDataSource(5), ::LevelSpotViewerUtils::GetNetRelevantViewers(Entity));
+        return;
     }
     UFUNCTION()
     void Job_OnEntityGameplayTagInit(const FECSEntity &inout Entity, const FC_GameplayTags &inout C_GameplayTags) const
@@ -155,7 +197,28 @@ class US_LevelSpotSystem : UECSScriptSystem
     }
     void UpdateLevelSpotDataFromGameplayTags(const FECSEntity &inout Entity, const FC_GameplayTags &inout C_GameplayTags) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        const ULevelSpotSettings local_2;
+        GetGameplaySettings<ULevelSpotSettings> local_4;
+        local_2 = local_4;
+        bool local_7 = false;
+        for (auto& local_26 : local_2.AutoApplyRuleConfigByTag)
+        {
+            if (C_GameplayTags.Match(local_26.GetKey()))
+            {
+                FLevelSpotData local_152;
+                if (local_152)
+                {
+                    ::EntityLevelSpotUtils::AddSpotData(Entity, ELevelSpotDataSource(0), local_152);
+                    local_7 = true;
+                    break;
+                }
+            }
+        }
+        if (!(local_7))
+        {
+            ::EntityLevelSpotUtils::RemoveSpotData(Entity, ELevelSpotDataSource(0));
+        }
+        return;
     }
     void OnNewViewerEnterGame(const FECSEntity &inout Viewer, FCS_LevelSpotViewerSummary &inout C_LevelSpotViewerSummary) const
     {
@@ -335,7 +398,7 @@ class US_LevelSpotSystem : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_SyncEntityLevelSpotToViewers(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = ::__GetMonitorLevelSpotOnActiveView(this.GetECSWorld(), EECSRegType(0), true, true);
+        FECSMonitorRuntimeView local_56 = ::__GetMonitorLevelSpotOnActiveView(this.GetECSWorld(), EECSRegType(0), (1 != 0), true);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {
@@ -464,7 +527,7 @@ class US_LevelSpotSystem : UECSScriptSystem
             GetComponent local_50_2 = FECSMonitorRuntimeViewItem::GetComponent(local_42_2);
             this.Monitor_OnCreatureMetaChanged(local_46, local_52);
         }
-        FECSMonitorRuntimeView local_56 = ::__GetMonitorCreatureMetaOnRemoveView(this.GetECSWorld(), EECSRegType(0), true, true);
+        FECSMonitorRuntimeView local_56 = ::__GetMonitorCreatureMetaOnRemoveView(this.GetECSWorld(), EECSRegType(0), (1 != 0), true);
         FECSMonitorRuntimeViewIterator local_28_2 = local_56.Iterator();
         for (; local_28_2.CanProceed;)
         {

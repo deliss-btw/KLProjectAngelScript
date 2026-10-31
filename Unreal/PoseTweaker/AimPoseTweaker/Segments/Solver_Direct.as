@@ -1,5 +1,3 @@
-﻿
-
 class USolver_DirectWeightCurve : UAimPoseSegmentSolver
 {
     EAimPoseYawOutOfRangeMode YawOutOfRangeMode = EAimPoseYawOutOfRangeMode(0);
@@ -17,7 +15,6 @@ class USolver_DirectWeightCurve : UAimPoseSegmentSolver
     float32 CfgNeutralYaw = 0.0f;
     float32 CfgReturnThreshold = 30.0f;
     float32 CfgRecoverThreshold = 15.0f;
-
 
     void ResetToConfigDefaults()
     {

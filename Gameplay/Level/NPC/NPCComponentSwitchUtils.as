@@ -1,4 +1,3 @@
-﻿
 namespace FNPCComponentSwitchUtils
 {
 ENPCComponentSwitchAction ResolveAction(const FNPCMainConfig &inout NPCConfig, const ENPCRuntimeComponentFeature Feature)

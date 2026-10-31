@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MobilePageEntrance
 {
     const int ModelId = 0;

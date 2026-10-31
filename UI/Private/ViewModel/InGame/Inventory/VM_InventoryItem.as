@@ -1,4 +1,3 @@
-﻿
 namespace FVM_InventoryItem
 {
     const int ModelId = 0;
@@ -16,7 +15,8 @@ struct FItemModelData
     }
     FItemModelData(const TEUIModelRef<FM_ItemData> &inout InItemDataModel)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.ItemDataModel = InItemDataModel;
+        return;
     }
 }
 
@@ -433,7 +433,6 @@ struct __GeneratedProperties_FVM_InventoryItem
     UPROPERTY()
     TEUIModelRef<FVM_InventoryItem> Self;
 
-
 }
 
 namespace FVM_InventoryItem
@@ -450,7 +449,92 @@ FVM_InventoryItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUI
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "bIsValid";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ItemModels";
+    local_14.TypeName = "FEUIModelContainer";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CommonItemVM";
+    local_14.TypeName = "TEUIModelRef<FVM_CommonItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ItemOperationList";
+    local_14.TypeName = "TEUIModelWeakRef<FVM_ItemOperationList>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsValid";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsFixed";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasNoOtherFixedItem";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsEquiped";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "EquipItemLevelText";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ItemNum";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsShowItemNum";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_InventoryItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_InventoryItem;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(6);
+    local_22.AddRefPropertyDirty(0, 3, FVM_ItemOperationList::__IndexOf_bShowList());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("ItemOperationList");
+    int local_2_2 = FVM_ItemOperationList::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(3);
+    local_30.RelatedDirtyMask.SetBit(FVM_ItemOperationList::__IndexOf_bShowList(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelMsgHandleDefine local_42;
+    local_42.FunctionName = "__OnInventoryChanged";
+    local_42.MessageTypeName = "Msg_PlayerInventoryChanged";
+    local_42.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_42);
+    FEUIModelDirtyDefine local_54;
+    local_54.FunctionName = "__OnItemOperationListShowListChanged";
+    local_54.DirtyFlags.Set(FVM_InventoryItem::__IndexOf_ItemOperationList());
+    local_54.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_54);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

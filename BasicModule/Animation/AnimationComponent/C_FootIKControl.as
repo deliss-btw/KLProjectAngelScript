@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_FootIKControl_NS
 {
     const TECSComponentDerivedPtr<FC_FootIKControl> DerivedPtr = TECSComponentDerivedPtr<FC_FootIKControl>();
@@ -31,11 +30,41 @@ struct FC_FootIKControl : FECSComponent
 
     FC_FootIKControl()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_Weight = 0.0f;
+        this.m_FloorNormal = FVector(0.0, 0.0, 1.0);
+        this.m_GroundPlaneLocation = FVector::ZeroVector;
+        this.m_GroundPlaneRotation = FQuat::Identity;
+        this.m_BodyPivotControl = 1.0f;
+        this.m_LegFollowBodyRotationWeight = 1.0f;
+        this.m_TargetBodyPivotControl = 1.0f;
+        this.m_TargetLegFollowBodyRotationWeight = 1.0f;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_FootIKControl(const FC_FootIKControl &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_Weight = 0.0f;
+        this.m_FloorNormal = FVector(0.0, 0.0, 1.0);
+        this.m_GroundPlaneLocation = FVector::ZeroVector;
+        this.m_GroundPlaneRotation = FQuat::Identity;
+        this.m_BodyPivotControl = 1.0f;
+        this.m_LegFollowBodyRotationWeight = 1.0f;
+        this.m_TargetBodyPivotControl = 1.0f;
+        this.m_TargetLegFollowBodyRotationWeight = 1.0f;
+        this.__InitDirtyFlags();
+        this.m_Weight = Other.m_Weight;
+        this.m_FloorNormal = Other.m_FloorNormal;
+        this.m_GroundPlaneLocation = Other.m_GroundPlaneLocation;
+        this.m_GroundPlaneRotation = Other.m_GroundPlaneRotation;
+        this.m_BodyPivotControl = Other.m_BodyPivotControl;
+        this.m_LegFollowBodyRotationWeight = Other.m_LegFollowBodyRotationWeight;
+        this.m_TargetBodyPivotControl = Other.m_TargetBodyPivotControl;
+        this.m_TargetLegFollowBodyRotationWeight = Other.m_TargetLegFollowBodyRotationWeight;
+        return;
     }
     FC_FootIKControl opAssign(const FC_FootIKControl &inout Other)
     {
@@ -267,37 +296,37 @@ bool RemoveFootIKControl(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorFootIKControlOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_FootIKControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_FootIKControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFootIKControlOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_FootIKControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_FootIKControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFootIKControlOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_FootIKControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_FootIKControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFootIKControlOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_FootIKControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_FootIKControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFootIKControlOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_FootIKControl, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_FootIKControl, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorFootIKControlLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_FootIKControl, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_FootIKControl, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFootIKControlActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_FootIKControl, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_FootIKControl, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFootIKControlModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_FootIKControl, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_FootIKControl, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

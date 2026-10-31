@@ -1,5 +1,3 @@
-﻿
-
 class US_ItemQuickSlotSystem : UECSScriptSystem
 {
     US_ItemQuickSlotSystem()
@@ -142,6 +140,7 @@ class US_ItemQuickSlotSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_HandleQuickSlotItemChanged(const FCE_NotifyQuickSlotItemChanged &inout Event, const FCS_FixedTime &inout FixedTime) const
     {
+        int local_4;
         int local_22 = 0;
         USkillConfig local_100;
         USkillConfig local_102;
@@ -209,7 +208,16 @@ class US_ItemQuickSlotSystem : UECSScriptSystem
                     {
                         ::InventoryUtils::EquipQuickSlotSkill(local_216, local_104, EESMTriggerInputSlot(Event.QuickSlot.opArrow().InputSlot));
                         int local_3 = FSkillUtils::GetSkillIndex(local_216, local_104);
-                        if ((local_201 > 0.0f && (local_201 < 1.0f)))
+                        if (local_201 <= 0.0f)
+                        {
+                            local_4 = 0;
+                        }
+                        else
+                        {
+                            bool local_219 = (local_201 < 1.0f);
+                            local_4 = local_219;
+                        }
+                        if (local_4 != 0)
                         {
                             float32 local_202 = 1.0f - local_201;
                             FSkillUtils::SetSkillCD(local_216, local_3, FixedTime.Time, local_202);

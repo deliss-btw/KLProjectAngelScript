@@ -1,5 +1,3 @@
-﻿
-
 class US_EcosimAIV2TeamSystem : UECSScriptSystem
 {
     US_EcosimAIV2TeamSystem()

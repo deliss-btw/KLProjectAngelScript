@@ -1,12 +1,9 @@
-﻿
-
 struct FPlayerMappableKeyCallback : FEUIModelDelegate
 {
-    FEUIModelDelegate _base_FEUIModelDelegate;
+    FEUIModelDelegate _base_FEUIModelDelegate = FEUIModelDelegate("bool", "FKey");
 
     FPlayerMappableKeyCallback()
     {
-        FEUIModelDelegate local_26 = FEUIModelDelegate("bool", "FKey");
         return;
     }
     bool Execute(const FKey &inout Arg0) const

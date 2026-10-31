@@ -1,5 +1,3 @@
-﻿
-
 class US_AnimAimPoseSystemAS : UECSScriptSystem
 {
     US_AnimAimPoseSystemAS()

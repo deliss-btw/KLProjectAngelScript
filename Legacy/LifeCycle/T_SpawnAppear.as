@@ -1,5 +1,3 @@
-﻿
-
 struct FT_SpawnAppear : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -9,7 +7,6 @@ struct FT_SpawnAppear : FECSTrait
     bool bHas_FC_SpawnAppearConfig = false;
     UPROPERTY()
     FC_SpawnAppearConfig Config_FC_SpawnAppearConfig;
-
 
 }
 

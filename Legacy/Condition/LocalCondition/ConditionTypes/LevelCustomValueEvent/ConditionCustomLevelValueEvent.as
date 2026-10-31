@@ -1,8 +1,3 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: FConditionCustomLevelValueEventConfig (body was stubbed).
-// They are carried over byte-exact when this module is recompiled.
-
 class UConditionCustomLevelValueEvent : ULocalConditionTypeDefineBase
 {
     UConditionCustomLevelValueEvent()
@@ -12,7 +7,9 @@ class UConditionCustomLevelValueEvent : ULocalConditionTypeDefineBase
     }
     void OnConditionRegistered(const FLocalConditionInstance &inout ConditionInstance) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FECSWorldPtr local_2 = ECS::GetECSWorld();
+        0.MonitoredEvents.FindOrAdd(this.GetEventName(GetConditionConfig())).ConditionInstances.Add(ConditionInstance.GetHandle());
+        return;
     }
     void OnConditionUnregistered(const FLocalConditionInstance &inout ConditionInstance) const
     {
@@ -51,9 +48,10 @@ struct FConditionCustomLevelValueEventConfig : FLocalConditionTypeDefineConfigBa
     UPROPERTY()
     FName EventName;
 
+    default _base_FLocalConditionTypeDefineConfigBase = UConditionCustomLevelValueEvent;
+
     FConditionCustomLevelValueEventConfig()
     {
-        super();
         this.__InitDefaults();
         return;
     }

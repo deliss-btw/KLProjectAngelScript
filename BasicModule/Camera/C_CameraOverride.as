@@ -1,4 +1,3 @@
-﻿
 enum ECameraOverrideLayer
 {
     Default,
@@ -55,11 +54,27 @@ struct FCameraOverrideParam
 
     FCameraOverrideParam()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Layer = ECameraOverrideLayer(0);
+        this.m_UseOverrideCameraData = false;
+        FSubDirtyFlags16 local_4;
+        this.__DirtyFlags = local_4;
+        return;
     }
     FCameraOverrideParam(const FCameraOverrideParam &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Layer = ECameraOverrideLayer(0);
+        this.m_UseOverrideCameraData = false;
+        FSubDirtyFlags16 local_4;
+        this.__DirtyFlags = local_4;
+        this.m_Layer = Other.m_Layer;
+        this.m_LookAtTargetEntity = Other.m_LookAtTargetEntity;
+        this.m_LookAtTargetOffset = Other.m_LookAtTargetOffset;
+        this.m_LookAtTargetSocketName = Other.m_LookAtTargetSocketName;
+        this.m_LookAtConfig = Other.m_LookAtConfig;
+        this.m_CameraState = Other.m_CameraState;
+        this.m_UseOverrideCameraData = Other.m_UseOverrideCameraData;
+        this.m_OverrideCamera = Other.m_OverrideCamera;
+        return;
     }
     FCameraOverrideParam opAssign(const FCameraOverrideParam &inout Other)
     {
@@ -230,21 +245,24 @@ struct FC_CameraOverrides : FECSComponent
     UPROPERTY()
     TArray<FCameraOverrideParam> SyncCameraOverrides;
     UPROPERTY()
-    int CurrentActiveIndex;
+    int CurrentActiveIndex = INDEX_NONE;
 
-    FC_CameraOverrides()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
     int GetCameraOverrideLayerIndex(const ECameraOverrideLayer Layer, const TArray<FCameraOverrideParam> &inout InCameraOverrides)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        int local_1 = 0;
+        for (; local_1 < InCameraOverrides.Num(); ++local_1)
+        {
+            if (int(InCameraOverrides[local_1].GetLayer()) == int(Layer))
+            {
+                return local_1;
+            }
+        }
+        return INDEX_NONE;
     }
     const FCameraOverrideParam GetCameraOverrideParam(const int Index) const
     {
         const FCameraOverrideParam __r;
-        int local_1 = this[Index];
+        int local_1 = this.CameraOverridesIndex[Index];
         if (local_1 < 0)
         {
         }
@@ -269,7 +287,63 @@ struct FC_CameraOverrides : FECSComponent
     }
     void MergeCameraOverrides()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_1;
+        int local_46 = 0;
+        int local_48 = 0;
+        this.CameraOverridesIndex.Empty(0);
+        TMap<ECameraOverrideLayer, int> local_22;
+        int local_23 = 0;
+        for (; local_23 < this.LocalCameraOverrides.Num(); )
+        {
+            ECameraOverrideLayer local_26 = this.LocalCameraOverrides[local_23].GetLayer();
+            local_22.FindOrAdd(local_26) = local_23;
+            ++local_23;
+        }
+        int local_23_2 = 0;
+        for (; local_23_2 < this.SyncCameraOverrides.Num(); )
+        {
+            local_1 = this.LocalCameraOverrides.Num();
+            local_1 = local_1 + local_23_2;
+            ECameraOverrideLayer local_26_2 = this.SyncCameraOverrides[local_23_2].GetLayer();
+            local_22.FindOrAdd(local_26_2) = local_1;
+            ++local_23_2;
+        }
+        this.CurrentActiveIndex = INDEX_NONE;
+        for (auto& local_44 : local_22)
+        {
+            local_44;
+            this.CameraOverridesIndex.Add();
+            int local_24 = INDEX_NONE;
+            if (this.CurrentActiveIndex == local_24)
+            {
+                this.CurrentActiveIndex = local_24;
+                continue;
+            }
+            if (this.CurrentActiveIndex < this.LocalCameraOverrides.Num())
+            {
+                local_1 = this.CurrentActiveIndex;
+            }
+            else
+            {
+                local_1 = this.CurrentActiveIndex;
+                local_1 = local_1 - this.LocalCameraOverrides.Num();
+            }
+            local_24 = this.LocalCameraOverrides.Num();
+            if (local_1 < local_24)
+            {
+            }
+            else
+            {
+                local_24 = local_24 - this.LocalCameraOverrides.Num();
+            }
+            ECameraOverrideLayer local_26_3 = local_48.GetLayer();
+            local_24 = int(local_46.GetLayer());
+            if (int(local_26_3) > local_24)
+            {
+                this.CurrentActiveIndex = local_24;
+            }
+        }
+        return;
     }
 }
 
@@ -308,7 +382,6 @@ struct FCE_RemoveCameraOverrideEvent : FECSEvent
     UPROPERTY()
     ECameraOverrideLayer Layer;
 
-
 }
 
 struct FC_SyncCameraOverride : FECSComponent
@@ -319,11 +392,15 @@ struct FC_SyncCameraOverride : FECSComponent
 
     FC_SyncCameraOverride()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_SyncCameraOverride(const FC_SyncCameraOverride &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_CameraOverrideParams = Other.m_CameraOverrideParams;
         return;
@@ -334,10 +411,25 @@ struct FC_SyncCameraOverride : FECSComponent
         this.SetCameraOverrideParams(Other.GetCameraOverrideParams());
         return __r;
     }
-    FCameraOverrideParam ModifyOrAddCameraOverrideParam(const ECameraOverrideLayer Layer)
+    FCameraOverrideParam& ModifyOrAddCameraOverrideParam(const ECameraOverrideLayer Layer)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        FCameraOverrideParam __r; return __r;
+        int local_1 = -1;
+        int local_3 = 0;
+        for (; local_3 < this.GetCameraOverrideParams().Num(); ++local_3)
+        {
+            if (int(this.GetCameraOverrideParams()[local_3].GetLayer()) == int(Layer))
+            {
+                local_1 = local_3;
+                break;
+            }
+        }
+        if (local_1 == INDEX_NONE)
+        {
+            local_1 = this.GetCameraOverrideParams().Num();
+            FCameraOverrideParam local_96;
+            this.GetModify_CameraOverrideParams().Add(local_96);
+        }
+        return this.GetModify_CameraOverrideParams()[local_1];
     }
     void RemoveCameraOverrideParam(const ECameraOverrideLayer Layer)
     {
@@ -456,37 +548,37 @@ bool RemoveCameraOverrides(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCameraOverridesOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CameraOverrides, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CameraOverrides, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraOverridesOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CameraOverrides, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CameraOverrides, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraOverridesOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CameraOverrides, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CameraOverrides, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraOverridesOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CameraOverrides, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CameraOverrides, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraOverridesOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CameraOverrides, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CameraOverrides, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCameraOverridesLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CameraOverrides, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CameraOverrides, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraOverridesActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CameraOverrides, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CameraOverrides, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraOverridesModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CameraOverrides, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CameraOverrides, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_CameraLookAtTargetOverride
@@ -569,37 +661,37 @@ bool RemoveCameraLookAtTargetOverride(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCameraLookAtTargetOverrideOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CameraLookAtTargetOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CameraLookAtTargetOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraLookAtTargetOverrideOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CameraLookAtTargetOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CameraLookAtTargetOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraLookAtTargetOverrideOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CameraLookAtTargetOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CameraLookAtTargetOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraLookAtTargetOverrideOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CameraLookAtTargetOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CameraLookAtTargetOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCameraLookAtTargetOverrideOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CameraLookAtTargetOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CameraLookAtTargetOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCameraLookAtTargetOverrideLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CameraLookAtTargetOverride, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CameraLookAtTargetOverride, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraLookAtTargetOverrideActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CameraLookAtTargetOverride, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CameraLookAtTargetOverride, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCameraLookAtTargetOverrideModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CameraLookAtTargetOverride, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CameraLookAtTargetOverride, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_SyncCameraOverride
@@ -679,37 +771,37 @@ bool RemoveSyncCameraOverride(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorSyncCameraOverrideOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_SyncCameraOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_SyncCameraOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSyncCameraOverrideOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_SyncCameraOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_SyncCameraOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSyncCameraOverrideOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_SyncCameraOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_SyncCameraOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSyncCameraOverrideOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_SyncCameraOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_SyncCameraOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSyncCameraOverrideOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_SyncCameraOverride, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_SyncCameraOverride, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorSyncCameraOverrideLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_SyncCameraOverride, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_SyncCameraOverride, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSyncCameraOverrideActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_SyncCameraOverride, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_SyncCameraOverride, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSyncCameraOverrideModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_SyncCameraOverride, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_SyncCameraOverride, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

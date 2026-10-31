@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_HUDTeamPanel
 {
     const int ViewID = 0;
@@ -28,7 +27,7 @@ class UWidget_HUDTeamPanel : UEUIActivatableWidget
     UFUNCTION()
     void OnGamepadLeftShoulderPressChanged(const bool bGamepadLeftShoulderPress)
     {
-        if ((this.Anim_LB_Pressed == nullptr || ((this.Anim_LB_Released == nullptr))))
+        if (this.Anim_LB_Pressed == nullptr || (this.Anim_LB_Released == nullptr))
         {
             return;
         }
@@ -162,6 +161,7 @@ namespace UWidget_HUDTeamPanel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_HUDTeamPanel;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnGamepadLeftShoulderPressChanged"));
     return;
 }

@@ -1,12 +1,9 @@
-﻿
-
 struct FESMViewSocketAlignInstanceData
 {
     UPROPERTY()
     FECSEntity TargetEntity;
     UPROPERTY()
     bool bInitialized = false;
-
 
 }
 
@@ -28,7 +25,6 @@ class UESMAction_ViewSocketAlign : UESMBPBaseSpanTickAction
     float32 BlendInDuration = 0.2f;
     UPROPERTY()
     float32 SmoothSpeed = 20.0f;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetViewInstanceDataInfo_Implementation() const

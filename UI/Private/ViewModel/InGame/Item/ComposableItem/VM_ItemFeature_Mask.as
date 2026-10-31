@@ -1,4 +1,3 @@
-﻿
 namespace ItemFeature_Mask_Util
 {
     const int COMMON_ITEM_MASK_TYPE_NORMAL = 0;

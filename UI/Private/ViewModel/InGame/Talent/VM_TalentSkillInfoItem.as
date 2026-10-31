@@ -1,4 +1,3 @@
-﻿
 enum ETalentInfoShowPageType
 {
     AvatarInfoPage,
@@ -251,12 +250,12 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     }
     bool GetIsShowPageTypeIsTalentInfoPage() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         bool __r; return __r;
     }
     bool GetIsShowPageTypeIsSkillChangePage() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         bool __r; return __r;
     }
     void ToggleDoubleStateTalent()
@@ -296,18 +295,20 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
             TEUIModelRef<FM_TalentNode> local_108 = this.GetTalentNode();
             this.SetRedDotVM(TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(GameplayTags::RedDotSystem_Avatar_NewTalent, GetDataId()))));
         }
-        if ((int(this.ResolveDisplaySkillType())) != 0)
+        int local_120 = int(this.ResolveDisplaySkillType());
+        if (local_120 != 0)
         {
-            this.SetSkillTypeBGVM(TEUIModelRef<FVM_TalentSkillTypeBG>(::FVM_TalentSkillTypeBG::Create(this.GetContext().Manager)));
+            this.SetSkillTypeBGVM(TEUIModelRef<FVM_TalentSkillTypeBG>(::FVM_TalentSkillTypeBG::Create(this.GetContext().Manager, ESkillType(local_120))));
         }
         return;
     }
     void SetSkillInitConfigOverride(const TDataObjectPtr<FSkillInitConfig> &inout InConfig)
     {
         this.SetSkillInitConfig(InConfig);
-        if ((int(this.ResolveDisplaySkillType())) != 0)
+        int local_2 = int(this.ResolveDisplaySkillType());
+        if (local_2 != 0)
         {
-            this.SetSkillTypeBGVM(TEUIModelRef<FVM_TalentSkillTypeBG>(::FVM_TalentSkillTypeBG::Create(this.GetContext().Manager)));
+            this.SetSkillTypeBGVM(TEUIModelRef<FVM_TalentSkillTypeBG>(::FVM_TalentSkillTypeBG::Create(this.GetContext().Manager, ESkillType(local_2))));
         }
         return;
     }
@@ -349,8 +350,19 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     }
     int GetConditionDataId(const TDataObjectPtr<FServerConditionConfigBase> &inout Cond) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        CastTo local_28;
+        TDataObjectPtr<FConditionConfig> local_52 = local_28.opCall();
+        if (local_52)
+        {
+            return ::NumericUtils::AsInt32(local_52.opArrow().DataId);
+        }
+        CastTo local_84;
+        TDataObjectPtr<FGsConditionGroupConfig> local_108 = local_84.opCall();
+        if (local_108)
+        {
+            return ::NumericUtils::AsInt32(local_108.opArrow().DataId);
+        }
+        return INDEX_NONE;
     }
     void CreateAchievedCondIdList()
     {
@@ -391,7 +403,7 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
                 }
             }
             TEUIModelRef<FVM_TalentUpgradeDesc> local_118 = TEUIModelRef<FVM_TalentUpgradeDesc>(::FVM_TalentUpgradeDesc::Create(this.GetContext().Manager));
-            NSLOCTEXT("Talent", "TalentPrereqNodeUnlock", "е‰ЌзЅ®иЉ‚з‚№йњЂи§Јй”Ѓ").SetContextDesc();
+            NSLOCTEXT("Talent", "TalentPrereqNodeUnlock", "前置节点需解锁").SetContextDesc();
             local_100.SetbHighLight();
             this.GetModify_AchievedCondIdList().Add(local_118);
             if (!(local_100))
@@ -404,7 +416,7 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
             int local_125;
             local_125 = ::FM_LocalPlayerLevel::Get(this.GetContext().Manager).GetLevel();
             TEUIModelRef<FVM_TalentUpgradeDesc> local_118_2 = TEUIModelRef<FVM_TalentUpgradeDesc>(::FVM_TalentUpgradeDesc::Create(this.GetContext().Manager));
-            NSLOCTEXT("Talent", "UpgradeUnlockLevel", "зЋ©е®¶з­‰зє§иѕѕе€°{0}");
+            NSLOCTEXT("Talent", "UpgradeUnlockLevel", "玩家等级达到{0}");
             FText local_130;
             local_130.SetContextDesc();
             local_1 = (local_125 >= 0);
@@ -819,8 +831,7 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     {
         if (this.GetContext().GetLocalPlayerPawn().IsValid())
         {
-            int local_6 = int(this.GetEquipSlot());
-            return FEUIInputAction(FSkillUtils::GetSkillInputAction(this.GetContext().GetLocalPlayerPawn()));
+            return FEUIInputAction(FSkillUtils::GetSkillInputAction(this.GetContext().GetLocalPlayerPawn(), this.GetEquipSlot()));
         }
         return FEUIInputAction();
     }
@@ -856,18 +867,18 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     }
     FText GetSkillTypeDisplayName() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         FText __r; return __r;
     }
     FText GetSkillUpgradeBtnText() const
     {
         if (this.GetIsUnlocked())
         {
-            return FText(NSLOCTEXT("Talent", "Passive", "еЌ‡зє§жЉЂиѓЅ"));
+            return FText(NSLOCTEXT("Talent", "Passive", "升级技能"));
         }
         else
         {
-            return FText(NSLOCTEXT("Talent", "Passive", "и§Јй”ЃжЉЂиѓЅ"));
+            return FText(NSLOCTEXT("Talent", "Passive", "解锁技能"));
         }
     }
     FSoftBrush GetIconImage() const
@@ -1049,7 +1060,7 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
         {
             return FText();
         }
-        return FText::Format(NSLOCTEXT("Talent", "ReplaceSkillCDUnit", "{0}з§’"), uint(local_1));
+        return FText::Format(NSLOCTEXT("Talent", "ReplaceSkillCDUnit", "{0}秒"), uint(local_1));
     }
     bool GetSkillHasCDDuration() const
     {
@@ -1287,10 +1298,10 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
             return;
         }
         ::FVM_TalentEditPage::GotoPage(this.GetContext().UELocalPlayer, GetAvatar()[0]);
-        if ((int(this.ResolveDisplaySkillType())) != 0)
+        int local_6 = int(this.ResolveDisplaySkillType());
+        if (local_6 != 0)
         {
-            int local_7 = int(this.GetEnterButtonSlot());
-            ::FVM_TalentEditPage::UpdateSkillSellectType(this.GetContext().UELocalPlayer);
+            ::FVM_TalentEditPage::UpdateSkillSellectType(this.GetContext().UELocalPlayer, this.GetEnterButtonSlot(), ESkillType(local_6));
         }
         return;
     }
@@ -1752,14 +1763,13 @@ struct __GeneratedProperties_FVM_TalentSkillInfoItem
     UPROPERTY()
     TEUIModelRef<FVM_TalentSkillInfoItem> Self;
 
-
 }
 
 namespace FVM_TalentSkillInfoItem
 {
 FVM_TalentSkillInfoItem& Create(const UObject ContextObject, const TDataObjectPtr<FAvatarMappingConfig> &inout AvatarConfig, const TEUIModelRef<FM_TalentNode> &inout TalentNode, const ESkillSlot EquipSlot, const ETalentInfoShowPageType ShowPageType)
 {
-    return FVM_TalentSkillInfoItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), AvatarConfig, TalentNode);
+    return FVM_TalentSkillInfoItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), AvatarConfig, TalentNode, ESkillSlot(EquipSlot), ETalentInfoShowPageType(ShowPageType));
 }
 FVM_TalentSkillInfoItem CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarMappingConfig> &inout AvatarConfig, const TEUIModelRef<FM_TalentNode> &inout TalentNode, const ESkillSlot EquipSlot, const ETalentInfoShowPageType ShowPageType)
 {
@@ -1769,7 +1779,340 @@ FVM_TalentSkillInfoItem CreateByManager(const UEUIManagerSubsystem Manager, cons
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "EquipSlot";
+    local_14.TypeName = "ESkillSlot";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShowPageType";
+    local_14.TypeName = "ETalentInfoShowPageType";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AchievedCondIdList";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_TalentUpgradeDesc>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "RedDotVM";
+    local_14.TypeName = "TEUIModelRef<FVM_RedDot>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "DoubleStateTalentIndex";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bVisible";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CurLevelForWidget";
+    local_14.TypeName = "uint32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bIsShownChoiceEquipped";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SkillTypeBGVM";
+    local_14.TypeName = "TEUIModelRef<FVM_TalentSkillTypeBG>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasDoubleForm";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShowPageTypeIndex";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsShowPageTypeIsTalentInfoPage";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsShowPageTypeIsSkillChangePage";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShowAchievedCondList";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShowUpgradeSpendCondList";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShowNextlevelUpgradeDesc";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsChoiceTalent";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsActiveChoice";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsNotActiveChoice";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsEquippedChoice";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsUnequippedChoice";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsFoundationNode";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsNotFoundationNode";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsUnlocked";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsUnlockedAndChoice";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsMaxLevel";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsNotMaxLevel";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShowUpgradeBtn";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "UpgradeBtnCostEnough";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsEquippedFoundation";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsEquippedSkill";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsNotEquippedFoundation";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsNotEquippedSkill";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CanEquip";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "UnequippedTalentFoundation";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsFoundationPassiveUnlocked";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bEquipment";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "NotSameWithButtonSkill";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "EquipmentAction";
+    local_14.TypeName = "FEUIInputAction";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "NeedShowActionSlot";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsNormalAttack";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SkillTypeDisplayName";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SkillUpgradeBtnText";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IconImage";
+    local_14.TypeName = "FSoftBrush";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SkillDesc";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SkillName";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SkillTypeShotDesc";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SkillPreviewMovie";
+    local_14.TypeName = "UMediaSource";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShowPreviewMovie";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShowPreviewPicture";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SkillPreviewPicture";
+    local_14.TypeName = "FSoftBrush";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SkillCDDurationSeconds";
+    local_14.TypeName = "FFPTime";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SkillCDDurationSecondsText";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SkillHasCDDuration";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SkillTypeIcon";
+    local_14.TypeName = "FSoftBrush";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "NextLevelUpgradeDesc";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasLinkedPassiveTalent";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasTalentSystemUnlock";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "LinkedPassiveTalentDesc";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "FoundationPassiveEffectDesc";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_TalentSkillInfoItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_TalentSkillInfoItem;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(17);
+    local_22.AddRefPropertyDirty(0, 0, FM_TalentNode::__IndexOf_ActiveLevel());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("TalentNode");
+    int local_2_2 = FM_TalentNode::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FM_TalentNode::__IndexOf_ActiveLevel(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnTalentNodeChanged";
+    local_40.DirtyFlags.Set(FVM_TalentSkillInfoItem::__IndexOf_TalentNode());
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnTalentNodeLevelChanged";
+    local_40.DirtyFlags.Set(FVM_TalentSkillInfoItem::__IndexOf_TalentNode());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    FEUIModelMsgHandleDefine local_50;
+    local_50.FunctionName = "__OnTalentDataUpdatedForEquip";
+    local_50.MessageTypeName = "Msg_TalentTreeDataUpdate";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

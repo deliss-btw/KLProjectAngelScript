@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MissionMainPanel
 {
     const int ModelId = 0;
@@ -61,11 +60,42 @@ struct FVM_MissionMainPanel : FEUIViewModel
 
     FVM_MissionMainPanel()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_bShowTrackingButton = false;
+        this.m_bIsSelectedMissionTracked = false;
+        this.m_bIsChapterEntryHighlighted = false;
+        this.m_bIsHighlightedChapterExpanded = false;
+        this.m_CurrentTabIndex = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FVM_MissionMainPanel(const FVM_MissionMainPanel &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_bShowTrackingButton = false;
+        this.m_bIsSelectedMissionTracked = false;
+        this.m_bIsChapterEntryHighlighted = false;
+        this.m_bIsHighlightedChapterExpanded = false;
+        this.m_CurrentTabIndex = INDEX_NONE;
+        this.m_MissionTabConfigMap = Other.m_MissionTabConfigMap;
+        this.m_SingleMissionEntryWidgetClass = Other.m_SingleMissionEntryWidgetClass;
+        this.m_ChapterMissionEntryWidgetClass = Other.m_ChapterMissionEntryWidgetClass;
+        this.m_ChapterEntryWidgetClass = Other.m_ChapterEntryWidgetClass;
+        this.m_RecommendLevelWarningFormat = Other.m_RecommendLevelWarningFormat;
+        this.m_TabListItems = Other.m_TabListItems;
+        this.m_SelectedTabItem = Other.m_SelectedTabItem;
+        this.m_TabSelectableItems = Other.m_TabSelectableItems;
+        this.m_TabTypes = Other.m_TabTypes;
+        this.m_CurrentTabIndex = int(Other.m_CurrentTabIndex);
+        this.m_MissionList = Other.m_MissionList;
+        this.m_CommissionDetail = Other.m_CommissionDetail;
+        this.m_bShowTrackingButton = Other.m_bShowTrackingButton;
+        this.m_bIsSelectedMissionTracked = Other.m_bIsSelectedMissionTracked;
+        this.m_bIsChapterEntryHighlighted = Other.m_bIsChapterEntryHighlighted;
+        this.m_bIsHighlightedChapterExpanded = Other.m_bIsHighlightedChapterExpanded;
+        this.m_DefaultSelectMission = Other.m_DefaultSelectMission;
+        return;
     }
     FVM_MissionMainPanel& opAssign(const FVM_MissionMainPanel &inout Other)
     {
@@ -204,7 +234,7 @@ struct FVM_MissionMainPanel : FEUIViewModel
         this.RefreshSelectedTabItem();
         this.RefreshTabSelection();
         TEUIModelRef<FVM_MissionList> local_10 = this.GetMissionList();
-        this.GetTabTypes()[Index].UpdateMissionList(true);
+        int(this.GetTabTypes()[Index]).UpdateMissionList(true);
         return;
     }
     void RefreshSelectedTabItem()
@@ -262,11 +292,10 @@ struct FVM_MissionMainPanel : FEUIViewModel
         FVM_CommonTabItem& local_106 = ::FVM_CommonTabItem::Create(this.GetContext().Manager);
         local_106.SetTitleText(local_92.TabTittle);
         FEUIModelContainer local_120;
-        FEUIModelRef local_122 = FEUIModelRef(local_104);
-        local_120.AddModel(local_122, false);
+        local_120.AddModel(FEUIModelRef(local_104), false);
         if (!(local_92.TabIcon.GetResourceObject().IsNull()))
         {
-            local_120.AddModel(local_122, false);
+            local_120.AddModel(FEUIModelRef(::FVM_Image::Create(this.GetContext().Manager, local_92.TabIcon)), false);
         }
         local_120.AddModel(FEUIModelRef(local_106), false);
         this.AddTabRedDot(local_120, EMissionTabType(TabType));
@@ -279,16 +308,12 @@ struct FVM_MissionMainPanel : FEUIViewModel
     {
         if (int(TabType) == 2)
         {
-            FEUIModelRef local_12;
-            FRedDotNodeData local_8 = FRedDotNodeData(GameplayTags::RedDotSystem_Mission_NewMainMissionTab, 0);
-            TabContainer.AddModel(local_12, false);
+            TabContainer.AddModel(FEUIModelRef(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(GameplayTags::RedDotSystem_Mission_NewMainMissionTab, 0))), false);
             return;
         }
         if (int(TabType) == 3)
         {
-            FEUIModelRef local_12;
-            FRedDotNodeData local_8_2 = FRedDotNodeData(GameplayTags::RedDotSystem_Mission_NewSideMissionTab, 0);
-            TabContainer.AddModel(local_12, false);
+            TabContainer.AddModel(FEUIModelRef(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(GameplayTags::RedDotSystem_Mission_NewSideMissionTab, 0))), false);
         }
         return;
     }
@@ -746,7 +771,6 @@ struct __GeneratedProperties_FVM_MissionMainPanel
     UPROPERTY()
     TEUIModelRef<FVM_MissionMainPanel> Self;
 
-
 }
 
 namespace FVM_MissionMainPanel
@@ -763,7 +787,93 @@ FVM_MissionMainPanel CreateByManager(const UEUIManagerSubsystem Manager)
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostLoad(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(true);
+    Result.SetbHasLoadConfig(true);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "TabListItems";
+    local_14.TypeName = "TArray<FEUIModelContainer>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SelectedTabItem";
+    local_14.TypeName = "FEUIModelContainer";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "MissionList";
+    local_14.TypeName = "TEUIModelRef<FVM_MissionList>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CommissionDetail";
+    local_14.TypeName = "TEUIModelRef<FVM_CommissionDetail>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bIsSelectedMissionTracked";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bIsChapterEntryHighlighted";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "bIsHighlightedChapterExpanded";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsCommissionTabSelected";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "ShowMissionButtons";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_MissionMainPanel>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_MissionMainPanel;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(17);
+    local_22.AddRefPropertyDirty(0, 1, FVM_MissionList::__IndexOf_SelectedMissionEntry());
+    local_22.AddRefPropertyDirty(1, 1, FVM_MissionList::__IndexOf_bShowTrackingButton());
+    local_22.AddRefPropertyDirty(2, 1, FVM_MissionList::__IndexOf_HighlightedEntry());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("MissionList");
+    int local_2_2 = FVM_MissionList::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(1);
+    local_30.RelatedDirtyMask.SetBit(FVM_MissionList::__IndexOf_SelectedMissionEntry(), true);
+    local_30.RelatedDirtyMask.SetBit(FVM_MissionList::__IndexOf_bShowTrackingButton(), true);
+    local_30.RelatedDirtyMask.SetBit(FVM_MissionList::__IndexOf_HighlightedEntry(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnHighlightedEntryChanged";
+    local_40.DirtyFlags.Set(FVM_MissionMainPanel::__IndexOf_MissionList());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(2));
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnSelectedMissionEntryChanged";
+    local_40.DirtyFlags.Set(FVM_MissionMainPanel::__IndexOf_MissionList());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnShowTrackingButtonChanged";
+    local_40.DirtyFlags.Set(FVM_MissionMainPanel::__IndexOf_MissionList());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(1));
+    Result.DirtyFunctions.Add(local_40);
+    FEUIModelMonitorDefine local_50;
+    local_50.FunctionName = "__OnTrackingMissionChanged";
+    local_50.ComponentType = FC_TrackingMission;
+    Result.MonitorFunctions.Add(local_50);
+    return;
 }
 UScriptStruct GetModelStruct()
 {
@@ -791,7 +901,9 @@ void __OnTrackingMissionChanged(FVM_MissionMainPanel &inout Model, const FECSEnt
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorTrackingMissionLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorTrackingMissionModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 TArray<FEUIModelContainer> __UIGetter_TabListItems(const FVM_MissionMainPanel &inout Model)
 {

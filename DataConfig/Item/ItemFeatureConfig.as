@@ -1,5 +1,3 @@
-﻿
-
 struct FItemFeatureConfig : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -11,7 +9,6 @@ struct FItemFeatureConfig : FDataObject
     bool bSpecialBg = false;
     UPROPERTY()
     FSoftBrush SpecialBgImage;
-
 
     TDataObjectPtr<FItemConfig> GetItemConfig() const property
     {

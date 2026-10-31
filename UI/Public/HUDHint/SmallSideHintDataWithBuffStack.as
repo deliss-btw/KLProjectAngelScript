@@ -1,5 +1,3 @@
-﻿
-
 struct FSmallSideHintDataWithBuffStack : FCommonSideHintData
 {
     FCommonSideHintData _base_FCommonSideHintData;
@@ -7,7 +5,6 @@ struct FSmallSideHintDataWithBuffStack : FCommonSideHintData
     int MaxStack;
     UPROPERTY()
     int CurStack;
-
 
 }
 

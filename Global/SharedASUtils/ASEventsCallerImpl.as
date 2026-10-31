@@ -1,5 +1,3 @@
-﻿
-
 class UASEventsCallerImpl : UASEventsCallerBase
 {
     UASEventsCallerImpl()

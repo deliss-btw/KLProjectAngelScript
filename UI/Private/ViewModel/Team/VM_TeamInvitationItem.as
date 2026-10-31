@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TeamInvitationItem
 {
     const int ModelId = 0;
@@ -15,7 +14,6 @@ struct FTeamInvitationItemData
     FPlayerBriefInfo PlayerBrief;
     UPROPERTY()
     float32 CurDistance = 0.0f;
-
 
 }
 
@@ -89,7 +87,7 @@ struct FVM_TeamInvitationItem : FEUIViewModel
         local_4.GetPlayer();
         ::FSocialTeamUtils::ClientSendTeamUp(this.GetContext().GetLocalPlayer(), GetPlayerUid());
         FCommonTipsParam local_18;
-        ::CommonPopup::Tips(NSLOCTEXT("TeamInvitationItem", "SendTeamUpRequest", "й‚ЂиЇ·иЇ·ж±‚е·ІеЏ‘йЂЃ"), local_18);
+        ::CommonPopup::Tips(NSLOCTEXT("TeamInvitationItem", "SendTeamUpRequest", "邀请请求已发送"), local_18);
         return;
     }
     FText GetPlayerName() const
@@ -119,7 +117,7 @@ struct FVM_TeamInvitationItem : FEUIViewModel
         FNumberFormattingOptions local_6 = FNumberFormattingOptions();
         FText local_14;
         FText::AsNumber(local_14, (this.GetCurDistance() / 100.0f));
-        return FText::Format(NSLOCTEXT("TeamInvitationItem", "CurDistanceText", "и·ќз¦»пјљ{0}з±і"), local_14);
+        return FText::Format(NSLOCTEXT("TeamInvitationItem", "CurDistanceText", "距离：{0}米"), local_14);
     }
     TEUIModelRef<FVM_PlayerInfo> GetPlayerInfo() const property
     {
@@ -231,15 +229,13 @@ struct __GeneratedProperties_FVM_TeamInvitationItem
     UPROPERTY()
     TEUIModelRef<FVM_TeamInvitationItem> Self;
 
-
 }
 
 namespace FVM_TeamInvitationItem
 {
-FVM_TeamInvitationItem Create(const UObject ContextObject, const TEUIModelRef<FVM_PlayerInfo> &inout PlayerInfo, const ETeamInvitationType InvitationType, const FPlayerBriefInfo &inout PlayerBrief, const float32 CurDistance)
+FVM_TeamInvitationItem& Create(const UObject ContextObject, const TEUIModelRef<FVM_PlayerInfo> &inout PlayerInfo, const ETeamInvitationType InvitationType, const FPlayerBriefInfo &inout PlayerBrief, const float32 CurDistance)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    FVM_TeamInvitationItem __r; return __r;
+    return FVM_TeamInvitationItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), PlayerInfo, ETeamInvitationType(InvitationType), PlayerBrief, CurDistance);
 }
 FVM_TeamInvitationItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_PlayerInfo> &inout PlayerInfo, const ETeamInvitationType InvitationType, const FPlayerBriefInfo &inout PlayerBrief, const float32 CurDistance)
 {

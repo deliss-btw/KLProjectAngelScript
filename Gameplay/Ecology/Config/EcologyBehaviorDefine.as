@@ -1,5 +1,3 @@
-﻿
-
 class UEcologyBehaviorDefine : UEcologyBehaviorBase
 {
     UPROPERTY()
@@ -54,7 +52,6 @@ class UCommonChangeAreaTriggerDefinitionAsset : UEcologyDataAssetBase
     bool bNeedChangeAreaMessage = true;
     UPROPERTY()
     FChangeAreaMessageInfo MessageInfo;
-
 
     bool IsConditionalTrue(const FChangeAreaTaskConditionContext &inout Context)
     {

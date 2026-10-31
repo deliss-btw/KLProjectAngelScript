@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_BuffIcon_Helpers
 {
 UFUNCTION()

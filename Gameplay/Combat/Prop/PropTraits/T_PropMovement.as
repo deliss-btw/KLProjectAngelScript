@@ -1,5 +1,3 @@
-﻿
-
 struct FT_Prop_Movement : FECSTrait
 {
     FECSTrait _base_FECSTrait;
@@ -40,7 +38,7 @@ struct FT_Prop_Movement : FECSTrait
     UPROPERTY()
     FC_CurveMovementConfig Config_FC_CurveMovementConfig;
 
-    default CustomName = FName("з§»еЉЁ (FT_Prop_Movement)");
+    default CustomName = FName("移动 (FT_Prop_Movement)");
 
     FT_Prop_Movement()
     {

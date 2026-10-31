@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TutorialHandbookDetail
 {
     const int ViewID = 0;
@@ -212,6 +211,7 @@ namespace UWidget_TutorialHandbookDetail
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TutorialHandbookDetail;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedDetailChanged"));
     return;
 }

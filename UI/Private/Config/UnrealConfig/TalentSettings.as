@@ -1,5 +1,3 @@
-﻿
-
 class UTalentSettings : UGameplaySettingsBase
 {
     UPROPERTY()

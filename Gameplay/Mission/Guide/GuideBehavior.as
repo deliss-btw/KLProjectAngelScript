@@ -1,4 +1,3 @@
-﻿
 enum EGuideStyleType
 {
     MainMission = 1,
@@ -17,7 +16,6 @@ enum EGuideStartResult
     DeferRetry,
     Failed,
 }
-
 
 struct FGuideTargetInfo
 {
@@ -48,7 +46,8 @@ struct FGuideTargetInfo
     }
     void SetEntity(const FECSEntity &inout __Value) property
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_Entity = __Value;
+        return;
     }
     const FVector GetServerPosition() const property
     {
@@ -93,15 +92,48 @@ struct FGuideContext
 
     FGuideContext()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_bClientAutoSelectIcon = false;
+        this.m_bShowGuidingPath = false;
+        FSubDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_GuideUniqueId = 0;
+        this.m_RegionRadius = 0.0;
+        this.m_bShowGuideFX = false;
+        return;
     }
     FGuideContext(const FGuideContext &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_bClientAutoSelectIcon = false;
+        this.m_bShowGuidingPath = false;
+        FSubDirtyFlags16 local_54;
+        this.__DirtyFlags = local_54;
+        this.m_GuideUniqueId = 0;
+        this.m_RegionRadius = 0.0;
+        this.m_bShowGuideFX = false;
+        this.m_RequesterEntity = Other.m_RequesterEntity;
+        this.m_DataSourceConfig = Other.m_DataSourceConfig;
+        this.m_GuideTargets = Other.m_GuideTargets;
+        this.m_GuidePresentationConfig = Other.m_GuidePresentationConfig;
+        this.m_LevelInfo = Other.m_LevelInfo;
+        this.m_GuideUniqueId = int(Other.m_GuideUniqueId);
+        this.m_bClientAutoSelectIcon = Other.m_bClientAutoSelectIcon;
+        this.m_bShowGuidingPath = Other.m_bShowGuidingPath;
+        this.m_RegionRadius = Other.m_RegionRadius;
+        this.m_bShowGuideFX = Other.m_bShowGuideFX;
+        return;
     }
     FGuideContext(const FECSEntity &inout InRequesterEntity, const FGuideDataSourceConfig &inout InDataSourceConfig)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.m_bClientAutoSelectIcon = false;
+        this.m_bShowGuidingPath = false;
+        FSubDirtyFlags16 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_GuideUniqueId = 0;
+        this.m_RegionRadius = 0.0;
+        this.m_bShowGuideFX = false;
+        this.SetRequesterEntity(InRequesterEntity);
+        this.SetDataSourceConfig(InDataSourceConfig);
+        return;
     }
     FGuideContext opAssign(const FGuideContext &inout Other)
     {
@@ -527,7 +559,8 @@ class UGuideEntityCommonBehavior : UGuideBehavior
         {
             return;
         }
-        if (!(Context.GetGuidePresentationConfig().opArrow().GetPresentationRule().IsSet()))
+        TDataObjectPtr<FPresentationRuleConfig> local_26 = Context.GetGuidePresentationConfig().opArrow().GetPresentationRule();
+        if (!(local_26.IsSet()))
         {
             return;
         }
@@ -539,6 +572,7 @@ class UGuideEntityCommonBehavior : UGuideBehavior
             }
             if (::EntityLevelSpotUtils::GetSpotData(local_64.GetEntity(), ELevelSpotDataSource(2)).IsEmpty())
             {
+                ::EntityLevelSpotUtils::AddSpotDataForViewers(local_64.GetEntity(), ELevelSpotDataSource(2), FLevelSpotData(local_26), FLevelSpotViewers(Context.GetRequesterEntity()));
             }
             else
             {
@@ -700,13 +734,12 @@ class UGuideRegionBehavior : UGuideBehavior
     }
     void SetupGuidePresentation(FGuideContext &inout Context) const
     {
-        bool local_17 = false;
         float32 local_18 = 0.0f;
         FInstancedStruct local_4 = Context.GetGuideData();
         if (FInstancedStruct::GetPtr(local_4).opCall())
         {
             Context.SetRegionRadius(local_18);
-            Context.SetbShowGuideFX(local_17);
+            Context.SetbShowGuideFX((0 != 0));
         }
         return;
     }

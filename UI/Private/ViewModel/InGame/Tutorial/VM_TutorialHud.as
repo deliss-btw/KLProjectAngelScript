@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TutorialHud
 {
     const int ModelId = 0;
@@ -83,6 +82,7 @@ struct FVM_TutorialHud : FEUIViewModel
     void UpdateFromInfo(const FTutorialInfo &inout Info)
     {
         const FTutorialInfoConfig& local_2;
+        int local_6;
         FVM_TutorialHudItem& local_8;
         int local_10;
         int local_3 = 0;
@@ -93,7 +93,16 @@ struct FVM_TutorialHud : FEUIViewModel
                 continue;
             }
             local_10 = local_8.GetStepIndex();
-            if (local_10 < Info.GetStepProgress().Num() && (local_10 < local_2.Steps.Num()))
+            if (local_10 >= Info.GetStepProgress().Num())
+            {
+                local_6 = 0;
+            }
+            else
+            {
+                bool local_11 = (local_10 < local_2.Steps.Num());
+                local_6 = local_11;
+            }
+            if (local_6 != 0)
             {
                 const FTutorialStepProgress& local_14 = Info.GetStepProgress()[local_10];
                 if (local_14.GetMaxProgress() <= 0)
@@ -286,7 +295,6 @@ struct __GeneratedProperties_FVM_TutorialHud
     bool IsAllProgressFinished;
     UPROPERTY()
     TEUIModelRef<FVM_TutorialHud> Self;
-
 
 }
 

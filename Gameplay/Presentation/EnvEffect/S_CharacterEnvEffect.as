@@ -1,5 +1,3 @@
-﻿
-
 class US_CharacterEnvEffect : UECSScriptSystem
 {
     US_CharacterEnvEffect()
@@ -14,7 +12,108 @@ class US_CharacterEnvEffect : UECSScriptSystem
     UFUNCTION()
     void UpdateEnvEffect(const FECSEntity &inout Entity, const FC_Collision &inout Collision, FC_CharacterEnvEffect &inout EnvEffect) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        const AActor local_10;
+        const UMeshComponent local_12;
+        UGamePhysicalMaterial local_174;
+        FCharacterEnvEffectGroundData& local_208;
+        if (EnvEffect.Settings == nullptr)
+        {
+            return;
+        }
+        UCharacterEnvEffectSettings local_6 = EnvEffect.Settings;
+        local_10 = Entity.GetActor();
+        if (local_10 == nullptr)
+        {
+            return;
+        }
+        if (EnvEffect.Mesh.IsValid())
+        {
+            local_12 = EnvEffect.Mesh.GetMeshComponent();
+        }
+        if ((!((local_12 != nullptr))))
+        {
+            local_12 = Cast<UMeshComponent>(local_10.GetComponentByClass(USkeletalMeshComponent));
+        }
+        if (!(EnvEffect.Mesh.IsValid()))
+        {
+            EnvEffect.Mesh = Entity.ModifyActorComponent(local_12.GetFName()).CastToMeshComponent();
+        }
+        FECSMeshComponentProxy local_28 = EnvEffect.Mesh;
+        if (!(local_28.IsValid()) || !((local_12 != nullptr)))
+        {
+            return;
+        }
+        FVector local_36 = local_10.GetActorLocation();
+        float32 local_43 = 0.0f;
+        FHitResult local_110;
+        FCollisionQueryParams local_148;
+        local_148.bReturnPhysicalMaterial = true;
+        FCollisionObjectQueryParams local_150 = FCollisionObjectQueryParams(ECollisionChannel(0));
+        bool local_3 = FPhysicsUtils::LineTraceSingle(ECS::GetUEWorld(), EPhysicsTraceTag(22), local_110, local_36, (local_36 - FVector(0.0, 0.0, (Collision.GetScaledHalfHeight() + 10.0f))), local_150, local_148);
+        if (local_3)
+        {
+            local_174 = (Cast<UGamePhysicalMaterial>(local_110.GetPhysMaterial()));
+            if (local_174 != nullptr)
+            {
+                if (local_174.GetbIsWater())
+                {
+                    float local_158 = local_110.ImpactPoint.Z - local_28.GetMeshComponent().GetWorldLocation().Z;
+                    local_43 = float32(local_158);
+                }
+            }
+        }
+        float local_158_2 = ECS::GetContextDeltaTime().ToSeconds();
+        float32 local_44_2 = float32(local_158_2);
+        float32 local_152 = Collision.GetScaledHeight();
+        if (local_43 > 0.0f)
+        {
+            EnvEffect.EnterWaterSeconds = (EnvEffect.EnterWaterSeconds + local_44_2);
+            EnvEffect.ExitWaterSeconds = 0.0f;
+            EnvEffect.WetnessDeep = (local_43 / local_152);
+            float32 local_179 = EnvEffect.WetnessShallowHeight;
+            EnvEffect.WetnessShallowHeight = FMath::Max(local_179, EnvEffect.WetnessDeep);
+            EnvEffect.WetnessDeepDry = FMath::Max((EnvEffect.WetnessDeepDry - this.SampleCurveDeltaValue(local_6.WetnessDeepDryFadeOutCurve, EnvEffect.EnterWaterSeconds, local_44_2)), 0.0f);
+            local_179 = EnvEffect.EnterWaterSeconds;
+            local_179 = EnvEffect.WetnessDry - this.SampleCurveDeltaValue(local_6.WetnessDryFadeOutCurve, local_179, local_44_2);
+            EnvEffect.WetnessDry = FMath::Max(local_179, 0.0f);
+        }
+        else
+        {
+            EnvEffect.EnterWaterSeconds = 0.0f;
+            EnvEffect.ExitWaterSeconds = (EnvEffect.ExitWaterSeconds + local_44_2);
+            EnvEffect.WetnessDeep = FMath::Max((EnvEffect.WetnessDeep - this.SampleCurveDeltaValue(local_6.WetnessFadeOutCurve, EnvEffect.ExitWaterSeconds, local_44_2)), 0.0f);
+            float32 local_179_2 = EnvEffect.WetnessDeepDry + this.SampleCurveDeltaValue(local_6.WetnessDeepDryFadeInCurve, EnvEffect.ExitWaterSeconds, local_44_2);
+            EnvEffect.WetnessDeepDry = FMath::Min(local_179_2, 1.0f);
+            float32 local_180 = EnvEffect.ExitWaterSeconds;
+            local_180 = EnvEffect.WetnessDry + this.SampleCurveDeltaValue(local_6.WetnessDryFadeInCurve, local_180, local_44_2);
+            EnvEffect.WetnessDry = FMath::Min(local_180, 1.0f);
+            if ((EnvEffect.WetnessDry == 1.0f && (EnvEffect.WetnessDeepDry == 1.0f)))
+            {
+                EnvEffect.WetnessShallowHeight = 0.0f;
+            }
+        }
+        local_28.SetScalarParameterValueOnMaterials(n"Wetness Deep Height", EnvEffect.WetnessDeep);
+        local_28.SetScalarParameterValueOnMaterials(n"Wetness Shallow Height", EnvEffect.WetnessShallowHeight);
+        local_28.SetScalarParameterValueOnMaterials(n"Wetness Deep Dry", EnvEffect.WetnessDeepDry);
+        local_28.SetScalarParameterValueOnMaterials(n"Wetness Dry", EnvEffect.WetnessDry);
+        local_158_2 = ECS::GetContextTime().ToSeconds();
+        for (auto& local_202 : EnvEffect.GroundData)
+        {
+            FCharacterEnvEffectGroundSettings& local_206 = local_6.GroundSettings[local_202.GetKey()];
+            if (local_208.MoveWeight > 0.0f)
+            {
+                local_208.MoveDurationSeconds = (local_208.MoveDurationSeconds + local_44_2);
+                local_208.MoveWeight = FMath::Max((local_208.MoveWeight - this.SampleCurveDeltaValue(local_206.MoveFadeOutCurve, local_208.MoveDurationSeconds, local_44_2)), 0.0f);
+                local_28.SetScalarParameterValueOnMaterials(local_206.MoveMaterialParameterName, local_208.MoveWeight);
+            }
+            if (local_208.FallWeight > 0.0f)
+            {
+                local_208.FallDurationSeconds = (local_208.FallDurationSeconds + local_44_2);
+                local_208.FallWeight = FMath::Max((local_208.FallWeight - this.SampleCurveDeltaValue(local_206.FallFadeOutCurve, local_208.FallDurationSeconds, local_44_2)), 0.0f);
+                local_28.SetScalarParameterValueOnMaterials(local_206.FallMaterialParameterName, local_208.FallWeight);
+            }
+        }
+        return;
     }
     UFUNCTION()
     void Job_HandleLandedSound(const FCE_EntityFootStepEvent &inout Event) const

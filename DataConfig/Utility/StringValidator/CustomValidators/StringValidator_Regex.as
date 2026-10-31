@@ -1,5 +1,3 @@
-﻿
-
 class UStringValidator_Regex : UStringValidatorBase
 {
     UPROPERTY()

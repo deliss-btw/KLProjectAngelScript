@@ -1,5 +1,3 @@
-﻿
-
 class UEQC_TargetCenterLocation : UEnvQueryContext_ECS_BlueprintBase
 {
     UEQC_TargetCenterLocation()

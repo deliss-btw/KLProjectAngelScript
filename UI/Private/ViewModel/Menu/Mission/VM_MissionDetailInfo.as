@@ -1,4 +1,3 @@
-﻿
 namespace FVM_MissionDetailInfo
 {
     const int ModelId = 0;
@@ -367,7 +366,6 @@ struct __GeneratedProperties_FVM_MissionDetailInfo
     bool ShowRecommendLevelWarning;
     UPROPERTY()
     TEUIModelRef<FVM_MissionDetailInfo> Self;
-
 
 }
 

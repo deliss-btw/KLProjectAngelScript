@@ -1,5 +1,3 @@
-﻿
-
 class US_TreasureBoxSystem : UECSScriptSystem
 {
     US_TreasureBoxSystem()
@@ -387,11 +385,11 @@ class US_TreasureBoxSystem : UECSScriptSystem
     {
         int local_24 = 0;
         ECS::GetContextJob();
-        if (ECSInternal::GetMonitorSingletonOnModify(this.GetECSWorld(), FCS_NetLivePlayerMask, EECSRegType(0), true, true).bIsMonitored)
+        if (int(ECSInternal::GetMonitorSingletonOnModify(this.GetECSWorld(), FCS_NetLivePlayerMask, EECSRegType(0), true, true).bIsMonitored) != 0)
         {
             this.Monitor_ServerInitTreasureBoxStateOnPlayerLogin(local_24);
         }
-        if (ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_NetLivePlayerMask, EECSRegType(0), true, true).bIsMonitored)
+        if (int(ECSInternal::GetMonitorSingletonOnAssign(this.GetECSWorld(), FCS_NetLivePlayerMask, EECSRegType(0), true, true).bIsMonitored) != 0)
         {
             this.Monitor_ServerInitTreasureBoxStateOnPlayerLogin(local_24);
         }

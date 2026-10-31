@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_AbilityLifespanByAbilityConfig : UESMBPBaseSpanAction
 {
     UPROPERTY()
@@ -12,7 +10,6 @@ class UESMAction_AbilityLifespanByAbilityConfig : UESMBPBaseSpanAction
     bool ActivateAbilityWhenEnter = true;
     UPROPERTY()
     bool DeactivateAbilityWhenExit = true;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const
@@ -123,7 +120,6 @@ class UESMAction_AbilitySignal : UESMBPBaseInstantAction
     UPROPERTY()
     FName Signal;
 
-
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const
     {
@@ -172,7 +168,6 @@ class UESMAction_AbilitySignalToAbilityInstance : UESMBPBaseInstantAction
     TSubclassOf<UEASAbility> AbilityClass;
     UPROPERTY()
     FName Signal;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const
@@ -234,7 +229,6 @@ class UESMAction_AbilitySignalsToAbilityInstanceSpan : UESMBPBaseSpanAction
     TSubclassOf<UEASAbility> ExitAbilityClass;
     UPROPERTY()
     FName ExitSignal;
-
 
     UFUNCTION()
     FString GetDisplayInfo_Implementation() const

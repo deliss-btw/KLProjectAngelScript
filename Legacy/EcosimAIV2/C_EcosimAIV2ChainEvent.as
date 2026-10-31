@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_EcosimAIV2ChainEvent_NS
 {
     const TECSEventDerivedPtr<FCE_EcosimAIV2ChainEvent> DerivedPtr = TECSEventDerivedPtr<FCE_EcosimAIV2ChainEvent>();

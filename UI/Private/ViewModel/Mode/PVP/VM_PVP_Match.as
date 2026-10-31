@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PVP_Match
 {
     const int ModelId = 0;

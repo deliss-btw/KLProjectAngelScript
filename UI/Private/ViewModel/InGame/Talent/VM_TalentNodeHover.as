@@ -1,4 +1,3 @@
-﻿
 namespace FVM_TalentNodeHover
 {
     const int ModelId = 0;
@@ -345,7 +344,7 @@ struct FVM_TalentNodeHover : FEUIViewModel
         bool local_9;
         if (!(this.GetbAllCondAchieved()))
         {
-            return NSLOCTEXT("Talent", "TalentUpgradeCondNotMet", "жњЄж»Ўи¶іжќЎд»¶");
+            return NSLOCTEXT("Talent", "TalentUpgradeCondNotMet", "未满足条件");
         }
         if (!(this.GetTalentNode().IsValid()))
         {
@@ -369,7 +368,7 @@ struct FVM_TalentNodeHover : FEUIViewModel
         }
         if (local_1)
         {
-            return NSLOCTEXT("Talent", "TalentUpgradeCostNotEnough", "жќђж–™дёЌи¶і");
+            return NSLOCTEXT("Talent", "TalentUpgradeCostNotEnough", "材料不足");
         }
         return FText();
     }
@@ -377,9 +376,9 @@ struct FVM_TalentNodeHover : FEUIViewModel
     {
         if (this.GetIsUnlocked())
         {
-            return FText(NSLOCTEXT("Talent", "Passive", "еЌ‡зє§жЉЂиѓЅ"));
+            return FText(NSLOCTEXT("Talent", "Passive", "升级技能"));
         }
-        return FText(NSLOCTEXT("Talent", "Passive", "и§Јй”ЃжЉЂиѓЅ"));
+        return FText(NSLOCTEXT("Talent", "Passive", "解锁技能"));
     }
     bool GetIsEquippedSkill() const
     {
@@ -555,8 +554,19 @@ struct FVM_TalentNodeHover : FEUIViewModel
     }
     int GetConditionDataId(const TDataObjectPtr<FServerConditionConfigBase> &inout Cond) const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        CastTo local_28;
+        TDataObjectPtr<FConditionConfig> local_52 = local_28.opCall();
+        if (local_52)
+        {
+            return ::NumericUtils::AsInt32(local_52.opArrow().DataId);
+        }
+        CastTo local_84;
+        TDataObjectPtr<FGsConditionGroupConfig> local_108 = local_84.opCall();
+        if (local_108)
+        {
+            return ::NumericUtils::AsInt32(local_108.opArrow().DataId);
+        }
+        return INDEX_NONE;
     }
     void CreateAchievedCondIdList()
     {
@@ -598,7 +608,7 @@ struct FVM_TalentNodeHover : FEUIViewModel
                 }
             }
             FText local_122;
-            TEUIModelRef<FVM_TitleAndDescAndStatus> local_118 = TEUIModelRef<FVM_TitleAndDescAndStatus>(::FVM_TitleAndDescAndStatus::Create(this.GetContext().Manager, NSLOCTEXT("Talent", "TalentPrereqNodeUnlock", "е‰ЌзЅ®иЉ‚з‚№йњЂи§Јй”Ѓ"), local_122));
+            TEUIModelRef<FVM_TitleAndDescAndStatus> local_118 = TEUIModelRef<FVM_TitleAndDescAndStatus>(::FVM_TitleAndDescAndStatus::Create(this.GetContext().Manager, NSLOCTEXT("Talent", "TalentPrereqNodeUnlock", "前置节点需解锁"), local_122));
             local_100.SetbDone();
             this.GetModify_AchievedCondIdList().Add(local_118);
             if (!(local_100))
@@ -612,7 +622,7 @@ struct FVM_TalentNodeHover : FEUIViewModel
             local_129 = ::FM_LocalPlayerLevel::Get(this.GetContext().Manager).GetLevel();
             local_1 = (local_129 >= 0);
             FText local_122;
-            NSLOCTEXT("Talent", "UpgradeUnlockLevel", "зЋ©е®¶з­‰зє§иѕѕе€°{0}");
+            NSLOCTEXT("Talent", "UpgradeUnlockLevel", "玩家等级达到{0}");
             FText local_134;
             local_128 = TEUIModelRef<FVM_TitleAndDescAndStatus>(::FVM_TitleAndDescAndStatus::Create(this.GetContext().Manager, local_134, local_122));
             TEUIModelRef<FVM_TitleAndDescAndStatus> local_118_2 = local_128;
@@ -803,7 +813,6 @@ struct __GeneratedProperties_FVM_TalentNodeHover
     UPROPERTY()
     TEUIModelRef<FVM_TalentNodeHover> Self;
 
-
 }
 
 namespace FVM_TalentNodeHover
@@ -820,7 +829,145 @@ FVM_TalentNodeHover CreateByManager(const UEUIManagerSubsystem Manager, const TE
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "bVisible";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AchievedCondIdList";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_TitleAndDescAndStatus>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AchievedCondUpgradeDescList";
+    local_14.TypeName = "TArray<TEUIModelRef<FVM_TalentUpgradeDesc>>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TalentName";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TalentLevel";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "TalentDesc";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsChoiceTalent";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "CanSwitchChoice";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SkillName";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsUnequippedChoice";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsUnlocked";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsCostInsufficient";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsCostInsufficientAndNotMaxLevel";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsFoundation";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsFoundationCostInsufficient";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "UpgradeUnavailableReason";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SkillUpgradeBtnText";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsEquippedSkill";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsEquippedFoundation";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "IsUnEquippedFoundation";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "HasLinkedPassiveTalent";
+    local_14.TypeName = "bool";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "LinkedPassiveTalentDesc";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_TalentNodeHover>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_TalentNodeHover;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(5);
+    local_22.AddRefPropertyDirty(0, 0, FM_TalentNode::__IndexOf_ActiveLevel());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("TalentNode");
+    int local_2_2 = FM_TalentNode::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FM_TalentNode::__IndexOf_ActiveLevel(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnTalentNodeChanged";
+    local_40.DirtyFlags.Set(FVM_TalentNodeHover::__IndexOf_TalentNode());
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnTalentNodeLevelChanged";
+    local_40.DirtyFlags.Set(FVM_TalentNodeHover::__IndexOf_TalentNode());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

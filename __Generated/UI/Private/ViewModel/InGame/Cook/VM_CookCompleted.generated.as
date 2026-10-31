@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_CookBuffInfo_Helpers
 {
 UFUNCTION()

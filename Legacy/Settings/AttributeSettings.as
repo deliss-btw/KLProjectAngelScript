@@ -1,5 +1,3 @@
-﻿
-
 struct FAttributeSettingsCache
 {
     UPROPERTY()

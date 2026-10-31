@@ -1,4 +1,3 @@
-﻿
 enum EFlockAllocatorType
 {
     SimpleFlock,
@@ -84,7 +83,6 @@ struct FRuntimeSpawnerReference
     UPROPERTY()
     int SubIndex;
 
-
 }
 
 struct FRuntimeSlotData
@@ -105,7 +103,6 @@ struct FRuntimeSlotData
     FVector TargetPosition;
     UPROPERTY()
     FVector TargetLookAt;
-
 
     bool WaitReallocated() const
     {
@@ -160,14 +157,13 @@ struct FCreatureActivityData
     UPROPERTY()
     TArray<TDataObjectPtr<FEcologyActivityDefinitionRow>> OverResourceActivityArray;
 
-
     bool IsValid() const
     {
-        return (!((this.TargetResourceId == ENTITY_ID_NULL)));
+        return (!((this.RuntimeSlotData.TargetResourceId == ENTITY_ID_NULL)));
     }
     bool IsWaitReallocate() const
     {
-        return this.WaitReallocated();
+        return this.RuntimeSlotData.WaitReallocated();
     }
     void SetActivity(const TDataObjectPtr<FEcologyActivityDefinitionRow> &inout InActivityRowData)
     {
@@ -200,7 +196,6 @@ struct FResourceSlotAllocator
     UPROPERTY()
     bool bLazyAllocate = true;
 
-
 }
 
 struct FFlockChangeAreaData
@@ -226,7 +221,6 @@ struct FFlockChangeAreaData
     UPROPERTY()
     TArray<AECSRegionVolume> CandidateCombatVolumes;
 
-
 }
 
 struct FFlockNoResourceActivityData
@@ -239,7 +233,6 @@ struct FFlockNoResourceActivityData
     bool bAllowAutoSearchResource;
     UPROPERTY()
     EFlockNoResourceUpdatePolicy FlockUpdatePolicy = EFlockNoResourceUpdatePolicy(0);
-
 
 }
 
@@ -261,7 +254,6 @@ struct FC_EcologyFlockComponent : FECSComponent
     bool bLimitedByActivityVolume = false;
     UPROPERTY()
     TArray<TSoftObjectPtr<AECSRegionVolume>> ActivityVolumes;
-
 
     FECSEntityId GetMainTargetResource() const
     {
@@ -294,7 +286,6 @@ struct FEcologyBossBattleInstanceContext
     UPROPERTY()
     FECSEntity BattleTargetFlock;
 
-
     void Reset()
     {
         this.EndTimeLimit = 45.0f;
@@ -326,7 +317,6 @@ struct FC_EcologyFlockBossBattleForAreaComponent : FECSComponent
     UPROPERTY()
     int BattleChangeAreaPriority = 80;
 
-
 }
 
 struct FEcologyBehaviorSubTask
@@ -345,7 +335,6 @@ struct FEcologyBehaviorSubTask
     FFPTime EmergencyHandleLastUpdateTime;
     UPROPERTY()
     TArray<FEcologyTaskInstance> SubTaskInstances;
-
 
     void RemoveAllSubTaskInstances()
     {
@@ -371,16 +360,12 @@ struct FEcologyBehaviorSubTask
 struct FFlockChangeAreaTaskInstance
 {
     UPROPERTY()
-    TObjectPtr<UCommonChangeAreaTriggerDefinitionAsset> Definition;
+    TObjectPtr<UCommonChangeAreaTriggerDefinitionAsset> Definition = nullptr;
     UPROPERTY()
-    int SuccessCount;
+    int SuccessCount = 0;
     UPROPERTY()
-    FFPTime LastTriggerTime;
+    FFPTime LastTriggerTime = 0;
 
-    FFlockChangeAreaTaskInstance()
-    {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
-    }
     bool IsValid() const
     {
         UCommonChangeAreaTriggerDefinitionAsset local_2;
@@ -424,7 +409,6 @@ struct FC_EcologyFlockBehaviorComponent : FECSComponent
     UPROPERTY()
     TArray<FECSEntityId> VisitedCombatRegion;
 
-
 }
 
 struct FC_EcologyFlockChildSpawnComponent : FECSComponent
@@ -435,7 +419,6 @@ struct FC_EcologyFlockChildSpawnComponent : FECSComponent
     bool bAcceptSpawnRatio = true;
     UPROPERTY()
     FCreatureConfigProxy CreatureDefinition;
-
 
 }
 
@@ -452,10 +435,52 @@ struct FChangeAreaTaskConditionContext
     UPROPERTY()
     float32 HPLostInCombat = 0.0f;
 
-
     void Setup(const FECSEntity &inout OuterEntity, const FCS_FixedTime &inout FixedTime, const FC_EcologyFlockBehaviorComponent &inout BehaviorComponent, const FC_EcologyFlockComponent &inout FlockComponent)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        this.Entity = OuterEntity;
+        if (int(BehaviorComponent.MainState) == 1)
+        {
+            this.ActivityTime = float32(((FFPTime(FixedTime.Time) - BehaviorComponent.EnterMainStateTime).ToSeconds()));
+        }
+        if (!(FECSEntity(FlockComponent.LeaderEntity)))
+        {
+            return;
+        }
+        Get local_24;
+        const FC_GameAttribute& local_26 = local_24.opCall();
+        if (local_26)
+        {
+            float32 local_11 = local_26.GetAttributeValue(Attribute::HPMax, FixedTime.Time);
+            if (local_11 > 0.0f)
+            {
+                this.HPPercent = ((local_26.GetAttributeValue(Attribute::HP, FixedTime.Time)) / local_11);
+                Has local_32;
+                bool local_4 = local_32.opCall();
+                if (local_4)
+                {
+                    Get local_36;
+                    const FC_CombatState& local_38 = local_36.opCall();
+                    if (local_38)
+                    {
+                        if (local_38.LastHPMaxOnEnterCombat > 0.0f)
+                        {
+                            this.HPLostInCombat = ((local_38.LastHPOnEnterCombat / local_38.LastHPMaxOnEnterCombat) - this.HPPercent);
+                        }
+                        else
+                        {
+                            this.HPLostInCombat = 0.0f;
+                        }
+                        this.BattleTime = float32(((FFPTime(FixedTime.Time) - local_38.SelfCombatSession.EnterCombatTime).ToSeconds()));
+                    }
+                    else
+                    {
+                        this.HPLostInCombat = 0.0f;
+                        this.BattleTime = 0.0f;
+                    }
+                }
+            }
+        }
+        return;
     }
 }
 
@@ -483,7 +508,6 @@ struct FCommonChangeAreaCondition
     bool bCheckHPLostInCombat;
     UPROPERTY()
     float32 HPLostInCombatMoreThan;
-
 
     bool IsTrue(const FChangeAreaTaskConditionContext &inout Context) const
     {
@@ -570,7 +594,6 @@ struct FC_CreatureEcologyState : FECSComponent
     UPROPERTY()
     bool ForceMuteCombatInChangeArea = false;
 
-
 }
 
 struct FC_FlockMember : FECSComponent
@@ -579,7 +602,6 @@ struct FC_FlockMember : FECSComponent
     FECSEntityId FlockProxyEntity;
     UPROPERTY()
     bool bIsLeader = false;
-
 
 }
 
@@ -601,7 +623,6 @@ struct FC_CreatureMeta : FECSComponent
     int Level = 0;
     UPROPERTY()
     UDataTable DifficultyLevelConfig = nullptr;
-
 
 }
 
@@ -697,37 +718,37 @@ bool RemoveEcologyFlockComponent(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcologyFlockComponentOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyFlockComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyFlockComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyFlockComponentOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyFlockComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyFlockComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyFlockComponentOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyFlockComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyFlockComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyFlockComponentOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyFlockComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyFlockComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyFlockComponentOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyFlockComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyFlockComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcologyFlockComponentLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcologyFlockComponent, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcologyFlockComponent, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyFlockComponentActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcologyFlockComponent, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcologyFlockComponent, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyFlockComponentModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcologyFlockComponent, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcologyFlockComponent, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcologyFlockBossBattleForAreaComponent
@@ -810,37 +831,37 @@ bool RemoveEcologyFlockBossBattleForAreaComponent(const FECSEntity &inout Entity
 }
 FECSMonitorRuntimeView __GetMonitorEcologyFlockBossBattleForAreaComponentOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyFlockBossBattleForAreaComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyFlockBossBattleForAreaComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyFlockBossBattleForAreaComponentOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyFlockBossBattleForAreaComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyFlockBossBattleForAreaComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyFlockBossBattleForAreaComponentOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyFlockBossBattleForAreaComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyFlockBossBattleForAreaComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyFlockBossBattleForAreaComponentOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyFlockBossBattleForAreaComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyFlockBossBattleForAreaComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyFlockBossBattleForAreaComponentOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyFlockBossBattleForAreaComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyFlockBossBattleForAreaComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcologyFlockBossBattleForAreaComponentLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcologyFlockBossBattleForAreaComponent, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcologyFlockBossBattleForAreaComponent, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyFlockBossBattleForAreaComponentActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcologyFlockBossBattleForAreaComponent, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcologyFlockBossBattleForAreaComponent, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyFlockBossBattleForAreaComponentModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcologyFlockBossBattleForAreaComponent, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcologyFlockBossBattleForAreaComponent, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcologyFlockBehaviorComponent
@@ -923,37 +944,37 @@ bool RemoveEcologyFlockBehaviorComponent(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcologyFlockBehaviorComponentOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyFlockBehaviorComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyFlockBehaviorComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyFlockBehaviorComponentOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyFlockBehaviorComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyFlockBehaviorComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyFlockBehaviorComponentOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyFlockBehaviorComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyFlockBehaviorComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyFlockBehaviorComponentOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyFlockBehaviorComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyFlockBehaviorComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyFlockBehaviorComponentOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyFlockBehaviorComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyFlockBehaviorComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcologyFlockBehaviorComponentLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcologyFlockBehaviorComponent, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcologyFlockBehaviorComponent, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyFlockBehaviorComponentActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcologyFlockBehaviorComponent, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcologyFlockBehaviorComponent, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyFlockBehaviorComponentModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcologyFlockBehaviorComponent, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcologyFlockBehaviorComponent, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_EcologyFlockChildSpawnComponent
@@ -1036,37 +1057,37 @@ bool RemoveEcologyFlockChildSpawnComponent(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorEcologyFlockChildSpawnComponentOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyFlockChildSpawnComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_EcologyFlockChildSpawnComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyFlockChildSpawnComponentOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyFlockChildSpawnComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_EcologyFlockChildSpawnComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyFlockChildSpawnComponentOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyFlockChildSpawnComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_EcologyFlockChildSpawnComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyFlockChildSpawnComponentOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyFlockChildSpawnComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_EcologyFlockChildSpawnComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorEcologyFlockChildSpawnComponentOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyFlockChildSpawnComponent, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_EcologyFlockChildSpawnComponent, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorEcologyFlockChildSpawnComponentLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_EcologyFlockChildSpawnComponent, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_EcologyFlockChildSpawnComponent, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyFlockChildSpawnComponentActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_EcologyFlockChildSpawnComponent, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_EcologyFlockChildSpawnComponent, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorEcologyFlockChildSpawnComponentModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_EcologyFlockChildSpawnComponent, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_EcologyFlockChildSpawnComponent, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_CreatureEcologyState
@@ -1149,37 +1170,37 @@ bool RemoveCreatureEcologyState(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCreatureEcologyStateOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CreatureEcologyState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CreatureEcologyState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCreatureEcologyStateOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CreatureEcologyState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CreatureEcologyState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCreatureEcologyStateOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CreatureEcologyState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CreatureEcologyState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCreatureEcologyStateOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CreatureEcologyState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CreatureEcologyState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCreatureEcologyStateOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CreatureEcologyState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CreatureEcologyState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCreatureEcologyStateLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CreatureEcologyState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CreatureEcologyState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCreatureEcologyStateActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CreatureEcologyState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CreatureEcologyState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCreatureEcologyStateModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CreatureEcologyState, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CreatureEcologyState, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_FlockMember
@@ -1262,37 +1283,37 @@ bool RemoveFlockMember(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorFlockMemberOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_FlockMember, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_FlockMember, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFlockMemberOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_FlockMember, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_FlockMember, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFlockMemberOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_FlockMember, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_FlockMember, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFlockMemberOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_FlockMember, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_FlockMember, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorFlockMemberOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_FlockMember, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_FlockMember, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorFlockMemberLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_FlockMember, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_FlockMember, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFlockMemberActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_FlockMember, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_FlockMember, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorFlockMemberModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_FlockMember, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_FlockMember, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_CreatureMeta
@@ -1375,36 +1396,36 @@ bool RemoveCreatureMeta(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorCreatureMetaOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_CreatureMeta, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_CreatureMeta, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCreatureMetaOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_CreatureMeta, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_CreatureMeta, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCreatureMetaOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_CreatureMeta, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_CreatureMeta, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCreatureMetaOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_CreatureMeta, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_CreatureMeta, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorCreatureMetaOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_CreatureMeta, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_CreatureMeta, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorCreatureMetaLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_CreatureMeta, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_CreatureMeta, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCreatureMetaActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_CreatureMeta, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_CreatureMeta, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorCreatureMetaModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_CreatureMeta, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_CreatureMeta, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

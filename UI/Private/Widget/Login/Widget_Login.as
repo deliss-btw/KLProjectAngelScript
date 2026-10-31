@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_Login
 {
     const int ViewID = 0;
@@ -122,7 +121,6 @@ class UWidget_Login : UEUIActivatableWidget
     bool bHasLastDownloadProgressSample = false;
     uint64 LastDownloadedByte = 0;
     float LastDownloadProgressTimeSeconds = 0.0;
-
 
     UFUNCTION()
     void Construct_Implementation()
@@ -338,29 +336,29 @@ class UWidget_Login : UEUIActivatableWidget
     {
         if ((RawType == "Public"))
         {
-            return "е…¬жњЌ";
+            return "公服";
         }
         if ((RawType == "Private"))
         {
-            return "з§ЃжњЌ";
+            return "私服";
         }
         if ((RawType == "QA"))
         {
-            return "жµ‹иЇ•жњЌ";
+            return "测试服";
         }
         return RawType;
     }
     FString GetServerTypeRawName(const FString &inout DisplayName)
     {
-        if ((DisplayName == "е…¬жњЌ"))
+        if ((DisplayName == "公服"))
         {
             return "Public";
         }
-        if ((DisplayName == "з§ЃжњЌ"))
+        if ((DisplayName == "私服"))
         {
             return "Private";
         }
-        if ((DisplayName == "жµ‹иЇ•жњЌ"))
+        if ((DisplayName == "测试服"))
         {
             return "QA";
         }
@@ -564,7 +562,7 @@ class UWidget_Login : UEUIActivatableWidget
         }
         if (local_13)
         {
-            this.DisplayErrorMessage("з”Ёж€·еђЌдёЌиѓЅеЊ…еђ«иЎЁжѓ…з¬¦еЏ·");
+            this.DisplayErrorMessage("用户名不能包含表情符号");
             return;
         }
         FString local_4 = this.EditableTextBox_DS_ID.GetText().ToString();
@@ -763,8 +761,19 @@ class UWidget_Login : UEUIActivatableWidget
     }
     int FindGateInfoIndexByRegionAddress(const FString &inout RegionAddress)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        if (RegionAddress.IsEmpty())
+        {
+            return INDEX_NONE;
+        }
+        int local_3 = 0;
+        for (; local_3 < this.GateInfoList.Num(); ++local_3)
+        {
+            if ((FString(this.GateInfoList[local_3].RegionAddress) == RegionAddress))
+            {
+                return local_3;
+            }
+        }
+        return INDEX_NONE;
     }
     bool TryDownLoadCLVersion(const FPbQueryCurRegionHttpRsp &inout QueryCurRegionHttpRsp)
     {
@@ -836,17 +845,17 @@ class UWidget_Login : UEUIActivatableWidget
         FString local_46 = System::GetBuildConfiguration();
         if (local_10 != 0 && !((local_18 == local_42)))
         {
-            this.DisplayErrorMessage(FString().Append("DSз‰€жњ¬дёЌеЊ№й…ЌпјљDSVersion(").Append(local_18).Append(") != е®ўж€·з«ЇCL(").Append(local_42).Append(")пјЊеЏЇеїЅз•Ґз»§з»­з™»еЅ•"));
+            this.DisplayErrorMessage(FString().Append("DS版本不匹配：DSVersion(").Append(local_18).Append(") != 客户端CL(").Append(local_42).Append(")，可忽略继续登录"));
             return false;
         }
         if (!(local_8.IsEmpty()) && !((local_8 == local_42)))
         {
-            this.DisplayErrorMessage(FString().Append("е®ўж€·з«Їз‰€жњ¬дёЌеЊ№й…ЌпјљжњЌеЉЎе™ЁCL(").Append(local_8).Append(") != е®ўж€·з«ЇCL(").Append(local_42).Append(")пјЊеЏЇеїЅз•Ґз»§з»­з™»еЅ•"));
+            this.DisplayErrorMessage(FString().Append("客户端版本不匹配：服务器CL(").Append(local_8).Append(") != 客户端CL(").Append(local_42).Append(")，可忽略继续登录"));
             return false;
         }
         if (!(local_14.IsEmpty()) && !((local_14 == local_46)))
         {
-            this.DisplayErrorMessage(FString().Append("жћ„е»єз±»ећ‹дёЌеЊ№й…ЌпјљDSBuildType(").Append(local_14).Append(") != е®ўж€·з«ЇBuildType(").Append(local_46).Append(")пјЊеЏЇеїЅз•Ґз»§з»­з™»еЅ•"));
+            this.DisplayErrorMessage(FString().Append("构建类型不匹配：DSBuildType(").Append(local_14).Append(") != 客户端BuildType(").Append(local_46).Append(")，可忽略继续登录"));
             return false;
         }
         return true;
@@ -919,7 +928,7 @@ class UWidget_Login : UEUIActivatableWidget
         if (bSuccess)
         {
             this.DisplayCommonMessage("SDK verification passed, logging in...");
-            ::UGameClientConnectionSubsystem::Get().PlayerLogin(this.CachedDsID, this.CachedLevelKey, this.CachedCommissionKey, this.bCachedEnterTestLevel, this.CachedToken, this.CheckBox_IgnoreVersion.IsChecked(), this.CheckBox_CreatePlayer.IsChecked(), (this.CheckBox_Skip_Tutorial != nullptr) && this.CheckBox_Skip_Tutorial.IsChecked());
+            ::UGameClientConnectionSubsystem::Get().PlayerLogin(this.CachedDsID, this.CachedLevelKey, this.CachedCommissionKey, (this.bCachedEnterTestLevel), this.CachedToken, this.CheckBox_IgnoreVersion.IsChecked(), this.CheckBox_CreatePlayer.IsChecked(), (this.CheckBox_Skip_Tutorial != nullptr) && this.CheckBox_Skip_Tutorial.IsChecked());
             return;
         }
         this.DisplayErrorMessage("SDK verification failed, please check anti-addiction or real-name status");
@@ -931,7 +940,6 @@ class UWidget_Login : UEUIActivatableWidget
     UFUNCTION()
     void OnPlayerLoginRsp(const FProtoWrapper &in ProtoWrapper)
     {
-        ULocalPlayer local_20;
         XLog(ELog(27), FString().Append("OnPlayerLoginRsp"));
         FPbPlayerLoginRsp local_14 = FPbPlayerLoginRsp::FromWrapper(ProtoWrapper);
         int local_16 = local_14.GetRetcode();
@@ -959,7 +967,7 @@ class UWidget_Login : UEUIActivatableWidget
             {
                 this.ClosePage(false);
                 ::FMS_Login::Get(this.GetOwningLocalPlayer()).SetCanCreatePlayer(true);
-                local_20 = this.GetOwningLocalPlayer();
+                FEUIModelRef local_46 = FEUIModelRef(::FMS_Login::Get(this.GetOwningLocalPlayer()));
                 FEUIMessageBus::Publish(EUIMessageBus);
                 local_40.NextPhase = ELoginShowPhase(2);
             }
@@ -969,7 +977,7 @@ class UWidget_Login : UEUIActivatableWidget
             FMsg_LoginNextPhase local_40;
             if (local_14.GetPlayerPhase() == 2)
             {
-                local_20 = this.GetOwningLocalPlayer();
+                FEUIModelRef local_46_2 = FEUIModelRef(::FMS_Login::Get(this.GetOwningLocalPlayer()));
                 FEUIMessageBus::Publish(EUIMessageBus);
                 local_40.NextPhase = ELoginShowPhase(5);
             }
@@ -1255,6 +1263,7 @@ namespace UWidget_Login
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_Login;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

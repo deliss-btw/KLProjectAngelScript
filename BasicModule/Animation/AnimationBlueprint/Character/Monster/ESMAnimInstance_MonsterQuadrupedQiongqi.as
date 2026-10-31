@@ -1,5 +1,3 @@
-﻿
-
 class UESMAnimInstance_MonsterQuadrupedQiongqi : UESMAnimInstance_MonsterQuadruped
 {
     UPROPERTY()
@@ -10,7 +8,6 @@ class UESMAnimInstance_MonsterQuadrupedQiongqi : UESMAnimInstance_MonsterQuadrup
     float32 TailDynamicAlpha = 0.0f;
     UPROPERTY()
     float32 FeatherDynamicAlphaPhase3 = 1.0f;
-
 
 }
 

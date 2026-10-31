@@ -1,5 +1,3 @@
-﻿
-
 struct FGSUseEffectBase
 {
     FGSUseEffectBase()
@@ -16,7 +14,6 @@ struct FGSUseEffectUnlockMotion : FGSUseEffectBase
 
     FGSUseEffectUnlockMotion()
     {
-        super();
         return;
     }
 }
@@ -29,7 +26,6 @@ struct FGSUseEffectGrantCurrency : FGSUseEffectBase
     UPROPERTY()
     int Count;
 
-
 }
 
 struct FGSUseEffectGrantDropItem : FGSUseEffectBase
@@ -40,7 +36,6 @@ struct FGSUseEffectGrantDropItem : FGSUseEffectBase
 
     FGSUseEffectGrantDropItem()
     {
-        super();
         return;
     }
 }
@@ -53,7 +48,6 @@ struct FGSUseEffectUnlockOutfit : FGSUseEffectBase
 
     FGSUseEffectUnlockOutfit()
     {
-        super();
         return;
     }
 }
@@ -66,7 +60,6 @@ struct FGSUseEffectGrantReward : FGSUseEffectBase
 
     FGSUseEffectGrantReward()
     {
-        super();
         return;
     }
 }

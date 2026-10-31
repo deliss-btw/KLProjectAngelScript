@@ -1,4 +1,3 @@
-﻿
 enum EProjectileTimelineEntityType
 {
     None,
@@ -29,7 +28,6 @@ enum EProjectileTimelineTransformOffsetType
     LocalSpace,
     WorldSpace,
 }
-
 
 struct FProjectileTimelineActionIdentity
 {
@@ -106,7 +104,6 @@ struct FProjectileTimelineActionData_PlayFX : FProjectileTimelineActionDataRepea
     UPROPERTY()
     float32 GroundHeightCheck = 1000.0f;
 
-
 }
 
 struct FProjectileTimelineActionData_HitTest : FProjectileTimelineActionDataRepeatable
@@ -133,7 +130,6 @@ struct FProjectileTimelineActionData_HitTest : FProjectileTimelineActionDataRepe
     UPROPERTY()
     FAreaStrikeShape StrikeShape;
 
-
 }
 
 struct FProjectileTimelineActionData_CreateArealEffectEntity : FProjectileTimelineActionDataBase
@@ -158,7 +154,6 @@ struct FProjectileTimelineActionData_CreateArealEffectEntity : FProjectileTimeli
     FVector PositionOffset;
     UPROPERTY()
     float32 GroundHeightCheck = 1000.0f;
-
 
 }
 
@@ -195,7 +190,7 @@ struct FProjectileTimelineActionData_AbilityEffectEvent : FProjectileTimelineAct
 struct FProjectileTimelineActionData_ChangeMaterialParam : FProjectileTimelineActionDataBase
 {
     UPROPERTY()
-    FName RequestName;
+    FName RequestName = n"Request1";
     UPROPERTY()
     TArray<FSingleMaterialParamRequestData> MaterialParams;
 
@@ -211,7 +206,6 @@ struct FProjectileTimelineActionData_ChangeMaterialParamSpan : FProjectileTimeli
 
     FProjectileTimelineActionData_ChangeMaterialParamSpan()
     {
-        super();
         return;
     }
 }
@@ -219,22 +213,18 @@ struct FProjectileTimelineActionData_ChangeMaterialParamSpan : FProjectileTimeli
 struct FProjectileTimelineActionData_InstantSFX : FProjectileTimelineActionDataBase
 {
     UPROPERTY()
-    TSoftObjectPtr<UAkAudioEvent> Event;
+    TSoftObjectPtr<UAkAudioEvent> Event = nullptr;
     UPROPERTY()
-    bool bFollow;
+    bool bFollow = true;
     UPROPERTY()
-    bool bSelfOnly;
+    bool bSelfOnly = false;
 
-    FProjectileTimelineActionData_InstantSFX()
-    {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
-    }
 }
 
 struct FProjectileTimelineActionData_DurationalSFX : FProjectileTimelineActionDataBase
 {
     UPROPERTY()
-    TSoftObjectPtr<UAkAudioEvent> EnterEvent;
+    TSoftObjectPtr<UAkAudioEvent> EnterEvent = nullptr;
     UPROPERTY()
     TSoftObjectPtr<UAkAudioEvent> ExitEvent = nullptr;
     UPROPERTY()
@@ -242,13 +232,12 @@ struct FProjectileTimelineActionData_DurationalSFX : FProjectileTimelineActionDa
     UPROPERTY()
     bool bSelfOnly = false;
 
-
 }
 
 struct FProjectileTimelineActionData_KeepSwitchValue : FProjectileTimelineActionDataBase
 {
     UPROPERTY()
-    TSoftObjectPtr<UAkSwitchValue> KeepSwitchValue;
+    TSoftObjectPtr<UAkSwitchValue> KeepSwitchValue = nullptr;
     UPROPERTY()
     TSoftObjectPtr<UAkSwitchValue> ResetSwitchValue = nullptr;
 
@@ -261,17 +250,13 @@ struct FProjectileTimelineActionData_KeepSwitchValue : FProjectileTimelineAction
 struct FProjectileTimelineActionData_KeepRtpcValue : FProjectileTimelineActionDataBase
 {
     UPROPERTY()
-    TSoftObjectPtr<UAkRtpc> Rtpc;
+    TSoftObjectPtr<UAkRtpc> Rtpc = nullptr;
     UPROPERTY()
-    float32 Value;
+    float32 Value = 0.0f;
     UPROPERTY()
-    float32 ResetValue;
+    float32 ResetValue = 0.0f;
     UPROPERTY()
-    float32 InterpolateTime;
+    float32 InterpolateTime = 0.1f;
 
-    FProjectileTimelineActionData_KeepRtpcValue()
-    {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
-    }
 }
 

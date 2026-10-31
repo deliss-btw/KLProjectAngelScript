@@ -1,5 +1,3 @@
-﻿
-
 struct FConfigVM_MenuPage : FConfigEUIModelBase
 {
     UPROPERTY()

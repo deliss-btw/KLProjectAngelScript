@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_AvatarEquipmentItemInfoCompare_Helpers
 {
 UFUNCTION()

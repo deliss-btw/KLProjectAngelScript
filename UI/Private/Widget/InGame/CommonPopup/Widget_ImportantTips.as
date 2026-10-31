@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ImportantTips
 {
     const int ViewID = 0;
@@ -46,6 +45,7 @@ namespace UWidget_ImportantTips
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ImportantTips;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

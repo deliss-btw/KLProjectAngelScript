@@ -1,29 +1,64 @@
-﻿
 namespace __FSubmitRechargeTierConfigFunctions
 {
 UFUNCTION()
 int __FSubmitRechargeTierConfig_GetTierId(const TDataObjectPtr<FSubmitRechargeTierConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    int __r; return __r;
+
+    if (DataObject == nullptr)
+    {
+        if (!EUIGlobals::GIsDuringPropertyConversion)
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'TierId' from a null 'FSubmitRechargeTierConfig' DataObject!");
+        }
+        FSubmitRechargeTierConfig defaultValue;
+        return defaultValue.TierId;
+    }
+    return DataObject.Get().TierId;
 }
 UFUNCTION()
 int __FSubmitRechargeTierConfig_GetCurrencyAmount(const TDataObjectPtr<FSubmitRechargeTierConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    int __r; return __r;
+
+    if (DataObject == nullptr)
+    {
+        if (!EUIGlobals::GIsDuringPropertyConversion)
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'CurrencyAmount' from a null 'FSubmitRechargeTierConfig' DataObject!");
+        }
+        FSubmitRechargeTierConfig defaultValue;
+        return defaultValue.CurrencyAmount;
+    }
+    return DataObject.Get().CurrencyAmount;
 }
 UFUNCTION()
 int __FSubmitRechargeTierConfig_GetPriceAmount(const TDataObjectPtr<FSubmitRechargeTierConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    int __r; return __r;
+
+    if (DataObject == nullptr)
+    {
+        if (!EUIGlobals::GIsDuringPropertyConversion)
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'PriceAmount' from a null 'FSubmitRechargeTierConfig' DataObject!");
+        }
+        FSubmitRechargeTierConfig defaultValue;
+        return defaultValue.PriceAmount;
+    }
+    return DataObject.Get().PriceAmount;
 }
 UFUNCTION()
 FSoftBrush __FSubmitRechargeTierConfig_GetIcon(const TDataObjectPtr<FSubmitRechargeTierConfig> &inout DataObject)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
-    FSoftBrush __r; return __r;
+    FSoftBrush __r;
+    if ((DataObject == nullptr))
+    {
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
+        {
+            FBlueprintDebugFunctions::ThrowScriptException("Get 'Icon' from a null 'FSubmitRechargeTierConfig' DataObject!");
+        }
+        FSubmitRechargeTierConfig local_64;
+        return local_64.Icon;
+    }
+    return __r;
 }
 UFUNCTION()
 FSubmitRechargeTierConfig CastToFSubmitRechargeTierConfig(const TDataObjectPtr<FSubmitRechargeTierConfig> &inout DataObject)

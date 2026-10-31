@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_LoginGamma
 {
     const int ViewID = 0;
@@ -30,7 +29,6 @@ class UWidget_LoginGamma : UEUIActivatableWidget
     FGetEUIModelRef GammaSliderVMDelegate;
     UPROPERTY()
     FGetEUIModelRef CommonSliderVMDelegate;
-
 
     UFUNCTION()
     void OnViewBind_Implementation()
@@ -86,7 +84,7 @@ class UWidget_LoginGamma : UEUIActivatableWidget
             {
                 SettingFinish();
                 this.ClosePage(false);
-                ULocalPlayer local_10 = this.GetOwningLocalPlayer();
+                FEUIModelRef local_12 = FEUIModelRef(::FMS_Login::Get(this.GetOwningLocalPlayer()));
                 FEUIMessageBus::Publish(EUIMessageBus);
                 FMsg_LoginNextPhase local_4;
                 local_4.NextPhase = ELoginShowPhase(3);
@@ -122,7 +120,10 @@ class UWidget_LoginGamma : UEUIActivatableWidget
         {
             FDialogDynamicCallback local_6;
             local_6.BindUFunction(this, n"HandleRequireCloseAnswer");
-            NSLOCTEXT("PlayerSettings", "RequireCloseTitle", "зЎ®и®¤йЂЂе‡є");
+            FDialogCallback local_40 = FDialogCallback(local_6);
+            FText local_44 = NSLOCTEXT("PlayerSettings", "RequireCloseTitle", "确认退出");
+            FCommonDialogParam local_46;
+            ::CommonPopup::Dialog(local_44, this.RequireCloseTitle, this.RequireCloseOptions, local_40, local_46);
             return;
         }
         this.ClosePage(false);
@@ -254,6 +255,7 @@ namespace UWidget_LoginGamma
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_LoginGamma;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCommonSliderRatioChanged"));
     return;
 }

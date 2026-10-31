@@ -1,5 +1,3 @@
-﻿
-
 class AGoldBirdPlay : AKLLevelScriptAreaTargetEvent
 {
     UPROPERTY()
@@ -38,7 +36,6 @@ class AGoldBirdPlay : AKLLevelScriptAreaTargetEvent
     int NearestIndex;
     bool recordRightInfo = false;
     bool bSuccess = false;
-
 
     UFUNCTION()
     void PreLevelBeginPlay_Implementation()
@@ -119,7 +116,7 @@ class AGoldBirdPlay : AKLLevelScriptAreaTargetEvent
                 local_152.SetLocationOffsetSpace(EFXOffsetSpace(2));
                 local_152.SetRotationOffsetSpace(EFXOffsetSpace(2));
                 local_152.SetScale(FVector(0.3, 0.3, 0.3));
-                ECS::GetContextTime();
+                ECSFX::PlayFXInstant(this.CurActiveStatue, local_152, ECS::GetContextTime(), 1.0f, true, true);
                 return;
             }
             XLog(ELog(0), "no nearest index");
@@ -142,20 +139,15 @@ class AGoldBirdPlay : AKLLevelScriptAreaTargetEvent
             this.CurActiveStatue = this.AllPickedStatueList[0];
             ECSFX::StopFX(this.FXEntity_Statue, true, false, 0.0f);
             ECSFX::StopFX(this.FXEntity_Desk, true, false, 0.0f);
-            FECSEntity local_14 = this.CurActiveStatue;
-            if ((!((local_14 == ENTITY_NULL))))
+            if ((!((this.CurActiveStatue == ENTITY_NULL))))
             {
                 FFXConfig local_130;
                 local_130.SetAsset(System::GetSoftClassPath(this.ActiveEffect_Statue));
                 local_130.SetbDetach(false);
-                ECS::GetContextTime();
-                this.FXEntity_Statue = local_14;
+                this.FXEntity_Statue = ECSFX::PlayFXDurational(this.CurActiveStatue, local_130, ECS::GetContextTime(), 1.0f, true);
                 local_130.SetAsset(System::GetSoftClassPath(this.ActiveEffect_Desk));
-                ECS::GetContextTime();
                 AECSPrefab local_144;
-                FECSEntity local_14_2 = ECS::GetPrefabEntity(local_144);
-                FECSEntity local_148;
-                this.FXEntity_Desk = local_148;
+                this.FXEntity_Desk = ECSFX::PlayFXDurational(ECS::GetPrefabEntity(local_144), local_130, ECS::GetContextTime(), 1.0f, true);
             }
         }
         return;
@@ -234,7 +226,7 @@ class AGoldBirdPlay : AKLLevelScriptAreaTargetEvent
     {
         this.OnGameplaySuccess();
         AECSPrefab local_2;
-        local_2.GetActorLocation();
+        ::MessageHintUtils::ServerDebugShowHintTextInArea(this.HintText, local_2.GetActorLocation(), 4000.0f, 4.0f);
         this.RemoveLinkEffect();
         ECSFX::StopFX(this.FXEntity_Desk, true, false, 0.0f);
         ECSFX::StopFX(this.FXEntity_Statue, true, false, 0.0f);
@@ -245,7 +237,6 @@ class AGoldBirdPlay : AKLLevelScriptAreaTargetEvent
     {
         ACombatPropPrefab local_8;
         AECSPrefab local_140;
-        FECSEntity local_154;
         if (this.NearestIndex < 0)
         {
             if (this.FXEntity_DeskInfo.IsValid())
@@ -280,9 +271,7 @@ class AGoldBirdPlay : AKLLevelScriptAreaTargetEvent
                 local_128.SetbUseWorldOriginAsBaseTransformSource(true);
                 local_128.SetLocationOffsetSpace(EFXOffsetSpace(2));
                 local_128.SetRotationOffsetSpace(EFXOffsetSpace(2));
-                ECS::GetContextTime();
-                ECS::GetPrefabEntity(local_140);
-                this.FXEntity_DeskInfo = local_154;
+                this.FXEntity_DeskInfo = ECSFX::PlayFXDurational(ECS::GetPrefabEntity(local_140), local_128, ECS::GetContextTime(), 1.0f, true);
             }
             else
             {
@@ -293,9 +282,7 @@ class AGoldBirdPlay : AKLLevelScriptAreaTargetEvent
                 local_128.SetbUseWorldOriginAsBaseTransformSource(true);
                 local_128.SetLocationOffsetSpace(EFXOffsetSpace(2));
                 local_128.SetRotationOffsetSpace(EFXOffsetSpace(2));
-                ECS::GetContextTime();
-                ECS::GetPrefabEntity(local_140);
-                this.FXEntity_DeskInfo = local_154;
+                this.FXEntity_DeskInfo = ECSFX::PlayFXDurational(ECS::GetPrefabEntity(local_140), local_128, ECS::GetContextTime(), 1.0f, true);
             }
         }
         return local_6;
@@ -314,9 +301,7 @@ class AGoldBirdPlay : AKLLevelScriptAreaTargetEvent
         local_118.SetLocationOffsetSpace(EFXOffsetSpace(2));
         local_118.SetRotationOffsetSpace(EFXOffsetSpace(2));
         local_118.SetScale(FVector(0.3, 0.3, 0.3));
-        ECS::GetContextTime();
-        FECSEntity local_150;
-        this.FXEntity_Link = local_150;
+        this.FXEntity_Link = ECSFX::PlayFXDurational(this.CurActiveStatue, local_118, ECS::GetContextTime(), 1.0f, true);
         return;
     }
     void RemoveLinkEffect()

@@ -1,15 +1,9 @@
-﻿
-
-// NOTE: class defaults are not authored in this module: UESMAction_EnableGravityFalling (default scalar field UESMAction.NetTriggerMode has no declared value type; load the matching Binds.Cache to author this module's defaults, or rerun with --force to use unverified Binds.Cache types (the result may be wrong)).
-// They are carried over byte-exact when this module is recompiled.
-
 class UESMAction_EnableGravityFalling : UESMBPBaseInstantAction
 {
     UPROPERTY()
     float32 GravityScale = 1.0f;
     UPROPERTY()
     FPropMovementExtraConfig ExtraCheckConfig;
-
 
     UFUNCTION()
     FLinearColor GetBackgroundColor_Implementation() const

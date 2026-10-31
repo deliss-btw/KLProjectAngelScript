@@ -1,5 +1,3 @@
-﻿
-
 class US_LookRequestSystemAS : UECSScriptSystem
 {
     US_LookRequestSystemAS()
@@ -28,13 +26,12 @@ class US_LookRequestSystemAS : UECSScriptSystem
     {
         int local_1 = -1;
         int local_3 = 0;
-        while (local_3 < 0)
+        for (; local_3 < Local.RequestArray.Num(); ++local_3)
         {
             if (local_1 < 0 || ::FC_LookRequest::IsBetterThan(Local.RequestArray[local_3], Local.RequestArray[local_1]))
             {
                 local_1 = local_3;
             }
-            ++local_3;
         }
         return local_1;
     }
@@ -55,13 +52,12 @@ class US_LookRequestSystemAS : UECSScriptSystem
     {
         int local_1 = -1;
         int local_3 = 0;
-        while (local_3 < 0)
+        for (; local_3 < Local.RequestArray.Num(); ++local_3)
         {
             if (local_1 < 0 || ::FC_LookRequest::IsBetterThan(Local.RequestArray[local_3], Local.RequestArray[local_1]))
             {
                 local_1 = local_3;
             }
-            ++local_3;
         }
         return local_1;
     }
@@ -89,7 +85,14 @@ class US_LookRequestSystemAS : UECSScriptSystem
     }
     void WriteResolvedFromWorldSnapshot(const FLookSnapshot &inout WorldSnapshot, const FECSEntity &inout Entity, const FTransform &inout OwnerTransform, FC_LookResolvedTarget &inout Out) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FLookSnapshot local_18 = WorldSnapshot;
+        if (::FAnimSnapshot::HasSnapshotType(WorldSnapshot, EAnimSnapshotType(0)))
+        {
+            local_18.SetPosition(::FC_LookRequest::ChangeTransformToBottomLocation(Entity, OwnerTransform).InverseTransformPosition(WorldSnapshot.GetPosition()));
+        }
+        Out.Snapshot = local_18;
+        Out.bHasTarget = true;
+        return;
     }
     void WriteResolvedFromLocalTarget(const FC_AimPoseConfig &inout AimPoseConfig, FC_LookResolvedTarget &inout Out) const
     {
@@ -204,7 +207,54 @@ class US_LookRequestSystemAS : UECSScriptSystem
     UFUNCTION()
     void ClientJob_LerpResolvedTarget(const FECSEntity &inout Entity, FC_LookResolvedTarget &inout LookResolvedTarget) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        int local_20 = 0;
+        int local_26 = 0;
+        float32 local_7 = float32(ECS::GetContextDeltaTime().ToSeconds());
+        if (!(local_20) || !(local_26))
+        {
+            return;
+        }
+        if (!(local_20.GetConfigPtr()))
+        {
+            return;
+        }
+        FVector local_34(LookResolvedTarget.Snapshot.GetPosition());
+        FC_LookResolved local_14;
+        FVector local_40(local_14.Snapshot.GetPosition());
+        bool local_41 = true;
+        bool local_42 = true;
+        if (LookResolvedTarget.bInTransition)
+        {
+            local_14.Snapshot.SetPosition(FVector(FMath::FInterpTo(local_40.X, local_34.X, local_7, local_26.GetTargetLerpSpeed()), (FMath::FInterpTo(local_40.Y, local_34.Y, local_7, local_26.GetTargetLerpSpeed())), (FMath::FInterpTo(local_40.Z, local_34.Z, local_7, local_26.GetTargetLerpSpeed()))));
+            local_41 = FMath::IsNearlyZero((FVector(local_14.Snapshot.GetPosition()) - local_34).Size(), 9.99999993922529e-9);
+        }
+        else
+        {
+            local_14.Snapshot.SetPosition(local_34);
+        }
+        local_14.bHasTarget = LookResolvedTarget.bHasTarget;
+        local_14.Snapshot.SetSource(LookResolvedTarget.Snapshot.GetSource());
+        local_14.Snapshot.SetPriority(LookResolvedTarget.Snapshot.GetPriority());
+        local_14.Snapshot.SetAnimSnapshotTypeMask(uint8(LookResolvedTarget.Snapshot.GetAnimSnapshotTypeMask()));
+        if (::FAnimSnapshot::HasSnapshotType(LookResolvedTarget.Snapshot, EAnimSnapshotType(1)))
+        {
+            FRotator local_76 = FRotator(LookResolvedTarget.Snapshot.GetRotator());
+            FRotator local_82 = FRotator(local_14.Snapshot.GetRotator());
+            if (LookResolvedTarget.bInTransition)
+            {
+                local_14.Snapshot.SetRotator(FRotator(FMath::FInterpTo(float32(local_82.Pitch), float32(local_76.Pitch), local_7, local_26.GetTargetLerpSpeed()), (FMath::FInterpTo(float32(local_82.Yaw), float32(local_76.Yaw), local_7, local_26.GetTargetLerpSpeed())), (FMath::FInterpTo(float32(local_82.Roll), float32(local_76.Roll), local_7, local_26.GetTargetLerpSpeed()))));
+                local_42 = FMath::IsNearlyZero(float32(((FRotator(local_14.Snapshot.GetRotator()) - local_76).GetNormalized().GetManhattanDistance(FRotator::ZeroRotator))), 1e-8f);
+            }
+            else
+            {
+                local_14.Snapshot.SetRotator(local_76);
+            }
+        }
+        if ((LookResolvedTarget.bInTransition && local_41) && local_42)
+        {
+            LookResolvedTarget.bInTransition = false;
+        }
+        return;
     }
     UFUNCTION()
     void Run_ServerJob_PickTop() const

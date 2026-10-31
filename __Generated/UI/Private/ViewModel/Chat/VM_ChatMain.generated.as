@@ -1,4 +1,3 @@
-﻿
 namespace __FVMS_ChatMain_Helpers
 {
 UFUNCTION()

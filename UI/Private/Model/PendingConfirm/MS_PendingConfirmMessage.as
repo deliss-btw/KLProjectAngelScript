@@ -1,4 +1,3 @@
-﻿
 namespace FMS_PendingConfirmMessage
 {
     const int ModelId = 0;
@@ -7,7 +6,7 @@ namespace FMS_PendingConfirmMessage
 struct FPendingConfirmEntry
 {
     UPROPERTY()
-    int CommonPopupId;
+    int CommonPopupId = INDEX_NONE;
     UPROPERTY()
     int64 MessageId;
     UPROPERTY()
@@ -33,10 +32,6 @@ struct FPendingConfirmEntry
     UPROPERTY()
     EPendingConfirmFeature Feature;
 
-    FPendingConfirmEntry()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
 }
 
 struct FMS_PendingConfirmMessage : FEUIModelSingleton
@@ -55,11 +50,22 @@ struct FMS_PendingConfirmMessage : FEUIModelSingleton
 
     FMS_PendingConfirmMessage()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_CurrentDisplayingPopupId = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        return;
     }
     FMS_PendingConfirmMessage(const FMS_PendingConfirmMessage &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_CurrentDisplayingPopupId = INDEX_NONE;
+        this.m_PendingPopups = Other.m_PendingPopups;
+        this.m_CurrentDisplayingPopupId = int(Other.m_CurrentDisplayingPopupId);
+        this.m_CurrentBubbleWidget = Other.m_CurrentBubbleWidget;
+        this.m_CurrentBubbleVM = Other.m_CurrentBubbleVM;
+        this.m_PendingEntries = Other.m_PendingEntries;
+        return;
     }
     FMS_PendingConfirmMessage& opAssign(const FMS_PendingConfirmMessage &inout Other)
     {
@@ -114,11 +120,59 @@ struct FMS_PendingConfirmMessage : FEUIModelSingleton
     }
     void AddEntryAndEnqueuePopup(FPendingConfirmEntry &inout Entry, const FPendingConfirmHintData &inout HintData)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_1_2 = ::CommonPopupUtils::TryEnqueuePopup(FGameplayTag::RequestGameplayTag(n"UI.Type.Commonpupop.PendingConfirm", true), -2000000000);
+        if (local_1_2 != INDEX_NONE)
+        {
+            Entry.CommonPopupId = local_1_2;
+            this.GetModify_PendingPopups().Add(local_1_2, HintData);
+        }
+        this.InsertEntryByPriority(Entry);
+        return;
     }
     void OnCommonPopupChanged(const FCE_NotifyCommonPopupManagerChanged &inout Event)
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FPendingConfirmHintData local_50;
+        ULocalPlayer local_84;
+        XLog(ELog(16), "Show Pending Confirm Message");
+        if (!(::CommonPopupUtils::HasMatchingPopupType(Event.AffectedPopupTypes, FGameplayTag::RequestGameplayTag(n"UI.Type.Commonpupop.PendingConfirm", true))))
+        {
+            return;
+        }
+        for (auto local_20 : Event.RemovedPopupIds)
+        {
+        }
+        for (auto local_21 : Event.NewDisplayingPopupIds)
+        {
+            if (this.GetPendingPopups().Find(local_21, local_50))
+            {
+                int64 local_54 = local_21;
+                int local_2 = this.FindEntryIndexByCommonPopupId(local_54);
+                if (local_2 == INDEX_NONE)
+                {
+                    local_54 = local_21;
+                    this.PurgePopupFromQueue(local_54);
+                    continue;
+                }
+                const FPendingConfirmEntry& local_56 = this.GetPendingEntries()[local_2];
+                TEUIModelRef<FVM_PendingConfirmItem> local_58 = TEUIModelRef<FVM_PendingConfirmItem>(::FVM_PendingConfirmItem::Create(this.GetContext().Manager, int(local_56.CommonPopupId), local_56.Player.opArrow().GetBriefInfo(), local_56.StartTime, local_56.EndTime, local_56.Config));
+                Get local_82;
+                local_84 = local_82.opCall().UEPlayerController.GetLocalPlayer();
+                FEUIWidgetRef local_92 = FEUIWidget::AddWidgetByClass(local_84, ::CommonPopupSettings::Get().PendingConfirmBubbleWidget, local_58.opImplConv());
+                if (local_92.IsValid())
+                {
+                    this.SetCurrentBubbleWidget(local_92);
+                    this.SetCurrentBubbleVM(local_58);
+                    this.SetCurrentDisplayingPopupId(local_21);
+                }
+                else
+                {
+                    this.DequeueAndRemoveBubble();
+                    XError(ELog(16), "Failed to add bubble widget for message");
+                }
+                break;
+            }
+        }
+        return;
     }
     void Tick()
     {
@@ -128,7 +182,18 @@ struct FMS_PendingConfirmMessage : FEUIModelSingleton
     }
     void TickBubbleLifetime()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (this.GetCurrentDisplayingPopupId() == INDEX_NONE)
+        {
+            return;
+        }
+        FFPTime local_8 = FFPTime(this.GetContext().Time);
+        TEUIModelRef<FVM_PendingConfirmItem> local_6 = this.GetCurrentBubbleVM();
+        if (local_8.opCmp(GetEndTime()) >= 0)
+        {
+            this.ExecuteTimeOutAction(this.GetCurrentDisplayingPopupId());
+            this.DequeueAndRemoveBubble();
+        }
+        return;
     }
     void TickPendingEntriesTimeout()
     {
@@ -151,7 +216,16 @@ struct FMS_PendingConfirmMessage : FEUIModelSingleton
     }
     void ExecuteTimeOutAction(const int64 CommonPopupId)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_2 = this.FindEntryIndexByCommonPopupId(CommonPopupId);
+        if (local_2 != INDEX_NONE)
+        {
+            this.ExecuteTimeOutActionForEntry(this.GetPendingEntries()[local_2]);
+            if (int(this.GetPendingEntries()[local_2].DurationTimeOutAutoAction) != 2)
+            {
+                this.GetModify_PendingEntries().RemoveAt(local_2);
+            }
+        }
+        return;
     }
     void ExecuteTimeOutActionForEntry(const FPendingConfirmEntry &inout Entry)
     {
@@ -222,11 +296,88 @@ struct FMS_PendingConfirmMessage : FEUIModelSingleton
     }
     void DequeueAndRemoveBubble()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        if (this.GetCurrentDisplayingPopupId() != INDEX_NONE)
+        {
+            ::CommonPopupUtils::DequeuePopupInternal(this.GetCurrentDisplayingPopupId());
+            int local_2 = this.GetCurrentDisplayingPopupId();
+        }
+        if (this.GetCurrentBubbleWidget().IsValid())
+        {
+            FEUIWidget::RemoveWidget(this.GetCurrentBubbleWidget());
+            this.SetCurrentBubbleWidget(FEUIWidgetRef());
+        }
+        this.SetCurrentBubbleVM(TEUIModelRef<FVM_PendingConfirmItem>());
+        this.SetCurrentDisplayingPopupId(INDEX_NONE);
+        return;
     }
     void SendConfirmResult(const int64 CommonPopupId, const EPendingConfirmAction Action)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_2 = this.FindEntryIndexByCommonPopupId(CommonPopupId);
+        if (local_2 == INDEX_NONE)
+        {
+            return;
+        }
+        else
+        {
+            const FPendingConfirmEntry& local_6 = this.GetPendingEntries()[local_2];
+            bool local_3 = (int(Action) == 1);
+            switch (int(local_6.Feature))
+            {
+            case 0:
+            {
+                    int local_10;
+                local_10 = local_6.Player.opArrow().GetPlayerUid();
+                ::FriendUtil::HandleApplyFriend(local_10, EPendingConfirmAction(Action));
+                return;
+            }
+            case 1:
+            {
+                if (local_3 && ::FMS_Mode::Get(this.GetContext().Manager).IsGloballyMatching())
+                {
+                    ::FMS_Mode::Get(this.GetContext().Manager).BeginCancelForTeamAccept(false, local_6.MessageId, local_6.Player.opArrow().GetPlayerUid());
+                    return;
+                }
+                else
+                {
+                        FCE_ClientToServerTeamApplyReply local_26;
+                    FFPTime local_24 = FFPTime(-1);
+                    FECSEntity local_18 = this.GetContext().GetLocalPlayer();
+                    local_26.TeamId = local_6.MessageId;
+                    local_26.SourceUid = local_6.Player.opArrow().GetPlayerUid();
+                    local_26.bAccept = local_3;
+                    return;
+                }
+            }
+            case 2:
+            {
+                if (local_3 && ::FMS_Mode::Get(this.GetContext().Manager).IsGloballyMatching())
+                {
+                    ::FMS_Mode::Get(this.GetContext().Manager).BeginCancelForTeamAccept(true, local_6.MessageId, local_6.Player.opArrow().GetPlayerUid());
+                    return;
+                }
+                else
+                {
+                        FCE_ClientToServerTeamInviteReply local_32;
+                    FFPTime local_24_2 = FFPTime(-1);
+                    FECSEntity local_18_2 = this.GetContext().GetLocalPlayer();
+                    local_32.TeamId = local_6.MessageId;
+                    local_32.SourceUid = local_6.Player.opArrow().GetPlayerUid();
+                    local_32.bAccept = local_3;
+                    return;
+                }
+            }
+            case 3:
+            {
+                ::FMS_FriendDataModel::Get(this.GetContext().UELocalPlayer).GS_FriendAssembleReplyReq(local_3);
+                return;
+            }
+            case 4:
+            {
+                ::FMS_FriendDataModel::Get(this.GetContext().UELocalPlayer).GS_TeamAssembleReplyReq(local_3);
+                return;
+            }
+            }
+        }
     }
     void SendConfirmResultToDS(const int64 MessageId, const EPendingConfirmAction Action)
     {
@@ -289,8 +440,15 @@ struct FMS_PendingConfirmMessage : FEUIModelSingleton
     }
     int FindEntryIndexByCommonPopupId(const int64 CommonPopupId)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        int __r; return __r;
+        int local_1 = 0;
+        for (; local_1 < this.GetPendingEntries().Num(); ++local_1)
+        {
+            if (this.GetPendingEntries()[local_1].CommonPopupId == CommonPopupId)
+            {
+                return local_1;
+            }
+        }
+        return INDEX_NONE;
     }
     const TMap<int, FPendingConfirmHintData> GetPendingPopups() const property
     {

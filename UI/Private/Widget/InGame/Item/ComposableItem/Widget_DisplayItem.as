@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_DisplayItem
 {
     const int ViewID = 0;
@@ -36,7 +35,6 @@ class UWidget_DisplayItem : UEUIUserListItemWidget
     FGetEUIModelRef DisplayItemDelegate;
     UPROPERTY()
     FGetEUIModelRef SelectableDelegate;
-
 
     UFUNCTION()
     void HandleDisplayItemVMChanged()
@@ -115,6 +113,7 @@ namespace UWidget_DisplayItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_DisplayItem;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleDisplayItemVMChanged"));
     return;
 }

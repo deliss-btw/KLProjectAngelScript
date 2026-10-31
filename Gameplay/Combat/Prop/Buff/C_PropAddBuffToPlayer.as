@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_PropAddBuffConfig_NS
 {
     const TECSComponentDerivedPtr<FC_PropAddBuffConfig> DerivedPtr = TECSComponentDerivedPtr<FC_PropAddBuffConfig>();
@@ -18,7 +17,6 @@ struct FPropBuffConfigItem
     UPROPERTY()
     int AddStackNum = 1;
 
-
 }
 
 struct FPropAddBuffConfigItem
@@ -31,7 +29,6 @@ struct FPropAddBuffConfigItem
     bool bToSelfAndFriendFaction = false;
     UPROPERTY()
     TArray<FPropBuffConfigItem> BuffConfigs;
-
 
 }
 
@@ -56,7 +53,6 @@ struct FC_PropAddBuffConfig : FECSComponent
     TArray<FPropAddBuffConfigItem> AddBuffConfigs;
     UPROPERTY()
     TArray<FTagNameToBuffConfigList> TagNameToBuffConfigList;
-
 
     FString ValidateConfig(const AECSPrefab Prefab) const
     {
@@ -113,7 +109,6 @@ struct FCE_PropAddBuffToPlayerEvent : FECSEvent
     bool bIncludeDefault;
     UPROPERTY()
     TArray<FName> BuffTagNames;
-
 
 }
 
@@ -197,36 +192,36 @@ bool RemovePropAddBuffConfig(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorPropAddBuffConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_PropAddBuffConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_PropAddBuffConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPropAddBuffConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_PropAddBuffConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_PropAddBuffConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPropAddBuffConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_PropAddBuffConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_PropAddBuffConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPropAddBuffConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_PropAddBuffConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_PropAddBuffConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorPropAddBuffConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_PropAddBuffConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_PropAddBuffConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorPropAddBuffConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_PropAddBuffConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_PropAddBuffConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPropAddBuffConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_PropAddBuffConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_PropAddBuffConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorPropAddBuffConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_PropAddBuffConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_PropAddBuffConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

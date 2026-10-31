@@ -1,5 +1,3 @@
-﻿
-
 struct FCommissionBadgeConfigsCache
 {
     UPROPERTY()
@@ -34,7 +32,7 @@ class UCommissionBadgeSettings : UGameplaySettingsBase
     }
     TArray<TDataObjectPtr<FCommissionBadgeConfig>> GetAllCommissionBadgeConfig() const
     {
-        // body not fully recovered вЂ” stub [no-return]
+        // body not fully recovered — stub [no-return]
         TArray<TDataObjectPtr<FCommissionBadgeConfig>> __r; return __r;
     }
 }

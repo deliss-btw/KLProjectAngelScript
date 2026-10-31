@@ -1,12 +1,9 @@
-﻿
-
 class UESMAction_CameraModifier : UESMBPBaseSpanTickAction
 {
     UPROPERTY()
     FDataObjectPtr Modifier;
     UPROPERTY()
     bool bAlignActionTime = false;
-
 
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const
@@ -36,12 +33,14 @@ class UESMAction_CameraModifier : UESMBPBaseSpanTickAction
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FCameraUtils::StartModifier(Context.GetEntity(), Time.WorldLastTime, this.GetDataPathName(), TDataObjectPtr<FTPCameraModifierConfig>(this.Modifier), -1.0f);
+        return;
     }
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FCameraUtils::StopModifier(Context.GetEntity(), Time.WorldLastTime, this.GetDataPathName(), TDataObjectPtr<FTPCameraModifierConfig>(this.Modifier), -1.0f, true);
+        return;
     }
     UFUNCTION()
     void Tick_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
@@ -54,7 +53,7 @@ class UESMAction_CameraModifier : UESMBPBaseSpanTickAction
     {
         if (!(this.Modifier.IsValid()))
         {
-            Node.AddDataInvalidComment(EESMDataValidType(2), "Camera Modifier й…ЌзЅ®ж— ж•€");
+            Node.AddDataInvalidComment(EESMDataValidType(2), "Camera Modifier 配置无效");
         }
         return;
     }

@@ -1,10 +1,17 @@
-﻿
 namespace FGameModeTimerUtils
 {
 int AddTimer(const FGameModeTimerEntry &inout InEntry)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
-    int __r; return __r;
+    int local_8 = 0;
+    FECSWorldPtr local_2 = ECS::GetECSWorld();
+    int local_10 = local_8.AllocateHandle();
+    local_8.TimerEntries.Add(local_10, InEntry);
+    FFPTime local_14 = local_8.NextTriggerTime;
+    if (local_14.opCmp(FFPTime(0)) < 0 || ((InEntry.TriggerTime.opCmp(local_8.NextTriggerTime) < 0)))
+    {
+        local_8.NextTriggerTime = InEntry.TriggerTime;
+    }
+    return local_10;
 }
 void AddTimers(const TArray<FGameModeTimerEntry> &inout Entries)
 {

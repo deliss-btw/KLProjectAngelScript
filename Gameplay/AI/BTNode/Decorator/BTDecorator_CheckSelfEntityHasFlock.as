@@ -1,5 +1,3 @@
-﻿
-
 class UBTDecorator_CheckSelfEntityHasFlock : UBTDecorator_ECSScriptBase
 {
     UBTDecorator_CheckSelfEntityHasFlock()

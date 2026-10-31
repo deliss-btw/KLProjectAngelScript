@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonDropdown
 {
     const int ModelId = 0;
@@ -12,20 +11,16 @@ struct FCommonDropdownDefaultOption
     UPROPERTY()
     FEUIModelRef DefaultModel;
 
-    FCommonDropdownDefaultOption()
-    {
-        this.DefaultIndex = 0;
-        return;
-    }
     FCommonDropdownDefaultOption(const int InDefaultIndex)
     {
-        this.DefaultIndex = 0;
         this.DefaultIndex = InDefaultIndex;
         return;
     }
     FCommonDropdownDefaultOption(const FEUIModelRef &inout InDefaultModel)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.DefaultIndex = INDEX_NONE;
+        this.DefaultModel = InDefaultModel;
+        return;
     }
 }
 
@@ -57,15 +52,51 @@ struct FVM_CommonDropdown : FEUIViewModel
 
     FVM_CommonDropdown()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_bDropdownOpen = false;
+        this.m_ExpandDirection = ECommonDropdownExpandDirection(1);
+        this.m_bWithIcon = true;
+        this.m_bBroadcast = true;
+        this.m_PrivateSelectedIndex = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        XError(ELog(17), "Should not construct model'FVM_CommonDropdown' by default constructor.");
+        return;
     }
     FVM_CommonDropdown(const FVM_CommonDropdown &inout Other)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_bDropdownOpen = false;
+        this.m_ExpandDirection = ECommonDropdownExpandDirection(1);
+        this.m_bWithIcon = true;
+        this.m_bBroadcast = true;
+        this.m_PrivateSelectedIndex = INDEX_NONE;
+        this.m_OptionDatas = Other.m_OptionDatas;
+        this.m_OptionDisabledIndices = Other.m_OptionDisabledIndices;
+        this.m_ButtonData = Other.m_ButtonData;
+        this.m_DropdownList = Other.m_DropdownList;
+        this.m_bDropdownOpen = Other.m_bDropdownOpen;
+        this.m_ExpandDirection = Other.m_ExpandDirection;
+        this.m_bWithIcon = Other.m_bWithIcon;
+        this.m_bBroadcast = Other.m_bBroadcast;
+        this.m_PrivateSelectedIndex = int(Other.m_PrivateSelectedIndex);
+        return;
     }
     FVM_CommonDropdown(const TArray<FEUIModelContainer> &inout InOptionDatas, const FCommonDropdownDefaultOption &inout InDefaultOption, const FOnCommonDropdownSelected &inout InOnDropdownSelected)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.m_bDropdownOpen = false;
+        this.m_ExpandDirection = ECommonDropdownExpandDirection(1);
+        this.m_bWithIcon = true;
+        this.m_bBroadcast = true;
+        this.m_PrivateSelectedIndex = INDEX_NONE;
+        if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
+        {
+            return;
+        }
+        this.SetOptionDatas(InOptionDatas);
+        this.SetDefaultOption(InDefaultOption);
+        this.SetOnDropdownSelected(InOnDropdownSelected);
+        return;
     }
     FVM_CommonDropdown opAssign(const FVM_CommonDropdown &inout Other)
     {
@@ -114,7 +145,14 @@ struct FVM_CommonDropdown : FEUIViewModel
     }
     void SelectByData(const FEUIModelContainer &inout OptionData)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        int local_1 = this.GetOptionDatas().IndexOfByKey(OptionData);
+        if (local_1 == INDEX_NONE)
+        {
+            XError(ELog(16), FString().Append("Invalid option data: ").Append(OptionData));
+            return;
+        }
+        this.SetSelectedIndex(local_1, true);
+        return;
     }
     void UpdateButtonData()
     {
@@ -138,8 +176,20 @@ struct FVM_CommonDropdown : FEUIViewModel
     }
     FEUIModelContainer MakeButtonData() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-        FEUIModelContainer __r; return __r;
+        FEUIModelContainer local_14;
+        int local_22 = 0;
+        if (this.GetSelectedIndex() != INDEX_NONE && this.GetOptionDatas().IsValidIndex(this.GetSelectedIndex()))
+        {
+            local_14 = this.GetOptionDatas()[this.GetSelectedIndex()];
+        }
+        else
+        {
+            local_14.AddModel(this.GetDefaultOption().DefaultModel, false);
+        }
+        TEUIModelWeakRef<FVM_CommonDropdown> local_20 = TEUIModelWeakRef<FVM_CommonDropdown>(this);
+        local_22.SetbWithIcon(this.GetbWithIcon());
+        local_14.AddModel(FEUIModelRef(local_22), false);
+        return local_14;
     }
     const TArray<FEUIModelContainer> GetOptionDatas() const property
     {

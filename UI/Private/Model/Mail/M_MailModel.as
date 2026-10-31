@@ -1,4 +1,3 @@
-﻿
 namespace FMS_MailModel
 {
     const int ModelId = 0;
@@ -25,7 +24,6 @@ struct FMsg_MailDetailLoaded : FEUIMessage
     UPROPERTY()
     uint MailId = 0;
 
-
 }
 
 struct FMsg_MailAttachmentClaimed : FEUIMessage
@@ -34,7 +32,6 @@ struct FMsg_MailAttachmentClaimed : FEUIMessage
     uint MailId = 0;
     UPROPERTY()
     TArray<FRewardItemEntry> Items;
-
 
 }
 
@@ -55,7 +52,6 @@ struct FMsg_MailDeleted : FEUIMessage
 {
     UPROPERTY()
     uint MailId = 0;
-
 
 }
 
@@ -324,18 +320,19 @@ struct FMS_MailModel : FEUIModelSingleton
     }
     void GS_OnClaimAllMailAttachmentRsp(const FPbClaimAllMailAttachmentRsp &inout Rsp)
     {
-        bool local_3;
+        int local_3;
         int local_8 = 0;
         if (Rsp.GetRetcode() == 0)
         {
-            local_3 = false;
+            local_3 = 0;
         }
         else
         {
             int local_4 = Rsp.GetClaimedMailIdList_Num();
-            local_3 = (local_4 == 0);
+            bool local_6 = (local_4 == 0);
+            local_3 = local_6;
         }
-        if (local_3)
+        if (local_3 != 0)
         {
             return;
         }

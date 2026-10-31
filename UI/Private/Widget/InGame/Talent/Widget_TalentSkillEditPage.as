@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TalentSkillEditPage
 {
     const int ViewID = 0;
@@ -51,7 +50,6 @@ class UWidget_TalentSkillEditPage : UEUIActivatableWidget
     UPROPERTY()
     FGetEUIModelRef ShowcaseDelegate;
 
-
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
@@ -92,7 +90,8 @@ class UWidget_TalentSkillEditPage : UEUIActivatableWidget
     UFUNCTION()
     void OnSkillListSelectChange(const int CurrentSkillIndex)
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        this.bFocusOnSkillList = (CurrentSkillIndex != INDEX_NONE);
+        return;
     }
     UFUNCTION()
     void OnSelectedDetailTalentChanged()
@@ -100,13 +99,8 @@ class UWidget_TalentSkillEditPage : UEUIActivatableWidget
         bool local_2 = GetIsDetailSelected();
         if (this.Showcase.IsValid())
         {
-            if (local_2)
-            {
-            }
-            else
-            {
-            }
-            ChangeShowcaseConfigIndex();
+            int local_3 = local_2 ? 1 : 0;
+            local_3.ChangeShowcaseConfigIndex();
         }
         if (!(this.bDetailAnimInitialized))
         {
@@ -583,6 +577,7 @@ namespace UWidget_TalentSkillEditPage
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TalentSkillEditPage;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnPendingClose"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSkillListSelectChange"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedDetailTalentChanged"));
@@ -602,6 +597,7 @@ namespace UWidget_TalentSkillEditPageWidget
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TalentSkillEditPageWidget;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

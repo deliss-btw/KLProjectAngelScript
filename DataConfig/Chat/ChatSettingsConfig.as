@@ -1,4 +1,3 @@
-﻿
 enum EChatChannelTab
 {
     None,
@@ -10,7 +9,6 @@ enum EChatChannelTab
     PrivateChat,
     Recruit,
 }
-
 
 struct FChatSettingsConfig : FDataObject
 {
@@ -63,7 +61,6 @@ struct FChatSettingsConfig : FDataObject
     TArray<EChatChannelTab> ServerHistoryChannels;
     UPROPERTY()
     int ChatSendCDMilliseconds;
-
 
     const TDataObjectPtr<FChatContentConfig> GetGetItemChatId() const property
     {

@@ -1,5 +1,3 @@
-﻿
-
 class UBTService_SimulateViewInput : UBTService_ECSScriptBase
 {
     UPROPERTY()
@@ -22,8 +20,7 @@ class UBTService_SimulateViewInput : UBTService_ECSScriptBase
         {
             GetDefaulted local_28;
             FVector local_46 = (FVector(local_28.opCall().GetPosition()) - FVector(local_28.opCall().GetPosition()));
-            FECSEntity local_52;
-            FAIInputUtils::SimulateViewInput(local_52, Context.PawnEntity);
+            FAIInputUtils::SimulateViewInput(Context.PawnEntity, FRotator::MakeFromX(local_46));
         }
         return;
     }

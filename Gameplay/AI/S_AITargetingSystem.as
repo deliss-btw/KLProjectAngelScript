@@ -1,4 +1,3 @@
-﻿
 const float32 TICK_COMBAT_SCORING_INTERVAL = 0.2f;
 
 class US_AITargetingSystem : UECSScriptSystem

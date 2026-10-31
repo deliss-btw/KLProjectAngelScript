@@ -1,5 +1,3 @@
-﻿
-
 class US_AnimatedCameraSystem : UECSScriptSystem
 {
     US_AnimatedCameraSystem()
@@ -16,8 +14,29 @@ class US_AnimatedCameraSystem : UECSScriptSystem
     }
     bool SweepCamera(const UWorld UEWorld, const FVector &inout Start, const FVector &inout End, const float32 ProbeSize, const FVector &inout OriginFollowPos, const float32 MuteCollisionDistance, FHitResult &inout OutHit) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
-        bool __r; return __r;
+        FCollisionQueryParams local_38;
+        local_38.AddIgnoredActors(TArray<AActor>());
+        TArray<FHitResult> local_46;
+        FCollisionResponseParams local_59;
+        FPhysicsUtils::SweepMulti(UEWorld, EPhysicsTraceTag(1), local_46, Start, End, FQuat::Identity, ECollisionChannel(4), FCollisionShape::MakeSphere(ProbeSize + 1.0f), local_38, local_59);
+        int local_63 = 0;
+        for (; local_63 < local_46.Num(); ++local_63)
+        {
+            if (MuteCollisionDistance > 0.0f)
+            {
+                if (float32(((FVector(local_46[local_63].Location) - OriginFollowPos).SizeSquared())) < (MuteCollisionDistance * MuteCollisionDistance))
+                {
+                    continue;
+                }
+            }
+            if (!(local_46[local_63].GetbBlockingHit()))
+            {
+                continue;
+            }
+            OutHit = local_46[local_63];
+            return true;
+        }
+        return false;
     }
     FVector ApplyAnimatedCameraCollisionCorrection(const UWorld UEWorld, const FVector &inout FollowTargetPosition, const FVector &inout AnimatedCameraPosition, const float32 MuteCollisionDistance, const float32 CorrectionStrength) const
     {
@@ -116,11 +135,11 @@ class US_AnimatedCameraSystem : UECSScriptSystem
     }
     void BlendToAnimatedCamera(const FAnimatedCameraData &inout AnimatedCamera, FCameraInstancedData &inout LastCameraData, FCameraInstancedData &inout CurrentCameraData, const float32 CameraWeight) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     void BlendToAnimatedCamera(const FAnimatedCameraPresentationData &inout AnimatedCamera, FCameraInstancedData &inout LastCameraData, FCameraInstancedData &inout CurrentCameraData, const float32 CameraWeight) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        // body not fully recovered — stub [argmismatch:argtype]
     }
     UFUNCTION()
     void ClientJob_UpdateAnimatedCamera(const FECSEntity &inout Entity, const FCS_LocalPlayer &inout LocalPlayer) const

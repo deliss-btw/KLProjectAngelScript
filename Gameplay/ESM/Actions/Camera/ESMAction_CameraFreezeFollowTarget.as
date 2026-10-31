@@ -1,10 +1,7 @@
-﻿
-
 class UESMAction_CameraFreezeFollowTarget : UESMBPBaseSpanAction
 {
     UPROPERTY()
     bool bFreezeYawInLookAt = true;
-
 
     UFUNCTION()
     EESMAssetWorkflow GetWorkflow_Implementation() const

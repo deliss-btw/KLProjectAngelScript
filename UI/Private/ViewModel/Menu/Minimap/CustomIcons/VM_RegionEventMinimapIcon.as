@@ -1,4 +1,3 @@
-﻿
 namespace FVM_RegionEventMinimapIcon
 {
     const int ModelId = 0;
@@ -328,7 +327,6 @@ struct __GeneratedProperties_FVM_RegionEventMinimapIcon
     bool HasAnyReward;
     UPROPERTY()
     TEUIModelRef<FVM_RegionEventMinimapIcon> Self;
-
 
 }
 

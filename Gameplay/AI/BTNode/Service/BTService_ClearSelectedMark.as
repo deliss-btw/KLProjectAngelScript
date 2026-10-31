@@ -1,8 +1,6 @@
-﻿
-
 class UBTService_ClearSelectedMark : UBTService_ECSScriptBase
 {
-    default SetNodeName("жё…з©єе·ІйЂ‰з›®ж ‡ж ‡и®°");
+    default SetNodeName("清空已选目标标记");
 
     UBTService_ClearSelectedMark()
     {

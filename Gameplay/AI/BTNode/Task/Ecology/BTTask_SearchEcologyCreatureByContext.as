@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_SearchEcologyCreatureByContext : UBTTask_ECSScriptBase
 {
     UPROPERTY()

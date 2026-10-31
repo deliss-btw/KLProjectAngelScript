@@ -1,5 +1,3 @@
-﻿
-
 class UHTNDecorator_CheckFlockState : UHTNDecorator_ECSScriptBase
 {
     UPROPERTY()

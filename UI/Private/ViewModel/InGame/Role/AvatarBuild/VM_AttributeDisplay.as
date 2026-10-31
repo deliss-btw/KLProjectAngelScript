@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AttributeDisplay
 {
     const int ModelId = 0;
@@ -47,10 +46,7 @@ struct FVM_AttributeDisplay : FEUIViewModel
         TEUIModelRef<FM_Attribute> local_2 = this.GetAttribute();
         if (local_4)
         {
-            FText local_10 = local_4.GetAttributeDescription();
-            FText local_14 = local_4.GetAttributeDisplayName();
-            UEUIManagerSubsystem local_16 = this.GetManager();
-            this.SetHoverTips(FEUIModelRef());
+            this.SetHoverTips(FEUIModelRef(::FVM_TitleAndDesc::Create(this.GetManager(), local_4.GetAttributeDisplayName(), local_4.GetAttributeDescription())));
         }
         return;
     }
@@ -169,7 +165,56 @@ FVM_AttributeDisplay CreateByManager(const UEUIManagerSubsystem Manager, const T
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "HoverTips";
+    local_14.TypeName = "FEUIModelRef";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AttributeName";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AttributeDescription";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AttributeValue";
+    local_14.TypeName = "FText";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "AttributeIcon";
+    local_14.TypeName = "FSoftBrush";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_AttributeDisplay>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_AttributeDisplay;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(2);
+    local_22.AddRefPropertyDirty(0, 0, FM_Attribute::__IndexOf_Attribute());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("Attribute");
+    int local_2_2 = FM_Attribute::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FM_Attribute::__IndexOf_Attribute(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__UpdateHoverTips";
+    local_40.DirtyFlags.Set(FVM_AttributeDisplay::__IndexOf_Attribute());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

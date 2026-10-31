@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_PVP_TDM_KDAListEntry_Helpers
 {
 UFUNCTION()

@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_ProjectileDurationalSFXList_NS
 {
     const TECSComponentDerivedPtr<FC_ProjectileDurationalSFXList> DerivedPtr = TECSComponentDerivedPtr<FC_ProjectileDurationalSFXList>();
@@ -44,7 +43,6 @@ struct FCE_ProjectileInstantSFX : FECSEvent
     UPROPERTY()
     bool bSelfOnly = false;
 
-
 }
 
 struct FProjectileDurationalSFXEntry
@@ -65,11 +63,33 @@ struct FProjectileDurationalSFXEntry
 
     FProjectileDurationalSFXEntry()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_TimelineIndex = -1;
+        this.m_ActionIndex = -1;
+        this.m_EnterEvent = nullptr;
+        this.m_ExitEvent = nullptr;
+        this.m_bFollow = true;
+        this.m_bSelfOnly = false;
+        return;
     }
     FProjectileDurationalSFXEntry(const FProjectileDurationalSFXEntry &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_TimelineIndex = -1;
+        this.m_ActionIndex = -1;
+        this.m_EnterEvent = nullptr;
+        this.m_ExitEvent = nullptr;
+        this.m_bFollow = true;
+        this.m_bSelfOnly = false;
+        this.m_TimelineIndex = int(Other.m_TimelineIndex);
+        this.m_ActionIndex = int(Other.m_ActionIndex);
+        this.m_EnterEvent = Other.m_EnterEvent;
+        this.m_ExitEvent = Other.m_ExitEvent;
+        this.m_bFollow = Other.m_bFollow;
+        this.m_bSelfOnly = Other.m_bSelfOnly;
+        return;
     }
     FProjectileDurationalSFXEntry opAssign(const FProjectileDurationalSFXEntry &inout Other)
     {
@@ -192,11 +212,15 @@ struct FC_ProjectileDurationalSFXList : FECSComponent
 
     FC_ProjectileDurationalSFXList()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_ProjectileDurationalSFXList(const FC_ProjectileDurationalSFXList &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_ActiveEntries = Other.m_ActiveEntries;
         return;
@@ -244,7 +268,6 @@ struct FProjectileDurationalSFXPlayingEntry
     UPROPERTY()
     bool bSelfOnly = false;
 
-
 }
 
 struct FC_ProjectileDurationalSFXView : FECSComponent
@@ -272,11 +295,27 @@ struct FProjectileAudioKeepSwitchEntry
 
     FProjectileAudioKeepSwitchEntry()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_TimelineIndex = -1;
+        this.m_ActionIndex = -1;
+        this.m_KeepSwitchValue = nullptr;
+        this.m_ResetSwitchValue = nullptr;
+        return;
     }
     FProjectileAudioKeepSwitchEntry(const FProjectileAudioKeepSwitchEntry &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
+        this.m_TimelineIndex = -1;
+        this.m_ActionIndex = -1;
+        this.m_KeepSwitchValue = nullptr;
+        this.m_ResetSwitchValue = nullptr;
+        this.m_TimelineIndex = int(Other.m_TimelineIndex);
+        this.m_ActionIndex = int(Other.m_ActionIndex);
+        this.m_KeepSwitchValue = Other.m_KeepSwitchValue;
+        this.m_ResetSwitchValue = Other.m_ResetSwitchValue;
+        return;
     }
     FProjectileAudioKeepSwitchEntry opAssign(const FProjectileAudioKeepSwitchEntry &inout Other)
     {
@@ -370,7 +409,6 @@ struct FProjectileAudioKeepSwitchPlayingEntry
     UPROPERTY()
     TSoftObjectPtr<UAkSwitchValue> ResetSwitchValue = nullptr;
 
-
 }
 
 struct FC_ProjectileAudioKeepSwitchList : FECSComponent
@@ -381,11 +419,15 @@ struct FC_ProjectileAudioKeepSwitchList : FECSComponent
 
     FC_ProjectileAudioKeepSwitchList()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_ProjectileAudioKeepSwitchList(const FC_ProjectileAudioKeepSwitchList &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_ActiveEntries = Other.m_ActiveEntries;
         return;
@@ -449,11 +491,33 @@ struct FProjectileAudioKeepRtpcEntry
 
     FProjectileAudioKeepRtpcEntry()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_TimelineIndex = -1;
+        this.m_ActionIndex = -1;
+        this.m_Rtpc = nullptr;
+        this.m_Value = 0.0f;
+        this.m_ResetValue = 0.0f;
+        this.m_InterpolateTime = 0.1f;
+        return;
     }
     FProjectileAudioKeepRtpcEntry(const FProjectileAudioKeepRtpcEntry &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FSubDirtyFlags8 local_3;
+        this.__DirtyFlags = local_3;
+        this.m_TimelineIndex = -1;
+        this.m_ActionIndex = -1;
+        this.m_Rtpc = nullptr;
+        this.m_Value = 0.0f;
+        this.m_ResetValue = 0.0f;
+        this.m_InterpolateTime = 0.1f;
+        this.m_TimelineIndex = int(Other.m_TimelineIndex);
+        this.m_ActionIndex = int(Other.m_ActionIndex);
+        this.m_Rtpc = Other.m_Rtpc;
+        this.m_Value = Other.m_Value;
+        this.m_ResetValue = Other.m_ResetValue;
+        this.m_InterpolateTime = Other.m_InterpolateTime;
+        return;
     }
     FProjectileAudioKeepRtpcEntry opAssign(const FProjectileAudioKeepRtpcEntry &inout Other)
     {
@@ -574,7 +638,6 @@ struct FProjectileAudioKeepRtpcPlayingEntry
     UPROPERTY()
     float32 InterpolateTime = 0.1f;
 
-
 }
 
 struct FC_ProjectileAudioKeepRtpcList : FECSComponent
@@ -585,11 +648,15 @@ struct FC_ProjectileAudioKeepRtpcList : FECSComponent
 
     FC_ProjectileAudioKeepRtpcList()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         return;
     }
     FC_ProjectileAudioKeepRtpcList(const FC_ProjectileAudioKeepRtpcList &inout Other)
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.__InitDirtyFlags();
         this.m_ActiveEntries = Other.m_ActiveEntries;
         return;
@@ -712,37 +779,37 @@ bool RemoveProjectileDurationalSFXList(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorProjectileDurationalSFXListOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileDurationalSFXList, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileDurationalSFXList, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileDurationalSFXListOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileDurationalSFXList, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileDurationalSFXList, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileDurationalSFXListOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileDurationalSFXList, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileDurationalSFXList, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileDurationalSFXListOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileDurationalSFXList, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileDurationalSFXList, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileDurationalSFXListOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileDurationalSFXList, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileDurationalSFXList, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorProjectileDurationalSFXListLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ProjectileDurationalSFXList, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ProjectileDurationalSFXList, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileDurationalSFXListActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ProjectileDurationalSFXList, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ProjectileDurationalSFXList, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileDurationalSFXListModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ProjectileDurationalSFXList, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ProjectileDurationalSFXList, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ProjectileDurationalSFXView
@@ -825,37 +892,37 @@ bool RemoveProjectileDurationalSFXView(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorProjectileDurationalSFXViewOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileDurationalSFXView, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileDurationalSFXView, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileDurationalSFXViewOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileDurationalSFXView, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileDurationalSFXView, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileDurationalSFXViewOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileDurationalSFXView, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileDurationalSFXView, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileDurationalSFXViewOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileDurationalSFXView, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileDurationalSFXView, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileDurationalSFXViewOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileDurationalSFXView, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileDurationalSFXView, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorProjectileDurationalSFXViewLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ProjectileDurationalSFXView, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ProjectileDurationalSFXView, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileDurationalSFXViewActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ProjectileDurationalSFXView, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ProjectileDurationalSFXView, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileDurationalSFXViewModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ProjectileDurationalSFXView, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ProjectileDurationalSFXView, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ProjectileAudioKeepSwitchList
@@ -935,37 +1002,37 @@ bool RemoveProjectileAudioKeepSwitchList(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorProjectileAudioKeepSwitchListOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileAudioKeepSwitchList, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileAudioKeepSwitchList, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileAudioKeepSwitchListOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileAudioKeepSwitchList, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileAudioKeepSwitchList, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileAudioKeepSwitchListOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileAudioKeepSwitchList, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileAudioKeepSwitchList, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileAudioKeepSwitchListOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileAudioKeepSwitchList, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileAudioKeepSwitchList, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileAudioKeepSwitchListOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileAudioKeepSwitchList, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileAudioKeepSwitchList, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorProjectileAudioKeepSwitchListLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ProjectileAudioKeepSwitchList, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ProjectileAudioKeepSwitchList, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileAudioKeepSwitchListActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ProjectileAudioKeepSwitchList, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ProjectileAudioKeepSwitchList, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileAudioKeepSwitchListModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ProjectileAudioKeepSwitchList, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ProjectileAudioKeepSwitchList, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ProjectileAudioKeepSwitchView
@@ -1048,37 +1115,37 @@ bool RemoveProjectileAudioKeepSwitchView(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorProjectileAudioKeepSwitchViewOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileAudioKeepSwitchView, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileAudioKeepSwitchView, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileAudioKeepSwitchViewOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileAudioKeepSwitchView, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileAudioKeepSwitchView, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileAudioKeepSwitchViewOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileAudioKeepSwitchView, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileAudioKeepSwitchView, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileAudioKeepSwitchViewOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileAudioKeepSwitchView, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileAudioKeepSwitchView, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileAudioKeepSwitchViewOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileAudioKeepSwitchView, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileAudioKeepSwitchView, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorProjectileAudioKeepSwitchViewLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ProjectileAudioKeepSwitchView, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ProjectileAudioKeepSwitchView, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileAudioKeepSwitchViewActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ProjectileAudioKeepSwitchView, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ProjectileAudioKeepSwitchView, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileAudioKeepSwitchViewModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ProjectileAudioKeepSwitchView, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ProjectileAudioKeepSwitchView, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ProjectileAudioKeepRtpcList
@@ -1158,37 +1225,37 @@ bool RemoveProjectileAudioKeepRtpcList(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorProjectileAudioKeepRtpcListOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileAudioKeepRtpcList, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileAudioKeepRtpcList, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileAudioKeepRtpcListOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileAudioKeepRtpcList, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileAudioKeepRtpcList, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileAudioKeepRtpcListOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileAudioKeepRtpcList, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileAudioKeepRtpcList, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileAudioKeepRtpcListOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileAudioKeepRtpcList, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileAudioKeepRtpcList, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileAudioKeepRtpcListOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileAudioKeepRtpcList, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileAudioKeepRtpcList, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorProjectileAudioKeepRtpcListLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ProjectileAudioKeepRtpcList, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ProjectileAudioKeepRtpcList, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileAudioKeepRtpcListActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ProjectileAudioKeepRtpcList, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ProjectileAudioKeepRtpcList, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileAudioKeepRtpcListModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ProjectileAudioKeepRtpcList, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ProjectileAudioKeepRtpcList, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_ProjectileAudioKeepRtpcView
@@ -1271,37 +1338,37 @@ bool RemoveProjectileAudioKeepRtpcView(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorProjectileAudioKeepRtpcViewOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileAudioKeepRtpcView, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_ProjectileAudioKeepRtpcView, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileAudioKeepRtpcViewOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileAudioKeepRtpcView, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_ProjectileAudioKeepRtpcView, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileAudioKeepRtpcViewOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileAudioKeepRtpcView, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_ProjectileAudioKeepRtpcView, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileAudioKeepRtpcViewOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileAudioKeepRtpcView, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_ProjectileAudioKeepRtpcView, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorProjectileAudioKeepRtpcViewOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileAudioKeepRtpcView, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_ProjectileAudioKeepRtpcView, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorProjectileAudioKeepRtpcViewLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_ProjectileAudioKeepRtpcView, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_ProjectileAudioKeepRtpcView, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileAudioKeepRtpcViewActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_ProjectileAudioKeepRtpcView, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_ProjectileAudioKeepRtpcView, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorProjectileAudioKeepRtpcViewModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_ProjectileAudioKeepRtpcView, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_ProjectileAudioKeepRtpcView, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace AutoDelta

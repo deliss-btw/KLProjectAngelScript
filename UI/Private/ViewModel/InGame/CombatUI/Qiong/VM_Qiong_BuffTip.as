@@ -1,4 +1,3 @@
-﻿
 namespace FVM_Qiong_BuffTip
 {
     const int ModelId = 0;
@@ -180,7 +179,6 @@ struct __GeneratedProperties_FVM_Qiong_BuffTip
     ESlateVisibility VisiblityVM;
     UPROPERTY()
     TEUIModelRef<FVM_Qiong_BuffTip> Self;
-
 
 }
 

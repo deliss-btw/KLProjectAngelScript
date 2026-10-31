@@ -1,5 +1,3 @@
-﻿
-
 struct FFogEffectSetting
 {
     UPROPERTY()
@@ -34,7 +32,6 @@ struct FFogEffectSetting
     float32 YAlphaRange = 1.0f;
     UPROPERTY()
     float32 WindSpeed = 0.01f;
-
 
 }
 
@@ -94,19 +91,19 @@ class ASceneLocalFogVolume : AActor
         {
             return;
         }
-        this.MID.SetScalarParameterValue(n"Г¦вЂўВґГ¤ВЅвЂњГ©в‚¬ВЏГ¦ЛњЕЅГҐВєВ¦", this.FogSetting.Alpha);
-        this.MID.SetScalarParameterValue(n"Г©ВЃВ®Г§ВЅВ©ГҐВЅВўГ§Е В¶", this.FogSetting.MaskShape);
-        this.MID.SetVectorParameterValue(n"Г¤ВёВ»Г©ВўЕ“ГЁвЂ°ВІ", this.FogSetting.Albedo);
-        this.MID.SetVectorParameterValue(n"Г¦В¬ВЎГ©ВўЕ“ГЁвЂ°ВІ", this.FogSetting.AlbedoSec);
-        this.MID.SetScalarParameterValue(n"Г©ВўЕ“ГЁвЂ°ВІГ¦В·В·ГҐВђЛ†Г§ВіВ»Г¦вЂўВ°", this.FogSetting.AlbedoLerpFactor);
-        this.MID.SetVectorParameterValue(n"ГЁвЂЎВЄГҐВЏвЂГҐвЂ¦вЂ°", this.FogSetting.Emissive);
-        this.MID.SetScalarParameterValue(n"ГҐв„ўВЄГҐВЈВ°UVГ§ВјВ©Г¦вЂќВѕ", this.FogSetting.FogNoiseUV);
-        this.MID.SetScalarParameterValue(n"ГҐв„ўВЄГҐВЈВ°ГҐВЇВ№Г¦ВЇвЂќГҐВєВ¦", this.FogSetting.NoiseContrast);
-        this.MID.SetScalarParameterValue(n"ГҐв„ўВЄГҐВЈВ°Г¦В·ВЎГҐЕ’вЂ“ГҐВјВєГҐВєВ¦", this.FogSetting.NoiseFade);
-        this.MID.SetScalarParameterValue(n"Г©ВќВ ГЁВївЂFadeГЁВ·ВќГ§В¦В»", this.FogSetting.NearFadeDistance);
-        this.MID.SetScalarParameterValue(n"Г©ВќВ ГЁВївЂFadeГҐВјВєГҐВєВ¦", this.FogSetting.NearFadeStrength);
+        this.MID.SetScalarParameterValue(n"æ•´ä½“é€æ˜Žåº¦", this.FogSetting.Alpha);
+        this.MID.SetScalarParameterValue(n"é®ç½©å½¢çŠ¶", this.FogSetting.MaskShape);
+        this.MID.SetVectorParameterValue(n"ä¸»é¢œè‰²", this.FogSetting.Albedo);
+        this.MID.SetVectorParameterValue(n"æ¬¡é¢œè‰²", this.FogSetting.AlbedoSec);
+        this.MID.SetScalarParameterValue(n"é¢œè‰²æ··åˆç³»æ•°", this.FogSetting.AlbedoLerpFactor);
+        this.MID.SetVectorParameterValue(n"è‡ªå‘å…‰", this.FogSetting.Emissive);
+        this.MID.SetScalarParameterValue(n"å™ªå£°UVç¼©æ”¾", this.FogSetting.FogNoiseUV);
+        this.MID.SetScalarParameterValue(n"å™ªå£°å¯¹æ¯”åº¦", this.FogSetting.NoiseContrast);
+        this.MID.SetScalarParameterValue(n"å™ªå£°æ·¡åŒ–å¼ºåº¦", this.FogSetting.NoiseFade);
+        this.MID.SetScalarParameterValue(n"é è¿‘Fadeè·ç¦»", this.FogSetting.NearFadeDistance);
+        this.MID.SetScalarParameterValue(n"é è¿‘Fadeå¼ºåº¦", this.FogSetting.NearFadeStrength);
         float32 local_5_2 = this.FogSetting.NearFadeSmooth;
-        this.MID.SetScalarParameterValue(n"Г©ВќВ ГЁВївЂFadeГЁВївЂЎГ¦ВёВЎГЁВ·ВќГ§В¦В»", local_5_2);
+        this.MID.SetScalarParameterValue(n"é è¿‘Fadeè¿‡æ¸¡è·ç¦»", local_5_2);
         if (this.FogSetting.EnableYAlphaMask)
         {
             local_5_2 = 1.0f;
@@ -115,10 +112,10 @@ class ASceneLocalFogVolume : AActor
         {
             local_5_2 = 0.0f;
         }
-        this.MID.SetScalarParameterValue(n"YГҐВђвЂГ©ВўВќГҐВ¤вЂ“AlphaГҐВјв‚¬ГҐвЂ¦Ві", local_5_2);
-        this.MID.SetScalarParameterValue(n"YГҐВђвЂГ©ВўВќГҐВ¤вЂ“Alpha Offset", int(this.FogSetting.YAlphaOffset));
-        this.MID.SetScalarParameterValue(n"YГҐВђвЂГ©ВўВќГҐВ¤вЂ“Alpha Range", int(this.FogSetting.YAlphaRange));
-        this.MID.SetScalarParameterValue(n"Г©ВЈЕЅГ©в‚¬Её", int(this.FogSetting.WindSpeed));
+        this.MID.SetScalarParameterValue(n"Yå‘é¢å¤–Alphaå¼€å…³", local_5_2);
+        this.MID.SetScalarParameterValue(n"Yå‘é¢å¤–Alpha Offset", this.FogSetting.YAlphaOffset);
+        this.MID.SetScalarParameterValue(n"Yå‘é¢å¤–Alpha Range", this.FogSetting.YAlphaRange);
+        this.MID.SetScalarParameterValue(n"é£Žé€Ÿ", this.FogSetting.WindSpeed);
         return;
     }
 }

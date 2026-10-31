@@ -1,4 +1,3 @@
-﻿
 const FConsoleVariable CVar_Fashion_DisableApply = FConsoleVariable();
 
 namespace FashionUtils
@@ -64,8 +63,8 @@ void ApplyFashionToActor(const AActor Actor, const uint AvatarId, const FRuntime
     bool local_340;
     bool local_341 = false;
     USkeletalMeshComponent local_344;
-    EFashionDecoSocket local_479;
-    EFashionDecoSocket local_480 = EFashionDecoSocket(0);
+    int local_479;
+    int local_480 = 0;
     FDecoAttachOffset local_548;
     if (CVar_Fashion_DisableApply.GetBool())
     {
@@ -284,7 +283,7 @@ void ApplyFashionToActor(const AActor Actor, const uint AvatarId, const FRuntime
             continue;
         }
         local_479 = local_480;
-        local_364.Add(local_479);
+        local_364.Add(EFashionDecoSocket(local_479));
         local_344 = AppearanceMeshUtils::FindChildSkeletalMesh(local_106, AppearanceMeshUtils::DecoChildName(EFashionDecoSocket(local_479)));
         if (local_344 != nullptr)
         {
@@ -313,7 +312,7 @@ void ApplyFashionToActor(const AActor Actor, const uint AvatarId, const FRuntime
     for (; local_285_2 < 14; ++local_285_2)
     {
         local_480 = local_285_2;
-        if (local_364.Contains(local_480))
+        if (local_364.Contains(EFashionDecoSocket(local_480)))
         {
             continue;
         }
@@ -452,119 +451,95 @@ void ApplyFashionDye(const USkeletalMeshComponent SkComp, const TDataObjectPtr<F
 }
 void ApplyHairDyeToMesh(const USkeletalMeshComponent SkComp, const FFashionHairDyeConfig &inout Dye)
 {
-    int local_2 = 0;
-    int local_3 = 0;
     UMaterialInterface local_10;
     UMaterialInstanceDynamic local_14;
     int local_1 = 0;
-    while (local_1 < local_3)
+    for (; local_1 < Dye.SlotNames.Num(); ++local_1)
     {
         const FName& local_6 = Dye.SlotNames[local_1];
         if ((local_6 == NAME_None))
         {
+            continue;
         }
-        else
+        int local_3 = SkComp.GetMaterialIndex(local_6);
+        if (local_3 < 0)
         {
-            local_3 = SkComp.GetMaterialIndex(local_6);
-            if (local_3 < 0)
-            {
-            }
-            else
-            {
-                local_10 = SkComp.GetMaterial(local_3);
-                local_14 = SkComp.CreateDynamicMaterialInstance(local_3, local_10, NAME_None);
-                if (local_14 == nullptr)
-                {
-                }
-                else
-                {
-                    local_14.SetVectorParameterValue(n"Base Color", Dye.BaseColor);
-                    local_14.SetVectorParameterValue(n"RootColor", Dye.RootColor);
-                    local_14.SetVectorParameterValue(n"TipColor", Dye.TipColor);
-                    local_14.SetVectorParameterValue(n"ID Color", Dye.IDColor);
-                    local_14.SetScalarParameterValue(n"Scatter", Dye.Scatter);
-                    local_14.SetScalarParameterValue(n"Brightness", Dye.Brightness);
-                }
-            }
+            continue;
         }
-        ++local_1;
+        local_10 = SkComp.GetMaterial(local_3);
+        local_14 = SkComp.CreateDynamicMaterialInstance(local_3, local_10, NAME_None);
+        if (local_14 == nullptr)
+        {
+            continue;
+        }
+        local_14.SetVectorParameterValue(n"Base Color", Dye.BaseColor);
+        local_14.SetVectorParameterValue(n"RootColor", Dye.RootColor);
+        local_14.SetVectorParameterValue(n"TipColor", Dye.TipColor);
+        local_14.SetVectorParameterValue(n"ID Color", Dye.IDColor);
+        local_14.SetScalarParameterValue(n"Scatter", Dye.Scatter);
+        local_14.SetScalarParameterValue(n"Brightness", Dye.Brightness);
     }
-    local_3 = 0;
-    while (local_3 < local_2)
+    int local_3_2 = 0;
+    for (; local_3_2 < Dye.DecoSlotNames.Num(); ++local_3_2)
     {
-        const FName& local_6_2 = Dye.DecoSlotNames[local_3];
+        const FName& local_6_2 = Dye.DecoSlotNames[local_3_2];
         if ((local_6_2 == NAME_None))
         {
+            continue;
         }
-        else
+        int local_2 = SkComp.GetMaterialIndex(local_6_2);
+        if (local_2 < 0)
         {
-            local_2 = SkComp.GetMaterialIndex(local_6_2);
-            if (local_2 < 0)
-            {
-            }
-            else
-            {
-                local_10 = SkComp.GetMaterial(local_2);
-                local_14 = SkComp.CreateDynamicMaterialInstance(local_2, local_10, NAME_None);
-                if (local_14 == nullptr)
-                {
-                }
-                else
-                {
-                    local_14.SetScalarParameterValue(n"Dye Enable", 1.0f);
-                    local_14.SetScalarParameterValue(n"Dye 1", Dye.DecoDye1);
-                    local_14.SetVectorParameterValue(n"Dye Color 1", Dye.DecoColor1);
-                    local_14.SetScalarParameterValue(n"Dye 2", Dye.DecoDye2);
-                    local_14.SetVectorParameterValue(n"Dye Color 2", Dye.DecoColor2);
-                    local_14.SetScalarParameterValue(n"Dye 3", Dye.DecoDye3);
-                    local_14.SetVectorParameterValue(n"Dye Color 3", Dye.DecoColor3);
-                    local_14.SetScalarParameterValue(n"Dye 4", Dye.DecoDye4);
-                    local_14.SetVectorParameterValue(n"Dye Color 4", Dye.DecoColor4);
-                }
-            }
+            continue;
         }
-        ++local_3;
+        local_10 = SkComp.GetMaterial(local_2);
+        local_14 = SkComp.CreateDynamicMaterialInstance(local_2, local_10, NAME_None);
+        if (local_14 == nullptr)
+        {
+            continue;
+        }
+        local_14.SetScalarParameterValue(n"Dye Enable", 1.0f);
+        local_14.SetScalarParameterValue(n"Dye 1", Dye.DecoDye1);
+        local_14.SetVectorParameterValue(n"Dye Color 1", Dye.DecoColor1);
+        local_14.SetScalarParameterValue(n"Dye 2", Dye.DecoDye2);
+        local_14.SetVectorParameterValue(n"Dye Color 2", Dye.DecoColor2);
+        local_14.SetScalarParameterValue(n"Dye 3", Dye.DecoDye3);
+        local_14.SetVectorParameterValue(n"Dye Color 3", Dye.DecoColor3);
+        local_14.SetScalarParameterValue(n"Dye 4", Dye.DecoDye4);
+        local_14.SetVectorParameterValue(n"Dye Color 4", Dye.DecoColor4);
     }
     return;
 }
 void ApplyClothDyeToMesh(const USkeletalMeshComponent SkComp, const FFashionClothDyeConfig &inout Dye)
 {
-    int local_3 = 0;
     int local_1 = 0;
-    while (local_1 < local_3)
+    for (; local_1 < Dye.SlotNames.Num(); ++local_1)
     {
         const FName& local_6 = Dye.SlotNames[local_1];
         if ((local_6 == NAME_None))
         {
+            continue;
         }
-        else
+        int local_3 = SkComp.GetMaterialIndex(local_6);
+        if (local_3 < 0)
         {
-            local_3 = SkComp.GetMaterialIndex(local_6);
-            if (local_3 < 0)
-            {
-            }
-            else
-            {
-                UMaterialInterface local_10 = SkComp.GetMaterial(local_3);
-                UMaterialInstanceDynamic local_14 = SkComp.CreateDynamicMaterialInstance(local_3, local_10, NAME_None);
-                if (local_14 == nullptr)
-                {
-                }
-                else
-                {
-                    local_14.SetScalarParameterValue(n"Dye Enable", 1.0f);
-                    local_14.SetScalarParameterValue(n"Dye 1", Dye.Dye1);
-                    local_14.SetVectorParameterValue(n"Dye Color 1", Dye.DyeColor1);
-                    local_14.SetScalarParameterValue(n"Dye 2", Dye.Dye2);
-                    local_14.SetVectorParameterValue(n"Dye Color 2", Dye.DyeColor2);
-                    local_14.SetScalarParameterValue(n"Dye 3", Dye.Dye3);
-                    local_14.SetVectorParameterValue(n"Dye Color 3", Dye.DyeColor3);
-                    local_14.SetScalarParameterValue(n"Dye 4", Dye.Dye4);
-                    local_14.SetVectorParameterValue(n"Dye Color 4", Dye.DyeColor4);
-                }
-            }
+            continue;
         }
-        ++local_1;
+        UMaterialInterface local_10 = SkComp.GetMaterial(local_3);
+        UMaterialInstanceDynamic local_14 = SkComp.CreateDynamicMaterialInstance(local_3, local_10, NAME_None);
+        if (local_14 == nullptr)
+        {
+            continue;
+        }
+        local_14.SetScalarParameterValue(n"Dye Enable", 1.0f);
+        local_14.SetScalarParameterValue(n"Dye 1", Dye.Dye1);
+        local_14.SetVectorParameterValue(n"Dye Color 1", Dye.DyeColor1);
+        local_14.SetScalarParameterValue(n"Dye 2", Dye.Dye2);
+        local_14.SetVectorParameterValue(n"Dye Color 2", Dye.DyeColor2);
+        local_14.SetScalarParameterValue(n"Dye 3", Dye.Dye3);
+        local_14.SetVectorParameterValue(n"Dye Color 3", Dye.DyeColor3);
+        local_14.SetScalarParameterValue(n"Dye 4", Dye.Dye4);
+        local_14.SetVectorParameterValue(n"Dye Color 4", Dye.DyeColor4);
     }
     return;
 }

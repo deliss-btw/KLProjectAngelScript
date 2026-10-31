@@ -1,4 +1,3 @@
-﻿
 enum EPresentationDataType
 {
     Config_Presentation,
@@ -655,7 +654,6 @@ struct FMsg_SpotPresentationDataModified : FEUIMessage
     TEUIModelRef<FM_SpotRegistry> Registry;
     UPROPERTY()
     EPresentationDataType DataType;
-
 
 }
 

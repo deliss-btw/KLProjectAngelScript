@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_Execute_SingleRipple
 {
     const int ViewID = 0;
@@ -17,7 +16,6 @@ class UWidget_Execute_SingleRipple : UEUIUserWidget
     FEUIModelWeakRef __SingleRippleVM;
     UPROPERTY()
     FGetEUIModelRef SingleRippleVMDelegate;
-
 
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
@@ -40,7 +38,7 @@ class UWidget_Execute_SingleRipple : UEUIUserWidget
         }
         else
         {
-            if ((int(State) == 4 || (int(State) == 5)))
+            if (int(State) == 4 || (int(State) == 5))
             {
                 this.PlayAnimation(this.Anim_Failed, 0.0f, 1, EUMGSequencePlayMode(0), 1.0f, false);
             }
@@ -114,6 +112,7 @@ namespace UWidget_Execute_SingleRipple
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_Execute_SingleRipple;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnStateChanged"));
     return;
 }

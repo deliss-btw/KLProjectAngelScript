@@ -1,5 +1,3 @@
-﻿
-
 UCLASS(Abstract)
 class UInteractionBehavior_SocialBase : UInteractionBehaviorBase
 {
@@ -76,7 +74,7 @@ class UInteractionBehavior_AcceptInteractActionRequest : UInteractionBehavior_So
         int local_38 = 0;
         int local_46 = 0;
         int local_54 = 0;
-        if (ECS::GetRuntimeInfo().IsClient)
+        if (int(ECS::GetRuntimeInfo().IsClient) != 0)
         {
             return;
         }

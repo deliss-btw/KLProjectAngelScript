@@ -1,5 +1,3 @@
-﻿
-
 class UHTNDecorator_CheckDynamicTreeValid : UHTNDecorator_ECSScriptBase
 {
     UPROPERTY()

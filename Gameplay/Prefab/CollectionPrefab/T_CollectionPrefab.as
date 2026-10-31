@@ -1,5 +1,3 @@
-﻿
-
 struct FT_CollectionPrefabPresentationConfig : FECSTrait
 {
     FECSTrait _base_FECSTrait;

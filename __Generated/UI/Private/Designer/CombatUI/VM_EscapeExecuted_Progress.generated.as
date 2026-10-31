@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_EscapeExecuted_Progress_Helpers
 {
 UFUNCTION()

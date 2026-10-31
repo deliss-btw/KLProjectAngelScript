@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommissionBadgeItem
 {
     const int ModelId = 0;
@@ -50,17 +49,17 @@ struct FVM_CommissionBadgeItem : FEUIViewModel
     }
     FText GetName() const
     {
-        // body not fully recovered вЂ” stub [no-return]
+        // body not fully recovered — stub [no-return]
         FText __r; return __r;
     }
     FSoftBrush GetIcon() const
     {
-        // body not fully recovered вЂ” stub [no-return]
+        // body not fully recovered — stub [no-return]
         FSoftBrush __r; return __r;
     }
     FText GetBadgeDesc() const
     {
-        // body not fully recovered вЂ” stub [no-return]
+        // body not fully recovered — stub [no-return]
         FText __r; return __r;
     }
     FText GetBadgeValueDesc() const
@@ -78,11 +77,11 @@ struct FVM_CommissionBadgeItem : FEUIViewModel
         int local_1 = 0;
         if (local_1 == 2)
         {
-            return NSLOCTEXT("CommissionBadge", "CommissionBadge_RankFirst", "з¬¬дёЂ");
+            return NSLOCTEXT("CommissionBadge", "CommissionBadge_RankFirst", "第一");
         }
         if (local_1 == 3)
         {
-            return NSLOCTEXT("CommissionBadge", "CommissionBadge_RankSecond", "з¬¬дєЊ");
+            return NSLOCTEXT("CommissionBadge", "CommissionBadge_RankSecond", "第二");
         }
         return FText();
     }

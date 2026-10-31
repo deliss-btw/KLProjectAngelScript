@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_ItemFeature_SpecialProps_Helpers
 {
 UFUNCTION()

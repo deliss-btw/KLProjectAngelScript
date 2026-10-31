@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_EquipmentSlotInfo_Helpers
 {
 UFUNCTION()

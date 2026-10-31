@@ -1,5 +1,3 @@
-﻿
-
 class UBTTask_GetSCtrlInfo : UBTTask_ECSScriptBase
 {
     UPROPERTY()

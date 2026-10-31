@@ -1,4 +1,3 @@
-﻿
 namespace FM_Dungeon
 {
     const int ModelId = 0;

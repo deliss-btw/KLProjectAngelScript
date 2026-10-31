@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PendingConfirmItem
 {
     const int ModelId = 0;
@@ -18,7 +17,6 @@ struct FPendingConfirmBubbleData
     FFPTime EndTime;
     UPROPERTY()
     TDataObjectPtr<FPendingConfirmHintConfig> Config;
-
 
 }
 
@@ -157,7 +155,7 @@ struct FVM_PendingConfirmItem : FEUIViewModel
     }
     FText GetRemainingTimeText() const
     {
-        return FText::Format(NSLOCTEXT("PendingConfirm", "RemainingTimeFormat", "({0})з§’"), FMath::CeilToInt(FMath::Max(this.GetTimeProgress().GetRemainedTime(), 0.0f)));
+        return FText::Format(NSLOCTEXT("PendingConfirm", "RemainingTimeFormat", "({0})秒"), FMath::CeilToInt(FMath::Max(this.GetTimeProgress().GetRemainedTime(), 0.0f)));
     }
     float32 GetRemainingTimePercent() const
     {
@@ -391,7 +389,6 @@ struct __GeneratedProperties_FVM_PendingConfirmItem
     FText SenderPlayerName;
     UPROPERTY()
     TEUIModelRef<FVM_PendingConfirmItem> Self;
-
 
 }
 

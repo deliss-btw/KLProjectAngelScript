@@ -1,4 +1,3 @@
-﻿
 namespace ItemFeature_EquipMark_Util
 {
     const int EQUIPMENT_ITEM_STATE_LIMIT = 0;
@@ -205,7 +204,6 @@ struct FMsg_ItemFeature_EquipMark_CheckableSelectedUpdate : FEUIMessage
     UPROPERTY()
     bool bCheckableSelected = false;
 
-
 }
 
 struct __GeneratedProperties_FVM_ItemFeature_EquipMark
@@ -214,7 +212,6 @@ struct __GeneratedProperties_FVM_ItemFeature_EquipMark
     ESlateVisibility CurItemDisplayStateVisibility;
     UPROPERTY()
     TEUIModelRef<FVM_ItemFeature_EquipMark> Self;
-
 
 }
 

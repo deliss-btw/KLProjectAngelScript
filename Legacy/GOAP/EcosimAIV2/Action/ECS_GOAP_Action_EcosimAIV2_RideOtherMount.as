@@ -1,5 +1,3 @@
-﻿
-
 class UGOAPAction_EcosimAIV2_RideOtherMount : UGOAP_ActionScriptableBase
 {
     UPROPERTY()

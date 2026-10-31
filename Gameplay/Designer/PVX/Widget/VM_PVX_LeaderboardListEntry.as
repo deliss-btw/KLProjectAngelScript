@@ -1,4 +1,3 @@
-﻿
 namespace FVM_PVX_LeaderboardListEntry
 {
     const int ModelId = 0;
@@ -127,7 +126,7 @@ struct FVM_PVX_LeaderboardListEntry : FEUIViewModel
             return;
         }
         FPVX_PlayerData& local_48 = local_24[this.GetPlayerEntity()];
-        FText local_64 = local_48.GetPlayerName().IsEmpty() ? NSLOCTEXT("PVX", "DefaultPlayerName", "зЋ©е®¶") : FText::FromString(local_48.GetPlayerName());
+        FText local_64 = local_48.GetPlayerName().IsEmpty() ? NSLOCTEXT("PVX", "DefaultPlayerName", "玩家") : FText::FromString(local_48.GetPlayerName());
         this.SetPlayerDisplayName(local_64);
         int local_66 = ::FASCommonUtils::GetPlayerUidFromPlayerEntity(this.GetPlayerEntity());
         FNumberFormattingOptions local_72;

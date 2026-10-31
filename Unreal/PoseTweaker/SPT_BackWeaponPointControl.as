@@ -1,5 +1,3 @@
-﻿
-
 class USPT_BackWeaponPointControl : USkeletalPoseTweaker
 {
     UPROPERTY()
@@ -9,17 +7,17 @@ class USPT_BackWeaponPointControl : USkeletalPoseTweaker
     UPROPERTY()
     TArray<FVector> SpineRotWeights;
     UPROPERTY()
-    float32 LocationSmoothSpeed;
+    float32 LocationSmoothSpeed = 20.0f;
     UPROPERTY()
-    float32 RotationSmoothSpeed;
+    float32 RotationSmoothSpeed = 20.0f;
     UPROPERTY()
-    float32 ExtendDistance;
+    float32 ExtendDistance = 30.0f;
     UPROPERTY()
-    float32 MaxCorrectionDegrees;
+    float32 MaxCorrectionDegrees = 30.0f;
     UPROPERTY()
-    float32 CorrectionSmoothSpeed;
+    float32 CorrectionSmoothSpeed = 15.0f;
     UPROPERTY()
-    bool bWantsDebug;
+    bool bWantsDebug = false;
     TArray<int> SpineChain;
     TArray<FVector> RuntimeRotWeights;
     TArray<int> ValidBoneIndices;
@@ -27,17 +25,13 @@ class USPT_BackWeaponPointControl : USkeletalPoseTweaker
     TArray<int> WeaponParentChainIdx;
     TArray<FVector> SmoothedLocations;
     TArray<FQuat> SmoothedRotations;
-    int Spine03Idx;
-    int Spine02Idx;
+    int Spine03Idx = INDEX_NONE;
+    int Spine02Idx = INDEX_NONE;
     TArray<float32> RefDistsA;
     TArray<float32> RefDistsB;
     TArray<FQuat> SmoothedCorrections;
-    bool bInitialized;
+    bool bInitialized = false;
 
-    USPT_BackWeaponPointControl()
-    {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
-    }
     UFUNCTION()
     void OnInitialization_Implementation()
     {
@@ -348,7 +342,7 @@ class USPT_BackWeaponPointControl : USkeletalPoseTweaker
     {
         FTransform local_48 = this.GetRefPoseTransformLocal(BoneIndex);
         int local_50 = this.GetParentBoneIndex(BoneIndex);
-        while (local_50 != 0)
+        while (local_50 != INDEX_NONE)
         {
             local_48 = (local_48 * this.GetRefPoseTransformLocal(local_50));
             local_50 = this.GetParentBoneIndex(local_50);
@@ -361,7 +355,7 @@ class USPT_BackWeaponPointControl_StdF : USPT_BackWeaponPointControl
 {
     USPT_BackWeaponPointControl_StdF()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
 }
 

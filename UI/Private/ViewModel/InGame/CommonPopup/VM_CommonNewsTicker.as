@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonNewsTicker
 {
     const int ModelId = 0;

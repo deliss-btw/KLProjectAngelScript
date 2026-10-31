@@ -1,5 +1,3 @@
-﻿
-
 class UESMAction_WeaponHide : UESMBPBaseSpanAction
 {
     UESMAction_WeaponHide()

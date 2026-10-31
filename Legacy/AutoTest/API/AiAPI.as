@@ -1,4 +1,3 @@
-﻿
 namespace AutoTest::API::AiAPI
 {
 void SetBTBlackbordValueAsVector(const int EntityId, const FName &inout KeyName, const FVector &inout Value)

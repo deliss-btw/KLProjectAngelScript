@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_TalentSkillInfoRightPanel
 {
     const int ViewID = 0;
@@ -123,11 +122,11 @@ class UWidget_TalentSkillInfoRightPanel : UEUIActivatableWidget
         bool local_8;
         if (GetIsUnlocked())
         {
-            this.UpgradeActionBinding.SetOverrideDisplayText(NSLOCTEXT("Talent", "TalentUpgradeBtn", "й•їжЊ‰еЌ‡зє§жЉЂиѓЅ"));
+            this.UpgradeActionBinding.SetOverrideDisplayText(NSLOCTEXT("Talent", "TalentUpgradeBtn", "长按升级技能"));
         }
         else
         {
-            this.UpgradeActionBinding.SetOverrideDisplayText(NSLOCTEXT("Talent", "TalentUnlockBtn", "й•їжЊ‰и§Јй”ЃжЉЂиѓЅ"));
+            this.UpgradeActionBinding.SetOverrideDisplayText(NSLOCTEXT("Talent", "TalentUnlockBtn", "长按解锁技能"));
         }
         bool local_1 = GetShowUpgradeBtn();
         this.UpgradeActionBinding.SetCollapsed(!(local_1));
@@ -311,6 +310,7 @@ namespace UWidget_TalentSkillInfoRightPanel
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_TalentSkillInfoRightPanel;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSkillChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSkillLevelChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnEquipChoiceChanged"));

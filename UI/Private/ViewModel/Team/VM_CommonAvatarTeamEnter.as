@@ -1,4 +1,3 @@
-﻿
 namespace FVM_CommonAvatarTeamEnterItem
 {
     const int ModelId = 0;
@@ -311,7 +310,6 @@ struct __GeneratedProperties_FVM_CommonAvatarTeamEnterItem
     UPROPERTY()
     TEUIModelRef<FVM_CommonAvatarTeamEnterItem> Self;
 
-
 }
 
 struct __GeneratedProperties_FVM_CommonAvatarTeamEnter
@@ -339,7 +337,65 @@ FVM_CommonAvatarTeamEnterItem CreateByManager(const UEUIManagerSubsystem Manager
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
-    // body not fully recovered вЂ” stub [opcode-uncovered]
+    Result.SetbHasPostConstruct(true);
+    Result.SetbHasLoadConfigDefault(false);
+    Result.SetbCanDefaultConstruct(false);
+    Result.SetbHasLoadConfig(false);
+    FEUIModelPropertyDefine local_14;
+    local_14.PropertyName = "PlayerBasicItem";
+    local_14.TypeName = "TEUIModelRef<FVM_PlayerBasicItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "SlotSwitcherIndex";
+    local_14.TypeName = "int32";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    local_14.PropertyName = "Self";
+    local_14.TypeName = "TEUIModelRef<FVM_CommonAvatarTeamEnterItem>";
+    local_14.bAllowGet = (1 != 0);
+    local_14.bAllowSet = (0 != 0);
+    Result.ExposeProperties.Add(local_14);
+    Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_CommonAvatarTeamEnterItem;
+    FEUIModelRefPropertyDirtyIndexer local_22 = FEUIModelRefPropertyDirtyIndexer(4);
+    local_22.AddRefPropertyDirty(0, 0, FM_Player::__IndexOf_CurrentAvatarAttr());
+    local_22.AddRefPropertyDirty(1, 0, FM_Player::__IndexOf_LevelAttr());
+    local_22.AddRefPropertyDirty(2, 0, FM_Player::__IndexOf_DivineSkillAttr());
+    local_22.AddRefPropertyDirty(3, 0, FM_Player::__IndexOf_NickNameAttr());
+    local_22.ApplySort();
+    FEUIModelRefPropertyDirty local_30;
+    local_30.PropertyName = FName("Player");
+    int local_2_2 = FM_Player::ModelId;
+    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.RelatedDirtyMask.SetBit(FM_Player::__IndexOf_CurrentAvatarAttr(), true);
+    local_30.RelatedDirtyMask.SetBit(FM_Player::__IndexOf_LevelAttr(), true);
+    local_30.RelatedDirtyMask.SetBit(FM_Player::__IndexOf_DivineSkillAttr(), true);
+    local_30.RelatedDirtyMask.SetBit(FM_Player::__IndexOf_NickNameAttr(), true);
+    Result.ListeningModelRefDirties.Add(local_30);
+    FEUIModelDirtyDefine local_40;
+    local_40.FunctionName = "__OnPlayerNickNameChanged";
+    local_40.DirtyFlags.Set(FVM_CommonAvatarTeamEnterItem::__IndexOf_Player());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(3));
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnPlayerAvatarChanged";
+    local_40.DirtyFlags.Set(FVM_CommonAvatarTeamEnterItem::__IndexOf_Player());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(0));
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnPlayerLevelChanged";
+    local_40.DirtyFlags.Set(FVM_CommonAvatarTeamEnterItem::__IndexOf_Player());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(1));
+    Result.DirtyFunctions.Add(local_40);
+    local_40.FunctionName = "__OnPlayerDivineSkillChanged";
+    local_40.DirtyFlags.Set(FVM_CommonAvatarTeamEnterItem::__IndexOf_Player());
+    local_40.DirtyFlags.Set(local_22.GetMappingDirtyIndex(2));
+    Result.DirtyFunctions.Add(local_40);
+    FEUIModelMsgHandleDefine local_50;
+    local_50.FunctionName = "__OnLocalPlayerLevelRefresh";
+    local_50.MessageTypeName = "Msg_LocalPlayerLevelRefresh";
+    local_50.SourcePropertyModelRefs = FBitSet64(0);
+    Result.MessageHandleFunctions.Add(local_50);
+    return;
 }
 UScriptStruct GetModelStruct()
 {

@@ -1,4 +1,3 @@
-﻿
 enum EBTCheckDirectionAngleCompareType
 {
     InRange,
@@ -10,7 +9,6 @@ enum EBTCheckDirectionAnchorType
     Root,
     Socket,
 }
-
 
 class UBTDecorator_CheckDirectionAngleToTarget : UBTDecorator_ECSScriptBase
 {
@@ -35,7 +33,6 @@ class UBTDecorator_CheckDirectionAngleToTarget : UBTDecorator_ECSScriptBase
     UPROPERTY()
     EBTCheckDirectionAnchorType OriginForwardType;
 
-
     UFUNCTION()
     bool CalculateRawConditionValue_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const
     {
@@ -43,7 +40,8 @@ class UBTDecorator_CheckDirectionAngleToTarget : UBTDecorator_ECSScriptBase
         float32 local_140 = 0.0f;
         float32 local_149 = 0.0f;
         float32 local_152;
-        if (!(FECSEntity(this.OriginEntity.GetValue(Context.opImplConv())).IsValid()) || !(FECSEntity(this.TargetEntity.GetValue(Context.opImplConv())).IsValid()))
+        FECSEntity local_12 = FECSEntity(this.OriginEntity.GetValue(Context.opImplConv()));
+        if (!(local_12.IsValid()) || !(FECSEntity(this.TargetEntity.GetValue(Context.opImplConv())).IsValid()))
         {
             return false;
         }
@@ -51,9 +49,7 @@ class UBTDecorator_CheckDirectionAngleToTarget : UBTDecorator_ECSScriptBase
         bool local_17 = (int(this.OriginLocationType) == 1);
         if (local_17)
         {
-            ECS::GetContextTime();
-            FTransform local_80;
-            local_44 = local_80;
+            local_44 = FTransformUtils::GetSocketTransformInGameMesh(local_12, this.OriginSocketName, ECS::GetContextTime(), local_17, FDownsampleConfig());
         }
         bool local_45 = local_17 && (int(this.OriginForwardType) == 1);
         FVector local_104;
@@ -142,7 +138,7 @@ class UBTDecorator_CheckDirectionAngleToTarget : UBTDecorator_ECSScriptBase
     UFUNCTION()
     FString GetStaticDescription_Implementation() const
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
         FString __r; return __r;
     }
 }

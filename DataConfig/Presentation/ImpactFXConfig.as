@@ -1,4 +1,3 @@
-﻿
 enum EImpactType
 {
     Default,
@@ -8,7 +7,6 @@ enum EImpactType
     BossBattle,
 }
 
-
 struct FImpactSFXData
 {
     UPROPERTY()
@@ -17,7 +15,6 @@ struct FImpactSFXData
     bool bFallBack;
     UPROPERTY()
     EImpactType FallBack;
-
 
 }
 
@@ -38,7 +35,6 @@ struct FImpactVFXData
     UPROPERTY()
     EImpactType FallBack;
 
-
 }
 
 struct FImpactVFXDataWithStrength
@@ -53,7 +49,6 @@ struct FImpactVFXDataWithStrength
     bool bFallBack;
     UPROPERTY()
     EImpactType FallBack;
-
 
 }
 

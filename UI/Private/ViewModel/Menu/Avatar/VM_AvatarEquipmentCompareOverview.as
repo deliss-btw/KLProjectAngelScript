@@ -1,4 +1,3 @@
-﻿
 namespace FVM_AvatarEquipmentCompareOverview
 {
     const int ModelId = 0;

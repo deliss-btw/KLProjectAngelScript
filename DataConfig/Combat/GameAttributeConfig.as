@@ -1,5 +1,3 @@
-﻿
-
 struct FGameAttributeInitConfigBase : FDataObject
 {
     FDataObject _base_FDataObject;
@@ -220,7 +218,6 @@ struct FGameAttributeInitConfig_Avatar : FGameAttributeInitConfigBase
     UPROPERTY()
     float32 RecoverHpRatio = 0.0f;
 
-
 }
 
 struct FGameAttributeInitConfig_CombatUnit : FGameAttributeInitConfigBase
@@ -375,7 +372,6 @@ struct FGameAttributeInitConfig_CombatUnit : FGameAttributeInitConfigBase
     UPROPERTY()
     float32 InnateDamageReduceRatio = 0.0f;
 
-
 }
 
 struct FGameAttributeInitConfig_Monster : FGameAttributeInitConfig_CombatUnit
@@ -389,7 +385,6 @@ struct FGameAttributeInitConfig_Monster : FGameAttributeInitConfig_CombatUnit
     float32 EcologyPostureRecoverDelay = 0.0f;
     UPROPERTY()
     float32 EcologyPostureRecoverSpeed = 0.0f;
-
 
 }
 
@@ -521,7 +516,6 @@ struct FGameAttributeInitConfig_Prop : FGameAttributeInitConfigBase
     UPROPERTY()
     float32 EcologyPostureRecoverSpeed;
 
-
 }
 
 struct FGameAttributeInitConfig_NPC : FGameAttributeInitConfig_CombatUnit
@@ -530,7 +524,6 @@ struct FGameAttributeInitConfig_NPC : FGameAttributeInitConfig_CombatUnit
 
     FGameAttributeInitConfig_NPC()
     {
-        super();
         return;
     }
 }
@@ -541,7 +534,6 @@ struct FGameAttributeInitConfig_Creature : FGameAttributeInitConfigBase
 
     FGameAttributeInitConfig_Creature()
     {
-        super();
         return;
     }
 }

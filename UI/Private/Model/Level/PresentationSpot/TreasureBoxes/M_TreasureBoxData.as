@@ -1,4 +1,3 @@
-﻿
 namespace FMS_TreasureBoxData
 {
     const int ModelId = 0;
@@ -11,7 +10,6 @@ struct FMsg_TreasureBoxStateChanged : FEUIMessage
     UPROPERTY()
     ETreasureBoxState NewState;
 
-
 }
 
 struct FTreasureBoxStateInfo
@@ -20,7 +18,6 @@ struct FTreasureBoxStateInfo
     ETreasureBoxState State = ETreasureBoxState(2);
     UPROPERTY()
     FEUITimerHandle RefreshTimerHandle;
-
 
 }
 
@@ -361,7 +358,9 @@ void __OnPlayerLevelObjectStatChanged(FMS_TreasureBoxData &inout Model, const FE
 }
 void __Register_Monitor__(const FECSWorldPtr &inout ECSWorld)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    __MonitorPlayerLevelObjectStatLifetime(ECSWorld, EECSRegType(0), false, false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    __MonitorPlayerLevelObjectStatModification(ECSWorld, EECSRegType(0), false, FECSMonitorDetail::All(NAME_None, FName("EJG_OutputBackend::TickUIModel")));
+    return;
 }
 int __IndexOf_TreasureBoxStates()
 {

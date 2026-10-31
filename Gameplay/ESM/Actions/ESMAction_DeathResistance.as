@@ -1,5 +1,3 @@
-﻿
-
 struct FESMDeathResistanceInstanceData
 {
     UPROPERTY()
@@ -21,7 +19,6 @@ class UESMAction_DeathResistance : UESMBPBaseSpanAction
     EESMActionTargetType TargetType = EESMActionTargetType(0);
     UPROPERTY()
     FNameHandle_EntityBBVarEntity TargetEntityBBVar;
-
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const
@@ -171,7 +168,7 @@ class UESMAction_DeferredDeath : UESMBPBaseSpanAction
         const UESMState local_4 = Info.GetParentState();
         if (local_4 == nullptr)
         {
-            Info.AddDataInvalidComment(EESMDataValidType(2), "Deferred Death еЏЄиѓЅж”ѕењЁеЏ—е‡» State дёЉгЂ‚");
+            Info.AddDataInvalidComment(EESMDataValidType(2), "Deferred Death 只能放在受击 State 上。");
             return;
         }
         UESMAsset::ModifyAutoCustomConfig local_10;
@@ -185,7 +182,19 @@ class UESMAction_DeferredDeath : UESMBPBaseSpanAction
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        const FECSEntity& local_2 = Context.GetEntity();
+        local_2.AddGameplayTag(GameplayTags::CombatState_InDeferredDeath, NAME_None);
+        Modify local_6;
+        FC_DeferDeathTransition& local_8 = local_6.opCall();
+        if (local_8)
+        {
+            local_8.SetbDeferByAction(true);
+        }
+        if (!(this.OnlyEnterAddGameplayTags.IsEmpty()))
+        {
+            Context.GetEntity().AddGameplayTags(this.OnlyEnterAddGameplayTags, this.GetDataPathName());
+        }
+        return;
     }
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const

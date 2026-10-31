@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_CommissionRandomElement
 {
     const int ViewID = 0;
@@ -37,6 +36,7 @@ namespace UWidget_CommissionRandomElement
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_CommissionRandomElement;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

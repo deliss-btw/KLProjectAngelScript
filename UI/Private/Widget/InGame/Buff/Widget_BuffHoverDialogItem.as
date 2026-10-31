@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_BuffHoverDialogItem
 {
     const int ViewID = 0;
@@ -106,6 +105,7 @@ namespace UWidget_BuffHoverDialogItem
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_BuffHoverDialogItem;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

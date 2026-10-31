@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_SelectTarget_Helpers
 {
 UFUNCTION()

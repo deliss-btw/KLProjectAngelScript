@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_GuidingPathTargetMinimapIcon_NS
 {
     const TECSComponentDerivedPtr<FC_GuidingPathTargetMinimapIcon> DerivedPtr = TECSComponentDerivedPtr<FC_GuidingPathTargetMinimapIcon>();
@@ -98,36 +97,36 @@ bool RemoveGuidingPathTargetMinimapIcon(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorGuidingPathTargetMinimapIconOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_GuidingPathTargetMinimapIcon, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_GuidingPathTargetMinimapIcon, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorGuidingPathTargetMinimapIconOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_GuidingPathTargetMinimapIcon, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_GuidingPathTargetMinimapIcon, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorGuidingPathTargetMinimapIconOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_GuidingPathTargetMinimapIcon, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_GuidingPathTargetMinimapIcon, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorGuidingPathTargetMinimapIconOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_GuidingPathTargetMinimapIcon, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_GuidingPathTargetMinimapIcon, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorGuidingPathTargetMinimapIconOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_GuidingPathTargetMinimapIcon, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_GuidingPathTargetMinimapIcon, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorGuidingPathTargetMinimapIconLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_GuidingPathTargetMinimapIcon, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_GuidingPathTargetMinimapIcon, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGuidingPathTargetMinimapIconActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_GuidingPathTargetMinimapIcon, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_GuidingPathTargetMinimapIcon, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorGuidingPathTargetMinimapIconModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_GuidingPathTargetMinimapIcon, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_GuidingPathTargetMinimapIcon, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }

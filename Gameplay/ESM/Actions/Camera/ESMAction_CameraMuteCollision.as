@@ -1,10 +1,7 @@
-﻿
-
 class UESMAction_CameraMuteCollision : UESMBPBaseSpanAction
 {
     UPROPERTY()
     float32 MuteDistance = 100.0f;
-
 
     UFUNCTION()
     void GetRestriction_Implementation(FESMNotifyRestriction &inout OutParam) const

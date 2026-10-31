@@ -1,17 +1,13 @@
-﻿
-
 struct FItemESMActionConfigPtr : FItemActionConfigPtr
 {
     FItemActionConfigPtr _base_FItemActionConfigPtr;
 
     FItemESMActionConfigPtr()
     {
-        super();
         return;
     }
     FItemESMActionConfigPtr(const FItemActionConfigPtr &inout ItemActionPtr)
     {
-        super();
         Super::SetItemConfig(ItemActionPtr.GetItemConfig());
         Super::SetActionType(ItemActionPtr.GetActionType());
         if ((!((this.GetESMAction() != nullptr))))
@@ -74,7 +70,12 @@ class UItemActionConfig_ESMAction : UItemActionConfig_TimeSpan
     }
     void NotifyCustomTrigger(FItemActionRuntimeInfo &inout RuntimeInfo, const FGameplayTag &inout CustomTrigger) const
     {
-        // body not fully recovered вЂ” stub [argmismatch:argtype]
+        FItemActionTriggerArray local_4;
+        if (this.OnCustomTriggers.Find(CustomTrigger, local_4))
+        {
+            Super::ExecuteCustomTriggers(RuntimeInfo, local_4.Triggers);
+        }
+        return;
     }
 }
 

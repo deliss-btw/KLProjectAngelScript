@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FC_RuntimeSplineMoveTarget_NS
 {
     const TECSComponentDerivedPtr<FC_RuntimeSplineMoveTarget> DerivedPtr = TECSComponentDerivedPtr<FC_RuntimeSplineMoveTarget>();
@@ -42,6 +41,8 @@ struct FC_RuntimeSplineMoveTarget : FECSComponent
 
     FC_RuntimeSplineMoveTarget()
     {
+        FRootDirtyFlags8 local_1;
+        this.__DirtyFlags = local_1;
         this.m_SplineEntity = ENTITY_NULL;
         this.m_MoveSpeed = -1.0f;
         this.__InitDirtyFlags();
@@ -49,6 +50,8 @@ struct FC_RuntimeSplineMoveTarget : FECSComponent
     }
     FC_RuntimeSplineMoveTarget(const FC_RuntimeSplineMoveTarget &inout Other)
     {
+        FRootDirtyFlags8 local_2;
+        this.__DirtyFlags = local_2;
         this.m_SplineEntity = ENTITY_NULL;
         this.m_MoveSpeed = -1.0f;
         this.__InitDirtyFlags();
@@ -169,11 +172,72 @@ struct FC_RuntimeSplineMoveState : FECSComponent
 
     FC_RuntimeSplineMoveState()
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags32 local_1;
+        this.__DirtyFlags = local_1;
+        this.m_bIsMoving = false;
+        this.m_bUseRootMotionSpeed = false;
+        this.m_bMovingToStart = false;
+        this.m_RootMotionSpeedPct = 1.0f;
+        this.m_SplineEntity = ENTITY_NULL;
+        this.m_DistanceOnSpline = 0.0f;
+        this.m_SplineTotalLength = 0.0f;
+        this.m_ConfigSpeed = 0.0f;
+        this.m_CurrentOffsetIndex = -1;
+        this.m_bReachedPeak = false;
+        this.m_PeakDistanceOnSpline = 0.0f;
+        this.m_FallToEndVelocity = FVector::ZeroVector;
+        this.m_FallToEndAccelerationZ = 0.0f;
+        this.m_FallToEndTimeLeft = 0.0f;
+        this.m_bHasSpeedFromCurve = false;
+        this.m_StartSpeedOnFromCurve = 0.0f;
+        this.m_SpeedFromCurve = 0.0f;
+        this.m_SpeedCurveStartTime = -1;
+        this.__InitDirtyFlags();
+        return;
     }
     FC_RuntimeSplineMoveState(const FC_RuntimeSplineMoveState &inout Other)
     {
-        // body not fully recovered вЂ” stub [argmismatch:copyctor]
+        FRootDirtyFlags32 local_4;
+        this.__DirtyFlags = local_4;
+        this.m_bIsMoving = false;
+        this.m_bUseRootMotionSpeed = false;
+        this.m_bMovingToStart = false;
+        this.m_RootMotionSpeedPct = 1.0f;
+        this.m_SplineEntity = ENTITY_NULL;
+        this.m_DistanceOnSpline = 0.0f;
+        this.m_SplineTotalLength = 0.0f;
+        this.m_ConfigSpeed = 0.0f;
+        this.m_CurrentOffsetIndex = -1;
+        this.m_bReachedPeak = false;
+        this.m_PeakDistanceOnSpline = 0.0f;
+        this.m_FallToEndVelocity = FVector::ZeroVector;
+        this.m_FallToEndAccelerationZ = 0.0f;
+        this.m_FallToEndTimeLeft = 0.0f;
+        this.m_bHasSpeedFromCurve = false;
+        this.m_StartSpeedOnFromCurve = 0.0f;
+        this.m_SpeedFromCurve = 0.0f;
+        this.m_SpeedCurveStartTime = -1;
+        this.__InitDirtyFlags();
+        this.m_bIsMoving = Other.m_bIsMoving;
+        this.m_bUseRootMotionSpeed = Other.m_bUseRootMotionSpeed;
+        this.m_bMovingToStart = Other.m_bMovingToStart;
+        this.m_RootMotionSpeedPct = Other.m_RootMotionSpeedPct;
+        this.m_SplineEntity = Other.m_SplineEntity;
+        this.m_DistanceOnSpline = Other.m_DistanceOnSpline;
+        this.m_SplineTotalLength = Other.m_SplineTotalLength;
+        this.m_ConfigSpeed = Other.m_ConfigSpeed;
+        this.m_CurrentOffsetIndex = int(Other.m_CurrentOffsetIndex);
+        this.m_StartLocationOnSpline = Other.m_StartLocationOnSpline;
+        this.m_bReachedPeak = Other.m_bReachedPeak;
+        this.m_PeakDistanceOnSpline = Other.m_PeakDistanceOnSpline;
+        this.m_FallToEndVelocity = Other.m_FallToEndVelocity;
+        this.m_FallToEndAccelerationZ = Other.m_FallToEndAccelerationZ;
+        this.m_FallToEndTimeLeft = Other.m_FallToEndTimeLeft;
+        this.m_bHasSpeedFromCurve = Other.m_bHasSpeedFromCurve;
+        this.m_StartSpeedOnFromCurve = Other.m_StartSpeedOnFromCurve;
+        this.m_SpeedFromCurve = Other.m_SpeedFromCurve;
+        this.m_SpeedCurveStartTime = Other.m_SpeedCurveStartTime;
+        return;
     }
     FC_RuntimeSplineMoveState opAssign(const FC_RuntimeSplineMoveState &inout Other)
     {
@@ -508,7 +572,7 @@ struct FC_SplineMoveConfig : FECSComponent
 
     FC_SplineMoveConfig()
     {
-        // body not fully recovered вЂ” stub [opcode-uncovered]
+        // body not fully recovered — stub [opcode-uncovered]
     }
 }
 
@@ -520,7 +584,6 @@ struct FC_SplineInfo : FECSComponent
     TSoftObjectPtr<AECSPrefab> SplinePrefab = nullptr;
     UPROPERTY()
     float32 PeekPointSplineDistance = 0.0f;
-
 
     USplineComponent GetSpline() const
     {
@@ -548,7 +611,6 @@ struct FSuperHookFlyMovementConfig
     float32 DistanceCurveTime = 1.0f;
     UPROPERTY()
     float32 DistanceCurveValuePct = 1.0f;
-
 
 }
 
@@ -579,7 +641,6 @@ struct FC_SuperHookFlyItem : FECSComponent
     FSuperHookFlyMovementConfig MovementConfig;
     UPROPERTY()
     TWeakObjectPtr<USplineComponent> Spline;
-
 
 }
 
@@ -660,37 +721,37 @@ bool RemoveRuntimeSplineMoveTarget(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorRuntimeSplineMoveTargetOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_RuntimeSplineMoveTarget, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_RuntimeSplineMoveTarget, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRuntimeSplineMoveTargetOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_RuntimeSplineMoveTarget, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_RuntimeSplineMoveTarget, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRuntimeSplineMoveTargetOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_RuntimeSplineMoveTarget, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_RuntimeSplineMoveTarget, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRuntimeSplineMoveTargetOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_RuntimeSplineMoveTarget, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_RuntimeSplineMoveTarget, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRuntimeSplineMoveTargetOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_RuntimeSplineMoveTarget, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_RuntimeSplineMoveTarget, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorRuntimeSplineMoveTargetLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_RuntimeSplineMoveTarget, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_RuntimeSplineMoveTarget, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRuntimeSplineMoveTargetActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_RuntimeSplineMoveTarget, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_RuntimeSplineMoveTarget, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRuntimeSplineMoveTargetModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_RuntimeSplineMoveTarget, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_RuntimeSplineMoveTarget, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_RuntimeSplineMoveState
@@ -770,37 +831,37 @@ bool RemoveRuntimeSplineMoveState(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorRuntimeSplineMoveStateOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_RuntimeSplineMoveState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_RuntimeSplineMoveState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRuntimeSplineMoveStateOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_RuntimeSplineMoveState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_RuntimeSplineMoveState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRuntimeSplineMoveStateOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_RuntimeSplineMoveState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_RuntimeSplineMoveState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRuntimeSplineMoveStateOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_RuntimeSplineMoveState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_RuntimeSplineMoveState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorRuntimeSplineMoveStateOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_RuntimeSplineMoveState, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_RuntimeSplineMoveState, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorRuntimeSplineMoveStateLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_RuntimeSplineMoveState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_RuntimeSplineMoveState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRuntimeSplineMoveStateActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_RuntimeSplineMoveState, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_RuntimeSplineMoveState, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorRuntimeSplineMoveStateModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_RuntimeSplineMoveState, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_RuntimeSplineMoveState, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_SplineMoveConfig
@@ -883,37 +944,37 @@ bool RemoveSplineMoveConfig(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorSplineMoveConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_SplineMoveConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_SplineMoveConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSplineMoveConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_SplineMoveConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_SplineMoveConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSplineMoveConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_SplineMoveConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_SplineMoveConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSplineMoveConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_SplineMoveConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_SplineMoveConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSplineMoveConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_SplineMoveConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_SplineMoveConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorSplineMoveConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_SplineMoveConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_SplineMoveConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSplineMoveConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_SplineMoveConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_SplineMoveConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSplineMoveConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_SplineMoveConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_SplineMoveConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_SplineInfo
@@ -996,37 +1057,37 @@ bool RemoveSplineInfo(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorSplineInfoOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_SplineInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_SplineInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSplineInfoOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_SplineInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_SplineInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSplineInfoOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_SplineInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_SplineInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSplineInfoOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_SplineInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_SplineInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSplineInfoOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_SplineInfo, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_SplineInfo, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorSplineInfoLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_SplineInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_SplineInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSplineInfoActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_SplineInfo, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_SplineInfo, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSplineInfoModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_SplineInfo, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_SplineInfo, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_SuperHookFlyItemConfig
@@ -1109,37 +1170,37 @@ bool RemoveSuperHookFlyItemConfig(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorSuperHookFlyItemConfigOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_SuperHookFlyItemConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_SuperHookFlyItemConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSuperHookFlyItemConfigOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_SuperHookFlyItemConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_SuperHookFlyItemConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSuperHookFlyItemConfigOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_SuperHookFlyItemConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_SuperHookFlyItemConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSuperHookFlyItemConfigOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_SuperHookFlyItemConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_SuperHookFlyItemConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSuperHookFlyItemConfigOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_SuperHookFlyItemConfig, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_SuperHookFlyItemConfig, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorSuperHookFlyItemConfigLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_SuperHookFlyItemConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_SuperHookFlyItemConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSuperHookFlyItemConfigActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_SuperHookFlyItemConfig, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_SuperHookFlyItemConfig, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSuperHookFlyItemConfigModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_SuperHookFlyItemConfig, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_SuperHookFlyItemConfig, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace ECSFunc_FC_SuperHookFlyItem
@@ -1222,37 +1283,37 @@ bool RemoveSuperHookFlyItem(const FECSEntity &inout Entity)
 }
 FECSMonitorRuntimeView __GetMonitorSuperHookFlyItemOnAssignView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnAssignView(World, FC_SuperHookFlyItem, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnAssignView(World, FC_SuperHookFlyItem, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSuperHookFlyItemOnRemoveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnRemoveView(World, FC_SuperHookFlyItem, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnRemoveView(World, FC_SuperHookFlyItem, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSuperHookFlyItemOnActiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnActiveView(World, FC_SuperHookFlyItem, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnActiveView(World, FC_SuperHookFlyItem, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSuperHookFlyItemOnInactiveView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnInactiveView(World, FC_SuperHookFlyItem, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnInactiveView(World, FC_SuperHookFlyItem, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 FECSMonitorRuntimeView __GetMonitorSuperHookFlyItemOnModifyView(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bMustHandleAll = true)
 {
-    return ECSInternal::GetMonitorOnModifyView(World, FC_SuperHookFlyItem, bFixedFrame, bMustHandleAll);
+    return ECSInternal::GetMonitorOnModifyView(World, FC_SuperHookFlyItem, EECSRegType(RegType), bFixedFrame, bMustHandleAll);
 }
 void __MonitorSuperHookFlyItemLifetime(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorLifetime(World, FC_SuperHookFlyItem, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorLifetime(World, FC_SuperHookFlyItem, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSuperHookFlyItemActivity(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const bool bNeedSnapshot, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorActivity(World, FC_SuperHookFlyItem, bFixedFrame, bNeedSnapshot, Details);
+    ECSInternal::MonitorActivity(World, FC_SuperHookFlyItem, EECSRegType(RegType), bFixedFrame, bNeedSnapshot, Details);
     return;
 }
 void __MonitorSuperHookFlyItemModification(const FECSWorldPtr &inout World, const EECSRegType RegType, const bool bFixedFrame, const FECSMonitorDetail &inout Details = FECSMonitorDetail())
 {
-    ECSInternal::MonitorModification(World, FC_SuperHookFlyItem, bFixedFrame, Details);
+    ECSInternal::MonitorModification(World, FC_SuperHookFlyItem, EECSRegType(RegType), bFixedFrame, Details);
     return;
 }
 namespace EntityBB

@@ -1,4 +1,3 @@
-﻿
 namespace __FVM_HeadsUpDisplayList_Helpers
 {
 UFUNCTION()

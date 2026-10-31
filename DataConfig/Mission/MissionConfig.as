@@ -1,4 +1,3 @@
-﻿
 enum EMissionType
 {
     MainStory,
@@ -29,14 +28,12 @@ enum EMissionHideType
     HideAllPhases,
 }
 
-
 struct FMissionActionConfig
 {
     UPROPERTY()
     EMissionTriggerType TriggerType;
     UPROPERTY()
     FInstancedStruct ActionData;
-
 
 }
 
@@ -57,7 +54,6 @@ struct FMissionPhaseConfig : FDataObject
     TArray<FMissionActionConfig> ActionList;
     UPROPERTY()
     FDataObjectPtr m_OverrideGuidePresentation;
-
 
     const TDataObjectPtr<FObjectiveConfig> GetObjective() const property
     {
@@ -105,7 +101,6 @@ struct FMissionPhaseTransitionConfig : FDataObject
     FDataObjectPtr m_ToPhase;
     UPROPERTY()
     FDataObjectPtr m_Condition;
-
 
     const TDataObjectPtr<FMissionPhaseConfig> GetFromPhase() const property
     {
@@ -161,7 +156,6 @@ struct FMissionPresentationRuleConfig : FDataObject
     FDataObjectPtr m_MissionFinishHint;
     UPROPERTY()
     TMap<EMissionStatus, FDataObjectPtr> m_MissionPhaseHint;
-
 
     const TDataObjectPtr<FGuidePresentationConfig> GetGuidePresentation() const property
     {
@@ -234,7 +228,6 @@ struct FMissionConfig : FDataObject
     TArray<FDataObjectPtr> m_FollowUpTrackingMissions;
     UPROPERTY()
     FDataObjectPtr m_PresentationRule;
-
 
     const TDataObjectPtr<FChapterConfig> GetBelongChapter() const property
     {

@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_ArmWrestle_Progress
 {
     const int ViewID = 0;
@@ -15,7 +14,6 @@ class UWidget_ArmWrestle_Progress : UEUIUserWidget
     FEUIModelWeakRef __VMS_ProgressOperation;
     UPROPERTY()
     FGetEUIModelRef VM_ArmWrestle_ProgressDelegate;
-
 
     UFUNCTION()
     void Construct_Implementation()
@@ -193,6 +191,7 @@ namespace UWidget_ArmWrestle_Progress
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_ArmWrestle_Progress;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnStateChanged"));
     return;
 }

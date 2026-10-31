@@ -1,4 +1,3 @@
-﻿
 namespace __INTENRAL_FCE_RequireNewTarget_NS
 {
     const TECSEventDerivedPtr<FCE_RequireNewTarget> DerivedPtr = TECSEventDerivedPtr<FCE_RequireNewTarget>();
@@ -75,7 +74,6 @@ struct FCE_AIChangeMountMoveStance : FECSEvent
     ECharacterMoveStance NewStance = ECharacterMoveStance(0);
     UPROPERTY()
     ECharacterMoveStanceLayer MoveStanceLayer = ECharacterMoveStanceLayer(0);
-
 
 }
 

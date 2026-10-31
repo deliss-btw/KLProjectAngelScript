@@ -1,4 +1,3 @@
-﻿
 namespace UWidget_SkillInfo
 {
     const int ViewID = 0;
@@ -98,6 +97,7 @@ namespace UWidget_SkillInfo
 {
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
+    Result.WidgetType = UWidget_SkillInfo;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnPlayerPawnEntityChanged"));
     return;
 }

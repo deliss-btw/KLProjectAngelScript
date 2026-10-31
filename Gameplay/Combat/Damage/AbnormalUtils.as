@@ -1,4 +1,3 @@
-﻿
 namespace FAbnormalStateUtils
 {
 enum EAbnormalHitStatePriority
@@ -25,7 +24,6 @@ struct FAccumulateAbnormalParams
     FFPTime Time;
     UPROPERTY()
     FECSEntity SourceEntity;
-
 
 }
 
@@ -56,7 +54,7 @@ FAbnormalStateUtils::EAbnormalHitStatePriority GetTargetCurrentAbnormalPriority(
         {
             if (local_24.IsActiving())
             {
-                FAbnormalStateUtils::EAbnormalHitStatePriority local_2 = FAbnormalStateUtils::GetSpecificAbnormalPriority(__return, local_24.GetAbnormalStateType());
+                FAbnormalStateUtils::EAbnormalHitStatePriority local_2 = FAbnormalStateUtils::GetSpecificAbnormalPriority(__return, local_24.GetAbnormalStateType(), EAbnormalState(Entity));
                 if ((int(local_2)) > (int(local_1)))
                 {
                     local_1 = local_2;
@@ -367,7 +365,7 @@ void OnTriggerAbnormalState(const FECSEntity &inout AbnormalEntity, const FECSEn
         return;
     }
     FAbnormalState local_172;
-    local_172.SetAbnormalStateType(EAbnormalState(Params.AbnormalState));
+    local_172.SetAbnormalStateType(Params.AbnormalState);
     local_172.SetActiveState(EAbnormalActiveState(local_2));
     local_172.SetAttacker(Params.SourceEntity);
     local_172.SetBuffConfig(local_62);
@@ -395,7 +393,44 @@ void OnTriggerAbnormalState(const FECSEntity &inout AbnormalEntity, const FECSEn
 }
 void RemoveSingleAbnormal(const FECSEntity &inout ComponentEntity, const EAbnormalState State, const FFPTime &inout Time, const UAbnormalDataAsset AbnormalData)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    TArray<FECSEntity> local_4;
+    FASCommonUtils::GetEntityAllPlayerPawnEntities(ComponentEntity, local_4);
+    FAbnormalStateConfig local_404;
+    if (AbnormalData.AbnormalStateGlobalConfig.Find(State, local_404))
+    {
+        FGameAttributeRef local_420 = local_404.AccumulationAttribute;
+        FGameAttributeRef local_434 = local_404.AccumulationAttributeMax;
+        for (auto& local_448 : local_4)
+        {
+            Get local_452;
+            const FC_GameAttribute& local_454 = local_452.opCall();
+            if (local_454)
+            {
+                if (local_454.HasAttribute(local_420) && local_454.HasAttribute(local_434))
+                {
+                    FGameAttributeUtils::ChangeConsumeValue(local_448, local_420, Time, local_454.GetAttributeMaxValue(local_434, Time), -1.0f);
+                }
+            }
+        }
+    }
+    Modify local_464;
+    FC_AbnormalState& local_460 = local_464.opCall();
+    if (local_460)
+    {
+        int local_468 = local_460.GetAbnormalStates().Num() - 1;
+        for (; local_468 >= 0; --local_468)
+        {
+            if (int(State) == (int(local_460.GetAbnormalStates()[local_468].GetAbnormalStateType())))
+            {
+                for (auto& local_448 : local_4)
+                {
+                    local_460.GetAbnormalStates()[local_468].RemoveBuffFromPawn(local_448, Time);
+                }
+                local_460.GetModify_AbnormalStates().RemoveAt(local_468);
+            }
+        }
+    }
+    return;
 }
 void OnTriggerAbnormalAccumulating(const FECSEntity &inout AbnormalEntity, const FECSEntity &inout ComponentEntity, const FAbnormalStateConfig &inout AbnormalStateConfig, const FAbnormalStateUtils::FAccumulateAbnormalParams &inout Params)
 {
@@ -416,7 +451,7 @@ void OnTriggerAbnormalAccumulating(const FECSEntity &inout AbnormalEntity, const
         return;
     }
     FAbnormalState local_102;
-    local_102.SetAbnormalStateType(EAbnormalState(Params.AbnormalState));
+    local_102.SetAbnormalStateType(Params.AbnormalState);
     local_102.SetActiveState(EAbnormalActiveState(local_1));
     local_102.SetAttacker(Params.SourceEntity);
     local_102.SetBuffConfig(local_40);
@@ -440,7 +475,7 @@ void OnTriggerAbnormalAccumulating(const FECSEntity &inout AbnormalEntity, const
 void PlayAbnormalFX(const FECSEntity &inout Entity, const FAbnormalFXConfig &inout AbnormalFXConfig, const FFPTime &inout Time, FAbnormalFX &inout OutAbnormalFX)
 {
     int local_1 = 0;
-    while (local_1 < 0)
+    for (; local_1 < AbnormalFXConfig.FXConfigDatas.Num(); ++local_1)
     {
         FAbnormalFXConfigData local_22;
         if (local_22.bOverrideMaterial)
@@ -474,7 +509,6 @@ void PlayAbnormalFX(const FECSEntity &inout Entity, const FAbnormalFXConfig &ino
                 OutAbnormalFX.FXEntity.Add(ECSFX::PlayFXDurationalEx(Entity, local_158, Time, 1.0f, false, FECSEntity(), EAttachFXStopMethod(0), false));
             }
         }
-        ++local_1;
     }
     return;
 }
@@ -495,7 +529,106 @@ void StopAbnormalFX(const FECSEntity &inout Entity, const FAbnormalFX &inout Abn
 }
 void DisposeAbnormalPresentation(const FECSEntity &inout ComponentEntity, const FC_AbnormalState &inout AbnormalStateComponent, const UAbnormalDataAsset AbnormalData, const FFPTime &inout Time)
 {
-    // body not fully recovered вЂ” stub [argmismatch:argtype]
+    bool local_17;
+    TArray<FECSEntity> local_4;
+    int local_22 = 0;
+    FASCommonUtils::GetEntityAllPlayerPawnEntities(ComponentEntity, local_4);
+    for (auto& local_20 : local_4)
+    {
+        if (!(local_20.IsValid()))
+        {
+            continue;
+        }
+        if (!(local_22))
+        {
+            continue;
+        }
+        FAbnormalStateConfig local_426;
+        for (auto& local_440 : AbnormalStateComponent.GetAbnormalStates())
+        {
+            int local_442 = int(local_440.GetAbnormalStateType());
+            local_17 = AbnormalData.AbnormalStateGlobalConfig.Find(EAbnormalState(local_442), local_426);
+            if (!(local_17))
+            {
+                continue;
+            }
+            FAbnormalFXConfig local_446;
+            if (int(local_440.GetActiveState()) == 0)
+            {
+                FAbnormalStateUtils::GetAbnormalFXConfig(local_20, local_426.AbnormalAccumulationFXConfigs, local_426.SpecialBossAbnormalAccumulationFXConfigs);
+            }
+            else
+            {
+                if (int(local_440.GetActiveState()) == 1)
+                {
+                    FAbnormalStateUtils::GetAbnormalFXConfig(local_20, local_426.AbnormalFXConfigs, local_426.SpecialBossAbnormalFXConfigs);
+                }
+                else
+                {
+                    FAbnormalStateUtils::GetAbnormalFXConfig(local_20, local_426.MonsterEnhancedConfig.AbnormalFXConfigs, local_426.MonsterEnhancedConfig.SpecialBossAbnormalFXConfigs);
+                }
+            }
+            int local_447 = int(local_440.GetActiveState());
+            local_442 = int(local_440.GetAbnormalStateType());
+            int local_449 = local_22.FindAbnormalState(EAbnormalState(local_442), EAbnormalActiveState(local_447));
+            if (local_449 >= 0)
+            {
+                FAbnormalFX local_468;
+                if (local_468.EndTime.opCmp(Time) <= 0 && ((local_468.EndTime.opCmp(0.0) > 0)))
+                {
+                    FAbnormalStateUtils::StopAbnormalFX(local_20, local_468);
+                    local_22.AbnormalFXs.RemoveAt(local_449);
+                }
+            }
+            else
+            {
+                if (FFPTime(local_440.GetEndTime()).opCmp(Time) > 0 || (!(local_440.IsActiving()) && (FFPTime(local_440.GetEndTime()).opCmp(0.0) < 0)))
+                {
+                    FAbnormalFX local_468;
+                    local_442 = int(local_440.GetAbnormalStateType());
+                    local_468.AbnormalState = EAbnormalState(local_442);
+                    local_468.ActiveState = EAbnormalActiveState(local_440.GetActiveState());
+                    if (local_446.FXConfigDatas.Num() > 0 && (local_446.FXConfigDatas[0].Duration > 0.0f))
+                    {
+                        local_468.EndTime = (Time + FFPTime(local_446.FXConfigDatas[0].Duration));
+                    }
+                    else
+                    {
+                        local_468.EndTime = (Time + FFPTime(9999));
+                    }
+                    FAbnormalStateUtils::PlayAbnormalFX(local_20, local_446, Time, local_468);
+                    local_22.AbnormalFXs.Add(local_468);
+                }
+            }
+        }
+        TArray<int> local_482;
+        int local_449_2 = 0;
+        for (; local_449_2 < local_22.AbnormalFXs.Num(); ++local_449_2)
+        {
+            FAbnormalFX local_468;
+            local_17 = false;
+            for (auto& local_440 : AbnormalStateComponent.GetAbnormalStates())
+            {
+                if (int(local_468.ActiveState) == int(local_440.GetActiveState()) && (int(local_468.AbnormalState) == int(local_440.GetAbnormalStateType())))
+                {
+                    local_17 = true;
+                    break;
+                }
+            }
+            if (!(local_17))
+            {
+                local_482.Add(local_449_2);
+            }
+        }
+        int local_484 = local_482.Num() - 1;
+        for (; local_484 >= 0; )
+        {
+            FAbnormalStateUtils::StopAbnormalFX(local_20, local_22.AbnormalFXs[local_484]);
+            local_22.AbnormalFXs.RemoveAt(local_484);
+            --local_484;
+        }
+    }
+    return;
 }
 FAbnormalFXConfig GetAbnormalFXConfig(const FECSEntity &inout Entity, const TMap<EAbnormalFXPrefabType, FAbnormalFXConfig> &inout AbnormalFXConfig, const TMap<FGameplayTag, FAbnormalFXConfig> &inout SpecialAbnormalFXConfig)
 {
